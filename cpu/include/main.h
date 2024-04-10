@@ -3,6 +3,11 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <utils/hello.h>
+#include <string.h>
+#include <commons/log.h>
+#include <commons/config.h>
+#include "conexionesCPU.h"
+#include "../../utils/include/sockets.h" 
+#include "../../utils/include/logconfig.h"
 
-#endif
+#endif // CPU_MAIN_H

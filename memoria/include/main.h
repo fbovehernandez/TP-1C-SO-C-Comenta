@@ -1,8 +1,13 @@
-#ifndef MEMORIA_MAIN_H
-#define MEMORIA_MAIN_H
+#ifndef MEMORIA_H
+#define MEMORIA_H
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <utils/hello.h>
+#include <string.h>
+#include <commons/log.h>
+#include <commons/config.h>
+#include "conexionesMEM.h"
+#include "../../utils/include/sockets.h" 
+#include "../../utils/include/logconfig.h"
 
-#endif
+#endif // MEMORIA_H

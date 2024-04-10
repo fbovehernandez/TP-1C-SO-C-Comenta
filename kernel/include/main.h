@@ -1,8 +1,13 @@
-#ifndef KERNEL_MAIN_H
+#ifndef KERNEL_MAIN_H_
 #define KERNEL_MAIN_H
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <utils/hello.h>
+#include <string.h>
+#include <commons/log.h>
+#include <commons/config.h>
+#include "conexiones.h"
+#include "../../utils/include/sockets.h" 
+#include "../../utils/include/logconfig.h"
 
-#endif
+#endif // KERNEL_MAIN_H_
