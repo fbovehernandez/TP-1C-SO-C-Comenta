@@ -9,5 +9,7 @@ int main(int argc, char* argv[]) {
     conectar_kernel_cpu_dispatch(config_kernel, logger_kernel, IP_CPU); // agarra el puerto que escucha la CPU y se conecta a la CPU
     conectar_kernel_cpu_interrupt(config_kernel, logger_kernel, IP_CPU);
     conectar_kernel_memoria(config_kernel, logger_kernel);
+
+    escuchar_IO(config_kernel, logger_kernel);
     return 0;
 }

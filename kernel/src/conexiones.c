@@ -54,3 +54,14 @@ void conectar_kernel_memoria(t_config* config_kernel, t_log* logger_kernel) {
     sendMessage(memoriafd);
     close(memoriafd);
 }
+
+void escuchar_IO(t_config* config_kernel, t_log* logger_kernel) {
+    char* escucha_IO = config_get_string_value(config_kernel, "PUERTO_IO"); // 8009
+    int kernelfd = iniciar_servidor(escucha_IO);
+    log_info(logger_kernel, "Servidor iniciado, esperando conexion de I/O");
+    printf("Escucha I/O: %s\n", escucha_IO);
+    int io_fd = esperar_conexion(kernelfd);
+
+    receiveMessagex(io_fd);
+    close(io_fd);
+}
