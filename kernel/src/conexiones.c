@@ -52,12 +52,19 @@ int conectar_kernel_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logge
     int memoriafd = crear_conexion(IP_MEMORIA, puerto_memoria);
     log_info(logger_kernel, "Conexion establecida con Memoria");
 
-    sendMessage(memoriafd);
+    handshake(memoriafd);
 
     close(memoriafd);
     return memoriafd;
 }
 
+void handshake(int socket) {
+    char* buffer = malloc(10);
+    send(socket, "KERNEL", 6, 0); // len("kernel")
+    recv(socket, buffer, sizeof(buffer), 0);
+    printf("Handshake: %s\n", buffer);
+    free(buffer);
+}
 /* 
 void escuchar_conexiones(t_config* config_kernel, t_log* logger_kernel) {
     char* escuchar_io = config_get_string_value(config_kernel, "PUERTO_IO"); // 8009

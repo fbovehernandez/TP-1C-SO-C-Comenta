@@ -62,8 +62,13 @@ int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) 
     int memoriafd = crear_conexion(IP_MEMORIA, puerto_memoria);
     log_info(logger_CPU, "Conexion establecida con Memoria");
 
-    sendMessage(memoriafd);
-
-    close(memoriafd);
     return memoriafd;
+}
+
+void handshake(int socket_memoria) {
+    char* buffer = malloc(10);
+    send(socket_memoria, "CPU", 4, 0); // len("CPU")
+    recv(socket_memoria, buffer, sizeof(buffer), 0);
+    printf("Handshake: %s\n", buffer);
+    free(buffer);
 }

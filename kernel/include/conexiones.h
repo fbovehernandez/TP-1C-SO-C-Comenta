@@ -10,6 +10,7 @@
 void conectar_kernel_cpu_dispatch(t_config* config_kernel, t_log* logger_kernel, char* ip);
 void conectar_kernel_cpu_interrupt(t_config* config_kernel, t_log* logger_kernel, char* ip);
 int conectar_kernel_memoria(char* ip, char* puerto, t_log* logger_kernel);
+void handshake(int socket);
 // void escuchar_STDOUT(t_config* config_kernel, t_log* logger_kernel);
 
 #endif // CONEXIONES_H

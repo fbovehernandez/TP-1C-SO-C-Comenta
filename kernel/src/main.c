@@ -13,9 +13,6 @@ int main(int argc, char* argv[]) {
     char* puerto_memoria = config_get_string_value(config_kernel, "PUERTO_MEMORIA");
 
     conectar_kernel_memoria(IP_MEMORIA, puerto_memoria, logger_kernel);
-    sleep(10);
-    conectar_kernel_memoria(IP_MEMORIA, puerto_memoria, logger_kernel);
-
     
     // escuchar_conexiones(config_kernel, logger_kernel);
     // escuchar_STDOUT(config_kernel, logger_kernel);
