@@ -9,5 +9,7 @@
 #include "conexiones_io.h"
 #include "../../utils/include/sockets.h" 
 #include "../../utils/include/logconfig.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
 #endif // MEMORIA_H

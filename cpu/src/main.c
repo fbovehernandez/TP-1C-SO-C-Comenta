@@ -8,5 +8,11 @@ int main(int argc, char* argv[]) {
                             
     escuchar_dispatcher(config_CPU, logger_CPU);
     escuchar_interrupt(config_CPU, logger_CPU); 
+
+    char* IP_MEMORIA = config_get_string_value(config_CPU, "IP_MEMORIA");
+    char* puerto_memoria = config_get_string_value(config_CPU, "PUERTO_MEMORIA");
+
+    conectar_memoria(IP_MEMORIA, puerto_memoria, logger_CPU);
+
     return 0;
 }

@@ -34,3 +34,36 @@ void escuchar_interrupt(t_config* config_CPU, t_log* logger_CPU) {
     receiveMessagex(kernel_interrupt);
     close(kernel_interrupt);
 }
+
+/* 
+int conectar_kernel_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_kernel) {
+    // char* IP_MEMORIA = config_get_string_value(config_kernel, "IP_MEMORIA");
+    // char* puerto_memoria = config_get_string_value(config_kernel, "PUERTO_MEMORIA");
+
+    printf("IP_MEMORIA: %s\n", IP_MEMORIA);
+    printf("PUERTO_MEMORIA: %s\n", puerto_memoria);
+
+    int memoriafd = crear_conexion(IP_MEMORIA, puerto_memoria);
+    log_info(logger_kernel, "Conexion establecida con Memoria");
+
+    sendMessage(memoriafd);
+
+    close(memoriafd);
+    return memoriafd;
+}*/
+
+int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) {
+    // char* IP_MEMORIA = config_get_string_value(config_CPU, "IP_MEMORIA");
+    // char* puerto_memoria = config_get_string_value(config_CPU, "PUERTO_MEMORIA");
+
+    printf("IP_MEMORIA: %s\n", IP_MEMORIA);
+    printf("PUERTO_MEMORIA: %s\n", puerto_memoria);
+
+    int memoriafd = crear_conexion(IP_MEMORIA, puerto_memoria);
+    log_info(logger_CPU, "Conexion establecida con Memoria");
+
+    sendMessage(memoriafd);
+
+    close(memoriafd);
+    return memoriafd;
+}

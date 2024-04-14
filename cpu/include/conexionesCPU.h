@@ -9,5 +9,6 @@
 
 void escuchar_dispatcher(t_config* config_CPU, t_log* logger_CPU);
 void escuchar_interrupt(t_config* config_CPU, t_log* logger_CPU);
+int conectar_memoria(char* ip, char* puerto, t_log* logger_CPU);
 
 #endif // CONEXIONESCPU_H

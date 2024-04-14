@@ -10,6 +10,7 @@
 #include <commons/log.h>
 #include <commons/config.h>
 #include <assert.h>
+#include <pthread.h>
 
 typedef enum {
 	MENSAJE,

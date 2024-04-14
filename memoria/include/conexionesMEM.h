@@ -7,6 +7,12 @@
 #include "../../utils/include/sockets.h" 
 #include "../../utils/include/logconfig.h"
 
-void iniciar_servidor_memoria(t_config* config_memoria, t_log* logger);
+typedef struct {
+    int socket;
+    t_log* logger;
+} t_config_memoria;
+
+void* manejar_conexion_kernel(void* config_memoria);
+void* manejar_conexion_cpu(void* config_memoria);
 
 #endif // CONEXIONES_H

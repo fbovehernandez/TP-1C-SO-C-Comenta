@@ -1,16 +1,34 @@
 #include "../include/main.h"
 
-int main(int argc, char* argv[]) {
-    // decir_hola("una Interfaz de Entrada/Salida");
+int main(int argc, char* argv[1]) {
     
-    t_config* config_io = iniciar_config("./entradasalida.config");
+    // Este archivo lo recibe por parametro
+    t_config* config_io = iniciar_config(argv[1]);
     t_log* logger_io = iniciar_logger("entradasalida.log");
 
     // Esto es solo para probar y practicar sockets, supongo que esto despues va con hilos
-
-    char* ip_io = config_get_string_value(config_io, "IP_KERNEL_IO");
     // char* puerto_io = config_get_string_value(config_io, "PUERTO_KERNEL_IO");
-    conectar_kernel_io(config_io, logger_io, ip_io);
     
-    return 0;
+    if(config_io == NULL) {
+        log_error(logger_io, "No se pudo leer el archivo de configuracion");
+        return 1;
+    }
+
+    char* tipo_interfaz = config_get_string_value(config_io, "TIPO_INTERFAZ");
+    printf("Tipo de interfaz: %s\n", tipo_interfaz);
+
+    if (strcmp(tipo_interfaz, "STDOUT") == 0) {
+        gestionar_STDOUT(config_io, logger_io);
+    } else if (strcmp(tipo_interfaz, "STDIN") == 0) {
+        printf("STDIN - Falta gestionar\n");        
+    } else if (strcmp(tipo_interfaz, "Genericas") == 0) {
+        // gestionar_GENERICA(config_io);
+    } else if (strcmp(tipo_interfaz, "DialFS") == 0) {
+        // gestionar_DIALFS(config_io);
+    } else {
+        printf("No trates de hacer mi experiencia con operativos peor\n");
+        // insert logica
+    }
+
+return 0;
 }

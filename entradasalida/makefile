@@ -52,6 +52,10 @@ $(sort $(dir $(BIN) $(OBJS))):
 start: debug
 	valgrind --tool=none ./$(BIN) $(ARGS)
 
+.PHONY: start2
+start2: debug
+    valgrind --tool=none ./$(BIN) $(ARGS2)
+
 .PHONY: memcheck
 memcheck: debug
 	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(ARGS)

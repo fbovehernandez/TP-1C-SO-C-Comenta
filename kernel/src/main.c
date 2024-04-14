@@ -8,8 +8,16 @@ int main(int argc, char* argv[]) {
     char* IP_CPU = config_get_string_value(config_kernel, "IP_CPU");
     conectar_kernel_cpu_dispatch(config_kernel, logger_kernel, IP_CPU); // agarra el puerto que escucha la CPU y se conecta a la CPU
     conectar_kernel_cpu_interrupt(config_kernel, logger_kernel, IP_CPU);
-    conectar_kernel_memoria(config_kernel, logger_kernel);
 
-    escuchar_IO(config_kernel, logger_kernel);
+    char* IP_MEMORIA = config_get_string_value(config_kernel, "IP_MEMORIA");
+    char* puerto_memoria = config_get_string_value(config_kernel, "PUERTO_MEMORIA");
+
+    conectar_kernel_memoria(IP_MEMORIA, puerto_memoria, logger_kernel);
+    sleep(10);
+    conectar_kernel_memoria(IP_MEMORIA, puerto_memoria, logger_kernel);
+
+    
+    // escuchar_conexiones(config_kernel, logger_kernel);
+    // escuchar_STDOUT(config_kernel, logger_kernel);
     return 0;
 }
