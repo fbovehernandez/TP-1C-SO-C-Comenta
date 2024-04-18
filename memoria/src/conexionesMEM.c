@@ -1,40 +1,97 @@
 #include "../include/conexionesMEM.h"
 
-void* manejar_conexion_kernel(void* config_memoria) {
-    t_config_memoria* config_memory = (t_config_memoria*)config_memoria;
-    char* buffer = malloc(10);
+//Acepta el handshake del cliente, se podria hacer mas generico y que cada uno tenga un valor diferente
+int esperar_cliente(int socket_servidor, t_log* logger_memoria)
+{
+	int handshake = 0;
+	// int resultOk = 0;
+	int resultError = -1;
+	int socket_cliente = accept(socket_servidor, NULL, NULL);
 
-    while(1) {
-        int kernel_memoria = esperar_conexion(config_memory->socket);
-        log_info(config_memory->logger, "Conexion establecida con kernel");
-        
-        recv(kernel_memoria, buffer, sizeof(buffer), 0);
-        if(strcmp(buffer, "KERNEL") == 0) {
-            send(kernel_memoria, "MEMORIA", 7, 0); // len("MEMORIA")
-        } else {
-            send(kernel_memoria, "ERROR", 6, 0); // len("ERROR")
+    if(socket_cliente == -1) {
+        return -1;
+    }
+    
+	recv(socket_cliente, &handshake, sizeof(int), MSG_WAITALL); 
+	if(handshake == 1) {
+        pthread_t kernel_thread;
+        pthread_create(&kernel_thread, NULL, (void*)handle_kernel, (void*)(intptr_t)socket_cliente);
+        pthread_detach(kernel_thread);
+    } else if(handshake == 2) {
+        pthread_t cpu_thread;
+        pthread_create(&cpu_thread, NULL, (void*)handle_cpu, (void*)(intptr_t)socket_cliente);
+        pthread_detach(cpu_thread);
+    } else {
+        send(socket_cliente, &resultError, sizeof(int), 0);
+        close(socket_cliente);
+        return -1;
+    }
+	return socket_cliente;
+}
+
+void* handle_cpu(void* socket) {
+    int socket_cpu = (intptr_t)socket;
+    int resultOk = 0;
+    send(socket_cpu, &resultOk, sizeof(int), 0);
+    printf("Se conecto un el cpu!\n");
+
+    int cod_op;
+    while(socket_cpu != -1) {
+        cod_op = recibir_operacion(socket_cpu);
+        switch(cod_op) {
+            case 10:
+                printf("Se recibio 10\n");
+                break;
+            case 7:
+                printf("Se recibio 7\n");
+                break;
+            default:
+                printf("Rompio todo?\n");
+                // close(socket_cpu); NO cierro conexion
+                return NULL;
         }
-        
-        close(kernel_memoria);
+    }
+    return NULL;
+}
+
+void* handle_kernel(void* socket) {
+    int socket_kernel = (intptr_t)socket;
+    // free(socket); 
+    int resultOk = 0;
+    send(socket_kernel, &resultOk, sizeof(int), 0);
+    printf("Se conecto el kernel!\n");
+
+    int cod_op;
+    while(1) {
+        cod_op = recibir_operacion(socket_kernel);
+        switch(cod_op) {
+            case 10:
+                printf("Se recibio 10\n");
+                break;
+            case 7:
+                printf("Se recibio 7\n");
+                break;
+            default:
+                printf("Rompio todo?\n");
+                // close(socket_kernel);
+                return NULL;
+        }
+    }
+    return NULL;
+}
+
+int recibir_operacion(int socket_client) {
+    int cod_op;
+    if(recv(socket_client, &cod_op, sizeof(int), MSG_WAITALL) != 0) {
+        return cod_op;
+    } else {
+        close(socket_client);
+        return -1;
     }
 }
 
-// En algun punto supongo que deberia pasar esta funcion a otro .c
-void* manejar_conexion_cpu(void* config_memoria) {
-    t_config_memoria* config_memory = (t_config_memoria*)config_memoria;
-    char* buffer = malloc(10);
+// Posible futura abstraccion: atender(t_config_memoria* memory_struct, char* modulo_atendido)
 
-    while(1) {
-        int cpu_memoria = esperar_conexion(config_memory->socket);
-        // La idea aca seria implementar algo tipo, bueno me das tu cod-op y veo que operacion realizo si en handshake dio bien
-        log_info(config_memory->logger, "Conexion establecida con cpu");
-
-        recv(cpu_memoria, buffer, sizeof(buffer), 0); 
-        if(strcmp(buffer, "CPU") == 0) {
-            send(cpu_memoria, "MEMORIA", 7, 0); // len("MEMORIA")
-        } else {
-            send(cpu_memoria, "ERROR", 6, 0); // len("ERROR")
-        }
-        close(cpu_memoria);
-    }
+void liberar_conexion(int socket_cliente) {
+	close(socket_cliente);
 }

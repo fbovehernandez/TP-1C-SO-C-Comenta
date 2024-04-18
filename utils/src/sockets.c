@@ -53,6 +53,7 @@ int iniciar_servidor(char* puerto) {
     return socket_servidor;
 }
 
+
 void corroborar_exito(int variable, char* mensaje) {
 	if(variable < 0)
 	{
@@ -61,9 +62,12 @@ void corroborar_exito(int variable, char* mensaje) {
 	}
 }
 
-int crear_conexion(char *ip, char* puerto) {
+int crear_conexion(char *ip, char* puerto, int valor) {
 	struct addrinfo hints;
 	struct addrinfo *server_info;
+
+	uint32_t handshake = valor;
+	uint32_t result;
 
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_UNSPEC;
@@ -83,6 +87,17 @@ int crear_conexion(char *ip, char* puerto) {
 	int conexion_cliente = connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen);
 
 	corroborar_exito(conexion_cliente, " conectar al cliente.");
+
+	// Envio handshake
+	send(socket_cliente, &handshake, sizeof(int), 0);
+	recv(socket_cliente, &result, sizeof(int), MSG_WAITALL); 
+
+	// Hacer con logger
+	
+	if(!result)
+		printf("conexion exitosa");
+	else
+		printf("conexion fallida");
 
 	freeaddrinfo(server_info);
 

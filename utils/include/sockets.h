@@ -32,6 +32,6 @@ int esperar_conexion(int);
 void corroborar_exito(int, char*);
 void sendMessage(int socket_fd);
 void receiveMessagex(int socket_fd);
-int crear_conexion(char *ip, char* puerto);
+int crear_conexion(char *ip, char* puerto, int valor);
 
 #endif // SOCKET_H

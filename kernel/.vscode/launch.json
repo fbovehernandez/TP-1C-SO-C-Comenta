@@ -19,9 +19,14 @@
           "description": "Enable pretty-printing for gdb",
           "text": "-enable-pretty-printing",
           "ignoreFailures": true
+        },
+        {
+          "description": "Skip standard library",
+          "text": "skip -gfi /usr/include/*",
+          "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "build"
+      "preLaunchTask": "build",
     }
   ]
 }

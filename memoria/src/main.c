@@ -1,27 +1,49 @@
 #include "../include/main.h"
 
 int main(int argc, char* argv[]) {
-    pthread_t conexion_kernel, conexion_cpu;
 
+    // Creo los configs y logs
     t_config* config_memoria = iniciar_config("./memoria.config");
     t_log* logger_memoria = iniciar_logger("memoria.log");
 
-    char* puerto_kernel = config_get_string_value(config_memoria, "PUERTO_ESCUCHA");
+    char* puerto_escucha = config_get_string_value(config_memoria, "PUERTO_ESCUCHA");
 
-    int escucha_fd = iniciar_servidor(puerto_kernel);
-    log_info(logger_memoria, "Servidor iniciado, esperando conexion de kernel");
+    // Levanto el servidor y devuelvo el socket de escucha
+    int escucha_fd = iniciar_servidor(puerto_escucha);
 
-    t_config_memoria* memory_struct = malloc(sizeof(t_config_memoria));
-    memory_struct->socket = escucha_fd;
-    memory_struct->logger = logger_memoria;
+    log_info(logger_memoria, "Servidor iniciado, esperando conexiones!");
 
-    pthread_create(&conexion_kernel, NULL, (void*)manejar_conexion_kernel , (void*)memory_struct);
-    pthread_create(&conexion_cpu, NULL, (void*)manejar_conexion_cpu , (void*)memory_struct); // Ver si hay problemas con el pasar el msimo struct
+    // conecto y recibo handshake de cpu
+    // int cliente_cpu = esperar_cliente(escucha_fd, logger_memoria, "CPU"); 
+
+    t_config_memoria* memory_struct_cpu = malloc(sizeof(t_config_memoria));
+    memory_struct_cpu->socket = escucha_fd;
+    memory_struct_cpu->logger = logger_memoria;
+
+    while(1) {
+        int socket_cliente = esperar_cliente(escucha_fd, logger_memoria);
+    }
+   
+    /* 
+    int cliente_kernel = esperar_cliente(escucha_fd, logger_memoria, "KERNEL"); // Aca va el handshake con el Kernel
     
-    // Aca lo dejo como un join porque no se en que momento el server deberia dejar de escuchar peticiones
-    pthread_join(conexion_kernel, NULL);
-    pthread_join(conexion_cpu, NULL);
-    // pthread_detach(conexion_kernel);
+    t_config_memoria* memory_struct_kernel = malloc(sizeof(t_config_memoria));
+    memory_struct_kernel->socket = cliente_kernel;
+    memory_struct_kernel->logger = logger_memoria;
+
+    pthread_create(&escucha_kernel, NULL, (void*)atender_kernel , (void*)memory_struct_kernel);
+    
+    pthread_join(escucha_kernel, NULL);
+    */
+   
+    // pthread_join(escucha_cpu, NULL);
+
+    // Libero conexiones 
     free(config_memoria);
+    free(memory_struct_cpu);
+    // free(memory_struct_kernel);
+    liberar_conexion(escucha_fd);
+    // liberar_conexion(cliente_kernel);
+
     return 0;
 }

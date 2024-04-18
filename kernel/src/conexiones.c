@@ -15,56 +15,54 @@ INSTANCIAS_RECURSOS=[1,2,1]
 GRADO_MULTIPROGRAMACION=10
 */
 
-void conectar_kernel_cpu_dispatch(t_config* config_kernel, t_log* logger_kernel, char* IP_CPU) {
-    // char* IP_CPU = config_get_string_value(config_kernel, "IP_CPU");
-    char* puerto_dispatcher = config_get_string_value(config_kernel, "PUERTO_CPU_DISPATCH");
-
-    printf("IP_CPU: %s\n", IP_CPU);
-    printf("PUERTO_CPU_DISPATCH: %s\n", puerto_dispatcher);
-
-    int dispatcherfd = crear_conexion(IP_CPU, puerto_dispatcher);
+int conectar_kernel_cpu_dispatch(t_log* logger_kernel, char* IP_CPU, char* puerto_cpu_dispatch) {
+    int valor = 1;
+    int message = 10;
+    int dispatcherfd = crear_conexion(IP_CPU, puerto_cpu_dispatch, valor);
     log_info(logger_kernel, "Conexion establecida con Dispatcher");
-    sendMessage(dispatcherfd);
-    close(dispatcherfd);
-} 
-
-
-void conectar_kernel_cpu_interrupt(t_config* config_kernel, t_log* logger_kernel, char* IP_CPU) {
-    // char* IP_CPU = config_get_string_value(config_kernel, "IP_CPU");
-    char* puerto_interrupt = config_get_string_value(config_kernel, "PUERTO_CPU_INTERRUPT");
-
-    printf("IP_CPU: %s\n", IP_CPU);
-    printf("PUERTO_CPU_INTERRUPT: %s\n", puerto_interrupt);
-
-    int interruptfd = crear_conexion(IP_CPU, puerto_interrupt);
-    log_info(logger_kernel, "Conexion establecida con Interrupt");
-    sendMessage(interruptfd);
-    close(interruptfd);
+    send(dispatcherfd, &message, sizeof(int), 0);
+    return dispatcherfd;
 }
 
 int conectar_kernel_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_kernel) {
     // char* IP_MEMORIA = config_get_string_value(config_kernel, "IP_MEMORIA");
     // char* puerto_memoria = config_get_string_value(config_kernel, "PUERTO_MEMORIA");
+    int message_kernel = 7;
+    int valor = 1;
 
-    printf("IP_MEMORIA: %s\n", IP_MEMORIA);
-    printf("PUERTO_MEMORIA: %s\n", puerto_memoria);
-
-    int memoriafd = crear_conexion(IP_MEMORIA, puerto_memoria);
+    int memoriafd = crear_conexion(IP_MEMORIA, puerto_memoria, valor);
     log_info(logger_kernel, "Conexion establecida con Memoria");
 
-    handshake(memoriafd);
+    send(memoriafd, &message_kernel, sizeof(int), 0); 
 
-    close(memoriafd);
+    // close(memoriafd); // (POSIBLE) no cierro el socket porque quiero reutilizar la conexion
     return memoriafd;
 }
 
+/*
 void handshake(int socket) {
-    char* buffer = malloc(10);
-    send(socket, "KERNEL", 6, 0); // len("kernel")
+    send(socket, 1, 6, 0); // len("kernel")
     recv(socket, buffer, sizeof(buffer), 0);
     printf("Handshake: %s\n", buffer);
     free(buffer);
+} */
+
+/*int server_escuchar(t_log* logger, char* server_name, int server_socket) {
+    int cliente_socket = esperar_cliente(logger, server_name, server_socket);
+
+    if (cliente_socket != -1) {
+        pthread_t hilo;
+        t_procesar_conexion_args* args = malloc(sizeof(t_procesar_conexion_args));
+        args->log = logger;
+        args->fd = cliente_socket;
+        args->server_name = server_name;
+        pthread_create(&hilo, NULL, (void*) procesar_conexion, (void*) args);
+        pthread_detach(hilo);
+        return 1;
+    }
+    return 0;
 }
+*/
 /* 
 void escuchar_conexiones(t_config* config_kernel, t_log* logger_kernel) {
     char* escuchar_io = config_get_string_value(config_kernel, "PUERTO_IO"); // 8009
@@ -77,3 +75,53 @@ void escuchar_conexiones(t_config* config_kernel, t_log* logger_kernel) {
     close(iostdout_fd);
 }
 */
+
+/* 
+
+typedef struct {
+    t_log* log;
+    int fd;
+    char* server_name;
+} t_procesar_conexion_args;
+
+static void procesar_conexion_cliente(void* void_args) {
+    t_procesar_conexion_args* args = (t_procesar_conexion_args*) void_args;
+    t_log* logger = args->log;
+    int cliente_socket = args->fd;
+    char* server_name = args->server_name;
+    free(args);
+    op_code cop;
+    while (cliente_socket != -1) {
+
+        if (recv(cliente_socket, &cop, sizeof(op_code), 0) != sizeof(op_code)) {
+            log_info(logger, "Desconectado!");
+            return;
+        }
+        switch (cop) {
+            case DEBUG:
+                log_info(logger, "debug");
+                break;
+
+            case INICIAR_PLANIFICACION:
+            {
+                // LOGICA DE INICIAR_PLANIFICACION
+            }
+            case DETENER_PLANIFICACION:
+            {
+
+            }
+
+            // Errores
+            case -1:
+                log_error(logger, "Cliente desconectado de %s...", server_name);
+                return;
+            default:
+                log_error(logger, "Algo anduvo mal en el server de %s", server_name);
+                return;
+        }
+    }
+
+    log_warning(logger, "El cliente se desconecto de %s server", server_name);
+    return;
+    */
+// }

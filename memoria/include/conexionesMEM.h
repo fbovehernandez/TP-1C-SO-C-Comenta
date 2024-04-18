@@ -12,7 +12,10 @@ typedef struct {
     t_log* logger;
 } t_config_memoria;
 
-void* manejar_conexion_kernel(void* config_memoria);
-void* manejar_conexion_cpu(void* config_memoria);
+int recibir_operacion(int socket_cliente);
+void* handle_kernel(void* socket);
+void* handle_cpu(void* socket);
+void liberar_conexion(int socket_cliente);
+int esperar_cliente(int, t_log*);
 
 #endif // CONEXIONES_H
