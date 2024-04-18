@@ -29,6 +29,7 @@ int main(int argc, char* argv[]) {
 
 	pthread_t dispatch;
     pthread_create(&dispatch, NULL, (void*)iniciar_servidor_dispatch, (void*)datos_dispatch);
+    
     pthread_join(dispatch, NULL);
 
 

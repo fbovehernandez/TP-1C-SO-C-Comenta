@@ -17,5 +17,5 @@ void* handle_kernel(void* socket);
 void* handle_cpu(void* socket);
 void liberar_conexion(int socket_cliente);
 int esperar_cliente(int, t_log*);
-
+int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io);
 #endif // CONEXIONES_H

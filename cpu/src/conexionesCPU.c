@@ -12,7 +12,7 @@ CANTIDAD_ENTRADAS_TLB=32
 ALGORITMO_TLB=FIFO
 
 */
-
+ 
 void escuchar_dispatcher(t_config* config_CPU, t_log* logger_CPU) {
     char* escucha_dispatcher = config_get_string_value(config_CPU, "PUERTO_ESCUCHA_DISPATCH"); // 8006
     int dispatcherfd = iniciar_servidor(escucha_dispatcher);
@@ -167,7 +167,7 @@ void* iniciar_servidor_dispatch(void* datos_dispatch) {
                 printf("Recibi 10\n");
                 break;
             default:
-                printf("entro por defautl\n");
+                printf("entro por default con codop: %d\n", codop);
                 return NULL;
         }
     }

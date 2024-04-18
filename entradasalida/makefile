@@ -54,7 +54,7 @@ start: debug
 
 .PHONY: start2
 start2: debug
-    valgrind --tool=none ./$(BIN) $(ARGS2)
+	valgrind --tool=none ./$(BIN) $(ARGS2)
 
 .PHONY: memcheck
 memcheck: debug

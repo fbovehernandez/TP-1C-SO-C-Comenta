@@ -7,6 +7,6 @@
 #include "../../utils/include/sockets.h" 
 #include "../../utils/include/logconfig.h"
 
-void gestionar_STDOUT(t_config* config_io, t_log* logger_io);
+int conectar_io_kernel(char* ip, char* puerto, t_log* logger);
 
 #endif // CONEXIONES_IO_H

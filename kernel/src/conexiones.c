@@ -15,6 +15,61 @@ INSTANCIAS_RECURSOS=[1,2,1]
 GRADO_MULTIPROGRAMACION=10
 */
 
+int esperar_cliente(int socket_escucha, t_log* logger) {
+    int handshake = 0;
+    int resultError = -1;
+    int socket_cliente = accept(socket_escucha, NULL,  NULL);
+
+    if(socket_cliente == -1) {
+        return -1;
+    }
+
+    recv(socket_cliente, &handshake, sizeof(int), 0);
+    if(handshake == 5) {
+        pthread_t hilo_io;
+        pthread_create(&hilo_io, NULL, (void*) handle_io, (void*)(intptr_t) socket_cliente);
+        pthread_detach(hilo_io);
+    } else {
+        send(socket_cliente, &resultError, sizeof(int), 0);
+        close(socket_cliente);
+        return -1;
+    }
+
+    return socket_cliente;
+}
+
+void* handle_io(void* socket) {
+    int socket_io = (intptr_t) socket;
+    int resultOk = 0;
+    send(socket_io, &resultOk, sizeof(int), 0);
+    printf("Conexion establecida con I/O\n");
+
+    int cod_op;
+    while(socket_io != -1) {
+        cod_op = recibir_operacion(socket_io);
+        switch (cod_op) {
+        case 12:
+            printf("Soy el I/O y recibi un mensaje\n");
+            break;
+        default:
+            printf("Llega al default.");
+            return NULL;
+        }
+    }
+    return NULL;
+}
+
+// Puede ir al utils/src/sockets.c
+int recibir_operacion(int socket_client) {
+    int cod_op;
+    if(recv(socket_client, &cod_op, sizeof(int), MSG_WAITALL) != 0) {
+        return cod_op;
+    } else {
+        close(socket_client);
+        return -1;
+    }
+}
+
 int conectar_kernel_cpu_dispatch(t_log* logger_kernel, char* IP_CPU, char* puerto_cpu_dispatch) {
     int valor = 1;
     int message = 10;
@@ -125,3 +180,4 @@ static void procesar_conexion_cliente(void* void_args) {
     return;
     */
 // }
+
