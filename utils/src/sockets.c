@@ -113,31 +113,6 @@ int esperar_conexion(int socket_servidor) {
     return socket_cliente; // Devuelve el socket de conexion con el cliente que se conecto
 }
 
-/*
-int esperar_conexiones_io(int socket_servidor) {
-    int socket_cliente;
-    
-	for(;;) {
-		socket_cliente = accept(socket_servidor, NULL, NULL);
-		if(socket_cliente != -1) {
-			continue;
-		}
-
-		pthread_t thread_io;
-		if (pthread_create(&thread_io, NULL, manejar_conexion, (void*) &socket_cliente) < 0) {
-            perror("could not create thread");
-            return;
-        }
-	}
-
-    return socket_cliente; // Devuelve el socket de conexion con el cliente que se conecto
+void liberar_conexion(int socket) {
+	close(socket);
 }
-
-void* manejar_conexion(void* socket_cliente) {
-    // Hacer que el hilo duerma durante 5 segundos
-    sleep(7);
-	printf("Hey, dejame dormir\n");
-    return NULL;
-}
-*/
-// Saco algunas funciones que no se estaban usando para testear conexiones

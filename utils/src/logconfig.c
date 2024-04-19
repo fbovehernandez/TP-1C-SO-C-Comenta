@@ -25,3 +25,13 @@ void terminar_programa(int conexion, t_log* logger, t_config* config) {
 	config_destroy(config);
 	close(conexion);
 }
+
+int recibir_operacion(int socket_client) {
+    int cod_op;
+    if(recv(socket_client, &cod_op, sizeof(int), MSG_WAITALL) != 0) {
+        return cod_op;
+    } else {
+        close(socket_client);
+        return -1;
+    }
+}

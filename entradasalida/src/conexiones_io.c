@@ -30,16 +30,14 @@ void gestionar_DIALFS(t_config *config_io) {
 */
 
 int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io) {
-    // char* IP_MEMORIA = config_get_string_value(config_kernel, "IP_MEMORIA");
-    // char* puerto_memoria = config_get_string_value(config_kernel, "PUERTO_MEMORIA");
-    int message_io = 12; //nro de codop
-    int valor = 5; //handshake
+    int message_io = 12; // nro de codop
+    int valor = 5; //handshake, 5 = I/O
 
     int kernelfd = crear_conexion(IP_KERNEL, puerto_kernel, valor);
     log_info(logger_io, "Conexion establecida con Kernel");
 
     send(kernelfd, &message_io, sizeof(int), 0); 
 
-    close(kernelfd); // (POSIBLE) no cierro el socket porque quiero reutilizar la conexion
+    // close(kernelfd); // (POSIBLE) no cierro el socket porque quiero reutilizar la conexion
     return kernelfd;
 }

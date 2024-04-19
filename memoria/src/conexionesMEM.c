@@ -79,19 +79,3 @@ void* handle_kernel(void* socket) {
     }
     return NULL;
 }
-
-int recibir_operacion(int socket_client) {
-    int cod_op;
-    if(recv(socket_client, &cod_op, sizeof(int), MSG_WAITALL) != 0) {
-        return cod_op;
-    } else {
-        close(socket_client);
-        return -1;
-    }
-}
-
-// Posible futura abstraccion: atender(t_config_memoria* memory_struct, char* modulo_atendido)
-
-void liberar_conexion(int socket_cliente) {
-	close(socket_cliente);
-}

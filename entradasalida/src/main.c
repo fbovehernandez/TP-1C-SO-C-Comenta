@@ -7,7 +7,6 @@ int main(int argc, char* argv[1]) {
     t_log* logger_io = iniciar_logger("entradasalida.log");
 
     char* IP_KERNEL = config_get_string_value(config_io, "IP_KERNEL");
-    // Esto es solo para probar y practicar sockets, supongo que esto despues va con hilos
     char* puerto_kernel = config_get_string_value(config_io, "PUERTO_KERNEL_IO");
     
     if(config_io == NULL) {
@@ -17,6 +16,7 @@ int main(int argc, char* argv[1]) {
 
     int socket_kernel_io = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io);     
     // close(socket_kernel_io);
+
 /*
     char* tipo_interfaz = config_get_string_value(config_io, "TIPO_INTERFAZ");
     printf("Tipo de interfaz: %s\n", tipo_interfaz);

@@ -15,6 +15,7 @@ INSTANCIAS_RECURSOS=[1,2,1]
 GRADO_MULTIPROGRAMACION=10
 */
 
+
 int esperar_cliente(int socket_escucha, t_log* logger) {
     int handshake = 0;
     int resultError = -1;
@@ -49,7 +50,7 @@ void* handle_io(void* socket) {
         cod_op = recibir_operacion(socket_io);
         switch (cod_op) {
         case 12:
-            printf("Soy el I/O y recibi un mensaje\n");
+            printf("Soy el kernel y recibi un mensaje de I/0\n");
             break;
         default:
             printf("Llega al default.");
@@ -57,17 +58,6 @@ void* handle_io(void* socket) {
         }
     }
     return NULL;
-}
-
-// Puede ir al utils/src/sockets.c
-int recibir_operacion(int socket_client) {
-    int cod_op;
-    if(recv(socket_client, &cod_op, sizeof(int), MSG_WAITALL) != 0) {
-        return cod_op;
-    } else {
-        close(socket_client);
-        return -1;
-    }
 }
 
 int conectar_kernel_cpu_dispatch(t_log* logger_kernel, char* IP_CPU, char* puerto_cpu_dispatch) {
@@ -80,8 +70,6 @@ int conectar_kernel_cpu_dispatch(t_log* logger_kernel, char* IP_CPU, char* puert
 }
 
 int conectar_kernel_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_kernel) {
-    // char* IP_MEMORIA = config_get_string_value(config_kernel, "IP_MEMORIA");
-    // char* puerto_memoria = config_get_string_value(config_kernel, "PUERTO_MEMORIA");
     int message_kernel = 7;
     int valor = 1;
 
@@ -94,90 +82,15 @@ int conectar_kernel_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logge
     return memoriafd;
 }
 
-/*
-void handshake(int socket) {
-    send(socket, 1, 6, 0); // len("kernel")
-    recv(socket, buffer, sizeof(buffer), 0);
-    printf("Handshake: %s\n", buffer);
-    free(buffer);
-} */
+void* escuchar_IO(void* kernel_io) {
+    t_config_kernel* kernel_struct_io = (t_config_kernel*) kernel_io;
+    int socket_io = kernel_struct_io->socket;
+    t_log* logger_io = kernel_struct_io->logger;
 
-/*int server_escuchar(t_log* logger, char* server_name, int server_socket) {
-    int cliente_socket = esperar_cliente(logger, server_name, server_socket);
-
-    if (cliente_socket != -1) {
-        pthread_t hilo;
-        t_procesar_conexion_args* args = malloc(sizeof(t_procesar_conexion_args));
-        args->log = logger;
-        args->fd = cliente_socket;
-        args->server_name = server_name;
-        pthread_create(&hilo, NULL, (void*) procesar_conexion, (void*) args);
-        pthread_detach(hilo);
-        return 1;
+    while(1) {
+        int socket_cliente = esperar_cliente(socket_io, logger_io);
     }
-    return 0;
+    
+    return NULL;
 }
-*/
-/* 
-void escuchar_conexiones(t_config* config_kernel, t_log* logger_kernel) {
-    char* escuchar_io = config_get_string_value(config_kernel, "PUERTO_IO"); // 8009
-    int kernelfd = iniciar_servidor(escuchar_io);
-    log_info(logger_kernel, "Servidor iniciado, esperando conexion de I/O stdout");
-    printf("Escucha I/O: %s\n", escuchar_io);
-    int iostdout_fd = esperar_conexiones_io(kernelfd);
-
-    receiveMessagex(iostdout_fd);
-    close(iostdout_fd);
-}
-*/
-
-/* 
-
-typedef struct {
-    t_log* log;
-    int fd;
-    char* server_name;
-} t_procesar_conexion_args;
-
-static void procesar_conexion_cliente(void* void_args) {
-    t_procesar_conexion_args* args = (t_procesar_conexion_args*) void_args;
-    t_log* logger = args->log;
-    int cliente_socket = args->fd;
-    char* server_name = args->server_name;
-    free(args);
-    op_code cop;
-    while (cliente_socket != -1) {
-
-        if (recv(cliente_socket, &cop, sizeof(op_code), 0) != sizeof(op_code)) {
-            log_info(logger, "Desconectado!");
-            return;
-        }
-        switch (cop) {
-            case DEBUG:
-                log_info(logger, "debug");
-                break;
-
-            case INICIAR_PLANIFICACION:
-            {
-                // LOGICA DE INICIAR_PLANIFICACION
-            }
-            case DETENER_PLANIFICACION:
-            {
-
-            }
-
-            // Errores
-            case -1:
-                log_error(logger, "Cliente desconectado de %s...", server_name);
-                return;
-            default:
-                log_error(logger, "Algo anduvo mal en el server de %s", server_name);
-                return;
-        }
-    }
-
-    log_warning(logger, "El cliente se desconecto de %s server", server_name);
-    return;
-    */
-// }
 

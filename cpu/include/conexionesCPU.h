@@ -23,3 +23,11 @@ int recibir_operacion(int socket_client);
 void* iniciar_servidor_dispatch(void* datos_dispatch);
 
 #endif // CONEXIONESCPU_H
+
+typedef struct {
+    char* puerto_escucha_dispatch;
+    char* puerto_escuchar_interrupt;
+    char* ip_cpu;
+    char* ip_memoria;
+    char* puerto_memoria;
+} ptrdata_cpu;

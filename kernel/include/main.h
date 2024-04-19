@@ -10,9 +10,4 @@
 #include "../../utils/include/sockets.h" 
 #include "../../utils/include/logconfig.h"
 
-typedef struct {
-    int socket;
-    t_log* logger;
-} t_config_kernel;
-
 #endif // KERNEL_MAIN_H_
