@@ -1,7 +1,9 @@
 include settings.mk
 
-# Set compiler options
+# Set compiler and archiver options
 CC=gcc
+AR=ar
+ARFLAGS=rcs
 
 # Set prerrequisites
 SRCS_C += $(shell find src/ -iname "*.c")
@@ -18,7 +20,7 @@ LIBDIRS = $(addsuffix /bin,$(STATIC_LIBPATHS))
 OBJS = $(patsubst src/%.c,obj/%.o,$(SRCS_C))
 
 # Set binary targets
-BIN = bin/$(shell cd . && pwd | xargs basename)
+BIN = bin/lib$(shell cd . && pwd | xargs basename).a
 
 .PHONY: all
 all: debug
@@ -36,10 +38,10 @@ clean:
 	-rm -rfv obj bin
 
 $(BIN): $(OBJS) | $(dir $(BIN))
-	$(CC) $(CFLAGS) -o "$@" $^ $(IDIRS:%=-I%) $(LIBDIRS:%=-L%) $(LIBS:%=-l%)
+	$(AR) $(ARFLAGS) -o "$@" $^
 
 obj/%.o: src/%.c $(SRCS_H) $(DEPS) | $(dir $(OBJS))
-	$(CC) $(CFLAGS) -c -o "$@" $< $(IDIRS:%=-I%)
+	$(CC) $(CFLAGS) -fPIC -c -o "$@" $< $(IDIRS:%=-I%)
 
 .SECONDEXPANSION:
 $(DEPS): $$(shell find $$(patsubst %bin/,%src/,$$(dir $$@)) -iname "*.c" -or -iname "*.h")
