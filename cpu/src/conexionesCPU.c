@@ -77,8 +77,9 @@ int esperar_cliente(int socket_servidor, t_log *logger_cpu) {
 void* iniciar_servidor_dispatch(void* datos_dispatch) {
     t_config_cpu* datos = (t_config_cpu*) datos_dispatch;
     int socket_cpu_escucha = iniciar_servidor(datos->puerto_escucha); // Inicia el servidor, bind() y listen() y socket()
-    // chicos, les parece bien que se quede esperando a nuevos clientes?
-    int client_dispatch = esperar_cliente(socket_cpu_escucha, datos->logger); // TODO -> ACA CREO OTRO HILO Y AHI VVEO EL WHILE(1)
+    log_info(datos->logger, "Servidor iniciado, esperando conexiones!");
+
+    int client_dispatch = esperar_cliente(socket_cpu_escucha, datos->logger); // TODO -> ACA CREO OTRO HILO Y AHI VEO EL WHILE(1)
 
     int codop;
     while(client_dispatch != -1) {    
@@ -89,10 +90,43 @@ void* iniciar_servidor_dispatch(void* datos_dispatch) {
                 printf("Recibi 10\n");
                 break;
             default:
+                printf("entro por default: %d\n", codop);
+                return NULL;
+        }
+    }
+
+    return NULL;
+}
+
+// Hace lo mismo que dispatch pero con interrupt (POR AHORA)
+void* iniciar_servidor_interrupt(void* datos_interrupt) {
+    t_config_cpu* datos = (t_config_cpu*) datos_interrupt;
+    int socket_cpu_escucha = iniciar_servidor(datos->puerto_escucha); // Inicia el servidor, bind() y listen() y socket()
+    int client_interrupt = esperar_cliente(socket_cpu_escucha, datos->logger); // TODO -> ACA CREO OTRO HILO Y AHI VEO EL WHILE(1)
+
+    int codop;
+    while(client_interrupt != -1) {    
+        // int client_dispatch = esperar_cliente(socket_cpu_escucha, datos->logger);
+        codop = recibir_operacion(client_interrupt);
+        switch(codop) {
+            case 17:
+                printf("Recibi 17\n");
+                break;
+            default:
                 printf("entro por default con codop: %d\n", codop);
                 return NULL;
         }
     }
 
     return NULL;
+}
+
+t_config_cpu* iniciar_datos(char* escucha_fd, t_log* logger_CPU) {
+    // Iniciacion de datos
+
+    t_config_cpu* cpu_server = malloc(sizeof(t_config_cpu));
+    cpu_server->puerto_escucha = escucha_fd;
+    cpu_server->logger = logger_CPU;
+
+    return cpu_server;
 }

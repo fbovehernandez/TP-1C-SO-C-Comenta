@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[]) {
     int nuevo_mensaje = 10;
-
+    
     t_log* logger_CPU = iniciar_logger("cpu.log"); 
     t_config* config_CPU = iniciar_config("./cpu.config");
     
@@ -16,19 +16,24 @@ int main(int argc, char* argv[]) {
     // Aca lo conecto a memoria -> creo que esto SI deberia ser un hilo
     int socket_memoria = conectar_memoria(IP_MEMORIA, puerto_memoria, logger_CPU);
     
-    sleep(5);
     send(socket_memoria, &nuevo_mensaje, sizeof(int), 0); // Me conecto y envio un mensaje a memoria
     // close(socket_memoria);
 
-    //////////// ---
+    //////////// -> Inicializa los datos y se los pasa a los hilos
+    t_config_cpu* cpu_interrupt = iniciar_datos(escucha_interrupt, logger_CPU);
+    t_config_cpu* cpu_dispatch = iniciar_datos(escucha_dispatch, logger_CPU);
 
-    t_config_cpu* datos_dispatch = malloc(sizeof(t_config_cpu));
-    datos_dispatch->puerto_escucha = escucha_dispatch;
-    datos_dispatch->logger = logger_CPU;
+    printf("Puerto escucha dispatch: %s\n", cpu_dispatch->puerto_escucha);
 
-    // Aca levanto server dispatch
+    // Aca levanto server dispatch e interrupt
 	pthread_t dispatch;
-    pthread_create(&dispatch, NULL, (void*)iniciar_servidor_dispatch, (void*)datos_dispatch);
+    pthread_t interrupt;
+
+    // Creacion de hilos, con sus respectivas funciones
+    pthread_create(&dispatch, NULL, (void*)iniciar_servidor_dispatch, (void*)(cpu_dispatch));
+    pthread_create(&interrupt, NULL, (void*)iniciar_servidor_interrupt, (void*)(cpu_interrupt));
+
+    pthread_join(interrupt, NULL);
     pthread_join(dispatch, NULL);
 	return 0;
 }

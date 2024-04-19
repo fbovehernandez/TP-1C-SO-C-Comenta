@@ -17,6 +17,7 @@ int main(int argc, char* argv[1]) {
     int socket_kernel_io = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io);     
     // close(socket_kernel_io);
 
+// Falta manejar los distintos tipos de interfaces
 /*
     char* tipo_interfaz = config_get_string_value(config_io, "TIPO_INTERFAZ");
     printf("Tipo de interfaz: %s\n", tipo_interfaz);

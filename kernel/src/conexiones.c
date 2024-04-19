@@ -1,20 +1,17 @@
 #include "../include/conexiones.h"
 
-/* 
-PUERTO_ESCUCHA_KERNEL_CPU=8010
-IP_CPU=127.0.0.1
-PUERTO_CPU_DISPATCH=8006
-PUERTO_CPU_INTERRUPT=8007
-IP_MEMORIA=127.0.0.1
-PUERTO_ESCUCHA_KERNEL_MEMORIA=8009
-PUERTO_MEMORIA=8002
-ALGORITMO_PLANIFICACION=VRR
-QUANTUM=2000
-RECURSOS=[RA,RB,RC]
-INSTANCIAS_RECURSOS=[1,2,1]
-GRADO_MULTIPROGRAMACION=10
-*/
+ptr_kernel* solicitar_datos(t_config* config_kernel){
+    ptr_kernel* datos = malloc(sizeof(ptr_kernel));
 
+    datos->ip_cpu = config_get_string_value(config_kernel, "IP_CPU");
+    datos->ip_mem = config_get_string_value(config_kernel, "IP_MEMORIA");
+    datos->puerto_memoria = config_get_string_value(config_kernel, "PUERTO_MEMORIA");
+    datos->puerto_cpu_dispatch  =  config_get_string_value(config_kernel, "PUERTO_CPU_DISPATCH");
+    datos->puerto_cpu_interrupt =  config_get_string_value(config_kernel, "PUERTO_CPU_INTERRUPT");
+    datos->puerto_io = config_get_string_value(config_kernel, "PUERTO_IO");
+
+    return datos;
+}
 
 int esperar_cliente(int socket_escucha, t_log* logger) {
     int handshake = 0;
@@ -69,11 +66,11 @@ int conectar_kernel_cpu_dispatch(t_log* logger_kernel, char* IP_CPU, char* puert
     return dispatcherfd;
 }
 
-int conectar_kernel_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_kernel) {
+int conectar_kernel_memoria(char* ip_memoria, char* puerto_memoria, t_log* logger_kernel) {
     int message_kernel = 7;
     int valor = 1;
 
-    int memoriafd = crear_conexion(IP_MEMORIA, puerto_memoria, valor);
+    int memoriafd = crear_conexion(ip_memoria, puerto_memoria, valor);
     log_info(logger_kernel, "Conexion establecida con Memoria");
 
     send(memoriafd, &message_kernel, sizeof(int), 0); 
@@ -83,12 +80,13 @@ int conectar_kernel_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logge
 }
 
 void* escuchar_IO(void* kernel_io) {
-    t_config_kernel* kernel_struct_io = (t_config_kernel*) kernel_io;
-    int socket_io = kernel_struct_io->socket;
-    t_log* logger_io = kernel_struct_io->logger;
+    t_config_kernel* kernel_struct_io = (void*) kernel_io;
+
+    // int socket_io = kernel_struct_io->socket;
+    // t_log* logger_io = kernel_struct_io->logger;
 
     while(1) {
-        int socket_cliente = esperar_cliente(socket_io, logger_io);
+        int socket_cliente = esperar_cliente(kernel_struct_io->socket, kernel_struct_io->logger);
     }
     
     return NULL;

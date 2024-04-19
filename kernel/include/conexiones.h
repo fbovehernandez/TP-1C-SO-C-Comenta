@@ -8,9 +8,19 @@
 #include "../../utils/include/logconfig.h"
 
 typedef struct {
+    char* puerto_escucha;
     int socket;
     t_log* logger;
 } t_config_kernel;
+
+typedef struct {
+    char* ip_cpu;
+    char* ip_mem;
+    char* puerto_memoria;
+    char* puerto_cpu_dispatch;
+    char* puerto_cpu_interrupt;
+    char* puerto_io;
+} ptr_kernel;
 
 int conectar_kernel_memoria(char* ip, char* puerto, t_log* logger_kernel);
 int conectar_kernel_cpu_dispatch(t_log* logger_kernel, char* ip, char* puerto);
@@ -20,5 +30,6 @@ int recibir_operacion(int socket_cliente);
 void liberar_conexion(int socket_cliente);
 // void escuchar_STDOUT(t_config* config_kernel, t_log* logger_kernel);
 void* escuchar_IO(void* kernel_io);
+ptr_kernel* solicitar_datos(t_config* config_kernel);
 
 #endif // CONEXIONES_H
