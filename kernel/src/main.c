@@ -1,7 +1,25 @@
 #include "../include/main.h"
+// Include commons
 
 int main(int argc, char* argv[]) {
     int quantum;
+    uint32_t contador_pid;
+
+    t_queue* cola_new;
+    t_queue* cola_procesos_sus_ready;
+    t_queue* cola_ready;
+    t_queue* cola_io;
+    t_queue* respuesta_interrupcion;
+
+    cola_new = queue_create();
+	cola_procesos_sus_ready = queue_create();
+	cola_ready = queue_create();
+	cola_io = queue_create();
+	respuesta_interrupcion = queue_create();
+    
+    // Inicializo colas con queue_create;
+
+    interaccion_consola(contador_pid); // -> Iniciar consola interactiva
     
     // int messagex = 10;
 
@@ -14,8 +32,6 @@ int main(int argc, char* argv[]) {
 
     // Hilo 2 -> Hacer un hilo para gestionar comunicacion con la cpu?
     int socket_cpu = conectar_kernel_cpu_dispatch(logger_kernel, datos_kernel->ip_cpu, datos_kernel->puerto_cpu_dispatch);
-    
-    crear_pcb()
     // enviar_pcb(socket_cpu, logger_kernel, 1); // -> Enviar PCB a CPU
 
     // Hilo 3 -> Conexion con interfaz I/O
