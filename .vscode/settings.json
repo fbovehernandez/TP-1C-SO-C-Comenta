@@ -1,5 +1,10 @@
 {
     "files.associations": {
-        "logconfig.h": "c"
+        "logconfig.h": "c",
+        "funcionalidades.h": "c",
+        "sockets.h": "c",
+        "semaphore.h": "c",
+        "config.h": "c",
+        "log.h": "c"
     }
 }

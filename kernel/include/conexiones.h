@@ -8,7 +8,6 @@
 #include "../../utils/include/logconfig.h"
 
 // Aca va el struct del PCB 
-
 typedef struct {
     char* puerto_escucha;
     int socket;
