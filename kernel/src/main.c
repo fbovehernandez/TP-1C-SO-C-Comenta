@@ -9,23 +9,18 @@ int main(int argc, char* argv[]) {
     cola_exec = queue_create();
     cola_exit = queue_create();
     
-    pthread_mutex_init(&mutex_estado_new, NULL);
-    pthread_mutex_init(&mutex_estado_ready, NULL);
-    sem_init(&sem_hay_pcb_esperando_ready, 0, 0);
-    sem_init(&sem_grado_multiprogramacion, 0, grado_multiprogramacion);
-    
-    // int messagex = 10;
-
     t_config* config_kernel   = iniciar_config("./kernel.config");
     logger_kernel = iniciar_logger("kernel.log");
     ptr_kernel* datos_kernel = solicitar_datos(config_kernel);
 
-    // Inicializo variables con los datos del config
     quantum = datos_kernel->quantum;
-
     grado_multiprogramacion = datos_kernel->grado_multiprogramacion;
-
     algoritmo_planificacion = datos_kernel->algoritmo_planificacion;
+
+    pthread_mutex_init(&mutex_estado_new, NULL);
+    pthread_mutex_init(&mutex_estado_ready, NULL);
+    sem_init(&sem_hay_pcb_esperando_ready, 0, 0);
+    sem_init(&sem_grado_multiprogramacion, 0, grado_multiprogramacion); // No testeado
 
     // Hilo 1 -> Hacer un hilo para gestionar la comunicacion con memoria?
     int socket_memoria_kernel = conectar_kernel_memoria(datos_kernel->ip_mem, datos_kernel->puerto_memoria, logger_kernel);
@@ -33,7 +28,8 @@ int main(int argc, char* argv[]) {
     // Hilo 2 -> Hacer un hilo para gestionar comunicacion con la cpu?
     int socket_cpu = conectar_kernel_cpu_dispatch(logger_kernel, datos_kernel->ip_cpu, datos_kernel->puerto_cpu_dispatch);
 
-	// pthread_create(&pasar_a_ready, NULL, funcion_pasar_a_ready, NULL);
+    pthread_t pasar_a_ready;
+	pthread_create(&pasar_a_ready, NULL, a_ready, NULL);
 
     /////////////// ---------- ///////////////
     // Hilo 3 -> Conexion con interfaz I/O

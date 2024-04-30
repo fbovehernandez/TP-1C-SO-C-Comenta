@@ -101,7 +101,6 @@ void encolar_a_new(t_pcb *pcb)
     pthread_mutex_unlock(&mutex_estado_new);
 
     log_info(logger_kernel, "Se crea el proceso: %d en NEW", pcb->pid);
-    // cont_grado_multip = grado_multiprogramacion;
     // Incrementar el semáforo para indicar que hay un nuevo proceso
     sem_post(&sem_hay_pcb_esperando_ready);
 }
@@ -124,7 +123,7 @@ void* a_ready() {
         pasar_a_ready(pcb);
         log_info(logger_kernel, "Cola Ready <COLA>: [<LISTA DE PIDS>]");
         
-        sem_post(&sem_hay_pcb_esperando_ready); 
+        // sem_post(&sem_hay_pcb_esperando_ready); 
     }
 }
 
