@@ -3,12 +3,15 @@
 ptr_kernel* solicitar_datos(t_config* config_kernel){
     ptr_kernel* datos = malloc(sizeof(ptr_kernel));
 
-    datos->ip_cpu = config_get_string_value(config_kernel, "IP_CPU");
-    datos->ip_mem = config_get_string_value(config_kernel, "IP_MEMORIA");
-    datos->puerto_memoria = config_get_string_value(config_kernel, "PUERTO_MEMORIA");
-    datos->puerto_cpu_dispatch  =  config_get_string_value(config_kernel, "PUERTO_CPU_DISPATCH");
-    datos->puerto_cpu_interrupt =  config_get_string_value(config_kernel, "PUERTO_CPU_INTERRUPT");
-    datos->puerto_io = config_get_string_value(config_kernel, "PUERTO_IO");
+    datos->ip_cpu                   = config_get_string_value(config_kernel, "IP_CPU");
+    datos->ip_mem                   = config_get_string_value(config_kernel, "IP_MEMORIA");
+    datos->puerto_memoria           = config_get_string_value(config_kernel, "PUERTO_MEMORIA");
+    datos->puerto_cpu_dispatch      = config_get_string_value(config_kernel, "PUERTO_CPU_DISPATCH");
+    datos->puerto_cpu_interrupt     = config_get_string_value(config_kernel, "PUERTO_CPU_INTERRUPT");
+    datos->puerto_io                = config_get_string_value(config_kernel, "PUERTO_IO");
+    datos->quantum                  = config_get_int_value(config_kernel, "QUANTUM");
+    datos->grado_multiprogramacion  = config_get_int_value(config_kernel, "GRADO_MULTIPROGRAMACION");
+    datos->algoritmo_planificacion  = config_get_string_value(config_kernel, "ALGORITMO_PLANIFICACION");
 
     return datos;
 }

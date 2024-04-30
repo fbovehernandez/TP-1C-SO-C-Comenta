@@ -37,3 +37,18 @@ int main(int argc, char* argv[]) {
     pthread_join(dispatch, NULL);
 	return 0;
 }
+
+/*
+void fetch(){
+
+}
+
+void decode(){
+
+}
+
+void execute() {
+ 
+    }
+}
+*/

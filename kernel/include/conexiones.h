@@ -8,7 +8,6 @@
 #include "../../utils/include/logconfig.h"
 
 // Aca va el struct del PCB 
-
 typedef struct {
     char* puerto_escucha;
     int socket;
@@ -22,6 +21,9 @@ typedef struct {
     char* puerto_cpu_dispatch;
     char* puerto_cpu_interrupt;
     char* puerto_io;
+    int quantum;
+    int grado_multiprogramacion;   
+    char* algoritmo_planificacion;
 } ptr_kernel;
 
 int conectar_kernel_memoria(char* ip, char* puerto, t_log* logger_kernel);

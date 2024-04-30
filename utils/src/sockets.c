@@ -116,3 +116,31 @@ int esperar_conexion(int socket_servidor) {
 void liberar_conexion(int socket) {
 	close(socket);
 }
+
+/* 
+void paquete(int conexion) {
+	// Ahora toca lo divertido!
+	char* leido;
+	t_paquete* paquete;
+
+	// Leemos y esta vez agregamos las lineas al paquete
+	paquete = crear_paquete();
+
+	while(1) {
+		leido = readline("> ");
+
+		if(strcmp(leido, "") == 0) 
+		{
+			break;
+		}
+
+		agregar_a_paquete(paquete, leido, strlen(leido) + 1);
+
+		free(leido);
+	}
+
+	enviar_paquete(paquete, conexion);
+	
+	eliminar_paquete(paquete);
+}
+*/
