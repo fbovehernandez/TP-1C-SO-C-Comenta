@@ -19,6 +19,7 @@ typedef enum {
 
 typedef struct {
 	int size;
+	uint32_t offset;
 	void* stream;
 } t_buffer;
 
@@ -26,6 +27,10 @@ typedef struct {
 	op_code codigo_operacion;
 	t_buffer* buffer;
 } t_paquete;
+
+typedef enum {
+    PATH
+} codigo_operacion;
 
 int iniciar_servidor(char*);
 int esperar_conexion(int);

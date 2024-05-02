@@ -1,4 +1,5 @@
 #include "../include/funcionalidades.h"
+#include "../include/conexiones.h"
 
 // Definicion de variables globales
 int grado_multiprogramacion;
@@ -19,7 +20,7 @@ t_queue* cola_exit;
 char* algoritmo_planificacion; // Tomamos en convencion que los algoritmos son "FIFO", "VRR" , "RR" (siempre en mayuscula)
 t_log* logger_kernel;
 
-void *interaccion_consola(/*t_consola* todo_lo_del_main_que_queremos*/) {
+void *interaccion_consola(t_sockets* sockets) {
 
     int respuesta;
 
@@ -43,7 +44,7 @@ void *interaccion_consola(/*t_consola* todo_lo_del_main_que_queremos*/) {
             EJECUTAR_SCRIPT(/* pathing del conjunto de instrucciones*/);
             break;
         case 2:
-            INICIAR_PROCESO(); // Esto va a crear un pcb que representa al proceso, y va a ponerlo en la cola de new (despues un hilo lo pasa a ready?)
+            INICIAR_PROCESO(/*PATH*/sockets); // Esto va a crear un pcb que representa al proceso, y va a ponerlo en la cola de new (despues un hilo lo pasa a ready?)
             break;
         case 3:
             FINALIZAR_PROCESO();
@@ -59,6 +60,7 @@ void *interaccion_consola(/*t_consola* todo_lo_del_main_que_queremos*/) {
             break;
         case 7:
             MULTIPROGRAMACION();
+            break;
         case 8:
             printf("Finalizacion del modulo\n");
             exit(1);
@@ -73,7 +75,7 @@ void *interaccion_consola(/*t_consola* todo_lo_del_main_que_queremos*/) {
     return NULL;
 }
 
-void INICIAR_PROCESO()
+void INICIAR_PROCESO(char* path_secuencia_de_comandos, t_sockets* sockets)
 {
     int pid_actual = obtener_siguiente_pid();
     printf("El pid del proceso es: %d\n", pid_actual);
@@ -82,7 +84,69 @@ void INICIAR_PROCESO()
     // en el enunciado dice "en caso de que el grado de multiprogramacion lo permita"
 
     encolar_a_new(pcb);
+
+    enviar_path_a_memoria(path_secuencia_de_comandos, sockets);
     // print_queue(NEW);
+}
+
+
+void* enviar_path_a_memoria(char* path_secuencia_de_comandos, t_sockets* sockets) {
+    t_path* pathNuevo;
+    pathNuevo -> path = path_secuencia_de_comandos;
+    pathNuevo -> path_length = sizeof(pathNuevo);
+    t_buffer* buffer = llenar_buffer(pathNuevo);
+
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+
+    paquete->codigo_operacion = PATH; // Podemos usar una constante por operación
+    paquete->buffer = buffer; // Nuestro buffer de antes.
+
+    // Armamos el stream a enviar
+    void* a_enviar = malloc(buffer->size + sizeof(uint8_t)) + sizeof(uint32_t);
+    int offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(uint8_t));
+
+    offset += sizeof(uint8_t);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    log_info(logger_kernel, "Se armo un paquete con este PATH: %s\n", paquete->buffer->stream);
+
+    // Por último enviamos
+    send(sockets->socket_memoria, a_enviar, buffer->size + sizeof(uint8_t) + sizeof(uint32_t), 0);
+
+    // No nos olvidamos de liberar la memoria que ya no usaremos
+    free(a_enviar);
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+} 
+
+typedef struct {
+    int path_length;
+    char* path;
+} t_path;
+
+t_buffer* llenar_buffer(t_path* pathNuevo) {
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+    void* stream = malloc(sizeof(pathNuevo));
+
+    buffer->size = pathNuevo -> path_length;                     
+
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+    // Para el nombre primero mandamos el tamaño y luego el texto en sí:
+    memcpy(stream + buffer->offset, &pathNuevo->path_length, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(buffer->offset + stream, &pathNuevo->path, pathNuevo->path_length);
+    // No tiene sentido seguir calculando el desplazamiento, ya ocupamos el buffer 
+   
+    buffer->stream = stream;
+    // Si usamos memoria dinámica para el path, y no la precisamos más, ya podemos liberarla:
+    free(pathNuevo -> path);
+    return(buffer);
 }
 
 int obtener_siguiente_pid()
@@ -136,6 +200,7 @@ void pasar_a_ready(t_pcb *pcb)
     pcb->estadoActual = READY;
     pcb->estadoAnterior = NEW;
 
+    sem_post(&hay_para_planificar);
     log_info(logger_kernel, "PID: %d - Estado Anterior: %d - Estado Actual: %d", pcb->pid, pcb->estadoAnterior, pcb->estadoActual);
 }
 
@@ -162,6 +227,28 @@ void printf_queue(t_queue *cola)
     }
 }
 
+void planificar_FIFO() {
+    
+}
+
+// Otro hilo para recibir de cpu? o uso solo recv?
+void* planificar_corto_plazo() {
+    
+    t_pcb *pcb;
+    while(1) {
+        sem_wait(&hay_para_planificar); 
+        pcb = proximo_a_ejecutar();
+        
+        enviar_pcb(pcb, socket_CPU, ENVIO_PCB); // Aca se serializa
+
+    }
+    // Aca se deberia planificar el proceso que esta en la cola de ready
+    // Se deberia sacar de la cola de ready y ponerlo en la cola de exec
+    // Se deberia ejecutar el proceso
+    // Se deberia poner en la cola de exit
+    // No se como sera la implementacion de quantum (otro hilo?)
+
+}
 // Aca se desarma el path y se obtienen las instrucciones y se le pasan a memoria para que esta lo guarde en su tabla de paginas de este proceso
 t_pcb *crear_nuevo_pcb(int pid)
 {
@@ -195,6 +282,55 @@ Registros *inicializar_registros_cpu()
     registro_cpu->DI = 0;
 
     return registro_cpu;
+}
+
+
+void* recibir_peticion_de_cpu() {
+    // recibiremos la instruccion
+}
+
+typedef struct {    
+    char* instruccion; 
+    int instruccion_length;  
+} t_peticion_io;
+
+typedef struct {
+    uint32_t size; // Tamaño del payload
+    uint32_t offset; // Desplazamiento dentro del payload
+    void* stream; // Payload
+} t_buffer;
+
+void* enviar_peticion_a_io(instruccion) {
+    t_peticion_io peticion = {
+        instruccion = ;
+        instruccion_length = instruccion.length();
+    }
+    
+    serializar_peticion(peticion);
+}
+
+void serializar_peticion(t_peticion_io* peticion){
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+
+    buffer->size = sizeof(uint32_t) * 3 // DNI, Pasaporte y longitud del nombre
+                + sizeof(uint8_t) // Edad
+                + peticion.instruccion_length; // La longitud del string nombre.
+                                        // Le habíamos sumado 1 para enviar tambien el caracter centinela '\0'.
+                                        // Esto se podría obviar, pero entonces deberíamos agregar el centinela en el receptor.
+
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    // Para la instruccion primero mandamos el tamaño y luego el texto en sí:
+    memcpy(stream + offset, &peticion.instruccion_length, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+    memcpy(stream + offset, peticion.instruccion, peticion.instruccion_length);
+    // No tiene sentido seguir calculando el desplazamiento, ya ocupamos el buffer completo
+
+    buffer->stream = stream;
+
+    // Si usamos memoria dinámica para el nombre, y no la precisamos más, ya podemos liberarla:
+    free(peticion->instruccion);
 }
 
 /*

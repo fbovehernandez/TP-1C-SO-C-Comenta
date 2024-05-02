@@ -31,6 +31,9 @@ int main(int argc, char* argv[]) {
     pthread_t pasar_a_ready;
 	pthread_create(&pasar_a_ready, NULL, a_ready, NULL);
 
+    pthread_t planificador_corto_plazo;
+    pthread_create(&planificador_corto_plazo, NULL, (void*)planificar_corto_plazo, NULL); // Definir plani a corto plazo
+
     /////////////// ---------- ///////////////
     // Hilo 3 -> Conexion con interfaz I/O
     int escucha_fd = iniciar_servidor(datos_kernel->puerto_io);
@@ -42,6 +45,10 @@ int main(int argc, char* argv[]) {
     kernel_io->socket = escucha_fd;
     kernel_io->logger = logger_kernel;
 
+    t_sockets* sockets = malloc(sizeof(t_sockets));
+    sockets->socket_cpu = socket_cpu;
+    sockets->socket_memoria = socket_memoria_kernel;
+
     // Levanto hilo para escuchar peticiones I/O
     pthread_t hilo_io;
     // pthread_create(&hilo_io, NULL, (void*) escuchar_IO, (void*) kernel_io); PARA PROBAR
@@ -51,7 +58,7 @@ int main(int argc, char* argv[]) {
     // pthread_create(&hilo_procesos, NULL, (void*) escuchar_IO, (void*) kernel_io);
 
     pthread_t socket_escucha_consola;
-    pthread_create(&socket_escucha_consola, NULL, (void*) interaccion_consola, NULL); 
+    pthread_create(&socket_escucha_consola, NULL, (void*) interaccion_consola, sockets); 
 
     pthread_join(socket_escucha_consola, NULL);
     pthread_join(hilo_io, NULL);

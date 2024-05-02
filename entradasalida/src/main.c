@@ -93,9 +93,6 @@ void iniciar_interfaz_generica(char* nombreInterfaz) {
     int tiempo_unidad_trabajo = config_get_int_value(config_io, "TIEMPO_UNIDAD_TRABAJO");
     // tiempo_unidad_trabajo: Tiempo que dura una unidad de trabajo en milisegundos
     // unidad_trabajo: Cantidad de unidades de trabajo que va a dormir segun la instruccion de CPU
-    
-    
-
 
     IO_GEN_SLEEP(unidad_trabajo,tiempo_unidad_trabajo); 
 }

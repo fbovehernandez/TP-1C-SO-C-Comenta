@@ -15,6 +15,11 @@ typedef struct {
 } t_config_kernel;
 
 typedef struct {
+    int socket_memoria;
+    int socket_cpu;
+} t_sockets;
+
+typedef struct {
     char* ip_cpu;
     char* ip_mem;
     char* puerto_memoria;

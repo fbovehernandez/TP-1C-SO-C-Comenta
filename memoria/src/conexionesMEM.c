@@ -15,11 +15,11 @@ int esperar_cliente(int socket_servidor, t_log* logger_memoria)
 	recv(socket_cliente, &handshake, sizeof(int), MSG_WAITALL); 
 	if(handshake == 1) {
         pthread_t kernel_thread;
-        pthread_create(&kernel_thread, NULL, (void*)handle_kernel, (void*)(intptr_t)socket_cliente);
+        pthread_create(&kernel_thread, NULL, (void*)handle_kernel, (void*)(int)socket_cliente);
         pthread_detach(kernel_thread);
     } else if(handshake == 2) {
         pthread_t cpu_thread;
-        pthread_create(&cpu_thread, NULL, (void*)handle_cpu, (void*)(intptr_t)socket_cliente);
+        pthread_create(&cpu_thread, NULL, (void*)handle_cpu, (void*)(int)socket_cliente);
         pthread_detach(cpu_thread);
     } else {
         send(socket_cliente, &resultError, sizeof(int), 0);
@@ -30,7 +30,7 @@ int esperar_cliente(int socket_servidor, t_log* logger_memoria)
 }
 
 void* handle_cpu(void* socket) {
-    int socket_cpu = (intptr_t)socket;
+    int socket_cpu = (int)socket;
     int resultOk = 0;
     send(socket_cpu, &resultOk, sizeof(int), 0);
     printf("Se conecto un el cpu!\n");
@@ -40,7 +40,7 @@ void* handle_cpu(void* socket) {
         cod_op = recibir_operacion(socket_cpu);
         switch(cod_op) {
             case 10:
-                printf("Se recibio 10\n");
+                printf("Se recibio 10\n"); //
                 break;
             case 7:
                 printf("Se recibio 7\n");
@@ -55,7 +55,7 @@ void* handle_cpu(void* socket) {
 }
 
 void* handle_kernel(void* socket) {
-    int socket_kernel = (intptr_t)socket;
+    int socket_kernel = (int)socket;
     // free(socket); 
     int resultOk = 0;
     send(socket_kernel, &resultOk, sizeof(int), 0);
@@ -71,6 +71,9 @@ void* handle_kernel(void* socket) {
             case 7:
                 printf("Se recibio 7\n");
                 break;
+            case 0:
+                printf("Recibo el path");
+                recibir_peticion_de_kernel(socket_kernel);
             default:
                 printf("Rompio todo?\n");
                 // close(socket_kernel);
@@ -78,4 +81,35 @@ void* handle_kernel(void* socket) {
         }
     }
     return NULL;
+}
+
+void* recibir_peticion_de_kernel(int socket_kernel) {
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+    paquete->buffer = malloc(sizeof(t_buffer));
+
+    // Primero recibimos el codigo de operacion
+    recv(socket_kernel, &(paquete->codigo_operacion), sizeof(uint8_t), 0);
+
+    // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
+    recv(socket_kernel, &(paquete->buffer->size), sizeof(uint32_t), 0);
+    paquete->buffer->stream = malloc(paquete->buffer->size);
+    recv(socket_kernel, paquete->buffer->stream, paquete->buffer->size, 0);
+
+    // Ahora en función del código recibido procedemos a deserializar el resto
+    switch(paquete->codigo_operacion) {
+        case PATH:
+            t_persona* persona = persona_serializar(paquete->buffer);
+            ...
+            // Hacemos lo que necesitemos con esta info
+            // Y eventualmente liberamos memoria
+            free(persona);
+            ...
+            break;
+        ... // Evaluamos los demás casos según corresponda
+    }
+
+    // Liberamos memoria
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
 }

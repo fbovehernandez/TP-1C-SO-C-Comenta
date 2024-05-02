@@ -38,6 +38,10 @@ enum Estado {
 };
 
 typedef struct {
+    
+} t_instrucciones;
+
+typedef struct {
     int pid;
     int program_counter;
     int quantum;
@@ -54,6 +58,13 @@ typedef struct {
     int tabla_paginas;
     int tamanio_en_memoria;
 } t_proceso;
+
+/*
+typedef struct {
+	t_link_element *head;
+	int elements_count;
+} t_list;
+*/
 
 //Si no podemos usar bien las variables globales, va a tener que pasar por consola
 /*typedef struct {
@@ -94,6 +105,8 @@ void print_queue(enum Estado estado);
 int obtener_siguiente_pid();
 // t_queue* mostrar_cola(t_queue* cola);
 void mostrar_pcb_proceso(t_pcb* pcb);
+void* planificar_corto_plazo();
+void* enviar_path_a_cpu(char* path_secuencia_de_comandos);
 
 void EJECUTAR_SCRIPT();
 void INICIAR_PROCESO();
