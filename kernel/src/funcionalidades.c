@@ -84,11 +84,11 @@ void INICIAR_PROCESO(char* path_secuencia_de_comandos, t_sockets* sockets)
 
     encolar_a_new(pcb);
 
-    // enviar_path_a_memoria(path_secuencia_de_comandos, sockets);
+    enviar_path_a_memoria(path_secuencia_de_comandos, sockets);
     // print_queue(NEW);
 }
 
-/* 
+
 void* enviar_path_a_memoria(char* path_secuencia_de_comandos, t_sockets* sockets) {
     t_path* pathNuevo;
     pathNuevo -> path = path_secuencia_de_comandos;
@@ -147,7 +147,7 @@ t_buffer* llenar_buffer(t_path* pathNuevo) {
     free(pathNuevo -> path);
     return(buffer);
 }
-*/
+
 
 int obtener_siguiente_pid()
 {
@@ -229,22 +229,26 @@ void printf_queue(t_queue *cola)
 
 
 // Otro hilo para recibir de cpu? o uso solo recv?
-void* planificar_corto_plazo() {
+void* planificar_corto_plazo(t_sockets* sockets) {
     // Esto no considera todavia la planificacion por quantum (desalojo) -> Como hago?
     // Si quantum se mide en segundos, yo podria enviar una interrupcion despues de 
     // contar los segundos (arrancaria a contar haciendo un post en la cpu cuando
     // arranque a ejecutar o reciba el pcb? bloqueando el hilo que cuenta con wait)
 
     t_pcb *pcb;
+
+    int socket_CPU = sockets -> socket_cpu;
+    
     while(1) {
         sem_wait(&hay_para_planificar); 
         pcb = proximo_a_ejecutar();
         
-        enviar_pcb(pcb, socket_CPU, ENVIO_PCB); // Serializar
+        pasar_a_exec(pcb);
+        enviar_pcb(pcb, socket_CPU); // Serializar antes de enviar
 
-        // Recibir respuesta de la CPU
-        causa_desalojo = esperar_cpu(); // Esto bloquearia la planificacion hasta que la cpu termine de ejecutar y me devuelta el contexto
-
+        // TO DO: Recibir respuesta de la CPU y todo lo que le sigue
+        int causa_desalojo = esperar_cpu(); // Esto bloquearia la planificacion hasta que la cpu termine de ejecutar y me devuelva el contexto
+        // Tiene que recibir causa_desalojo y contexto_ejecucion
     }
 
     // Aca se deberia planificar el proceso que esta en la cola de ready
@@ -252,10 +256,74 @@ void* planificar_corto_plazo() {
     // Se deberia ejecutar el proceso
     // Se deberia poner en la cola de exit
     // No se como sera la implementacion de quantum (otro hilo?)
-
 }
 
-// JOURNEY BEFORE DESTINATION -> Viaja ante un destino (perdon soy de boca) --  Perdon sofi y caro tenemos noni
+void* pasar_a_exec(t_pcb* pcb) {
+    pthread_mutex_lock(&mutex_estado_exec);
+    queue_push(cola_exec, (void *)pcb);
+    pthread_mutex_unlock(&mutex_estado_exec);
+
+    pcb->estadoActual = EXEC;
+    pcb->estadoAnterior = READY;
+
+    log_info(logger_kernel, "PID: %d - Estado Anterior: %d - Estado Actual: %d", pcb->pid, pcb->estadoAnterior, pcb->estadoActual);
+}
+
+void* enviar_pcb(t_pcb* pcb, int socket) {
+    t_buffer* buffer = llenar_buffer(pcb);
+
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+
+    paquete->codigo_operacion = ENVIO_PCB; // Podemos usar una constante por operación
+    paquete->buffer = buffer; // Nuestro buffer de antes.
+
+    // Armamos el stream a enviar
+    void* a_enviar = malloc(buffer->size + sizeof(codigo_operacion) + sizeof(int));
+    int offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(codigo_operacion));
+
+    offset += sizeof(codigo_operacion);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    // Por último enviamos
+    send(socket, a_enviar, buffer->size + sizeof(codigo_operacion) + sizeof(int), 0);
+}
+
+t_buffer* llenar_buffer(t_pcb* pcb) {
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+
+    buffer->size = sizeof(int) * 4 
+                + sizeof(enum Estado) * 2
+                + sizeof(Registros);
+
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    void* stream = buffer->stream;
+
+    memcpy(stream + buffer->offset, &pcb->pid, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, &pcb->program_counter, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, &pcb->quantum, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, &pcb->socketProceso, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, &pcb->estadoActual, sizeof(enum Estado));
+    buffer->offset += sizeof(enum Estado);
+    memcpy(stream + buffer->offset, &pcb->estadoAnterior, sizeof(enum Estado));
+    buffer->offset += sizeof(enum Estado);
+    memcpy(stream + buffer->offset, &pcb->registros, sizeof(Registros));
+    buffer->offset += sizeof(Registros);
+
+    buffer->stream = stream;
+
+    return buffer;
+}
+
 t_pcb* proximo_a_ejecutar() {
     t_pcb* pcb = NULL;
     

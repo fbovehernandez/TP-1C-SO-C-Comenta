@@ -28,5 +28,6 @@ int recibir_operacion(int socket_client);
 void* iniciar_servidor_dispatch(void* datos_dispatch);
 void* iniciar_servidor_interrupt(void* datos_interrupt);
 t_config_cpu* iniciar_datos(char* escucha_fd, t_log* logger_CPU);
+t_pcb* pcb_deserializar(t_buffer* buffer);
 
 #endif // CONEXIONESCPU_H

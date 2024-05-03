@@ -87,7 +87,6 @@ void* handle_kernel(void* socket) {
     return NULL;
 }
 
-/* 
 void* recibir_peticion_de_kernel(int socket_kernel) {
     t_paquete* paquete = malloc(sizeof(t_paquete));
     paquete->buffer = malloc(sizeof(t_buffer));
@@ -118,4 +117,3 @@ void* recibir_peticion_de_kernel(int socket_kernel) {
     free(paquete->buffer);
     free(paquete);
 }
-*/

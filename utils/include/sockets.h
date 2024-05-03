@@ -24,12 +24,13 @@ typedef struct {
 } t_buffer;
 
 typedef struct {
-	op_code codigo_operacion;
+	codigo_operacion codigo_operacion;
 	t_buffer* buffer;
 } t_paquete;
 
 typedef enum {
-    PATH
+    PATH,
+	ENVIO_PCB
 } codigo_operacion;
 
 int iniciar_servidor(char*);

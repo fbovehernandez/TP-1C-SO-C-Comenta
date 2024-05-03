@@ -28,11 +28,15 @@ int main(int argc, char* argv[]) {
     // Hilo 2 -> Hacer un hilo para gestionar comunicacion con la cpu?
     int socket_cpu = conectar_kernel_cpu_dispatch(logger_kernel, datos_kernel->ip_cpu, datos_kernel->puerto_cpu_dispatch);
 
+    t_sockets* sockets = malloc(sizeof(t_sockets));
+    sockets->socket_cpu = socket_cpu;
+    sockets->socket_memoria = socket_memoria_kernel;
+
     pthread_t pasar_a_ready;
 	pthread_create(&pasar_a_ready, NULL, a_ready, NULL);
 
     pthread_t planificador_corto_plazo;
-    // pthread_create(&planificador_corto_plazo, NULL, (void*)planificar_corto_plazo, NULL); // Definir plani a corto plazo
+    pthread_create(&planificador_corto_plazo, NULL, (void*)planificar_corto_plazo, sockets); // Definir plani a corto plazo
 
     /////////////// ---------- ///////////////
     // Hilo 3 -> Conexion con interfaz I/O
@@ -44,10 +48,6 @@ int main(int argc, char* argv[]) {
     kernel_io->puerto_escucha = datos_kernel->puerto_io;
     kernel_io->socket = escucha_fd;
     kernel_io->logger = logger_kernel;
-
-    t_sockets* sockets = malloc(sizeof(t_sockets));
-    sockets->socket_cpu = socket_cpu;
-    sockets->socket_memoria = socket_memoria_kernel;
 
     // Levanto hilo para escuchar peticiones I/O
     pthread_t hilo_io;

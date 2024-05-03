@@ -1,6 +1,6 @@
 #include "../include/conexionesCPU.h"
 
-/* 
+/* holaaa facuuu - holaaaaaaaa
 
 PUERTO_KERNEL=8010
 IP_KERNEL=127.0.0.1
@@ -26,7 +26,7 @@ int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) 
 }
 
 
-void* handle_dispatch(void* socket_dispatch) {
+/*void* handle_dispatch(void* socket_dispatch) {
     int socket_kernel = (intptr_t)socket_dispatch;
     // despues veremos que hace
     free(socket_dispatch);
@@ -36,8 +36,8 @@ void* handle_dispatch(void* socket_dispatch) {
     while(1) {
         cod_op = recibir_operacion(socket_kernel);
         switch(cod_op) {
-            case 10:
-                printf("Se recibio 10 en dispatcher\n");
+            case 1:
+                recibir_pcb_de_kernel(socket_kernel);
                 break;
             case 7:
                 printf("Se recibio 7 en dispatcher\n");
@@ -49,7 +49,7 @@ void* handle_dispatch(void* socket_dispatch) {
         }
     }
     return NULL;
-}
+}*/
 
 void* handle_interrupt(void* socket) {
     printf("Todavia no hacemos nada");
@@ -74,6 +74,7 @@ int esperar_cliente(int socket_servidor, t_log *logger_cpu) {
 	return socket_cliente;
 }
 
+// Es esta funcion la que se encarga de recibir el codigo de operacion y a partir de eso actuar? Tiene codop = recibirOperacion()!!!!!
 void* iniciar_servidor_dispatch(void* datos_dispatch) {
     t_config_cpu* datos = (t_config_cpu*) datos_dispatch;
     int socket_cpu_escucha = iniciar_servidor(datos->puerto_escucha); // Inicia el servidor, bind() y listen() y socket()
@@ -86,8 +87,9 @@ void* iniciar_servidor_dispatch(void* datos_dispatch) {
         // int client_dispatch = esperar_cliente(socket_cpu_escucha, datos->logger);
         codop = recibir_operacion(client_dispatch);
         switch(codop) {
-            case 10:
-                printf("Recibi 10\n");
+            //Borramos el case 10: Estamos intentando con el envio_pcb
+            case ENVIO_PCB:
+                recibir_pcb_de_kernel(client_dispatch);
                 break;
             default:
                 printf("entro por default: %d\n", codop);
@@ -131,3 +133,51 @@ t_config_cpu* iniciar_datos(char* escucha_fd, t_log* logger_CPU) {
     return cpu_server;
 }
 
+void* recibir_pcb_de_kernel(int socket_kernel) {
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+    paquete->buffer = malloc(sizeof(t_buffer));
+
+    //Ya sacamos el codigo de operacion en iniciar_servidor_dispatch, y es por eso que estamos en esta funcion.
+
+    // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
+    recv(socket_kernel, &(paquete->buffer->size), sizeof(paquete->buffer->size), 0);
+    paquete->buffer->stream = malloc(paquete->buffer->size);
+    recv(socket_kernel, paquete->buffer->stream, paquete->buffer->size, 0);
+
+    // Ahora en función del código recibido procedemos a deserializar el resto
+    t_pcb* pcb = pcb_deserializar(paquete->buffer);
+    
+    // Hacemos lo que necesitemos con esta info
+    // Y eventualmente liberamos memoria
+    free(pcb);
+    
+     // Evaluamos los demás casos según corresponda
+
+    // Liberamos memoria
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+}
+
+//Falta t_pcb como estructura en CPU, podria estar en utils
+//TO DO: Toda la funcion
+t_pcb* pcb_deserializar(t_buffer* buffer) {
+    t_pcb* pcb = malloc(sizeof(t_pcb));
+
+    void* stream = buffer->stream;
+    // Deserializamos los campos que tenemos en el buffer
+    memcpy(&(pcb->dni), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(persona->edad), stream, sizeof(uint8_t));
+    stream += sizeof(uint8_t);
+    memcpy(&(persona->pasaporte), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+
+    // Por último, para obtener el nombre, primero recibimos el tamaño y luego el texto en sí:
+    memcpy(&(persona->nombre_length), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    persona->nombre = malloc(persona->nombre_length);
+    memcpy(persona->nombre, stream, persona->nombre_length);
+
+    return persona;
+}
