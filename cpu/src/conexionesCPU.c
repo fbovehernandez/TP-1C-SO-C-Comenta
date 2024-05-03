@@ -131,6 +131,3 @@ t_config_cpu* iniciar_datos(char* escucha_fd, t_log* logger_CPU) {
     return cpu_server;
 }
 
-void* enviar_peticion_a_memoria() {
-
-}

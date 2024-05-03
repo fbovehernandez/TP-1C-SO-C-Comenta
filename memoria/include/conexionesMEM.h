@@ -7,6 +7,8 @@
 #include "../../utils/include/sockets.h" 
 #include "../../utils/include/logconfig.h"
 
+extern pthread_t kernel_thread;
+extern pthread_t cpu_thread;
 typedef struct {
     int socket;
     t_log* logger;

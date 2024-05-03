@@ -1,16 +1,16 @@
 #include "../include/main.h"
 
 int main(int argc, char* argv[]) {
-    int nuevo_mensaje = 10;
+    int nuevo_mensaje = 7;
     
-    t_log* logger_CPU = iniciar_logger("cpu.log"); 
+    t_log* logger_CPU    = iniciar_logger("cpu.log"); 
     t_config* config_CPU = iniciar_config("./cpu.config");
     
-    char* escucha_dispatch = config_get_string_value(config_CPU, "PUERTO_ESCUCHA_DISPATCH");
+    char* escucha_dispatch  = config_get_string_value(config_CPU, "PUERTO_ESCUCHA_DISPATCH");
     char* escucha_interrupt = config_get_string_value(config_CPU, "PUERTO_ESCUCHA_INTERRUPT");
-    char* ip_cpu = config_get_string_value(config_CPU, "IP_CPU");
+    char* ip_cpu            = config_get_string_value(config_CPU, "IP_CPU");
 
-    char* IP_MEMORIA = config_get_string_value(config_CPU, "IP_MEMORIA");
+    char* IP_MEMORIA     = config_get_string_value(config_CPU, "IP_MEMORIA");
     char* puerto_memoria = config_get_string_value(config_CPU, "PUERTO_MEMORIA");
 
     // Aca lo conecto a memoria -> creo que esto SI deberia ser un hilo
@@ -21,12 +21,12 @@ int main(int argc, char* argv[]) {
 
     //////////// -> Inicializa los datos y se los pasa a los hilos
     t_config_cpu* cpu_interrupt = iniciar_datos(escucha_interrupt, logger_CPU);
-    t_config_cpu* cpu_dispatch = iniciar_datos(escucha_dispatch, logger_CPU);
+    t_config_cpu* cpu_dispatch  = iniciar_datos(escucha_dispatch, logger_CPU);
 
     printf("Puerto escucha dispatch: %s\n", cpu_dispatch->puerto_escucha);
 
     // Aca levanto server dispatch e interrupt
-	pthread_t dispatch;
+	pthread_t dispatch;  
     pthread_t interrupt;
 
     // Creacion de hilos, con sus respectivas funciones

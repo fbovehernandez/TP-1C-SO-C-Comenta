@@ -22,9 +22,9 @@ t_log* logger_kernel;
 
 void *interaccion_consola(t_sockets* sockets) {
 
-    int respuesta;
+    int respuesta = 0;
 
-    do
+    while (respuesta != 8)
     {
         printf("--------------- Consola interactiva Kernel ---------------\n");
         printf("Elija una opcion (numero)\n");
@@ -36,7 +36,7 @@ void *interaccion_consola(t_sockets* sockets) {
         printf("6- Listar procesos por estado\n");
         printf("7- Cambiar el grado de multiprogramacion\n");
         printf("8- Finalizar modulo\n");
-        scanf("%d", &respuesta);
+        scanf(&respuesta);
 
         switch (respuesta)
         {
@@ -44,7 +44,7 @@ void *interaccion_consola(t_sockets* sockets) {
             EJECUTAR_SCRIPT(/* pathing del conjunto de instrucciones*/);
             break;
         case 2:
-            INICIAR_PROCESO(/*PATH*/sockets); // Esto va a crear un pcb que representa al proceso, y va a ponerlo en la cola de new (despues un hilo lo pasa a ready?)
+            INICIAR_PROCESO("PATH", sockets); // Esto va a crear un pcb que representa al proceso, y va a ponerlo en la cola de new (despues un hilo lo pasa a ready?)
             break;
         case 3:
             FINALIZAR_PROCESO();
@@ -69,8 +69,7 @@ void *interaccion_consola(t_sockets* sockets) {
             printf("No se encuentra el numero dentro de las opciones, porfavor elija una correcta\n");
             break;
         }
-
-    } while (respuesta != 7);
+    } 
 
     return NULL;
 }
@@ -85,11 +84,11 @@ void INICIAR_PROCESO(char* path_secuencia_de_comandos, t_sockets* sockets)
 
     encolar_a_new(pcb);
 
-    enviar_path_a_memoria(path_secuencia_de_comandos, sockets);
+    // enviar_path_a_memoria(path_secuencia_de_comandos, sockets);
     // print_queue(NEW);
 }
 
-
+/* 
 void* enviar_path_a_memoria(char* path_secuencia_de_comandos, t_sockets* sockets) {
     t_path* pathNuevo;
     pathNuevo -> path = path_secuencia_de_comandos;
@@ -148,6 +147,7 @@ t_buffer* llenar_buffer(t_path* pathNuevo) {
     free(pathNuevo -> path);
     return(buffer);
 }
+*/
 
 int obtener_siguiente_pid()
 {
@@ -227,21 +227,26 @@ void printf_queue(t_queue *cola)
     }
 }
 
-void planificar_FIFO() {
-    
-}
 
 // Otro hilo para recibir de cpu? o uso solo recv?
 void* planificar_corto_plazo() {
-    
+    // Esto no considera todavia la planificacion por quantum (desalojo) -> Como hago?
+    // Si quantum se mide en segundos, yo podria enviar una interrupcion despues de 
+    // contar los segundos (arrancaria a contar haciendo un post en la cpu cuando
+    // arranque a ejecutar o reciba el pcb? bloqueando el hilo que cuenta con wait)
+
     t_pcb *pcb;
     while(1) {
         sem_wait(&hay_para_planificar); 
         pcb = proximo_a_ejecutar();
         
-        enviar_pcb(pcb, socket_CPU, ENVIO_PCB); // Aca se serializa
+        enviar_pcb(pcb, socket_CPU, ENVIO_PCB); // Serializar
+
+        // Recibir respuesta de la CPU
+        causa_desalojo = esperar_cpu(); // Esto bloquearia la planificacion hasta que la cpu termine de ejecutar y me devuelta el contexto
 
     }
+
     // Aca se deberia planificar el proceso que esta en la cola de ready
     // Se deberia sacar de la cola de ready y ponerlo en la cola de exec
     // Se deberia ejecutar el proceso
@@ -249,6 +254,24 @@ void* planificar_corto_plazo() {
     // No se como sera la implementacion de quantum (otro hilo?)
 
 }
+
+// JOURNEY BEFORE DESTINATION -> Viaja ante un destino (perdon soy de boca) --  Perdon sofi y caro tenemos noni
+t_pcb* proximo_a_ejecutar() {
+    t_pcb* pcb = NULL;
+    
+    if(strcmp("FIFO",algoritmo_planificacion) == 0) {
+        pthread_mutex_lock(&mutex_estado_ready);
+        pcb = queue_pop(cola_ready);
+        pthread_mutex_unlock(&mutex_estado_ready);
+    } else if (strcmp("RR",algoritmo_planificacion) == 0){
+        // Logica RR
+    } else{
+        // Logica VRR
+    }
+
+    return pcb;
+}
+
 // Aca se desarma el path y se obtienen las instrucciones y se le pasan a memoria para que esta lo guarde en su tabla de paginas de este proceso
 t_pcb *crear_nuevo_pcb(int pid)
 {
@@ -284,7 +307,7 @@ Registros *inicializar_registros_cpu()
     return registro_cpu;
 }
 
-
+/* 
 void* recibir_peticion_de_cpu() {
     // recibiremos la instruccion
 }
@@ -332,7 +355,7 @@ void serializar_peticion(t_peticion_io* peticion){
     // Si usamos memoria dinámica para el nombre, y no la precisamos más, ya podemos liberarla:
     free(peticion->instruccion);
 }
-
+*/
 /*
 void* escuchar_consola(int socket_kernel_escucha, t_config* config){
     while(1) {

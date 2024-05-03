@@ -10,20 +10,19 @@ int main(int argc, char* argv[]) {
 
     // Levanto el servidor y devuelvo el socket de escucha
     int escucha_fd = iniciar_servidor(puerto_escucha);
-
     log_info(logger_memoria, "Servidor iniciado, esperando conexiones!");
-
-    // conecto y recibo handshake de cpu
-    // int cliente_cpu = esperar_cliente(escucha_fd, logger_memoria, "CPU"); 
 
     t_config_memoria* memory_struct_cpu = malloc(sizeof(t_config_memoria));
     memory_struct_cpu->socket = escucha_fd;
     memory_struct_cpu->logger = logger_memoria;
 
-    while(1) {
-        int socket_cliente = esperar_cliente(escucha_fd, logger_memoria);
-    }
-   
+    int socket_cpu = esperar_cliente(escucha_fd, logger_memoria);
+    int socket_kernel = esperar_cliente(escucha_fd, logger_memoria);
+
+    // Hago los join aca para que no se cierre el hilo principal ->  TODO: Ver mejor implementacion o volver al while(1)
+    pthread_join(cpu_thread, NULL); 
+    pthread_join(kernel_thread, NULL);
+
     // Libero conexiones 
     free(config_memoria);
     free(memory_struct_cpu);

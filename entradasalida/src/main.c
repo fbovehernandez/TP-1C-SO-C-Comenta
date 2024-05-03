@@ -88,6 +88,7 @@ free(paquete);
 
 */
 
+
 void iniciar_interfaz_generica(char* nombreInterfaz) {
     char* tipo_interfaz = config_get_string_value(config_io, "TIPO_INTERFAZ");
     int tiempo_unidad_trabajo = config_get_int_value(config_io, "TIEMPO_UNIDAD_TRABAJO");

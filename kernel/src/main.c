@@ -3,11 +3,11 @@
 int main(int argc, char* argv[]) {
     
     // Inicializo colas con queue_create
-    cola_new = queue_create(); 
-    cola_ready = queue_create();
+    cola_new     = queue_create(); 
+    cola_ready   = queue_create();
     cola_blocked = queue_create();
-    cola_exec = queue_create();
-    cola_exit = queue_create();
+    cola_exec    = queue_create();
+    cola_exit    = queue_create();
     
     t_config* config_kernel   = iniciar_config("./kernel.config");
     logger_kernel = iniciar_logger("kernel.log");
@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
 	pthread_create(&pasar_a_ready, NULL, a_ready, NULL);
 
     pthread_t planificador_corto_plazo;
-    pthread_create(&planificador_corto_plazo, NULL, (void*)planificar_corto_plazo, NULL); // Definir plani a corto plazo
+    // pthread_create(&planificador_corto_plazo, NULL, (void*)planificar_corto_plazo, NULL); // Definir plani a corto plazo
 
     /////////////// ---------- ///////////////
     // Hilo 3 -> Conexion con interfaz I/O

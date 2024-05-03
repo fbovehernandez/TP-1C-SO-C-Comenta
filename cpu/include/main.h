@@ -11,4 +11,3 @@
 #include "../../utils/include/logconfig.h"
 
 #endif // CPU_MAIN_H
-cpu/src/main.c
