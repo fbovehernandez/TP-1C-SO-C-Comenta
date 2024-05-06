@@ -100,7 +100,7 @@ void* recibir_peticion_de_kernel(int socket_kernel) {
     recv(socket_kernel, paquete->buffer->stream, paquete->buffer->size, 0);
 
     // Ahora en función del código recibido procedemos a deserializar el resto
-    switch(paquete->codigo_operacion) {
+    /*switch(paquete->codigo_operacion) {
         case PATH:
             t_persona* persona = persona_serializar(paquete->buffer);
             ...
@@ -110,10 +110,12 @@ void* recibir_peticion_de_kernel(int socket_kernel) {
             ...
             break;
         ... // Evaluamos los demás casos según corresponda
-    }
+    }*/
 
     // Liberamos memoria
     free(paquete->buffer->stream);
     free(paquete->buffer);
     free(paquete);
+
+    return 0;
 }

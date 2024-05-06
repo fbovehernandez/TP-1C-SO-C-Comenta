@@ -8,8 +8,10 @@ int contador_pid = 0;
 
 pthread_mutex_t mutex_estado_new;
 pthread_mutex_t mutex_estado_ready;
+pthread_mutex_t mutex_estado_exec;
 sem_t sem_grado_multiprogramacion;
 sem_t sem_hay_pcb_esperando_ready;
+sem_t sem_hay_para_planificar;
 
 t_queue* cola_new;
 t_queue* cola_ready;
@@ -22,6 +24,7 @@ t_log* logger_kernel;
 
 void *interaccion_consola(t_sockets* sockets) {
 
+    char* respuesta_por_consola;
     int respuesta = 0;
 
     while (respuesta != 8)
@@ -36,7 +39,9 @@ void *interaccion_consola(t_sockets* sockets) {
         printf("6- Listar procesos por estado\n");
         printf("7- Cambiar el grado de multiprogramacion\n");
         printf("8- Finalizar modulo\n");
-        scanf(&respuesta);
+        respuesta_por_consola = readline(">");
+
+        respuesta = atoi(respuesta_por_consola);
 
         switch (respuesta)
         {
@@ -84,16 +89,17 @@ void INICIAR_PROCESO(char* path_secuencia_de_comandos, t_sockets* sockets)
 
     encolar_a_new(pcb);
 
-    enviar_path_a_memoria(path_secuencia_de_comandos, sockets);
+    // Ya veremos cómo enviar el path a memoria
+    // enviar_path_a_memoria(path_secuencia_de_comandos, sockets);
     // print_queue(NEW);
 }
 
 
 void* enviar_path_a_memoria(char* path_secuencia_de_comandos, t_sockets* sockets) {
-    t_path* pathNuevo;
+    t_path* pathNuevo = malloc(sizeof(t_path));
     pathNuevo -> path = path_secuencia_de_comandos;
     pathNuevo -> path_length = sizeof(pathNuevo);
-    t_buffer* buffer = llenar_buffer(pathNuevo);
+    t_buffer* buffer = llenar_buffer_path(pathNuevo);
 
     t_paquete* paquete = malloc(sizeof(t_paquete));
 
@@ -111,7 +117,7 @@ void* enviar_path_a_memoria(char* path_secuencia_de_comandos, t_sockets* sockets
     offset += sizeof(uint32_t);
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
-    log_info(logger_kernel, "Se armo un paquete con este PATH: %s\n", paquete->buffer->stream);
+    log_info(logger_kernel, "Se armo un paquete con este PATH: %s\n", pathNuevo->path);
 
     // Por último enviamos
     send(sockets->socket_memoria, a_enviar, buffer->size + sizeof(uint8_t) + sizeof(uint32_t), 0);
@@ -121,14 +127,11 @@ void* enviar_path_a_memoria(char* path_secuencia_de_comandos, t_sockets* sockets
     free(paquete->buffer->stream);
     free(paquete->buffer);
     free(paquete);
+
+    return NULL;
 } 
 
-typedef struct {
-    int path_length;
-    char* path;
-} t_path;
-
-t_buffer* llenar_buffer(t_path* pathNuevo) {
+t_buffer* llenar_buffer_path(t_path* pathNuevo) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
     void* stream = malloc(sizeof(pathNuevo));
 
@@ -200,7 +203,7 @@ void pasar_a_ready(t_pcb *pcb)
     pcb->estadoActual = READY;
     pcb->estadoAnterior = NEW;
 
-    sem_post(&hay_para_planificar);
+    sem_post(&sem_hay_para_planificar);
     log_info(logger_kernel, "PID: %d - Estado Anterior: %d - Estado Actual: %d", pcb->pid, pcb->estadoAnterior, pcb->estadoActual);
 }
 
@@ -240,14 +243,14 @@ void* planificar_corto_plazo(t_sockets* sockets) {
     int socket_CPU = sockets -> socket_cpu;
     
     while(1) {
-        sem_wait(&hay_para_planificar); 
+        sem_wait(&sem_hay_para_planificar); 
         pcb = proximo_a_ejecutar();
         
         pasar_a_exec(pcb);
         enviar_pcb(pcb, socket_CPU); // Serializar antes de enviar
 
         // TO DO: Recibir respuesta de la CPU y todo lo que le sigue
-        int causa_desalojo = esperar_cpu(); // Esto bloquearia la planificacion hasta que la cpu termine de ejecutar y me devuelva el contexto
+        int causa_desalojo = esperar_cpu(); 
         // Tiene que recibir causa_desalojo y contexto_ejecucion
     }
 
@@ -267,10 +270,12 @@ void* pasar_a_exec(t_pcb* pcb) {
     pcb->estadoAnterior = READY;
 
     log_info(logger_kernel, "PID: %d - Estado Anterior: %d - Estado Actual: %d", pcb->pid, pcb->estadoAnterior, pcb->estadoActual);
+
+    return NULL;
 }
 
 void* enviar_pcb(t_pcb* pcb, int socket) {
-    t_buffer* buffer = llenar_buffer(pcb);
+    t_buffer* buffer = llenar_buffer_pcb(pcb);
 
     t_paquete* paquete = malloc(sizeof(t_paquete));
 
@@ -290,9 +295,11 @@ void* enviar_pcb(t_pcb* pcb, int socket) {
 
     // Por último enviamos
     send(socket, a_enviar, buffer->size + sizeof(codigo_operacion) + sizeof(int), 0);
+
+    return 0;
 }
 
-t_buffer* llenar_buffer(t_pcb* pcb) {
+t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
     buffer->size = sizeof(int) * 4 
@@ -373,6 +380,11 @@ Registros *inicializar_registros_cpu()
     registro_cpu->DI = 0;
 
     return registro_cpu;
+}
+
+// TO DO: Esto bloquearia la planificacion hasta que la cpu termine de ejecutar y me devuelva el contexto. Tiene que recibir causa de desalojo y contexto
+int esperar_cpu() {
+    return 0;
 }
 
 /* 

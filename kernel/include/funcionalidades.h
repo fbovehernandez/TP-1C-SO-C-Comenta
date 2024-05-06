@@ -5,51 +5,17 @@
 #include <stdlib.h>
 #include <string.h>
 #include <semaphore.h>
+#include "conexiones.h"
 #include "../../utils/include/sockets.h" 
 #include "../../utils/include/logconfig.h"
 #include <commons/collections/queue.h>
 #include <pthread.h>
 
 typedef struct {
-
-    // Registros de proposito gral.  (1 byte) 
-    uint8_t   AX;
-    uint8_t   BX; 
-    uint8_t   CX;
-    uint8_t   DX;
-
-    // Registros de proposito gral. (4 bytes) 
-    uint32_t  EAX;
-    uint32_t  EBX; 
-    uint32_t  ECX;
-    uint32_t  EDX;
-
-    uint32_t  SI; // Contiene la dirección lógica de memoria de origen desde donde se va a copiar un string.
-    uint32_t  DI; // Contiene la dirección lógica de memoria de destino a donde se va a copiar un string.
-
-} Registros;
-
-enum Estado {
-    NEW,
-    READY,
-    BLOCKED,
-    EXEC,
-    EXIT
-};
-
-typedef struct {
     
 } t_instrucciones;
 
-typedef struct {
-    int pid;
-    int program_counter;
-    int quantum;
-    enum Estado estadoActual;
-    enum Estado estadoAnterior;
-    int socketProceso;
-    Registros* registros;
-} t_pcb;
+//Me lleve t_pcb al utils, lo mismo que Registros y Estado
 
 // Los 2 de abajo no los usamos todavia
 typedef struct {
@@ -76,14 +42,21 @@ typedef struct {
     int socket_cpu; // var global
 } t_consola;*/
 
+typedef struct {
+    int path_length;
+    char* path;
+} t_path;
+
 extern int grado_multiprogramacion;
 extern int quantum;
 extern int contador_pid;  
 
 extern pthread_mutex_t mutex_estado_new;
 extern pthread_mutex_t mutex_estado_ready;
+extern pthread_mutex_t mutex_estado_exec;
 extern sem_t sem_grado_multiprogramacion;
 extern sem_t sem_hay_pcb_esperando_ready;
+extern sem_t sem_hay_para_planificar;
 
 extern t_queue* cola_new;
 extern t_queue* cola_ready;
@@ -106,7 +79,13 @@ int obtener_siguiente_pid();
 // t_queue* mostrar_cola(t_queue* cola);
 void mostrar_pcb_proceso(t_pcb* pcb);
 void* planificar_corto_plazo();
-void* enviar_path_a_cpu(char* path_secuencia_de_comandos);
+void* enviar_path_a_memoria(char* path_secuencia_de_comandos, t_sockets* sockets);
+void* enviar_pcb(t_pcb* pcb, int socket);
+t_buffer* llenar_buffer_path(t_path* pathNuevo);
+t_buffer* llenar_buffer_pcb(t_pcb* pcb);
+t_pcb* proximo_a_ejecutar();
+void* pasar_a_exec(t_pcb* pcb);
+int esperar_cpu();
 
 void EJECUTAR_SCRIPT();
 void INICIAR_PROCESO();

@@ -157,6 +157,8 @@ void* recibir_pcb_de_kernel(int socket_kernel) {
     free(paquete->buffer->stream);
     free(paquete->buffer);
     free(paquete);
+
+    return 0;
 }
 
 //Falta t_pcb como estructura en CPU, podria estar en utils
@@ -164,7 +166,7 @@ void* recibir_pcb_de_kernel(int socket_kernel) {
 t_pcb* pcb_deserializar(t_buffer* buffer) {
     t_pcb* pcb = malloc(sizeof(t_pcb));
 
-    void* stream = buffer->stream;
+    /*void* stream = buffer->stream;
     // Deserializamos los campos que tenemos en el buffer
     memcpy(&(pcb->dni), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
@@ -178,6 +180,7 @@ t_pcb* pcb_deserializar(t_buffer* buffer) {
     stream += sizeof(uint32_t);
     persona->nombre = malloc(persona->nombre_length);
     memcpy(persona->nombre, stream, persona->nombre_length);
-
-    return persona;
+    */
+   
+    return pcb;
 }
