@@ -1,7 +1,6 @@
 #include "../include/conexionesCPU.h"
 
-/* holaaa facuuu - holaaaaaaaa
-
+/* 
 PUERTO_KERNEL=8010
 IP_KERNEL=127.0.0.1
 PUERTO_ESCUCHA_DISPATCH=8006
@@ -161,26 +160,31 @@ void* recibir_pcb_de_kernel(int socket_kernel) {
     return 0;
 }
 
-//Falta t_pcb como estructura en CPU, podria estar en utils
 //TO DO: Toda la funcion
 t_pcb* pcb_deserializar(t_buffer* buffer) {
-    t_pcb* pcb = malloc(sizeof(t_pcb));
+   /* t_pcb* pcb = malloc(sizeof(t_pcb));
+    Registros* registros = malloc(sizeof(Registros));
 
-    /*void* stream = buffer->stream;
+    void* stream = buffer->stream;
     // Deserializamos los campos que tenemos en el buffer
-    memcpy(&(pcb->dni), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-    memcpy(&(persona->edad), stream, sizeof(uint8_t));
-    stream += sizeof(uint8_t);
-    memcpy(&(persona->pasaporte), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
+    memcpy(&(pcb->pid), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(pcb->program_counter), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(pcb->quantum), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(pcb->estadoActual), stream, sizeof(enum Estado));
+    stream += sizeof(enum Estado);
+    memcpy(&(pcb->estadoAnterior), stream, sizeof(enum Estado));
+    stream += sizeof(enum Estado);
+    memcpy(&(pcb->registros), stream, sizeof(registros));
+    stream += sizeof(registros);
 
     // Por último, para obtener el nombre, primero recibimos el tamaño y luego el texto en sí:
     memcpy(&(persona->nombre_length), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
     persona->nombre = malloc(persona->nombre_length);
-    memcpy(persona->nombre, stream, persona->nombre_length);
-    */
+    memcpy(persona->nombre, stream, persona->nombre_length);*/
    
     return pcb;
 }

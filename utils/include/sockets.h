@@ -67,7 +67,6 @@ typedef struct {
     int quantum;
     enum Estado estadoActual;
     enum Estado estadoAnterior;
-    int socketProceso;
     Registros* registros;
 } t_pcb;
 

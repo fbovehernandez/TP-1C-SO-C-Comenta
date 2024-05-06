@@ -12,6 +12,7 @@ pthread_mutex_t mutex_estado_exec;
 sem_t sem_grado_multiprogramacion;
 sem_t sem_hay_pcb_esperando_ready;
 sem_t sem_hay_para_planificar;
+sem_t sem_contador_quantum;
 
 t_queue* cola_new;
 t_queue* cola_ready;
@@ -24,7 +25,7 @@ t_log* logger_kernel;
 
 void *interaccion_consola(t_sockets* sockets) {
 
-    char* respuesta_por_consola;
+    //char* respuesta_por_consola;
     int respuesta = 0;
 
     while (respuesta != 8)
@@ -39,9 +40,9 @@ void *interaccion_consola(t_sockets* sockets) {
         printf("6- Listar procesos por estado\n");
         printf("7- Cambiar el grado de multiprogramacion\n");
         printf("8- Finalizar modulo\n");
-        respuesta_por_consola = readline(">");
+        scanf("%d", &respuesta);
 
-        respuesta = atoi(respuesta_por_consola);
+        // respuesta = atoi(respuesta_por_consola);
 
         switch (respuesta)
         {
@@ -107,8 +108,8 @@ void* enviar_path_a_memoria(char* path_secuencia_de_comandos, t_sockets* sockets
     paquete->buffer = buffer; // Nuestro buffer de antes.
 
     // Armamos el stream a enviar
-    void* a_enviar = malloc(buffer->size + sizeof(uint8_t)) + sizeof(uint32_t);
-    int offset = 0;
+    void* a_enviar = malloc(buffer->size + sizeof(uint8_t) + sizeof(uint32_t));
+    int offset = 0; 
 
     memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(uint8_t));
 
@@ -230,35 +231,56 @@ void printf_queue(t_queue *cola)
     }
 }
 
-
 // Otro hilo para recibir de cpu? o uso solo recv?
 void* planificar_corto_plazo(t_sockets* sockets) {
-    // Esto no considera todavia la planificacion por quantum (desalojo) -> Como hago?
-    // Si quantum se mide en segundos, yo podria enviar una interrupcion despues de 
-    // contar los segundos (arrancaria a contar haciendo un post en la cpu cuando
-    // arranque a ejecutar o reciba el pcb? bloqueando el hilo que cuenta con wait)
-
+    int contexto_devolucion = 0;
     t_pcb *pcb;
 
     int socket_CPU = sockets -> socket_cpu;
     
     while(1) {
         sem_wait(&sem_hay_para_planificar); 
+        // No esta preparado para VRR, el proximo por ahora es siempre el siguiente en ready
         pcb = proximo_a_ejecutar();
-        
         pasar_a_exec(pcb);
         enviar_pcb(pcb, socket_CPU); // Serializar antes de enviar
 
-        // TO DO: Recibir respuesta de la CPU y todo lo que le sigue
-        int causa_desalojo = esperar_cpu(); 
-        // Tiene que recibir causa_desalojo y contexto_ejecucion
+        if(strcmp(algoritmo_planificacion,"RR") == 0) {
+            sem_post(sem_contador_quantum);
+            pthread_t* thread_round_robin;
+            hiloRR = pthread_create(&thread_round_robin, NULL, (void*)round_robin, pcb);
+            sem_post(hilo_round_robin);
+            contexto_devolucion = esperar_cpu(); // TO DO: implementar
+            pthread_cancel(thread_round_robin);
+        }
     }
+}
 
-    // Aca se deberia planificar el proceso que esta en la cola de ready
-    // Se deberia sacar de la cola de ready y ponerlo en la cola de exec
-    // Se deberia ejecutar el proceso
-    // Se deberia poner en la cola de exit
-    // No se como sera la implementacion de quantum (otro hilo?)
+void* round_robin(t_pcb* pcb) {
+        sem_wait(hilo_round_robin);
+        sleep(quantum);
+        int interrupcion_cpu = INTERRUPCION;
+        send(socket_cpu, &interrupcion_cpu, sizeof(int), 0); // interrupcion a cpu, TO DO: recibirlo de la cpu
+        pasar_a_ready();
+}
+
+//TO DO: Esto bloquearia la planificacion hasta que la cpu termine de ejecutar y me devuelva el contexto. 
+//Tiene que recibir causa de desalojo y contexto
+int esperar_cpu() {
+    //La cpu nos lo tiene que traer
+    //Los codigos todavia no estan definidos en el .h
+    switch (devolucion_cpu)
+    {
+    case INTERRUPCION_QUANTUM:
+        break;
+    case IO_BLOCKED:
+        break;
+    case SALIR_CPU:
+        break;
+    default:
+        break;
+    }
+    return 0;
 }
 
 void* pasar_a_exec(t_pcb* pcb) {
@@ -266,8 +288,8 @@ void* pasar_a_exec(t_pcb* pcb) {
     queue_push(cola_exec, (void *)pcb);
     pthread_mutex_unlock(&mutex_estado_exec);
 
-    pcb->estadoActual = EXEC;
-    pcb->estadoAnterior = READY;
+    pcb->estadoActual = EXEC; 
+    pcb->estadoAnterior = READY; 
 
     log_info(logger_kernel, "PID: %d - Estado Anterior: %d - Estado Actual: %d", pcb->pid, pcb->estadoAnterior, pcb->estadoActual);
 
@@ -302,7 +324,7 @@ void* enviar_pcb(t_pcb* pcb, int socket) {
 t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
-    buffer->size = sizeof(int) * 4 
+    buffer->size = sizeof(int) * 3 
                 + sizeof(enum Estado) * 2
                 + sizeof(Registros);
 
@@ -317,8 +339,6 @@ t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
     buffer->offset += sizeof(int);
     memcpy(stream + buffer->offset, &pcb->quantum, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &pcb->socketProceso, sizeof(int));
-    buffer->offset += sizeof(int);
     memcpy(stream + buffer->offset, &pcb->estadoActual, sizeof(enum Estado));
     buffer->offset += sizeof(enum Estado);
     memcpy(stream + buffer->offset, &pcb->estadoAnterior, sizeof(enum Estado));
@@ -332,18 +352,17 @@ t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
 }
 
 t_pcb* proximo_a_ejecutar() {
+    int flag_vacio = 0;
     t_pcb* pcb = NULL;
-    
-    if(strcmp("FIFO",algoritmo_planificacion) == 0) {
-        pthread_mutex_lock(&mutex_estado_ready);
-        pcb = queue_pop(cola_ready);
-        pthread_mutex_unlock(&mutex_estado_ready);
-    } else if (strcmp("RR",algoritmo_planificacion) == 0){
-        // Logica RR
-    } else{
-        // Logica VRR
+    pthread_mutex_lock(&mutex_estado_ready); 
+    flag_vacio = queue_is_empty(cola_ready);
+    if(!flag_vacio) {
+        pcb = queue_pop(cola_ready); 
+    } else {
+        printf("No hay procesos para ejecutar\n");
     }
-
+    pthread_mutex_unlock(&mutex_estado_ready);
+    
     return pcb;
 }
 
@@ -380,11 +399,6 @@ Registros *inicializar_registros_cpu()
     registro_cpu->DI = 0;
 
     return registro_cpu;
-}
-
-// TO DO: Esto bloquearia la planificacion hasta que la cpu termine de ejecutar y me devuelva el contexto. Tiene que recibir causa de desalojo y contexto
-int esperar_cpu() {
-    return 0;
 }
 
 /* 

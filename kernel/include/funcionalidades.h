@@ -57,6 +57,7 @@ extern pthread_mutex_t mutex_estado_exec;
 extern sem_t sem_grado_multiprogramacion;
 extern sem_t sem_hay_pcb_esperando_ready;
 extern sem_t sem_hay_para_planificar;
+extern sem_t sem_contador_quantum;
 
 extern t_queue* cola_new;
 extern t_queue* cola_ready;
@@ -86,6 +87,7 @@ t_buffer* llenar_buffer_pcb(t_pcb* pcb);
 t_pcb* proximo_a_ejecutar();
 void* pasar_a_exec(t_pcb* pcb);
 int esperar_cpu();
+t_pcb* fifo();
 
 void EJECUTAR_SCRIPT();
 void INICIAR_PROCESO();
