@@ -30,7 +30,7 @@ typedef struct {
 } t_buffer;
 
 typedef struct {
-	codigo_operacion codigo_operacion;
+	int codigo_operacion;
 	t_buffer* buffer;
 } t_paquete;
 
@@ -67,7 +67,7 @@ typedef struct {
     int quantum;
     enum Estado estadoActual;
     enum Estado estadoAnterior;
-    Registros* registros;
+    // Registros* registros;
 } t_pcb;
 
 typedef struct {

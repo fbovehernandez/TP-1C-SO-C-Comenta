@@ -189,7 +189,6 @@ void* a_ready() {
 
         // Pasar el proceso a ready
         pasar_a_ready(pcb);
-        log_info(logger_kernel, "Cola Ready <COLA>: [<LISTA DE PIDS>]");
         
         // sem_post(&sem_hay_pcb_esperando_ready); 
     }
@@ -204,11 +203,14 @@ void pasar_a_ready(t_pcb *pcb)
     queue_push(cola_ready, (void *)pcb);
     pthread_mutex_unlock(&mutex_estado_ready);
 
-    sem_post(&sem_hay_para_planificar);
     log_info(logger_kernel, "PID: %d - Estado Anterior: %d - Estado Actual: %d", pcb->pid, pcb->estadoAnterior, pcb->estadoActual);
+    sem_post(&sem_hay_para_planificar);
 }
 
-void* planificar_corto_plazo(t_sockets* sockets) { // Ver el cambio por tipo void....
+void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por tipo void....
+    pthread_t hilo_quantum; // uff las malas practicas
+
+    t_sockets* sockets = (t_sockets*)sockets_necesarios;
     int contexto_devolucion = 0;
     t_pcb *pcb;
 
@@ -220,30 +222,31 @@ void* planificar_corto_plazo(t_sockets* sockets) { // Ver el cambio por tipo voi
         pasar_a_exec(pcb);
         enviar_pcb(pcb, socket_CPU); // Serializar antes de enviar 
 
-        //FIFO ya esta hecho con lo de arriba
+        // FIFO ya esta hecho con lo de arriba
         if(strcmp(algoritmo_planificacion,"RR") == 0) {
-            pthread_t hilo_quantum;
-            pthread_create(&hilo_quantum, NULL, (void*)contar_quantum, socket_CPU);
+            pthread_create(&hilo_quantum, NULL, (void*)contar_quantum, (void*)(intptr_t)socket_CPU);
 
             sem_post(&sem_contador_quantum);
         }
 
-        esperar_cpu(pcb); 
+        // contexto_devolucion = esperar_cpu(pcb); -> Pruebo con un proceso, si sale agrego otro pero primero hay que hacer esta funcion
 
-        if(strcmp(algoritmo_planificacion,"RR") == 0) {
-            pthread_cancel(contar_quantum);
+        if(strcmp(algoritmo_planificacion,"RR") == 0) { // Plantear una mejor forma de hacer esto
+            pthread_cancel(hilo_quantum);
         }
 
         // Y sino sigue sin crear ni eliminar el hilo...
     }
 }
 
-void* contar_quantum(t_socket* socket_CPU) {
+void* contar_quantum(void* sockets_CPU) {
+        int socket_CPU = (intptr_t)sockets_CPU;
         sem_wait(&sem_contador_quantum);
         sleep(quantum);
 
         int interrupcion_cpu = INTERRUPCION_QUANTUM;
-        send(socket_CPU, &interrupcion_cpu, sizeof(int), 0); -> interrupcion a cpu, TO DO: recibirlo de la cpu -> Se envia como un codop? 
+        send(socket_CPU, &interrupcion_cpu, sizeof(int), 0);
+        return NULL;
 }
 
 
@@ -293,7 +296,7 @@ void* pasar_a_exec(t_pcb* pcb) {
     queue_push(cola_exec, (void *)pcb);
     pthread_mutex_unlock(&mutex_estado_exec);
 
-    log_info(logger_kernel, "PID: %d - Estado Anterior: %d - Estado Actual: %d", pcb->pid, pcb->estadoAnterior, pcb->estadoActual);
+    log_info(logger_kernel, "PID: %d - Estado Anterior en exec: %d - Estado Actual: %d", pcb->pid, pcb->estadoAnterior, pcb->estadoActual);
 
     return NULL;
 }
@@ -304,31 +307,35 @@ void* enviar_pcb(t_pcb* pcb, int socket) {
 
     t_paquete* paquete = malloc(sizeof(t_paquete));
 
-    paquete->codigo_operacion = ENVIO_PCB; // Podemos usar una constante por operación
+    paquete->codigo_operacion = 10; // Podemos usar una constante por operación
     paquete->buffer = buffer; // Nuestro buffer de antes.
 
     // Armamos el stream a enviar
-    void* a_enviar = malloc(buffer->size + sizeof(codigo_operacion) + sizeof(int));
+    void* a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
     int offset = 0;
 
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(codigo_operacion));
-
-    offset += sizeof(codigo_operacion);
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
+    offset += sizeof(int);
     memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
     offset += sizeof(int);
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
     // Por último enviamos
-    send(socket, a_enviar, buffer->size + sizeof(codigo_operacion) + sizeof(int), 0);
+    send(socket, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
+    printf("Paquete enviado!");
 
     // Falta liberar todo
+    free(a_enviar);
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
     free(paquete);
-    free(buffer);
     return 0;
 }
 
 t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
+
+    printf("Llenando buffer...");
 
     buffer->size = sizeof(int) * 3 
                 + sizeof(enum Estado) * 2
@@ -349,11 +356,12 @@ t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
     buffer->offset += sizeof(enum Estado);
     memcpy(stream + buffer->offset, &pcb->estadoAnterior, sizeof(enum Estado));
     buffer->offset += sizeof(enum Estado);
-    memcpy(stream + buffer->offset, &pcb->registros, sizeof(Registros));
-    buffer->offset += sizeof(Registros);
+    // memcpy(stream + buffer->offset, &pcb->registros, sizeof(Registros));
+    // buffer->offset += sizeof(Registros);
 
     buffer->stream = stream;
 
+    printf("Buffer llenado...");
     return buffer;
 }
 
@@ -366,7 +374,7 @@ t_pcb *crear_nuevo_pcb(int pid){
     pcb->quantum = quantum;   // Esto lo saco del config
     pcb->estadoActual = NEW;
     pcb->estadoAnterior = NEW;
-    pcb->registros = inicializar_registros_cpu();
+    // pcb->registros = inicializar_registros_cpu();
 
     return pcb;
 }

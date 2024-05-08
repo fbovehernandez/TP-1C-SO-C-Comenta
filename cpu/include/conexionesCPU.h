@@ -29,6 +29,8 @@ void* iniciar_servidor_dispatch(void* datos_dispatch);
 void* iniciar_servidor_interrupt(void* datos_interrupt);
 t_config_cpu* iniciar_datos(char* escucha_fd, t_log* logger_CPU);
 void* recibir_pcb_de_kernel(int socket_kernel);
-t_pcb* pcb_deserializar(t_buffer* buffer);
+t_pcb* deserializar_pcb(t_buffer* buffer);
+void recibir(int socket);
+void imprimir_pcb(t_pcb* pcb);
 
 #endif // CONEXIONESCPU_H
