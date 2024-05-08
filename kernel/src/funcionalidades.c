@@ -220,14 +220,15 @@ void* planificar_corto_plazo(t_sockets* sockets) { // Ver el cambio por tipo voi
         pasar_a_exec(pcb);
         enviar_pcb(pcb, socket_CPU); // Serializar antes de enviar 
 
+        //FIFO ya esta hecho con lo de arriba
         if(strcmp(algoritmo_planificacion,"RR") == 0) {
             pthread_t hilo_quantum;
-            pthread_create(&hilo_quantum, NULL, (void*)contar_quantum, NULL);
+            pthread_create(&hilo_quantum, NULL, (void*)contar_quantum, socket_CPU);
 
             sem_post(&sem_contador_quantum);
         }
 
-        contexto_devolucion = esperar_cpu(); 
+        esperar_cpu(pcb); 
 
         if(strcmp(algoritmo_planificacion,"RR") == 0) {
             pthread_cancel(contar_quantum);
@@ -237,13 +238,12 @@ void* planificar_corto_plazo(t_sockets* sockets) { // Ver el cambio por tipo voi
     }
 }
 
-void* contar_quantum(t_pcb* pcb) {
+void* contar_quantum(t_socket* socket_CPU) {
         sem_wait(&sem_contador_quantum);
         sleep(quantum);
 
         int interrupcion_cpu = INTERRUPCION_QUANTUM;
-        enviar_interrupcion(interrupcion_cpu);
-        // send(socket_cpu, &interrupcion_cpu, sizeof(int), 0); -> interrupcion a cpu, TO DO: recibirlo de la cpu -> Se envia como un codop? 
+        send(socket_CPU, &interrupcion_cpu, sizeof(int), 0); -> interrupcion a cpu, TO DO: recibirlo de la cpu -> Se envia como un codop? 
 }
 
 
@@ -267,23 +267,21 @@ t_pcb* proximo_a_ejecutar() { // Esta pensando solo para FIFO y RR
 //Tiene que recibir causa de desalojo y contexto
 
 /* 
-int esperar_cpu() {
+void esperar_cpu(int devolucion_cpu, t_pcb* pcb) {
     //La cpu nos lo tiene que traer
     //Los codigos todavia no estan definidos en el .h
+    recv(socket_cpu, &devolucion, sizeof(enum), MSG_WAITALL);
     
-    switch (devolucion_cpu)
-    {
-    case INTERRUPCION_QUANTUM:
-        break;
-    case IO_BLOCKED:
-        break;
-    case FINALIZO_PROCESO:
-        break;
-    default:
-        break;
+    switch (devolucion_cpu) {
+        case INTERRUPCION_QUANTUM: //hay que replanificar
+            pasar_a_ready(pcb);
+            break;
+        case IO_BLOCKED: // ver esto
+            break;
+        case FINALIZO_PROCESO:
+            pasar_a_exit(pcb);
+            break;
     }
-
-    return 0;
 }
 */
 
@@ -324,6 +322,8 @@ void* enviar_pcb(t_pcb* pcb, int socket) {
     send(socket, a_enviar, buffer->size + sizeof(codigo_operacion) + sizeof(int), 0);
 
     // Falta liberar todo
+    free(paquete);
+    free(buffer);
     return 0;
 }
 
@@ -358,8 +358,7 @@ t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
 }
 
 // Aca se desarma el path y se obtienen las instrucciones y se le pasan a memoria para que esta lo guarde en su tabla de paginas de este proceso
-t_pcb *crear_nuevo_pcb(int pid)
-{
+t_pcb *crear_nuevo_pcb(int pid){
     t_pcb *pcb = malloc(sizeof(t_pcb));
 
     pcb->pid = pid;

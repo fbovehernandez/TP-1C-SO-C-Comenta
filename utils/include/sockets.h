@@ -70,6 +70,11 @@ typedef struct {
     Registros* registros;
 } t_pcb;
 
+typedef struct {
+    char* nombre;
+    t_list* parametros; //Cada una de las instrucciones
+} t_instruccion;
+
 int iniciar_servidor(char*);
 int esperar_conexion(int);
 void corroborar_exito(int, char*);

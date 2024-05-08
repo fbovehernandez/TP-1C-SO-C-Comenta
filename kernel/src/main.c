@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
 	pthread_create(&pasar_a_ready, NULL, (void*)a_ready, NULL);
 
     pthread_t planificador_corto_plazo;
-    pthread_create(&planificador_corto_plazo, NULL, (void*)planificar_corto_plazo, sockets); // Definir plani a corto plazo
+    pthread_create(&planificador_corto_plazo, NULL, (void*)planificar_corto_plazo, sockets); 
 
     /////////////// ---------- ///////////////
     // Hilo 3 -> Conexion con interfaz I/O

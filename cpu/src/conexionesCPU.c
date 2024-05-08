@@ -80,31 +80,57 @@ void* iniciar_servidor_dispatch(void* datos_dispatch) {
     log_info(datos->logger, "Servidor iniciado, esperando conexiones!");
 
     int client_dispatch = esperar_cliente(socket_cpu_escucha, datos->logger); // TODO -> ACA CREO OTRO HILO Y AHI VEO EL WHILE(1)
+    recibir(client_dispatch);
+    
+    return NULL;
+}
 
-    int codop;
+void recibir(int client_dispatch) {
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+    paquete->buffer = malloc(sizeof(t_buffer));
+
+    recv(client_dispatch, &(paquete->codigo_operacion), sizeof(uint8_t), 0);
+    
+    // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
+    recv(client_dispatch, &(paquete->buffer->size), sizeof(paquete->buffer->size), 0);
+    paquete->buffer->stream = malloc(paquete->buffer->size);
+    recv(client_dispatch, paquete->buffer->stream, paquete->buffer->size, 0);
+
+    //int codop;
     while(client_dispatch != -1) {    
         // int client_dispatch = esperar_cliente(socket_cpu_escucha, datos->logger);
-        codop = recibir_operacion(client_dispatch);
-        switch(codop) {
+        //codop = recibir_operacion(client_dispatch);
+        switch(paquete->codigo_operacion){
             //Borramos el case 10: Estamos intentando con el envio_pcb
             case ENVIO_PCB:
-                recibir_pcb_de_kernel(client_dispatch);
+                t_pcb* pcb = deserializar_pcb(paquete->buffer);
+                imprimir_pcb(pcb);
                 break;
             default:
-                printf("entro por default: %d\n", codop);
+                printf("entro por default: %d\n", paquete->codigo_operacion);
                 return NULL;
         }
     }
 
-    return NULL;
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+}
+
+void imprimir_pcb(t_pcb* pcb) {
+    printf("El pid es %d : ", pcb->pid);
+    printf("El program counter es %d : ", pcb->program_counter);
+    printf("El quantum es %d : ", pcb->quantum);
+    printf("El estado actual es %s : ", pcb->estadoActual);
+    printf("El estado anterior es %s : ", pcb->estadoAnterior);
+    printf("Los registros son %d : ", pcb->registros); //
 }
 
 // Hace lo mismo que dispatch pero con interrupt (POR AHORA)
 void* iniciar_servidor_interrupt(void* datos_interrupt) {
     t_config_cpu* datos = (t_config_cpu*) datos_interrupt;
     int socket_cpu_escucha = iniciar_servidor(datos->puerto_escucha); // Inicia el servidor, bind() y listen() y socket()
-    int client_interrupt = esperar_cliente(socket_cpu_escucha, datos->logger); // TODO -> ACA CREO OTRO HILO Y AHI VEO EL WHILE(1)
-
+    int client_interrupt = esperar_cliente(socket_cpu_escucha, datos->logger); 
     int codop;
     while(client_interrupt != -1) {    
         // int client_dispatch = esperar_cliente(socket_cpu_escucha, datos->logger);
@@ -132,34 +158,9 @@ t_config_cpu* iniciar_datos(char* escucha_fd, t_log* logger_CPU) {
     return cpu_server;
 }
 
-void* recibir_pcb_de_kernel(int socket_kernel) {
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-    paquete->buffer = malloc(sizeof(t_buffer));
-
-    // Ya sacamos el codigo de operacion en iniciar_servidor_dispatch, y es por eso que estamos en esta funcion.
-
-    // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
-    recv(socket_kernel, &(paquete->buffer->size), sizeof(paquete->buffer->size), 0);
-    paquete->buffer->stream = malloc(paquete->buffer->size);
-    recv(socket_kernel, paquete->buffer->stream, paquete->buffer->size, 0);
-
-    // Ahora en función del código recibido procedemos a deserializar el resto
-    t_pcb* pcb = pcb_deserializar(paquete->buffer);
-    
-    // Hacemos lo que necesitemos con esta info
-    // Y eventualmente liberamos memoria
-    
-    free(pcb);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
-
-    return 0;
-}
-
 //TO DO: Toda la funcion
-t_pcb* pcb_deserializar(t_buffer* buffer) {
-   /* t_pcb* pcb = malloc(sizeof(t_pcb));
+t_pcb* deserializar_pcb(t_buffer* buffer) {
+    t_pcb* pcb = malloc(sizeof(t_pcb));
     Registros* registros = malloc(sizeof(Registros));
 
     void* stream = buffer->stream;
@@ -176,12 +177,7 @@ t_pcb* pcb_deserializar(t_buffer* buffer) {
     stream += sizeof(enum Estado);
     memcpy(&(pcb->registros), stream, sizeof(registros));
     stream += sizeof(registros);
-
-    // Por último, para obtener el nombre, primero recibimos el tamaño y luego el texto en sí:
-    memcpy(&(persona->nombre_length), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-    persona->nombre = malloc(persona->nombre_length);
-    memcpy(persona->nombre, stream, persona->nombre_length);*/
+    // no sabemos si los registros se pasan asi ya que es otro puntero
    
     return pcb;
 }
