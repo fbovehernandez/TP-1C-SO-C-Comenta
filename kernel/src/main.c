@@ -19,6 +19,7 @@ int main(int argc, char* argv[]) {
 
     pthread_mutex_init(&mutex_estado_new, NULL);
     pthread_mutex_init(&mutex_estado_ready, NULL);
+    sem_init(&sem_contador_quantum, 0, 0);
     sem_init(&sem_hay_para_planificar, 0, 0);
     sem_init(&sem_hay_pcb_esperando_ready, 0, 0);
     sem_init(&sem_grado_multiprogramacion, 0, grado_multiprogramacion); // No testeado
@@ -53,10 +54,6 @@ int main(int argc, char* argv[]) {
     // Levanto hilo para escuchar peticiones I/O
     //pthread_t hilo_io;
     // pthread_create(&hilo_io, NULL, (void*) escuchar_IO, (void*) kernel_io); PARA PROBAR
-
-    // Hilo que guía la ejecución de procesos
-    // pthread_t hilo_procesos;
-    // pthread_create(&hilo_procesos, NULL, (void*) escuchar_IO, (void*) kernel_io);
 
     pthread_t socket_escucha_consola;
     pthread_create(&socket_escucha_consola, NULL, (void*) interaccion_consola, sockets); 

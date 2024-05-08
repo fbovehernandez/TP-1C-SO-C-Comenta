@@ -1,5 +1,6 @@
 #include "../include/funcionalidades.h"
 #include "../include/conexiones.h"
+#define INTERRUPCION_QUANTUM 1
 
 // Definicion de variables globales
 int grado_multiprogramacion;
@@ -50,7 +51,7 @@ void *interaccion_consola(t_sockets* sockets) {
             EJECUTAR_SCRIPT(/* pathing del conjunto de instrucciones*/);
             break;
         case 2:
-            INICIAR_PROCESO("PATH", sockets); // Esto va a crear un pcb que representa al proceso, y va a ponerlo en la cola de new (despues un hilo lo pasa a ready?)
+            INICIAR_PROCESO("PATH", sockets); 
             break;
         case 3:
             FINALIZAR_PROCESO();
@@ -92,7 +93,6 @@ void INICIAR_PROCESO(char* path_secuencia_de_comandos, t_sockets* sockets)
 
     // Ya veremos cómo enviar el path a memoria
     // enviar_path_a_memoria(path_secuencia_de_comandos, sockets);
-    // print_queue(NEW);
 }
 
 
@@ -197,105 +197,110 @@ void* a_ready() {
 
 void pasar_a_ready(t_pcb *pcb)
 {
+    pcb->estadoActual = READY;
+    pcb->estadoAnterior = NEW;
+
     pthread_mutex_lock(&mutex_estado_ready);
     queue_push(cola_ready, (void *)pcb);
     pthread_mutex_unlock(&mutex_estado_ready);
-
-    pcb->estadoActual = READY;
-    pcb->estadoAnterior = NEW;
 
     sem_post(&sem_hay_para_planificar);
     log_info(logger_kernel, "PID: %d - Estado Anterior: %d - Estado Actual: %d", pcb->pid, pcb->estadoAnterior, pcb->estadoActual);
 }
 
-// Ver
-void printf_queue(t_queue *cola)
-{
-
-    t_queue *actual = cola;
-
-    while (actual != NULL)
-    {
-        t_pcb *pcb = actual->elements->head->data;
-
-        printf("PID: %d\n", pcb->pid);
-        printf("Program Counter: %d\n", pcb->program_counter);
-        // printf("Quantum: %d\n", pcb->quantum);
-        // printf("Instrucciones: %d\n", pcb->instrucciones);
-        printf("Estado Actual: %d\n", pcb->estadoActual);
-        printf("Estado Anterior: %d\n", pcb->estadoAnterior);
-        // Assuming 'Registros' is a struct that can be printed
-        // printf("Registros: %s\n", pcb->registros->toString());
-
-        actual->elements->head = actual->elements->head->next;
-    }
-}
-
-// Otro hilo para recibir de cpu? o uso solo recv?
-void* planificar_corto_plazo(t_sockets* sockets) {
+void* planificar_corto_plazo(t_sockets* sockets) { // Ver el cambio por tipo void....
     int contexto_devolucion = 0;
     t_pcb *pcb;
 
-    int socket_CPU = sockets -> socket_cpu;
+    int socket_CPU = sockets->socket_cpu;
     
     while(1) {
         sem_wait(&sem_hay_para_planificar); 
-        // No esta preparado para VRR, el proximo por ahora es siempre el siguiente en ready
         pcb = proximo_a_ejecutar();
         pasar_a_exec(pcb);
-        enviar_pcb(pcb, socket_CPU); // Serializar antes de enviar
+        enviar_pcb(pcb, socket_CPU); // Serializar antes de enviar 
 
         if(strcmp(algoritmo_planificacion,"RR") == 0) {
-            sem_post(sem_contador_quantum);
-            pthread_t* thread_round_robin;
-            hiloRR = pthread_create(&thread_round_robin, NULL, (void*)round_robin, pcb);
-            sem_post(hilo_round_robin);
-            contexto_devolucion = esperar_cpu(); // TO DO: implementar
-            pthread_cancel(thread_round_robin);
+            pthread_t hilo_quantum;
+            pthread_create(&hilo_quantum, NULL, (void*)contar_quantum, NULL);
+
+            sem_post(&sem_contador_quantum);
         }
+
+        contexto_devolucion = esperar_cpu(); 
+
+        if(strcmp(algoritmo_planificacion,"RR") == 0) {
+            pthread_cancel(contar_quantum);
+        }
+
+        // Y sino sigue sin crear ni eliminar el hilo...
     }
 }
 
-void* round_robin(t_pcb* pcb) {
-        sem_wait(hilo_round_robin);
+void* contar_quantum(t_pcb* pcb) {
+        sem_wait(&sem_contador_quantum);
         sleep(quantum);
-        int interrupcion_cpu = INTERRUPCION;
-        send(socket_cpu, &interrupcion_cpu, sizeof(int), 0); // interrupcion a cpu, TO DO: recibirlo de la cpu
-        pasar_a_ready();
+
+        int interrupcion_cpu = INTERRUPCION_QUANTUM;
+        enviar_interrupcion(interrupcion_cpu);
+        // send(socket_cpu, &interrupcion_cpu, sizeof(int), 0); -> interrupcion a cpu, TO DO: recibirlo de la cpu -> Se envia como un codop? 
+}
+
+
+t_pcb* proximo_a_ejecutar() { // Esta pensando solo para FIFO y RR
+    int ready_vacio = 0;
+    t_pcb* pcb = NULL;
+
+    pthread_mutex_lock(&mutex_estado_ready); 
+    ready_vacio = queue_is_empty(cola_ready);
+    if(!ready_vacio) {
+        pcb = queue_pop(cola_ready); 
+    } else {
+        printf("No hay procesos para ejecutar\n");
+    }
+    pthread_mutex_unlock(&mutex_estado_ready);
+    
+    return pcb; // NO deberia devolver null
 }
 
 //TO DO: Esto bloquearia la planificacion hasta que la cpu termine de ejecutar y me devuelva el contexto. 
 //Tiene que recibir causa de desalojo y contexto
+
+/* 
 int esperar_cpu() {
     //La cpu nos lo tiene que traer
     //Los codigos todavia no estan definidos en el .h
+    
     switch (devolucion_cpu)
     {
     case INTERRUPCION_QUANTUM:
         break;
     case IO_BLOCKED:
         break;
-    case SALIR_CPU:
+    case FINALIZO_PROCESO:
         break;
     default:
         break;
     }
+
     return 0;
 }
+*/
 
 void* pasar_a_exec(t_pcb* pcb) {
+    pcb->estadoActual = EXEC; 
+    pcb->estadoAnterior = READY;
+
     pthread_mutex_lock(&mutex_estado_exec);
     queue_push(cola_exec, (void *)pcb);
     pthread_mutex_unlock(&mutex_estado_exec);
-
-    pcb->estadoActual = EXEC; 
-    pcb->estadoAnterior = READY; 
 
     log_info(logger_kernel, "PID: %d - Estado Anterior: %d - Estado Actual: %d", pcb->pid, pcb->estadoAnterior, pcb->estadoActual);
 
     return NULL;
 }
 
+// Esta podria ser la funcion generica y pasarle el codOP por parametro
 void* enviar_pcb(t_pcb* pcb, int socket) {
     t_buffer* buffer = llenar_buffer_pcb(pcb);
 
@@ -318,6 +323,7 @@ void* enviar_pcb(t_pcb* pcb, int socket) {
     // Por último enviamos
     send(socket, a_enviar, buffer->size + sizeof(codigo_operacion) + sizeof(int), 0);
 
+    // Falta liberar todo
     return 0;
 }
 
@@ -349,21 +355,6 @@ t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
     buffer->stream = stream;
 
     return buffer;
-}
-
-t_pcb* proximo_a_ejecutar() {
-    int flag_vacio = 0;
-    t_pcb* pcb = NULL;
-    pthread_mutex_lock(&mutex_estado_ready); 
-    flag_vacio = queue_is_empty(cola_ready);
-    if(!flag_vacio) {
-        pcb = queue_pop(cola_ready); 
-    } else {
-        printf("No hay procesos para ejecutar\n");
-    }
-    pthread_mutex_unlock(&mutex_estado_ready);
-    
-    return pcb;
 }
 
 // Aca se desarma el path y se obtienen las instrucciones y se le pasan a memoria para que esta lo guarde en su tabla de paginas de este proceso

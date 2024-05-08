@@ -136,7 +136,7 @@ void* recibir_pcb_de_kernel(int socket_kernel) {
     t_paquete* paquete = malloc(sizeof(t_paquete));
     paquete->buffer = malloc(sizeof(t_buffer));
 
-    //Ya sacamos el codigo de operacion en iniciar_servidor_dispatch, y es por eso que estamos en esta funcion.
+    // Ya sacamos el codigo de operacion en iniciar_servidor_dispatch, y es por eso que estamos en esta funcion.
 
     // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
     recv(socket_kernel, &(paquete->buffer->size), sizeof(paquete->buffer->size), 0);
@@ -148,11 +148,8 @@ void* recibir_pcb_de_kernel(int socket_kernel) {
     
     // Hacemos lo que necesitemos con esta info
     // Y eventualmente liberamos memoria
-    free(pcb);
     
-     // Evaluamos los demás casos según corresponda
-
-    // Liberamos memoria
+    free(pcb);
     free(paquete->buffer->stream);
     free(paquete->buffer);
     free(paquete);
