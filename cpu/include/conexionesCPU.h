@@ -6,6 +6,7 @@
 #include <string.h>
 #include "../../utils/include/sockets.h" 
 #include "../../utils/include/logconfig.h"
+#include "operaciones.h"
 
 typedef struct {
     char* puerto_escucha;

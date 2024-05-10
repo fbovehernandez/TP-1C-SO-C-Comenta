@@ -2,6 +2,7 @@
 
 pthread_t cpu_thread;
 pthread_t kernel_thread;
+t_config* config_memoria;
 
 //Acepta el handshake del cliente, se podria hacer mas generico y que cada uno tenga un valor diferente
 int esperar_cliente(int socket_servidor, t_log* logger_memoria)
@@ -66,6 +67,8 @@ void* handle_kernel(void* socket) {
     send(socket_kernel, &resultOk, sizeof(int), 0);
     printf("Se conecto el kernel!\n");
 
+    char* path_completo;
+
     while(1) {
         t_paquete* paquete = malloc(sizeof(t_paquete));
         paquete->buffer = malloc(sizeof(t_buffer));
@@ -85,9 +88,13 @@ void* handle_kernel(void* socket) {
             case PATH:
                 t_path* path = deserializar_path(paquete->buffer);
                 imprimir_path(path);
-                // crear_estructuras();
+                path_completo = agrupar_path(path); // Ojo con el SEG_FAULT
+                crear_estructuras(path_completo);
+
+                // Libero el path
+                free(path_completo);
                 break;
-            default:
+            default: 
                 break;
         }
 
@@ -99,6 +106,82 @@ void* handle_kernel(void* socket) {
 
     return NULL;
 }
+
+/*
+typedef struct {
+		t_hash_element **elements;
+		int table_max_size;
+		int table_current_size;
+		int elements_amount;
+	} t_dictionary;
+*/
+
+/* 
+SET AX 1
+SET BX 1
+SET CX 1
+SET DX 1
+IO_GEN_SLEEP Interfaz1 10
+SET EAX 1
+SET EBX 1
+SET ECX 1
+SET EDX 1
+EXIT
+*/
+
+/* 
+typedef struct {
+		t_link_element *head;
+		int elements_count;
+	} t_list;
+*/
+
+void crear_estructuras(char* path_completo) {
+    FILE* file = fopen(path_completo, "r");
+    if(file == NULL) {
+        printf("No se pudo abrir el archivo\n");
+        return;
+    }
+
+    t_list* instrucciones = list_create();
+
+    char* line = NULL;
+    while (fgets(line, sizeof(line), file)) {
+        if(strcmp(line, "\n") == 0) {
+            t_instruccion* instruccion = build_instruccion(line);
+            list_add(instrucciones, instruccion);
+        }
+    }
+
+    free(line);
+    fclose(file);
+}
+
+t_instruccion* build_instruccion(char* line) {
+    t_instruccion* instruccion = malloc(sizeof(t_instruccion));
+
+    char* nombre_instruccion = strtok(line, " \n"); // char* nombre_instruccion = strtok(linea_leida, " \n");
+    instruccion->nombre = strdup(nombre_instruccion); 
+
+    instruccion->parametros = list_create();
+
+    char* arg = strtok(NULL, " \n");
+    while(arg != NULL) {
+        list_add(instruccion->parametros, strdup(arg));
+        arg = strtok(NULL, " ");
+    }
+
+    return instruccion;
+}
+
+char* agrupar_path(t_path* path) {
+    char* pathConfig = config_get_string_value(config_memoria, "PATH_INSTRUCCIONES");
+    char* path_completo = malloc(strlen(pathConfig) + strlen(path->path_length) + 1);
+    path_completo = strcat(path_completo, pathConfig);
+    printf("Path completo: %s\n", path_completo);
+    return path_completo;
+}
+
 
 t_path* deserializar_path(t_buffer* buffer) {
     t_path* path = malloc(sizeof(t_path));
@@ -128,3 +211,4 @@ void imprimir_path(t_path* path) {
     printf("Path length: %d\n", path->path_length);
     printf("Path: %s\n", path->path);
 }
+

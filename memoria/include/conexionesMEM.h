@@ -9,6 +9,7 @@
 
 extern pthread_t kernel_thread;
 extern pthread_t cpu_thread;
+extern t_config* config_memoria;
 typedef struct {
     int socket;
     t_log* logger;

@@ -32,7 +32,8 @@ typedef enum {
 
 typedef enum {
     PATH,
-	ENVIO_PCB
+	ENVIO_PCB,
+    INSTRUCCION
 } codigo_operacion;
 
 typedef struct {

@@ -133,6 +133,10 @@ void recibir(int client_dispatch) {
                 imprimir_pcb(pcb);
                 // ejecutar_pcb(pcb);
                 break;
+            case INSTRUCCION:
+                t_instruccion* instruccion = deserializar_instruccion(paquete->buffer);
+                ejecutar_instruccion(instruccion);
+                break;
             default:
                 break;
         }
@@ -144,6 +148,10 @@ void recibir(int client_dispatch) {
         
     // ejecutar_pcb(pcb);/ / -> Otra funcion?
     
+}
+
+void deserializar_instruccion(t_buffer* buffer) {
+
 }
 
 void imprimir_pcb(t_pcb* pcb) {

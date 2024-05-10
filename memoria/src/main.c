@@ -3,7 +3,7 @@
 int main(int argc, char* argv[]) {
 
     // Creo los configs y logs
-    t_config* config_memoria = iniciar_config("./memoria.config");
+    config_memoria = iniciar_config("./memoria.config");
     t_log* logger_memoria = iniciar_logger("memoria.log");
 
     char* puerto_escucha = config_get_string_value(config_memoria, "PUERTO_ESCUCHA");
