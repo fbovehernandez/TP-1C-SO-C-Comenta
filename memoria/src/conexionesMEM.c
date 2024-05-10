@@ -31,7 +31,7 @@ int esperar_cliente(int socket_servidor, t_log* logger_memoria)
 	return socket_cliente;
 }
 
-void* handle_cpu(void* socket) {
+void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa en handle_kernel, se va a recibir peticiones de cpu y se va a hacer algo con ellas (iternado switch)
     int socket_cpu = (intptr_t)socket;
     // free(socket); 
     int resultOk = 0;
@@ -58,6 +58,7 @@ void* handle_cpu(void* socket) {
     return NULL;
 }
 
+// Ver error
 void* handle_kernel(void* socket) {
     int socket_kernel = (intptr_t)socket;
     // free(socket); 
@@ -65,57 +66,65 @@ void* handle_kernel(void* socket) {
     send(socket_kernel, &resultOk, sizeof(int), 0);
     printf("Se conecto el kernel!\n");
 
-    int cod_op;
     while(1) {
-        cod_op = recibir_operacion(socket_kernel);
-        switch(cod_op) {
-            case 10:
-                printf("Se recibio 10\n");
+        t_paquete* paquete = malloc(sizeof(t_paquete));
+        paquete->buffer = malloc(sizeof(t_buffer));
+
+        // Primero recibimos el codigo de operacion
+        printf("Esperando recibir paquete\n");
+        recv(socket_kernel, &(paquete->codigo_operacion), sizeof(int), 0);
+        printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
+
+        // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
+        recv(socket_kernel, &(paquete->buffer->size), sizeof(int), 0);
+        paquete->buffer->stream = malloc(paquete->buffer->size);
+        recv(socket_kernel, paquete->buffer->stream, paquete->buffer->size, 0);
+
+        // Ahora en función del código recibido procedemos a deserializar el resto
+        switch(paquete->codigo_operacion) {
+            case PATH:
+                t_path* path = deserializar_path(paquete->buffer);
+                imprimir_path(path);
+                // crear_estructuras();
                 break;
-            case 7:
-                printf("Se recibio 7\n");
-                break;
-            case 0:
-                printf("Recibo el path");
-                // recibir_peticion_de_kernel(socket_kernel);
             default:
-                printf("Rompio todo?\n");
-                // close(socket_kernel);
-                return NULL;
+                break;
         }
+
+        // Liberamos memoria
+        free(paquete->buffer->stream);
+        free(paquete->buffer);
+        free(paquete);
     }
+
     return NULL;
 }
 
-void* recibir_peticion_de_kernel(int socket_kernel) {
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-    paquete->buffer = malloc(sizeof(t_buffer));
+t_path* deserializar_path(t_buffer* buffer) {
+    t_path* path = malloc(sizeof(t_path));
+    
+    void* stream = buffer->stream;
 
-    // Primero recibimos el codigo de operacion
-    recv(socket_kernel, &(paquete->codigo_operacion), sizeof(uint8_t), 0);
+    memcpy(&(path->PID), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(path->path_length), stream, sizeof(int));
+    stream += sizeof(int);
+    
+    // Reservo memoria para el path
+    path->path = malloc(path->path_length);
+    memcpy(path->path, stream, path->path_length);
+    path->path[path->path_length - 1] = '\0'; // Es necesario?
 
-    // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
-    recv(socket_kernel, &(paquete->buffer->size), sizeof(uint32_t), 0);
-    paquete->buffer->stream = malloc(paquete->buffer->size);
-    recv(socket_kernel, paquete->buffer->stream, paquete->buffer->size, 0);
+    // La posta es que toque un par de cosas en lo de seralizar con mem dinamica,
+    // pero enrealidad fui viendo que era diferente del de la catedra je, asi
+    // que no se como funciona, pero funciona :)
 
-    // Ahora en función del código recibido procedemos a deserializar el resto
-    /*switch(paquete->codigo_operacion) {
-        case PATH:
-            t_persona* persona = persona_serializar(paquete->buffer);
-            ...
-            // Hacemos lo que necesitemos con esta info
-            // Y eventualmente liberamos memoria
-            free(persona);
-            ...
-            break;
-        ... // Evaluamos los demás casos según corresponda
-    }*/
+    return path;
 
-    // Liberamos memoria
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+}
 
-    return 0;
+void imprimir_path(t_path* path) {
+    printf("PID: %d\n", path->PID);
+    printf("Path length: %d\n", path->path_length);
+    printf("Path: %s\n", path->path);
 }

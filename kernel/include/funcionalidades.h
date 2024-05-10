@@ -42,11 +42,6 @@ typedef struct {
     int socket_cpu; // var global
 } t_consola;*/
 
-typedef struct {
-    int path_length;
-    char* path;
-} t_path;
-
 extern int grado_multiprogramacion;
 extern int quantum;
 extern int contador_pid;  
@@ -69,7 +64,7 @@ extern char* algoritmo_planificacion; // Tomamos en convencion que los algoritmo
 extern t_log* logger_kernel;
 
 // Funciones
-void* interaccion_consola();
+void* interaccion_consola(t_sockets* sockets);
 void encolar_a_new(t_pcb* pcb);
 void* a_ready(); // Para hilo 
 void pasar_a_ready(t_pcb *pcb);
@@ -81,17 +76,16 @@ int obtener_siguiente_pid();
 // t_queue* mostrar_cola(t_queue* cola);
 void mostrar_pcb_proceso(t_pcb* pcb);
 void* planificar_corto_plazo(void* sockets_kernel);
-void* enviar_path_a_memoria(char* path_secuencia_de_comandos, t_sockets* sockets);
+void* enviar_path_a_memoria(char* path, t_sockets* sockets, int pid);
 void* enviar_pcb(t_pcb* pcb, int socket);
 t_buffer* llenar_buffer_path(t_path* pathNuevo);
 t_buffer* llenar_buffer_pcb(t_pcb* pcb);
 t_pcb* proximo_a_ejecutar();
 void* pasar_a_exec(t_pcb* pcb);
-int esperar_cpu();
-t_pcb* fifo();
+int esperar_cpu(t_pcb* pcb);
 
 void EJECUTAR_SCRIPT();
-void INICIAR_PROCESO();
+void INICIAR_PROCESO(char* path, t_sockets* sockets);
 void FINALIZAR_PROCESO();
 void INICIAR_PLANIFICACION();
 void DETENER_PLANIFICACION();

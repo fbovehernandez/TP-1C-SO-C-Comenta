@@ -12,6 +12,18 @@
 #include <assert.h>
 #include <pthread.h>
 
+typedef struct {
+    int PID;
+    int path_length;
+    char* path;
+} t_path;
+typedef enum {
+    INTERRUPCION_QUANTUM,
+    IO_BLOCKED,
+    WAIT_RECURSO,
+    FIN_PROCESO
+} desalojo_cpu;
+
 // Para que usar op_code si tenemos codigo_operacion? (O al revés, qué rompimos?)
 typedef enum {
 	MENSAJE,
@@ -30,7 +42,7 @@ typedef struct {
 } t_buffer;
 
 typedef struct {
-	int codigo_operacion;
+	codigo_operacion codigo_operacion;
 	t_buffer* buffer;
 } t_paquete;
 
@@ -72,7 +84,7 @@ typedef struct {
 
 typedef struct {
     char* nombre;
-    t_list* parametros; //Cada una de las instrucciones
+    t_list* parametros; // Cada una de las instrucciones
 } t_instruccion;
 
 int iniciar_servidor(char*);

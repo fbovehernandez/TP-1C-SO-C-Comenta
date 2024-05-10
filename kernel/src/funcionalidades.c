@@ -1,6 +1,5 @@
 #include "../include/funcionalidades.h"
 #include "../include/conexiones.h"
-#define INTERRUPCION_QUANTUM 1
 
 // Definicion de variables globales
 int grado_multiprogramacion;
@@ -51,7 +50,8 @@ void *interaccion_consola(t_sockets* sockets) {
             EJECUTAR_SCRIPT(/* pathing del conjunto de instrucciones*/);
             break;
         case 2:
-            INICIAR_PROCESO("PATH", sockets); 
+            INICIAR_PROCESO("scipt", sockets); 
+            // home/utnso/c-comenta/pruebas -> Esto tendria en memoria y lo uno con este que le mando
             break;
         case 3:
             FINALIZAR_PROCESO();
@@ -81,7 +81,7 @@ void *interaccion_consola(t_sockets* sockets) {
     return NULL;
 }
 
-void INICIAR_PROCESO(char* path_secuencia_de_comandos, t_sockets* sockets)
+void INICIAR_PROCESO(char* path_instrucciones, t_sockets* sockets)
 {
     int pid_actual = obtener_siguiente_pid();
     printf("El pid del proceso es: %d\n", pid_actual);
@@ -90,16 +90,17 @@ void INICIAR_PROCESO(char* path_secuencia_de_comandos, t_sockets* sockets)
     // en el enunciado dice "en caso de que el grado de multiprogramacion lo permita"
 
     encolar_a_new(pcb);
-
-    // Ya veremos cómo enviar el path a memoria
-    // enviar_path_a_memoria(path_secuencia_de_comandos, sockets);
+    enviar_path_a_memoria(path_instrucciones, sockets, pid_actual);
 }
 
-
-void* enviar_path_a_memoria(char* path_secuencia_de_comandos, t_sockets* sockets) {
+void* enviar_path_a_memoria(char* path_instrucciones, t_sockets* sockets, int pid) {
+    // Mando PID para saber donde asociar las instrucciones
     t_path* pathNuevo = malloc(sizeof(t_path));
-    pathNuevo -> path = path_secuencia_de_comandos;
-    pathNuevo -> path_length = sizeof(pathNuevo);
+
+    pathNuevo->path = strdup(path_instrucciones); 
+    pathNuevo->path_length = strlen(pathNuevo->path) + 1;
+    pathNuevo->PID = pid;
+
     t_buffer* buffer = llenar_buffer_path(pathNuevo);
 
     t_paquete* paquete = malloc(sizeof(t_paquete));
@@ -108,20 +109,19 @@ void* enviar_path_a_memoria(char* path_secuencia_de_comandos, t_sockets* sockets
     paquete->buffer = buffer; // Nuestro buffer de antes.
 
     // Armamos el stream a enviar
-    void* a_enviar = malloc(buffer->size + sizeof(uint8_t) + sizeof(uint32_t));
+    void* a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
     int offset = 0; 
 
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(uint8_t));
-
-    offset += sizeof(uint8_t);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(uint32_t));
-    offset += sizeof(uint32_t);
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+    offset += sizeof(int);
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
     log_info(logger_kernel, "Se armo un paquete con este PATH: %s\n", pathNuevo->path);
 
     // Por último enviamos
-    send(sockets->socket_memoria, a_enviar, buffer->size + sizeof(uint8_t) + sizeof(uint32_t), 0);
+    send(sockets->socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
 
     // No nos olvidamos de liberar la memoria que ya no usaremos
     free(a_enviar);
@@ -129,26 +129,36 @@ void* enviar_path_a_memoria(char* path_secuencia_de_comandos, t_sockets* sockets
     free(paquete->buffer);
     free(paquete);
 
+    free(pathNuevo->path);
+    free(pathNuevo);
+
     return NULL;
 } 
 
+// Falta implementar esta
 t_buffer* llenar_buffer_path(t_path* pathNuevo) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
-    void* stream = malloc(sizeof(pathNuevo));
 
-    buffer->size = pathNuevo -> path_length;                     
-
+    buffer->size = sizeof(int) * 2 + pathNuevo->path_length;                    
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
+
+    void* stream = buffer->stream; // No memoria?
+
     // Para el nombre primero mandamos el tamaño y luego el texto en sí:
+    memcpy(stream+buffer->offset, &pathNuevo->PID, sizeof(int));
+    buffer->offset += sizeof(int);
     memcpy(stream + buffer->offset, &pathNuevo->path_length, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(buffer->offset + stream, &pathNuevo->path, pathNuevo->path_length);
+    memcpy(stream + buffer->offset, pathNuevo->path, pathNuevo->path_length);
     // No tiene sentido seguir calculando el desplazamiento, ya ocupamos el buffer 
    
     buffer->stream = stream;
     // Si usamos memoria dinámica para el path, y no la precisamos más, ya podemos liberarla:
-    free(pathNuevo -> path);
+
+    // free(pathNuevo->path); -> Si yo hago el free esto rompe, porque?
+    // free(pathNuevo);
+
     return(buffer);
 }
 
@@ -229,7 +239,7 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
             sem_post(&sem_contador_quantum);
         }
 
-        // contexto_devolucion = esperar_cpu(pcb); -> Pruebo con un proceso, si sale agrego otro pero primero hay que hacer esta funcion
+        // contexto_devolucion = esperar_cpu(pcb); -> Comento para probar
 
         if(strcmp(algoritmo_planificacion,"RR") == 0) { // Plantear una mejor forma de hacer esto
             pthread_cancel(hilo_quantum);
@@ -266,23 +276,28 @@ t_pcb* proximo_a_ejecutar() { // Esta pensando solo para FIFO y RR
     return pcb; // NO deberia devolver null
 }
 
-//TO DO: Esto bloquearia la planificacion hasta que la cpu termine de ejecutar y me devuelva el contexto. 
-//Tiene que recibir causa de desalojo y contexto
+// TO DO: Esto bloquearia la planificacion hasta que la cpu termine de ejecutar y me devuelva el contexto. 
+// Tiene que recibir causa de desalojo y contexto
 
 /* 
-void esperar_cpu(int devolucion_cpu, t_pcb* pcb) {
-    //La cpu nos lo tiene que traer
+void esperar_cpu(t_pcb* pcb) {
+    //La cpu nos lo tiene que traer'
     //Los codigos todavia no estan definidos en el .h
-    recv(socket_cpu, &devolucion, sizeof(enum), MSG_WAITALL);
+    
+    // ----> Hacer los sockets variables globales
+
+    desalojo_cpu devolucion_cpu;
+    recv(socket_cpu, &devolucion_cpu, sizeof(desalojo_cpu), MSG_WAITALL);
     
     switch (devolucion_cpu) {
-        case INTERRUPCION_QUANTUM: //hay que replanificar
-            pasar_a_ready(pcb);
+        case INTERRUPCION_QUANTUM:
+            // TODO
             break;
-        case IO_BLOCKED: // ver esto
+        case IO_BLOCKED: 
+            // TODO
             break;
-        case FINALIZO_PROCESO:
-            pasar_a_exit(pcb);
+        case FIN_PROCESO:
+            // TODO
             break;
     }
 }
@@ -307,7 +322,7 @@ void* enviar_pcb(t_pcb* pcb, int socket) {
 
     t_paquete* paquete = malloc(sizeof(t_paquete));
 
-    paquete->codigo_operacion = 10; // Podemos usar una constante por operación
+    paquete->codigo_operacion = ENVIO_PCB; // Podemos usar una constante por operación
     paquete->buffer = buffer; // Nuestro buffer de antes.
 
     // Armamos el stream a enviar
@@ -344,7 +359,7 @@ t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
-    void* stream = buffer->stream;
+    void* stream = buffer->stream; // No memoria?
 
     memcpy(stream + buffer->offset, &pcb->pid, sizeof(int));
     buffer->offset += sizeof(int);

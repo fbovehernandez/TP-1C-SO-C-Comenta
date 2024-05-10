@@ -76,7 +76,7 @@ int conectar_kernel_memoria(char* ip_memoria, char* puerto_memoria, t_log* logge
     int memoriafd = crear_conexion(ip_memoria, puerto_memoria, valor);
     log_info(logger_kernel, "Conexion establecida con Memoria");
 
-    send(memoriafd, &message_kernel, sizeof(int), 0); 
+    // send(memoriafd, &message_kernel, sizeof(int), 0); 
 
     // close(memoriafd); // (POSIBLE) no cierro el socket porque quiero reutilizar la conexion
     return memoriafd;

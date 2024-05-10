@@ -20,7 +20,7 @@ int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) 
     
     send(memoriafd, &message_cpu, sizeof(int), 0); // Me conecto y envio un mensaje a memoria
 
-    sleep(5);
+    sleep(3);
     return memoriafd;
 }
 
@@ -120,7 +120,7 @@ void recibir(int client_dispatch) {
         printf("Esperando recibir paquete\n");
         recv(client_dispatch, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
         printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
-        
+
         recv(client_dispatch, &(paquete->buffer->size), sizeof(int), 0);
         paquete->buffer->stream = malloc(paquete->buffer->size);
 
@@ -128,9 +128,10 @@ void recibir(int client_dispatch) {
         // codigo_operacion = recibir_operacion(client_dispatch);
 
         switch (paquete->codigo_operacion) {
-            case 10:
+            case ENVIO_PCB:
                 t_pcb* pcb = deserializar_pcb(paquete->buffer);
                 imprimir_pcb(pcb);
+                // ejecutar_pcb(pcb);
                 break;
             default:
                 break;
