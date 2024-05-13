@@ -13,12 +13,12 @@ ALGORITMO_TLB=FIFO
 */
 int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) {
     int valor = 2;
-    int message_cpu = 10;
+    // int message_cpu = 10;
 
     int memoriafd = crear_conexion(IP_MEMORIA, puerto_memoria, valor);
     log_info(logger_CPU, "Conexion establecida con Memoria");
     
-    send(memoriafd, &message_cpu, sizeof(int), 0); // Me conecto y envio un mensaje a memoria
+    // send(memoriafd, &message_cpu, sizeof(int), 0); // Me conecto y envio un mensaje a memoria
 
     sleep(3);
     return memoriafd;
@@ -133,10 +133,10 @@ void recibir(int client_dispatch) {
                 imprimir_pcb(pcb);
                 // ejecutar_pcb(pcb);
                 break;
-            case INSTRUCCION:
-                t_instruccion* instruccion = deserializar_instruccion(paquete->buffer);
-                ejecutar_instruccion(instruccion);
-                break;
+            // case INSTRUCCION:
+               //  t_instruccion* instruccion = deserializar_instruccion(paquete->buffer);
+               //  ejecutar_instruccion(instruccion);
+               // break;
             default:
                 break;
         }
@@ -148,10 +148,6 @@ void recibir(int client_dispatch) {
         
     // ejecutar_pcb(pcb);/ / -> Otra funcion?
     
-}
-
-void deserializar_instruccion(t_buffer* buffer) {
-
 }
 
 void imprimir_pcb(t_pcb* pcb) {

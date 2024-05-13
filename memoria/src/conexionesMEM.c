@@ -3,6 +3,7 @@
 pthread_t cpu_thread;
 pthread_t kernel_thread;
 t_config* config_memoria;
+t_dictionary* diccionario_instrucciones;
 
 //Acepta el handshake del cliente, se podria hacer mas generico y que cada uno tenga un valor diferente
 int esperar_cliente(int socket_servidor, t_log* logger_memoria)
@@ -34,34 +35,51 @@ int esperar_cliente(int socket_servidor, t_log* logger_memoria)
 
 void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa en handle_kernel, se va a recibir peticiones de cpu y se va a hacer algo con ellas (iternado switch)
     int socket_cpu = (intptr_t)socket;
+    int codigo_operacion = 0;
     // free(socket); 
     int resultOk = 0;
     // Envio confirmacion de handshake!
     send(socket_cpu, &resultOk, sizeof(int), 0);
     printf("Se conecto un el cpu!\n");
+    
+    while(1) {
+        t_paquete* paquete = malloc(sizeof(t_paquete));
+        paquete->buffer = malloc(sizeof(t_buffer));
 
-    int cod_op;
-    while(socket_cpu != -1) {
-        cod_op = recibir_operacion(socket_cpu);
-        switch(cod_op) {
-            case 10:
-                printf("Se recibio 10\n"); 
-                break;
-            case 7:
-                printf("Se recibio 7\n");
+        // Primero recibimos el codigo de operacion
+        printf("Esperando recibir paquete\n");
+        recv(socket_cpu, &(paquete->codigo_operacion), sizeof(int), 0);
+        printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
+
+        // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
+        recv(socket_cpu, &(paquete->buffer->size), sizeof(int), 0);
+        paquete->buffer->stream = malloc(paquete->buffer->size);
+        recv(socket_cpu, paquete->buffer->stream, paquete->buffer->size, 0);
+
+        /* 
+        switch(paquete->codigo_operacion) {// Ver si no es mejor recibir primero el cod-op y adentro recibimos el resto (Cambiaria la forma de serializar, ya no habria un "Paquete") 
+            case QUIERO_INSTRUCCION:
+                serializar_instruccion();
+                enviar_instruccion();
+                printf("Nose\n"); 
                 break;
             default:
                 printf("Rompio todo?\n");
                 // close(socket_cpu); NO cierro conexion
                 return NULL;
-        }
+        }*/
+        
+        free(paquete->buffer->stream);
+        free(paquete->buffer);
+        free(paquete);
     }
+    // Liberamos memoria
     return NULL;
 }
 
 // Ver error
 void* handle_kernel(void* socket) {
-    int socket_kernel = (intptr_t)socket;
+    int socket_kernel = (intptr_t)socket; // (intptr_t)
     // free(socket); 
     int resultOk = 0;
     send(socket_kernel, &resultOk, sizeof(int), 0);
@@ -85,13 +103,19 @@ void* handle_kernel(void* socket) {
 
         // Ahora en función del código recibido procedemos a deserializar el resto
         switch(paquete->codigo_operacion) {
-            case PATH:
+            case PATH:                                       // Ver si no es mejor recibir primero el cod-op y adentro recibimos el resto (Cambiaria la forma de serializar, ya no habira)
                 t_path* path = deserializar_path(paquete->buffer);
                 imprimir_path(path);
                 path_completo = agrupar_path(path); // Ojo con el SEG_FAULT
-                crear_estructuras(path_completo);
+                printf("CUIDADO QUE IMPRIMO EL PATH: %s", path_completo);
 
-                // Libero el path
+                
+                crear_estructuras(path_completo, path->PID);
+                
+                printf("Cuidado que voy a imprimir el diccionario...");
+
+                imprimir_diccionario(); // Imprime todo, sin PID especifico...
+                
                 free(path_completo);
                 break;
             default: 
@@ -106,59 +130,109 @@ void* handle_kernel(void* socket) {
 
     return NULL;
 }
+    
+void imprimir_diccionario() {
+    // t_list* instrucciones = dictionary_elements(diccionario_instrucciones);
 
-/*
+    dictionary_iterator(diccionario_instrucciones, (void*)print_instrucciones);  
+}
+
+/* 
+void dictionary_iterator(t_dictionary *self, void(*closure)(char*,void*)) { 
+	int table_index;
+	for (table_index = 0; table_index < self->table_max_size; table_index++) {
+		t_hash_element *element = self->elements[table_index];
+
+		while (element != NULL) {
+			closure(element->key, element->data);
+			element = element->next;
+
+		}
+	}
+}
+
 typedef struct {
 		t_hash_element **elements;
 		int table_max_size;
 		int table_current_size;
 		int elements_amount;
 	} t_dictionary;
+
+    struct hash_element{
+		char *key; -> PID
+		void *data; -> lista
+		struct hash_element *next;
+	};
+	typedef struct hash_element t_hash_element;
 */
 
-/* 
-SET AX 1
-SET BX 1
-SET CX 1
-SET DX 1
-IO_GEN_SLEEP Interfaz1 10
-SET EAX 1
-SET EBX 1
-SET ECX 1
-SET EDX 1
-EXIT
-*/
+/*typedef struct {
+    char* nombre;
+    t_list* parametros; // Cada una de las instrucciones
+} t_instruccion;*/
 
-/* 
-typedef struct {
-		t_link_element *head;
-		int elements_count;
-	} t_list;
-*/
+void print_parametros(char* parametro) {
+    printf("Parametro %s \n", parametro);
+}
 
-void crear_estructuras(char* path_completo) {
+void print_instruccion(t_instruccion* instruccion) {
+    printf("Nombre instruccion %s: \n", instruccion->nombre);
+    list_iterate(instruccion->parametros, (void*)print_parametros);
+}
+
+void print_instrucciones(char* pid, t_list* lista_instrucciones) {
+    // closure(element->key, element->data);
+    printf("El PID del proceso a mostrar es %s: \n", pid);
+    list_iterate(lista_instrucciones, (void*)print_instruccion); 
+}
+
+void crear_estructuras(char* path_completo, int pid) {
     FILE* file = fopen(path_completo, "r");
     if(file == NULL) {
         printf("No se pudo abrir el archivo\n");
         return;
     }
 
+    /* 
+         char* linea_leida = NULL;
+    size_t length = 0;
+
+    while (getline(&linea_leida, &length, archivo_pseudocodigo) != -1) {
+    	if(strcmp(linea_leida,"\n")){
+        	list_add(instrucciones_leidas, parsear_instruccion(linea_leida));
+    	}
+    }
+    */
     t_list* instrucciones = list_create();
 
     char* line = NULL;
-    while (fgets(line, sizeof(line), file)) {
-        if(strcmp(line, "\n") == 0) {
+    size_t bufsize = 0; // Tamaño inicial del buffer
+
+    while ((getline(&line, &bufsize, file)) != -1) {
+        if(strcmp(line, "\n") != 0) {
             t_instruccion* instruccion = build_instruccion(line);
             list_add(instrucciones, instruccion);
         }
     }
+    
+    char* pid_char = malloc(sizeof(int));
+    sprintf(pid_char, "%d", pid);
+    
+    // char* pid_char = pid + '0'; 
+    // pid_char = (char*)pid;
+    // char *pidchar = (char *)&pid;
+    
+    diccionario_instrucciones = dictionary_create();
+    dictionary_put(diccionario_instrucciones, pid_char, instrucciones);
+
+    // ->  
 
     free(line);
     fclose(file);
 }
 
 t_instruccion* build_instruccion(char* line) {
-    t_instruccion* instruccion = malloc(sizeof(t_instruccion));
+    t_instruccion* instruccion = malloc(sizeof(t_instruccion)); // SET AX 1
 
     char* nombre_instruccion = strtok(line, " \n"); // char* nombre_instruccion = strtok(linea_leida, " \n");
     instruccion->nombre = strdup(nombre_instruccion); 
@@ -166,22 +240,27 @@ t_instruccion* build_instruccion(char* line) {
     instruccion->parametros = list_create();
 
     char* arg = strtok(NULL, " \n");
+    
+    if(arg == NULL) {
+        printf("El argumento es nulo!!!!!!\n");
+    }
+
     while(arg != NULL) {
         list_add(instruccion->parametros, strdup(arg));
-        arg = strtok(NULL, " ");
+        arg = strtok(NULL, " \n");
     }
 
     return instruccion;
 }
 
+//Encuentra la carpeta en la que se va a encontrar el path y la suma al nombre del path
 char* agrupar_path(t_path* path) {
     char* pathConfig = config_get_string_value(config_memoria, "PATH_INSTRUCCIONES");
-    char* path_completo = malloc(strlen(pathConfig) + strlen(path->path_length) + 1);
-    path_completo = strcat(path_completo, pathConfig);
+    char* path_completo = malloc(strlen(pathConfig) + path->path_length); // 69  + 20  + 1
+    path_completo = strcat(pathConfig, path->path);
     printf("Path completo: %s\n", path_completo);
     return path_completo;
 }
-
 
 t_path* deserializar_path(t_buffer* buffer) {
     t_path* path = malloc(sizeof(t_path));

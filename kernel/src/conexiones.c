@@ -62,7 +62,7 @@ void* handle_io(void* socket) {
 
 int conectar_kernel_cpu_dispatch(t_log* logger_kernel, char* IP_CPU, char* puerto_cpu_dispatch) {
     int valor = 1;
-    int message = 10;
+    // int message = 10;
     int dispatcherfd = crear_conexion(IP_CPU, puerto_cpu_dispatch, valor);
     log_info(logger_kernel, "Conexion establecida con Dispatcher");
     // send(dispatcherfd, &message, sizeof(int), 0);

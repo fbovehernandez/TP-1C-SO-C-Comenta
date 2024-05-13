@@ -1,3 +1,6 @@
+#include "../include/operaciones.h"
+
+/* 
 void ejecutar_pcb(t_pcb* pcb){ // falta traer socket_memoria
     t_instruccion* instruccion;
     int cantidad_instrucciones = list_size(X); // -> Ver idea dictionario PID key y lista de valor
@@ -9,7 +12,9 @@ void ejecutar_pcb(t_pcb* pcb){ // falta traer socket_memoria
         pcb->pc++;
     }   
 }
+*/
 
+/* 
 void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
     // TO-DO: FACU REVISA ESTO EN CONSOLA HERMOSO -> NO QUIERO MATI, NO ME OBLIGGUES
     // Se puede hacer con Strings también
@@ -19,7 +24,7 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
     // Decode // -> Aca tendria que ver si va a memoria? implica devolucion a kernel?
 
     // Execute // -> Modelo de ejemplo basico
-
+    
     int registro = registroDe(instruccion->nombre); // Mati, sos un cabeza de zapallo, estas haciendo un switch con un registro (AX,BX)... no con el nombre de la instruccion
     switch (instruccion->nombre) {
         case "SET": // SET AX 1
@@ -58,10 +63,10 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
         default:
             break;
     }
+    */
     // TO DO: Check interrupt // 
-}
 
-
+/* 
 void dormirInterfaz(char* nombre_interfaz, char* unidades_de_trabajo) {
     // TO DO : Esta instrucción solicita al Kernel que se envíe a una interfaz de I/O a que realice un 
     // sleep por una cantidad de unidades de trabajo.
@@ -116,9 +121,11 @@ void pedir_instruccion_a_memoria(int socket_memoria, t_pcb* pcb) {
     free(paquete->buffer);
     free(paquete);
 }
+*/
 
+/*
 t_instruccion* deserializar_instruccion(int socket_memoria) {
-    t_instruccion instruccion;
+    t_instruccion* instruccion;
     
     t_paquete* paquete = malloc(sizeof(t_paquete));
     paquete->buffer = malloc(sizeof(t_buffer));
@@ -139,7 +146,7 @@ t_instruccion* deserializar_instruccion(int socket_memoria) {
             // Hacemos lo que necesitemos con esta info
             // Y eventualmente liberamos memoria
             break;
-        case default:
+        default:
             printf("Tenia que deserializar la instruccion, no se que paso.");
             break;
     }
@@ -150,7 +157,11 @@ t_instruccion* deserializar_instruccion(int socket_memoria) {
     free(paquete);
 
     return instruccion;
-}
+}*/
+/*
+t_instruccion* instruccion_serializar(t_buffer) {
+    return instruccion;
+}*/
 
 /*
 ()iUna vez recibido el PCntB del kernel, se pide la direccion de memoria de dicho
@@ -181,7 +192,7 @@ de interes, hacer un send a la CPU y un recv desde la CPU
 // Program counter del pcb va a Memoria para pedir la instruccion (el numero de instruccion a buscar relativo al proceso en ejecucion)
 // Tendremos que buscar el program counter en la cola de procesos a ejecutar?-> no es el del 
 
-
+/*
 registroDe(char* registro){
     switch(registro){
         case "AX":
@@ -207,4 +218,4 @@ registroDe(char* registro){
             return pcb->registros->DI;
     }
 }
-/
+*/

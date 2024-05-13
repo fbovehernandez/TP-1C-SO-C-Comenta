@@ -50,7 +50,7 @@ void *interaccion_consola(t_sockets* sockets) {
             EJECUTAR_SCRIPT(/* pathing del conjunto de instrucciones*/);
             break;
         case 2:
-            INICIAR_PROCESO("scriptprueba", sockets); // Ver problemas con caracteres como _ o /
+            INICIAR_PROCESO("/script_io_basico_1", sockets); // Ver problemas con caracteres como _ o /
             // home/utnso/c-comenta/pruebas -> Esto tendria en memoria y lo uno con este que le mando
             break;
         case 3:

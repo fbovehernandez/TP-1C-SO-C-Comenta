@@ -10,6 +10,8 @@
 extern pthread_t kernel_thread;
 extern pthread_t cpu_thread;
 extern t_config* config_memoria;
+extern t_dictionary* diccionario_instrucciones;
+
 typedef struct {
     int socket;
     t_log* logger;
@@ -23,5 +25,14 @@ int esperar_cliente(int, t_log*);
 int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io);
 void imprimir_path(t_path* path);
 t_path* deserializar_path(t_buffer* buffer);
+t_instruccion* build_instruccion(char*);
+char* agrupar_path(t_path* path);
+void imprimir_path(t_path* path);
+void crear_estructuras(char* path_completo, int pid);
+void imprimir_diccionario();
+void print_parametros(char* parametro); 
+void print_instruccion(t_instruccion* instruccion);
+void print_instrucciones(char* key, t_list* lista_instrucciones);
+
 
 #endif // CONEXIONES_H

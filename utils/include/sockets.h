@@ -17,6 +17,7 @@ typedef struct {
     int path_length;
     char* path;
 } t_path;
+
 typedef enum {
     INTERRUPCION_QUANTUM,
     IO_BLOCKED,
@@ -33,7 +34,8 @@ typedef enum {
 typedef enum {
     PATH,
 	ENVIO_PCB,
-    INSTRUCCION
+    INSTRUCCION,
+    QUIERO_INSTRUCCION
 } codigo_operacion;
 
 typedef struct {
