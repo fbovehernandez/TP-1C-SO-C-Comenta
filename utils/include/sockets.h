@@ -68,27 +68,44 @@ typedef struct {
 
 } Registros;
 
-enum Estado {
+typedef enum {
     NEW,
     READY,
     BLOCKED,
     EXEC,
     EXIT
-};
+} Estado;
 
 typedef struct {
     int pid;
     int program_counter;
     int quantum;
-    enum Estado estadoActual;
-    enum Estado estadoAnterior;
+    Estado estadoActual;
+    Estado estadoAnterior;
     // Registros* registros;
 } t_pcb;
 
 typedef struct {
-    char* nombre;
+    TipoInstruccion nombre;
     t_list* parametros; // Cada una de las instrucciones
 } t_instruccion;
+
+
+typedef enum {
+    SET,  
+    MOV_IN,
+    MOV_OUT,
+    SUM,
+    SUB,
+    JNZ,
+    RESIZE,
+    COPY_STRING,,
+    // ...
+    WAIT,
+    SIGNAL,
+    IO_GEN_SLEEP,
+    IO_STDIN_READ
+} TipoInstruccion;
 
 int iniciar_servidor(char*);
 int esperar_conexion(int);

@@ -1,6 +1,6 @@
 #include "../include/operaciones.h"
 
-/* 
+/*
 void ejecutar_pcb(t_pcb* pcb){ // falta traer socket_memoria
     t_instruccion* instruccion;
     int cantidad_instrucciones = list_size(X); // -> Ver idea dictionario PID key y lista de valor
@@ -14,10 +14,43 @@ void ejecutar_pcb(t_pcb* pcb){ // falta traer socket_memoria
 }
 */
 
+typedef struct {
+    uint8_t *registro8;
+    uint32_t *registro32;
+} RegistroSeleccionado;
+
+typedef struct {
+    TipoInstruccion nombre;
+    t_list* parametros; // Cada una de las instrucciones
+} t_instruccion;
+
 /* 
+
+void enviar_instruccion(int socket_cpu, t_instruccion* instruccion) {
+    // Primero enviamos el nombre de la instrucción
+    send(socket_cpu, &(instruccion->nombre), sizeof(TipoInstruccion), 0);
+
+    // Luego enviamos la cantidad de parámetros
+    int cantidad_parametros = list_size(instruccion->parametros);
+    send(socket_cpu, &cantidad_parametros, sizeof(int), 0);
+
+    // Enviamos cada parámetro
+    for (int i = 0; i < cantidad_parametros; i++) {
+        char* parametro = list_get(instruccion->parametros, i);
+        int longitud_parametro = strlen(parametro) + 1; // Incluimos el '\0'
+        send(socket_cpu, &longitud_parametro, sizeof(int), 0); // Enviamos la longitud del parámetro
+        send(socket_cpu, parametro, longitud_parametro, 0); // Enviamos el parámetro en sí
+    }
+}
+
+*/
+void get_registros_set() {
+       
+}
+
+/*
 void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
-    // TO-DO: FACU REVISA ESTO EN CONSOLA HERMOSO -> NO QUIERO MATI, NO ME OBLIGGUES
-    // Se puede hacer con Strings también
+    // Se puede hacer con Strings también -> Enums
     log_info(logger, "PID: %d - Ejecutando: %s - Parametros: %s", pcb->pid, instruccion->nombre, list_iterate(instruccion->parametros, printf));
     // void list_iterate(t_list *, void(*closure)(void*));
         
@@ -25,46 +58,134 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
 
     // Execute // -> Modelo de ejemplo basico
     
-    int registro = registroDe(instruccion->nombre); // Mati, sos un cabeza de zapallo, estas haciendo un switch con un registro (AX,BX)... no con el nombre de la instruccion
-    switch (instruccion->nombre) {
-        case "SET": // SET AX 1
-            registro = instruccion -> parametros[1];
+    char *nombreRegistro = (char*)instruccion->nombre; // Set AX 1
+    t_list* list_parametros = instruccion->parametros
+
+    t_registro* registro1 = seleccionar_registro(list_get(list_parametros,0), pcb);
+    t_registro* registro2 = seleccionar_registro(list_get(list_parametros,1), pcb);
+    t_registro* registro3 = seleccionar_registro(list_get(list_parametros,2), pcb);
+    t_registro* registro4 = seleccionar_registro(list_get(list_parametros,3), pcb);
+    t_registro* registro5 = seleccionar_registro(list_get(list_parametros,4), pcb);
+    // Puede haber segmentation fault aca, estamos laburando con memoria a pleno, si se les ocurre alguna mejora o si me quieren putear haganlo (vamos, puedo putear)...
+
+    switch (nombreRegistro) {
+        case SET:
+            get_registros_set();
+            set(parametro[1], parametro[2]);
             break;
-        case "MOV_IN": // MOV_IN EDX ECX
-            // TODO
+        case MOV_IN:
+            get_registros_mov_in();
+            mov_in(parametros...);
             break;
-        case "MOV_OUT":
+        case MOV_OUT:
             break;
-        case "SUM": // SUM AX 5
-            pcb->(instruccion->parametros[0]) += instruccion -> parametros[1];
+        case SUM:
+            sum(registro,valor);
             break;
-        case "SUB":
-            pcb->(instruccion->parametros[0]) -= instruccion -> parametros[1];
+        case SUB:
+            sub(registro,valor);
             break;
-        case "JNZ": // JNZ (variable_a_comparar) (salto_pc)
-            if(instruccion->parametros[0] != 0) {
-                pcb->pc = instruccion->parametros[1]; 
-            }  
+        case JNZ:
+            jnz(registro,valor)
             break;
-        case "RESIZE":
+        case RESIZE:
+          
             break;
-        case "COPY_STRING":
-            //  TODO
+        case COPY_STRING:
+           
             break;
-        case "WAIT":
+        case WAIT:
+         
             break;
-        case "SIGNAL":
+        case SIGNAL:
+          
             break;
-        case "IO_GEN_SLEEP": // IO_GEN_SLEEP interfaz(1,2,3) unidades_de_trabajo
-            dormirInterfaz(instruccion->parametros[0], instruccion->parametros[1]); // TODO en entrada salida
+        case IO_GEN_SLEEP:
+
             break;
-        case "IO_STDIN_READ":
+        case IO_STDIN_READ:
+          
             break;
         default:
+            printf("Error: No exxiste ese tipo de intruccion\n");
             break;
     }
-    */
+    // Pongo log papra ver  si se  modifica
+    log_info(logger, "PID: %d - Finalizando %s - Parametros: %s", pcb->pid, instruccion->nombre, list_iterate(instruccion->parametros, printf));
     // TO DO: Check interrupt // 
+}
+*/
+/* 
+
+t_registro* seleccionar_registro(char* nombreRegistro, t_pcb *pcb) {
+    t_registro* registro;
+
+    if (strcmp(nombreRegistro, "AX") == 0) {
+        registro = &pcb->registros->AX;
+    } else if (strcmp(nombreRegistro, "BX") == 0) {
+        registro = &pcb->registros->BX;    
+    } else if (strcmp(nombreRegistro, "CX") == 0) {
+       registro = &pcb->registros->CX;
+    } else if (strcmp(nombreRegistro, "DX") == 0) {
+        registroSeleccionado->registro8 = &pcb->registros->DX;
+    } else if (strcmp(nombreRegistro, "SI") == 0) {
+        registro = &pcb->registros->SI;
+    } else if (strcmp(nombreRegistro, "DI") == 0) {
+        registro = &pcb->registros->DI;
+    } else if (strcmp(nombreRegistro, "EAX") == 0) {
+        registro = &pcb->registros->EAX;  
+    } else if (strcmp(nombreRegistro, "EBX") == 0) {
+        registro = &pcb->registros->EBX;
+    } else if (strcmp(nombreRegistro, "ECX") == 0) {
+        registro = &pcb->registros->ECX;
+    } else if (strcmp(nombreRegistro, "EDX") == 0) {
+        registro = &pcb->registros->EDX;
+    else if(todosSonDigitosDe(nombreRegistro)) {
+        registro = atoi(nombreRegistro); 
+    }else {
+        // Registro no válido, se inicializan a NULL los punteros
+        registro = NULL;
+    }
+    return registroSeleccionado;
+}
+
+int todosSonDigitosDe(char *nombreRegistro) { //con libreria #include <ctype.h>
+    while(*nombreRegistro != '\0'){
+        if(!isdigit(*nombreRegistro)) {
+            return 0;
+        }
+        nombreRegistro++; // No sabemos si anda pero ahi esta la idea 
+    }
+    return 1;
+}
+
+
+/////////////////////////
+// OPERACIONES DE CPU //
+///////////////////////
+
+void set(RegistroSeleccionado registro,(void*) valor) {
+    memcpy(registro->registro8, valor, sizeof(uint8_t));
+    memcpy(registro->registro32, valor, sizeof(uint32_t));
+}
+
+void sum(RegistroSeleccionado registro,(void*) valor){
+    *(registro->registro8) += *((uint32_t *)valor);
+    *(registro->registro32) += *((uint32_t *)valor);
+}
+
+void sub(RegistroSelecccionado registro,(void*) valor) {
+    *(registro->registro8) -= *((uint8_t *)valor);
+    *(registro->registro32) -= *((uint32_t *)valor);   
+}
+
+void jnz(RegistroSelecccionado registro,(void*) valor){
+    if(registro -> registro8 == 0 || registro -> registro32 == 0){
+        pc = valor;
+    }
+}
+*/
+
 
 /* 
 void dormirInterfaz(char* nombre_interfaz, char* unidades_de_trabajo) {
@@ -192,30 +313,3 @@ de interes, hacer un send a la CPU y un recv desde la CPU
 // Program counter del pcb va a Memoria para pedir la instruccion (el numero de instruccion a buscar relativo al proceso en ejecucion)
 // Tendremos que buscar el program counter en la cola de procesos a ejecutar?-> no es el del 
 
-/*
-registroDe(char* registro){
-    switch(registro){
-        case "AX":
-            return pcb->registros->AX;
-            break;
-        case "BX":
-            return pcb->registros->BX;
-        case "CX":
-            return pcb->registros->CX;    
-        case "DX":
-            return pcb->registros->DX;
-        case "EAX":
-            return pcb->registros->EAX;
-        case "EBX":
-            return pcb->registros->EBX;
-        case "ECX":
-            return pcb->registros->ECX;    
-        case "EDX":
-            return pcb->registros->EDX;
-        case "SI":
-            return pcb->registros->SI;
-        case "DI":
-            return pcb->registros->DI;
-    }
-}
-*/
