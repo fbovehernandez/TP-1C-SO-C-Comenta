@@ -131,7 +131,7 @@ void recibir(int client_dispatch) {
             case ENVIO_PCB:
                 t_pcb* pcb = deserializar_pcb(paquete->buffer);
                 imprimir_pcb(pcb);
-                // ejecutar_pcb(pcb);
+                ejecutar_pcb(pcb); // este ejecutar_pcb(pcb) seria el ejectuar_instrucciones(pcb)
                 break;
             // case INSTRUCCION:
                //  t_instruccion* instruccion = deserializar_instruccion(paquete->buffer);

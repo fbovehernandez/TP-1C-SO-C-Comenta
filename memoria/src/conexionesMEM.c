@@ -56,18 +56,17 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
         paquete->buffer->stream = malloc(paquete->buffer->size);
         recv(socket_cpu, paquete->buffer->stream, paquete->buffer->size, 0);
 
-        /* 
-        switch(paquete->codigo_operacion) {// Ver si no es mejor recibir primero el cod-op y adentro recibimos el resto (Cambiaria la forma de serializar, ya no habria un "Paquete") 
+        switch(paquete->codigo_operacion) { // Ver si no es mejor recibir primero el cod-op y adentro recibimos el resto (Cambiaria la forma de serializar, ya no habria un "Paquete") 
             case QUIERO_INSTRUCCION:
-                serializar_instruccion();
-                enviar_instruccion();
-                printf("Nose\n"); 
+                // TO DO
+                t_solicitud_instruccion* solicitud_cpu = deserializar_solicitud(paquete->buffer);
+                enviar_instruccion(solicitud_cpu);
                 break;
             default:
                 printf("Rompio todo?\n");
                 // close(socket_cpu); NO cierro conexion
                 return NULL;
-        }*/
+        }
         
         free(paquete->buffer->stream);
         free(paquete->buffer);
@@ -109,7 +108,6 @@ void* handle_kernel(void* socket) {
                 path_completo = agrupar_path(path); // Ojo con el SEG_FAULT
                 printf("CUIDADO QUE IMPRIMO EL PATH: %s", path_completo);
 
-                
                 crear_estructuras(path_completo, path->PID);
                 
                 printf("Cuidado que voy a imprimir el diccionario...");
@@ -137,46 +135,13 @@ void imprimir_diccionario() {
     dictionary_iterator(diccionario_instrucciones, (void*)print_instrucciones);  
 }
 
-/* 
-void dictionary_iterator(t_dictionary *self, void(*closure)(char*,void*)) { 
-	int table_index;
-	for (table_index = 0; table_index < self->table_max_size; table_index++) {
-		t_hash_element *element = self->elements[table_index];
-
-		while (element != NULL) {
-			closure(element->key, element->data);
-			element = element->next;
-
-		}
-	}
-}
-
-typedef struct {
-		t_hash_element **elements;
-		int table_max_size;
-		int table_current_size;
-		int elements_amount;
-	} t_dictionary;
-
-    struct hash_element{
-		char *key; -> PID
-		void *data; -> lista
-		struct hash_element *next;
-	};
-	typedef struct hash_element t_hash_element;
-*/
-
-/*typedef struct {
-    char* nombre;
-    t_list* parametros; // Cada una de las instrucciones
-} t_instruccion;*/
-
 void print_parametros(char* parametro) {
     printf("Parametro %s \n", parametro);
 }
 
 void print_instruccion(t_instruccion* instruccion) {
     printf("Nombre instruccion %s: \n", instruccion->nombre);
+    printf("Cantidad parametros %d :", instruccion->cantidad_parametros);
     list_iterate(instruccion->parametros, (void*)print_parametros);
 }
 
@@ -249,6 +214,8 @@ t_instruccion* build_instruccion(char* line) {
         list_add(instruccion->parametros, strdup(arg));
         arg = strtok(NULL, " \n");
     }
+    
+    instruccion->cantidad_parametros = list_size(instruccion->parametros);
 
     return instruccion;
 }

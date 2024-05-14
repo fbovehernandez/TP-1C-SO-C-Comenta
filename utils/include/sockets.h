@@ -18,6 +18,11 @@ typedef struct {
     char* path;
 } t_path;
 
+typedef struct {
+    int pid;
+    int pc;
+} t_solicitud_instruccion;
+
 typedef enum {
     INTERRUPCION_QUANTUM,
     IO_BLOCKED,
@@ -34,7 +39,6 @@ typedef enum {
 typedef enum {
     PATH,
 	ENVIO_PCB,
-    INSTRUCCION,
     QUIERO_INSTRUCCION
 } codigo_operacion;
 
@@ -88,6 +92,7 @@ typedef struct {
 typedef struct {
     TipoInstruccion nombre;
     t_list* parametros; // Cada una de las instrucciones
+    int cantidad_parametros;
 } t_instruccion;
 
 
