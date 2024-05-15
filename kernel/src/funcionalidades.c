@@ -354,7 +354,7 @@ t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
 
     buffer->size = sizeof(int) * 3 
                 + sizeof(enum Estado) * 2
-                + sizeof(Registros);
+                + sizeof(t_registros);
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
@@ -367,10 +367,10 @@ t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
     buffer->offset += sizeof(int);
     memcpy(stream + buffer->offset, &pcb->quantum, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &pcb->estadoActual, sizeof(enum Estado));
-    buffer->offset += sizeof(enum Estado);
-    memcpy(stream + buffer->offset, &pcb->estadoAnterior, sizeof(enum Estado));
-    buffer->offset += sizeof(enum Estado);
+    memcpy(stream + buffer->offset, &pcb->estadoActual, sizeof(Estado));
+    buffer->offset += sizeof(Estado);
+    memcpy(stream + buffer->offset, &pcb->estadoAnterior, sizeof(Estado));
+    buffer->offset += sizeof(Estado);
     // memcpy(stream + buffer->offset, &pcb->registros, sizeof(Registros));
     // buffer->offset += sizeof(Registros);
 

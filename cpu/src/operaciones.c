@@ -1,41 +1,19 @@
 #include "../include/operaciones.h"
 
-void ejecutar_pcb(t_pcb* pcb) { // falta traer socket_memoria
+void ejecutar_pcb(t_pcb* pcb,int socket_memoria) {
     // Va a terminar cuando llegue a EXIT
     while(1) {
         t_instruccion* instruccion = malloc(sizeof(t_instruccion));
         // FETCH //
-        instruccion = pedir_instruccion_a_memoria(socket_memoria, pcb);
-        
-        // DECODE //
-        switch(instruccion->nombre) {
-            case SET: 
-                // TO DO: SET
-                break;
-            default:
-                printf("La instruccion no estaba en la lista de instrucciones.");
-                break;
-        }
+        pedir_instruccion_a_memoria(socket_memoria, pcb);
+        recibir_instruccion(socket_memoria, pcb);
         
         pcb->program_counter++;
     }
 }
 
-/* 
-typedef struct {
-	int size;
-	uint32_t offset;
-	void* stream;
-} t_buffer;
-
-typedef struct {
-	codigo_operacion codigo_operacion;
-	t_buffer* buffer;
-} t_paquete;
-*/
-
 // Manda a memoria el pcb, espera una instruccion y la devuelve
-t_instruccion* pedir_instruccion_a_memoria(int socket_memoria, t_pcb* pcb) {
+void* pedir_instruccion_a_memoria(int socket_memoria, t_pcb* pcb) {
     // Recibimos cada parámetro
     t_instruccion* instruccion;
 
@@ -54,32 +32,20 @@ t_instruccion* pedir_instruccion_a_memoria(int socket_memoria, t_pcb* pcb) {
     int offset = 0;
     
     memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int);
+    offset += sizeof(int); //siceof
     memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
     offset += sizeof(int);
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
     // Por último enviamos
     send(socket, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-    printf("Paquete enviado!");
+    printf("Paquete enviado!\n");
 
     // Falta liberar todo
     free(a_enviar);
     free(paquete->buffer->stream);
     free(paquete->buffer);
     free(paquete);
-    
-    // Recibimos la instruccion y deserializamos
-    // TO DO
-    for (int i = 0; i < cantidad_parametros; i++) {
-        void* longitud_parametro;
-        recv(socket_cpu, &longitud_parametro, sizeof(int), 0);
-        char* parametro = malloc(longitud_parametro);
-        recv(socket_cpu, parametro, longitud_parametro, 0);
-        list_add(instruccion->parametros, parametro);
-    }
-
-    return instruccion;
 }
 
 t_buffer* llenar_buffer_solicitud_instruccion(t_solicitud_instruccion solicitud_instruccion) {
@@ -98,7 +64,7 @@ t_buffer* llenar_buffer_solicitud_instruccion(t_solicitud_instruccion solicitud_
    
     buffer->stream = stream;
 
-    return t_buffer;
+    return buffer;
 }
 
 typedef struct {
@@ -106,39 +72,98 @@ typedef struct {
     uint32_t *registro32;
 } RegistroSeleccionado;
 
-typedef struct {
-    TipoInstruccion nombre;
-    t_list* parametros; // Cada una de las instrucciones
-} t_instruccion;
-
-
-/* 
-t_instruccion* recibir_instruccion(int socket_cpu) {
+void* recibir_instruccion(int socket_memoria, int pcb) {
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+    paquete->buffer = malloc(sizeof(t_buffer));
     t_instruccion* instruccion = malloc(sizeof(t_instruccion));
 
+    // Primero recibimos el codigo de operacion
+    recv(socket_memoria, &(paquete->codigo_operacion), sizeof(uint8_t), 0);
+
+    // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
+    recv(socket_memoria, &(paquete->buffer->size), sizeof(uint32_t), 0);
+    paquete->buffer->stream = malloc(paquete->buffer->size);
+    recv(socket_memoria, paquete->buffer->stream, paquete->buffer->size, 0);
+
+
+    // Ahora en función del código recibido procedemos a deserializar el resto
+    switch(paquete->codigo_operacion) {
+        case ENVIO_INSTRUCCION:
+            t_instruccion* instruccion = instruccion_serializar(paquete->buffer);
+            ejecutar_instruccion(instruccion, pcb);
+            /*// DECODE //
+            switch(instruccion->nombre) {
+                case SET:
+                    // TO DO: SET
+                    break;
+                case SUM:
+                    break;
+                
+                default:
+                    printf("La instruccion no estaba en la lista de instrucciones\n");
+                    break;
+            }*/
+            free(instruccion);
+            break;
+    }
+
+    // Liberamos memoria
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+    /*
     // Recibimos el nombre de la instrucción
-    recv(socket_cpu, &(instruccion->nombre), sizeof(TipoInstruccion), 0);
+    recv(socket_memoria, &(instruccion->nombre), sizeof(TipoInstruccion), 0);
 
     // Recibimos la cantidad de parámetros
     int cantidad_parametros;
-    recv(socket_cpu, &cantidad_parametros, sizeof(int), 0);
+    recv(socket_memoria, &cantidad_parametros, sizeof(int), 0);
 
     instruccion->parametros = list_create();
 
-    // Recibimos cada parámetro
+    // Recibimos la instruccion y deserializamos
+    // TO DO 
     for (int i = 0; i < cantidad_parametros; i++) {
-        int longitud_parametro;
-        recv(socket_cpu, &longitud_parametro, sizeof(int), 0);
+        void* longitud_parametro;
+        recv(socket_memoria, &longitud_parametro, sizeof(int), 0);
         char* parametro = malloc(longitud_parametro);
-        recv(socket_cpu, parametro, longitud_parametro, 0);
+        recv(socket_memoria, parametro, longitud_parametro, 0);
         list_add(instruccion->parametros, parametro);
     }
-
-    return instruccion;
+    */
 }
+
+/*
+t_list de la instruccion guarda una lista de parametros
+
+typedef struct {
+    char* nombre;
+    int length;
+} t_parametro;
 */
 
-/* 
+t_instruccion* instruccion_serializar(t_buffer* buffer) {
+    t_instruccion* instruccion = malloc(sizeof(t_instruccion));
+
+    void* stream = buffer->stream;
+    // Deserializamos los campos que tenemos en el buffer
+    memcpy(&(instruccion->nombre), stream, sizeof(TipoInstruccion));
+    stream += sizeof(TipoInstruccion);
+    memcpy(&(instruccion->cantidad_parametros), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(instruccion->parametros), stream, sizeof(t_parametro) * instruccion->parametros);
+    stream += sizeof(t_parametro) * instruccion->parametros;
+    
+    for(int i=0; i<instruccion->cantidad_parametros; i++) {
+        char* parametro = list_get(instruccion->parametros, i);
+        memcpy(&(parametro), stream, list_size(instruccion->parametros));
+        stream += list_size(instruccion->parametros) ;
+    }
+    
+    return instruccion;
+}
+
+/*
  // ESTO ES EN EL LADO DE LA MEMORIA
 void enviar_instruccion(int socket_cpu, t_instruccion* instruccion) {
     // Primero enviamos el nombre de la instrucción
@@ -155,31 +180,38 @@ void enviar_instruccion(int socket_cpu, t_instruccion* instruccion) {
         send(socket_cpu, &longitud_parametro, sizeof(int), 0); // Enviamos la longitud del parámetro
         send(socket_cpu, parametro, longitud_parametro, 0); // Enviamos el parámetro en sí
     }
-}
+}*/
 
+/*typedef struct {
+    TipoInstruccion nombre;
+    t_list* parametros; // Cada una de las instrucciones
+    int cantidad_parametros;
+} t_instruccion;*/
 
-/*
 void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
     // Se puede hacer con Strings también -> Enums
+    //log para mostrar las instrucciones
     log_info(logger, "PID: %d - Ejecutando: %s - Parametros: %s", pcb->pid, instruccion->nombre, list_iterate(instruccion->parametros, printf));
     // void list_iterate(t_list *, void(*closure)(void*));
         
     // Decode // -> Aca tendria que ver si va a memoria? implica devolucion a kernel?
 
     // Execute // -> Modelo de ejemplo basico
-    
-    char *nombreRegistro = (char*)instruccion->nombre; // Set AX 1
-    t_list* list_parametros = instruccion->parametros
+    // SEGUIR CON ESTOOO
+    TipoInstruccion nombreInstruccion = instruccion->nombre; // Set AX 1
+    t_list* list_parametros = instruccion->parametros;
 
-    // Puede haber segmentation fault aca, estamos laburando con memoria a pleno, si se les ocurre alguna mejora o si me quieren putear haganlo (vamos, puedo putear)...
-
-    switch (nombreRegistro) {
+    // TO DO: Seleccionar registro tiene que recibir un enum TipoInstruccion
+    // Esta bien que el switch sea segun el nombre de la instruccion, pero se tiene que seleccionar el registro
+    // segun la instruccion, imaginate un resize o un exit, no reciben un registro por parametro.
+    // char* registro = seleccionar_registro(nombreInstruccion, pcb);
+    switch(nombreInstruccion) {
         case SET:
-            get_registros_set();
-            set(parametro[1], parametro[2]);
+            char* registro1 = list_get(list_parametros, 0);
+            int registro2 = list_get(list_parametros, 1);
+            set(pcb, list_get(list_parametros, 0), registro2); 
             break;
         case MOV_IN:
-            get_registros_mov_in();
             mov_in(parametros...);
             break;
         case MOV_OUT:
@@ -219,11 +251,10 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
     log_info(logger, "PID: %d - Finalizando %s - Parametros: %s", pcb->pid, instruccion->nombre, list_iterate(instruccion->parametros, printf));
     // TO DO: Check interrupt // 
 }
-*/
-/* 
 
+// Revisar, como hacemos esto????
 t_registro* seleccionar_registro(char* nombreRegistro, t_pcb *pcb) {
-    t_registro* registro;
+    t_registro* registro = NULL;
 
     if (strcmp(nombreRegistro, "AX") == 0) {
         registro = &pcb->registros->AX;
@@ -245,13 +276,10 @@ t_registro* seleccionar_registro(char* nombreRegistro, t_pcb *pcb) {
         registro = &pcb->registros->ECX;
     } else if (strcmp(nombreRegistro, "EDX") == 0) {
         registro = &pcb->registros->EDX;
-    else if(todosSonDigitosDe(nombreRegistro)) {
+    }else if(todosSonDigitosDe(nombreRegistro)) {
         registro = atoi(nombreRegistro); 
-    }else {
-        // Registro no válido, se inicializan a NULL los punteros
-        registro = NULL;
     }
-    return registroSeleccionado;
+    return registro;   
 }
 
 int todosSonDigitosDe(char *nombreRegistro) { //con libreria #include <ctype.h>
@@ -269,10 +297,23 @@ int todosSonDigitosDe(char *nombreRegistro) { //con libreria #include <ctype.h>
 // OPERACIONES DE CPU //
 ///////////////////////
 
-void set(RegistroSeleccionado registro,(void*) valor) {
-    memcpy(registro->registro8, valor, sizeof(uint8_t));
-    memcpy(registro->registro32, valor, sizeof(uint32_t));
+void set(t_pcb* pcb, char* registro, char* valor) { //SET AX 1
+    int valor_atoi = atoi(valor);
+    RegistroSeleccionado registro_seleccionado;
+
+    //Hay problemas por todos lados. TO DO: Todo.
+
+    if(es_registro_uint8(registro)){
+        memcpy(pcb->registros->AX, valor, sizeof(uint8_t));
+    } else {
+        memcpy(pcb->registros->AX, valor, sizeof(uint32_t));
+    }
 }
+
+bool es_registro_uint8(registro) {
+    return (strcmp(registro, "AX" ==0) || strcmp(registro, "BX" ==0) || strcmp(registro, "CX" ==0) || strcmp(registro, "CX" ==0));
+}
+
 
 void sum(RegistroSeleccionado registro,(void*) valor){
     *(registro->registro8) += *((uint32_t *)valor);
@@ -289,7 +330,6 @@ void jnz(RegistroSelecccionado registro,(void*) valor){
         pc = valor;
     }
 }
-*/
 
 
 /* 

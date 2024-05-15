@@ -39,7 +39,8 @@ typedef enum {
 typedef enum {
     PATH,
 	ENVIO_PCB,
-    QUIERO_INSTRUCCION
+    QUIERO_INSTRUCCION,
+    ENVIO_INSTRUCCION
 } codigo_operacion;
 
 typedef struct {
@@ -70,7 +71,15 @@ typedef struct {
     uint32_t  SI; // Contiene la dirección lógica de memoria de origen desde donde se va a copiar un string.
     uint32_t  DI; // Contiene la dirección lógica de memoria de destino a donde se va a copiar un string.
 
-} Registros;
+} t_registros;
+
+/*
+typedef struct registros_cpu {
+	char  AX[ 4],  BX[ 4],  CX[ 4],  DX[ 4];
+	char EAX[ 8], EBX[ 8], ECX[ 8], EDX[ 8];
+	char RAX[16], RBX[16], RCX[16], RDX[16];
+} t_registros_cpu;
+*/
 
 typedef enum {
     NEW,
@@ -86,7 +95,7 @@ typedef struct {
     int quantum;
     Estado estadoActual;
     Estado estadoAnterior;
-    // Registros* registros;
+    t_registros* registros;
 } t_pcb;
 
 typedef struct {
@@ -95,6 +104,10 @@ typedef struct {
     int cantidad_parametros;
 } t_instruccion;
 
+typedef struct {
+    char* nombre;
+    int length;
+} t_parametro;
 
 typedef enum {
     SET,  

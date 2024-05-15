@@ -5,6 +5,7 @@
         "sockets.h": "c",
         "semaphore.h": "c",
         "config.h": "c",
-        "log.h": "c"
+        "log.h": "c",
+        "string.h": "c"
     }
 }
