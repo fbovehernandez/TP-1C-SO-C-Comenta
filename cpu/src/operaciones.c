@@ -18,7 +18,7 @@ void* pedir_instruccion_a_memoria(int socket_memoria, t_pcb* pcb) {
     t_instruccion* instruccion;
 
     t_solicitud_instruccion* pid_pc;
-    pid_pc->pid = pcb->PID;
+    pid_pc->pid = pcb->pid;
     pid_pc->pc = pcb->program_counter;
     
     t_buffer* buffer = llenar_buffer_solicitud_instruccion(pid_pc);
@@ -48,7 +48,7 @@ void* pedir_instruccion_a_memoria(int socket_memoria, t_pcb* pcb) {
     free(paquete);
 }
 
-t_buffer* llenar_buffer_solicitud_instruccion(t_solicitud_instruccion solicitud_instruccion) {
+t_buffer* llenar_buffer_solicitud_instruccion(t_solicitud_instruccion* solicitud_instruccion) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
     
     buffer->size = sizeof(int) * 2 ;                    
@@ -151,8 +151,8 @@ t_instruccion* instruccion_serializar(t_buffer* buffer) {
     stream += sizeof(TipoInstruccion);
     memcpy(&(instruccion->cantidad_parametros), stream, sizeof(int));
     stream += sizeof(int);
-    memcpy(&(instruccion->parametros), stream, sizeof(t_parametro) * instruccion->parametros);
-    stream += sizeof(t_parametro) * instruccion->parametros;
+    memcpy(&(instruccion->parametros), stream, sizeof(t_parametro) * instruccion->cantidad_parametros);
+    stream += sizeof(t_parametro) * instruccion->cantidad_parametros;
     
     for(int i=0; i<instruccion->cantidad_parametros; i++) {
         char* parametro = list_get(instruccion->parametros, i);
@@ -207,9 +207,44 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
     // char* registro = seleccionar_registro(nombreInstruccion, pcb);
     switch(nombreInstruccion) {
         case SET:
-            char* registro1 = list_get(list_parametros, 0);
-            int registro2 = list_get(list_parametros, 1);
-            set(pcb, list_get(list_parametros, 0), registro2); 
+
+        /* 
+        typedef struct {
+        char* nombre;
+        int tipo; // 0 para uint8_t, 1 para uint32_t
+} t_registro_info;
+
+    t_registro_info registros_info[] = {
+        {"AX", 0},
+        {"BX", 0},
+        // ...
+        {"EAX", 1},
+        {"EBX", 1},
+        // ...
+};
+
+    int obtener_tipo_registro(char* nombre) {
+        for (int i = 0; i < sizeof(registros_info) / sizeof(t_registro_info); i++) {
+            if (strcmp(nombre, registros_info[i].nombre) == 0) {
+             return registros_info[i].tipo;
+        }
+    }
+    return -1; // No se encontró el registro
+}
+    char* registro1 = list_get(list_parametros, 0);
+    int tipo_registro1 = obtener_tipo_registro(registro1);
+    if (tipo_registro1 == 0) {
+        // registro1 es un uint8_t -> casteo a uint_8 
+    } else if (tipo_registro1 == 1) {
+    // registro1 es un uint32_t // casteo uint32_t
+    } else {
+    // No se reconoció el registro
+    }
+        */
+            char* registro1 = list_get(list_parametros, 0); 
+                                                            // El tema es q se repeteria un poco de logica porque lo vas a tratar igual en mo            // svalorca habria que ver de hacer poner la funcion para que pueda castear el tipo y me lo devuelva con su tipo (nose tdvia mb como)
+            puntero_pcb = seleccionar_registro(registro1,pcb);
+            set(puntero_pcb, registro2);
             break;
         case MOV_IN:
             mov_in(parametros...);
@@ -244,7 +279,7 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
           
             break;
         default:
-            printf("Error: No exxiste ese tipo de intruccion\n");
+            printf("Error: No existe ese tipo de intruccion\n");
             break;
     }
     // Pongo log papra ver  si se  modifica
@@ -252,9 +287,14 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
     // TO DO: Check interrupt // 
 }
 
+void* set(t_instruccion* instruccion) {
+    char* registro1 = list_get(instruccion->parametros, 0);
+    instruccion->parametros->head = instruccion->parametros[instruccion->parametros->elements_count - 1];
+}
+
 // Revisar, como hacemos esto????
-t_registro* seleccionar_registro(char* nombreRegistro, t_pcb *pcb) {
-    t_registro* registro = NULL;
+t_registros* seleccionar_registro(char* nombreRegistro, t_pcb *pcb) {
+    t_registros* registro = NULL;
 
     if (strcmp(nombreRegistro, "AX") == 0) {
         registro = &pcb->registros->AX;
@@ -263,7 +303,7 @@ t_registro* seleccionar_registro(char* nombreRegistro, t_pcb *pcb) {
     } else if (strcmp(nombreRegistro, "CX") == 0) {
        registro = &pcb->registros->CX;
     } else if (strcmp(nombreRegistro, "DX") == 0) {
-        registroSeleccionado->registro8 = &pcb->registros->DX;
+        registro = &pcb->registros->DX;
     } else if (strcmp(nombreRegistro, "SI") == 0) {
         registro = &pcb->registros->SI;
     } else if (strcmp(nombreRegistro, "DI") == 0) {
@@ -294,10 +334,26 @@ int todosSonDigitosDe(char *nombreRegistro) { //con libreria #include <ctype.h>
 
 
 /////////////////////////
-// OPERACIONES DE CPU //
-///////////////////////
 
-void set(t_pcb* pcb, char* registro, char* valor) { //SET AX 1
+/*
+registttr
+void set int valor(t_pcb* pcb, char* registro, char* valor) { //SET AX 1
+    int valor_atoi = atoi(valor);
+    RegistroSeleccionado registro_seleccionado;
+
+    //Hay problemas por todos lados. TO DO: Todo.
+
+    if(es_registro_uint8(registro)){
+        memcpy(pcb->registros->AX, valor, sizeof(uint8_t));
+    } else {
+        memcpy(pcb->registros->AX, valor, sizeof(uint32_t));
+    }
+}
+
+*/
+
+*////////////////////////
+void set int valor(t_pcb* pcb, char* registro, char* valor) { //SET AX 1
     int valor_atoi = atoi(valor);
     RegistroSeleccionado registro_seleccionado;
 

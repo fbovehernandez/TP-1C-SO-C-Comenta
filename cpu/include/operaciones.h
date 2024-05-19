@@ -15,4 +15,6 @@ void execute(t_pcb* pcb);
 void ejectuar_pcb(t_pcb* pcb);
 t_instruccion* pedir_instruccion_a_memoria(int socket_memoria, t_pcb* pcb);
 
+extern t_log* logger;
+
 #endif 
