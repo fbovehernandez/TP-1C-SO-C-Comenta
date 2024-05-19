@@ -200,13 +200,7 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
     // SEGUIR CON ESTOOO
     TipoInstruccion nombreInstruccion = instruccion->nombre; // Set AX 1
     t_list* list_parametros = instruccion->parametros;
-
-    // TO DO: Seleccionar registro tiene que recibir un enum TipoInstruccion
-    // Esta bien que el switch sea segun el nombre de la instruccion, pero se tiene que seleccionar el registro
-    // segun la instruccion, imaginate un resize o un exit, no reciben un registro por parametro.
-    // char* registro = seleccionar_registro(nombreInstruccion, pcb);
     switch(nombreInstruccion) {
-        case SET:
 
         /* 
         typedef struct {
@@ -241,10 +235,92 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
     // No se reconoció el registro
     }
         */
+        case SET: //  "Set" List["AX" -> 1]
             char* registro1 = list_get(list_parametros, 0); 
-                                                            // El tema es q se repeteria un poco de logica porque lo vas a tratar igual en mo            // svalorca habria que ver de hacer poner la funcion para que pueda castear el tipo y me lo devuelva con su tipo (nose tdvia mb como)
-            puntero_pcb = seleccionar_registro(registro1,pcb);
-            set(puntero_pcb, registro2);
+            int* valor = list_get(list_parametros, 1);
+            int tipo_registro1 = obtener_tipo_registro(registro1);
+            asignar_typo(&registro1); // Aca lo casteo (SERIA TIPAR) a un uint8_t o uint32_t
+
+            *registro1 = seleccionar_registro(registro1, pcb); // La idea es aca reformular la funcion de mati para que lo castee directamente, no devuelva nd
+            set(registro1, valor);  
+
+
+
+/*
+// Definición de la estructura con diferentes tipos
+typedef struct {
+    uint32_t var1;
+    uint8_t var2;
+    uint32_t var3;
+} MyStruct;
+
+// Enumeración para identificar las variables
+typedef enum {
+    VAR1,
+    VAR2,
+    VAR3
+} VarIndex;
+
+// Union para los diferentes tipos de punteros
+typedef union {
+    uint32_t* ptr32;
+    uint8_t* ptr8;
+} VarPointer;
+
+// Función para obtener un puntero a una variable de la estructura
+VarPointer get_pointer_to_variable(MyStruct* s, VarIndex var_index) {
+    VarPointer vp;
+    switch (var_index) {
+        case VAR1:
+            vp.ptr32 = &(s->var1);
+            break;
+        case VAR2:
+            vp.ptr8 = &(s->var2);
+            break;
+        case VAR3:
+            vp.ptr32 = &(s->var3);
+            break;
+        default:
+            vp.ptr32 = NULL;  // Devuelve NULL si el índice no es válido
+            break;
+    }
+    return vp;
+}
+
+int main() {
+    MyStruct s;
+    s.var1 = 10;
+    s.var2 = 20;
+    s.var3 = 30;
+
+    // Obtener un puntero a var2
+    VarPointer ptr = get_pointer_to_variable(&s, VAR2);
+
+    if (ptr.ptr8 != NULL) {
+        printf("El valor de var2 es: %u\n", *ptr.ptr8);
+        // Modificar el valor de var2 a través del puntero
+        *ptr.ptr8 = 40;
+        printf("El nuevo valor de var2 es: %u\n", s.var2);
+    } else {
+        printf("Índice inválido\n");
+    }
+
+    // Mostrar los valores actuales de todas las variables en la estructura
+    printf("Valores actuales en la estructura:\n");
+    printf("s.var1: %u\n", s.var1);
+    printf("s.var2: %u\n", s.var2);
+    printf("s.var3: %u\n", s.var3);
+
+    return 0;
+}
+
+El valor de var2 es: 20
+El nuevo valor de var2 es: 40
+Valores actuales en la estructura:
+s.var1: 10
+s.var2: 40
+s.var3: 30
+*/
             break;
         case MOV_IN:
             mov_in(parametros...);
@@ -252,6 +328,12 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
         case MOV_OUT:
             break;
         case SUM:
+            char* registro1;
+            int tipo_registro1 = obtener_tipo_registro(registro1);
+            asignar_typo(&registro1);
+            char* registro2;
+            int tipo_registro1 = obtener_tipo_registro(registro1);
+            asignar_typo(&registro1);
             sum(registro,valor);
             break;
         case SUB:
@@ -287,56 +369,82 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
     // TO DO: Check interrupt // 
 }
 
-void* set(t_instruccion* instruccion) {
-    char* registro1 = list_get(instruccion->parametros, 0);
-    instruccion->parametros->head = instruccion->parametros[instruccion->parametros->elements_count - 1];
+
+void set(void* registroACambiar,int valor){
+    memcpy(registroACambiar,valor,/* Tipo del reggistroo uint8 o 32*/);
 }
 
 // Revisar, como hacemos esto????
-t_registros* seleccionar_registro(char* nombreRegistro, t_pcb *pcb) {
-    t_registros* registro = NULL;
-
-    if (strcmp(nombreRegistro, "AX") == 0) {
-        registro = &pcb->registros->AX;
-    } else if (strcmp(nombreRegistro, "BX") == 0) {
-        registro = &pcb->registros->BX;    
-    } else if (strcmp(nombreRegistro, "CX") == 0) {
-       registro = &pcb->registros->CX;
-    } else if (strcmp(nombreRegistro, "DX") == 0) {
-        registro = &pcb->registros->DX;
-    } else if (strcmp(nombreRegistro, "SI") == 0) {
-        registro = &pcb->registros->SI;
-    } else if (strcmp(nombreRegistro, "DI") == 0) {
-        registro = &pcb->registros->DI;
-    } else if (strcmp(nombreRegistro, "EAX") == 0) {
-        registro = &pcb->registros->EAX;  
-    } else if (strcmp(nombreRegistro, "EBX") == 0) {
-        registro = &pcb->registros->EBX;
-    } else if (strcmp(nombreRegistro, "ECX") == 0) {
-        registro = &pcb->registros->ECX;
-    } else if (strcmp(nombreRegistro, "EDX") == 0) {
-        registro = &pcb->registros->EDX;
-    }else if(todosSonDigitosDe(nombreRegistro)) {
-        registro = atoi(nombreRegistro); 
-    }
-    return registro;   
+void* seleccionar_registro(char* registro1, t_pcb *pcb) {
+    
+    if (strcmp(registro1, "AX") == 0) {
+        uint8_t* (registro1) = &pcb->registros->AX;
+    } else if (strcmp(registro1, "BX") == 0) {
+       uint8_t* registro = &pcb->registros->BX;    
+    } else if (strcmp(registro1, "CX") == 0) {
+      uint8_t* registro = &pcb->registros->CX;
+    } else if (strcmp(registro1, "DX") == 0) {
+       uint8_t* registro = &pcb->registros->DX;
+    } else if (strcmp(registro1, "SI") == 0) {
+       uint8_t* registro = &pcb->registros->SI;
+    } else if (strcmp(registro1, "DI") == 0) {
+       uint8_t* registro = &pcb->registros->DI;
+    } else if (strcmp(registro1, "EAX") == 0) {
+        uint32_t* registro = &pcb->registros->EAX;  
+    } else if (strcmp(registro1, "EBX") == 0) {
+        uint32_t* registro = &pcb->registros->EBX;
+    } else if (strcmp(registro1, "ECX") == 0) {
+        uint32_t* registro = &pcb->registros->ECX;
+    } else if (strcmp(registro1, "EDX") == 0) {
+        uint32_t* registro = &pcb->registros->EDX;
+    }else if(todosSonDigitosDe(registro1)) {
+        int registro = atoi(registro1); 
+    } 
 }
 
-int todosSonDigitosDe(char *nombreRegistro) { //con libreria #include <ctype.h>
-    while(*nombreRegistro != '\0'){
-        if(!isdigit(*nombreRegistro)) {
-            return 0;
+
+void set(t_pcb* pcb, t_list* lista_parametros) {
+    uint8_t variableuint8;
+    uint32_t variableuint23;
+
+    char* registro1 = list_get(lista_parametros, 0);
+    
+    if(es_registro_uint8(registro1)) {
+        uint8_t variableuint8 = list_get(lista_parametros, 1); //AX 1
+
+        if (strcmp(registro1, "AX") == 0) {
+            pcb->registros->AX = variableuint8;
+        } else if (strcmp(registro1, "BX") == 0) {
+            pcb->registros->BX = variableuint8;
+        } else if (strcmp(registro1, "CX") == 0) {
+            pcb->registros->CX = variableuint8;
+        } else if (strcmp(registro1, "DX") == 0) {
+            pcb->registros->DX = variableuint8;
+        } 
+    } else {
+        uint32_t variableuint32 = list_get(lista_parametros, 1);
+
+        if (strcmp(registro1, "SI") == 0) {
+            registro1 = &pcb->registros->SI;
+        } else if (strcmp(registro1, "DI") == 0) {
+            registro1 = &pcb->registros->DI;
+        } else if (strcmp(registro1, "EAX") == 0) {
+            registro1 = &pcb->registros->EAX;  
+        } else if (strcmp(registro1, "EBX") == 0) {
+            registro1 = &pcb->registros->EBX;
+        } else if (strcmp(registro1, "ECX") == 0) {
+            registro1 = &pcb->registros->ECX;
+        } else if (strcmp(registro1, "EDX") == 0) {
+            registro1 = &pcb->registros->EDX;
+        }else if(todosSonDigitosDe(registro1)) {
+            registro1 = atoi(registro1); 
         }
-        nombreRegistro++; // No sabemos si anda pero ahi esta la idea 
+        return registro1;   
     }
-    return 1;
 }
 
-
-/////////////////////////
 
 /*
-registttr
 void set int valor(t_pcb* pcb, char* registro, char* valor) { //SET AX 1
     int valor_atoi = atoi(valor);
     RegistroSeleccionado registro_seleccionado;
@@ -352,8 +460,37 @@ void set int valor(t_pcb* pcb, char* registro, char* valor) { //SET AX 1
 
 */
 
-*////////////////////////
+int todosSonDigitosDe(char *nombreRegistro) { //con libreria #include <ctype.h>
+    while(*nombreRegistro != '\0'){
+        if(!isdigit(*nombreRegistro)) {
+            return 0;
+        }
+        nombreRegistro++; // No sabemos si anda pero ahi esta la idea 
+    }
+    return 1;
+}
+
+
+/////////////////////////
+
+/*
 void set int valor(t_pcb* pcb, char* registro, char* valor) { //SET AX 1
+    int valor_atoi = atoi(valor);
+    RegistroSeleccionado registro_seleccionado;
+
+    //Hay problemas por todos lados. TO DO: Todo.
+
+    if(es_registro_uint8(registro)){
+        memcpy(pcb->registros->AX, valor, sizeof(uint8_t));
+    } else {
+        memcpy(pcb->registros->AX, valor, sizeof(uint32_t));
+    }
+}
+
+*/
+
+////////////////////////
+int valor(t_pcb* pcb, char* registro, char* valor) { //SET AX 1
     int valor_atoi = atoi(valor);
     RegistroSeleccionado registro_seleccionado;
 
@@ -514,3 +651,27 @@ de interes, hacer un send a la CPU y un recv desde la CPU
 // Program counter del pcb va a Memoria para pedir la instruccion (el numero de instruccion a buscar relativo al proceso en ejecucion)
 // Tendremos que buscar el program counter en la cola de procesos a ejecutar?-> no es el del 
 
+/*
+#include <stdio.h>
+
+// Declaración de la función
+int* getPointer(int* num);
+
+int main() {
+    int x = 10;
+    int* p = getPointer(&x);
+    
+    printf("El valor original de x es: %d\n", *p);  // Debería imprimir 10
+    
+    // Modificar x a través del puntero
+    *p = 20;
+    
+    printf("El nuevo valor de x es: %d\n", x);  // Debería imprimir 20
+    return 0;
+}
+
+// Definición de la función
+int* getPointer(int* num) {
+    return num;
+}
+*/

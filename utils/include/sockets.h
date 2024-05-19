@@ -73,6 +73,26 @@ typedef struct {
 
 } t_registros;
 
+typedef struct {
+        char* nombre;
+        int tipo; // 0 para uint8_t, 1 para uint32_t
+} t_registro_info;
+
+// no esta listo, lo estoy pensado, osea no se como chota hace la estructura
+t_registro_info registros_info[] = {
+        {"AX", 0},
+        {"BX", 0},
+        {"CX", 0},
+        {"DX", 0},
+        {"EAX", 1},
+        {"EBX", 1},
+        {"ECX", 1},
+        {"EDX", 1},
+        {"SI", 1},
+        {"DI", 1},
+        // ...
+};
+
 /*
 typedef struct registros_cpu {
 	char  AX[ 4],  BX[ 4],  CX[ 4],  DX[ 4];
@@ -104,10 +124,12 @@ typedef struct {
     int cantidad_parametros;
 } t_instruccion;
 
+/*
 typedef struct {
     char* nombre;
     int length;
 } t_parametro;
+*/
 
 typedef enum {
     SET,  
@@ -117,7 +139,7 @@ typedef enum {
     SUB,
     JNZ,
     RESIZE,
-    COPY_STRING,,
+    COPY_STRING,
     // ...
     WAIT,
     SIGNAL,

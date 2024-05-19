@@ -196,6 +196,7 @@ void crear_estructuras(char* path_completo, int pid) {
     fclose(file);
 }
 
+//Hay que construir bien la instruccion
 t_instruccion* build_instruccion(char* line) {
     t_instruccion* instruccion = malloc(sizeof(t_instruccion)); // SET AX 1
 
@@ -211,7 +212,7 @@ t_instruccion* build_instruccion(char* line) {
     }
 
     while(arg != NULL) {
-        t_parametro* parametro = malloc(sizeof(int) + sizeof(char) * string_length(strdup(arg)));
+        //t_parametro* parametro = malloc(sizeof(int) + sizeof(char) * string_length(strdup(arg)));
 
         parametro->nombre = strdup(arg);
         parametro->length = string_length(arg);
