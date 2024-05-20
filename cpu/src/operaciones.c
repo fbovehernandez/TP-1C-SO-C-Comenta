@@ -5,7 +5,6 @@ t_log* logger;
 void ejecutar_pcb(t_pcb* pcb, int socket_memoria) {
     // Va a terminar cuando llegue a EXIT
     while(1) {
-        t_instruccion* instruccion = malloc(sizeof(t_instruccion));
         // FETCH //
         pedir_instruccion_a_memoria(socket_memoria, pcb);
         recibir_instruccion(socket_memoria, pcb);
@@ -17,9 +16,7 @@ void ejecutar_pcb(t_pcb* pcb, int socket_memoria) {
 // Manda a memoria el pcb, espera una instruccion y la devuelve
 void pedir_instruccion_a_memoria(int socket_memoria, t_pcb* pcb) {
     // Recibimos cada parámetro
-    t_instruccion* instruccion;
-
-    t_solicitud_instruccion* pid_pc = sizeof(t_solicitud_instruccion);
+    t_solicitud_instruccion* pid_pc = malloc(sizeof(t_solicitud_instruccion));
     pid_pc->pid = pcb->pid;
     pid_pc->pc = pcb->program_counter;
     
@@ -40,7 +37,7 @@ void pedir_instruccion_a_memoria(int socket_memoria, t_pcb* pcb) {
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
     // Por último enviamos
-    send(socket, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
+    send(socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
     printf("Paquete enviado!\n");
 
     // Falta liberar todo
@@ -69,9 +66,10 @@ t_buffer* llenar_buffer_solicitud_instruccion(t_solicitud_instruccion* solicitud
     return buffer;
 }
 
-void recibir_instruccion(int socket_memoria, int pcb) {
+void recibir_instruccion(int socket_memoria, t_pcb* pcb) {
     t_paquete* paquete = malloc(sizeof(t_paquete));
     paquete->buffer = malloc(sizeof(t_buffer));
+
     t_instruccion* instruccion = malloc(sizeof(t_instruccion));
 
     // Primero recibimos el codigo de operacion
@@ -89,6 +87,9 @@ void recibir_instruccion(int socket_memoria, int pcb) {
             instruccion = instruccion_deserializar(paquete->buffer);
             ejecutar_instruccion(instruccion, pcb);
             free(instruccion);
+            break;
+        default:
+            printf("Error: Fallo!\n");
             break;
     }
 

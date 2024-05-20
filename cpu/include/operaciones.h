@@ -11,7 +11,7 @@
 void ejecutar_pcb(t_pcb* pcb, int socket_memoria);
 void pedir_instruccion_a_memoria(int socket_memoria, t_pcb* pcb);
 t_buffer* llenar_buffer_solicitud_instruccion(t_solicitud_instruccion* solicitud_instruccion);
-void recibir_instruccion(int socket_memoria, int pcb);
+void recibir_instruccion(int socket_memoria, t_pcb* pcb);
 t_instruccion* instruccion_deserializar(t_buffer* buffer);
 void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb);
 void* seleccionar_registro(char* nombreRegistro, t_pcb *pcb);

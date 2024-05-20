@@ -70,8 +70,8 @@ void* a_ready(); // Para hilo
 void pasar_a_ready(t_pcb *pcb);
 t_pcb* crear_nuevo_pcb(int pid);
 void* contar_quantum(void* socket_CPU);
-Registros* inicializar_registros_cpu();
-void print_queue(enum Estado estado);
+t_registros* inicializar_registros_cpu();
+void print_queue(Estado estado);
 int obtener_siguiente_pid();
 // t_queue* mostrar_cola(t_queue* cola);
 void mostrar_pcb_proceso(t_pcb* pcb);

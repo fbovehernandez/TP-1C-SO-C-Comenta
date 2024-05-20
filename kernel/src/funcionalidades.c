@@ -353,7 +353,7 @@ t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
     printf("Llenando buffer...");
 
     buffer->size = sizeof(int) * 3 
-                + sizeof(enum Estado) * 2
+                + sizeof(Estado) * 2
                 + sizeof(t_registros);
 
     buffer->offset = 0;
@@ -394,9 +394,8 @@ t_pcb *crear_nuevo_pcb(int pid){
     return pcb;
 }
 
-Registros *inicializar_registros_cpu()
-{
-    Registros *registro_cpu = malloc(sizeof(Registros));
+t_registros* inicializar_registros_cpu() {
+    t_registros* registro_cpu = malloc(sizeof(t_registros));
 
     registro_cpu->AX = 0;
     registro_cpu->BX = 0;

@@ -61,6 +61,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 // TO DO
                 t_solicitud_instruccion* solicitud_cpu = deserializar_solicitud(paquete->buffer);
                 enviar_instruccion(solicitud_cpu, socket_cpu);
+                free(solicitud_cpu);
                 break;
             default:
                 printf("Rompio todo?\n");
@@ -78,8 +79,8 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
 // Ver error
 void* handle_kernel(void* socket) {
-    int socket_kernel = *(int*)socket;
-    // free(socket); 
+    int socket_kernel = (intptr_t)socket;
+
     int resultOk = 0;
     send(socket_kernel, &resultOk, sizeof(int), 0);
     printf("Se conecto el kernel!\n");
@@ -114,7 +115,7 @@ void* handle_kernel(void* socket) {
 
                 imprimir_diccionario(); // Imprime todo, sin PID especifico...
                 
-                free(path_completo);
+                free(path);
                 break;
             default: 
                 break;
@@ -177,6 +178,7 @@ void crear_estructuras(char* path_completo, int pid) {
         if(strcmp(line, "\n") != 0) {
             t_instruccion* instruccion = build_instruccion(line);
             list_add(instrucciones, instruccion);
+            free(instruccion);
         }
     }
     
@@ -191,8 +193,7 @@ void crear_estructuras(char* path_completo, int pid) {
     dictionary_put(diccionario_instrucciones, pid_char, instrucciones);
 
     // ->  
-
-    free(line);
+    free(pid_char);
     fclose(file);
 }
 
@@ -246,7 +247,10 @@ t_instruccion* build_instruccion(char* line) {
     t_instruccion* instruccion = malloc(sizeof(t_instruccion)); // SET AX 1
 
     char* nombre_instruccion = strtok(line, " \n"); // char* nombre_instruccion = strtok(linea_leida, " \n");
+    
     nombre_instruccion = strdup(nombre_instruccion); 
+
+    printf("Nombre instruccion: %s\n", nombre_instruccion);
 
     instruccion->nombre = pasar_a_enum(nombre_instruccion);
     instruccion->parametros = list_create();
@@ -259,12 +263,14 @@ t_instruccion* build_instruccion(char* line) {
 
     while(arg != NULL) {
         t_parametro* parametro = malloc(sizeof(int) + sizeof(char) * string_length(strdup(arg)));
+        printf("hola");
 
         parametro->nombre = strdup(arg);
         parametro->length = string_length(arg);
 
         list_add(instruccion->parametros, parametro);
         arg = strtok(NULL, " \n");
+        // free(parametro);
     }
     
     instruccion->cantidad_parametros = list_size(instruccion->parametros);
@@ -301,7 +307,6 @@ t_path* deserializar_path(t_buffer* buffer) {
     // que no se como funciona, pero funciona :)
 
     return path;
-
 }
 
 void imprimir_path(t_path* path) {
@@ -335,6 +340,7 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu,int socket_cpu) {
     sprintf(pid_char, "%d", pid);
 
     t_list* instrucciones = dictionary_get(diccionario_instrucciones, pid_char);
+    free(pid_char);
     t_instruccion* instruccion = list_get(instrucciones, pc);
     
     t_paquete* paquete = malloc(sizeof(t_paquete));
