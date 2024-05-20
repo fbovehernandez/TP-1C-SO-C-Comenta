@@ -78,7 +78,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
 // Ver error
 void* handle_kernel(void* socket) {
-    int socket_kernel = (intptr_t)socket; // (intptr_t)
+    int socket_kernel = *(int*)socket;
     // free(socket); 
     int resultOk = 0;
     send(socket_kernel, &resultOk, sizeof(int), 0);
@@ -131,16 +131,16 @@ void* handle_kernel(void* socket) {
     
 void imprimir_diccionario() {
     // t_list* instrucciones = dictionary_elements(diccionario_instrucciones);
-
     dictionary_iterator(diccionario_instrucciones, (void*)print_instrucciones);  
 }
 
-void print_parametros(char* parametro) {
-    printf("Parametro %s \n", parametro);
+void print_parametros(t_parametro* parametro) {
+    printf("Parametro length %d \n", parametro->length);
+    printf("Parametro %s \n", parametro->nombre);
 }
 
 void print_instruccion(t_instruccion* instruccion) {
-    printf("Nombre instruccion %s: \n", instruccion->nombre);
+    printf("Nombre instruccion %d: \n", instruccion->nombre);
     printf("Cantidad parametros %d :", instruccion->cantidad_parametros);
     list_iterate(instruccion->parametros, (void*)print_parametros);
 }
@@ -196,13 +196,59 @@ void crear_estructuras(char* path_completo, int pid) {
     fclose(file);
 }
 
+TipoInstruccion pasar_a_enum(char* nombre) {
+    if (strcmp(nombre, "SET") == 0) {
+        return SET;
+    } else if (strcmp(nombre, "MOV_IN") == 0) {
+        return MOV_IN;    
+    } else if (strcmp(nombre, "MOV_OUT") == 0) {
+       return MOV_OUT;
+    } else if (strcmp(nombre, "SUM") == 0) {
+        return SUM;
+    } else if (strcmp(nombre, "SUB") == 0) {
+        return SUB;
+    } else if (strcmp(nombre, "JNZ") == 0) {
+        return JNZ;
+    } else if (strcmp(nombre, "RESIZE") == 0) {
+        return RESIZE;  
+    } else if (strcmp(nombre, "COPY_STRING") == 0) { 
+        return COPY_STRING; 
+    } else if (strcmp(nombre, "WAIT") == 0) {
+        return WAIT;
+    } else if (strcmp(nombre, "SIGNAL") == 0){
+        return SIGNAL;
+    } else if (strcmp(nombre, "IO_GEN_SLEEP") == 0) {
+        return IO_GEN_SLEEP;
+    } else if (strcmp(nombre, "IO_STDIN_READ") == 0) {
+        return IO_STDIN_READ;
+    } else if (strcmp(nombre, "IO_STDOUT_WRITE") == 0) {
+        return IO_STDOUT_WRITE;
+    } else if (strcmp(nombre, "IO_FS_CREATE") == 0) {
+        return IO_FS_CREATE;
+    } else if (strcmp(nombre, "IO_FS_DELETE") == 0) {
+        return IO_FS_DELETE;
+    } else if (strcmp(nombre, "IO_FS_TRUNCATE") == 0) {
+        return IO_FS_TRUNCATE;
+    } else if (strcmp(nombre, "IO_FS_WRITE") == 0) {
+        return IO_FS_WRITE;
+    } else if (strcmp(nombre, "IO_FS_READ") == 0) {
+        return IO_FS_READ;
+    } else if (strcmp(nombre, "EXIT") == 0) {
+        return EXIT_INSTRUCCION;
+    }
+
+    // printf("Salio mal la lectura de instruccion.\n");
+    return EXIT_INSTRUCCION; // Ver esto
+}
+
 //Hay que construir bien la instruccion
 t_instruccion* build_instruccion(char* line) {
     t_instruccion* instruccion = malloc(sizeof(t_instruccion)); // SET AX 1
 
     char* nombre_instruccion = strtok(line, " \n"); // char* nombre_instruccion = strtok(linea_leida, " \n");
-    instruccion->nombre = strdup(nombre_instruccion); 
+    nombre_instruccion = strdup(nombre_instruccion); 
 
+    instruccion->nombre = pasar_a_enum(nombre_instruccion);
     instruccion->parametros = list_create();
 
     char* arg = strtok(NULL, " \n");
@@ -212,7 +258,7 @@ t_instruccion* build_instruccion(char* line) {
     }
 
     while(arg != NULL) {
-        //t_parametro* parametro = malloc(sizeof(int) + sizeof(char) * string_length(strdup(arg)));
+        t_parametro* parametro = malloc(sizeof(int) + sizeof(char) * string_length(strdup(arg)));
 
         parametro->nombre = strdup(arg);
         parametro->length = string_length(arg);
@@ -281,31 +327,25 @@ t_solicitud_instruccion* deserializar_solicitud(t_buffer* buffer) {
     return instruccion;
 }
 
-/*
-typedef struct {
-    TipoInstruccion nombre;
-    t_list* parametros; // Cada una de las instrucciones
-    int cantidad_parametros;
-} t_instruccion; 
-*/
 void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu,int socket_cpu) {
     int pid = solicitud_cpu->pid;
     int pc = solicitud_cpu->pc;
 
-    t_list* instrucciones = dictionary_get(diccionario_instrucciones, pid);
+    char* pid_char = malloc(sizeof(int));
+    sprintf(pid_char, "%d", pid);
+
+    t_list* instrucciones = dictionary_get(diccionario_instrucciones, pid_char);
     t_instruccion* instruccion = list_get(instrucciones, pc);
     
     t_paquete* paquete = malloc(sizeof(t_paquete));
     t_buffer* buffer = malloc(sizeof(t_buffer));
-    
-    /*
-    int cantidad_caracteres_parametros = cantidad_caracteres_por_parametros(instruccion);
-    buffer->size = sizeof(TipoInstruccion) + sizeof(int) + sizeof(char) * cantidad_caracteres_parametros;
-    */
-    //buffer->size = sizeof(TipoInstruccion) + sizeof(t_list) * instruccion->cantidad_parametros + sizeof(int); 
-    // No se pone "enum NombreDeEnum" se pone "NombreDeEnum" directo. 
 
-    buffer->size = sizeof(TipoInstruccion) + sizeof(int) + sizeof(char) * list_size(instruccion->parametros);
+    buffer->size = sizeof(TipoInstruccion) + sizeof(int);
+
+    for(int i=0; i<instruccion->cantidad_parametros; i++) {
+        t_parametro* parametro1 = list_get(instruccion->parametros, i);
+        buffer->size += sizeof(char) * parametro1->length;
+    }
 
     buffer->offset = 0;                                       
     buffer->stream = malloc(buffer->size);
@@ -316,12 +356,12 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu,int socket_cpu) {
     buffer->offset += sizeof(TipoInstruccion);
     
     for(int i = 0; i < instruccion->cantidad_parametros; i++) {
-        t_parametro* parametro = list_get(instruccion->parametros, i);
+        t_parametro* parametro2 = list_get(instruccion->parametros, i);
 
-        memcpy(stream + buffer->offset, parametro->length, sizeof(int));
+        memcpy(stream + buffer->offset, &parametro2->length, sizeof(uint32_t));
         buffer->offset += sizeof(int); 
-        memcpy(stream + buffer->offset, parametro, sizeof(char) * parametro->length);
-        buffer->offset += sizeof(char) * parametro->length;
+        memcpy(stream + buffer->offset, parametro2->nombre, parametro2->length);
+        buffer->offset += parametro2->length;
     }
 
     buffer->stream = stream;
@@ -339,22 +379,11 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu,int socket_cpu) {
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
     // Por último enviamos
-    send(socket_cpu, a_enviar, buffer->size + sizeof(uint8_t) + sizeof(int), 0);
+    send(socket_cpu, a_enviar, buffer->size + sizeof(uint8_t) + sizeof(uint32_t), 0);
 
     // Liberamos memoria
     free(a_enviar);
     free(paquete->buffer->stream);
     free(paquete->buffer);
     free(paquete);
-}
-
-int cantidad_caracteres_por_parametros(t_instruccion* instruccion) {
-    int cantidad_total = 0;
-    int i;
-    for(i = 0; i <instruccion->cantidad_parametros; i++) {
-        char* parametro = list_get(instruccion->parametros, i);
-        cantidad_total += string_length(parametro);
-    }
-    
-    return cantidad_total;
 }

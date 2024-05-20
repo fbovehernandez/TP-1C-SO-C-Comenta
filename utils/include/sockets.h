@@ -73,25 +73,6 @@ typedef struct {
 
 } t_registros;
 
-typedef struct {
-        char* nombre;
-        int tipo; // 0 para uint8_t, 1 para uint32_t
-} t_registro_info;
-
-// no esta listo, lo estoy pensado, osea no se como chota hace la estructura
-t_registro_info registros_info[] = {
-        {"AX", 0},
-        {"BX", 0},
-        {"CX", 0},
-        {"DX", 0},
-        {"EAX", 1},
-        {"EBX", 1},
-        {"ECX", 1},
-        {"EDX", 1},
-        {"SI", 1},
-        {"DI", 1},
-        // ...
-};
 
 /*
 typedef struct registros_cpu {
@@ -118,19 +99,6 @@ typedef struct {
     t_registros* registros;
 } t_pcb;
 
-typedef struct {
-    TipoInstruccion nombre;
-    t_list* parametros; // Cada una de las instrucciones
-    int cantidad_parametros;
-} t_instruccion;
-
-/*
-typedef struct {
-    char* nombre;
-    int length;
-} t_parametro;
-*/
-
 typedef enum {
     SET,  
     MOV_IN,
@@ -140,12 +108,29 @@ typedef enum {
     JNZ,
     RESIZE,
     COPY_STRING,
-    // ...
     WAIT,
     SIGNAL,
     IO_GEN_SLEEP,
-    IO_STDIN_READ
+    IO_STDIN_READ,
+    IO_STDOUT_WRITE,
+    IO_FS_CREATE,
+    IO_FS_DELETE,
+    IO_FS_TRUNCATE,
+    IO_FS_WRITE,
+    IO_FS_READ,
+    EXIT_INSTRUCCION
 } TipoInstruccion;
+
+typedef struct {
+    TipoInstruccion nombre;
+    t_list* parametros; // Cada una de las instrucciones
+    int cantidad_parametros;
+} t_instruccion;
+
+typedef struct {
+    char* nombre;
+    int length;
+} t_parametro;
 
 int iniciar_servidor(char*);
 int esperar_conexion(int);

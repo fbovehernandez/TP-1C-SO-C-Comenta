@@ -100,10 +100,10 @@ t_pcb* deserializar_pcb(t_buffer* buffer) {
     stream += sizeof(int);
     memcpy(&(pcb->quantum), stream, sizeof(int));
     stream += sizeof(int);
-    memcpy(&(pcb->estadoActual), stream, sizeof(enum Estado));
-    stream += sizeof(enum Estado);
-    memcpy(&(pcb->estadoAnterior), stream, sizeof(enum Estado));
-    stream += sizeof(enum Estado);
+    memcpy(&(pcb->estadoActual), stream, sizeof(Estado));
+    stream += sizeof(Estado);
+    memcpy(&(pcb->estadoAnterior), stream, sizeof(Estado));
+    stream += sizeof(Estado);
    // memcpy(&(pcb->registros), stream, sizeof(registros));
     // stream += sizeof(registros);
     // no sabemos si los registros se pasan asi ya que es otro puntero
@@ -131,7 +131,7 @@ void recibir(int client_dispatch) {
             case ENVIO_PCB:
                 t_pcb* pcb = deserializar_pcb(paquete->buffer);
                 imprimir_pcb(pcb);
-                ejecutar_pcb(pcb); // este ejecutar_pcb(pcb) seria el ejectuar_instrucciones(pcb)
+                ejecutar_pcb(pcb, client_dispatch); // este ejecutar_pcb(pcb) seria el ejectuar_instrucciones(pcb)
                 break;
             // case INSTRUCCION:
                //  t_instruccion* instruccion = deserializar_instruccion(paquete->buffer);

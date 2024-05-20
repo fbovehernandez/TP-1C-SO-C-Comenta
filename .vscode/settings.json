@@ -6,6 +6,7 @@
         "semaphore.h": "c",
         "config.h": "c",
         "log.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "stdio.h": "c"
     }
 }
