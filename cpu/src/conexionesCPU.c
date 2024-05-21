@@ -1,5 +1,7 @@
 #include "../include/conexionesCPU.h"
 
+int socket_memoria;
+
 /* 
 PUERTO_KERNEL=8010
 IP_KERNEL=127.0.0.1
@@ -131,7 +133,7 @@ void recibir(int client_dispatch) {
             case ENVIO_PCB:
                 t_pcb* pcb = deserializar_pcb(paquete->buffer);
                 imprimir_pcb(pcb);
-                ejecutar_pcb(pcb, client_dispatch); // este ejecutar_pcb(pcb) seria el ejectuar_instrucciones(pcb)
+                ejecutar_pcb(pcb, socket_memoria); // este ejecutar_pcb(pcb) seria el ejectuar_instrucciones(pcb)
                 break;
             // case INSTRUCCION:
                //  t_instruccion* instruccion = deserializar_instruccion(paquete->buffer);

@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <sys/socket.h>
 #include <string.h>
+#include <semaphore.h>
 #include <unistd.h>
 #include <netdb.h>
 #include <commons/log.h>
@@ -12,6 +13,7 @@
 #include <assert.h>
 #include <pthread.h>
 
+extern sem_t sem_wait_memoria;
 typedef struct {
     int PID;
     int path_length;

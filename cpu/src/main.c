@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
     char* puerto_memoria = config_get_string_value(config_CPU, "PUERTO_MEMORIA");
 
     // Aca lo conecto a memoria -> creo que esto SI deberia ser un hilo
-    int socket_memoria = conectar_memoria(IP_MEMORIA, puerto_memoria, logger_CPU);
+    socket_memoria = conectar_memoria(IP_MEMORIA, puerto_memoria, logger_CPU);
     
     // send(socket_memoria, &nuevo_mensaje, sizeof(int), 0); // Me conecto y envio un mensaje a memoria
     // close(socket_memoria);

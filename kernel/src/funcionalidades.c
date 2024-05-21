@@ -85,12 +85,14 @@ void INICIAR_PROCESO(char* path_instrucciones, t_sockets* sockets)
 {
     int pid_actual = obtener_siguiente_pid();
     printf("El pid del proceso es: %d\n", pid_actual);
+    // Primero envio el path de instruccion a memoria y luego el PCB...
+    enviar_path_a_memoria(path_instrucciones, sockets, pid_actual);
 
+    sleep(3); // Sacar esto
     t_pcb *pcb = crear_nuevo_pcb(pid_actual); // Aca dentro recibo el set de instrucciones del path
     // en el enunciado dice "en caso de que el grado de multiprogramacion lo permita"
 
     encolar_a_new(pcb);
-    enviar_path_a_memoria(path_instrucciones, sockets, pid_actual);
 }
 
 void* enviar_path_a_memoria(char* path_instrucciones, t_sockets* sockets, int pid) {
@@ -222,7 +224,7 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
 
     t_sockets* sockets = (t_sockets*)sockets_necesarios;
     int contexto_devolucion = 0;
-    t_pcb *pcb;
+    t_pcb *pcb = malloc(sizeof(t_pcb));
 
     int socket_CPU = sockets->socket_cpu;
     

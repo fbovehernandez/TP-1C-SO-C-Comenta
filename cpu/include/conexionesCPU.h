@@ -8,6 +8,7 @@
 #include "../../utils/include/logconfig.h"
 #include "operaciones.h"
 
+extern int socket_memoria;
 typedef struct {
     char* puerto_escucha;
     t_log* logger;

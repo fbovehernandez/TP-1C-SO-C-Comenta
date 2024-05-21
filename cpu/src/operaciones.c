@@ -4,7 +4,7 @@ t_log* logger;
 
 void ejecutar_pcb(t_pcb* pcb, int socket_memoria) {
     // Va a terminar cuando llegue a EXIT
-    while(1) {
+    while(pcb->program_counter < 9) { // Por ahora esto esta medio hecho para el culo, pero la idea es que yo de algun lado tengo que frenar
         // FETCH //
         pedir_instruccion_a_memoria(socket_memoria, pcb);
         recibir_instruccion(socket_memoria, pcb);
@@ -73,20 +73,46 @@ void recibir_instruccion(int socket_memoria, t_pcb* pcb) {
     t_instruccion* instruccion = malloc(sizeof(t_instruccion));
 
     // Primero recibimos el codigo de operacion
-    recv(socket_memoria, &(paquete->codigo_operacion), sizeof(uint8_t), 0);
+    printf("Esperando recibir instruccion...\n");
+
+    int bytes_recibidos = recv(socket_memoria, &(paquete->codigo_operacion), sizeof(codigo_operacion), 0);
+    printf("codigo %d: ", paquete->codigo_operacion); // Veo codigo a ver que onda
+
+    if (bytes_recibidos <= 0) {
+        printf("Error al recibir el codigo de operacion\n");
+        free(paquete->buffer);
+        free(paquete);
+        return;
+    }
 
     // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
     recv(socket_memoria, &(paquete->buffer->size), sizeof(uint32_t), 0);
+
+     if (bytes_recibidos <= 0) {
+        printf("Error al recibir el tamaño del buffer\n");
+        free(paquete->buffer);
+        free(paquete);
+        return;
+    }
+
     paquete->buffer->stream = malloc(paquete->buffer->size);
     recv(socket_memoria, paquete->buffer->stream, paquete->buffer->size, 0);
 
+    if (bytes_recibidos <= 0) {
+        printf("Error al recibir el contenido del buffer\n");
+        free(paquete->buffer->stream);
+        free(paquete->buffer);
+        free(paquete);
+        return;
+    }
 
     // Ahora en función del código recibido procedemos a deserializar el resto
     switch(paquete->codigo_operacion) {
         case ENVIO_INSTRUCCION:
+            printf("SE RECIBIO ALGO");
             instruccion = instruccion_deserializar(paquete->buffer);
             ejecutar_instruccion(instruccion, pcb);
-            free(instruccion);
+            // free(instruccion);
             break;
         default:
             printf("Error: Fallo!\n");
@@ -97,6 +123,7 @@ void recibir_instruccion(int socket_memoria, t_pcb* pcb) {
     free(paquete->buffer->stream);
     free(paquete->buffer);
     free(paquete);
+    free(instruccion);
 }
 
 /*
@@ -113,20 +140,24 @@ t_instruccion* instruccion_deserializar(t_buffer* buffer) {
     instruccion->parametros = list_create();
 
     void* stream = buffer->stream;
+
     // Deserializamos los campos que tenemos en el buffer
     memcpy(&(instruccion->nombre), stream, sizeof(TipoInstruccion));
     stream += sizeof(TipoInstruccion);
     memcpy(&(instruccion->cantidad_parametros), stream, sizeof(int));
     stream += sizeof(int);
     
+    // Podria estar mal
     for(int i=0; i<instruccion->cantidad_parametros; i++) {
         t_parametro* parametro = malloc(sizeof(t_parametro));
-        memcpy(&(parametro->length), stream, sizeof(int));
-        stream += sizeof(int);
-        memcpy(&(parametro->nombre), stream, sizeof(char) * parametro->length);
+        memcpy(&(parametro->length), stream, sizeof(uint32_t));
+        stream += sizeof(uint32_t);
+        parametro->nombre = malloc(sizeof(char) * parametro->length + 1);
+        memcpy(parametro->nombre, stream, sizeof(char) * parametro->length);
+        parametro->nombre[parametro->length] = '\0';
+        stream += parametro->length;
         printf("Parametro %s : ", parametro->nombre);
-        stream += sizeof(int);
-        
+
         list_add(instruccion->parametros, parametro);
     }
 
@@ -135,10 +166,11 @@ t_instruccion* instruccion_deserializar(t_buffer* buffer) {
 
 void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
  
-    log_info(logger, "PID: %d - Ejecutando: %d ", pcb->pid, instruccion->nombre);
+    // log_info(logger, "PID: %d - Ejecutando: %d ", pcb->pid, instruccion->nombre);
     
     TipoInstruccion nombreInstruccion = instruccion->nombre; // Set AX 1
     t_list* list_parametros = instruccion->parametros;
+
     switch(nombreInstruccion) {
         case SET: 
             // Obtengo los datos de la lista de parametros
@@ -202,7 +234,7 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
             break;
     }
     // Pongo log papra ver  si se  modifica
-    log_info(logger, "PID: %d - Finalizando %d", pcb->pid, instruccion->nombre);
+    // log_info(logger, "PID: %d - Finalizando %d", pcb->pid, instruccion->nombre);
     // TO DO: Check interrupt // 
 }
 

@@ -1,5 +1,7 @@
 #include "../include/sockets.h"
 
+sem_t sem_wait_memoria;
+
 // Ver esta... 
 void receiveMessagex(int socket_fd) {
     char buffer[1024] = {0};
