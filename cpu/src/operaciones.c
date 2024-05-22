@@ -4,10 +4,12 @@ t_log* logger;
 
 void ejecutar_pcb(t_pcb* pcb, int socket_memoria) {
     // Va a terminar cuando llegue a EXIT
-    while(pcb->program_counter < 10) { 
-    // si ponemos pcb->estadoActual == 4
-    // Por ahora veamos solo con 1
+
+    int total_instrucciones = pedir_cantidad_instrucciones_a_memoria(socket_memoria, pcb);
+
+    while(pcb->estadoActual <10) { // chicos si pueden hagan esta funcion para pedirle las instruc a memoria, hay que serializar :)
         // FETCH //
+
         pedir_instruccion_a_memoria(socket_memoria, pcb);
         //sem_wait(&sem_memoria_instruccion);
         recibir_instruccion(socket_memoria, pcb);
@@ -222,22 +224,21 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
             break;
     
         case RESIZE:
-          
             break;
         case COPY_STRING:
-           
             break;
         case WAIT:
-         
             break;
         case SIGNAL:
-          
             break;
         case IO_GEN_SLEEP:
-
             break;
         case IO_STDIN_READ:
-          
+            break;
+        case EXIT_INSTRUCCION:
+            // guardar_estado(pcb); -> No estoy seguro si esta es necesaria, pero de todas formas nos va a servir cuando se interrumpa por quantum
+            setear_registros_cpu();
+            enviar_fin_programa(pcb); // No hecha, seria enviarle la kernel para que haga lo suyo
             break;
         default:
             printf("Error: No existe ese tipo de intruccion\n");
@@ -246,6 +247,22 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
 
     // log_info(logger, "PID: %d - Finalizando %d", pcb->pid, instruccion->nombre);
     // TO DO: Check interrupt // 
+}
+
+// Deberia estar en otro lado
+void setear_registros_cpu() {
+    registros_cpu->AX = 0;
+    registros_cpu->BX = 0;
+    registros_cpu->CX = 0;
+    registros_cpu->DX = 0;
+
+    registros_cpu->EAX = 0;
+    registros_cpu->EBX = 0;
+    registros_cpu->ECX = 0;
+    registros_cpu->EDX = 0;
+
+    registros_cpu->SI = 0;
+    registros_cpu->DI = 0;
 }
 
 void* seleccionar_registro_cpu(char* nombreRegistro) { 
@@ -352,6 +369,7 @@ void sum(void* registroDestino, void* registroOrigen, bool es_8_bits, t_pcb* pcb
 ///////////////////////////////
 //////////  SUB  //////////////
 ///////////////////////////////
+
 void sub(void* registroDestino, void* registroOrigen, bool es_8_bits, t_pcb* pcb) {
     if(es_8_bits) {
         *(uint8_t*)registroDestino -= *(uint8_t*)registroOrigen;

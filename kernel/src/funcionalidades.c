@@ -50,8 +50,11 @@ void *interaccion_consola(t_sockets* sockets) {
             EJECUTAR_SCRIPT(/* pathing del conjunto de instrucciones*/);
             break;
         case 2:
-            INICIAR_PROCESO("/script_io_basico_1", sockets); // Ver problemas con caracteres como _ o /
-            // home/utnso/c-comenta/pruebas -> Esto tendria en memoria y lo uno con este que le mando
+            char path_ejecutable[100]; // chicos vean si pueden usar un getline aca, les dejo el problema je
+            printf("Ingrese el path del script a ejecutar %s\n", path_ejecutable);
+            scanf("%s", &path_ejecutable);
+            INICIAR_PROCESO(path_ejecutable, sockets); // Ver problemas con caracteres como _ o /
+            // home/utnso/c-comenta/pruebas -> Esto tendria en memoria y lo uno con este que le mando -> Ver sockets como variable global
             break;
         case 3:
             FINALIZAR_PROCESO();
@@ -89,6 +92,7 @@ void INICIAR_PROCESO(char* path_instrucciones, t_sockets* sockets)
     enviar_path_a_memoria(path_instrucciones, sockets, pid_actual);
 
     sleep(3); // Sacar esto
+
     t_pcb *pcb = crear_nuevo_pcb(pid_actual); // Aca dentro recibo el set de instrucciones del path
     // en el enunciado dice "en caso de que el grado de multiprogramacion lo permita"
 
@@ -283,8 +287,8 @@ t_pcb* proximo_a_ejecutar() { // Esta pensando solo para FIFO y RR
 
 /* 
 void esperar_cpu(t_pcb* pcb) {
-    //La cpu nos lo tiene que traer'
-    //Los codigos todavia no estan definidos en el .h
+    // La cpu nos lo tiene que traer'
+    // Los codigos todavia no estan definidos en el .h
     
     // ----> Hacer los sockets variables globales
 
@@ -299,7 +303,7 @@ void esperar_cpu(t_pcb* pcb) {
             // TODO
             break;
         case FIN_PROCESO:
-            // TODO
+            // TODO -> Aca hago la logica del EXIT de la cpu, liberar memoria, etc
             break;
     }
 }
