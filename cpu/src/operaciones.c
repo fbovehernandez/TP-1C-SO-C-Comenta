@@ -4,7 +4,7 @@ t_log* logger;
 
 void ejecutar_pcb(t_pcb* pcb, int socket_memoria) {
     // Va a terminar cuando llegue a EXIT
-    while(pcb->program_counter < 13) { // Por ahora esto esta medio hecho para el culo, pero la idea es que yo de algun lado tengo que frenar
+    while(pcb->program_counter < 10) { // Por ahora esto esta medio hecho para el culo, pero la idea es que yo de algun lado tengo que frenar
     // si ponemos pcb->estadoActual == 4
     // Por ahora veamos solo con 1
         // FETCH //
@@ -135,7 +135,10 @@ t_instruccion* instruccion_deserializar(t_buffer* buffer) {
     
     printf("Recibimos la instruccion de enum %d con %d parametros.\n", instruccion->nombre, instruccion->cantidad_parametros);
 
-    // Podria estar mal
+    if(instruccion->cantidad_parametros == 0) {
+        return instruccion;
+    }
+    
     for(int i=0; i<instruccion->cantidad_parametros; i++) {
         t_parametro* parametro = malloc(sizeof(t_parametro));
         memcpy(&(parametro->length), stream, sizeof(int));

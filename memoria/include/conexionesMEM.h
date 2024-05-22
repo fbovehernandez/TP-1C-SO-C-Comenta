@@ -18,7 +18,7 @@ typedef struct {
     t_log* logger;
 } t_config_memoria;
 
-const char* instruccion_a_string(TipoInstruccion tipo);
+char* instruccion_a_string(TipoInstruccion tipo);
 int recibir_operacion(int socket_cliente);
 void* handle_kernel(void* socket); //
 void* handle_cpu(void* socket);//

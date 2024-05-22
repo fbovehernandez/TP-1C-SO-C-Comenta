@@ -159,7 +159,7 @@ void print_instrucciones(char* pid, t_list* lista_instrucciones) {
     list_iterate(lista_instrucciones, (void*)print_instruccion); 
 }
 
-const char* instruccion_a_string(TipoInstruccion tipo) {
+char* instruccion_a_string(TipoInstruccion tipo) {
     switch (tipo) {
         case SET: return "SET";
         case MOV_IN: return "MOV_IN";
@@ -202,23 +202,13 @@ void crear_estructuras(char* path_completo, int pid) {
     }
     */
 
-    /*
-    
-int main() {
-    char buffer[1024];
-    printf("Enter a line: ");
-    fgets(buffer, sizeof(buffer), stdin);
-    printf("You entered: %s\n", buffer);
-    return 0;
-}*/
-
     t_list* instrucciones = list_create();
 
-    char* line;
-    //size_te_t bufsize = 0;
+    char* line = NULL;
+    //size_t bufsize = 0;
     size_t bufsize = 0; // Tamaño inicial del buffer
     
-    while ((fgets(&line, &bufsize, file)) != "") {
+    while ((getline(&line, &bufsize, file)) != -1) {
         printf("Esta es la linea: %s\n",line);
         if(strcmp(line, "\n") != 0) {
             //printf("Esta es la linea: %s\n", line);
@@ -308,12 +298,14 @@ t_instruccion* build_instruccion(char* line) {
 
     char* arg = strtok(NULL, " \n");
     
-    if(arg == NULL && instruccion->nombre != EXIT_INSTRUCCION) { // Esta ultima impresion podria ser por el EXIT final que no tiene argumentos
-        printf("El argumento es nulo!\n");
+    if(instruccion->nombre == EXIT_INSTRUCCION) { // Esta ultima impresion podria ser por el EXIT final que no tiene argumentos
+        printf("Estoy en EXIT\n");
+        instruccion->cantidad_parametros = 0;
+        return instruccion;
     }
 
     while(arg != NULL) {
-        t_parametro* parametro = malloc(sizeof(int) + string_length(strdup(arg)) * sizeof(char));
+        t_parametro* parametro = malloc(sizeof(int) + string_length(strdup(arg)) * sizeof(char)); // Aaca falta un free
 
         parametro->nombre = strdup(arg);
         parametro->length = string_length(arg);
@@ -384,7 +376,6 @@ typedef struct {
 } t_solicitud_instruccion;
 */
 
-
 void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu, int socket_cpu) {
     int pid = solicitud_cpu->pid;
     int pc = solicitud_cpu->pc;
@@ -410,11 +401,14 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu, int socket_cpu) 
 
     buffer->size = sizeof(TipoInstruccion) + sizeof(int);
 
-    for(int i=0; i<instruccion->cantidad_parametros; i++) {
-        t_parametro* parametro1 = malloc(sizeof(t_parametro));
-        parametro1 = list_get(instruccion->parametros, i);
-        //buffer->size += sizeof(uint32_t) + parametro1->length;
-        buffer->size += sizeof(int) + parametro1->length;
+    char* nombre_instruccion_string = instruccion_a_string(instruccion->nombre);
+    if(strcmp(nombre_instruccion_string, "EXIT_INSTRUCCION") != 0) {
+        for(int i=0; i<instruccion->cantidad_parametros; i++) {
+            // t_parametro* parametro1 = malloc(sizeof(t_parametro));
+            t_parametro* parametro1 = list_get(instruccion->parametros, i);
+            //buffer->size += sizeof(uint32_t) + parametro1->length;
+            buffer->size += sizeof(int) + parametro1->length;
+        }
     }
 
     buffer->offset = 0;                                       
@@ -426,29 +420,31 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu, int socket_cpu) 
     buffer->offset += sizeof(TipoInstruccion);
     memcpy(stream + buffer->offset, &instruccion->cantidad_parametros, sizeof(int));  // Copiar cantidad_parametros
     buffer->offset += sizeof(int);
-    
-    for(int i = 0; i < instruccion->cantidad_parametros; i++) {
-        t_parametro* parametro2 = malloc(sizeof(t_parametro));
-        //t_parametro* parametro2 = list_get(instruccion->parametros, i);
-        parametro2 = list_get(instruccion->parametros, i);
 
-        printf("Este es el nombre del parametro %d que agarro de la lista: %s\n", i, parametro2->nombre);
+    if(strcmp(nombre_instruccion_string, "EXIT_INSTRUCCION") != 0) {
+        for(int i = 0; i < instruccion->cantidad_parametros; i++) {
+            // t_parametro* parametro2 = malloc(sizeof(t_parametro));
+            t_parametro* parametro2 = list_get(instruccion->parametros, i);
+            // parametro2 = list_get(instruccion->parametros, i);
 
-        /*uint32_t param_length = parametro2->length;
-        memcpy(stream + buffer->offset, &param_length, sizeof(uint32_t));
-        buffer->offset += sizeof(uint32_t); 
-        memcpy(stream + buffer->offset, parametro2->nombre, param_length);
-        buffer->offset += param_length;
-        */
+            printf("Este es el nombre del parametro %d que agarro de la lista: %s\n", i, parametro2->nombre);
 
-        memcpy(stream + buffer->offset, &(parametro2->length), sizeof(int));
-        buffer->offset += sizeof(int); 
-        memcpy(stream + buffer->offset, parametro2->nombre, parametro2->length);
-        buffer->offset += parametro2->length;
+            /*uint32_t param_length = parametro2->length;
+            memcpy(stream + buffer->offset, &param_length, sizeof(uint32_t));
+            buffer->offset += sizeof(uint32_t); 
+            memcpy(stream + buffer->offset, parametro2->nombre, param_length);
+            buffer->offset += param_length;
+            */
 
-        // free(parametro2->nombre);
+            memcpy(stream + buffer->offset, &(parametro2->length), sizeof(int));
+            buffer->offset += sizeof(int); 
+            memcpy(stream + buffer->offset, parametro2->nombre, parametro2->length);
+            buffer->offset += parametro2->length;
+
+            // free(parametro2->nombre);
+        }
     }
- 
+
     buffer->stream = stream;
 
     paquete->codigo_operacion = ENVIO_INSTRUCCION; 
