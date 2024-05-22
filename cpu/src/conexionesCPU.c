@@ -106,8 +106,8 @@ t_pcb* deserializar_pcb(t_buffer* buffer) {
     stream += sizeof(Estado);
     memcpy(&(pcb->estadoAnterior), stream, sizeof(Estado));
     stream += sizeof(Estado);
-   // memcpy(&(pcb->registros), stream, sizeof(registros));
-    // stream += sizeof(registros);
+    memcpy(&(pcb->registros), stream, sizeof(t_registros));
+    stream += sizeof(t_registros);
     // no sabemos si los registros se pasan asi ya que es otro puntero
    
     return pcb;
@@ -123,10 +123,12 @@ void recibir(int client_dispatch) {
         recv(client_dispatch, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
         printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
 
-        recv(client_dispatch, &(paquete->buffer->size), sizeof(int), 0);
+        //recv(client_dispatch, &(paquete->buffer->size), sizeof(int), 0);
+        recv(client_dispatch, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
         paquete->buffer->stream = malloc(paquete->buffer->size);
 
-        recv(client_dispatch, paquete->buffer->stream, paquete->buffer->size, 0);
+        //recv(client_dispatch, paquete->buffer->stream, paquete->buffer->size, 0);
+        recv(client_dispatch, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
         // codigo_operacion = recibir_operacion(client_dispatch);
 
         switch (paquete->codigo_operacion) {
@@ -153,9 +155,9 @@ void recibir(int client_dispatch) {
 }
 
 void imprimir_pcb(t_pcb* pcb) {
-    printf("El pid es %d : ", pcb->pid);
-    printf("El program counter es %d : ", pcb->program_counter);
-    printf("El quantum es %d : ", pcb->quantum);
+    printf("El pid es: %d\n", pcb->pid);
+    printf("El program counter es: %d\n", pcb->program_counter);
+    printf("El quantum es: %d\n", pcb->quantum);
     // printf("El estado actual es %s : ", pcb->estadoActual);
     // printf("El estado anterior es %s : ", pcb->estadoAnterior);
     // printf("Los registros son %d : ", pcb->registros); //

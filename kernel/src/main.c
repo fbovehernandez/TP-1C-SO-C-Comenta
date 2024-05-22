@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
     sem_init(&sem_hay_para_planificar, 0, 0);
     sem_init(&sem_hay_pcb_esperando_ready, 0, 0);
     sem_init(&sem_grado_multiprogramacion, 0, grado_multiprogramacion); // No testeado
-    sem_init(&sem_wait_memoria, 0, 0);
+    sem_init(&sem_memoria_instruccion, 0, 0);
 
     // Hilo 1 -> Hacer un hilo para gestionar la comunicacion con memoria?
     int socket_memoria_kernel = conectar_kernel_memoria(datos_kernel->ip_mem, datos_kernel->puerto_memoria, logger_kernel);

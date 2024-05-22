@@ -13,7 +13,8 @@
 #include <assert.h>
 #include <pthread.h>
 
-extern sem_t sem_wait_memoria;
+extern sem_t sem_memoria_instruccion;
+
 typedef struct {
     int PID;
     int path_length;
@@ -120,13 +121,14 @@ typedef enum {
     IO_FS_TRUNCATE,
     IO_FS_WRITE,
     IO_FS_READ,
-    EXIT_INSTRUCCION
+    EXIT_INSTRUCCION,
+    ERROR_INSTRUCCION
 } TipoInstruccion;
 
 typedef struct {
     TipoInstruccion nombre;
-    t_list* parametros; // Cada una de las instrucciones
     int cantidad_parametros;
+    t_list* parametros; // Cada una de las instrucciones
 } t_instruccion;
 
 typedef struct {

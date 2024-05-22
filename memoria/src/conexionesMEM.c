@@ -48,13 +48,17 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
         // Primero recibimos el codigo de operacion
         printf("Esperando recibir paquete de CPU\n");
-        recv(socket_cpu, &(paquete->codigo_operacion), sizeof(int), 0);
-        printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
+        //recv(socket_cpu, &(paquete->codigo_operacion), sizeof(int), 0);
+        //sem_wait(&sem_memoria_instruccion);
+        recv(socket_cpu, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
+        printf("Recibi el codigo de operacion de CPU: %d\n", paquete->codigo_operacion);
 
         // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
-        recv(socket_cpu, &(paquete->buffer->size), sizeof(int), 0);
+        //recv(socket_cpu, &(paquete->buffer->size), sizeof(int), 0);
+        recv(socket_cpu, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
         paquete->buffer->stream = malloc(paquete->buffer->size);
-        recv(socket_cpu, paquete->buffer->stream, paquete->buffer->size, 0);
+        //recv(socket_cpu, paquete->buffer->stream, paquete->buffer->size, 0);
+        recv(socket_cpu, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
 
         switch(paquete->codigo_operacion) { // Ver si no es mejor recibir primero el cod-op y adentro recibimos el resto (Cambiaria la forma de serializar, ya no habria un "Paquete") 
             case QUIERO_INSTRUCCION:
@@ -93,13 +97,16 @@ void* handle_kernel(void* socket) {
 
         // Primero recibimos el codigo de operacion
         printf("Esperando recibir paquete de kernel\n");
-        recv(socket_kernel, &(paquete->codigo_operacion), sizeof(int), 0);
-        printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
+        //recv(socket_kernel, &(paquete->codigo_operacion), sizeof(int), 0);
+        recv(socket_kernel, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
+        printf("Recibi el codigo de operacion de kernel: %d\n", paquete->codigo_operacion);
 
         // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
-        recv(socket_kernel, &(paquete->buffer->size), sizeof(int), 0);
+        //recv(socket_kernel, &(paquete->buffer->size), sizeof(int), 0);
+        recv(socket_kernel, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
         paquete->buffer->stream = malloc(paquete->buffer->size);
-        recv(socket_kernel, paquete->buffer->stream, paquete->buffer->size, 0);
+        //recv(socket_kernel, paquete->buffer->stream, paquete->buffer->size, 0);
+        recv(socket_kernel, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
 
         // Ahora en función del código recibido procedemos a deserializar el resto
         switch(paquete->codigo_operacion) {
@@ -107,11 +114,11 @@ void* handle_kernel(void* socket) {
                 t_path* path = deserializar_path(paquete->buffer);
                 imprimir_path(path);
                 path_completo = agrupar_path(path); // Ojo con el SEG_FAULT
-                printf("CUIDADO QUE IMPRIMO EL PATH: %s", path_completo);
+                printf("CUIDADO QUE IMPRIMO EL PATH: %s\n", path_completo);
 
                 crear_estructuras(path_completo, path->PID);
 
-                printf("Cuidado que voy a imprimir el diccionario...");
+                printf("Cuidado que voy a imprimir el diccionario...\n");
 
                 imprimir_diccionario(); // Imprime todo, sin PID especifico...
 
@@ -136,13 +143,13 @@ void imprimir_diccionario() {
 }
 
 void print_parametros(t_parametro* parametro) {
-    printf("Parametro %s \n", parametro->nombre);
-    printf("Parametro length %d \n", parametro->length);
+    printf("Parametro: %s \n", parametro->nombre);
+    printf("Parametro length: %d \n", parametro->length);
 }
 
 void print_instruccion(t_instruccion* instruccion) {
-    printf("Nombre instruccion %s: \n", instruccion_a_string(instruccion->nombre)); // Ver esto
-    printf("Cantidad parametros %d: \n", instruccion->cantidad_parametros);
+    printf("Nombre instruccion: %s\n", instruccion_a_string(instruccion->nombre)); // Ver esto
+    printf("Cantidad parametros: %d\n", instruccion->cantidad_parametros);
     list_iterate(instruccion->parametros, (void*)print_parametros);
 }
 
@@ -194,13 +201,27 @@ void crear_estructuras(char* path_completo, int pid) {
     	}
     }
     */
+
+    /*
+    
+int main() {
+    char buffer[1024];
+    printf("Enter a line: ");
+    fgets(buffer, sizeof(buffer), stdin);
+    printf("You entered: %s\n", buffer);
+    return 0;
+}*/
+
     t_list* instrucciones = list_create();
 
-    char* line = NULL;
+    char* line;
+    //size_te_t bufsize = 0;
     size_t bufsize = 0; // Tamaño inicial del buffer
-
-    while ((getline(&line, &bufsize, file)) != -1) {
+    
+    while ((fgets(&line, &bufsize, file)) != "") {
+        printf("Esta es la linea: %s\n",line);
         if(strcmp(line, "\n") != 0) {
+            //printf("Esta es la linea: %s\n", line);
             t_instruccion* instruccion = build_instruccion(line);
             // printf("Instruccion creada %s\n" , instruccion_a_string(instruccion->nombre));
             list_add(instrucciones, instruccion);
@@ -208,7 +229,8 @@ void crear_estructuras(char* path_completo, int pid) {
         }
     }
     
-    char* pid_char = malloc(20); // sizeof(int) + 2 VER
+    //char* pid_char = malloc(20); // sizeof(int) + 2 VER
+    char* pid_char = malloc(sizeof(char) * 4); // Un char es de 1B, un int es de 4B
     sprintf(pid_char, "%d", pid);
     
     // char* pid_char = pid + '0'; 
@@ -219,7 +241,7 @@ void crear_estructuras(char* path_completo, int pid) {
     dictionary_put(diccionario_instrucciones, pid_char, instrucciones);
 
     // ->  
-    free(pid_char);
+    //free(pid_char);
     free(line);
     fclose(file);
 }
@@ -266,7 +288,7 @@ TipoInstruccion pasar_a_enum(char* nombre) {
     }
 
     // printf("Salio mal la lectura de instruccion.\n");
-    return EXIT_INSTRUCCION; // Ver esto
+    return ERROR_INSTRUCCION; // Ver esto
 }
 
 //Hay que construir bien la instruccion
@@ -291,7 +313,7 @@ t_instruccion* build_instruccion(char* line) {
     }
 
     while(arg != NULL) {
-        t_parametro* parametro = malloc(sizeof(int) + sizeof(char) * string_length(strdup(arg)));
+        t_parametro* parametro = malloc(sizeof(int) + string_length(strdup(arg)) * sizeof(char));
 
         parametro->nombre = strdup(arg);
         parametro->length = string_length(arg);
@@ -344,13 +366,6 @@ void imprimir_path(t_path* path) {
     printf("Path: %s\n", path->path);
 }
 
-/*
-typedef struct {
-    int pid;
-    int pc;
-} t_solicitud_instruccion;
-*/
-
 t_solicitud_instruccion* deserializar_solicitud(t_buffer* buffer) {
     t_solicitud_instruccion* instruccion = malloc(sizeof(t_solicitud_instruccion));
     printf("Deserializando solicitud\n");
@@ -362,6 +377,14 @@ t_solicitud_instruccion* deserializar_solicitud(t_buffer* buffer) {
     return instruccion;
 }
 
+/*
+typedef struct {
+    int pid;
+    int pc;
+} t_solicitud_instruccion;
+*/
+
+
 void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu, int socket_cpu) {
     int pid = solicitud_cpu->pid;
     int pc = solicitud_cpu->pc;
@@ -369,12 +392,15 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu, int socket_cpu) 
     printf("PID: %d\n", pid);
     printf("PC: %d\n", pc);
 
-    char* pid_char = malloc(20);
+    //char* pid_char = malloc(20);
+    char* pid_char = malloc(sizeof(char) * 4); // El pid es un int, los ints ocupan 4 bytes y cada char ocupa un 1 byte
     sprintf(pid_char, "%d", pid);
+
+    printf("PID en char*: %s\n", pid_char);
 
     t_list* instrucciones = dictionary_get(diccionario_instrucciones, pid_char);
 
-    free(pid_char);
+    //free(pid_char); // vamos a necesitar esta variable?
 
     t_instruccion* instruccion = list_get(instrucciones, pc);
     printf("Instruccion a enviar: %s\n", instruccion_a_string(instruccion->nombre));
@@ -385,9 +411,10 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu, int socket_cpu) 
     buffer->size = sizeof(TipoInstruccion) + sizeof(int);
 
     for(int i=0; i<instruccion->cantidad_parametros; i++) {
-        t_parametro* parametro1 = list_get(instruccion->parametros, i);
-        buffer->size += sizeof(uint32_t) + parametro1->length;
-        // buffer->size += sizeof(char) * parametro1->length;
+        t_parametro* parametro1 = malloc(sizeof(t_parametro));
+        parametro1 = list_get(instruccion->parametros, i);
+        //buffer->size += sizeof(uint32_t) + parametro1->length;
+        buffer->size += sizeof(int) + parametro1->length;
     }
 
     buffer->offset = 0;                                       
@@ -400,15 +427,24 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu, int socket_cpu) 
     memcpy(stream + buffer->offset, &instruccion->cantidad_parametros, sizeof(int));  // Copiar cantidad_parametros
     buffer->offset += sizeof(int);
     
-    
     for(int i = 0; i < instruccion->cantidad_parametros; i++) {
-        t_parametro* parametro2 = list_get(instruccion->parametros, i);
+        t_parametro* parametro2 = malloc(sizeof(t_parametro));
+        //t_parametro* parametro2 = list_get(instruccion->parametros, i);
+        parametro2 = list_get(instruccion->parametros, i);
 
-        uint32_t param_length = parametro2->length;
+        printf("Este es el nombre del parametro %d que agarro de la lista: %s\n", i, parametro2->nombre);
+
+        /*uint32_t param_length = parametro2->length;
         memcpy(stream + buffer->offset, &param_length, sizeof(uint32_t));
         buffer->offset += sizeof(uint32_t); 
         memcpy(stream + buffer->offset, parametro2->nombre, param_length);
         buffer->offset += param_length;
+        */
+
+        memcpy(stream + buffer->offset, &(parametro2->length), sizeof(int));
+        buffer->offset += sizeof(int); 
+        memcpy(stream + buffer->offset, parametro2->nombre, parametro2->length);
+        buffer->offset += parametro2->length;
 
         // free(parametro2->nombre);
     }
@@ -419,17 +455,25 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu, int socket_cpu) 
     paquete->buffer = buffer;
 
     // Armamos el stream a enviar
-    void* a_enviar = malloc(buffer->size + sizeof(codigo_operacion) + sizeof(uint32_t));
+    void* a_enviar = malloc(buffer->size + sizeof(codigo_operacion) + sizeof(int));
+    //void* a_enviar = malloc(buffer->size + sizeof(uint8_t) + sizeof(uint32_t));
     int offset = 0;
 
     memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(codigo_operacion));
     offset += sizeof(codigo_operacion);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(uint32_t));
-    offset += sizeof(uint32_t);
+    
+    /*memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(uint32_t));
+    offset += sizeof(uint32_t);*/
+    
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+    offset += sizeof(int);
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
     // Por último enviamos
-    send(socket_cpu, a_enviar, buffer->size + sizeof(codigo_operacion) + sizeof(uint32_t), 0);
+    //send(socket_cpu, a_enviar, buffer->size + sizeof(uint8_t) + sizeof(uint32_t), 0);
+    //sem_post(&sem_memoria_instruccion);
+    
+    send(socket_cpu, a_enviar, buffer->size + sizeof(codigo_operacion) + sizeof(int), 0);
 
     // Liberamos memoria
     free(a_enviar);

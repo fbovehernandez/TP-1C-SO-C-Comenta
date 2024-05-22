@@ -1,6 +1,6 @@
 #include "../include/sockets.h"
 
-sem_t sem_wait_memoria;
+sem_t sem_memoria_instruccion;
 
 // Ver esta... 
 void receiveMessagex(int socket_fd) {
