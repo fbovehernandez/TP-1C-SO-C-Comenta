@@ -26,32 +26,6 @@ int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) 
     return memoriafd;
 }
 
-
-/*void* handle_dispatch(void* socket_dispatch) {
-    int socket_kernel = (intptr_t)socket_dispatch;
-    // despues veremos que hace
-    free(socket_dispatch);
-    printf("Gestionando dispatcher\n");  
-    int cod_op;
-    
-    while(1) {
-        cod_op = recibir_operacion(socket_kernel);
-        switch(cod_op) {
-            case 1:
-                recibir_pcb_de_kernel(socket_kernel);
-                break;
-            case 7:
-                printf("Se recibio 7 en dispatcher\n");
-                break;
-            default:
-                printf("Rompio todo en dispatcher?\n");
-                close(socket_kernel);
-                return NULL;
-        }
-    }
-    return NULL;
-}*/
-
 void* handle_interrupt(void* socket) {
     printf("Todavia no hacemos nada");
     return NULL;
@@ -92,7 +66,7 @@ void* iniciar_servidor_dispatch(void* datos_dispatch) {
 
 t_pcb* deserializar_pcb(t_buffer* buffer) {
     t_pcb* pcb = malloc(sizeof(t_pcb));
-    // Registros* registros = malloc(sizeof(Registros));
+    pcb->registros = malloc(sizeof(t_registros)); // Acordarse de liberar memoria
 
     void* stream = buffer->stream;
     // Deserializamos los campos que tenemos en el buffer
@@ -106,11 +80,47 @@ t_pcb* deserializar_pcb(t_buffer* buffer) {
     stream += sizeof(Estado);
     memcpy(&(pcb->estadoAnterior), stream, sizeof(Estado));
     stream += sizeof(Estado);
-    memcpy(&(pcb->registros), stream, sizeof(t_registros));
-    stream += sizeof(t_registros);
-    // no sabemos si los registros se pasan asi ya que es otro puntero
+    // Deserializo los registros ...
+
+    memcpy(&(pcb->registros->AX), stream, sizeof(uint8_t));
+    stream += sizeof(uint8_t);
+    memcpy(&(pcb->registros->BX), stream, sizeof(uint8_t));
+    stream += sizeof(uint8_t);
+    memcpy(&(pcb->registros->CX), stream, sizeof(uint8_t));
+    stream += sizeof(uint8_t);
+    memcpy(&(pcb->registros->DX), stream, sizeof(uint8_t));
+    stream += sizeof(uint8_t);
+
+    memcpy(&(pcb->registros->EAX), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(pcb->registros->EBX), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(pcb->registros->ECX), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(pcb->registros->EDX), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+
+    memcpy(&(pcb->registros->SI), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(pcb->registros->DI), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
    
     return pcb;
+}
+
+void cargar_registros(t_registros* registros_pcb) {
+    registros_cpu->AX = registros_pcb->AX;
+    registros_cpu->BX = registros_pcb->BX;
+    registros_cpu->CX = registros_pcb->CX;
+    registros_cpu->DX = registros_pcb->DX;
+
+    registros_cpu->EAX = registros_pcb->EAX;
+    registros_cpu->EBX = registros_pcb->EBX;
+    registros_cpu->ECX = registros_pcb->ECX;
+    registros_cpu->EDX = registros_pcb->EDX;
+
+    registros_cpu->SI = registros_pcb->SI;
+    registros_cpu->DI = registros_pcb->DI;
 }
 
 void recibir(int client_dispatch) {
@@ -134,13 +144,10 @@ void recibir(int client_dispatch) {
         switch (paquete->codigo_operacion) {
             case ENVIO_PCB:
                 t_pcb* pcb = deserializar_pcb(paquete->buffer);
+                cargar_registros(pcb->registros);
                 imprimir_pcb(pcb);
                 ejecutar_pcb(pcb, socket_memoria); // este ejecutar_pcb(pcb) seria el ejectuar_instrucciones(pcb)
                 break;
-            // case INSTRUCCION:
-               //  t_instruccion* instruccion = deserializar_instruccion(paquete->buffer);
-               //  ejecutar_instruccion(instruccion);
-               // break;
             default:
                 break;
         }
@@ -149,9 +156,6 @@ void recibir(int client_dispatch) {
         free(paquete->buffer);
         free(paquete);
     }
-        
-    // ejecutar_pcb(pcb);/ / -> Otra funcion?
-    
 }
 
 void imprimir_pcb(t_pcb* pcb) {
@@ -160,7 +164,18 @@ void imprimir_pcb(t_pcb* pcb) {
     printf("El quantum es: %d\n", pcb->quantum);
     // printf("El estado actual es %s : ", pcb->estadoActual);
     // printf("El estado anterior es %s : ", pcb->estadoAnterior);
-    // printf("Los registros son %d : ", pcb->registros); //
+    printf("Registro AX: %u\n", pcb->registros->AX);
+    printf("Registro BX: %u\n", pcb->registros->BX);
+    printf("Registro CX: %u\n", pcb->registros->CX);
+    printf("Registro DX: %u\n", pcb->registros->DX);
+
+    printf("Registro EAX: %u\n", pcb->registros->EAX);
+    printf("Registro EBX: %u\n", pcb->registros->EBX);
+    printf("Registro ECX: %u\n", pcb->registros->ECX);
+    printf("Registro EDX: %u\n", pcb->registros->EDX);
+
+    printf("Registro SI: %u\n", pcb->registros->SI);
+    printf("Registro DI: %u\n", pcb->registros->DI);
 }
 
 // Hace lo mismo que dispatch pero con interrupt (POR AHORA)
@@ -195,5 +210,3 @@ t_config_cpu* iniciar_datos(char* escucha_fd, t_log* logger_CPU) {
 
     return cpu_server;
 }
-
-//TO DO: Toda la funcion

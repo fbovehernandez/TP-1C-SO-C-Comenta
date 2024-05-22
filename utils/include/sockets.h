@@ -76,6 +76,7 @@ typedef struct {
 
 } t_registros;
 
+extern t_registros* registros_cpu; // Por ahora la pongo aca, despues hay que sacarla para que solo la use la CPU
 
 /*
 typedef struct registros_cpu {
@@ -142,5 +143,6 @@ void corroborar_exito(int, char*);
 void sendMessage(int socket_fd);
 void receiveMessagex(int socket_fd);
 int crear_conexion(char *ip, char* puerto, int valor);
+t_registros* inicializar_registros_cpu(t_registros* registro_pcb);
 
 #endif // SOCKET_H

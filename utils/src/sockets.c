@@ -1,6 +1,7 @@
 #include "../include/sockets.h"
 
 sem_t sem_memoria_instruccion;
+t_registros* registros_cpu;
 
 // Ver esta... 
 void receiveMessagex(int socket_fd) {
@@ -117,6 +118,24 @@ int esperar_conexion(int socket_servidor) {
 
 void liberar_conexion(int socket) {
 	close(socket);
+}
+
+t_registros* inicializar_registros_cpu(t_registros* registro_pcb) {
+
+    registro_pcb->AX = 0;
+    registro_pcb->BX = 0;
+    registro_pcb->CX = 0;
+    registro_pcb->DX = 0;
+
+    registro_pcb->EAX = 0;
+    registro_pcb->EBX = 0;
+    registro_pcb->ECX = 0;
+    registro_pcb->EDX = 0;
+
+    registro_pcb->SI = 0;
+    registro_pcb->DI = 0;
+
+    return registro_pcb;
 }
 
 /* 

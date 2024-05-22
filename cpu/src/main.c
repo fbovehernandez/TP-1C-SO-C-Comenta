@@ -13,6 +13,9 @@ int main(int argc, char* argv[]) {
     char* IP_MEMORIA     = config_get_string_value(config_CPU, "IP_MEMORIA");
     char* puerto_memoria = config_get_string_value(config_CPU, "PUERTO_MEMORIA");
 
+    registros_cpu = malloc(sizeof(t_registros));
+    registros_cpu = inicializar_registros_cpu(registros_cpu);
+
     // Aca lo conecto a memoria -> creo que esto SI deberia ser un hilo
     socket_memoria = conectar_memoria(IP_MEMORIA, puerto_memoria, logger_CPU);
     

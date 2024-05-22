@@ -355,9 +355,9 @@ t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
     printf("Llenando buffer...");
 
     buffer->size = sizeof(int) * 3 
-                + sizeof(Estado) * 2/*
+                + sizeof(Estado) * 2
                 + sizeof(uint8_t) * 4
-                + sizeof(uint32_t) * 6*/;
+                + sizeof(uint32_t) * 6;
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
@@ -374,10 +374,30 @@ t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
     buffer->offset += sizeof(Estado);
     memcpy(stream + buffer->offset, &pcb->estadoAnterior, sizeof(Estado));
     buffer->offset += sizeof(Estado);
-    /*memcpy(stream + buffer->offset, &pcb->registros->AZ, sizeof(t_registros));
-    buffer->offset += sizeof(t_registros);
-    memcpy(stream + buffer->offset, &pcb->registros, sizeof(t_registros));
-    buffer->offset += sizeof(t_registros);*/
+    // Serializo los registros...
+
+    memcpy(stream + buffer->offset, &pcb->registros->AX, sizeof(uint8_t));
+    buffer->offset += sizeof(uint8_t);
+    memcpy(stream + buffer->offset, &pcb->registros->BX, sizeof(uint8_t));
+    buffer->offset += sizeof(uint8_t);
+    memcpy(stream + buffer->offset, &pcb->registros->CX, sizeof(uint8_t));
+    buffer->offset += sizeof(uint8_t);
+    memcpy(stream + buffer->offset, &pcb->registros->DX, sizeof(uint8_t));
+    buffer->offset += sizeof(uint8_t);
+
+    memcpy(stream + buffer->offset, &pcb->registros->EAX, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+    memcpy(stream + buffer->offset, &pcb->registros->EBX, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+    memcpy(stream + buffer->offset, &pcb->registros->ECX, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+    memcpy(stream + buffer->offset, &pcb->registros->EDX, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+
+    memcpy(stream + buffer->offset, &pcb->registros->SI, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+    memcpy(stream + buffer->offset, &pcb->registros->DI, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
 
     buffer->stream = stream;
 
@@ -388,35 +408,37 @@ t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
 // Aca se desarma el path y se obtienen las instrucciones y se le pasan a memoria para que esta lo guarde en su tabla de paginas de este proceso
 t_pcb *crear_nuevo_pcb(int pid){
     t_pcb *pcb = malloc(sizeof(t_pcb));
+    t_registros* registros_pcb = malloc(sizeof(t_registros));
 
     pcb->pid = pid;
     pcb->program_counter = 0; // Deberia ser un num de instruccion de memoria?
     pcb->quantum = quantum;   // Esto lo saco del config
     pcb->estadoActual = NEW;
     pcb->estadoAnterior = NEW;
-    // pcb->registros = inicializar_registros_cpu();
+    pcb->registros = inicializar_registros_cpu(registros_pcb);
 
     return pcb;
 }
 
-t_registros* inicializar_registros_cpu() {
-    t_registros* registro_cpu = malloc(sizeof(t_registros));
+/* 
+t_registros* inicializar_registros_cpu(t_registros* registro_pcb) {
 
-    registro_cpu->AX = 0;
-    registro_cpu->BX = 0;
-    registro_cpu->CX = 0;
-    registro_cpu->DX = 0;
+    registro_pcb->AX = 0;
+    registro_pcb->BX = 0;
+    registro_pcb->CX = 0;
+    registro_pcb->DX = 0;
 
-    registro_cpu->EAX = 0;
-    registro_cpu->EBX = 0;
-    registro_cpu->ECX = 0;
-    registro_cpu->EDX = 0;
+    registro_pcb->EAX = 0;
+    registro_pcb->EBX = 0;
+    registro_pcb->ECX = 0;
+    registro_pcb->EDX = 0;
 
-    registro_cpu->SI = 0;
-    registro_cpu->DI = 0;
+    registro_pcb->SI = 0;
+    registro_pcb->DI = 0;
 
-    return registro_cpu;
+    return registro_pcb;
 }
+*/
 
 /* 
 void* recibir_peticion_de_cpu() {

@@ -33,6 +33,7 @@ t_config_cpu* iniciar_datos(char* escucha_fd, t_log* logger_CPU);
 void* recibir_pcb_de_kernel(int socket_kernel);
 t_pcb* deserializar_pcb(t_buffer* buffer);
 void recibir(int socket);
+void cargar_registros(t_registros* registros_pcb);
 void imprimir_pcb(t_pcb* pcb);
 
 #endif // CONEXIONESCPU_H

@@ -15,6 +15,7 @@ void recibir_instruccion(int socket_memoria, t_pcb* pcb);
 t_instruccion* instruccion_deserializar(t_buffer* buffer);
 void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb);
 void* seleccionar_registro(char* nombreRegistro, t_pcb *pcb);
+void* seleccionar_registro_cpu(char* nombreRegistro);
 //bool todosSonDigitosDe(char* valor);
 bool es_de_8_bits(char* registro);
 void set(void* registro, uint32_t valor, bool es_8_bits);
