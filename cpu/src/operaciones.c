@@ -1,21 +1,67 @@
 #include "../include/operaciones.h"
 
 t_log* logger;
+t_cantidad_instrucciones* cantidad_instrucciones;
 
 void ejecutar_pcb(t_pcb* pcb, int socket_memoria) {
-    // Va a terminar cuando llegue a EXIT
+    pedir_cantidad_instrucciones_a_memoria(socket_memoria);
+    recibir(socket_memoria, pcb); // recibir cantidad de instrucciones
 
-    int total_instrucciones = pedir_cantidad_instrucciones_a_memoria(socket_memoria, pcb);
-
-    while(pcb->estadoActual <10) { // chicos si pueden hagan esta funcion para pedirle las instruc a memoria, hay que serializar :)
-        // FETCH //
-
+    while(pcb->estadoActual < cantidad_instrucciones) { 
         pedir_instruccion_a_memoria(socket_memoria, pcb);
-        //sem_wait(&sem_memoria_instruccion);
-        recibir_instruccion(socket_memoria, pcb);
-        
+        //sem_wait(&sem_memori, pcbtr 
+        recibir(socket_memoria,pcb); // recibir cada instruccion
         pcb->program_counter++;
     }
+}
+
+void pedir_cantidad_instrucciones_a_memoria(int socket_memoria) {
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+    t_cantidad_instrucciones* cantidad = malloc(sizeof(t_cantidad_instrucciones));
+
+    buffer->size = sizeof(int);
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    void* stream = buffer->stream;
+   
+    buffer->stream = stream;
+
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+
+    paquete->codigo_operacion = CANTIDAD_INSTRUCCIONES; // Podemos usar una constante por operación
+    paquete->buffer = buffer; // Nuestro buffer de antes.
+
+    // Armamos el stream a enviar
+    void* a_enviar = malloc(buffer->size + sizeof(int));
+    int offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(uint8_t));
+
+    offset += sizeof(uint8_t);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    // Por último enviamos
+    send(socket_memoria, a_enviar, buffer->size + sizeof(int), 0);
+
+    // No nos olvidamos de liberar la memoria que ya no usaremos
+    free(a_enviar);
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+}       
+
+t_cantidad_instrucciones* cantidad_instrucciones_serializar(t_buffer* buffer) {
+    t_cantidad_instrucciones* cantidad_instrucciones = malloc(sizeof(t_cantidad_instrucciones));
+
+    void* stream = buffer->stream;
+    // Deserializamos los campos que tenemos en el buffer
+    memcpy(&(cantidad_instrucciones->cantidad), stream, sizeof(int));
+    stream += sizeof(int);
+
+    return cantidad_instrucciones;
 }
 
 // Manda a memoria el pcb, espera una instruccion y la devuelve
@@ -71,11 +117,9 @@ t_buffer* llenar_buffer_solicitud_instruccion(t_solicitud_instruccion* solicitud
     return buffer;
 }
 
-void recibir_instruccion(int socket_memoria, t_pcb* pcb) {
+void recibir(int socket_memoria,t_pcb* pcb) {
     t_paquete* paquete = malloc(sizeof(t_paquete));
     paquete->buffer = malloc(sizeof(t_buffer));
-
-    t_instruccion* instruccion = malloc(sizeof(t_instruccion));
 
     // Primero recibimos el codigo de operacion
     printf("Esperando recibir instruccion...\n");
@@ -92,8 +136,13 @@ void recibir_instruccion(int socket_memoria, t_pcb* pcb) {
     // Ahora en función del código recibido procedemos a deserializar el resto
     switch(paquete->codigo_operacion) {
         case ENVIO_INSTRUCCION:
+            t_instruccion* instruccion = malloc(sizeof(t_instruccion));
             instruccion = instruccion_deserializar(paquete->buffer);
             ejecutar_instruccion(instruccion, pcb);
+            free(instruccion);
+            break;
+        case CANTIDAD:
+            cantidad_instrucciones = cantidad_instrucciones_serializar(paquete->buffer);
             break;
         default:
             printf("Error: Fallo!\n");
@@ -104,7 +153,6 @@ void recibir_instruccion(int socket_memoria, t_pcb* pcb) {
     free(paquete->buffer->stream);
     free(paquete->buffer);
     free(paquete);
-    free(instruccion);
 }
 
 t_instruccion* instruccion_deserializar(t_buffer* buffer) {
@@ -238,7 +286,7 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
         case EXIT_INSTRUCCION:
             // guardar_estado(pcb); -> No estoy seguro si esta es necesaria, pero de todas formas nos va a servir cuando se interrumpa por quantum
             setear_registros_cpu();
-            enviar_fin_programa(pcb); // No hecha, seria enviarle la kernel para que haga lo suyo
+            //enviar_fin_programa(pcb); // No hecha, seria enviarle la kernel para que haga lo suyo
             break;
         default:
             printf("Error: No existe ese tipo de intruccion\n");

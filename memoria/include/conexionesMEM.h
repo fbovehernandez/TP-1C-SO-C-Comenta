@@ -18,6 +18,10 @@ typedef struct {
     t_log* logger;
 } t_config_memoria;
 
+typedef struct {
+    int cantidad;
+} t_cantidad_instrucciones;
+
 char* instruccion_a_string(TipoInstruccion tipo);
 int recibir_operacion(int socket_cliente);
 void* handle_kernel(void* socket); //
@@ -38,5 +42,6 @@ void print_parametros(t_parametro* parametro); //
 void print_instruccion(t_instruccion* instruccion);//
 void print_instrucciones(char* key, t_list* lista_instrucciones);//
 TipoInstruccion pasar_a_enum(char* nombre);//
+t_cantidad_instrucciones* deserializar_cantidad(t_buffer* buffer);
 
 #endif // CONEXIONES_H

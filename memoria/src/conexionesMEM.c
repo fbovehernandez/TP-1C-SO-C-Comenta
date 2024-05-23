@@ -60,12 +60,17 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
         //recv(socket_cpu, paquete->buffer->stream, paquete->buffer->size, 0);
         recv(socket_cpu, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
 
-        switch(paquete->codigo_operacion) { // Ver si no es mejor recibir primero el cod-op y adentro recibimos el resto (Cambiaria la forma de serializar, ya no habria un "Paquete") 
+        switch(paquete->codigo_operacion) { 
             case QUIERO_INSTRUCCION:
                 // TO DO
                 t_solicitud_instruccion* solicitud_cpu = deserializar_solicitud(paquete->buffer);
                 enviar_instruccion(solicitud_cpu, socket_cpu);
                 free(solicitud_cpu);
+                break;
+            case CANTIDAD_INSTRUCCIONES:
+                t_cantidad_instrucciones* cantidad_instrucciones = deserializar_cantidad(paquete->buffer);
+                enviar_cantidad_parametros(socket_cpu);
+                free(cantidad_instrucciones);
                 break;
             default:
                 printf("Rompio todo?\n");
@@ -476,4 +481,52 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu, int socket_cpu) 
     free(paquete->buffer->stream);
     free(paquete->buffer);
     free(paquete);
+}
+
+void enviar_cantidad_parametros(int socket_cpu){
+    t_list* cantidad_instrucciones = dictionary_size(diccionario_instrucciones);
+
+    printf("cant de elementos %d\n", cantidad_instrucciones);
+    
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+
+    buffer->stream = malloc(buffer->size);
+    void* stream = buffer->stream;
+
+    buffer->stream = stream;
+
+    paquete->codigo_operacion = CANTIDAD; 
+    paquete->buffer = buffer;
+
+    // Armamos el stream a enviar
+    void* a_enviar = malloc(buffer->size + sizeof(codigo_operacion) + sizeof(int));
+    //void* a_enviar = malloc(buffer->size + sizeof(uint8_t) + sizeof(uint32_t));
+    int offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(codigo_operacion));
+    offset += sizeof(codigo_operacion);
+    
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+    
+    send(socket_cpu, a_enviar, buffer->size + sizeof(codigo_operacion) + sizeof(int), 0);
+
+    // Liberamos memoria
+    free(a_enviar);
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+}
+
+t_cantidad_instrucciones* deserializar_cantidad(t_buffer* buffer) {
+    t_cantidad_instrucciones* cantidad_instrucciones = malloc(sizeof(t_cantidad_instrucciones));
+
+    void* stream = buffer->stream;
+    // Deserializamos los campos que tenemos en el buffer
+    memcpy(&(cantidad_instrucciones->cantidad), stream, sizeof(int));
+    stream += sizeof(int);
+
+    return cantidad_instrucciones;
 }

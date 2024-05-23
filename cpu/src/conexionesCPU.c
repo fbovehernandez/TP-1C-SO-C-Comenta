@@ -59,7 +59,7 @@ void* iniciar_servidor_dispatch(void* datos_dispatch) {
     log_info(datos->logger, "Esperando cliente...");
 
     // Aca recibo al cliente (este es mi while(1))
-    recibir(client_dispatch);
+    recibir_cliente(client_dispatch);
     
     return NULL;
 }
@@ -123,8 +123,7 @@ void cargar_registros(t_registros* registros_pcb) {
     registros_cpu->DI = registros_pcb->DI;
 }
 
-void recibir(int client_dispatch) {
-
+void recibir_cliente(int client_dispatch) {
     while(1) {
         t_paquete* paquete = malloc(sizeof(t_paquete));
         paquete->buffer = malloc(sizeof(t_buffer));

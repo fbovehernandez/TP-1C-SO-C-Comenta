@@ -43,7 +43,9 @@ typedef enum {
     PATH,
 	ENVIO_PCB,
     QUIERO_INSTRUCCION,
-    ENVIO_INSTRUCCION
+    ENVIO_INSTRUCCION,
+    CANTIDAD_INSTRUCCIONES,
+    CANTIDAD
 } codigo_operacion;
 
 typedef struct {
