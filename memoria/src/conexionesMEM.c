@@ -67,10 +67,15 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 enviar_instruccion(solicitud_cpu, socket_cpu);
                 free(solicitud_cpu);
                 break;
-            case CANTIDAD_INSTRUCCIONES:
-                t_cantidad_instrucciones* cantidad_instrucciones = deserializar_cantidad(paquete->buffer);
-                enviar_cantidad_parametros(socket_cpu);
-                free(cantidad_instrucciones);
+            case QUIERO_CANTIDAD_INSTRUCCIONES:
+                //t_cantidad_instrucciones* cantidad_instrucciones = deserializar_cantidad(paquete->buffer);
+                int pid_int = deserializar_pid(paquete->buffer);
+                char* pid_string = malloc(sizeof(int));
+                pid_string = string_itoa(pid_int);
+                printf("La CPU me pide la cantidad de instrucciones del proceso con pid %s.\n", pid_string);
+                //enviar_cantidad_parametros(socket_cpu);
+                enviar_cantidad_instrucciones_pedidas(pid_string, socket_cpu);
+                //free(cantidad_instrucciones);
                 break;
             default:
                 printf("Rompio todo?\n");
@@ -160,7 +165,7 @@ void print_instruccion(t_instruccion* instruccion) {
 
 void print_instrucciones(char* pid, t_list* lista_instrucciones) {
     // closure(element->key, element->data);
-    printf("El PID del proceso a mostrar es %s: \n", pid);
+    printf("El PID del proceso a mostrar es: %s\n", pid);
     list_iterate(lista_instrucciones, (void*)print_instruccion); 
 }
 
@@ -483,6 +488,7 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu, int socket_cpu) 
     free(paquete);
 }
 
+/*
 void enviar_cantidad_parametros(int socket_cpu){
     t_list* cantidad_instrucciones = dictionary_size(diccionario_instrucciones);
 
@@ -519,7 +525,52 @@ void enviar_cantidad_parametros(int socket_cpu){
     free(paquete->buffer);
     free(paquete);
 }
+*/
 
+void enviar_cantidad_instrucciones_pedidas(char* pid, int socket_cpu) {
+    t_list* instrucciones = dictionary_get(diccionario_instrucciones, pid);
+    int cantidad_instrucciones = list_size(instrucciones);
+
+    printf("Cant de instrucciones del proceso %s: %d\n", pid, cantidad_instrucciones);
+    
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+
+    buffer->size = sizeof(int);
+    buffer->offset = 0;
+
+    buffer->stream = malloc(buffer->size);
+    void* stream = buffer->stream;
+
+    memcpy(stream+buffer->offset, &cantidad_instrucciones, sizeof(int));
+
+    buffer->stream = stream;
+
+    paquete->codigo_operacion = ENVIO_CANTIDAD_INSTRUCCIONES; 
+    paquete->buffer = buffer;
+
+    // Armamos el stream a enviar
+    void* a_enviar = malloc(buffer->size + sizeof(codigo_operacion) + sizeof(int));
+    //void* a_enviar = malloc(buffer->size + sizeof(uint8_t) + sizeof(uint32_t));
+    int offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(codigo_operacion));
+    offset += sizeof(codigo_operacion);
+    
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+    
+    send(socket_cpu, a_enviar, buffer->size + sizeof(codigo_operacion) + sizeof(int), 0);
+
+    // Liberamos memoria
+    free(a_enviar);
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+}
+
+/*
 t_cantidad_instrucciones* deserializar_cantidad(t_buffer* buffer) {
     t_cantidad_instrucciones* cantidad_instrucciones = malloc(sizeof(t_cantidad_instrucciones));
 
@@ -529,4 +580,14 @@ t_cantidad_instrucciones* deserializar_cantidad(t_buffer* buffer) {
     stream += sizeof(int);
 
     return cantidad_instrucciones;
+}
+*/
+
+int deserializar_pid(t_buffer* buffer) {
+    int pid;
+
+    void* stream = buffer->stream;
+    memcpy(&pid, stream, sizeof(int));
+
+    return pid;
 }

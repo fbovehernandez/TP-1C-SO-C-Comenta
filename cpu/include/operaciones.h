@@ -7,6 +7,7 @@
 
 #include "../../utils/include/sockets.h" 
 #include "../../utils/include/logconfig.h"
+#include "conexionesCPU.h"
 
 typedef struct {
     int cantidad;
@@ -24,8 +25,9 @@ bool es_de_8_bits(char* registro);
 void set(void* registro, uint32_t valor, bool es_8_bits);
 void setear_registros_cpu();
 //void sum(void* registro,void* valor, bool es_8_bits, t_pcb* pcb);
-void pedir_cantidad_instrucciones_a_memoria(int socket_memoria);
+void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria);
 void recibir(int socket_memoria, t_pcb* pcb);
+int cantidad_instrucciones_deserializar(t_buffer* buffer);
 
 extern t_log* logger;
 

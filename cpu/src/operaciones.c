@@ -1,50 +1,54 @@
 #include "../include/operaciones.h"
 
 t_log* logger;
-t_cantidad_instrucciones* cantidad_instrucciones;
+//t_cantidad_instrucciones* cantidad_instrucciones;
 
 void ejecutar_pcb(t_pcb* pcb, int socket_memoria) {
-    pedir_cantidad_instrucciones_a_memoria(socket_memoria);
+    pedir_cantidad_instrucciones_a_memoria(pcb->pid, socket_memoria);
     recibir(socket_memoria, pcb); // recibir cantidad de instrucciones
 
-    while(pcb->estadoActual < cantidad_instrucciones) { 
+    /*while(pcb->estadoActual < cantidad_instrucciones) { 
         pedir_instruccion_a_memoria(socket_memoria, pcb);
         //sem_wait(&sem_memori, pcbtr 
         recibir(socket_memoria,pcb); // recibir cada instruccion
         pcb->program_counter++;
-    }
+    }*/
+    // La unica que le encuentro es llevarlo al switch
 }
 
-void pedir_cantidad_instrucciones_a_memoria(int socket_memoria) {
+void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
-    t_cantidad_instrucciones* cantidad = malloc(sizeof(t_cantidad_instrucciones));
+    //t_cantidad_instrucciones* cantidad = malloc(sizeof(t_cantidad_instrucciones));
 
     buffer->size = sizeof(int);
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
     void* stream = buffer->stream;
-   
+
+    memcpy(stream + buffer->offset, &pid, sizeof(int));
+
     buffer->stream = stream;
 
     t_paquete* paquete = malloc(sizeof(t_paquete));
 
-    paquete->codigo_operacion = CANTIDAD_INSTRUCCIONES; // Podemos usar una constante por operación
+    paquete->codigo_operacion = QUIERO_CANTIDAD_INSTRUCCIONES; // Podemos usar una constante por operación
     paquete->buffer = buffer; // Nuestro buffer de antes.
 
     // Armamos el stream a enviar
-    void* a_enviar = malloc(buffer->size + sizeof(int));
+    void* a_enviar = malloc(buffer->size + sizeof(int) * 2);
     int offset = 0;
 
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(uint8_t));
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
 
-    offset += sizeof(uint8_t);
+    offset += sizeof(int);
     memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
     offset += sizeof(int);
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
+    printf("Pedi la cantidad de instrucciones del proceso %d.\n", pid);
     // Por último enviamos
-    send(socket_memoria, a_enviar, buffer->size + sizeof(int), 0);
+    send(socket_memoria, a_enviar, buffer->size + sizeof(int) * 2, 0);
 
     // No nos olvidamos de liberar la memoria que ya no usaremos
     free(a_enviar);
@@ -53,13 +57,24 @@ void pedir_cantidad_instrucciones_a_memoria(int socket_memoria) {
     free(paquete);
 }       
 
-t_cantidad_instrucciones* cantidad_instrucciones_serializar(t_buffer* buffer) {
+/*
+t_cantidad_instrucciones* cantidad_instrucciones_deserializar(t_buffer* buffer) {
     t_cantidad_instrucciones* cantidad_instrucciones = malloc(sizeof(t_cantidad_instrucciones));
 
     void* stream = buffer->stream;
     // Deserializamos los campos que tenemos en el buffer
     memcpy(&(cantidad_instrucciones->cantidad), stream, sizeof(int));
     stream += sizeof(int);
+
+    return cantidad_instrucciones;
+}
+*/
+int cantidad_instrucciones_deserializar(t_buffer* buffer) {
+    printf("Deserializa la cantidad de instrucciones.\n");
+    int cantidad_instrucciones;
+
+    void* stream = buffer->stream;
+    memcpy(&cantidad_instrucciones, stream, sizeof(int));
 
     return cantidad_instrucciones;
 }
@@ -125,9 +140,10 @@ void recibir(int socket_memoria,t_pcb* pcb) {
     printf("Esperando recibir instruccion...\n");
 
     recv(socket_memoria, &(paquete->codigo_operacion), sizeof(codigo_operacion), MSG_WAITALL);
-    printf("codigo de operacion: %d\n", paquete->codigo_operacion); 
+    printf("Codigo de operacion: %d\n", paquete->codigo_operacion); 
  
     recv(socket_memoria, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
+    printf("paquete->buffer->size: %d\n", paquete->buffer->size);
 
     paquete->buffer->stream = malloc(paquete->buffer->size);
     //recv(socket_memoria, paquete->buffer->stream, paquete->buffer->size, 0);
@@ -141,8 +157,18 @@ void recibir(int socket_memoria,t_pcb* pcb) {
             ejecutar_instruccion(instruccion, pcb);
             free(instruccion);
             break;
-        case CANTIDAD:
-            cantidad_instrucciones = cantidad_instrucciones_serializar(paquete->buffer);
+        case ENVIO_CANTIDAD_INSTRUCCIONES:
+            int cantidad_instrucciones = cantidad_instrucciones_deserializar(paquete->buffer);
+
+            printf("Recibi que la cantidad de instrucciones del proceso %d es %d.\n", pcb->pid, cantidad_instrucciones);
+
+            while(pcb->program_counter < cantidad_instrucciones) { 
+                printf("Numero de vuelta: %d\n", pcb->program_counter);
+                pedir_instruccion_a_memoria(socket_memoria, pcb);
+                recibir(socket_memoria,pcb); // recibir cada instruccion
+                pcb->program_counter++;
+                // Check interrupt
+            }
             break;
         default:
             printf("Error: Fallo!\n");
@@ -220,8 +246,8 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
             bool es_registro_uint8 = es_de_8_bits(registro1);
             set(registro_pcb1, valor, es_registro_uint8); 
 
-            printf("Cuando hace SET AX 1 queda asi el registro AX del CPU: %u\n", registros_cpu->AX);
-            printf("Cuando hace SET BX 1 queda asi el registro BX del CPU: %u\n", registros_cpu->BX);
+            /*printf("Cuando hace SET AX 1 queda asi el registro AX del CPU: %u\n", registros_cpu->AX);
+            printf("Cuando hace SET BX 1 queda asi el registro BX del CPU: %u\n", registros_cpu->BX);*/
             sleep(5);
             break;
         case MOV_IN:
@@ -280,6 +306,7 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
         case SIGNAL:
             break;
         case IO_GEN_SLEEP:
+            printf("Hizo IO_GEN_SLEEP\n");
             break;
         case IO_STDIN_READ:
             break;
@@ -289,6 +316,10 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
             //enviar_fin_programa(pcb); // No hecha, seria enviarle la kernel para que haga lo suyo
             break;
         default:
+            if(pcb->program_counter == 10) {
+                imprimir_pcb(pcb); // Solo para ver.
+            }
+            
             printf("Error: No existe ese tipo de intruccion\n");
             break;
     }

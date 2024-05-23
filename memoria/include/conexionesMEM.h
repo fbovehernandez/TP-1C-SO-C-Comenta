@@ -42,6 +42,8 @@ void print_parametros(t_parametro* parametro); //
 void print_instruccion(t_instruccion* instruccion);//
 void print_instrucciones(char* key, t_list* lista_instrucciones);//
 TipoInstruccion pasar_a_enum(char* nombre);//
-t_cantidad_instrucciones* deserializar_cantidad(t_buffer* buffer);
+//t_cantidad_instrucciones* deserializar_cantidad(t_buffer* buffer);
+int deserializar_pid(t_buffer* buffer);
+void enviar_cantidad_instrucciones_pedidas(char* pid, int socket_cpu);
 
 #endif // CONEXIONES_H

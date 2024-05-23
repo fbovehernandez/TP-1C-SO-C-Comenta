@@ -50,10 +50,15 @@ void *interaccion_consola(t_sockets* sockets) {
             EJECUTAR_SCRIPT(/* pathing del conjunto de instrucciones*/);
             break;
         case 2:
-            char path_ejecutable[100]; // chicos vean si pueden usar un getline aca, les dejo el problema je
+            /*char path_ejecutable[100]; // chicos vean si pueden usar un getline aca, les dejo el problema je
             printf("Ingrese el path del script a ejecutar %s\n", path_ejecutable);
             scanf("%s", &path_ejecutable);
-            INICIAR_PROCESO(path_ejecutable, sockets); // Ver problemas con caracteres como _ o /
+            INICIAR_PROCESO(path_ejecutable, sockets);*/ // Ver problemas con caracteres como _ o /
+            
+            // Lo comento hasta que me deje de volver loca.
+
+            INICIAR_PROCESO("/script_io_basico_1", sockets);
+
             // home/utnso/c-comenta/pruebas -> Esto tendria en memoria y lo uno con este que le mando -> Ver sockets como variable global
             break;
         case 3:
