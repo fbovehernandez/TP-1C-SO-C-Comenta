@@ -11,6 +11,8 @@
 #include <commons/collections/queue.h>
 #include <pthread.h>
 
+extern int client_dispatch;
+
 typedef struct {
     
 } t_instrucciones;
@@ -77,7 +79,7 @@ int obtener_siguiente_pid();
 void mostrar_pcb_proceso(t_pcb* pcb);
 void* planificar_corto_plazo(void* sockets_kernel);
 void* enviar_path_a_memoria(char* path, t_sockets* sockets, int pid);
-void* enviar_pcb(t_pcb* pcb, int socket);
+void* enviar_pcb(t_pcb* pcb, int socket,codigo_operacion codop);
 t_buffer* llenar_buffer_path(t_path* pathNuevo);
 t_buffer* llenar_buffer_pcb(t_pcb* pcb);
 t_pcb* proximo_a_ejecutar();

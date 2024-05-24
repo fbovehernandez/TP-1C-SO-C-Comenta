@@ -132,7 +132,7 @@ t_buffer* llenar_buffer_solicitud_instruccion(t_solicitud_instruccion* solicitud
     return buffer;
 }
 
-void recibir(int socket_memoria,t_pcb* pcb) {
+void recibir(int socket_memoria, t_pcb* pcb) {
     t_paquete* paquete = malloc(sizeof(t_paquete));
     paquete->buffer = malloc(sizeof(t_buffer));
 
@@ -313,19 +313,28 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
         case EXIT_INSTRUCCION:
             // guardar_estado(pcb); -> No estoy seguro si esta es necesaria, pero de todas formas nos va a servir cuando se interrumpa por quantum
             setear_registros_cpu();
-            //enviar_fin_programa(pcb); // No hecha, seria enviarle la kernel para que haga lo suyo
+            // guardar_estado(pcb);
+            enviar_fin_programa(pcb); // No hecha, seria enviarle la kernel para que haga lo suyo
             break;
         default:
-            if(pcb->program_counter == 10) {
-                imprimir_pcb(pcb); // Solo para ver.
-            }
-            
             printf("Error: No existe ese tipo de intruccion\n");
             break;
+
+        if(pcb->program_counter == 10) {
+            imprimir_pcb(pcb); // Solo para ver.
+        }
     }
 
     // log_info(logger, "PID: %d - Finalizando %d", pcb->pid, instruccion->nombre);
     // TO DO: Check interrupt // 
+}
+
+void enviar_fin_programa(t_pcb* pcb){
+    enviar_pcb(pcb, client_dispatch, FIN_PROCESO);
+}
+
+void guardar_estado(t_pcb* pcb) {
+    // TODO...
 }
 
 // Deberia estar en otro lado
@@ -371,35 +380,6 @@ void* seleccionar_registro_cpu(char* nombreRegistro) {
     return NULL;
     
 }
-
-/* 
-void* seleccionar_registro(char* nombreRegistro, t_pcb *pcb) { 
-
-    if (strcmp(nombreRegistro, "AX") == 0) {
-        return &pcb->registros->AX;
-    } else if (strcmp(nombreRegistro, "BX") == 0) {
-        return &pcb->registros->BX;    
-    } else if (strcmp(nombreRegistro, "CX") == 0) {
-       return &pcb->registros->CX;
-    } else if (strcmp(nombreRegistro, "DX") == 0) {
-        return &pcb->registros->DX;
-    } else if (strcmp(nombreRegistro, "SI") == 0) {
-        return &pcb->registros->SI;
-    } else if (strcmp(nombreRegistro, "DI") == 0) {
-        return &pcb->registros->DI;
-    } else if (strcmp(nombreRegistro, "EAX") == 0) {
-        return &pcb->registros->EAX;  
-    } else if (strcmp(nombreRegistro, "EBX") == 0) {
-        return &pcb->registros->EBX;
-    } else if (strcmp(nombreRegistro, "ECX") == 0) {
-        return &pcb->registros->ECX;
-    } else if (strcmp(nombreRegistro, "EDX") == 0) {
-        return &pcb->registros->EDX;
-    }
-
-    return NULL;
-}
-*/
 
 bool es_de_8_bits(char* registro) {
     return (strcmp(registro, "AX") == 0 || strcmp(registro, "BX") == 0 ||

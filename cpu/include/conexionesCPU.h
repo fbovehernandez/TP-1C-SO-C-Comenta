@@ -9,6 +9,8 @@
 #include "operaciones.h"
 
 extern int socket_memoria;
+extern int client_dispatch;
+
 typedef struct {
     char* puerto_escucha;
     t_log* logger;
@@ -24,7 +26,7 @@ typedef struct {
 
 int conectar_memoria(char* ip, char* puerto, t_log* logger_CPU);
 int esperar_cliente(int socket_escucha, t_log* logger_CPU);
-void* handle_dispatch(void* socket_dispatch);
+void* handle_dispatch(void* client_dispatch);
 void* handle_interrupt(void* socket_interrupt);
 int recibir_operacion(int socket_client);
 void* iniciar_servidor_dispatch(void* datos_dispatch);

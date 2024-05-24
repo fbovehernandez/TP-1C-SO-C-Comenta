@@ -1,5 +1,6 @@
 #include "../include/funcionalidades.h"
 #include "../include/conexiones.h"
+#include "../include/sockets.h"
 
 // Definicion de variables globales
 int grado_multiprogramacion;
@@ -55,7 +56,7 @@ void *interaccion_consola(t_sockets* sockets) {
             scanf("%s", &path_ejecutable);
             INICIAR_PROCESO(path_ejecutable, sockets);*/ // Ver problemas con caracteres como _ o /
             
-            // Lo comento hasta que me deje de volver loca.
+            // Lo comento hasta que me deje de volver loca. JDJSADSAJDSA PERDON SOFI
 
             INICIAR_PROCESO("/script_io_basico_1", sockets);
 
@@ -241,7 +242,7 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
         sem_wait(&sem_hay_para_planificar); 
         pcb = proximo_a_ejecutar();
         pasar_a_exec(pcb);
-        enviar_pcb(pcb, socket_CPU); // Serializar antes de enviar 
+        enviar_pcb(pcb, socket_CPU, ENVIO_PCB); // Serializar antes de enviar 
 
         // FIFO ya esta hecho con lo de arriba
         if(strcmp(algoritmo_planificacion,"RR") == 0) {
@@ -250,7 +251,7 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
             sem_post(&sem_contador_quantum);
         }
 
-        // contexto_devolucion = esperar_cpu(pcb); -> Comento para probar
+        contexto_devolucion = esperar_cpu(pcb); 
 
         if(strcmp(algoritmo_planificacion,"RR") == 0) { // Plantear una mejor forma de hacer esto
             pthread_cancel(hilo_quantum);
@@ -261,13 +262,13 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
 }
 
 void* contar_quantum(void* sockets_CPU) {
-        int socket_CPU = (intptr_t)sockets_CPU;
-        sem_wait(&sem_contador_quantum);
-        sleep(quantum);
+    int socket_CPU = (intptr_t)sockets_CPU;
+    sem_wait(&sem_contador_quantum);
+    sleep(quantum);
 
-        int interrupcion_cpu = INTERRUPCION_QUANTUM;
-        send(socket_CPU, &interrupcion_cpu, sizeof(int), 0);
-        return NULL;
+    int interrupcion_cpu = INTERRUPCION_QUANTUM;
+    send(socket_CPU, &interrupcion_cpu, sizeof(int), 0);
+    return NULL;
 }
 
 
@@ -290,29 +291,55 @@ t_pcb* proximo_a_ejecutar() { // Esta pensando solo para FIFO y RR
 // TO DO: Esto bloquearia la planificacion hasta que la cpu termine de ejecutar y me devuelva el contexto. 
 // Tiene que recibir causa de desalojo y contexto
 
-/* 
-void esperar_cpu(t_pcb* pcb) {
-    // La cpu nos lo tiene que traer'
-    // Los codigos todavia no estan definidos en el .h
-    
-    // ----> Hacer los sockets variables globales
+t_paquete* recibir_cpu() {
+    while(1) {
+        t_paquete* paquete = malloc(sizeof(t_paquete));
+        paquete->buffer = malloc(sizeof(t_buffer));
+
+        printf("Esperando recibir paquete\n");
+        recv(client_dispatch, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
+        printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
+
+        recv(client_dispatch, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
+        paquete->buffer->stream = malloc(paquete->buffer->size);
+
+        recv(client_dispatch, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+        return paquete;
+    }
+}
+
+int esperar_cpu(t_pcb* pcb) {
+    t_paquete* package = malloc(sizeof(t_pcb));
 
     desalojo_cpu devolucion_cpu;
-    recv(socket_cpu, &devolucion_cpu, sizeof(desalojo_cpu), MSG_WAITALL);
     
+    package = recibir_cpu(); // pcb y codigo de operacion (devolucion_cpu)
+    devolucion_cpu = package->codigo_operacion;
+
     switch (devolucion_cpu) {
         case INTERRUPCION_QUANTUM:
             // TODO
             break;
-        case IO_BLOCKED: 
+        case IO_BLOCKED: // io_bloqued -> im sorry caro xd, mati was here, not facu
             // TODO
             break;
         case FIN_PROCESO:
-            // TODO -> Aca hago la logica del EXIT de la cpu, liberar memoria, etc
+            t_pcb* pcb = deserializar_pcb(*(package->buffer)); 
+            liberar_memoria(); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
+            change_status(pcb, EXIT); // con caro's pronunciation, i mean, STAYTUS
+            sem_post(&sem_grado_multiprogramacion); // Esto deberia liberar un grado de memoria para que acceda un proceso
+            free(pcb);
             break;
     }
+    
+    free(package); // PAKESH 
 }
-*/
+
+// we're cooking goddamit, we love you caroo don't kill us
+void change_status(t_pcb* pcb, Estado new_status) {
+    pcb->estadoAnterior = pcb -> estadoActual;
+    pcb->estadoActual   = new_status;
+}
 
 void* pasar_a_exec(t_pcb* pcb) {
     pcb->estadoActual = EXEC; 
@@ -328,35 +355,6 @@ void* pasar_a_exec(t_pcb* pcb) {
 }
 
 // Esta podria ser la funcion generica y pasarle el codOP por parametro
-void* enviar_pcb(t_pcb* pcb, int socket) {
-    t_buffer* buffer = llenar_buffer_pcb(pcb);
-
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-
-    paquete->codigo_operacion = ENVIO_PCB; // Podemos usar una constante por operación
-    paquete->buffer = buffer; // Nuestro buffer de antes.
-
-    // Armamos el stream a enviar
-    void* a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    // Por último enviamos
-    send(socket, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-    printf("Paquete enviado!");
-
-    // Falta liberar todo
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
-    return 0;
-}
 
 t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
     t_buffer* buffer = malloc(sizeof(t_buffer));

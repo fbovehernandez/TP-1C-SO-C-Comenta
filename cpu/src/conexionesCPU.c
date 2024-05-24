@@ -1,6 +1,7 @@
 #include "../include/conexionesCPU.h"
 
 int socket_memoria;
+int client_dispatch;
 
 /* 
 PUERTO_KERNEL=8010
@@ -55,57 +56,13 @@ void* iniciar_servidor_dispatch(void* datos_dispatch) {
     int socket_cpu_escucha = iniciar_servidor(datos->puerto_escucha); // Inicia el servidor, bind() y listen() y socket()
     log_info(datos->logger, "Servidor iniciado, esperando conexiones!");
 
-    int client_dispatch = esperar_cliente(socket_cpu_escucha, datos->logger); 
+    client_dispatch = esperar_cliente(socket_cpu_escucha, datos->logger); 
     log_info(datos->logger, "Esperando cliente...");
 
     // Aca recibo al cliente (este es mi while(1))
     recibir_cliente(client_dispatch);
     
     return NULL;
-}
-
-t_pcb* deserializar_pcb(t_buffer* buffer) {
-    t_pcb* pcb = malloc(sizeof(t_pcb));
-    pcb->registros = malloc(sizeof(t_registros)); // Acordarse de liberar memoria
-
-    void* stream = buffer->stream;
-    // Deserializamos los campos que tenemos en el buffer
-    memcpy(&(pcb->pid), stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&(pcb->program_counter), stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&(pcb->quantum), stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&(pcb->estadoActual), stream, sizeof(Estado));
-    stream += sizeof(Estado);
-    memcpy(&(pcb->estadoAnterior), stream, sizeof(Estado));
-    stream += sizeof(Estado);
-    // Deserializo los registros ...
-
-    memcpy(&(pcb->registros->AX), stream, sizeof(uint8_t));
-    stream += sizeof(uint8_t);
-    memcpy(&(pcb->registros->BX), stream, sizeof(uint8_t));
-    stream += sizeof(uint8_t);
-    memcpy(&(pcb->registros->CX), stream, sizeof(uint8_t));
-    stream += sizeof(uint8_t);
-    memcpy(&(pcb->registros->DX), stream, sizeof(uint8_t));
-    stream += sizeof(uint8_t);
-
-    memcpy(&(pcb->registros->EAX), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-    memcpy(&(pcb->registros->EBX), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-    memcpy(&(pcb->registros->ECX), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-    memcpy(&(pcb->registros->EDX), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-
-    memcpy(&(pcb->registros->SI), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-    memcpy(&(pcb->registros->DI), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-   
-    return pcb;
 }
 
 void cargar_registros(t_registros* registros_pcb) {
@@ -123,7 +80,7 @@ void cargar_registros(t_registros* registros_pcb) {
     registros_cpu->DI = registros_pcb->DI;
 }
 
-void recibir_cliente(int client_dispatch) {
+void recibir_cliente() { // Se supone que desde aca se conecta el kernel
     while(1) {
         t_paquete* paquete = malloc(sizeof(t_paquete));
         paquete->buffer = malloc(sizeof(t_buffer));

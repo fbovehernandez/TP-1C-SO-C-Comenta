@@ -45,7 +45,7 @@ typedef enum {
     QUIERO_INSTRUCCION,
     ENVIO_INSTRUCCION,
     QUIERO_CANTIDAD_INSTRUCCIONES,
-    ENVIO_CANTIDAD_INSTRUCCIONES
+    ENVIO_CANTIDAD_INSTRUCCIONES,
 } codigo_operacion;
 
 typedef struct {
@@ -139,6 +139,7 @@ typedef struct {
     int length;
 } t_parametro;
 
+void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op);
 int iniciar_servidor(char*);
 int esperar_conexion(int);
 void corroborar_exito(int, char*);
@@ -146,5 +147,6 @@ void sendMessage(int socket_fd);
 void receiveMessagex(int socket_fd);
 int crear_conexion(char *ip, char* puerto, int valor);
 t_registros* inicializar_registros_cpu(t_registros* registro_pcb);
+t_pcb* deserializar_pcb(t_buffer buffer);
 
 #endif // SOCKET_H

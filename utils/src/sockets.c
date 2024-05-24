@@ -138,6 +138,80 @@ t_registros* inicializar_registros_cpu(t_registros* registro_pcb) {
     return registro_pcb;
 }
 
+void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op) {
+    t_buffer* buffer = llenar_buffer_pcb(pcb);
+
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+
+    paquete->codigo_operacion = cod_op; // Podemos usar una constante por operación
+    paquete->buffer = buffer; // Nuestro buffer de antes.
+
+    // Armamos el stream a enviar
+    void* a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
+    int offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    // Por último enviamos
+    send(socket, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
+    printf("Paquete enviado!");
+
+    // Falta liberar todo
+    free(a_enviar);
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+    return 0;
+}
+
+t_pcb* deserializar_pcb(t_buffer* buffer) {
+    t_pcb* pcb = malloc(sizeof(t_pcb));
+    pcb->registros = malloc(sizeof(t_registros)); // Acordarse de liberar memoria
+
+    void* stream = buffer->stream;
+    // Deserializamos los campos que tenemos en el buffer
+    memcpy(&(pcb->pid), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(pcb->program_counter), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(pcb->quantum), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(pcb->estadoActual), stream, sizeof(Estado));
+    stream += sizeof(Estado);
+    memcpy(&(pcb->estadoAnterior), stream, sizeof(Estado));
+    stream += sizeof(Estado);
+    // Deserializo los registros ...
+
+    memcpy(&(pcb->registros->AX), stream, sizeof(uint8_t));
+    stream += sizeof(uint8_t);
+    memcpy(&(pcb->registros->BX), stream, sizeof(uint8_t));
+    stream += sizeof(uint8_t);
+    memcpy(&(pcb->registros->CX), stream, sizeof(uint8_t));
+    stream += sizeof(uint8_t);
+    memcpy(&(pcb->registros->DX), stream, sizeof(uint8_t));
+    stream += sizeof(uint8_t);
+
+    memcpy(&(pcb->registros->EAX), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(pcb->registros->EBX), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(pcb->registros->ECX), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(pcb->registros->EDX), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+
+    memcpy(&(pcb->registros->SI), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(pcb->registros->DI), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+   
+    return pcb;
+}
+
 /* 
 void paquete(int conexion) {
 	// Ahora toca lo divertido!
