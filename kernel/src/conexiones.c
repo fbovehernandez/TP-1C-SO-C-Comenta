@@ -60,6 +60,11 @@ void* handle_io(void* socket) {
     return NULL;
 }
 
+int conectar_kernel_cpu_interrupt(t_log* logger_kernel, char* IP_CPU, char* puerto_interrupt) {
+    int valor = 3;
+    int m
+}
+
 int conectar_kernel_cpu_dispatch(t_log* logger_kernel, char* IP_CPU, char* puerto_cpu_dispatch) {
     int valor = 1;
     // int message = 10;

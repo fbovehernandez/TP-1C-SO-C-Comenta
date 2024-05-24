@@ -13,6 +13,7 @@ void ejecutar_pcb(t_pcb* pcb, int socket_memoria) {
         recibir(socket_memoria,pcb); // recibir cada instruccion
         pcb->program_counter++;
     }*/
+
     // La unica que le encuentro es llevarlo al switch
 }
 
@@ -69,6 +70,7 @@ t_cantidad_instrucciones* cantidad_instrucciones_deserializar(t_buffer* buffer) 
     return cantidad_instrucciones;
 }
 */
+
 int cantidad_instrucciones_deserializar(t_buffer* buffer) {
     printf("Deserializa la cantidad de instrucciones.\n");
     int cantidad_instrucciones;
@@ -168,6 +170,10 @@ void recibir(int socket_memoria, t_pcb* pcb) {
                 recibir(socket_memoria,pcb); // recibir cada instruccion
                 pcb->program_counter++;
                 // Check interrupt
+                if(hay_interrupcion) {
+                    break;
+                    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+                }
             }
             break;
         default:
@@ -313,7 +319,7 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
         case EXIT_INSTRUCCION:
             // guardar_estado(pcb); -> No estoy seguro si esta es necesaria, pero de todas formas nos va a servir cuando se interrumpa por quantum
             setear_registros_cpu();
-            // guardar_estado(pcb);
+            guardar_estado(pcb);
             enviar_fin_programa(pcb); // No hecha, seria enviarle la kernel para que haga lo suyo
             break;
         default:
@@ -326,7 +332,14 @@ void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb) {
     }
 
     // log_info(logger, "PID: %d - Finalizando %d", pcb->pid, instruccion->nombre);
-    // TO DO: Check interrupt // 
+    // CHECK INTERRUPT
+    check_interrupt(pcb);
+}
+
+void check_interrupt(t_pcb* pcb){
+    if(hay_interrupcion) {
+        enviar_pcb(pcb, client_dispatch, INTERRUPCION_QUANTUM);
+    }
 }
 
 void enviar_fin_programa(t_pcb* pcb){
@@ -334,7 +347,16 @@ void enviar_fin_programa(t_pcb* pcb){
 }
 
 void guardar_estado(t_pcb* pcb) {
-    // TODO...
+    pcb->registros->AX = registros_cpu->AX;
+    pcb->registros->BX = registros_cpu->BX;
+    pcb->registros->CX = registros_cpu->CX;
+    pcb->registros->DX = registros_cpu->DX;
+    pcb->registros->EAX = registros_cpu->EAX;
+    pcb->registros->EBX = registros_cpu->EBX;
+    pcb->registros->ECX = registros_cpu->ECX;
+    pcb->registros->EDX = registros_cpu->EDX;
+    pcb->registros->SI = registros_cpu->SI;
+    pcb->registros->DI = registros_cpu->DI;
 }
 
 // Deberia estar en otro lado
@@ -386,9 +408,9 @@ bool es_de_8_bits(char* registro) {
             strcmp(registro, "CX") == 0 || strcmp(registro, "DX") == 0);
 }
 
-///////////////////////////////
-//////////  SET  //////////////
-///////////////////////////////
+///////////////////////////
+/////  INSTRUCCIONES //////
+///////////////////////////
 
 void set(void* registro, uint32_t valor, bool es_8_bits) {
     //registro = &valor;
@@ -398,10 +420,6 @@ void set(void* registro, uint32_t valor, bool es_8_bits) {
         *(uint32_t*)registro = valor;
     }
 }
-
-///////////////////////////////
-//////////  SUM  //////////////
-/////////////////////////////// 
 
 /*
 void sum(void* registroDestino, void* registroOrigen, bool es_8_bits, t_pcb* pcb){
@@ -424,11 +442,6 @@ void sum(void* registroDestino, void* registroOrigen, bool es_8_bits, t_pcb* pcb
 }
 */
 /*
-
-///////////////////////////////
-//////////  SUB  //////////////
-///////////////////////////////
-
 void sub(void* registroDestino, void* registroOrigen, bool es_8_bits, t_pcb* pcb) {
     if(es_8_bits) {
         *(uint8_t*)registroDestino -= *(uint8_t*)registroOrigen;
@@ -437,21 +450,12 @@ void sub(void* registroDestino, void* registroOrigen, bool es_8_bits, t_pcb* pcb
     }
 }
 
-///////////////////////////////
-//////////  JNZ  //////////////
-///////////////////////////////
-
 void jnz(void* registro, int valor, pcb){
     if(*(void*)registro == 0) {
         pcb->program_counter = valor;
     }
 }
 */
-
-////////////////////////////////////////
-//////////  IO_GEN_SLEEP  //////////////
-////////////////////////////////////////
-
 
 /* 
 void io_gen_sleep(char* nombre_interfaz, char* unidades_de_trabajo) {
