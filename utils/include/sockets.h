@@ -46,6 +46,7 @@ typedef enum {
     ENVIO_INSTRUCCION,
     QUIERO_CANTIDAD_INSTRUCCIONES,
     ENVIO_CANTIDAD_INSTRUCCIONES,
+    INTERRUPCION_CPU
 } codigo_operacion;
 
 typedef struct {

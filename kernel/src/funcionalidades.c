@@ -210,16 +210,15 @@ void* a_ready() {
         pthread_mutex_unlock(&mutex_estado_new);
 
         // Pasar el proceso a ready
-        pasar_a_ready(pcb);
+        pasar_a_ready(pcb, NEW);
         
         // sem_post(&sem_hay_pcb_esperando_ready); 
     }
 }
 
-void pasar_a_ready(t_pcb *pcb)
-{
-    pcb->estadoActual = READY;
-    pcb->estadoAnterior = NEW;
+void pasar_a_ready(t_pcb *pcb, Estado estadoAnterior) {
+    pcb->estadoAnterior = estadoAnterior;
+    change_status(pcb, READY);
 
     pthread_mutex_lock(&mutex_estado_ready);
     queue_push(cola_ready, (void *)pcb);
@@ -318,15 +317,16 @@ int esperar_cpu(t_pcb* pcb) {
 
     switch (devolucion_cpu) {
         case INTERRUPCION_QUANTUM:
-            // TODO
+            t_pcb* pcb = deserializar_pcb(*(package->buffer));
+            pasar_a_ready(pcb, EXEC);
             break;
-        case IO_BLOCKED: // io_bloqued -> im sorry caro xd, mati was here, not facu
+        case IO_BLOCKED:
             // TODO
             break;
         case FIN_PROCESO:
             t_pcb* pcb = deserializar_pcb(*(package->buffer)); 
             liberar_memoria(); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
-            change_status(pcb, EXIT); // con caro's pronunciation, i mean, STAYTUS
+            change_status(pcb, EXIT); 
             sem_post(&sem_grado_multiprogramacion); // Esto deberia liberar un grado de memoria para que acceda un proceso
             free(pcb);
             break;
@@ -335,15 +335,14 @@ int esperar_cpu(t_pcb* pcb) {
     free(package); // PAKESH 
 }
 
-// we're cooking goddamit, we love you caroo don't kill us
+
 void change_status(t_pcb* pcb, Estado new_status) {
     pcb->estadoAnterior = pcb -> estadoActual;
     pcb->estadoActual   = new_status;
 }
 
 void* pasar_a_exec(t_pcb* pcb) {
-    pcb->estadoActual = EXEC; 
-    pcb->estadoAnterior = READY;
+    change_status(pcb, EXEC);
 
     pthread_mutex_lock(&mutex_estado_exec);
     queue_push(cola_exec, (void *)pcb);

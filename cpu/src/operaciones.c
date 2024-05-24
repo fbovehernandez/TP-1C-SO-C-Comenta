@@ -1,6 +1,7 @@
 #include "../include/operaciones.h"
 
 t_log* logger;
+int hay_interrupcion;
 //t_cantidad_instrucciones* cantidad_instrucciones;
 
 void ejecutar_pcb(t_pcb* pcb, int socket_memoria) {
@@ -170,9 +171,8 @@ void recibir(int socket_memoria, t_pcb* pcb) {
                 recibir(socket_memoria,pcb); // recibir cada instruccion
                 pcb->program_counter++;
                 // Check interrupt
-                if(hay_interrupcion) {
-                    break;
-                    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+                if(hay_interrupcion) { 
+                    break; 
                 }
             }
             break;

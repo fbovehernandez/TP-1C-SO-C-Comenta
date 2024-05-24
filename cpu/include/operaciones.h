@@ -9,6 +9,7 @@
 #include "../../utils/include/logconfig.h"
 #include "conexionesCPU.h"
 
+extern int hay_interrupcion;
 typedef struct {
     int cantidad;
 } t_cantidad_instrucciones;

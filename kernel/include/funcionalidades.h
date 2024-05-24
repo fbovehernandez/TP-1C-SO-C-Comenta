@@ -69,7 +69,7 @@ extern t_log* logger_kernel;
 void* interaccion_consola(t_sockets* sockets);
 void encolar_a_new(t_pcb* pcb);
 void* a_ready(); // Para hilo 
-void pasar_a_ready(t_pcb *pcb);
+void pasar_a_ready(t_pcb *pcb, Estado estadoAnterior);
 t_pcb* crear_nuevo_pcb(int pid);
 void* contar_quantum(void* socket_CPU);
 t_registros* inicializar_registros_cpu();

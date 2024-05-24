@@ -28,8 +28,12 @@ int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) 
 }
 
 void* handle_interrupt(void* socket) {
-    printf("Todavia no hacemos nada");
+    recibir_interrupcion();
     return NULL;
+}
+
+void recibir_interrupcion() {
+    
 }
 
 // Modificar para que me devuelva un struct con los sockets y el sv_type
@@ -103,7 +107,7 @@ void recibir_cliente() { // Se supone que desde aca se conecta el kernel
                 cargar_registros(pcb->registros);
                 imprimir_pcb(pcb);
                 ejecutar_pcb(pcb, socket_memoria); // este ejecutar_pcb(pcb) seria el ejectuar_instrucciones(pcb)
-                break;
+                break;                
             default:
                 break;
         }
@@ -139,23 +143,59 @@ void* iniciar_servidor_interrupt(void* datos_interrupt) {
     t_config_cpu* datos = (t_config_cpu*) datos_interrupt;
     int socket_cpu_escucha = iniciar_servidor(datos->puerto_escucha); // Inicia el servidor, bind() y listen() y socket()
     int client_interrupt = esperar_cliente(socket_cpu_escucha, datos->logger); 
+
     int codop;
 
-    while(client_interrupt != -1) {    
-        // int client_dispatch = esperar_cliente(socket_cpu_escucha, datos->logger);
-        codop = recibir_operacion(client_interrupt);
-        switch(codop) {
-            case 17:
-                printf("Recibi 17\n");
-                break;
-            default:
-                printf("entro por default con codop: %d\n", codop);
-                return NULL;
-        }
-    }
-
+    recibir_cliente_interrupt(client_interrupt);
     return NULL;
 }
+
+void recibir_cliente_interrupt(int client_interrupt) {
+    while(1) {
+        t_paquete* paquete = malloc(sizeof(t_paquete));
+        paquete->buffer = malloc(sizeof(t_buffer));
+
+        printf("Esperando recibir paquete\n");
+        recv(client_interrupt, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
+        printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
+
+        //recv(client_dispatch, &(paquete->buffer->size), sizeof(int), 0);
+        recv(client_interrupt, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
+        paquete->buffer->stream = malloc(paquete->buffer->size);
+
+        //recv(client_dispatch, paquete->buffer->stream, paquete->buffer->size, 0);
+        recv(client_interrupt, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+        // codigo_operacion = recibir_operacion(client_dispatch);
+
+        switch (paquete->codigo_operacion) {
+            case INTERRUPCION_CPU:
+                recibir_interrupcion();
+                break;         
+            default:
+                break;
+        }
+
+        free(paquete->buffer->stream);
+        free(paquete->buffer);
+        free(paquete);
+    }
+}
+
+/* 
+void* iniciar_servidor_dispatch(void* datos_dispatch) {
+    t_config_cpu* datos = (t_config_cpu*) datos_dispatch;
+    int socket_cpu_escucha = iniciar_servidor(datos->puerto_escucha); // Inicia el servidor, bind() y listen() y socket()
+    log_info(datos->logger, "Servidor iniciado, esperando conexiones!");
+
+    client_dispatch = esperar_cliente(socket_cpu_escucha, datos->logger); 
+    log_info(datos->logger, "Esperando cliente...");
+
+    // Aca recibo al cliente (este es mi while(1))
+    recibir_cliente(client_dispatch);
+    
+    return NULL;
+}
+*/
 
 t_config_cpu* iniciar_datos(char* escucha_fd, t_log* logger_CPU) {
     // Iniciacion de datos
