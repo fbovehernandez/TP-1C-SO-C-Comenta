@@ -13,5 +13,3 @@
 #include <readline/history.h>
 
 #endif // MEMORIA_H
-
-t_config* config_io;

@@ -1,5 +1,7 @@
 #include "../include/conexiones.h"
 
+t_dictionary* diccionario_io;
+
 ptr_kernel* solicitar_datos(t_config* config_kernel){
     ptr_kernel* datos = malloc(sizeof(ptr_kernel));
 
@@ -90,16 +92,28 @@ int conectar_kernel_memoria(char* ip_memoria, char* puerto_memoria, t_log* logge
     return memoriafd;
 }
 
-void* escuchar_IO(void* kernel_io) {
+void* escuchar_IO(void* kernel_io) { //kernel_io es el socket del kerne
     t_config_kernel* kernel_struct_io = (void*) kernel_io;
 
-    // int socket_io = kernel_struct_io->socket;
-    // t_log* logger_io = kernel_struct_io->logger;
+    int socket_io = kernel_struct_io->socket;
+    t_log* logger_kernel = kernel_struct_io->logger;
 
     while(1) {
-        int socket_cliente = esperar_cliente(kernel_struct_io->socket, kernel_struct_io->logger);
+        int socket_cliente = esperar_cliente(socket_io, logger_kernel);
+        char* nombre[100];
+        solicitar_nombre_io(socket_cliente);
+        char* nombre = recibir_nombre(socket_cliente);
+        dictionary_put(diccionario_io, nombre, socket_cliente);
     }
     
     return NULL;
 }
 
+void solicitar_nombre_io(int socket) {
+    send(socket, QUIERO_NOMBRE, 100, 0);
+}
+
+char* recibir_nombre(int kernel) {
+    recv(kernel, nombre_io, 100, 0);
+    return nombre_io;
+}

@@ -14,12 +14,22 @@
 #include <pthread.h>
 
 extern sem_t sem_memoria_instruccion;
+t_list interfaces_io;
+
+char* nombre_io;
+t_log* logger_io;
 
 typedef struct {
     int PID;
     int path_length;
     char* path;
 } t_path;
+
+typedef struct {
+    char* interfaz;
+    int length_interfaz;
+    int unidadesDeTrabajo;
+} t_operacion_io;
 
 typedef struct {
     int pid;
@@ -51,7 +61,9 @@ typedef enum {
     ENVIO_INSTRUCCION,
     QUIERO_CANTIDAD_INSTRUCCIONES,
     ENVIO_CANTIDAD_INSTRUCCIONES,
-    INTERRUPCION_CPU
+    INTERRUPCION_CPU,
+    DORMIR_INTERFAZ,
+    QUIERO_NOMBRE
 } codigo_operacion;
 
 typedef struct {
@@ -154,5 +166,8 @@ void receiveMessagex(int socket_fd);
 int crear_conexion(char *ip, char* puerto, int valor);
 t_registros* inicializar_registros_cpu(t_registros* registro_pcb);
 t_pcb* deserializar_pcb(t_buffer buffer);
+
+
+
 
 #endif // SOCKET_H

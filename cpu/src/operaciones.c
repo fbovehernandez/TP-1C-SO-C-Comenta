@@ -93,7 +93,7 @@ void pedir_instruccion_a_memoria(int socket_memoria, t_pcb *pcb)
     pid_pc->pid = pcb->pid;
     pid_pc->pc = pcb->program_counter;
 
-    t_buffer *buffer = llenar_buffer_solicitud_instruccion(pid_pc);
+    t_buffer *buffer = t_buffer_solicitud_instruccion(pid_pc);
 
     t_paquete *paquete = malloc(sizeof(t_paquete));
 
@@ -120,8 +120,7 @@ void pedir_instruccion_a_memoria(int socket_memoria, t_pcb *pcb)
     free(paquete);
 }
 
-t_buffer *llenar_buffer_solicitud_instruccion(t_solicitud_instruccion *solicitud_instruccion)
-{
+t_buffer *llenar_buffer_solicitud_instruccion(t_solicitud_instruccion *solicitud_instruccion) {
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
     buffer->size = sizeof(int) * 2;
@@ -158,37 +157,39 @@ void recibir(int socket_memoria, t_pcb *pcb) {
     recv(socket_memoria, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
 
     // Ahora en función del código recibido procedemos a deserializar el resto
-    switch (paquete->codigo_operacion) {
-        case ENVIO_INSTRUCCION:
-            t_instruccion *instruccion = malloc(sizeof(t_instruccion));
-            instruccion = instruccion_deserializar(paquete->buffer);
-            ejecutar_instruccion(instruccion, pcb); //
-            if (hay_interrupcion) {
-                printf("Hubo una interrupcion.\n");
-                guardar_estado(pcb);
-                enviar_pcb(pcb, client_dispatch, INTERRUPCION_QUANTUM);
-                hay_interrupcion = 0;
-                return;
-            }
-            free(instruccion);
-            break;
-        case ENVIO_CANTIDAD_INSTRUCCIONES:
-            int cantidad_instrucciones = cantidad_instrucciones_deserializar(paquete->buffer);
-
-            printf("Recibi que la cantidad de instrucciones del proceso %d es %d.\n", pcb->pid, cantidad_instrucciones);
-
-            while (pcb->program_counter < cantidad_instrucciones && !hay_interrupcion)
-            {
-                printf("Numero de vuelta: %d\n", pcb->program_counter);
-                pedir_instruccion_a_memoria(socket_memoria, pcb);
-                recibir(socket_memoria, pcb); // recibir cada instruccion
-                pcb->program_counter++;
-            }
-            break;
-        default:
-            printf("Error: Fallo!\n");
-            break;
+    switch (paquete->codigo_operacion)
+    {
+    case ENVIO_INSTRUCCION:
+        t_instruccion *instruccion = malloc(sizeof(t_instruccion));
+        instruccion = instruccion_deserializar(paquete->buffer);
+        ejecutar_instruccion(instruccion, pcb); //
+        if (hay_interrupcion)
+        {
+            printf("Hubo una interrupcion.\n");
+            guardar_estado(pcb);
+            enviar_pcb(pcb, client_dispatch, INTERRUPCION_QUANTUM);
+            hay_interrupcion = 0;
+            return;
         }
+        free(instruccion);
+        break;
+    case ENVIO_CANTIDAD_INSTRUCCIONES:
+        int cantidad_instrucciones = cantidad_instrucciones_deserializar(paquete->buffer);
+
+        printf("Recibi que la cantidad de instrucciones del proceso %d es %d.\n", pcb->pid, cantidad_instrucciones);
+
+        while (pcb->program_counter < cantidad_instrucciones && !hay_interrupcion)
+        {
+            printf("Numero de vuelta: %d\n", pcb->program_counter);
+            pedir_instruccion_a_memoria(socket_memoria, pcb);
+            recibir(socket_memoria, pcb); // recibir cada instruccion
+            pcb->program_counter++;
+        }
+        break;
+    default:
+        printf("Error: Fallo!\n");
+        break;
+    }
 
     // Liberamos memoria
     free(paquete->buffer->stream);
@@ -247,7 +248,7 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb)
 
     printf("La instruccion es de numero %d y tiene %d parametros\n", instruccion->nombre, instruccion->cantidad_parametros);
 
-    switch (nombreInstruccion)
+    switch (nombreInstruccion) // Ver la repeticion de logica... -> Abstraer
     {
     case SET:
         // Obtengo los datos de la lista de parametros
@@ -275,48 +276,45 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb)
     case MOV_OUT:
         break;
     case SUM:
-        /*
-        char* registro1 = (char*)list_get(list_parametros, 0);
-        void* valor_void = (char*)list_get(list_parametros, 1);
-        void* registro_pcb1 = seleccionar_registro(registro1, pcb);
+        t_parametro *registro_param1 = list_get(list_parametros, 0);
+        char *registro1 = registro_param1->nombre;
 
-        int es_registro_uint8 = es_de_8bits(registro1);
-        sum(registro_pcb1, valor_void, es_registro_uint8, pcb);
+        t_parametro* registro_param2 = list_get(list_parametros, 1); // valor_void = 2do registro
+        char *registro2 = registro_param2->nombre;
+
+        void* registro_origen = seleccionar_registro(registro1);
+        bool es_registro_uint8_origen = es_de_8bits(registro1);
+        void* registro_destino = seleccionar_registro(registro2);
+        bool es_registro_uint8_destino = es_de_8bits(registro2);
+
+        // set()
+        sum(registro_origen, registro_destino, es_registro_uint8_origen, es_registro_uint8_destino);
         break;
-
-        char* registro1 = list_get(list_parametros, 0);
-        char* registro2 = list_get(list_parametros, 1);
-
-        void* registroDestino = seleccionar_registro(registro1, pcb);
-        void* registroOrigen = seleccionar_registro(registro2, pcb);
-
-        bool es_registro_uint8 = es_de_8_bits(registro1);
-        sum(registroDestino, registroOrigen, es_registro_uint8, pcb);
-        */
     case SUB:
-        /*
-            char* registro1 = list_get(list_parametros, 0);
-            char* registro2 = list_get(list_parametros, 1);
+        t_parametro *registro_origen_param_resta = list_get(list_parametros, 0);
+        char *registro_origen_resta = registro_origen_param_resta->nombre;
 
-            void* registroDestino = seleccionar_registro(registro1, pcb);
-            void* registroOrigen = seleccionar_registro(registro2, pcb);
+        t_parametro *registro_destino_param_resta = list_get(list_parametros, 1);
+        char *registro_destino_resta = registro_destino_param_resta->nombre;
 
-            bool es_registro_uint8 = es_de_8_bits(registro1);
-            sub(registroDestino, registroOrigen, es_registro_uint8, pcb);
-        */
+        void *registro_origen_pcb_resta = seleccionar_registro_cpu(registro_origen_resta);
+        void *registro_destino_pcb_resta = seleccionar_registro_cpu(registro_destino_resta);
+
+        bool es_8_bits_origen_resta = es_de_8_bits(registro_origen_resta);
+        bool es_8_bits_destino_resta = es_de_8_bits(registro_destino_resta);
+
+        sub(registro_origen_pcb_resta, registro_destino_pcb_resta, es_8_bits_origen_resta, es_8_bits_destino_resta);
         break;
-
     case JNZ:
-        /*
-            char* registro1 = list_get(list_parametros, 0);
-            char* nuevo_pc = list_get(list_parametros, 1);
+        t_parametro *registro_parametro = list_get(list_parametros, 0);
+        char *registro1 = registro_parametro->nombre;
+        
+        t_parametro *pc = list_get(list_parametros, 1);
+        int nuevo_pc = atoi(pc->nombre);
 
-            void* registro = seleccion_registro(registro1, pcb);
-
-            jnz(registro1, nuevo_pc, pcb);
-        */
+        void *registro = seleccion_registro(registro1, pcb);
+        jnz(registro, nuevo_pc, pcb);
         break;
-
     case RESIZE:
         break;
     case COPY_STRING:
@@ -326,35 +324,96 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb)
     case SIGNAL:
         break;
     case IO_GEN_SLEEP:
-        /*
-        char* interfazSeleccionada = list_get(list_parametros, 0);
-        int unidadesDeTrabajo = list_get(list_parametros,1);
-        solicitud_dormirIO_kernel();
+        t_parametro *interfaz = list_get(list_parametros, 0);
+        char *interfazSeleccionada = interfaz->nombre;
+
+        t_parametro *unidades = list_get(list_parametros, 1);
+        int unidadesDeTrabajo = atoi(unidades->nombre);
+
+        solicitud_dormirIO_kernel(interfazSeleccionada, unidadesDeTrabajo);
         printf("Hizo IO_GEN_SLEEP\n");
-        
-        */
+
+        desalojar(pcb, IO_BLOCKED); // Necesario?
         break;
     case IO_STDIN_READ:
         break;
     case EXIT_INSTRUCCION:
         // guardar_estado(pcb); -> No estoy seguro si esta es necesaria, pero de todas formas nos va a servir cuando se interrumpa por quantum
-        setear_registros_cpu();
-        guardar_estado(pcb);
-        enviar_fin_programa(pcb); // No hecha, seria enviarle la kernel para que haga lo suyo
+        desalojar(pcb, FIN_PROCESO);
         break;
     default:
         printf("Error: No existe ese tipo de intruccion\n");
         break;
 
-        if (pcb->program_counter == 10)
-        {
+        if (pcb->program_counter == 10){
             imprimir_pcb(pcb); // Solo para ver.
         }
     }
+}
 
-    // log_info(logger, "PID: %d - Finalizando %d", pcb->pid, instruccion->nombre);
-    // CHECK INTERRUPT
-    check_interrupt(pcb);
+void desalojar(t_pcb* pcb, DesalojoCpu motivo) {
+    guardar_estado(pcb);
+    setear_registros_cpu();
+    enviar_pcb(pcb, client_dispatch, motivo);
+}
+
+void solicitud_dormirIO_kernel(char* interfaz, int unidades) {
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+    buffer = llenar_buffer_dormir_IO(interfaz, unidades);
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+
+    paquete->codigo_operacion = DORMIR_INTERFAZ; // Podemos usar una constante por operación
+    paquete->buffer = buffer; // Nuestro buffer de antes.
+
+    // Armamos el stream a enviar
+    void* a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
+    int offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    // Por último enviamos
+    // hay que poner el socket kernel globallll
+    send(client_dispatch, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
+    printf("Paquete enviado!");
+
+    // Falta liberar todo
+    free(a_enviar);
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+    return 0;
+}
+
+// ver
+t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
+    int length_interfaz = string_length(interfaz);
+
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+    t_operacion_io* io = malloc(sizeof(int) * 2 + length_interfaz);
+
+    io->length_interfaz = length_interfaz;
+    io->interfaz = malloc(length_interfaz);
+    io->interfaz = interfaz;
+    io->unidadesDeTrabajo = unidades;
+
+    buffer->size = sizeof(int) * 2 + length_interfaz + sizeof(int);
+
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    memcpy(buffer->stream + buffer->offset, &io->interfaz, io->length_interfaz);
+    buffer->offset += sizeof(io->length_interfaz);
+    
+    memcpy(buffer->stream + buffer->offset, &io->unidadesDeTrabajo, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(buffer->stream + buffer->offset, &io->length_interfaz, sizeof(int));
+    buffer->offset += sizeof(int);
+    
+    return buffer;
 }
 
 void enviar_fin_programa(t_pcb *pcb) {
@@ -375,8 +434,7 @@ void guardar_estado(t_pcb *pcb) {
 }
 
 // Deberia estar en otro lado
-void setear_registros_cpu()
-{
+void setear_registros_cpu() {
     registros_cpu->AX = 0;
     registros_cpu->BX = 0;
     registros_cpu->CX = 0;
@@ -391,8 +449,7 @@ void setear_registros_cpu()
     registros_cpu->DI = 0;
 }
 
-void *seleccionar_registro_cpu(char *nombreRegistro)
-{
+void *seleccionar_registro_cpu(char *nombreRegistro) {
 
     if (strcmp(nombreRegistro, "AX") == 0)
     {
@@ -438,8 +495,7 @@ void *seleccionar_registro_cpu(char *nombreRegistro)
     return NULL;
 }
 
-bool es_de_8_bits(char *registro)
-{
+bool es_de_8_bits(char *registro) {
     return (strcmp(registro, "AX") == 0 || strcmp(registro, "BX") == 0 ||
             strcmp(registro, "CX") == 0 || strcmp(registro, "DX") == 0);
 }
@@ -448,83 +504,106 @@ bool es_de_8_bits(char *registro)
 /////  INSTRUCCIONES //////
 ///////////////////////////
 
-void set(void *registro, uint32_t valor, bool es_8_bits)
-{
+// Esta funcion transforma ese uint8 en un uint32;
+
+void set(void *registro, uint32_t valor, bool es_8_bits) {
     // registro = &valor;
-    if (es_8_bits)
-    {
+    if (es_8_bits) {
         *(uint8_t *)registro = (uint8_t)valor; // NO va a haber ninguno registro de 8 bits que pase el limite
     }
-    else
-    {
+    else {
         *(uint32_t *)registro = valor;
     }
 }
 
-/*
-void sum(void* registroDestino, void* registroOrigen, bool es_8_bits, t_pcb* pcb){
-    void* registro2;
-    if(!(todosSonDigitosDe(valor))) {
-        registro2 = seleccionar_registro(valor, pcb); // Podria ser int* ????
-        if (es_8_bits) {
-            *(uint8_t*)registro += (uint8_t)valor; // NO va a haber ninguno registro de 8 bits que pase el limite
-        } else {
-            *(uint32_t*)registro += (uint32_t) valor;
-        }
+void sub(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, bool es_8_bits_destino) {
+    uint32_t valor_origen;
+    uint32_t valor_destino;
+
+    // Obtener el valor del registro origen
+    if (es_8_bits_origen) {
+        valor_origen = *(uint8_t *)registroOrigen;
     } else {
-        int registro2 = (int *) valor;
+        valor_origen = *(uint32_t *)registroOrigen;
     }
-    if(es_8_bits) {
-        *(uint8_t*)registroDestino += *(uint8_t*)registroOrigen;
+
+    // Obtener el valor del registro destino
+    if (es_8_bits_destino) {
+        valor_destino = *(uint8_t *)registroDestino;
     } else {
-        *(uint32_t*)registroDestino += *(uint32_t*)registroOrigen;
+        valor_destino = *(uint32_t *)registroDestino;
+    }
+
+    // Realizar la resta
+    uint32_t resultado = valor_destino - valor_origen;
+
+    // Actualizar el registro destino con el resultado usando la función set
+    set(registroDestino, resultado, es_8_bits_destino);
+}
+
+void sum(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, bool es_8_bits_destino) {
+    uint32_t valor_origen;
+    uint32_t valor_destino;
+
+    // Obtener el valor del registro origen
+    if (es_8_bits_origen) {
+        valor_origen = *(uint8_t *)registroOrigen;
+    } else {
+        valor_origen = *(uint32_t *)registroOrigen;
+    }
+
+    // Obtener el valor del registro destino
+    if (es_8_bits_destino) {
+        valor_destino = *(uint8_t *)registroDestino;
+    } else {
+        valor_destino = *(uint32_t *)registroDestino;
+    }
+
+    // Realizar la suma
+    uint32_t resultado_suma = valor_origen + valor_destino;
+
+    // Actualizar el registro destino con el resultado usando la función set
+    set(registroDestino, resultado_suma, es_8_bits_destino);
+}
+
+/* 
+void sum(void* registroOrigen, void* registroDestino, bool es_8_bits, bool es_8bits_2, t_pcb *pcb) {
+    // Aca va lo que pasa si pasan dos registros
+    if (es_8_bits1 && es_8_bits2) {
+        *(uint8_t *)registroOrigen += *(uint8_t *)registroDestino; // NO va a haber ninguno registro de 8 bits que pase el limite
+    } else {
+        *(uint32_t *)registroOrigen += *(uint32_t *)registroDestino;
+    } else {    
+        *(uint8_t *)registroOrigen += *(uint32_t *)registroDestino;
+    } else {
+        *(uint32_t *)registroOrigen += *(uint8_t *)registroDestino;
     }
 }
 */
-/*
-void sub(void* registroDestino, void* registroOrigen, bool es_8_bits, t_pcb* pcb) {
-    if(es_8_bits) {
-        *(uint8_t*)registroDestino -= *(uint8_t*)registroOrigen;
+
+// Lo mismo que ssum pero negativo
+void sub(void* registroOrigen, void* registroDestino, bool es_8_bits, t_pcb* pcb) {
+   if (es_8_bits) {
+        *(uint8_t *)registroOrigen -= *(uint8_t *)registroDestino; // NO va a haber ninguno registro de 8 bits que pase el limite
     } else {
-        *(uint32_t*)registroDestino -= *(uint32_t*)registroOrigen;
+        *(uint32_t *)registroOrigen -= *(uint32_t *)registroDestino;
     }
 }
 
-void jnz(void* registro, int valor, pcb){
-    if(*(void*)registro == 0) {
+void jnz(void* registro, int valor, t_pcb* pcb) {
+    if ((void *)registro != 0) {
         pcb->program_counter = valor;
     }
 }
-*/
 
-/*
-void* solicitud_dormirIO_kernel(char* nombre_interfaz, char* unidades_de_trabajo) {
-    
-    t_buffer* buffer = llenar_buffer_pcb(pcb);
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-
-    paquete->codigo_operacion =  DORMIR_INTERFAZ; // Podemos usar una constante por operación
-    paquete->buffer = buffer; // Nuestro buffer de antes.
-
-    // Armamos el stream a enviar
-    void* a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    // Por último enviamos
-    send(escuchaFD, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-    printf("Paquete enviado!");
-
-    // Falta liberar todo
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
-    return 0;
+bool sonTodosDigitosDe(char *palabra) {
+    while (*palabra)
+    {
+        if (!isdigit(*palabra))
+        {
+            return false;
+        }
+        palabra++;
+    }
+    return true;
 }
-*/

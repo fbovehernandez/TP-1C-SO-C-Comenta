@@ -1,19 +1,8 @@
 #include "../include/conexionesCPU.h"
 
 int socket_memoria;
+int socket_kernel;
 int client_dispatch;
-
-/* 
-PUERTO_KERNEL=8010
-IP_KERNEL=127.0.0.1
-PUERTO_ESCUCHA_DISPATCH=8006
-PUERTO_ESCUCHA_INTERRUPT=8007
-IP_MEMORIA=127.0.0.1
-PUERTO_MEMORIA=8002
-CANTIDAD_ENTRADAS_TLB=32
-ALGORITMO_TLB=FIFO
-
-*/
 
 int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) {
     int valor = 2;
@@ -27,16 +16,6 @@ int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) 
     sleep(3);
     return memoriafd;
 }
-
-/*
-void* handle_interrupt(void* socket) {
-    recibir_interrupcion();
-    return NULL;
-}
-
-void recibir_interrupcion() {
-    
-}*/
 
 // Modificar para que me devuelva un struct con los sockets y el sv_type
 int esperar_cliente(int socket_servidor, t_log *logger_cpu) {
@@ -146,51 +125,25 @@ void* iniciar_servidor_interrupt(void* datos_interrupt) {
     int socket_cpu_escucha = iniciar_servidor(datos->puerto_escucha); // Inicia el servidor, bind() y listen() y socket()
     int client_interrupt = esperar_cliente(socket_cpu_escucha, datos->logger); 
 
-    int codop;
-
     recibir_cliente_interrupt(client_interrupt);
     return NULL;
 }
 
 void recibir_cliente_interrupt(int client_interrupt) {
     while(1) {
-        t_paquete* paquete = malloc(sizeof(t_paquete));
-        paquete->buffer = malloc(sizeof(t_buffer));
-
         printf("Esperando recibir paquete\n");
-        recv(client_interrupt, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
-        printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
+        recv(client_interrupt, &(codigo_operacion), sizeof(int), MSG_WAITALL);
+        printf("Recibi el codigo de operacion : %d\n", codigo_operacion);
 
-        //recv(client_dispatch, &(paquete->buffer->size), sizeof(int), 0);
-        recv(client_interrupt, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
-        paquete->buffer->stream = malloc(paquete->buffer->size);
-
-        //recv(client_dispatch, paquete->buffer->stream, paquete->buffer->size, 0);
-        recv(client_interrupt, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
-        // codigo_operacion = recibir_operacion(client_dispatch);
-
-        switch (paquete->codigo_operacion) {
+        // Posible if si no hay mas codigos de operacion para interrumpir
+        switch (codigo_operacion) {
             case INTERRUPCION_CPU:
-                int pid = recibir_interrupcion(paquete->buffer);
+                hay_interrupcion = 1;
                 break;         
             default:
                 break;
         }
-
-        free(paquete->buffer->stream);
-        free(paquete->buffer);
-        free(paquete);
     }
-}
-
-int recibir_interrupcion(t_buffer* buffer) {
-    int pid;
-    void* stream = buffer->stream;
-    // Deserializamos los campos que tenemos en el buffer
-    memcpy(&pid, stream, sizeof(int));
-    stream += sizeof(int);
-    hay_interrupcion = 1;
-    return pid;
 }
 
 t_config_cpu* iniciar_datos(char* escucha_fd, t_log* logger_CPU) {

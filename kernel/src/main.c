@@ -17,6 +17,8 @@ int main(int argc, char* argv[]) {
     grado_multiprogramacion = datos_kernel->grado_multiprogramacion;
     algoritmo_planificacion = datos_kernel->algoritmo_planificacion;
 
+    diccionario_io = dictionary_create();
+
     pthread_mutex_init(&mutex_estado_new, NULL);
     pthread_mutex_init(&mutex_estado_ready, NULL);
     sem_init(&sem_contador_quantum, 0, 0);
@@ -37,6 +39,7 @@ int main(int argc, char* argv[]) {
     t_sockets* sockets = malloc(sizeof(t_sockets));
     sockets->socket_cpu = socket_cpu;
     sockets->socket_memoria = socket_memoria_kernel;
+    sockets->socket_int = socket_interrupt;
 
     pthread_t pasar_a_ready;
 	pthread_create(&pasar_a_ready, NULL, (void*)a_ready, NULL);
@@ -56,8 +59,8 @@ int main(int argc, char* argv[]) {
     kernel_io->logger = logger_kernel;
 
     // Levanto hilo para escuchar peticiones I/O
-    //pthread_t hilo_io;
-    // pthread_create(&hilo_io, NULL, (void*) escuchar_IO, (void*) kernel_io); PARA PROBAR
+    pthread_t hilo_io;
+    pthread_create(&hilo_io, NULL, (void*) escuchar_IO, (void*) kernel_io); //PARA PROBAR
 
     pthread_t socket_escucha_consola;
     pthread_create(&socket_escucha_consola, NULL, (void*) interaccion_consola, sockets); 

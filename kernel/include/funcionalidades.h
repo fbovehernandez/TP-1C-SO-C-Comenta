@@ -85,6 +85,8 @@ t_buffer* llenar_buffer_pcb(t_pcb* pcb);
 t_pcb* proximo_a_ejecutar();
 void* pasar_a_exec(t_pcb* pcb);
 int esperar_cpu(t_pcb* pcb);
+t_operacion_io* serializar_io(t_buffer* buffer);
+
 
 void EJECUTAR_SCRIPT();
 void INICIAR_PROCESO(char* path, t_sockets* sockets);

@@ -235,7 +235,7 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
     int contexto_devolucion = 0;
     t_pcb *pcb = malloc(sizeof(t_pcb));
 
-    int socket_CPU = sockets->socket_cpu;
+    int socket_CPU = sockets->socket_int; 
     
     while(1) {
         sem_wait(&sem_hay_para_planificar); 
@@ -310,7 +310,7 @@ t_paquete* recibir_cpu() {
 int esperar_cpu(t_pcb* pcb) {
     t_paquete* package = malloc(sizeof(t_pcb));
 
-    desalojo_cpu devolucion_cpu;
+    DesalojoCpu devolucion_cpu;
     
     package = recibir_cpu(); // pcb y codigo de operacion (devolucion_cpu)
     devolucion_cpu = package->codigo_operacion;
@@ -320,8 +320,9 @@ int esperar_cpu(t_pcb* pcb) {
             t_pcb* pcb = deserializar_pcb(*(package->buffer));
             pasar_a_ready(pcb, EXEC);
             break;
-        case IO_BLOCKED:
-            // TODO
+        case DORMIR_INTERFAZ:
+            t_operacion_io* operacion_io = serializar_io(package->buffer);
+            dormir_io(operacion_io);
             break;
         case FIN_PROCESO:
             t_pcb* pcb = deserializar_pcb(*(package->buffer)); 
@@ -334,6 +335,37 @@ int esperar_cpu(t_pcb* pcb) {
     
     free(package); // PAKESH 
 }
+
+t_operacion_io* serializar_io(t_buffer* buffer) {
+    t_operacion_io* operacion_io = malloc(sizeof(t_operacion_io));
+
+    void* stream = buffer->stream;
+    // Deserializamos los campos que tenemos en el buffer
+    memcpy(&(operacion_io->interfaz), stream, sizeof(char*));
+    stream += sizeof(char*);
+    memcpy(&(operacion_io->unidadesDeTrabajo), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(operacion_io->length_interfaz), stream, sizeof(int));
+    stream += sizeof(int);
+
+    return operacion_io;
+}
+
+void dormir_io(t_operacion_io* operacion_io) {
+    pthread_t dormir_interfaz;
+    pthread_create(&dormir_interfaz, NULL, (void*) hilo_dormir_io, operacion_io); 
+}
+
+void hilo_dormir_io(t_operacion_io* operacion_io) {
+   bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
+    if(existe_io) {
+        if(operacion_io->interfaz) {
+            
+        } 
+    }
+    //sleep(operacion_io->unidadesDeTrabajo);
+}
+
 
 
 void change_status(t_pcb* pcb, Estado new_status) {

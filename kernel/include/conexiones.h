@@ -7,6 +7,8 @@
 #include "../../utils/include/sockets.h" 
 #include "../../utils/include/logconfig.h"
 
+extern t_dictionary* diccionario_io;
+
 // Aca va el struct del PCB 
 typedef struct {
     char* puerto_escucha;
@@ -17,6 +19,7 @@ typedef struct {
 typedef struct {
     int socket_memoria;
     int socket_cpu;
+    int socket_int;
 } t_sockets;
 
 typedef struct {

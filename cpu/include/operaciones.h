@@ -10,6 +10,7 @@
 #include "conexionesCPU.h"
 
 extern int hay_interrupcion;
+
 typedef struct {
     int cantidad;
 } t_cantidad_instrucciones;
@@ -21,7 +22,7 @@ t_instruccion* instruccion_deserializar(t_buffer* buffer);
 void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb);
 void* seleccionar_registro(char* nombreRegistro, t_pcb *pcb);
 void* seleccionar_registro_cpu(char* nombreRegistro);
-//bool todosSonDigitosDe(char* valor);
+bool todosSonDigitosDe(char* valor);
 bool es_de_8_bits(char* registro);
 void set(void* registro, uint32_t valor, bool es_8_bits);
 void setear_registros_cpu();
@@ -29,6 +30,7 @@ void setear_registros_cpu();
 void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria);
 void recibir(int socket_memoria, t_pcb* pcb);
 int cantidad_instrucciones_deserializar(t_buffer* buffer);
+void solicitud_dormirIO_kernel(char* interfaz, int unidades);
 
 extern t_log* logger;
 

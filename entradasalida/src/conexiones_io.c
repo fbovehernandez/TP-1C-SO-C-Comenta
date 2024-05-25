@@ -1,5 +1,7 @@
 #include "../include/conexiones_io.h"
 
+int socket_kernel_io;
+
 /*
 void gestionar_STDOUT(t_config* config_io, t_log* logger_io) {
     // char* IP_CPU = config_get_string_value(config_kernel, "IP_CPU");
@@ -28,16 +30,34 @@ void gestionar_DIALFS(t_config *config_io) {
 
 }
 */
+typedef struct {
+    int nombre_interfaz_largo;
+    char* nombre_interfaz;
+} t_info_io;
 
-int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io) {
+int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, char* nombre_interfaz) {
     int message_io = 12; // nro de codop
     int valor = 5; //handshake, 5 = I/O
 
     int kernelfd = crear_conexion(IP_KERNEL, puerto_kernel, valor);
     log_info(logger_io, "Conexion establecida con Kernel");
-
-    send(kernelfd, &message_io, sizeof(int), 0); 
+    
+    t_info_io =
+    int str_interfaz = strlen(nombre_interfaz);
+    send(socket_kernel_io, &str_interfaz, sizeof(int), 0); 
 
     // close(kernelfd); // (POSIBLE) no cierro el socket porque quiero reutilizar la conexion
     return kernelfd;
+}
+
+void recibir_solicitud_kernel() {
+    codigo_operacion cod_op;
+    recv(socket_kernel_io, &cod_op, sizeof(int), 0);
+    switch(cod_op) {
+        case QUIERO_NOMBRE:
+            send(socket_kernel_io, nombre_io, 100, 0); // esta bien pasado asi?
+            break;
+        default:
+            break;
+    }
 }
