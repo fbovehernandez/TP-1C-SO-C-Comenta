@@ -62,7 +62,10 @@ void* handle_io(void* socket) {
 
 int conectar_kernel_cpu_interrupt(t_log* logger_kernel, char* IP_CPU, char* puerto_interrupt) {
     int valor = 3;
-    int m
+    int interruptfd = crear_conexion(IP_CPU, puerto_interrupt, valor);
+    log_info(logger_kernel, "Conexion establecida con Interrupt");
+    // send(dispatcherfd, &message, sizeof(int), 0);
+    return interruptfd;   
 }
 
 int conectar_kernel_cpu_dispatch(t_log* logger_kernel, char* IP_CPU, char* puerto_cpu_dispatch) {

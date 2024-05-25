@@ -31,7 +31,12 @@ typedef enum {
     IO_BLOCKED,
     WAIT_RECURSO,
     FIN_PROCESO
-} desalojo_cpu;
+} DesalojoCpu;
+
+typedef struct {
+    int pid;
+    DesalojoCpu motivoDesalojo;
+} t_desalojo;
 
 // Para que usar op_code si tenemos codigo_operacion? (O al revés, qué rompimos?)
 typedef enum {
