@@ -63,7 +63,8 @@ typedef enum {
     ENVIO_CANTIDAD_INSTRUCCIONES,
     INTERRUPCION_CPU,
     DORMIR_INTERFAZ,
-    QUIERO_NOMBRE
+    QUIERO_NOMBRE,
+    DORMITE
 } codigo_operacion;
 
 typedef struct {

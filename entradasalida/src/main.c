@@ -40,13 +40,11 @@ int main(int argc, char* argv[2]) {
     return 0;
 }
 
-void iniciar_interfaz_generica(char* nombreInterfaz, char* IP_KERNEL, char* puerto_kernel) {
+void iniciar_interfaz_generica(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, char* puerto_kernel) {
     // Saco el unico dato que tiene esta interfaz
     int tiempo_unidad_trabajo = config_get_int_value(config_io, "TIEMPO_UNIDAD_TRABAJO");
-    conectar_io_kernel(IP_KERNEL, puerto_kernel, logger, nombre_interfaz); // falta logger..
+    conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz); // falta logger..
     recibir_kernel();
-
-    // IO_GEN_SLEEP(unidad_trabajo,tiempo_unidad_trabajo); 
 }
 
 void IO_GEN_SLEEP(int unidad_trabajo, int tiempo_unidad_trabajo) {

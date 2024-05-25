@@ -357,15 +357,43 @@ void dormir_io(t_operacion_io* operacion_io) {
 }
 
 void hilo_dormir_io(t_operacion_io* operacion_io) {
-   bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
+    bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
     if(existe_io) {
-        if(operacion_io->interfaz) {
-            
-        } 
-    }
-    //sleep(operacion_io->unidadesDeTrabajo);
-}
+        void* elemento = dictionary_get(diccionario_io, operacion_io->interfaz);
 
+        t_paquete* paquete = malloc(sizeof(t_paquete));
+        t_buffer* buffer = malloc(sizeof(t_buffer));
+
+        buffer->size = sizeof(int);
+
+        buffer->offset = 0;
+        buffer->stream = malloc(buffer->size);
+
+        memcpy(buffer->stream, &elemento, sizeof(int));
+        
+        paquete->codigo_operacion = DORMITE; // Podemos usar una constante por operación
+        paquete->buffer = buffer; // Nuestro buffer de antes.
+
+        // Armamos el stream a enviar
+        void* a_enviar = malloc(buffer->size + sizeof(int));
+        int offset = 0;
+
+        memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
+        offset += sizeof(int);
+        memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+        offset += sizeof(int);
+        memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+        // Por último enviamos
+        send(elemento, a_enviar, buffer->size + sizeof(int), 0);
+
+        // No nos olvidamos de liberar la memoria que ya no usaremos
+        free(a_enviar);
+        free(paquete->buffer->stream);
+        free(paquete->buffer);
+        free(paquete);
+    }
+}
 
 
 void change_status(t_pcb* pcb, Estado new_status) {

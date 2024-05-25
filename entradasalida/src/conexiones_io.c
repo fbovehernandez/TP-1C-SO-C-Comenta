@@ -1,6 +1,7 @@
 #include "../include/conexiones_io.h"
 
 int socket_kernel_io;
+t_log* logger_io;
 
 /*
 void gestionar_STDOUT(t_config* config_io, t_log* logger_io) {
@@ -42,7 +43,8 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     int kernelfd = crear_conexion(IP_KERNEL, puerto_kernel, valor);
     log_info(logger_io, "Conexion establecida con Kernel");
     
-    t_info_io =
+    t_info_io* io = malloc(sizeof(int) + string_length(nombre_interfaz));
+    // Hay que mandarle el nombre de la IO. Ver estructura t_info_io
     int str_interfaz = strlen(nombre_interfaz);
     send(socket_kernel_io, &str_interfaz, sizeof(int), 0); 
 
@@ -57,7 +59,29 @@ void recibir_solicitud_kernel() {
         case QUIERO_NOMBRE:
             send(socket_kernel_io, nombre_io, 100, 0); // esta bien pasado asi?
             break;
+        case DORMITE:
+            //Podria estar en recibir_kernel(), asi no tenemos que mandar un paquete vacio en QUIERO_NOMBRE.
+            t_paquete* paquete = malloc(sizeof(t_paquete));
+            paquete->buffer = malloc(sizeof(t_buffer));
+
+            // Primero recibimos el codigo de operacion
+            recv(socket_kernel_io, &(paquete->codigo_operacion), sizeof(int), 0);
+            // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
+            recv(socket_kernel_io, &(paquete->buffer->size), sizeof(uint32_t), 0);
+            paquete->buffer->stream = malloc(paquete->buffer->size);
+            recv(socket_kernel_io, paquete->buffer->stream, paquete->buffer->size, 0);
+
+            int unidadesDeTrabajo = serializar_unidades_trabajo(paquete->buffer);
+            
+            // tiempoUnidadesTrabajo esta en el config
+            sleep(unidadesDeTrabajo * tiempoUnidadesTrabajo);
         default:
             break;
     }
+}
+
+int serializar_unidades_trabajo(t_buffer* buffer) {
+    int unidades_de_trabajo;
+    memcpy(&unidades_de_trabajo, buffer->stream, sizeof(int));
+    return unidades_de_trabajo;
 }
