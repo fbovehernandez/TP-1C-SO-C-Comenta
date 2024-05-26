@@ -14,10 +14,6 @@
 #include <pthread.h>
 
 extern sem_t sem_memoria_instruccion;
-t_list interfaces_io;
-
-char* nombre_io;
-t_log* logger_io;
 
 typedef struct {
     int PID;
@@ -39,6 +35,7 @@ typedef struct {
 typedef enum {
     INTERRUPCION_QUANTUM,
     IO_BLOCKED,
+    DORMIR_INTERFAZ,
     WAIT_RECURSO,
     FIN_PROCESO
 } DesalojoCpu;
@@ -62,7 +59,6 @@ typedef enum {
     QUIERO_CANTIDAD_INSTRUCCIONES,
     ENVIO_CANTIDAD_INSTRUCCIONES,
     INTERRUPCION_CPU,
-    DORMIR_INTERFAZ,
     QUIERO_NOMBRE,
     DORMITE
 } codigo_operacion;
@@ -166,9 +162,7 @@ void sendMessage(int socket_fd);
 void receiveMessagex(int socket_fd);
 int crear_conexion(char *ip, char* puerto, int valor);
 t_registros* inicializar_registros_cpu(t_registros* registro_pcb);
-t_pcb* deserializar_pcb(t_buffer buffer);
-
-
-
+t_pcb* deserializar_pcb(t_buffer* buffer);
+t_buffer* llenar_buffer_pcb(t_pcb* pcb);
 
 #endif // SOCKET_H

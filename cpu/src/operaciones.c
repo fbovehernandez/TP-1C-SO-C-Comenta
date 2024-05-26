@@ -4,8 +4,7 @@ t_log *logger;
 int hay_interrupcion;
 // t_cantidad_instrucciones* cantidad_instrucciones;
 
-void ejecutar_pcb(t_pcb *pcb, int socket_memoria)
-{
+void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
     pedir_cantidad_instrucciones_a_memoria(pcb->pid, socket_memoria);
     recibir(socket_memoria, pcb); // recibir cantidad de instrucciones
 
@@ -19,8 +18,7 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria)
     // La unica que le encuentro es llevarlo al switch
 }
 
-void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria)
-{
+void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria) {
     t_buffer *buffer = malloc(sizeof(t_buffer));
     // t_cantidad_instrucciones* cantidad = malloc(sizeof(t_cantidad_instrucciones));
 
@@ -74,8 +72,7 @@ t_cantidad_instrucciones* cantidad_instrucciones_deserializar(t_buffer* buffer) 
 }
 */
 
-int cantidad_instrucciones_deserializar(t_buffer *buffer)
-{
+int cantidad_instrucciones_deserializar(t_buffer *buffer) {
     printf("Deserializa la cantidad de instrucciones.\n");
     int cantidad_instrucciones;
 
@@ -86,8 +83,7 @@ int cantidad_instrucciones_deserializar(t_buffer *buffer)
 }
 
 // Manda a memoria el pcb, espera una instruccion y la devuelve
-void pedir_instruccion_a_memoria(int socket_memoria, t_pcb *pcb)
-{
+void pedir_instruccion_a_memoria(int socket_memoria, t_pcb *pcb) {
     // Recibimos cada parámetro
     t_solicitud_instruccion *pid_pc = malloc(sizeof(t_solicitud_instruccion));
     pid_pc->pid = pcb->pid;
@@ -197,8 +193,7 @@ void recibir(int socket_memoria, t_pcb *pcb) {
     free(paquete);
 }
 
-t_instruccion *instruccion_deserializar(t_buffer *buffer)
-{
+t_instruccion *instruccion_deserializar(t_buffer *buffer) {
     t_instruccion *instruccion = malloc(sizeof(t_instruccion));
     instruccion->parametros = list_create();
 
@@ -238,8 +233,7 @@ t_instruccion *instruccion_deserializar(t_buffer *buffer)
     return instruccion;
 }
 
-void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb)
-{
+void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
     // log_info(logger, "PID: %d - Ejecutando: %d ", pcb->pid, instruccion->nombre);
 
@@ -248,12 +242,13 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb)
 
     printf("La instruccion es de numero %d y tiene %d parametros\n", instruccion->nombre, instruccion->cantidad_parametros);
 
+    char* registro1;
     switch (nombreInstruccion) // Ver la repeticion de logica... -> Abstraer
     {
     case SET:
         // Obtengo los datos de la lista de parametros
         t_parametro *registro_param = list_get(list_parametros, 0);
-        char *registro1 = registro_param->nombre;
+        registro1 = registro_param->nombre;
 
         t_parametro *valor_param = list_get(list_parametros, 1);
 
@@ -277,14 +272,14 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb)
         break;
     case SUM:
         t_parametro *registro_param1 = list_get(list_parametros, 0);
-        char *registro1 = registro_param1->nombre;
+        registro1 = registro_param1->nombre;
 
         t_parametro* registro_param2 = list_get(list_parametros, 1); // valor_void = 2do registro
         char *registro2 = registro_param2->nombre;
 
-        void* registro_origen = seleccionar_registro(registro1);
+        void* registro_origen = seleccionar_registro_cpu(registro1);
         bool es_registro_uint8_origen = es_de_8bits(registro1);
-        void* registro_destino = seleccionar_registro(registro2);
+        void* registro_destino = seleccionar_registro_cpu(registro2);
         bool es_registro_uint8_destino = es_de_8bits(registro2);
 
         // set()
@@ -307,7 +302,7 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb)
         break;
     case JNZ:
         t_parametro *registro_parametro = list_get(list_parametros, 0);
-        char *registro1 = registro_parametro->nombre;
+        registro1 = registro_parametro->nombre;
         
         t_parametro *pc = list_get(list_parametros, 1);
         int nuevo_pc = atoi(pc->nombre);
@@ -582,13 +577,13 @@ void sum(void* registroOrigen, void* registroDestino, bool es_8_bits, bool es_8b
 */
 
 // Lo mismo que ssum pero negativo
-void sub(void* registroOrigen, void* registroDestino, bool es_8_bits, t_pcb* pcb) {
+/*void sub(void* registroOrigen, void* registroDestino, bool es_8_bits, t_pcb* pcb) {
    if (es_8_bits) {
         *(uint8_t *)registroOrigen -= *(uint8_t *)registroDestino; // NO va a haber ninguno registro de 8 bits que pase el limite
     } else {
         *(uint32_t *)registroOrigen -= *(uint32_t *)registroDestino;
     }
-}
+}*/
 
 void jnz(void* registro, int valor, t_pcb* pcb) {
     if ((void *)registro != 0) {

@@ -2,6 +2,7 @@
 
 int socket_kernel_io;
 t_log* logger_io;
+char* nombre_io;
 
 /*
 void gestionar_STDOUT(t_config* config_io, t_log* logger_io) {
@@ -31,10 +32,6 @@ void gestionar_DIALFS(t_config *config_io) {
 
 }
 */
-typedef struct {
-    int nombre_interfaz_largo;
-    char* nombre_interfaz;
-} t_info_io;
 
 int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, char* nombre_interfaz) {
     int message_io = 12; // nro de codop
@@ -43,10 +40,13 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     int kernelfd = crear_conexion(IP_KERNEL, puerto_kernel, valor);
     log_info(logger_io, "Conexion establecida con Kernel");
     
-    t_info_io* io = malloc(sizeof(int) + string_length(nombre_interfaz));
-    // Hay que mandarle el nombre de la IO. Ver estructura t_info_io
     int str_interfaz = strlen(nombre_interfaz);
-    send(socket_kernel_io, &str_interfaz, sizeof(int), 0); 
+    
+    t_info_io* io = malloc(sizeof(int) + str_interfaz);
+    io->nombre_interfaz_largo = str_interfaz;
+    io->nombre_interfaz = nombre_interfaz;
+
+    send(socket_kernel_io, &io, sizeof(int) + str_interfaz, 0); 
 
     // close(kernelfd); // (POSIBLE) no cierro el socket porque quiero reutilizar la conexion
     return kernelfd;
@@ -59,20 +59,27 @@ void recibir_solicitud_kernel() {
         case QUIERO_NOMBRE:
             send(socket_kernel_io, nombre_io, 100, 0); // esta bien pasado asi?
             break;
+        default:
+            break;
+    }
+}
+
+void recibir_kernel(t_config* config_io) {
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+    paquete->buffer = malloc(sizeof(t_buffer));
+
+    recv(socket_kernel_io, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
+    printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
+
+    recv(socket_kernel_io, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
+    paquete->buffer->stream = malloc(paquete->buffer->size);
+
+    recv(socket_kernel_io, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+
+    switch(paquete->codigo_operacion) {
         case DORMITE:
-            //Podria estar en recibir_kernel(), asi no tenemos que mandar un paquete vacio en QUIERO_NOMBRE.
-            t_paquete* paquete = malloc(sizeof(t_paquete));
-            paquete->buffer = malloc(sizeof(t_buffer));
-
-            // Primero recibimos el codigo de operacion
-            recv(socket_kernel_io, &(paquete->codigo_operacion), sizeof(int), 0);
-            // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
-            recv(socket_kernel_io, &(paquete->buffer->size), sizeof(uint32_t), 0);
-            paquete->buffer->stream = malloc(paquete->buffer->size);
-            recv(socket_kernel_io, paquete->buffer->stream, paquete->buffer->size, 0);
-
             int unidadesDeTrabajo = serializar_unidades_trabajo(paquete->buffer);
-            
+            int tiempoUnidadesTrabajo = config_get_int_value(config_io,"TIEMPO_UNIDAD_TRABAJO");
             // tiempoUnidadesTrabajo esta en el config
             sleep(unidadesDeTrabajo * tiempoUnidadesTrabajo);
         default:

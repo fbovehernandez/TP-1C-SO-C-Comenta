@@ -45,7 +45,7 @@ void* iniciar_servidor_dispatch(void* datos_dispatch) {
     log_info(datos->logger, "Esperando cliente...");
 
     // Aca recibo al cliente (este es mi while(1))
-    recibir_cliente(client_dispatch);
+    recibir_cliente();
     
     return NULL;
 }
@@ -130,13 +130,14 @@ void* iniciar_servidor_interrupt(void* datos_interrupt) {
 }
 
 void recibir_cliente_interrupt(int client_interrupt) {
+    codigo_operacion cod_op;
     while(1) {
         printf("Esperando recibir paquete\n");
-        recv(client_interrupt, &(codigo_operacion), sizeof(int), MSG_WAITALL);
-        printf("Recibi el codigo de operacion : %d\n", codigo_operacion);
+        recv(client_interrupt, &cod_op, sizeof(int), MSG_WAITALL);
+        printf("Recibi el codigo de operacion : %d\n", cod_op);
 
         // Posible if si no hay mas codigos de operacion para interrumpir
-        switch (codigo_operacion) {
+        switch (cod_op) {
             case INTERRUPCION_CPU:
                 hay_interrupcion = 1;
                 break;         

@@ -81,11 +81,14 @@ void* planificar_corto_plazo(void* sockets_kernel);
 void* enviar_path_a_memoria(char* path, t_sockets* sockets, int pid);
 void* enviar_pcb(t_pcb* pcb, int socket,codigo_operacion codop);
 t_buffer* llenar_buffer_path(t_path* pathNuevo);
-t_buffer* llenar_buffer_pcb(t_pcb* pcb);
 t_pcb* proximo_a_ejecutar();
 void* pasar_a_exec(t_pcb* pcb);
 int esperar_cpu(t_pcb* pcb);
 t_operacion_io* serializar_io(t_buffer* buffer);
+t_paquete* recibir_cpu();
+void dormir_io(t_operacion_io* operacion_io);
+void hilo_dormir_io(t_operacion_io* operacion_io);
+void change_status(t_pcb* pcb, Estado new_status);
 
 
 void EJECUTAR_SCRIPT();

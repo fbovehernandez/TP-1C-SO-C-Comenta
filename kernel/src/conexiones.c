@@ -100,20 +100,21 @@ void* escuchar_IO(void* kernel_io) { //kernel_io es el socket del kerne
 
     while(1) {
         int socket_cliente = esperar_cliente(socket_io, logger_kernel);
-        char* nombre[100];
         solicitar_nombre_io(socket_cliente);
         char* nombre = recibir_nombre(socket_cliente);
-        dictionary_put(diccionario_io, nombre, socket_cliente);
+        dictionary_put(diccionario_io, nombre, &socket_cliente);
     }
     
     return NULL;
 }
 
 void solicitar_nombre_io(int socket) {
-    send(socket, QUIERO_NOMBRE, 100, 0);
+    void* pointer_codop = (void*) QUIERO_NOMBRE; 
+    send(socket, pointer_codop, sizeof(int), 0);
 }
 
 char* recibir_nombre(int kernel) {
+    char* nombre_io[100];
     recv(kernel, nombre_io, 100, 0);
     return nombre_io;
 }

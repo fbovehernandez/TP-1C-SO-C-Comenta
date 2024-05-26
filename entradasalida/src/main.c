@@ -3,20 +3,20 @@
 int main(int argc, char* argv[2]) {
     
     // Este archivo lo recibe por parametro
-    config_io = iniciar_config(argv[2]);
+    t_config* config_io = iniciar_config(argv[2]);
     logger_io = iniciar_logger("entradasalida.log"); // Declararla en el .h
     
     if(config_io == NULL) {
         log_error(logger_io, "No se pudo leer el archivo de configuracion");
         return 1;
     }
-    nombre_io = argc;
+    nombre_io = argv[1];
 
     char* tipo_interfaz = config_get_string_value(config_io, "TIPO_INTERFAZ"); // TOdos
     char* IP_KERNEL = config_get_string_value(config_io, "IP_KERNEL"); // Todos
     char* puerto_kernel = config_get_string_value(config_io, "PUERTO_KERNEL_IO"); // Todos
 
-    int socket_kernel_io = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io);     
+    int socket_kernel_io = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombre_io);     
     // close(socket_kernel_io);
 
     // Falta manejar los distintos tipos de interfaces
@@ -29,7 +29,7 @@ int main(int argc, char* argv[2]) {
     } else if (strcmp(tipo_interfaz, "STDIN") == 0) {
         // printf("STDIN - Falta gestionar\n");        
     } else if (strcmp(tipo_interfaz, "Genericas") == 0) {
-            iniciar_interfaz_generica(config_io, IP_KERNEL, puerto_kernel);
+            iniciar_interfaz_generica(nombre_io, config_io, IP_KERNEL, puerto_kernel);
     } else if (strcmp(tipo_interfaz, "DialFS") == 0) {
         // gestionar_DIALFS(config_io);
     } else {
@@ -43,12 +43,8 @@ int main(int argc, char* argv[2]) {
 void iniciar_interfaz_generica(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, char* puerto_kernel) {
     // Saco el unico dato que tiene esta interfaz
     int tiempo_unidad_trabajo = config_get_int_value(config_io, "TIEMPO_UNIDAD_TRABAJO");
-    conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz); // falta logger..
-    recibir_kernel();
-}
-
-void IO_GEN_SLEEP(int unidad_trabajo, int tiempo_unidad_trabajo) {
-    sleep(unidad_trabajo * tiempo_unidad_trabajo);
+    conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz); 
+    recibir_kernel(config_io); 
 }
 
 

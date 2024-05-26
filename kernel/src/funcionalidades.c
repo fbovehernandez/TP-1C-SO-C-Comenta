@@ -317,7 +317,7 @@ int esperar_cpu(t_pcb* pcb) {
 
     switch (devolucion_cpu) {
         case INTERRUPCION_QUANTUM:
-            t_pcb* pcb = deserializar_pcb(*(package->buffer));
+            pcb = deserializar_pcb(package->buffer);
             pasar_a_ready(pcb, EXEC);
             break;
         case DORMIR_INTERFAZ:
@@ -325,7 +325,7 @@ int esperar_cpu(t_pcb* pcb) {
             dormir_io(operacion_io);
             break;
         case FIN_PROCESO:
-            t_pcb* pcb = deserializar_pcb(*(package->buffer)); 
+            pcb = deserializar_pcb(package->buffer); 
             liberar_memoria(); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
             change_status(pcb, EXIT); 
             sem_post(&sem_grado_multiprogramacion); // Esto deberia liberar un grado de memoria para que acceda un proceso
@@ -334,6 +334,7 @@ int esperar_cpu(t_pcb* pcb) {
     }
     
     free(package); // PAKESH 
+    return 0;
 }
 
 t_operacion_io* serializar_io(t_buffer* buffer) {
@@ -385,7 +386,7 @@ void hilo_dormir_io(t_operacion_io* operacion_io) {
         memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
         // Por último enviamos
-        send(elemento, a_enviar, buffer->size + sizeof(int), 0);
+        send(&elemento, a_enviar, buffer->size + sizeof(int), 0);
 
         // No nos olvidamos de liberar la memoria que ya no usaremos
         free(a_enviar);
@@ -415,61 +416,7 @@ void* pasar_a_exec(t_pcb* pcb) {
 
 // Esta podria ser la funcion generica y pasarle el codOP por parametro
 
-t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
-    t_buffer* buffer = malloc(sizeof(t_buffer));
 
-    printf("Llenando buffer...");
-
-    buffer->size = sizeof(int) * 3 
-                + sizeof(Estado) * 2
-                + sizeof(uint8_t) * 4
-                + sizeof(uint32_t) * 6;
-
-    buffer->offset = 0;
-    buffer->stream = malloc(buffer->size);
-
-    void* stream = buffer->stream; // No memoria?
-
-    memcpy(stream + buffer->offset, &pcb->pid, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &pcb->program_counter, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &pcb->quantum, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &pcb->estadoActual, sizeof(Estado));
-    buffer->offset += sizeof(Estado);
-    memcpy(stream + buffer->offset, &pcb->estadoAnterior, sizeof(Estado));
-    buffer->offset += sizeof(Estado);
-    // Serializo los registros...
-
-    memcpy(stream + buffer->offset, &pcb->registros->AX, sizeof(uint8_t));
-    buffer->offset += sizeof(uint8_t);
-    memcpy(stream + buffer->offset, &pcb->registros->BX, sizeof(uint8_t));
-    buffer->offset += sizeof(uint8_t);
-    memcpy(stream + buffer->offset, &pcb->registros->CX, sizeof(uint8_t));
-    buffer->offset += sizeof(uint8_t);
-    memcpy(stream + buffer->offset, &pcb->registros->DX, sizeof(uint8_t));
-    buffer->offset += sizeof(uint8_t);
-
-    memcpy(stream + buffer->offset, &pcb->registros->EAX, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
-    memcpy(stream + buffer->offset, &pcb->registros->EBX, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
-    memcpy(stream + buffer->offset, &pcb->registros->ECX, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
-    memcpy(stream + buffer->offset, &pcb->registros->EDX, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
-
-    memcpy(stream + buffer->offset, &pcb->registros->SI, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
-    memcpy(stream + buffer->offset, &pcb->registros->DI, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
-
-    buffer->stream = stream;
-
-    printf("Buffer llenado...");
-    return buffer;
-}
 
 // Aca se desarma el path y se obtienen las instrucciones y se le pasan a memoria para que esta lo guarde en su tabla de paginas de este proceso
 t_pcb *crear_nuevo_pcb(int pid){
