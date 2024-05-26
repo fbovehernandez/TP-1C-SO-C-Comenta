@@ -6,6 +6,7 @@
 int grado_multiprogramacion;
 int quantum;
 int contador_pid = 0;
+int client_dispatch;
 
 pthread_mutex_t mutex_estado_new;
 pthread_mutex_t mutex_estado_ready;
@@ -326,7 +327,7 @@ int esperar_cpu(t_pcb* pcb) {
             break;
         case FIN_PROCESO:
             pcb = deserializar_pcb(package->buffer); 
-            liberar_memoria(); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
+            //liberar_memoria(); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
             change_status(pcb, EXIT); 
             sem_post(&sem_grado_multiprogramacion); // Esto deberia liberar un grado de memoria para que acceda un proceso
             free(pcb);

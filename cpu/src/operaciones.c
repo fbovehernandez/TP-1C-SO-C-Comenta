@@ -89,7 +89,7 @@ void pedir_instruccion_a_memoria(int socket_memoria, t_pcb *pcb) {
     pid_pc->pid = pcb->pid;
     pid_pc->pc = pcb->program_counter;
 
-    t_buffer *buffer = t_buffer_solicitud_instruccion(pid_pc);
+    t_buffer *buffer = llenar_buffer_solicitud_instruccion(pid_pc);
 
     t_paquete *paquete = malloc(sizeof(t_paquete));
 
@@ -233,6 +233,11 @@ t_instruccion *instruccion_deserializar(t_buffer *buffer) {
     return instruccion;
 }
 
+bool es_de_8_bits(char *registro) {
+    return (strcmp(registro, "AX") == 0 || strcmp(registro, "BX") == 0 ||
+            strcmp(registro, "CX") == 0 || strcmp(registro, "DX") == 0);
+}
+
 void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
     // log_info(logger, "PID: %d - Ejecutando: %d ", pcb->pid, instruccion->nombre);
@@ -278,9 +283,9 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         char *registro2 = registro_param2->nombre;
 
         void* registro_origen = seleccionar_registro_cpu(registro1);
-        bool es_registro_uint8_origen = es_de_8bits(registro1);
+        bool es_registro_uint8_origen = es_de_8_bits(registro1);
         void* registro_destino = seleccionar_registro_cpu(registro2);
-        bool es_registro_uint8_destino = es_de_8bits(registro2);
+        bool es_registro_uint8_destino = es_de_8_bits(registro2);
 
         // set()
         sum(registro_origen, registro_destino, es_registro_uint8_origen, es_registro_uint8_destino);
@@ -307,7 +312,7 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         t_parametro *pc = list_get(list_parametros, 1);
         int nuevo_pc = atoi(pc->nombre);
 
-        void *registro = seleccion_registro(registro1, pcb);
+        void *registro = seleccionar_registro_cpu(registro1);
         jnz(registro, nuevo_pc, pcb);
         break;
     case RESIZE:
@@ -488,11 +493,6 @@ void *seleccionar_registro_cpu(char *nombreRegistro) {
     }
 
     return NULL;
-}
-
-bool es_de_8_bits(char *registro) {
-    return (strcmp(registro, "AX") == 0 || strcmp(registro, "BX") == 0 ||
-            strcmp(registro, "CX") == 0 || strcmp(registro, "DX") == 0);
 }
 
 ///////////////////////////

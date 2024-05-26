@@ -32,7 +32,8 @@ int main(int argc, char* argv[]) {
 
     // Hilo 2 -> Hacer un hilo para gestionar comunicacion con la cpu?
     int socket_cpu = conectar_kernel_cpu_dispatch(logger_kernel, datos_kernel->ip_cpu, datos_kernel->puerto_cpu_dispatch);
-
+    client_dispatch = socket_cpu;
+    
     // Hilo 3 -> Hacer un hilo para interrupt
     int socket_interrupt = conectar_kernel_cpu_interrupt(logger_kernel, datos_kernel->ip_cpu, datos_kernel->puerto_cpu_interrupt);
 

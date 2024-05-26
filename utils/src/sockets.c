@@ -212,6 +212,62 @@ t_pcb* deserializar_pcb(t_buffer* buffer) {
     return pcb;
 }
 
+t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+
+    printf("Llenando buffer...");
+
+    buffer->size = sizeof(int) * 3 
+                + sizeof(Estado) * 2
+                + sizeof(uint8_t) * 4
+                + sizeof(uint32_t) * 6;
+
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    void* stream = buffer->stream; // No memoria?
+
+    memcpy(stream + buffer->offset, &pcb->pid, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, &pcb->program_counter, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, &pcb->quantum, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, &pcb->estadoActual, sizeof(Estado));
+    buffer->offset += sizeof(Estado);
+    memcpy(stream + buffer->offset, &pcb->estadoAnterior, sizeof(Estado));
+    buffer->offset += sizeof(Estado);
+    // Serializo los registros...
+
+    memcpy(stream + buffer->offset, &pcb->registros->AX, sizeof(uint8_t));
+    buffer->offset += sizeof(uint8_t);
+    memcpy(stream + buffer->offset, &pcb->registros->BX, sizeof(uint8_t));
+    buffer->offset += sizeof(uint8_t);
+    memcpy(stream + buffer->offset, &pcb->registros->CX, sizeof(uint8_t));
+    buffer->offset += sizeof(uint8_t);
+    memcpy(stream + buffer->offset, &pcb->registros->DX, sizeof(uint8_t));
+    buffer->offset += sizeof(uint8_t);
+
+    memcpy(stream + buffer->offset, &pcb->registros->EAX, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+    memcpy(stream + buffer->offset, &pcb->registros->EBX, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+    memcpy(stream + buffer->offset, &pcb->registros->ECX, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+    memcpy(stream + buffer->offset, &pcb->registros->EDX, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+
+    memcpy(stream + buffer->offset, &pcb->registros->SI, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+    memcpy(stream + buffer->offset, &pcb->registros->DI, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+
+    buffer->stream = stream;
+
+    printf("Buffer llenado...");
+    return buffer;
+}
+
 /* 
 void paquete(int conexion) {
 	// Ahora toca lo divertido!
