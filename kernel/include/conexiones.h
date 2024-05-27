@@ -45,6 +45,5 @@ void liberar_conexion(int socket_cliente);
 void* escuchar_IO(void* kernel_io);
 ptr_kernel* solicitar_datos(t_config* config_kernel);
 void solicitar_nombre_io(int socket);
-char* recibir_nombre(int kernel);
 
 #endif // CONEXIONES_H

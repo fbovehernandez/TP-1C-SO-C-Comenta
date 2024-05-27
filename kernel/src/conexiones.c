@@ -22,8 +22,10 @@ int esperar_cliente(int socket_escucha, t_log* logger) {
     int handshake = 0;
     int resultError = -1;
     int socket_cliente = accept(socket_escucha, NULL,  NULL);
-
+    printf("hola\n");
+    corroborar_exito(socket_cliente, "aceptar el handshake.");
     if(socket_cliente == -1) {
+        printf("No acepto el handshake.\n");
         return -1;
     }
 
@@ -80,7 +82,6 @@ int conectar_kernel_cpu_dispatch(t_log* logger_kernel, char* IP_CPU, char* puert
 }
 
 int conectar_kernel_memoria(char* ip_memoria, char* puerto_memoria, t_log* logger_kernel) {
-    int message_kernel = 7;
     int valor = 1;
 
     int memoriafd = crear_conexion(ip_memoria, puerto_memoria, valor);
@@ -101,8 +102,9 @@ void* escuchar_IO(void* kernel_io) { //kernel_io es el socket del kerne
     while(1) {
         int socket_cliente = esperar_cliente(socket_io, logger_kernel);
         solicitar_nombre_io(socket_cliente);
-        char* nombre = recibir_nombre(socket_cliente);
-        dictionary_put(diccionario_io, nombre, &socket_cliente);
+        char* nombre_io = malloc(100);
+        recv(socket_cliente, &nombre_io, 100, 0);
+        dictionary_put(diccionario_io, nombre_io, &socket_cliente);
     }
     
     return NULL;
@@ -111,10 +113,4 @@ void* escuchar_IO(void* kernel_io) { //kernel_io es el socket del kerne
 void solicitar_nombre_io(int socket) {
     void* pointer_codop = (void*) QUIERO_NOMBRE; 
     send(socket, pointer_codop, sizeof(int), 0);
-}
-
-char* recibir_nombre(int kernel) {
-    char* nombre_io[100];
-    recv(kernel, nombre_io, 100, 0);
-    return nombre_io;
 }

@@ -91,8 +91,7 @@ void *interaccion_consola(t_sockets* sockets) {
     return NULL;
 }
 
-void INICIAR_PROCESO(char* path_instrucciones, t_sockets* sockets)
-{
+void INICIAR_PROCESO(char* path_instrucciones, t_sockets* sockets) {
     int pid_actual = obtener_siguiente_pid();
     printf("El pid del proceso es: %d\n", pid_actual);
     // Primero envio el path de instruccion a memoria y luego el PCB...
@@ -176,14 +175,12 @@ t_buffer* llenar_buffer_path(t_path* pathNuevo) {
 }
 
 
-int obtener_siguiente_pid()
-{
+int obtener_siguiente_pid() {
     contador_pid++;
     return contador_pid;
 }
 
-void encolar_a_new(t_pcb *pcb)
-{
+void encolar_a_new(t_pcb *pcb) {
     // Bloquear el acceso a la cola de procesos
     pthread_mutex_lock(&mutex_estado_new);
     // Sacar el proceso de la cola
@@ -233,7 +230,6 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
     pthread_t hilo_quantum; // uff las malas practicas
 
     t_sockets* sockets = (t_sockets*)sockets_necesarios;
-    int contexto_devolucion = 0;
     t_pcb *pcb = malloc(sizeof(t_pcb));
 
     int socket_CPU = sockets->socket_int; 
@@ -251,7 +247,7 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
             sem_post(&sem_contador_quantum);
         }
 
-        contexto_devolucion = esperar_cpu(pcb); 
+        esperar_cpu(pcb); // NO devuelve un contexto de devolucion, devolvía un int con la info de si se ejecuto bien o no
 
         if(strcmp(algoritmo_planificacion,"RR") == 0) { // Plantear una mejor forma de hacer esto
             pthread_cancel(hilo_quantum);
@@ -308,7 +304,7 @@ t_paquete* recibir_cpu() {
     }
 }
 
-int esperar_cpu(t_pcb* pcb) {
+void esperar_cpu(t_pcb* pcb) {
     t_paquete* package = malloc(sizeof(t_pcb));
 
     DesalojoCpu devolucion_cpu;
@@ -332,10 +328,11 @@ int esperar_cpu(t_pcb* pcb) {
             sem_post(&sem_grado_multiprogramacion); // Esto deberia liberar un grado de memoria para que acceda un proceso
             free(pcb);
             break;
+        default:
+            break;
     }
     
     free(package); // PAKESH 
-    return 0;
 }
 
 t_operacion_io* serializar_io(t_buffer* buffer) {
@@ -361,7 +358,9 @@ void dormir_io(t_operacion_io* operacion_io) {
 void hilo_dormir_io(t_operacion_io* operacion_io) {
     bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
     if(existe_io) {
-        void* elemento = dictionary_get(diccionario_io, operacion_io->interfaz);
+        void* socket = dictionary_get(diccionario_io, operacion_io->interfaz);
+        
+        int socket_int = *(int*)socket;
 
         t_paquete* paquete = malloc(sizeof(t_paquete));
         t_buffer* buffer = malloc(sizeof(t_buffer));
@@ -371,7 +370,7 @@ void hilo_dormir_io(t_operacion_io* operacion_io) {
         buffer->offset = 0;
         buffer->stream = malloc(buffer->size);
 
-        memcpy(buffer->stream, &elemento, sizeof(int));
+        memcpy(buffer->stream, &socket, sizeof(int));
         
         paquete->codigo_operacion = DORMITE; // Podemos usar una constante por operación
         paquete->buffer = buffer; // Nuestro buffer de antes.
@@ -387,7 +386,7 @@ void hilo_dormir_io(t_operacion_io* operacion_io) {
         memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
         // Por último enviamos
-        send(&elemento, a_enviar, buffer->size + sizeof(int), 0);
+        send(socket_int, a_enviar, buffer->size + sizeof(int), 0);
 
         // No nos olvidamos de liberar la memoria que ya no usaremos
         free(a_enviar);
@@ -411,6 +410,7 @@ void* pasar_a_exec(t_pcb* pcb) {
     pthread_mutex_unlock(&mutex_estado_exec);
 
     log_info(logger_kernel, "PID: %d - Estado Anterior en exec: %d - Estado Actual: %d", pcb->pid, pcb->estadoAnterior, pcb->estadoActual);
+    change_status(pcb, EXIT);
 
     return NULL;
 }

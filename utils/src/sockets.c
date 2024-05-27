@@ -58,9 +58,8 @@ int iniciar_servidor(char* puerto) {
 
 
 void corroborar_exito(int variable, char* mensaje) {
-	if(variable < 0)
-	{
-		printf("No se pudo %s", mensaje);
+	if(variable < 0) {
+		printf("No se pudo %s\n", mensaje);
 		exit(2); // Exit "2" devuelve el error puntual
 	}
 }
@@ -89,7 +88,7 @@ int crear_conexion(char *ip, char* puerto, int valor) {
 	// Ahora que tenemos el socket, vamos a conectarlo
 	int conexion_cliente = connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen);
 
-	corroborar_exito(conexion_cliente, " conectar al cliente.");
+	corroborar_exito(conexion_cliente, "conectar al cliente.");
 
 	// Envio handshake
 	send(socket_cliente, &handshake, sizeof(int), 0);
@@ -139,6 +138,7 @@ t_registros* inicializar_registros_cpu(t_registros* registro_pcb) {
 }
 
 void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op) {
+    printf("Este es el pid del pcb a mandar: %d\n", pcb->pid);
     t_buffer* buffer = llenar_buffer_pcb(pcb);
 
     t_paquete* paquete = malloc(sizeof(t_paquete));

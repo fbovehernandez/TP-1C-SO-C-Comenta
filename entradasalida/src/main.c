@@ -29,7 +29,7 @@ int main(int argc, char* argv[2]) {
     } else if (strcmp(tipo_interfaz, "STDIN") == 0) {
         // printf("STDIN - Falta gestionar\n");        
     } else if (strcmp(tipo_interfaz, "Genericas") == 0) {
-            iniciar_interfaz_generica(nombre_io, config_io, IP_KERNEL, puerto_kernel);
+            //iniciar_interfaz_generica(nombre_io, config_io, IP_KERNEL, puerto_kernel);
     } else if (strcmp(tipo_interfaz, "DialFS") == 0) {
         // gestionar_DIALFS(config_io);
     } else {

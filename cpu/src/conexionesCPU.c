@@ -27,7 +27,7 @@ int esperar_cliente(int socket_servidor, t_log *logger_cpu) {
 	recv(socket_cliente, &handshake, sizeof(uint32_t), MSG_WAITALL);
 	if(handshake == 1) {
 		send(socket_cliente, &resultOk, sizeof(uint32_t), 0);
-        log_info(logger_cpu, "Se conecto un cliente de dispatch!");
+        log_info(logger_cpu, "Se conecto un cliente de dispatch!\n");
     } else {
         send(socket_cliente, &resultError, sizeof(uint32_t), 0);
     }
@@ -70,9 +70,9 @@ void recibir_cliente() { // Se supone que desde aca se conecta el kernel
         t_paquete* paquete = malloc(sizeof(t_paquete));
         paquete->buffer = malloc(sizeof(t_buffer));
 
-        printf("Esperando recibir paquete\n");
+        printf("Esperando recibir paquete (por dispatch)\n");
         recv(client_dispatch, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
-        printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
+        printf("Recibi el codigo de operacion por dispatch: %d\n", paquete->codigo_operacion);
 
         //recv(client_dispatch, &(paquete->buffer->size), sizeof(int), 0);
         recv(client_dispatch, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
@@ -132,9 +132,9 @@ void* iniciar_servidor_interrupt(void* datos_interrupt) {
 void recibir_cliente_interrupt(int client_interrupt) {
     codigo_operacion cod_op;
     while(1) {
-        printf("Esperando recibir paquete\n");
+        printf("Esperando recibir paquete (interrupt)\n");
         recv(client_interrupt, &cod_op, sizeof(int), MSG_WAITALL);
-        printf("Recibi el codigo de operacion : %d\n", cod_op);
+        printf("Recibi el codigo de operacion por interrupt: %d\n", cod_op);
 
         // Posible if si no hay mas codigos de operacion para interrumpir
         switch (cod_op) {

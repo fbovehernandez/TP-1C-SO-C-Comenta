@@ -35,7 +35,6 @@ int esperar_cliente(int socket_servidor, t_log* logger_memoria)
 
 void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa en handle_kernel, se va a recibir peticiones de cpu y se va a hacer algo con ellas (iternado switch)
     int socket_cpu = (intptr_t)socket;
-    int codigo_operacion = 0;
     // free(socket); 
     int resultOk = 0;
     // Envio confirmacion de handshake!

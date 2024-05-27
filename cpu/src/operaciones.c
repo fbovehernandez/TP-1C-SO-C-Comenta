@@ -385,7 +385,6 @@ void solicitud_dormirIO_kernel(char* interfaz, int unidades) {
     free(paquete->buffer->stream);
     free(paquete->buffer);
     free(paquete);
-    return 0;
 }
 
 // ver
@@ -591,6 +590,7 @@ void jnz(void* registro, int valor, t_pcb* pcb) {
     }
 }
 
+/*
 bool sonTodosDigitosDe(char *palabra) {
     while (*palabra)
     {
@@ -602,3 +602,4 @@ bool sonTodosDigitosDe(char *palabra) {
     }
     return true;
 }
+*/

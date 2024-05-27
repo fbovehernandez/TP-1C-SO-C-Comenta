@@ -1,14 +1,12 @@
 #include "../include/main.h"
 
-int main(int argc, char* argv[]) {
-    int nuevo_mensaje = 7;
-    
+int main(int argc, char* argv[]) {    
     t_log* logger_CPU    = iniciar_logger("cpu.log"); 
     t_config* config_CPU = iniciar_config("./cpu.config");
     
     char* escucha_dispatch  = config_get_string_value(config_CPU, "PUERTO_ESCUCHA_DISPATCH");
     char* escucha_interrupt = config_get_string_value(config_CPU, "PUERTO_ESCUCHA_INTERRUPT");
-    char* ip_cpu            = config_get_string_value(config_CPU, "IP_CPU");
+    config_get_string_value(config_CPU, "IP_CPU");
 
     char* IP_MEMORIA     = config_get_string_value(config_CPU, "IP_MEMORIA");
     char* puerto_memoria = config_get_string_value(config_CPU, "PUERTO_MEMORIA");

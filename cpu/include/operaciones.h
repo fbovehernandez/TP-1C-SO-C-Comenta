@@ -7,6 +7,7 @@
 
 #include "../../utils/include/sockets.h" 
 #include "../../utils/include/logconfig.h"
+#include <commons/string.h>
 #include "conexionesCPU.h"
 
 extern int hay_interrupcion;
