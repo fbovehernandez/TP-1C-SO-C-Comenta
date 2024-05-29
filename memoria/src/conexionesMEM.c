@@ -6,8 +6,7 @@ t_config* config_memoria;
 t_dictionary* diccionario_instrucciones;
 
 //Acepta el handshake del cliente, se podria hacer mas generico y que cada uno tenga un valor diferente
-int esperar_cliente(int socket_servidor, t_log* logger_memoria)
-{
+int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
 	int handshake = 0;
 	int resultError = -1;
 	int socket_cliente = accept(socket_servidor, NULL, NULL);

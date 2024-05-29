@@ -33,22 +33,61 @@ void gestionar_DIALFS(t_config *config_io) {
 }
 */
 
-int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, char* nombre_interfaz) {
-    int message_io = 12; // nro de codop
-    int valor = 5; //handshake, 5 = I/O
+int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, char* nombre_interfaz, TipoInterfaz tipo_interfaz) {
+    //int message_io = 12; // nro de codop
+    int valor = 5; // handshake, 5 = I/O
 
     int kernelfd = crear_conexion(IP_KERNEL, puerto_kernel, valor);
     log_info(logger_io, "Conexion establecida con Kernel");
     
+    //send(kernelfd, &message_io, sizeof(int), 0); 
+
     int str_interfaz = strlen(nombre_interfaz);
     
     t_info_io* io = malloc(sizeof(int) + str_interfaz);
     io->nombre_interfaz_largo = str_interfaz;
     io->nombre_interfaz = nombre_interfaz;
+    io->tipo = tipo_interfaz;
 
-    send(socket_kernel_io, &io, sizeof(int) + str_interfaz, 0); 
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+    t_paquete* paquete = malloc(sizeof(t_paquete));
 
-    // close(kernelfd); // (POSIBLE) no cierro el socket porque quiero reutilizar la conexion
+    buffer->size = sizeof(int) * 2 + str_interfaz;
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    void* stream = buffer->stream;
+
+    memcpy(stream+buffer->offset, &io->nombre_interfaz_largo, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, &io->nombre_interfaz, str_interfaz);
+    buffer->offset += str_interfaz;
+    memcpy(stream + buffer->offset, &io->tipo, sizeof(int));
+    buffer->offset += sizeof(int);
+
+    buffer->stream = stream;
+
+    paquete->codigo_operacion = CONEXION_INTERFAZ; // Podemos usar una constante por operación
+    paquete->buffer = buffer;                                  // Nuestro buffer de antes.
+
+    // Armamos el stream a enviar
+    void *a_enviar = malloc(buffer->size + sizeof(int));
+    int offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
+
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    send(socket_kernel_io, a_enviar, buffer->size + sizeof(int), 0); 
+
+    free(a_enviar);
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+
     return kernelfd;
 }
 

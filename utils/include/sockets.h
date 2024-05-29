@@ -60,7 +60,8 @@ typedef enum {
     ENVIO_CANTIDAD_INSTRUCCIONES,
     INTERRUPCION_CPU,
     QUIERO_NOMBRE,
-    DORMITE
+    DORMITE,
+    CONEXION_INTERFAZ
 } codigo_operacion;
 
 typedef struct {
@@ -153,6 +154,12 @@ typedef struct {
     char* nombre;
     int length;
 } t_parametro;
+
+typedef struct {
+    int nombre_interfaz_largo;
+    char* nombre_interfaz;
+    tipoIntefaz tipo;
+} t_info_io;
 
 void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op);
 int iniciar_servidor(char*);

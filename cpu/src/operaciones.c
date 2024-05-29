@@ -240,6 +240,7 @@ bool es_de_8_bits(char *registro) {
         int pid;
         int pagina;
         int marco;
+        long timestamps;
     } t_tlb;
 
     typedef struct {
@@ -272,6 +273,97 @@ bool es_de_8_bits(char *registro) {
         return;
     }
 
+t_queue* TLB = queue_create();
+
+//va en el main
+algoritmo_reemplazo_TLB = algoritmo_reemplazo_to_int(config_get_string_value(config, "REEMPLAZO_TLB"));
+
+long tiempoEnMilisecs() {
+  struct timeval time;
+  gettimeofday(&time, NULL);
+
+  return time.tv_sec * 1000 + time.tv_usec / 1000;
+}
+
+void guardar_en_TLB(int pid, int nro_pagina, int nro_marco) {
+	t_tlb* nueva_entrada = malloc(sizeof(t_tlb));
+	
+    nueva_entrada->pid = pid;
+	nueva_entrada->pagina = nro_pagina;
+	nueva_entrada->marco = nro_marco;
+    nueva_entrada->timestamp = tiempoEnMilisecs();
+
+	int cant_entradas = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
+    char* algoritmo_tlb = config_get_string_value(config_CPU, "ALGORITMO_TLB");
+
+    switch(algoritmo_TLB)
+    {
+        case FIFO:
+            queue_push(TLB, nueva_entrada);
+            break;
+        case LRU:
+            algoritmo_LRU(nueva_entrada);
+            break;
+    }
+}
+
+void algoritmo_LRU(t_tlb* nueva_entrada){
+	t_tlb* auxiliar1 = malloc(sizeof(t_tlb));
+	t_tlb* auxiliar2 = malloc(sizeof(t_tlb));
+
+	int tamanio = queue_size(TLB);
+	auxiliar1 = queue_pop(TLB);
+
+	for(int i = 1; i < tamanio; i++){
+		auxiliar2 = queue_pop(TLB);
+
+		if(auxiliar1->timestamp > auxiliar2->timestamp) {
+			queue_push(TLB, auxiliar1);
+			auxiliar1 = auxiliar2;
+		}
+        // Si el aux1 es más nuevo en la TLB que el aux2, pushea el auxiliar 1 y le asigna el más viejo, o sea auxiliar 2. 
+        // De esta forma, en auxiliar 1 nos queda la entrada que esta hace mas tiempo en TLB para volver a comparar
+		else
+			queue_push(TLB, auxiliar2);
+	}
+	
+	queue_push(TLB, nueva_entrada);
+}
+
+int esta_en_TLB(int nro_pagina){
+	int se_encontro = 0;	
+	for(int i = 0; i < queue_size(TLB); i++){
+		t_tlb* una_entrada = queue_pop(TLB);
+		if (una_entrada->pagina == nro_pagina){
+			una_entrada->timestamp = tiempoEnMilisecs();
+			se_encontro = 1;
+		}
+		queue_push(TLB, una_entrada);
+	}
+    
+    if(se_encontro == 1)  
+        logger(socket_cpu,"PID: %s - TLB HIT - Pagina: %d",una_entrada->pid,nro_pagina );
+    else 
+        logger(socket_cpu,"PID: %s - TLB MISS - Pagina: %d",una_entrada->pid,nro_pagina);
+    
+    return se_encontro;
+}
+
+int numero_pagina(int direccion_logica){
+	// el tamaño página se solicita a la memoria al comenzar la ejecución // falta hacerlo
+	return direccion_logica / tamanio_pagina; // ---> la división ya retorna el entero truncado a la unidad
+}
+
+int desplazamiento_memoria(int direccion_logica, int nro_pagina){
+	return direccion_logica - nro_pagina * tamanio_pagina;
+}
+
+void vaciar_tlb(){
+	while(queue_size(TLB) > 0){
+		t_tlb* una_entrada = queue_pop(TLB);
+		free(una_entrada);
+	}
+}
 
 */
 
@@ -314,12 +406,20 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         t_parametro *registro_direccion = list_get(list_parametros, 1);
         
         void* puntero_registro_direccion = seleccionar_registro_cpu(registro_direccion);
-        puntero_registro_direccion->direccion_logica
+        int num_pag = numero_pagina(puntero_registro_direccion);
+        int desp = desplazamiento(puntero_registro_direccion, num_pag);
+        void valor = num_pag * desp; // no se si es asi, hay que ver como acceder al valor teniendo la direccion. nadie lo pregunto en el foro todavia :(
 	
-	    memcpy(puntero_registro_direccion,puntero_registro_datos,sizeof(??????));
-    */
+        set(registro_datos, valor);
+    */;
         break;
     case MOV_OUT:
+    /*
+        t_parametro *registro_direccion = list_get(list_parametros, 0);
+        t_parametro *registro_datos = list_get(list_parametros, 1);
+
+
+    */
         break;
     case SUM:
         t_parametro *registro_param1 = list_get(list_parametros, 0);

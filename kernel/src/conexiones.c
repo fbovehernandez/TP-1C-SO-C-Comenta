@@ -49,19 +49,57 @@ void* handle_io(void* socket) {
     send(socket_io, &resultOk, sizeof(int), 0);
     printf("Conexion establecida con I/O\n");
 
-    int cod_op;
     while(socket_io != -1) {
-        cod_op = recibir_operacion(socket_io);
-        switch (cod_op) {
-        case 12:
+        t_paquete* paquete = recibir_paquete(socket_io);
+
+        // Primero recibimos el codigo de operacion
+        printf("Esperando recibir paquete de IO\n");
+        //recv(socket_cpu, &(paquete->codigo_operacion), sizeof(int), 0);
+        //sem_wait(&sem_memoria_instruccion);
+        recv(socket_io, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
+        printf("Recibi el codigo de operacion de IO: %d\n", paquete->codigo_operacion);
+
+        // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
+        //recv(socket_cpu, &(paquete->buffer->size), sizeof(int), 0);
+        recv(socket_io, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
+        paquete->buffer->stream = malloc(paquete->buffer->size);
+        //recv(socket_cpu, paquete->buffer->stream, paquete->buffer->size, 0);
+        recv(socket_io, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+
+        switch (paquete->codigo_operacion) {
+        /*case 12:
             printf("Soy el kernel y recibi un mensaje de I/0\n");
+            break;*/
+        case CONEXION_INTERFAZ:
+            t_info_io* interfaz = deserializar_interfaz(paquete->buffer);
+            // Podemos en vez de enviar socket_io, enviar una struct q tenga el socket y el tipo de la io
+            // para mejor manejo de los switchs mas adelante
+            dictionary_put(diccionario_io, interfaz->nombre_interfaz, &socket_io);
+            printf("Llego %s !!!!!!\n", interfaz->nombre_interfaz);
             break;
         default:
             printf("Llega al default.");
             return NULL;
         }
+        
+        free(paquete->buffer->stream);
+        free(paquete->buffer);
+        free(paquete);
     }
     return NULL;
+}
+
+t_info_io* deserializar_interfaz(t_buffer* buffer) {
+    t_info_io* interfaz = malloc(sizeof(t_info_io));
+    printf("Deserializando interfaz\n");
+    void* stream = buffer->stream;
+    // Deserializamos los campos que tenemos en el buffer
+    memcpy(&(interfaz->nombre_interfaz_largo), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(interfaz->nombre_interfaz), stream, interfaz->nombre_interfaz_largo);
+    stream += interfaz->nombre_interfaz_largo;
+    memcpy(&(interfaz->tipo), stream, sizeof(int));
+    return interfaz;
 }
 
 int conectar_kernel_cpu_interrupt(t_log* logger_kernel, char* IP_CPU, char* puerto_interrupt) {
@@ -93,7 +131,7 @@ int conectar_kernel_memoria(char* ip_memoria, char* puerto_memoria, t_log* logge
     return memoriafd;
 }
 
-void* escuchar_IO(void* kernel_io) { //kernel_io es el socket del kerne
+void* escuchar_IO(void* kernel_io) { //kernel_io es el socket del kernel
     t_config_kernel* kernel_struct_io = (void*) kernel_io;
 
     int socket_io = kernel_struct_io->socket;
@@ -113,4 +151,8 @@ void* escuchar_IO(void* kernel_io) { //kernel_io es el socket del kerne
 void solicitar_nombre_io(int socket) {
     void* pointer_codop = (void*) QUIERO_NOMBRE; 
     send(socket, pointer_codop, sizeof(int), 0);
+}
+
+void agregarADiccionario(t_info_io* interfaz) {
+    
 }

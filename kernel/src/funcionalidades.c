@@ -321,7 +321,8 @@ void esperar_cpu(t_pcb* pcb) {
             pasar_a_ready(pcb, EXEC);
             break;
         case DORMIR_INTERFAZ:
-            t_operacion_io* operacion_io = serializar_io(package->buffer);
+            printf("Vino a dormir la interfaz\n");
+            t_operacion_io* operacion_io = deserializar_io(package->buffer); //deserializar
             dormir_io(operacion_io);
             break;
         case FIN_PROCESO:
@@ -338,7 +339,7 @@ void esperar_cpu(t_pcb* pcb) {
     free(package); // PAKESH 
 }
 
-t_operacion_io* serializar_io(t_buffer* buffer) {
+t_operacion_io* deserializar_io(t_buffer* buffer) {
     t_operacion_io* operacion_io = malloc(sizeof(t_operacion_io));
 
     void* stream = buffer->stream;
@@ -354,8 +355,53 @@ t_operacion_io* serializar_io(t_buffer* buffer) {
 }
 
 void dormir_io(t_operacion_io* operacion_io) {
-    pthread_t dormir_interfaz;
-    pthread_create(&dormir_interfaz, NULL, (void*) hilo_dormir_io, operacion_io); 
+    /*pthread_t dormir_interfaz;
+    pthread_create(&dormir_interfaz, NULL, (void*) hilo_dormir_io, operacion_io); */
+    int existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
+    if(existe_io) {
+        void* socket = dictionary_get(diccionario_io, operacion_io->interfaz);
+        
+        int socket_io = *(int*)socket;
+
+        t_paquete* paquete = malloc(sizeof(t_paquete));
+        t_buffer* buffer = malloc(sizeof(t_buffer));
+
+        buffer->size = sizeof(int);
+
+        buffer->offset = 0;
+        buffer->stream = malloc(buffer->size);
+
+        //TO DO
+        //ACA TENEMOS QUE SEGUIR, EL BUFFER ESTA VACIO.
+        //TIENE QUE LLEVARSE LA CANTIDAD DE UNIDADES DE TRABAJO PARA QUE SE DUERMA LA IO.
+        //NO ESTAMOS HACIENDO ACA EL SLEEP, SINO QUE LO LLEVARIAMOS A LA IO.
+
+        memcpy(buffer->stream, &socket, sizeof(int));
+        
+        paquete->codigo_operacion = DORMITE; // Podemos usar una constante por operación
+        paquete->buffer = buffer; // Nuestro buffer de antes.
+
+        // Armamos el stream a enviar
+        void* a_enviar = malloc(buffer->size + sizeof(int));
+        int offset = 0;
+
+        memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
+        offset += sizeof(int);
+        memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+        offset += sizeof(int);
+        memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+        // Por último enviamos
+        send(socket_io, a_enviar, buffer->size + sizeof(int), 0);
+
+        // No nos olvidamos de liberar la memoria que ya no usaremos
+        free(a_enviar);
+        free(paquete->buffer->stream);
+        free(paquete->buffer);
+        free(paquete);
+    } else {
+        printf("No existe dicha IO.\n");
+    }
 }
 
 void hilo_dormir_io(t_operacion_io* operacion_io) {

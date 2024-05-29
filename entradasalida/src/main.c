@@ -1,5 +1,6 @@
 #include "../include/main.h"
 
+//./bin/entradasalida Interfaz1 generica.config
 int main(int argc, char* argv[2]) {
     
     // Este archivo lo recibe por parametro
@@ -10,6 +11,7 @@ int main(int argc, char* argv[2]) {
         log_error(logger_io, "No se pudo leer el archivo de configuracion");
         return 1;
     }
+    
     nombre_io = argv[1];
 
     char* tipo_interfaz = config_get_string_value(config_io, "TIPO_INTERFAZ"); // TOdos
@@ -20,7 +22,7 @@ int main(int argc, char* argv[2]) {
     // close(socket_kernel_io);
 
     // Falta manejar los distintos tipos de interfaces
-    // iniciar_interfaz_generica(argv[1]);
+    iniciar_interfaz_generica(nombre_io, config_io, IP_KERNEL, puerto_kernel);
 
     printf("Tipo de interfaz: %s\n", tipo_interfaz);
 
@@ -43,7 +45,7 @@ int main(int argc, char* argv[2]) {
 void iniciar_interfaz_generica(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, char* puerto_kernel) {
     // Saco el unico dato que tiene esta interfaz
     int tiempo_unidad_trabajo = config_get_int_value(config_io, "TIEMPO_UNIDAD_TRABAJO");
-    conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz); 
+    conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, GENERICA); 
     recibir_kernel(config_io); 
 }
 
