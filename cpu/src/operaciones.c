@@ -153,20 +153,18 @@ void recibir(int socket_memoria, t_pcb *pcb) {
     recv(socket_memoria, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
 
     // Ahora en función del código recibido procedemos a deserializar el resto
-    switch (paquete->codigo_operacion)
-    {
-    case ENVIO_INSTRUCCION:
-        t_instruccion *instruccion = malloc(sizeof(t_instruccion));
-        instruccion = instruccion_deserializar(paquete->buffer);
-        ejecutar_instruccion(instruccion, pcb); //
-        if (hay_interrupcion)
-        {
-            printf("Hubo una interrupcion.\n");
-            guardar_estado(pcb);
-            enviar_pcb(pcb, client_dispatch, INTERRUPCION_QUANTUM);
-            hay_interrupcion = 0;
-            return;
-        }
+    switch (paquete->codigo_operacion) {
+        case ENVIO_INSTRUCCION:
+            t_instruccion *instruccion = malloc(sizeof(t_instruccion));
+            instruccion = instruccion_deserializar(paquete->buffer);
+            ejecutar_instruccion(instruccion, pcb); //
+            if (hay_interrupcion) {
+                printf("Hubo una interrupcion.\n");
+                guardar_estado(pcb);
+                enviar_pcb(pcb, client_dispatch, INTERRUPCION_QUANTUM);
+                hay_interrupcion = 0;
+                return;
+            }
         free(instruccion);
         break;
     case ENVIO_CANTIDAD_INSTRUCCIONES:
@@ -174,8 +172,7 @@ void recibir(int socket_memoria, t_pcb *pcb) {
 
         printf("Recibi que la cantidad de instrucciones del proceso %d es %d.\n", pcb->pid, cantidad_instrucciones);
 
-        while (pcb->program_counter < cantidad_instrucciones && !hay_interrupcion)
-        {
+        while (pcb->program_counter < cantidad_instrucciones && !hay_interrupcion) {
             printf("Numero de vuelta: %d\n", pcb->program_counter);
             pedir_instruccion_a_memoria(socket_memoria, pcb);
             recibir(socket_memoria, pcb); // recibir cada instruccion
@@ -238,6 +235,46 @@ bool es_de_8_bits(char *registro) {
             strcmp(registro, "CX") == 0 || strcmp(registro, "DX") == 0);
 }
 
+/*
+    typedef struct {
+        int pid;
+        int pagina;
+        int marco;
+    } t_tlb;
+
+    typedef struct {
+        int numero_pagina;
+        int desplazamiento;
+    } t_direccion_logica;
+
+    int traer_tamanio_pagina_mem(int socket_mem) {
+        recv(socket_mem,&tamanio_pagina, sizeof(int), 0);
+        return tamanio_pagina;
+    }
+
+    void crear_direccion_logica(int tamanio_pagina) {
+        t_direccion_logica* direccion_logica;
+        int tamanio_pagina = traer_tamanio_pagina_mem();
+        direccion_logica->numero_página = floor(direccion_lógica / tamanio_pagina);
+        direccion_logica->desplazamiento = direccion_logica - direccion_logica->numero_página * tamanio_pagina;
+    }
+
+    CANTIDAD_ENTRADAS_TLB=32
+    ALGORITMO_TLB=FIFO
+
+    void* crear_tlb() {
+        t_tlb tlb;
+        int cant_entradas = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
+        char* algoritmo_tlb = config_get_string_value(config_CPU, "ALGORITMO_TLB");
+        if(cant_entradas == 0){
+            deshabilitar_tlb();
+        }
+        return;
+    }
+
+
+*/
+
 void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
     // log_info(logger, "PID: %d - Ejecutando: %d ", pcb->pid, instruccion->nombre);
@@ -271,7 +308,16 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         printf("Cuando hace SET BX 1 queda asi el registro BX del CPU: %u\n", registros_cpu->BX);*/
         sleep(5);
         break;
-    case MOV_IN:
+    case MOV_IN: // MOV_IN AX BX
+    /*
+        t_parametro *registro_datos = list_get(list_parametros, 0);
+        t_parametro *registro_direccion = list_get(list_parametros, 1);
+        
+        void* puntero_registro_direccion = seleccionar_registro_cpu(registro_direccion);
+        puntero_registro_direccion->direccion_logica
+	
+	    memcpy(puntero_registro_direccion,puntero_registro_datos,sizeof(??????));
+    */
         break;
     case MOV_OUT:
         break;
@@ -333,7 +379,7 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         solicitud_dormirIO_kernel(interfazSeleccionada, unidadesDeTrabajo);
         printf("Hizo IO_GEN_SLEEP\n");
 
-        desalojar(pcb, IO_BLOCKED); // Necesario?
+        // desalojar(pcb, IO_BLOCKED); // Necesario?
         break;
     case IO_STDIN_READ:
         break;

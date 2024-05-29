@@ -232,7 +232,8 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
     t_sockets* sockets = (t_sockets*)sockets_necesarios;
     t_pcb *pcb = malloc(sizeof(t_pcb));
 
-    int socket_CPU = sockets->socket_int; 
+    int socket_CPU = sockets->socket_cpu; 
+    int socket_int = sockets->socket_int;
     
     while(1) {
         sem_wait(&sem_hay_para_planificar); 
@@ -241,8 +242,10 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
         enviar_pcb(pcb, socket_CPU, ENVIO_PCB); // Serializar antes de enviar 
 
         // FIFO ya esta hecho con lo de arriba
+        //strcmp devuelve 0 si son iguales
         if(strcmp(algoritmo_planificacion,"RR") == 0) {
-            pthread_create(&hilo_quantum, NULL, (void*)contar_quantum, (void*)(intptr_t)socket_CPU);
+            printf("Entro a donde no queriamos\n");
+            pthread_create(&hilo_quantum, NULL, (void*)contar_quantum, (void*)(intptr_t)socket_int);
 
             sem_post(&sem_contador_quantum);
         }
@@ -294,7 +297,7 @@ t_paquete* recibir_cpu() {
 
         printf("Esperando recibir paquete\n");
         recv(client_dispatch, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
-        printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
+        printf("Recibi el codigo de operacion (por dispatch) : %d\n", paquete->codigo_operacion);
 
         recv(client_dispatch, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
         paquete->buffer->stream = malloc(paquete->buffer->size);
@@ -323,7 +326,7 @@ void esperar_cpu(t_pcb* pcb) {
             break;
         case FIN_PROCESO:
             pcb = deserializar_pcb(package->buffer); 
-            //liberar_memoria(); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
+            // liberar_memoria(); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
             change_status(pcb, EXIT); 
             sem_post(&sem_grado_multiprogramacion); // Esto deberia liberar un grado de memoria para que acceda un proceso
             free(pcb);
@@ -356,7 +359,7 @@ void dormir_io(t_operacion_io* operacion_io) {
 }
 
 void hilo_dormir_io(t_operacion_io* operacion_io) {
-    bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
+    int existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
     if(existe_io) {
         void* socket = dictionary_get(diccionario_io, operacion_io->interfaz);
         
@@ -393,6 +396,8 @@ void hilo_dormir_io(t_operacion_io* operacion_io) {
         free(paquete->buffer->stream);
         free(paquete->buffer);
         free(paquete);
+    } else {
+        
     }
 }
 

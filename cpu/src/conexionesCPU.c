@@ -1,8 +1,7 @@
 #include "../include/conexionesCPU.h"
 
 int socket_memoria;
-int socket_kernel;
-int client_dispatch;
+int client_dispatch; //socket_kernel
 
 int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) {
     int valor = 2;
