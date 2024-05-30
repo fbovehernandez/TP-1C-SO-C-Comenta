@@ -80,7 +80,7 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     offset += sizeof(int);
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
-    send(socket_kernel_io, a_enviar, buffer->size + sizeof(int), 0); 
+    send(kernelfd, a_enviar, buffer->size + sizeof(int), 0); 
 
     free(a_enviar);
     free(paquete->buffer->stream);
@@ -90,8 +90,10 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     return kernelfd;
 }
 
+/* 
 void recibir_solicitud_kernel() {
     codigo_operacion cod_op;
+
     recv(socket_kernel_io, &cod_op, sizeof(int), 0);
     switch(cod_op) {
         case QUIERO_NOMBRE:
@@ -101,6 +103,7 @@ void recibir_solicitud_kernel() {
             break;
     }
 }
+*/
 
 void recibir_kernel(t_config* config_io) {
     t_paquete* paquete = malloc(sizeof(t_paquete));

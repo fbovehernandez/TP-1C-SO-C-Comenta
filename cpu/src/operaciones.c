@@ -470,8 +470,8 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     case SIGNAL:
         break;
     case IO_GEN_SLEEP:
-        t_parametro *interfaz = list_get(list_parametros, 0);
-        char *interfazSeleccionada = interfaz->nombre;
+        t_parametro *interfaz1 = list_get(list_parametros, 0);
+        char *interfazSeleccionada = interfaz1->nombre;
 
         t_parametro *unidades = list_get(list_parametros, 1);
         int unidadesDeTrabajo = atoi(unidades->nombre);
@@ -482,17 +482,18 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         // desalojar(pcb, IO_BLOCKED); // Necesario?
         break;
     case IO_STDIN_READ:
-        t_parametro *interfaz = list_get(list_parametros,0);
-        char *interfazSeleccionada = interfaz->nombre;
+        /*
+        t_parametro *interfaz2 = list_get(list_parametros,0);
+        char *interfazSeleccionada2 = interfaz2->nombre;
         
-        t_parametro* registro_destino = list_get(list_parametros,1);
-        void* valor_registro_destino = registroSeleccionado(registro_destino);
+        t_parametro *registro_destino2 = list_get(list_parametros,1);
+        void* valor_registro_destino = seleccionar_registro_cpu(registro_destino2->nombre);
 
         t_parametro* registro_tamanio = list_get(list_parametros,2);
-        void* valor_registro_tamanio = registroSeleccionado(registro_tamanio);
+        void* valor_registro_tamanio = seleccionar_registro_cpu(registro_tamanio->nombre);
 
-        solicitud_lecturaIO_kernel(interfazSeleccionada,valor_registro_destino,valor_registro_tamanio);
-        
+        solicitud_lecturaIO_kernel(interfazSeleccionada2,valor_registro_destino,valor_registro_tamanio);
+        */
         break;
     case EXIT_INSTRUCCION:
         // guardar_estado(pcb); -> No estoy seguro si esta es necesaria, pero de todas formas nos va a servir cuando se interrumpa por quantum
@@ -543,7 +544,7 @@ void solicitud_dormirIO_kernel(char* interfaz, int unidades) {
     free(paquete->buffer);
     free(paquete);
 }
-
+/*
 void solicitud_lecturaIO_kernel(char* interfaz,void* valorRegistroDestino,void* valorRegistroTamanio){
     t_buffer* buffer = malloc(sizeof(t_buffer));
     buffer = llenar_buffer_leer_IO(interfaz, valorRegistroDestino,valorRegistroTamanio);
@@ -573,7 +574,7 @@ void solicitud_lecturaIO_kernel(char* interfaz,void* valorRegistroDestino,void* 
     free(paquete->buffer);
     free(paquete);
 }
-
+*/
 // ver
 t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
     int length_interfaz = string_length(interfaz);
@@ -601,6 +602,13 @@ t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
     
     return buffer;
 }
+
+/*
+t_buffer* llenar_buffer_leer_IO(interfaz, valorRegistroDestino,valorRegistroTamanio){
+    return NULL; // TODO
+}
+*/
+// Dear Caro, our code has so many problems, please solve them, thank you very much, Mati 
 
 void enviar_fin_programa(t_pcb *pcb) {
     enviar_pcb(pcb, client_dispatch, FIN_PROCESO);

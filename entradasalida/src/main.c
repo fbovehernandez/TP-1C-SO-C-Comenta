@@ -18,7 +18,7 @@ int main(int argc, char* argv[2]) {
     char* IP_KERNEL = config_get_string_value(config_io, "IP_KERNEL"); // Todos
     char* puerto_kernel = config_get_string_value(config_io, "PUERTO_KERNEL_IO"); // Todos
 
-    int socket_kernel_io = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombre_io);     
+    // int socket_kernel_io = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombre_io);     
     // close(socket_kernel_io);
 
     // Falta manejar los distintos tipos de interfaces
