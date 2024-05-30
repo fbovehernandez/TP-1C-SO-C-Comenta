@@ -13,7 +13,7 @@ extern int socket_kernel_io;
 extern t_log* logger_io;
 extern char* nombre_io;
 
-int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, char* nombre_interfaz, TipoInterfaz tipo_interfaz):
+int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, char* nombre_interfaz, TipoInterfaz tipo_interfaz);
 void recibir_solicitud_kernel();
 void recibir_kernel(t_config* config_io);
 int serializar_unidades_trabajo(t_buffer* buffer);

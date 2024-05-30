@@ -36,6 +36,7 @@ typedef enum {
     INTERRUPCION_QUANTUM,
     IO_BLOCKED,
     DORMIR_INTERFAZ,
+    LEER_INTERFAZ,
     WAIT_RECURSO,
     FIN_PROCESO
 } DesalojoCpu;
@@ -96,14 +97,6 @@ typedef struct {
 
 extern t_registros* registros_cpu; // Por ahora la pongo aca, despues hay que sacarla para que solo la use la CPU
 
-/*
-typedef struct registros_cpu {
-	char  AX[ 4],  BX[ 4],  CX[ 4],  DX[ 4];
-	char EAX[ 8], EBX[ 8], ECX[ 8], EDX[ 8];
-	char RAX[16], RBX[16], RCX[16], RDX[16];
-} t_registros_cpu;
-*/
-
 typedef enum {
     NEW,
     READY,
@@ -155,10 +148,17 @@ typedef struct {
     int length;
 } t_parametro;
 
+typedef enum {
+    GENERICA, 
+    STDIN,
+    STDOUT,
+    DIALFS
+} TipoInterfaz;
+
 typedef struct {
     int nombre_interfaz_largo;
     char* nombre_interfaz;
-    tipoIntefaz tipo;
+    TipoInterfaz tipo;
 } t_info_io;
 
 void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op);

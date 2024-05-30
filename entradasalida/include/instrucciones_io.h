@@ -9,13 +9,6 @@
 #include <commons/string.h>
 #include "conexiones_io.h"
 
-typedef enum {
-    GENERICA, 
-    STDIN,
-    STDOUT,
-    DIALFS
-} TipoInterfaz;
-
 void io_gen_sleep(int unidad_trabajo, int tiempo_unidad_trabajo);
 
 #endif

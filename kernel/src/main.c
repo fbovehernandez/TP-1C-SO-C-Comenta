@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
 
     // Levanto hilo para escuchar peticiones I/O
     pthread_t hilo_io;
-    pthread_create(&hilo_io, NULL, (void*) escuchar_IO, (void*) kernel_io); //PARA PROBAR
+    pthread_create(&hilo_io, NULL, (void*) escuchar_IO, (void*) kernel_io); // PARA PROBAR
 
     pthread_t socket_escucha_consola;
     pthread_create(&socket_escucha_consola, NULL, (void*) interaccion_consola, sockets); 

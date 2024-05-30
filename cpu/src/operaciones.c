@@ -482,6 +482,17 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         // desalojar(pcb, IO_BLOCKED); // Necesario?
         break;
     case IO_STDIN_READ:
+        t_parametro *interfaz = list_get(list_parametros,0);
+        char *interfazSeleccionada = interfaz->nombre;
+        
+        t_parametro* registro_destino = list_get(list_parametros,1);
+        void* valor_registro_destino = registroSeleccionado(registro_destino);
+
+        t_parametro* registro_tamanio = list_get(list_parametros,2);
+        void* valor_registro_tamanio = registroSeleccionado(registro_tamanio);
+
+        solicitud_lecturaIO_kernel(interfazSeleccionada,valor_registro_destino,valor_registro_tamanio);
+        
         break;
     case EXIT_INSTRUCCION:
         // guardar_estado(pcb); -> No estoy seguro si esta es necesaria, pero de todas formas nos va a servir cuando se interrumpa por quantum
@@ -509,6 +520,36 @@ void solicitud_dormirIO_kernel(char* interfaz, int unidades) {
     t_paquete* paquete = malloc(sizeof(t_paquete));
 
     paquete->codigo_operacion = DORMIR_INTERFAZ; // Podemos usar una constante por operación
+    paquete->buffer = buffer; // Nuestro buffer de antes.
+
+    // Armamos el stream a enviar
+    void* a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
+    int offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    // Por último enviamos
+    // hay que poner el socket kernel globallll
+    send(client_dispatch, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
+    printf("Paquete enviado!");
+
+    // Falta liberar todo
+    free(a_enviar);
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+}
+
+void solicitud_lecturaIO_kernel(char* interfaz,void* valorRegistroDestino,void* valorRegistroTamanio){
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+    buffer = llenar_buffer_leer_IO(interfaz, valorRegistroDestino,valorRegistroTamanio);
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+
+    paquete->codigo_operacion = LEER_INTERFAZ; // Podemos usar una constante por operación
     paquete->buffer = buffer; // Nuestro buffer de antes.
 
     // Armamos el stream a enviar

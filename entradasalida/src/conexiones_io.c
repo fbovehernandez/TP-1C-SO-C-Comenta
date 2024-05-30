@@ -34,15 +34,15 @@ void gestionar_DIALFS(t_config *config_io) {
 */
 
 int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, char* nombre_interfaz, TipoInterfaz tipo_interfaz) {
-    //int message_io = 12; // nro de codop
+    // int message_io = 12; // nro de codop
     int valor = 5; // handshake, 5 = I/O
 
     int kernelfd = crear_conexion(IP_KERNEL, puerto_kernel, valor);
     log_info(logger_io, "Conexion establecida con Kernel");
     
-    //send(kernelfd, &message_io, sizeof(int), 0); 
+    // send(kernelfd, &message_io, sizeof(int), 0); 
 
-    int str_interfaz = strlen(nombre_interfaz);
+    int str_interfaz = strlen(nombre_interfaz) + 1;
     
     t_info_io* io = malloc(sizeof(int) + str_interfaz);
     io->nombre_interfaz_largo = str_interfaz;
@@ -52,7 +52,7 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     t_buffer* buffer = malloc(sizeof(t_buffer));
     t_paquete* paquete = malloc(sizeof(t_paquete));
 
-    buffer->size = sizeof(int) * 2 + str_interfaz;
+    buffer->size = sizeof(int) + str_interfaz + sizeof(int); // sizeof(x2)
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
@@ -75,7 +75,6 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     int offset = 0;
 
     memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-
     offset += sizeof(int);
     memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
     offset += sizeof(int);
