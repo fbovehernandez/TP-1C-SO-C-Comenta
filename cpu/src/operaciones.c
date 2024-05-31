@@ -473,6 +473,8 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         t_parametro *interfaz1 = list_get(list_parametros, 0);
         char *interfazSeleccionada = interfaz1->nombre;
 
+        printf("En la linea 476 tenemos esta interfaz: %s\n", interfazSeleccionada);
+
         t_parametro *unidades = list_get(list_parametros, 1);
         int unidadesDeTrabajo = atoi(unidades->nombre);
 
@@ -516,7 +518,7 @@ void desalojar(t_pcb* pcb, DesalojoCpu motivo) {
 }
 
 void solicitud_dormirIO_kernel(char* interfaz, int unidades) {
-    t_buffer* buffer = malloc(sizeof(t_buffer));
+    t_buffer* buffer; // Creo que no hace falta reservar memoria
     buffer = llenar_buffer_dormir_IO(interfaz, unidades);
     t_paquete* paquete = malloc(sizeof(t_paquete));
 
@@ -544,6 +546,7 @@ void solicitud_dormirIO_kernel(char* interfaz, int unidades) {
     free(paquete->buffer);
     free(paquete);
 }
+
 /*
 void solicitud_lecturaIO_kernel(char* interfaz,void* valorRegistroDestino,void* valorRegistroTamanio){
     t_buffer* buffer = malloc(sizeof(t_buffer));
@@ -576,8 +579,16 @@ void solicitud_lecturaIO_kernel(char* interfaz,void* valorRegistroDestino,void* 
 }
 */
 // ver
+/*
+typedef struct {
+    char* interfaz;
+    int length_interfaz;
+    int unidadesDeTrabajo;
+} t_operacion_io; 
+*/
+
 t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
-    int length_interfaz = string_length(interfaz);
+    int length_interfaz = string_length(interfaz) + 1;
 
     t_buffer* buffer = malloc(sizeof(t_buffer));
     t_operacion_io* io = malloc(sizeof(int) * 2 + length_interfaz);
@@ -587,19 +598,22 @@ t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
     io->interfaz = interfaz;
     io->unidadesDeTrabajo = unidades;
 
-    buffer->size = sizeof(int) * 2 + length_interfaz + sizeof(int);
+    buffer->size = sizeof(int) * 2 + length_interfaz;
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
-    memcpy(buffer->stream + buffer->offset, &io->interfaz, io->length_interfaz);
-    buffer->offset += sizeof(io->length_interfaz);
-    
     memcpy(buffer->stream + buffer->offset, &io->unidadesDeTrabajo, sizeof(int));
     buffer->offset += sizeof(int);
+
     memcpy(buffer->stream + buffer->offset, &io->length_interfaz, sizeof(int));
     buffer->offset += sizeof(int);
+
+    memcpy(buffer->stream + buffer->offset, io->interfaz, io->length_interfaz);
+    buffer->offset += sizeof(io->length_interfaz);
     
+    free(io->interfaz);
+    free(io);
     return buffer;
 }
 
@@ -755,22 +769,8 @@ void sum(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, boo
     set(registroDestino, resultado_suma, es_8_bits_destino);
 }
 
-/* 
-void sum(void* registroOrigen, void* registroDestino, bool es_8_bits, bool es_8bits_2, t_pcb *pcb) {
-    // Aca va lo que pasa si pasan dos registros
-    if (es_8_bits1 && es_8_bits2) {
-        *(uint8_t *)registroOrigen += *(uint8_t *)registroDestino; // NO va a haber ninguno registro de 8 bits que pase el limite
-    } else {
-        *(uint32_t *)registroOrigen += *(uint32_t *)registroDestino;
-    } else {    
-        *(uint8_t *)registroOrigen += *(uint32_t *)registroDestino;
-    } else {
-        *(uint32_t *)registroOrigen += *(uint8_t *)registroDestino;
-    }
-}
-*/
 
-// Lo mismo que ssum pero negativo
+// Lo mismo que sum pero negativo
 /*void sub(void* registroOrigen, void* registroDestino, bool es_8_bits, t_pcb* pcb) {
    if (es_8_bits) {
         *(uint8_t *)registroOrigen -= *(uint8_t *)registroDestino; // NO va a haber ninguno registro de 8 bits que pase el limite

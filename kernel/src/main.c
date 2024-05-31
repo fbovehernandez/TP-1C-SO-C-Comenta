@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
 
     // Levanto hilo para escuchar peticiones I/O
     pthread_t hilo_io;
-    pthread_create(&hilo_io, NULL, (void*) escuchar_IO, (void*) kernel_io); // PARA PROBAR
+    pthread_create(&hilo_io, NULL, (void*) escuchar_IO, (void*) kernel_io); 
 
     pthread_t socket_escucha_consola;
     pthread_create(&socket_escucha_consola, NULL, (void*) interaccion_consola, sockets); 
@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
     pthread_join(socket_escucha_consola, NULL);
     pthread_join(pasar_a_ready, NULL);
     pthread_join(planificador_corto_plazo, NULL);
-    //pthread_join(hilo_io, NULL);
+    // pthread_join(hilo_io, NULL);
 
     // Libero conexiones
     free(config_kernel);

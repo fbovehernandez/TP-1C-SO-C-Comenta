@@ -10,7 +10,7 @@ Memoria inicializarMemoria(t_config* config_memoria) {
     mem.memoria = malloc(tamanioMemoria);
     
     // Inicializar la tabla de páginas
-    int numPaginas = *(int*) tamanioMemoria / tamanioPagina;
+    int numPaginas = tamanioMemoria / tamanioPagina;
 
 
     mem.tablaPaginas.numPaginas = numPaginas;

@@ -21,9 +21,12 @@ ptr_kernel* solicitar_datos(t_config* config_kernel){
 int esperar_cliente(int socket_escucha, t_log* logger) {
     int handshake = 0;
     int resultError = -1;
+    printf("Esperando a la IO\n");
+    
     int socket_cliente = accept(socket_escucha, NULL,  NULL);
-    printf("hola\n");
-    corroborar_exito(socket_cliente, "aceptar el handshake.");
+
+    // corroborar_exito(socket_cliente, "aceptar el handshake.");
+
     if(socket_cliente == -1) {
         printf("No acepto el handshake.\n");
         return -1;
@@ -50,20 +53,16 @@ void* handle_io(void* socket) {
     printf("Conexion establecida con I/O\n");
 
     while(socket_io != -1) {
-        t_paquete* paquete = recibir_paquete(socket_io);
+        t_paquete* paquete = malloc(sizeof(t_paquete));
+        paquete->buffer = malloc(sizeof(t_buffer));
 
-        // Primero recibimos el codigo de operacion
         printf("Esperando recibir paquete de IO\n");
-        //recv(socket_cpu, &(paquete->codigo_operacion), sizeof(int), 0);
-        //sem_wait(&sem_memoria_instruccion);
         recv(socket_io, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
         printf("Recibi el codigo de operacion de IO: %d\n", paquete->codigo_operacion);
 
-        // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
-        //recv(socket_cpu, &(paquete->buffer->size), sizeof(int), 0);
         recv(socket_io, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
         paquete->buffer->stream = malloc(paquete->buffer->size);
-        //recv(socket_cpu, paquete->buffer->stream, paquete->buffer->size, 0);
+
         recv(socket_io, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
 
         switch (paquete->codigo_operacion) {
@@ -72,10 +71,13 @@ void* handle_io(void* socket) {
             break;*/
         case CONEXION_INTERFAZ:
             t_info_io* interfaz = deserializar_interfaz(paquete->buffer);
-            // Podemos en vez de enviar socket_io, enviar una struct q tenga el socket y el tipo de la io
-            // para mejor manejo de los switchs mas adelante
-            dictionary_put(diccionario_io, interfaz->nombre_interfaz, &socket_io);
-            printf("Llego %s !!!!!!\n", interfaz->nombre_interfaz);
+            
+            t_conjuntoInterfaz* data_interfaz = malloc(sizeof(t_conjuntoInterfaz));
+            data_interfaz->socket = socket_io;
+            data_interfaz->tipoInterfaz = interfaz->tipo;
+            
+            dictionary_put(diccionario_io, interfaz->nombre_interfaz, (void*) data_interfaz);
+            mostrar_elem_diccionario(interfaz->nombre_interfaz);
             break;
         default:
             printf("Llega al default.");
@@ -91,14 +93,24 @@ void* handle_io(void* socket) {
 
 t_info_io* deserializar_interfaz(t_buffer* buffer) {
     t_info_io* interfaz = malloc(sizeof(t_info_io));
+
     printf("Deserializando interfaz\n");
+
     void* stream = buffer->stream;
     // Deserializamos los campos que tenemos en el buffer
     memcpy(&(interfaz->nombre_interfaz_largo), stream, sizeof(int));
     stream += sizeof(int);
-    memcpy(&(interfaz->nombre_interfaz), stream, interfaz->nombre_interfaz_largo);
-    stream += interfaz->nombre_interfaz_largo;
-    memcpy(&(interfaz->tipo), stream, sizeof(int));
+
+    printf("Este es el largo que deserializa: %d\n", interfaz->nombre_interfaz_largo);
+    
+    memcpy(&(interfaz->tipo), stream, sizeof(TipoInterfaz));
+    stream += sizeof(TipoInterfaz);
+
+    interfaz->nombre_interfaz = malloc(interfaz->nombre_interfaz_largo);
+    memcpy(interfaz->nombre_interfaz, stream, interfaz->nombre_interfaz_largo);  
+
+    printf("Este es el nombre interfaz que deserializa: %s\n", interfaz->nombre_interfaz);
+
     return interfaz;
 }
 
@@ -139,20 +151,14 @@ void* escuchar_IO(void* kernel_io) { //kernel_io es el socket del kernel
 
     while(1) {
         int socket_cliente = esperar_cliente(socket_io, logger_kernel);
-        solicitar_nombre_io(socket_cliente);
-        char* nombre_io = malloc(100);
-        recv(socket_cliente, &nombre_io, 100, 0);
-        dictionary_put(diccionario_io, nombre_io, &socket_cliente);
     }
     
     return NULL;
 }
 
-void solicitar_nombre_io(int socket) {
-    void* pointer_codop = (void*) QUIERO_NOMBRE; 
-    send(socket, pointer_codop, sizeof(int), 0);
-}
-
-void agregarADiccionario(t_info_io* interfaz) {
-    
+void mostrar_elem_diccionario(char* nombre_interfaz) {
+    t_conjuntoInterfaz* interfaz = dictionary_get(diccionario_io, nombre_interfaz);
+    printf("Nombre Interfaz: %s\n", nombre_interfaz);
+    printf("Tipo Interfaz (enum): %d\n", interfaz->tipoInterfaz);
+    printf("Socket: %d\n", interfaz->socket);
 }

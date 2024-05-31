@@ -26,6 +26,25 @@ typedef struct {
     int length_interfaz;
     int unidadesDeTrabajo;
 } t_operacion_io;
+// Lo usamos en kernel para recibir cpu
+
+typedef enum {
+    GENERICA, 
+    STDIN,
+    STDOUT,
+    DIALFS
+} TipoInterfaz;
+
+typedef struct{
+    int socket;
+    TipoInterfaz tipoInterfaz;
+} t_conjuntoInterfaz; //para el diccionario
+
+typedef struct { // usa io para pasarlo al kernel
+    int nombre_interfaz_largo;
+    TipoInterfaz tipo;
+    char* nombre_interfaz;
+} t_info_io;
 
 typedef struct {
     int pid;
@@ -147,19 +166,6 @@ typedef struct {
     char* nombre;
     int length;
 } t_parametro;
-
-typedef enum {
-    GENERICA, 
-    STDIN,
-    STDOUT,
-    DIALFS
-} TipoInterfaz;
-
-typedef struct {
-    int nombre_interfaz_largo;
-    char* nombre_interfaz;
-    TipoInterfaz tipo;
-} t_info_io;
 
 void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op);
 int iniciar_servidor(char*);

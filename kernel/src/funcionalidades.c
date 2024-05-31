@@ -44,8 +44,6 @@ void *interaccion_consola(t_sockets* sockets) {
         printf("8- Finalizar modulo\n");
         scanf("%d", &respuesta);
 
-        // respuesta = atoi(respuesta_por_consola);
-
         switch (respuesta)
         {
         case 1:
@@ -56,8 +54,6 @@ void *interaccion_consola(t_sockets* sockets) {
             printf("Ingrese el path del script a ejecutar %s\n", path_ejecutable);
             scanf("%s", &path_ejecutable);
             INICIAR_PROCESO(path_ejecutable, sockets);*/ // Ver problemas con caracteres como _ o /
-            
-            // Lo comento hasta que me deje de volver loca. JDJSADSAJDSA PERDON SOFI
 
             INICIAR_PROCESO("/script_io_basico_1", sockets);
 
@@ -91,7 +87,8 @@ void *interaccion_consola(t_sockets* sockets) {
     return NULL;
 }
 
-void INICIAR_PROCESO(char* path_instrucciones, t_sockets* sockets) {
+void INICIAR_PROCESO(char* path_instrucciones, t_sockets* sockets)
+{
     int pid_actual = obtener_siguiente_pid();
     printf("El pid del proceso es: %d\n", pid_actual);
     // Primero envio el path de instruccion a memoria y luego el PCB...
@@ -175,12 +172,14 @@ t_buffer* llenar_buffer_path(t_path* pathNuevo) {
 }
 
 
-int obtener_siguiente_pid() {
+int obtener_siguiente_pid()
+{
     contador_pid++;
     return contador_pid;
 }
 
-void encolar_a_new(t_pcb *pcb) {
+void encolar_a_new(t_pcb *pcb)
+{
     // Bloquear el acceso a la cola de procesos
     pthread_mutex_lock(&mutex_estado_new);
     // Sacar el proceso de la cola
@@ -230,10 +229,11 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
     pthread_t hilo_quantum; // uff las malas practicas
 
     t_sockets* sockets = (t_sockets*)sockets_necesarios;
+    int contexto_devolucion = 0;
     t_pcb *pcb = malloc(sizeof(t_pcb));
 
-    int socket_CPU = sockets->socket_cpu; 
-    int socket_int = sockets->socket_int;
+    int socket_CPU = sockets->socket_cpu;
+    int socket_INT = sockets->socket_int; 
     
     while(1) {
         sem_wait(&sem_hay_para_planificar); 
@@ -242,15 +242,13 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
         enviar_pcb(pcb, socket_CPU, ENVIO_PCB); // Serializar antes de enviar 
 
         // FIFO ya esta hecho con lo de arriba
-        //strcmp devuelve 0 si son iguales
         if(strcmp(algoritmo_planificacion,"RR") == 0) {
-            printf("Entro a donde no queriamos\n");
-            pthread_create(&hilo_quantum, NULL, (void*)contar_quantum, (void*)(intptr_t)socket_int);
+            pthread_create(&hilo_quantum, NULL, (void*)contar_quantum, (void*)(intptr_t)socket_INT);
 
             sem_post(&sem_contador_quantum);
         }
 
-        esperar_cpu(pcb); // NO devuelve un contexto de devolucion, devolvía un int con la info de si se ejecuto bien o no
+        esperar_cpu(pcb); 
 
         if(strcmp(algoritmo_planificacion,"RR") == 0) { // Plantear una mejor forma de hacer esto
             pthread_cancel(hilo_quantum);
@@ -297,7 +295,7 @@ t_paquete* recibir_cpu() {
 
         printf("Esperando recibir paquete\n");
         recv(client_dispatch, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
-        printf("Recibi el codigo de operacion (por dispatch) : %d\n", paquete->codigo_operacion);
+        printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
 
         recv(client_dispatch, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
         paquete->buffer->stream = malloc(paquete->buffer->size);
@@ -321,95 +319,59 @@ void esperar_cpu(t_pcb* pcb) {
             pasar_a_ready(pcb, EXEC);
             break;
         case DORMIR_INTERFAZ:
-            printf("Vino a dormir la interfaz\n");
-            t_operacion_io* operacion_io = deserializar_io(package->buffer); //deserializar
+            t_operacion_io* operacion_io = deserializar_io(package->buffer);
             dormir_io(operacion_io);
             break;
         case FIN_PROCESO:
             pcb = deserializar_pcb(package->buffer); 
-            // liberar_memoria(); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
+            //liberar_memoria(); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
             change_status(pcb, EXIT); 
             sem_post(&sem_grado_multiprogramacion); // Esto deberia liberar un grado de memoria para que acceda un proceso
             free(pcb);
             break;
         default:
+            printf("Llego a default de la 333 en funcionalidades.c\n");
             break;
     }
     
-    free(package); // PAKESH 
+    free(package); 
 }
 
 t_operacion_io* deserializar_io(t_buffer* buffer) {
     t_operacion_io* operacion_io = malloc(sizeof(t_operacion_io));
 
     void* stream = buffer->stream;
+
     // Deserializamos los campos que tenemos en el buffer
-    memcpy(&(operacion_io->interfaz), stream, sizeof(char*));
-    stream += sizeof(char*);
     memcpy(&(operacion_io->unidadesDeTrabajo), stream, sizeof(int));
     stream += sizeof(int);
+
     memcpy(&(operacion_io->length_interfaz), stream, sizeof(int));
     stream += sizeof(int);
 
+    operacion_io->interfaz = malloc(operacion_io->length_interfaz); 
+
+    memcpy(operacion_io->interfaz, stream, operacion_io->length_interfaz);
+    
+    printf("Interfaz: %s\n", operacion_io->interfaz);
+    printf("Unidades de trabajo: %d\n", operacion_io->unidadesDeTrabajo);
     return operacion_io;
 }
 
+/* 
 void dormir_io(t_operacion_io* operacion_io) {
-    /*pthread_t dormir_interfaz;
-    pthread_create(&dormir_interfaz, NULL, (void*) hilo_dormir_io, operacion_io); */
-    int existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
-    if(existe_io) {
-        void* socket = dictionary_get(diccionario_io, operacion_io->interfaz);
-        
-        int socket_io = *(int*)socket;
-
-        t_paquete* paquete = malloc(sizeof(t_paquete));
-        t_buffer* buffer = malloc(sizeof(t_buffer));
-
-        buffer->size = sizeof(int);
-
-        buffer->offset = 0;
-        buffer->stream = malloc(buffer->size);
-
-        //TO DO
-        //ACA TENEMOS QUE SEGUIR, EL BUFFER ESTA VACIO.
-        //TIENE QUE LLEVARSE LA CANTIDAD DE UNIDADES DE TRABAJO PARA QUE SE DUERMA LA IO.
-        //NO ESTAMOS HACIENDO ACA EL SLEEP, SINO QUE LO LLEVARIAMOS A LA IO.
-
-        memcpy(buffer->stream, &socket, sizeof(int));
-        
-        paquete->codigo_operacion = DORMITE; // Podemos usar una constante por operación
-        paquete->buffer = buffer; // Nuestro buffer de antes.
-
-        // Armamos el stream a enviar
-        void* a_enviar = malloc(buffer->size + sizeof(int));
-        int offset = 0;
-
-        memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-        offset += sizeof(int);
-        memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-        offset += sizeof(int);
-        memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-        // Por último enviamos
-        send(socket_io, a_enviar, buffer->size + sizeof(int), 0);
-
-        // No nos olvidamos de liberar la memoria que ya no usaremos
-        free(a_enviar);
-        free(paquete->buffer->stream);
-        free(paquete->buffer);
-        free(paquete);
-    } else {
-        printf("No existe dicha IO.\n");
-    }
+    pthread_t dormir_interfaz;
+    pthread_create(&dormir_interfaz, NULL, (void*) hilo_dormir_io, operacion_io); 
 }
+*/
 
-void hilo_dormir_io(t_operacion_io* operacion_io) {
-    int existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
-    if(existe_io) {
-        void* socket = dictionary_get(diccionario_io, operacion_io->interfaz);
-        
-        int socket_int = *(int*)socket;
+void dormir_io(t_operacion_io* operacion_io) {
+
+    // bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
+    int resultado_io = validar_io(operacion_io);
+
+    if(resultado_io) {
+        t_conjuntoInterfaz* data_interfaz = dictionary_get(diccionario_io, operacion_io->interfaz);
 
         t_paquete* paquete = malloc(sizeof(t_paquete));
         t_buffer* buffer = malloc(sizeof(t_buffer));
@@ -419,7 +381,10 @@ void hilo_dormir_io(t_operacion_io* operacion_io) {
         buffer->offset = 0;
         buffer->stream = malloc(buffer->size);
 
-        memcpy(buffer->stream, &socket, sizeof(int));
+        memcpy(buffer->stream + buffer->offset, &, sizeof(uint32_t));
+        buffer->offset += sizeof(uint32_t);
+        memcpy(buffer->stream + buffer->offset, &persona, sizeof(uint8_t));
+        buffer->offset += sizeof(uint8_t);
         
         paquete->codigo_operacion = DORMITE; // Podemos usar una constante por operación
         paquete->buffer = buffer; // Nuestro buffer de antes.
@@ -435,15 +400,13 @@ void hilo_dormir_io(t_operacion_io* operacion_io) {
         memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
         // Por último enviamos
-        send(socket_int, a_enviar, buffer->size + sizeof(int), 0);
+        // send(&elemento, a_enviar, buffer->size + sizeof(int), 0); -> COMENTO POR AHORA
 
         // No nos olvidamos de liberar la memoria que ya no usaremos
         free(a_enviar);
         free(paquete->buffer->stream);
         free(paquete->buffer);
         free(paquete);
-    } else {
-        
     }
 }
 
@@ -461,14 +424,11 @@ void* pasar_a_exec(t_pcb* pcb) {
     pthread_mutex_unlock(&mutex_estado_exec);
 
     log_info(logger_kernel, "PID: %d - Estado Anterior en exec: %d - Estado Actual: %d", pcb->pid, pcb->estadoAnterior, pcb->estadoActual);
-    change_status(pcb, EXIT);
 
     return NULL;
 }
 
 // Esta podria ser la funcion generica y pasarle el codOP por parametro
-
-
 
 // Aca se desarma el path y se obtienen las instrucciones y se le pasan a memoria para que esta lo guarde en su tabla de paginas de este proceso
 t_pcb *crear_nuevo_pcb(int pid){
@@ -484,26 +444,6 @@ t_pcb *crear_nuevo_pcb(int pid){
 
     return pcb;
 }
-
-/* 
-t_registros* inicializar_registros_cpu(t_registros* registro_pcb) {
-
-    registro_pcb->AX = 0;
-    registro_pcb->BX = 0;
-    registro_pcb->CX = 0;
-    registro_pcb->DX = 0;
-
-    registro_pcb->EAX = 0;
-    registro_pcb->EBX = 0;
-    registro_pcb->ECX = 0;
-    registro_pcb->EDX = 0;
-
-    registro_pcb->SI = 0;
-    registro_pcb->DI = 0;
-
-    return registro_pcb;
-}
-*/
 
 /* 
 void* recibir_peticion_de_cpu() {
@@ -614,19 +554,6 @@ void PROCESO_ESTADO() {
 
 }
 
-/*
-
-typedef struct {
-    int pid;
-    int program_counter;
-    int quantum;
-    enum Estado estadoActual;
-    enum Estado estadoAnterior;
-    Registros* registros;
-} t_pcb;
-
-
-*/
 /* 
 void PROCESO_ESTADO()
 {

@@ -83,7 +83,7 @@ int crear_conexion(char *ip, char* puerto, int valor) {
                     server_info->ai_socktype,
                     server_info->ai_protocol);
 	
-	corroborar_exito(socket_cliente, " crear el socket cliente.");
+	corroborar_exito(socket_cliente, "crear el socket cliente.");
 
 	// Ahora que tenemos el socket, vamos a conectarlo
 	int conexion_cliente = connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen);
@@ -97,9 +97,9 @@ int crear_conexion(char *ip, char* puerto, int valor) {
 	// Hacer con logger
 	
 	if(!result)
-		printf("conexion exitosa");
+		printf("conexion exitosa\n");
 	else
-		printf("conexion fallida");
+		printf("conexion fallida\n");
 
 	freeaddrinfo(server_info);
 

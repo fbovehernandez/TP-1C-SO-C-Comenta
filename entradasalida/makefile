@@ -50,11 +50,11 @@ $(sort $(dir $(BIN) $(OBJS))):
 
 .PHONY: start
 start: debug
-	valgrind --tool=none ./$(BIN) $(ARGS)
+	valgrind --tool=none ./$(BIN) $(NOMBRE_INTERFAZ) $(ARGS)
 
 .PHONY: start2
 start2: debug
-	valgrind --tool=none ./$(BIN) $(ARGS2)
+	valgrind --tool=none ./$(BIN) $(ARGS2) $(NOMBRE_INTERFAZ) 
 
 .PHONY: memcheck
 memcheck: debug

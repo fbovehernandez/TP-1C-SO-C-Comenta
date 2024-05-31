@@ -10,7 +10,8 @@ CRELEASE=-O3 -Wall -DNDEBUG -fcommon
 
 # Arguments when executing with start, memcheck or helgrind
 ARGS="../entradasalida/stdout.config"
-ARGS2 = "../entradasalida/stdin.config"
+ARGS2 = "generica.config"
+NOMBRE_INTERFAZ = caro
 
 # Valgrind flags
 MEMCHECK_FLAGS=--track-origins=yes

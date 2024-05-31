@@ -36,9 +36,8 @@ void gestionar_DIALFS(t_config *config_io) {
 int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, char* nombre_interfaz, TipoInterfaz tipo_interfaz) {
     // int message_io = 12; // nro de codop
     int valor = 5; // handshake, 5 = I/O
-
     int kernelfd = crear_conexion(IP_KERNEL, puerto_kernel, valor);
-    log_info(logger_io, "Conexion establecida con Kernel");
+    log_info(logger_io, "Conexion establecida con Kernel\n");
     
     // send(kernelfd, &message_io, sizeof(int), 0); 
 
@@ -46,8 +45,8 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     
     t_info_io* io = malloc(sizeof(int) + str_interfaz);
     io->nombre_interfaz_largo = str_interfaz;
-    io->nombre_interfaz = nombre_interfaz;
     io->tipo = tipo_interfaz;
+    io->nombre_interfaz = nombre_interfaz;
 
     t_buffer* buffer = malloc(sizeof(t_buffer));
     t_paquete* paquete = malloc(sizeof(t_paquete));
@@ -58,12 +57,12 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
 
     void* stream = buffer->stream;
 
-    memcpy(stream+buffer->offset, &io->nombre_interfaz_largo, sizeof(int));
+    memcpy(stream + buffer->offset, &io->nombre_interfaz_largo, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &io->nombre_interfaz, str_interfaz);
+    memcpy(stream + buffer->offset, &io->tipo, sizeof(TipoInterfaz));
+    buffer->offset += sizeof(TipoInterfaz);
+    memcpy(stream + buffer->offset, io->nombre_interfaz, str_interfaz);
     buffer->offset += str_interfaz;
-    memcpy(stream + buffer->offset, &io->tipo, sizeof(int));
-    buffer->offset += sizeof(int);
 
     buffer->stream = stream;
 
@@ -106,25 +105,28 @@ void recibir_solicitud_kernel() {
 */
 
 void recibir_kernel(t_config* config_io) {
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-    paquete->buffer = malloc(sizeof(t_buffer));
+    while(1) {
+        t_paquete* paquete = malloc(sizeof(t_paquete));
+        paquete->buffer = malloc(sizeof(t_buffer));
 
-    recv(socket_kernel_io, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
-    printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
+        recv(socket_kernel_io, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
+        printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
 
-    recv(socket_kernel_io, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
-    paquete->buffer->stream = malloc(paquete->buffer->size);
+        recv(socket_kernel_io, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
+        paquete->buffer->stream = malloc(paquete->buffer->size);
 
-    recv(socket_kernel_io, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+        recv(socket_kernel_io, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
 
-    switch(paquete->codigo_operacion) {
-        case DORMITE:
-            int unidadesDeTrabajo = serializar_unidades_trabajo(paquete->buffer);
-            int tiempoUnidadesTrabajo = config_get_int_value(config_io,"TIEMPO_UNIDAD_TRABAJO");
-            // tiempoUnidadesTrabajo esta en el config
-            sleep(unidadesDeTrabajo * tiempoUnidadesTrabajo);
-        default:
-            break;
+        switch(paquete->codigo_operacion) {
+            case DORMITE:
+                printf("Me voy a dormir.\n");
+                int unidadesDeTrabajo = serializar_unidades_trabajo(paquete->buffer);
+                int tiempoUnidadesTrabajo = config_get_int_value(config_io,"TIEMPO_UNIDAD_TRABAJO");
+                // tiempoUnidadesTrabajo esta en el config
+                sleep(unidadesDeTrabajo * tiempoUnidadesTrabajo);
+            default:
+                break;
+        }
     }
 }
 

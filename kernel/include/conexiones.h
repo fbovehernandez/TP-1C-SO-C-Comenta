@@ -46,5 +46,6 @@ void* escuchar_IO(void* kernel_io);
 ptr_kernel* solicitar_datos(t_config* config_kernel);
 void solicitar_nombre_io(int socket);
 t_info_io* deserializar_interfaz(t_buffer* buffer);
+void mostrar_elem_diccionario(char* nombre_interfaz);
 
 #endif // CONEXIONES_H
