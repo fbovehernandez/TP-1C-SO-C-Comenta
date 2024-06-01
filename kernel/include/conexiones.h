@@ -4,10 +4,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <commons/collections/queue.h>
+#include <commons/collections/list.h>
 #include "../../utils/include/sockets.h" 
 #include "../../utils/include/logconfig.h"
 
 extern t_dictionary* diccionario_io;
+extern t_list* lista_io;
+extern sem_t sem_cola_io;
+extern sem_t mutex_lista_io;
 
 // Aca va el struct del PCB 
 typedef struct {
@@ -38,7 +43,7 @@ int conectar_kernel_memoria(char* ip, char* puerto, t_log* logger_kernel);
 int conectar_kernel_cpu_dispatch(t_log* logger_kernel, char* ip, char* puerto);
 int conectar_kernel_cpu_interrupt(t_log* logger_kernel,char* IP_CPU,char* puerto_cpu_dispatch);
 int esperar_cliente(int socket_escucha, t_log* logger);
-void* handle_io(void* socket);
+void* handle_io_generica(void* socket);
 int recibir_operacion(int socket_cliente);
 void liberar_conexion(int socket_cliente);
 // void escuchar_STDOUT(t_config* config_kernel, t_log* logger_kernel);

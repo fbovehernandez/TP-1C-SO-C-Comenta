@@ -9,6 +9,6 @@
 #include <commons/string.h>
 #include "conexiones_io.h"
 
-void io_gen_sleep(int unidad_trabajo, int tiempo_unidad_trabajo);
+void io_gen_sleep_func(int unidad_trabajo, int tiempo_unidad_trabajo);
 
 #endif

@@ -225,6 +225,16 @@ void pasar_a_ready(t_pcb *pcb, Estado estadoAnterior) {
     sem_post(&sem_hay_para_planificar);
 }
 
+void pasar_a_exit(t_pcb* pcb) {
+    change_status(pcb, EXIT);
+    liberar_memoria(pcb);
+    sem_post(&sem_grado_multiprogramacion);
+}
+
+void liberar_memoria(t_pcb* pcb) {
+    //Le mandaria a memoria que debe eliminar el pcb y toda la cosa
+}
+
 void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por tipo void....
     pthread_t hilo_quantum; // uff las malas practicas
 
@@ -305,28 +315,32 @@ t_paquete* recibir_cpu() {
     }
 }
 
-void esperar_cpu(t_pcb* pcb) {
+void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
     t_paquete* package = malloc(sizeof(t_pcb));
-
+    size_t offset = 0;
     DesalojoCpu devolucion_cpu;
     
     package = recibir_cpu(); // pcb y codigo de operacion (devolucion_cpu)
     devolucion_cpu = package->codigo_operacion;
-
+    // Deserializo antes el pcb, me ahorro cierta logica y puedo hacer send si es IO_BLOCKED
+    pcb = deserializar_pcb(package->buffer);
+    
     switch (devolucion_cpu) {
         case INTERRUPCION_QUANTUM:
-            pcb = deserializar_pcb(package->buffer);
+            // pcb = deserializar_pcb(package->buffer);
             pasar_a_ready(pcb, EXEC);
             break;
         case DORMIR_INTERFAZ:
             t_operacion_io* operacion_io = deserializar_io(package->buffer);
-            dormir_io(operacion_io);
+            dormir_io(operacion_io, pcb);
+            // dormir_io(operacion_io);
             break;
         case FIN_PROCESO:
             pcb = deserializar_pcb(package->buffer); 
+            pasar_a_exec(pcb);
             //liberar_memoria(); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
-            change_status(pcb, EXIT); 
-            sem_post(&sem_grado_multiprogramacion); // Esto deberia liberar un grado de memoria para que acceda un proceso
+            //change_status(pcb, EXIT); 
+            //sem_post(&sem_grado_multiprogramacion); // Esto deberia liberar un grado de memoria para que acceda un proceso
             free(pcb);
             break;
         default:
@@ -365,14 +379,49 @@ void dormir_io(t_operacion_io* operacion_io) {
 }
 */
 
-void dormir_io(t_operacion_io* operacion_io) {
+/*
+it("should find the first value that satisfies a condition") {
+                t_person *find_someone_by_name(char *name) {
+                    int _is_the_one(t_person *p) {
+                        return string_equals_ignore_case(p->name, name);
+                    }
 
+                    return list_find(list, (void*) _is_the_one);
+                }
+
+                assert_person(find_someone_by_name("Ezequiel"), "Ezequiel", 25);
+                assert_person(find_someone_by_name("Sebastian"), "Sebastian", 21);
+                should_ptr(find_someone_by_name("Chuck Norris")) be null;
+                should_int(list_size(list)) be equal to(5);
+            } end
+            */
+
+
+void dormir_io(t_operacion_io* io, t_pcb* pcb) {
+    bool match_nombre(t_list_io* nodo_lista) {
+        return strcmp(nodo_lista->data_io->nombreInterfaz, io->interfaz) == 0;
+    };
+
+    io_gen_sleep* datos_sleep = malloc(sizeof(io_gen_sleep));
     // bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
-    int resultado_io = validar_io(operacion_io);
 
-    if(resultado_io) {
-        t_conjuntoInterfaz* data_interfaz = dictionary_get(diccionario_io, operacion_io->interfaz);
+    sem_wait(mutex_lista_io);
+    t_list_io* elemento_encontrado = validar_io(io, pcb); 
+    // Aca tambien deberia cambiar su estado a blocked o Exit respectivamnete
 
+    if(1) { // resultado_okey
+        datos_sleep->ut = io->unidadesDeTrabajo;
+        datos_sleep->pcb = pcb;
+        // llanto de caro
+        queue_push(elemento_encontrado->cola_blocked, datos_sleep);
+
+        sem_wait(mutex_lista_io);
+        sem_post(elemento_encontrado->semaforo_cola_procesos_blocked);
+        printf("La operacion deberia realizarse...\n");
+        sem_post(mutex_lista_io);
+    }
+
+        /* 
         t_paquete* paquete = malloc(sizeof(t_paquete));
         t_buffer* buffer = malloc(sizeof(t_buffer));
 
@@ -381,11 +430,8 @@ void dormir_io(t_operacion_io* operacion_io) {
         buffer->offset = 0;
         buffer->stream = malloc(buffer->size);
 
-        memcpy(buffer->stream + buffer->offset, &, sizeof(uint32_t));
-        buffer->offset += sizeof(uint32_t);
-        memcpy(buffer->stream + buffer->offset, &persona, sizeof(uint8_t));
-        buffer->offset += sizeof(uint8_t);
-        
+        memcpy(buffer->stream + buffer->offset, &(operacion_io->unidadesDeTrabajo), sizeof(uint32_t));
+       
         paquete->codigo_operacion = DORMITE; // Podemos usar una constante por operación
         paquete->buffer = buffer; // Nuestro buffer de antes.
 
@@ -400,16 +446,38 @@ void dormir_io(t_operacion_io* operacion_io) {
         memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
         // Por último enviamos
-        // send(&elemento, a_enviar, buffer->size + sizeof(int), 0); -> COMENTO POR AHORA
+        send(&elemento, a_enviar, buffer->size + sizeof(int), 0); 
 
         // No nos olvidamos de liberar la memoria que ya no usaremos
         free(a_enviar);
         free(paquete->buffer->stream);
         free(paquete->buffer);
         free(paquete);
+        */
+    
+} 
+
+/*  Al recibir una petición de I/O de parte de la CPU primero se deberá validar que exista y esté
+conectada la interfaz solicitada, en caso contrario, se deberá enviar el proceso a EXIT.
+En caso de que la interfaz exista y esté conectada, se deberá validar que la interfaz admite la
+operación solicitada, en caso de que no sea así, se deberá enviar el proceso a EXIT. */
+
+int validar_io(t_operacion_io* io, t_pcb* pcb) {
+    bool match_nombre(t_list_io* nodo_lista) {
+        return strcmp(nodo_lista->nombreInterfaz, io->interfaz) == 0;
+    };
+    
+    t_list_io* elemento_encontrado = list_find(lista_io, match_nombre); // Aca deberia buscar la interfaz en la lista de io
+
+    if(elemento_encontrado == NULL || io->data->tipo != GENERICA) {
+        pasar_a_exit(pcb);
+        sem_post(mutex_lista_io);
+        error("No existe la io o no admite operacion");
+    } else { 
+        sem_post(mutex_lista_io);
+        return elemento_encontrado;    
     }
 }
-
 
 void change_status(t_pcb* pcb, Estado new_status) {
     pcb->estadoAnterior = pcb -> estadoActual;

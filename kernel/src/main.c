@@ -18,6 +18,9 @@ int main(int argc, char* argv[]) {
     algoritmo_planificacion = datos_kernel->algoritmo_planificacion;
 
     diccionario_io = dictionary_create();
+    // Lista global para manejo de I/O
+    lista_io = list_create();
+    
 
     pthread_mutex_init(&mutex_estado_new, NULL);
     pthread_mutex_init(&mutex_estado_ready, NULL);
@@ -26,6 +29,8 @@ int main(int argc, char* argv[]) {
     sem_init(&sem_hay_pcb_esperando_ready, 0, 0);
     sem_init(&sem_grado_multiprogramacion, 0, grado_multiprogramacion); // No testeado
     sem_init(&sem_memoria_instruccion, 0, 0);
+    pthread_mutex_init(&mutex_lista_io, NULL);
+    sem_init(&sem_cola_io, 0, 0);
 
     // Hilo 1 -> Hacer un hilo para gestionar la comunicacion con memoria?
     int socket_memoria_kernel = conectar_kernel_memoria(datos_kernel->ip_mem, datos_kernel->puerto_memoria, logger_kernel);

@@ -119,7 +119,7 @@ void recibir_kernel(t_config* config_io) {
 
         switch(paquete->codigo_operacion) {
             case DORMITE:
-                printf("Me voy a dormir.\n");
+                printf("Me voy a dormir...\n");
                 int unidadesDeTrabajo = serializar_unidades_trabajo(paquete->buffer);
                 int tiempoUnidadesTrabajo = config_get_int_value(config_io,"TIEMPO_UNIDAD_TRABAJO");
                 // tiempoUnidadesTrabajo esta en el config

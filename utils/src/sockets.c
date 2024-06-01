@@ -137,9 +137,15 @@ t_registros* inicializar_registros_cpu(t_registros* registro_pcb) {
     return registro_pcb;
 }
 
-void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op) {
+void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, void* datos_add, int size) {
     printf("Este es el pid del pcb a mandar: %d\n", pcb->pid);
     t_buffer* buffer = llenar_buffer_pcb(pcb);
+
+    if (datos_add != NULL) { // Se podria hacer un malloc() por el total_size
+        buffer->stream = realloc(buffer->stream, buffer->size + size);
+        memcpy(buffer->stream + buffer->size, datos_add, size); // No se si esta bien que aca sea un void* y no un t_buffer*
+        buffer->size += size;
+    }
 
     t_paquete* paquete = malloc(sizeof(t_paquete));
 

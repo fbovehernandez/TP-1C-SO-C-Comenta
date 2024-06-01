@@ -10,6 +10,7 @@
 #include <netdb.h>
 #include <commons/log.h>
 #include <commons/config.h>
+#include <commons/collections/queue.h>
 #include <assert.h>
 #include <pthread.h>
 
@@ -22,8 +23,7 @@ typedef struct {
 } t_path;
 
 typedef struct {
-    char* interfaz;
-    int length_interfaz;
+    t_info_io info;
     int unidadesDeTrabajo;
 } t_operacion_io;
 // Lo usamos en kernel para recibir cpu
@@ -35,16 +35,18 @@ typedef enum {
     DIALFS
 } TipoInterfaz;
 
-typedef struct{
-    int socket;
-    TipoInterfaz tipoInterfaz;
-} t_conjuntoInterfaz; //para el diccionario
-
 typedef struct { // usa io para pasarlo al kernel
     int nombre_interfaz_largo;
     TipoInterfaz tipo;
     char* nombre_interfaz;
 } t_info_io;
+
+typedef struct {
+    int socket;
+    t_info_io* data_io;
+    t_queue* cola_blocked;
+    sem_t* semaforo_cola_procesos_blocked;
+} t_list_io; //para el diccionario
 
 typedef struct {
     int pid;
@@ -133,6 +135,11 @@ typedef struct {
     t_registros* registros;
 } t_pcb;
 
+typedef struct {
+    int ut;
+    t_pcb* pcb;
+} io_gen_sleep;
+
 typedef enum {
     SET,  
     MOV_IN,
@@ -167,7 +174,7 @@ typedef struct {
     int length;
 } t_parametro;
 
-void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op);
+void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, void* buffer, int size);
 int iniciar_servidor(char*);
 int esperar_conexion(int);
 void corroborar_exito(int, char*);

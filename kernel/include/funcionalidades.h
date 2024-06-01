@@ -89,6 +89,7 @@ t_paquete* recibir_cpu();
 void dormir_io(t_operacion_io* operacion_io);
 void hilo_dormir_io(t_operacion_io* operacion_io);
 void change_status(t_pcb* pcb, Estado new_status);
+bool match_nombre(char* interfaz);
 
 
 void EJECUTAR_SCRIPT();

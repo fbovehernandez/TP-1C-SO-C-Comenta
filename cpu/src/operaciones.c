@@ -158,30 +158,32 @@ void recibir(int socket_memoria, t_pcb *pcb) {
             t_instruccion *instruccion = malloc(sizeof(t_instruccion));
             instruccion = instruccion_deserializar(paquete->buffer);
             ejecutar_instruccion(instruccion, pcb); //
+            
             if (hay_interrupcion) {
                 printf("Hubo una interrupcion.\n");
                 guardar_estado(pcb);
-                enviar_pcb(pcb, client_dispatch, INTERRUPCION_QUANTUM);
+                // enviar_pcb(pcb, client_dispatch, INTERRUPCION_QUANTUM, NULL, 0); // Podria usar desalojar?
                 hay_interrupcion = 0;
                 return;
             }
-        free(instruccion);
-        break;
-    case ENVIO_CANTIDAD_INSTRUCCIONES:
-        int cantidad_instrucciones = cantidad_instrucciones_deserializar(paquete->buffer);
 
-        printf("Recibi que la cantidad de instrucciones del proceso %d es %d.\n", pcb->pid, cantidad_instrucciones);
+            free(instruccion);
+            break;
+        case ENVIO_CANTIDAD_INSTRUCCIONES:
+            int cantidad_instrucciones = cantidad_instrucciones_deserializar(paquete->buffer);
 
-        while (pcb->program_counter < cantidad_instrucciones && !hay_interrupcion) {
-            printf("Numero de vuelta: %d\n", pcb->program_counter);
-            pedir_instruccion_a_memoria(socket_memoria, pcb);
-            recibir(socket_memoria, pcb); // recibir cada instruccion
-            pcb->program_counter++;
-        }
-        break;
-    default:
-        printf("Error: Fallo!\n");
-        break;
+            printf("Recibi que la cantidad de instrucciones del proceso %d es %d.\n", pcb->pid, cantidad_instrucciones);
+
+            while (pcb->program_counter < cantidad_instrucciones && !hay_interrupcion) {
+                printf("Numero de vuelta: %d\n", pcb->program_counter);
+                pedir_instruccion_a_memoria(socket_memoria, pcb);
+                recibir(socket_memoria, pcb); // recibir cada instruccion
+                pcb->program_counter++;
+            }
+            break;
+        default:
+            printf("Error: Fallo!\n");
+            break;
     }
 
     // Liberamos memoria
@@ -478,10 +480,16 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         t_parametro *unidades = list_get(list_parametros, 1);
         int unidadesDeTrabajo = atoi(unidades->nombre);
 
-        solicitud_dormirIO_kernel(interfazSeleccionada, unidadesDeTrabajo);
-        printf("Hizo IO_GEN_SLEEP\n");
+        t_buffer* buffer;
+        buffer = llenar_buffer_dormir_IO(interfazSeleccionada, unidadesDeTrabajo);
 
-        // desalojar(pcb, IO_BLOCKED); // Necesario?
+        // el puntero al buffer de abajo YA ESTA SERIALIZADO
+
+        desalojar(pcb, DORMIR_INTERFAZ, (void*)buffer, sizeof(t_operacion_io));
+        // recv(client_dispatch, &solicitud_unidades_trabajo, sizeof(int), MSG_WAITALL);
+        // solicitud_dormirIO_kernel(interfazSeleccionada, unidadesDeTrabajo);
+
+        printf("Hizo IO_GEN_SLEEP\n");
         break;
     case IO_STDIN_READ:
         /*
@@ -499,7 +507,7 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         break;
     case EXIT_INSTRUCCION:
         // guardar_estado(pcb); -> No estoy seguro si esta es necesaria, pero de todas formas nos va a servir cuando se interrumpa por quantum
-        desalojar(pcb, FIN_PROCESO);
+        desalojar(pcb, FIN_PROCESO, NULL, 0); // Envio 0 ya que no me importa size
         break;
     default:
         printf("Error: No existe ese tipo de intruccion\n");
@@ -511,10 +519,10 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     }
 }
 
-void desalojar(t_pcb* pcb, DesalojoCpu motivo) {
+void desalojar(t_pcb* pcb, DesalojoCpu motivo, void* datos_adicionales, int datos_add_size) {
     guardar_estado(pcb);
     setear_registros_cpu();
-    enviar_pcb(pcb, client_dispatch, motivo);
+    enviar_pcb(pcb, client_dispatch, motivo, datos_adicionales, datos_add_size);
 }
 
 void solicitud_dormirIO_kernel(char* interfaz, int unidades) {
@@ -624,9 +632,11 @@ t_buffer* llenar_buffer_leer_IO(interfaz, valorRegistroDestino,valorRegistroTama
 */
 // Dear Caro, our code has so many problems, please solve them, thank you very much, Mati 
 
+/* 
 void enviar_fin_programa(t_pcb *pcb) {
-    enviar_pcb(pcb, client_dispatch, FIN_PROCESO);
+    enviar_pcb(pcb, client_dispatch, FIN_PROCESO, NULL, 0);
 }
+*/
 
 void guardar_estado(t_pcb *pcb) {
     pcb->registros->AX = registros_cpu->AX;
