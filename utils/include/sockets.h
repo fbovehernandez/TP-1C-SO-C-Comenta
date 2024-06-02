@@ -16,24 +16,17 @@
 
 extern sem_t sem_memoria_instruccion;
 
-typedef struct {
-    int PID;
-    int path_length;
-    char* path;
-} t_path;
-
-typedef struct {
-    t_info_io info;
-    int unidadesDeTrabajo;
-} t_operacion_io;
-// Lo usamos en kernel para recibir cpu
-
 typedef enum {
     GENERICA, 
     STDIN,
     STDOUT,
     DIALFS
 } TipoInterfaz;
+typedef struct {
+    int PID;
+    int path_length;
+    char* path;
+} t_path;
 
 typedef struct { // usa io para pasarlo al kernel
     int nombre_interfaz_largo;
@@ -42,11 +35,18 @@ typedef struct { // usa io para pasarlo al kernel
 } t_info_io;
 
 typedef struct {
+    t_info_io* info;
+    int unidadesDeTrabajo;
+} t_operacion_io;
+// Lo usamos en kernel para recibir cpu
+
+typedef struct {
     int socket;
-    t_info_io* data_io;
+    char* nombreInterfaz; // Aaca tenia un dato_io que le sque
+    TipoInterfaz TipoInterfaz;
     t_queue* cola_blocked;
     sem_t* semaforo_cola_procesos_blocked;
-} t_list_io; //para el diccionario
+} t_list_io; // para el diccionario
 
 typedef struct {
     int pid;

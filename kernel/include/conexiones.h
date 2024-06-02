@@ -44,6 +44,7 @@ int conectar_kernel_cpu_dispatch(t_log* logger_kernel, char* ip, char* puerto);
 int conectar_kernel_cpu_interrupt(t_log* logger_kernel,char* IP_CPU,char* puerto_cpu_dispatch);
 int esperar_cliente(int socket_escucha, t_log* logger);
 void* handle_io_generica(void* socket);
+int ejecutar_io(int socket_io);
 int recibir_operacion(int socket_cliente);
 void liberar_conexion(int socket_cliente);
 // void escuchar_STDOUT(t_config* config_kernel, t_log* logger_kernel);

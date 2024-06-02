@@ -249,7 +249,7 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
         sem_wait(&sem_hay_para_planificar); 
         pcb = proximo_a_ejecutar();
         pasar_a_exec(pcb);
-        enviar_pcb(pcb, socket_CPU, ENVIO_PCB); // Serializar antes de enviar 
+        enviar_pcb(pcb, socket_CPU, ENVIO_PCB, NULL, 0); // Serializar antes de enviar 
 
         // FIFO ya esta hecho con lo de arriba
         if(strcmp(algoritmo_planificacion,"RR") == 0) {
@@ -317,7 +317,6 @@ t_paquete* recibir_cpu() {
 
 void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
     t_paquete* package = malloc(sizeof(t_pcb));
-    size_t offset = 0;
     DesalojoCpu devolucion_cpu;
     
     package = recibir_cpu(); // pcb y codigo de operacion (devolucion_cpu)
@@ -360,14 +359,14 @@ t_operacion_io* deserializar_io(t_buffer* buffer) {
     memcpy(&(operacion_io->unidadesDeTrabajo), stream, sizeof(int));
     stream += sizeof(int);
 
-    memcpy(&(operacion_io->length_interfaz), stream, sizeof(int));
+    memcpy(&(operacion_io->info->nombre_interfaz_largo), stream, sizeof(int));
     stream += sizeof(int);
 
-    operacion_io->interfaz = malloc(operacion_io->length_interfaz); 
+    operacion_io->info->nombre_interfaz = malloc(operacion_io->info->nombre_interfaz_largo); 
 
-    memcpy(operacion_io->interfaz, stream, operacion_io->length_interfaz);
+    memcpy(operacion_io->info->nombre_interfaz, stream, operacion_io->info->nombre_interfaz_largo);
     
-    printf("Interfaz: %s\n", operacion_io->interfaz);
+    printf("Interfaz: %s\n", operacion_io->info->nombre_interfaz);
     printf("Unidades de trabajo: %d\n", operacion_io->unidadesDeTrabajo);
     return operacion_io;
 }
@@ -398,27 +397,29 @@ it("should find the first value that satisfies a condition") {
 
 
 void dormir_io(t_operacion_io* io, t_pcb* pcb) {
-    bool match_nombre(t_list_io* nodo_lista) {
-        return strcmp(nodo_lista->data_io->nombreInterfaz, io->interfaz) == 0;
-    };
 
     io_gen_sleep* datos_sleep = malloc(sizeof(io_gen_sleep));
     // bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
 
-    sem_wait(mutex_lista_io);
+    sem_wait(&mutex_lista_io);
     t_list_io* elemento_encontrado = validar_io(io, pcb); 
     // Aca tambien deberia cambiar su estado a blocked o Exit respectivamnete
+
+    if(elemento_encontrado == NULL) {
+        // Aca estaria tamb la logica de matar al hilo
+        return;
+    }
 
     if(1) { // resultado_okey
         datos_sleep->ut = io->unidadesDeTrabajo;
         datos_sleep->pcb = pcb;
-        // llanto de caro
+        
         queue_push(elemento_encontrado->cola_blocked, datos_sleep);
 
-        sem_wait(mutex_lista_io);
+        sem_wait(&mutex_lista_io);
         sem_post(elemento_encontrado->semaforo_cola_procesos_blocked);
         printf("La operacion deberia realizarse...\n");
-        sem_post(mutex_lista_io);
+        sem_post(&mutex_lista_io);
     }
 
         /* 
@@ -462,21 +463,22 @@ conectada la interfaz solicitada, en caso contrario, se deberá enviar el proces
 En caso de que la interfaz exista y esté conectada, se deberá validar que la interfaz admite la
 operación solicitada, en caso de que no sea así, se deberá enviar el proceso a EXIT. */
 
-int validar_io(t_operacion_io* io, t_pcb* pcb) {
+t_list_io* validar_io(t_operacion_io* io, t_pcb* pcb) {
     bool match_nombre(t_list_io* nodo_lista) {
         return strcmp(nodo_lista->nombreInterfaz, io->interfaz) == 0;
     };
     
     t_list_io* elemento_encontrado = list_find(lista_io, match_nombre); // Aca deberia buscar la interfaz en la lista de io
 
-    if(elemento_encontrado == NULL || io->data->tipo != GENERICA) {
-        pasar_a_exit(pcb);
-        sem_post(mutex_lista_io);
-        error("No existe la io o no admite operacion");
+    if(elemento_encontrado == NULL || io->info->tipo != GENERICA) {
+        // pasar_a_exit(pcb);
+        sem_post(&mutex_lista_io);
+        printf("No existe la io o no admite operacion");
     } else { 
-        sem_post(mutex_lista_io);
+        sem_post(&mutex_lista_io);
         return elemento_encontrado;    
     }
+    return NULL;
 }
 
 void change_status(t_pcb* pcb, Estado new_status) {

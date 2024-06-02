@@ -2,7 +2,7 @@
 
 t_dictionary* diccionario_io;
 t_list* lista_io;
-sem_t* sem_cola_io;
+sem_t sem_cola_io;
 sem_t mutex_lista_io;
 
 ptr_kernel* solicitar_datos(t_config* config_kernel){
@@ -84,9 +84,9 @@ void* handle_io_generica(void* socket) {
 
             io->socket = socket_io;
             strcpy(io->nombreInterfaz, interfaz->nombre_interfaz);
-            io->tipoInterfaz = interfaz->tipo;
+            io->TipoInterfaz = interfaz->tipo;
             io->cola_blocked = cola_io;
-            io->semaforo_cola_procesos_blocked = sem_cola_io;
+            io->semaforo_cola_procesos_blocked = &sem_cola_io;
             
             // Ver que sea asi -> agrego a la lista global de io
             sem_wait(&mutex_lista_io);
@@ -101,7 +101,7 @@ void* handle_io_generica(void* socket) {
         
     while(true) {
         sem_wait(io->semaforo_cola_procesos_blocked);
-        t_pcb* pcb = queue_pop(io->cola_procesos_blocked);
+        t_pcb* pcb = queue_pop(io->cola_blocked);
         // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola)
         
         int respuesta_ok = ejecutar_io(io->socket);
