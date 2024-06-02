@@ -157,8 +157,13 @@ void recibir(int socket_memoria, t_pcb *pcb) {
         case ENVIO_INSTRUCCION:
             t_instruccion *instruccion = malloc(sizeof(t_instruccion));
             instruccion = instruccion_deserializar(paquete->buffer);
-            ejecutar_instruccion(instruccion, pcb); //
-            
+            int resultado_exec = ejecutar_instruccion(instruccion, pcb); //
+
+            if(resultado_exec == 1) {
+                printf("Salgo porque el proceso se va a BLOCKED");
+                return;
+            }
+
             if (hay_interrupcion) {
                 printf("Hubo una interrupcion.\n");
                 guardar_estado(pcb);
@@ -369,7 +374,7 @@ void vaciar_tlb(){
 
 */
 
-void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
+int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
     // log_info(logger, "PID: %d - Ejecutando: %d ", pcb->pid, instruccion->nombre);
 
@@ -400,7 +405,7 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         /*printf("Cuando hace SET AX 1 queda asi el registro AX del CPU: %u\n", registros_cpu->AX);
         printf("Cuando hace SET BX 1 queda asi el registro BX del CPU: %u\n", registros_cpu->BX);*/
-        sleep(5);
+        sleep(2);
         break;
     case MOV_IN: // MOV_IN AX BX
     /*
@@ -489,7 +494,11 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         // recv(client_dispatch, &solicitud_unidades_trabajo, sizeof(int), MSG_WAITALL);
         // solicitud_dormirIO_kernel(interfazSeleccionada, unidadesDeTrabajo);
 
+        free(buffer->stream);
+        free(buffer);
+
         printf("Hizo IO_GEN_SLEEP\n");
+        return 1; // Retorna 1 si desalojo PCB...
         break;
     case IO_STDIN_READ:
         /*
@@ -517,6 +526,7 @@ void ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
             imprimir_pcb(pcb); // Solo para ver.
         }
     }
+    return 0;
 }
 
 void desalojar(t_pcb* pcb, DesalojoCpu motivo, void* datos_adicionales, int datos_add_size) {
@@ -589,8 +599,8 @@ void solicitud_lecturaIO_kernel(char* interfaz,void* valorRegistroDestino,void* 
 // ver
 /*
 typedef struct {
-    char* interfaz;
-    int length_interfaz;
+    int nombre_interfaz_largo;
+    char* nombre_interfaz;
     int unidadesDeTrabajo;
 } t_operacion_io; 
 */
@@ -599,11 +609,11 @@ t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
     int length_interfaz = string_length(interfaz) + 1;
 
     t_buffer* buffer = malloc(sizeof(t_buffer));
-    t_operacion_io* io = malloc(sizeof(int) * 2 + length_interfaz);
+    t_operacion_io* io = malloc(sizeof(t_operacion_io));
 
-    io->length_interfaz = length_interfaz;
-    io->interfaz = malloc(length_interfaz);
-    io->interfaz = interfaz;
+    io->nombre_interfaz_largo = length_interfaz;
+    io->nombre_interfaz = malloc(length_interfaz);
+    strcpy(io->nombre_interfaz, interfaz);
     io->unidadesDeTrabajo = unidades;
 
     buffer->size = sizeof(int) * 2 + length_interfaz;
@@ -614,13 +624,13 @@ t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
     memcpy(buffer->stream + buffer->offset, &io->unidadesDeTrabajo, sizeof(int));
     buffer->offset += sizeof(int);
 
-    memcpy(buffer->stream + buffer->offset, &io->length_interfaz, sizeof(int));
+    memcpy(buffer->stream + buffer->offset, &io->nombre_interfaz_largo, sizeof(int));
     buffer->offset += sizeof(int);
 
-    memcpy(buffer->stream + buffer->offset, io->interfaz, io->length_interfaz);
-    buffer->offset += sizeof(io->length_interfaz);
+    memcpy(buffer->stream + buffer->offset, io->nombre_interfaz, io->nombre_interfaz_largo);
+    buffer->offset += sizeof(io->nombre_interfaz_largo);
     
-    free(io->interfaz);
+    free(io->nombre_interfaz);
     free(io);
     return buffer;
 }

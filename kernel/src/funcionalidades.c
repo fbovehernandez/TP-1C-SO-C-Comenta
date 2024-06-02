@@ -324,6 +324,7 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
     // Deserializo antes el pcb, me ahorro cierta logica y puedo hacer send si es IO_BLOCKED
     pcb = deserializar_pcb(package->buffer);
     
+    
     switch (devolucion_cpu) {
         case INTERRUPCION_QUANTUM:
             // pcb = deserializar_pcb(package->buffer);
@@ -359,14 +360,14 @@ t_operacion_io* deserializar_io(t_buffer* buffer) {
     memcpy(&(operacion_io->unidadesDeTrabajo), stream, sizeof(int));
     stream += sizeof(int);
 
-    memcpy(&(operacion_io->info->nombre_interfaz_largo), stream, sizeof(int));
+    memcpy(&(operacion_io->nombre_interfaz_largo), stream, sizeof(int));
     stream += sizeof(int);
 
-    operacion_io->info->nombre_interfaz = malloc(operacion_io->info->nombre_interfaz_largo); 
+    operacion_io->nombre_interfaz = malloc(operacion_io->nombre_interfaz_largo); 
 
-    memcpy(operacion_io->info->nombre_interfaz, stream, operacion_io->info->nombre_interfaz_largo);
+    memcpy(operacion_io->nombre_interfaz, stream, operacion_io->nombre_interfaz_largo);
     
-    printf("Interfaz: %s\n", operacion_io->info->nombre_interfaz);
+    printf("Interfaz: %s\n", operacion_io->nombre_interfaz);
     printf("Unidades de trabajo: %d\n", operacion_io->unidadesDeTrabajo);
     return operacion_io;
 }
@@ -401,7 +402,7 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
     io_gen_sleep* datos_sleep = malloc(sizeof(io_gen_sleep));
     // bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
 
-    sem_wait(&mutex_lista_io);
+    pthread_mutex_lock(&mutex_lista_io);
     t_list_io* elemento_encontrado = validar_io(io, pcb); 
     // Aca tambien deberia cambiar su estado a blocked o Exit respectivamnete
 
@@ -416,10 +417,10 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
         
         queue_push(elemento_encontrado->cola_blocked, datos_sleep);
 
-        sem_wait(&mutex_lista_io);
+        pthread_mutex_lock(&mutex_lista_io);
         sem_post(elemento_encontrado->semaforo_cola_procesos_blocked);
         printf("La operacion deberia realizarse...\n");
-        sem_post(&mutex_lista_io);
+        pthread_mutex_unlock(&mutex_lista_io);
     }
 
         /* 
@@ -464,18 +465,18 @@ En caso de que la interfaz exista y esté conectada, se deberá validar que la i
 operación solicitada, en caso de que no sea así, se deberá enviar el proceso a EXIT. */
 
 t_list_io* validar_io(t_operacion_io* io, t_pcb* pcb) {
-    bool match_nombre(t_list_io* nodo_lista) {
-        return strcmp(nodo_lista->nombreInterfaz, io->interfaz) == 0;
+    bool match_nombre(void* nodo_lista) {
+        return strcmp(((t_list_io*)nodo_lista)->nombreInterfaz, io->nombre_interfaz) == 0;
     };
     
     t_list_io* elemento_encontrado = list_find(lista_io, match_nombre); // Aca deberia buscar la interfaz en la lista de io
 
-    if(elemento_encontrado == NULL || io->info->tipo != GENERICA) {
+    if(elemento_encontrado == NULL || elemento_encontrado->TipoInterfaz != GENERICA) { // Deberia ser global
         // pasar_a_exit(pcb);
-        sem_post(&mutex_lista_io);
+        pthread_mutex_lock(&mutex_lista_io);
         printf("No existe la io o no admite operacion");
     } else { 
-        sem_post(&mutex_lista_io);
+        pthread_mutex_unlock(&mutex_lista_io);
         return elemento_encontrado;    
     }
     return NULL;

@@ -23,7 +23,7 @@ void pedir_instruccion_a_memoria(int socket_memoria, t_pcb *pcb);
 t_buffer* llenar_buffer_solicitud_instruccion(t_solicitud_instruccion* solicitud_instruccion);
 void recibir(int socket_memoria, t_pcb *pcb);
 t_instruccion* instruccion_deserializar(t_buffer* buffer);
-void ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb);
+int ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb);
 void desalojar(t_pcb* pcb, DesalojoCpu motivo, void* add, int size);
 void solicitud_dormirIO_kernel(char* interfaz, int unidades);
 t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades);

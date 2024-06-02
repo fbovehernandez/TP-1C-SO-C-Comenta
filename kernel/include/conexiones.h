@@ -12,7 +12,7 @@
 extern t_dictionary* diccionario_io;
 extern t_list* lista_io;
 extern sem_t sem_cola_io;
-extern sem_t mutex_lista_io;
+extern pthread_mutex_t mutex_lista_io;
 
 // Aca va el struct del PCB 
 typedef struct {

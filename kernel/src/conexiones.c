@@ -3,7 +3,7 @@
 t_dictionary* diccionario_io;
 t_list* lista_io;
 sem_t sem_cola_io;
-sem_t mutex_lista_io;
+pthread_mutex_t mutex_lista_io;
 
 ptr_kernel* solicitar_datos(t_config* config_kernel){
     ptr_kernel* datos = malloc(sizeof(ptr_kernel));
@@ -89,9 +89,9 @@ void* handle_io_generica(void* socket) {
             io->semaforo_cola_procesos_blocked = &sem_cola_io;
             
             // Ver que sea asi -> agrego a la lista global de io
-            sem_wait(&mutex_lista_io);
+            pthread_mutex_lock(&mutex_lista_io);
             list_add(lista_io, io);
-            sem_post(&mutex_lista_io);
+            pthread_mutex_unlock(&mutex_lista_io);
 
             break;
         default:

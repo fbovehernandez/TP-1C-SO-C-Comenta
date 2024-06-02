@@ -20,7 +20,8 @@ typedef enum {
     GENERICA, 
     STDIN,
     STDOUT,
-    DIALFS
+    DIALFS,
+    NON
 } TipoInterfaz;
 typedef struct {
     int PID;
@@ -28,6 +29,7 @@ typedef struct {
     char* path;
 } t_path;
 
+// Posible idea, crear un struct para el nombre, pero serian mas mallocs y mas frees.
 typedef struct { // usa io para pasarlo al kernel
     int nombre_interfaz_largo;
     TipoInterfaz tipo;
@@ -35,7 +37,8 @@ typedef struct { // usa io para pasarlo al kernel
 } t_info_io;
 
 typedef struct {
-    t_info_io* info;
+    int nombre_interfaz_largo;
+    char* nombre_interfaz;
     int unidadesDeTrabajo;
 } t_operacion_io;
 // Lo usamos en kernel para recibir cpu
