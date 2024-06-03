@@ -98,26 +98,6 @@ void recibir_cliente() { // Se supone que desde aca se conecta el kernel
     }
 }
 
-void imprimir_pcb(t_pcb* pcb) {
-    printf("El pid es: %d\n", pcb->pid);
-    printf("El program counter es: %d\n", pcb->program_counter);
-    printf("El quantum es: %d\n", pcb->quantum);
-    // printf("El estado actual es %s : ", pcb->estadoActual);
-    // printf("El estado anterior es %s : ", pcb->estadoAnterior);
-    printf("Registro AX: %u\n", pcb->registros->AX);
-    printf("Registro BX: %u\n", pcb->registros->BX);
-    printf("Registro CX: %u\n", pcb->registros->CX);
-    printf("Registro DX: %u\n", pcb->registros->DX);
-
-    printf("Registro EAX: %u\n", pcb->registros->EAX);
-    printf("Registro EBX: %u\n", pcb->registros->EBX);
-    printf("Registro ECX: %u\n", pcb->registros->ECX);
-    printf("Registro EDX: %u\n", pcb->registros->EDX);
-
-    printf("Registro SI: %u\n", pcb->registros->SI);
-    printf("Registro DI: %u\n", pcb->registros->DI);
-}
-
 // Hace lo mismo que dispatch pero con interrupt (POR AHORA)
 void* iniciar_servidor_interrupt(void* datos_interrupt) {
     t_config_cpu* datos = (t_config_cpu*) datos_interrupt;

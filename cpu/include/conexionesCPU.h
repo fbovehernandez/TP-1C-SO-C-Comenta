@@ -29,7 +29,6 @@ int esperar_cliente(int socket_escucha, t_log* logger_CPU);
 void* iniciar_servidor_dispatch(void* datos_dispatch);
 void cargar_registros_en_cpu(t_registros* registros_pcb);
 void recibir_cliente();
-void imprimir_pcb(t_pcb* pcb);
 void* iniciar_servidor_interrupt(void* datos_interrupt);
 void recibir_cliente_interrupt(int client_interrupt);
 t_config_cpu* iniciar_datos(char* escucha_fd, t_log* logger_CPU);

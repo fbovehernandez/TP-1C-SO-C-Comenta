@@ -92,11 +92,11 @@ void hilo_dormir_io(t_operacion_io* operacion_io);
 void change_status(t_pcb* pcb, Estado new_status);
 bool match_nombre(char* interfaz);
 t_list_io* validar_io(t_operacion_io* operacion_io, t_pcb* pcb);
-
+void pasar_a_exit(t_pcb* pcb);
 
 void EJECUTAR_SCRIPT();
 void INICIAR_PROCESO(char* path, t_sockets* sockets);
-void FINALIZAR_PROCESO();
+void FINALIZAR_PROCESO(int pid);
 void INICIAR_PLANIFICACION();
 void DETENER_PLANIFICACION();
 void PROCESO_ESTADO();

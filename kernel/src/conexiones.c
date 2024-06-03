@@ -1,6 +1,7 @@
 #include "../include/conexiones.h"
 
 t_dictionary* diccionario_io;
+t_list* lista_procesos;
 t_list* lista_io;
 sem_t sem_cola_io;
 pthread_mutex_t mutex_lista_io;
@@ -84,6 +85,7 @@ void* handle_io_generica(void* socket) {
 
             io->socket = socket_io;
             strcpy(io->nombreInterfaz, interfaz->nombre_interfaz);
+            printf("En la linea 88 dice esto: %s\n", io->nombreInterfaz);
             io->TipoInterfaz = interfaz->tipo;
             io->cola_blocked = cola_io;
             io->semaforo_cola_procesos_blocked = &sem_cola_io;
@@ -164,23 +166,18 @@ int ejecutar_io(int socket_io) {
 
 t_info_io* deserializar_interfaz(t_buffer* buffer) {
     t_info_io* interfaz = malloc(sizeof(t_info_io));
-
-    printf("Deserializando interfaz\n");
-
     void* stream = buffer->stream;
     // Deserializamos los campos que tenemos en el buffer
     memcpy(&(interfaz->nombre_interfaz_largo), stream, sizeof(int));
     stream += sizeof(int);
-
-    printf("Este es el largo que deserializa: %d\n", interfaz->nombre_interfaz_largo);
     
+    interfaz->nombre_interfaz = malloc(interfaz->nombre_interfaz_largo);
+    
+    memcpy(interfaz->nombre_interfaz, stream, interfaz->nombre_interfaz_largo);
+    stream += interfaz->nombre_interfaz_largo;
+
     memcpy(&(interfaz->tipo), stream, sizeof(TipoInterfaz));
     stream += sizeof(TipoInterfaz);
-
-    interfaz->nombre_interfaz = malloc(interfaz->nombre_interfaz_largo);
-    memcpy(interfaz->nombre_interfaz, stream, interfaz->nombre_interfaz_largo);  
-
-    printf("Este es el nombre interfaz que deserializa: %s\n", interfaz->nombre_interfaz);
 
     return interfaz;
 }

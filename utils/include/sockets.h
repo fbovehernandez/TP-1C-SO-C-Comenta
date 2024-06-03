@@ -15,6 +15,7 @@
 #include <pthread.h>
 
 extern sem_t sem_memoria_instruccion;
+extern sem_t pedir_instruccion;
 
 typedef enum {
     GENERICA, 
@@ -38,8 +39,8 @@ typedef struct { // usa io para pasarlo al kernel
 
 typedef struct {
     int nombre_interfaz_largo;
-    char* nombre_interfaz;
     int unidadesDeTrabajo;
+    char* nombre_interfaz;
 } t_operacion_io;
 // Lo usamos en kernel para recibir cpu
 
@@ -177,7 +178,7 @@ typedef struct {
     int length;
 } t_parametro;
 
-void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, void* buffer, int size);
+void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* buffer);
 int iniciar_servidor(char*);
 int esperar_conexion(int);
 void corroborar_exito(int, char*);
@@ -187,5 +188,6 @@ int crear_conexion(char *ip, char* puerto, int valor);
 t_registros* inicializar_registros_cpu(t_registros* registro_pcb);
 t_pcb* deserializar_pcb(t_buffer* buffer);
 t_buffer* llenar_buffer_pcb(t_pcb* pcb);
+void imprimir_pcb(t_pcb* pcb);
 
 #endif // SOCKET_H

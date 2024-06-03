@@ -48,6 +48,8 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     io->tipo = tipo_interfaz;
     io->nombre_interfaz = nombre_interfaz;
 
+    printf("holu holu %s\n", io->nombre_interfaz);
+
     t_buffer* buffer = malloc(sizeof(t_buffer));
     t_paquete* paquete = malloc(sizeof(t_paquete));
 
@@ -59,10 +61,12 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
 
     memcpy(stream + buffer->offset, &io->nombre_interfaz_largo, sizeof(int));
     buffer->offset += sizeof(int);
+
+    memcpy(stream + buffer->offset, io->nombre_interfaz, io->nombre_interfaz_largo);
+    buffer->offset += io->nombre_interfaz_largo;
+
     memcpy(stream + buffer->offset, &io->tipo, sizeof(TipoInterfaz));
     buffer->offset += sizeof(TipoInterfaz);
-    memcpy(stream + buffer->offset, io->nombre_interfaz, str_interfaz);
-    buffer->offset += str_interfaz;
 
     buffer->stream = stream;
 

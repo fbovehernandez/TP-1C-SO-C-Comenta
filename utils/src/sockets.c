@@ -137,15 +137,64 @@ t_registros* inicializar_registros_cpu(t_registros* registro_pcb) {
     return registro_pcb;
 }
 
-void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, void* datos_add, int size) {
+void imprimir_pcb(t_pcb* pcb) {
+    printf("El pid es: %d\n", pcb->pid);
+    printf("El program counter es: %d\n", pcb->program_counter);
+    printf("El quantum es: %d\n", pcb->quantum);
+    // printf("El estado actual es %s : ", pcb->estadoActual);
+    // printf("El estado anterior es %s : ", pcb->estadoAnterior);
+    printf("Registro AX: %u\n", pcb->registros->AX);
+    printf("Registro BX: %u\n", pcb->registros->BX);
+    printf("Registro CX: %u\n", pcb->registros->CX);
+    printf("Registro DX: %u\n", pcb->registros->DX);
+
+    printf("Registro EAX: %u\n", pcb->registros->EAX);
+    printf("Registro EBX: %u\n", pcb->registros->EBX);
+    printf("Registro ECX: %u\n", pcb->registros->ECX);
+    printf("Registro EDX: %u\n", pcb->registros->EDX);
+
+    printf("Registro SI: %u\n", pcb->registros->SI);
+    printf("Registro DI: %u\n", pcb->registros->DI);
+}
+/* 
+t_operacion_io* operacion_io = malloc(sizeof(t_operacion_io));
+
+        void* stream = buffer->stream;
+
+        // Deserializamos los campos que tenemos en el buffer
+        memcpy(&(operacion_io->unidadesDeTrabajo), stream, sizeof(int));
+        stream += sizeof(int);
+
+        memcpy(&(operacion_io->nombre_interfaz_largo), stream, sizeof(int));
+        stream += sizeof(int);
+
+        operacion_io->nombre_interfaz = malloc(operacion_io->nombre_interfaz_largo); 
+
+        memcpy(operacion_io->nombre_interfaz, stream, operacion_io->nombre_interfaz_largo);
+    
+        printf("Interfaz: %s\n", operacion_io->nombre_interfaz);
+        printf("Unidades de trabajo: %d\n", operacion_io->unidadesDeTrabajo);
+
+*/
+void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* datos_add) {
     printf("Este es el pid del pcb a mandar: %d\n", pcb->pid);
     t_buffer* buffer = llenar_buffer_pcb(pcb);
 
-    if (datos_add != NULL) { // Se podria hacer un malloc() por el total_size
-        buffer->stream = realloc(buffer->stream, buffer->size + size);
-        memcpy(buffer->stream + buffer->size, datos_add, size); // No se si esta bien que aca sea un void* y no un t_buffer*
-        buffer->size += size;
+    size_t total_size = buffer->size + (datos_add ? datos_add->size : 0);
+
+    void* stream = malloc(total_size);
+    int offset_add = 0;
+
+    memcpy(stream + offset_add, buffer->stream, buffer->size);
+    offset_add += buffer->size;
+
+    if (datos_add) {
+        memcpy(stream + offset_add, datos_add->stream, datos_add->size);
+        offset_add += datos_add->size;
     }
+
+    buffer->size = total_size;
+    buffer->stream = stream;
 
     t_paquete* paquete = malloc(sizeof(t_paquete));
 
@@ -164,7 +213,7 @@ void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, void* datos_ad
 
     // Por último enviamos
     send(socket, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-    printf("Paquete enviado!");
+    printf("Paquete enviado!\n");
 
     // Falta liberar todo
     free(a_enviar);
@@ -180,6 +229,8 @@ t_pcb* deserializar_pcb(t_buffer* buffer) {
 
     void* stream = buffer->stream;
     // Deserializamos los campos que tenemos en el buffer
+
+    // Ojo con esto, aca usamos directamente el buffer...
     memcpy(&(pcb->pid), stream, sizeof(int));
     stream += sizeof(int);
     memcpy(&(pcb->program_counter), stream, sizeof(int));
@@ -221,7 +272,7 @@ t_pcb* deserializar_pcb(t_buffer* buffer) {
 t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
-    printf("Llenando buffer...");
+    printf("Llenando buffer...\n");
 
     buffer->size = sizeof(int) * 3 
                 + sizeof(Estado) * 2
@@ -231,46 +282,42 @@ t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
-    void* stream = buffer->stream; // No memoria?
-
-    memcpy(stream + buffer->offset, &pcb->pid, sizeof(int));
+    memcpy(buffer->stream + buffer->offset, &pcb->pid, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &pcb->program_counter, sizeof(int));
+    memcpy(buffer->stream + buffer->offset, &pcb->program_counter, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &pcb->quantum, sizeof(int));
+    memcpy(buffer->stream + buffer->offset, &pcb->quantum, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &pcb->estadoActual, sizeof(Estado));
+    memcpy(buffer->stream + buffer->offset, &pcb->estadoActual, sizeof(Estado));
     buffer->offset += sizeof(Estado);
-    memcpy(stream + buffer->offset, &pcb->estadoAnterior, sizeof(Estado));
+    memcpy(buffer->stream + buffer->offset, &pcb->estadoAnterior, sizeof(Estado));
     buffer->offset += sizeof(Estado);
     // Serializo los registros...
 
-    memcpy(stream + buffer->offset, &pcb->registros->AX, sizeof(uint8_t));
+    memcpy(buffer->stream + buffer->offset, &pcb->registros->AX, sizeof(uint8_t));
     buffer->offset += sizeof(uint8_t);
-    memcpy(stream + buffer->offset, &pcb->registros->BX, sizeof(uint8_t));
+    memcpy(buffer->stream + buffer->offset, &pcb->registros->BX, sizeof(uint8_t));
     buffer->offset += sizeof(uint8_t);
-    memcpy(stream + buffer->offset, &pcb->registros->CX, sizeof(uint8_t));
+    memcpy(buffer->stream + buffer->offset, &pcb->registros->CX, sizeof(uint8_t));
     buffer->offset += sizeof(uint8_t);
-    memcpy(stream + buffer->offset, &pcb->registros->DX, sizeof(uint8_t));
+    memcpy(buffer->stream + buffer->offset, &pcb->registros->DX, sizeof(uint8_t));
     buffer->offset += sizeof(uint8_t);
 
-    memcpy(stream + buffer->offset, &pcb->registros->EAX, sizeof(uint32_t));
+    memcpy(buffer->stream + buffer->offset, &pcb->registros->EAX, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
-    memcpy(stream + buffer->offset, &pcb->registros->EBX, sizeof(uint32_t));
+    memcpy(buffer->stream + buffer->offset, &pcb->registros->EBX, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
-    memcpy(stream + buffer->offset, &pcb->registros->ECX, sizeof(uint32_t));
+    memcpy(buffer->stream + buffer->offset, &pcb->registros->ECX, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
-    memcpy(stream + buffer->offset, &pcb->registros->EDX, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
-
-    memcpy(stream + buffer->offset, &pcb->registros->SI, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
-    memcpy(stream + buffer->offset, &pcb->registros->DI, sizeof(uint32_t));
+    memcpy(buffer->stream + buffer->offset, &pcb->registros->EDX, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
 
-    buffer->stream = stream;
+    memcpy(buffer->stream + buffer->offset, &pcb->registros->SI, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+    memcpy(buffer->stream + buffer->offset, &pcb->registros->DI, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
 
-    printf("Buffer llenado...");
+    printf("Buffer llenado...\n");
     return buffer;
 }
 

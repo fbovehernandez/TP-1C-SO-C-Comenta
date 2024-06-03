@@ -18,9 +18,10 @@ int main(int argc, char* argv[]) {
     algoritmo_planificacion = datos_kernel->algoritmo_planificacion;
 
     diccionario_io = dictionary_create();
+
     // Lista global para manejo de I/O
     lista_io = list_create();
-    
+    lista_procesos = list_create();
 
     pthread_mutex_init(&mutex_estado_new, NULL);
     pthread_mutex_init(&mutex_estado_ready, NULL);

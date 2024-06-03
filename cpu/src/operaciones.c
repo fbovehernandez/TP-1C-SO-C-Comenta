@@ -6,7 +6,25 @@ int hay_interrupcion;
 
 void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
     pedir_cantidad_instrucciones_a_memoria(pcb->pid, socket_memoria);
-    recibir(socket_memoria, pcb); // recibir cantidad de instrucciones
+    int cantidad_instrucciones = recibir_cantidad_instrucciones(socket_memoria, pcb->pid);
+
+    while(pcb->program_counter < cantidad_instrucciones) {
+        // sem_wait(pedir_instruccion);
+        pedir_instruccion_a_memoria(socket_memoria, pcb);
+        t_instruccion* instruccion = recibir_instruccion(socket_memoria, pcb); // Se ejecuta la instruccion tambien
+        // sem_post(pedir_instruccion);
+        int resultado_ok = ejecutar_instruccion(instruccion, pcb);
+        printf("resultado %d\n", resultado_ok); // Validar valor
+
+        if(resultado_ok == 1) {
+            return;
+        }
+        // Podria ser una funcion directa -> Por ahora no es esencial
+        check_interrupt(pcb);
+
+        pcb->program_counter++;
+        free(instruccion);
+    }
 
     /*while(pcb->estadoActual < cantidad_instrucciones) {
         pedir_instruccion_a_memoria(socket_memoria, pcb);
@@ -16,6 +34,14 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
     }*/
 
     // La unica que le encuentro es llevarlo al switch
+}
+
+void check_interrupt(t_pcb* pcb) {
+    if(hay_interrupcion) {
+        printf("Hubo una interrupcion.\n");
+        desalojar(pcb, INTERRUPCION_QUANTUM, NULL);
+        hay_interrupcion = 0;
+    } 
 }
 
 void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria) {
@@ -59,19 +85,6 @@ void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria) {
     free(paquete);
 }
 
-/*
-t_cantidad_instrucciones* cantidad_instrucciones_deserializar(t_buffer* buffer) {
-    t_cantidad_instrucciones* cantidad_instrucciones = malloc(sizeof(t_cantidad_instrucciones));
-
-    void* stream = buffer->stream;
-    // Deserializamos los campos que tenemos en el buffer
-    memcpy(&(cantidad_instrucciones->cantidad), stream, sizeof(int));
-    stream += sizeof(int);
-
-    return cantidad_instrucciones;
-}
-*/
-
 int cantidad_instrucciones_deserializar(t_buffer *buffer) {
     printf("Deserializa la cantidad de instrucciones.\n");
     int cantidad_instrucciones;
@@ -114,6 +127,7 @@ void pedir_instruccion_a_memoria(int socket_memoria, t_pcb *pcb) {
     free(paquete->buffer->stream);
     free(paquete->buffer);
     free(paquete);
+    // free(pid_pc); -> ver si va aca
 }
 
 t_buffer *llenar_buffer_solicitud_instruccion(t_solicitud_instruccion *solicitud_instruccion) {
@@ -135,66 +149,89 @@ t_buffer *llenar_buffer_solicitud_instruccion(t_solicitud_instruccion *solicitud
     return buffer;
 }
 
-void recibir(int socket_memoria, t_pcb *pcb) {
-    t_paquete *paquete = malloc(sizeof(t_paquete));
-    paquete->buffer = malloc(sizeof(t_buffer));
+t_paquete* recibir_memoria(int socket_memoria) {
+    while(1) {
+        t_paquete *paquete = malloc(sizeof(t_paquete));
+        paquete->buffer = malloc(sizeof(t_buffer));
 
-    // Primero recibimos el codigo de operacion
-    printf("Esperando recibir instruccion...\n");
+        // Primero recibimos el codigo de operacion
+        printf("Esperando recibir instruccion...\n");
 
-    recv(socket_memoria, &(paquete->codigo_operacion), sizeof(codigo_operacion), MSG_WAITALL);
-    printf("Codigo de operacion: %d\n", paquete->codigo_operacion);
+        recv(socket_memoria, &(paquete->codigo_operacion), sizeof(codigo_operacion), MSG_WAITALL);
+        printf("Codigo de operacion: %d\n", paquete->codigo_operacion);
 
-    recv(socket_memoria, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
-    printf("paquete->buffer->size: %d\n", paquete->buffer->size);
+        recv(socket_memoria, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
+        printf("paquete->buffer->size: %d\n", paquete->buffer->size);
 
-    paquete->buffer->stream = malloc(paquete->buffer->size);
-    // recv(socket_memoria, paquete->buffer->stream, paquete->buffer->size, 0);
-    recv(socket_memoria, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+        paquete->buffer->stream = malloc(paquete->buffer->size);
+        // recv(socket_memoria, paquete->buffer->stream, paquete->buffer->size, 0);
+        recv(socket_memoria, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+        return paquete;
+    }  
+}
+
+int recibir_cantidad_instrucciones(int socket_memoria, int pid) {
+    t_paquete *paquete = recibir_memoria(socket_memoria);
+    int cantidad_instrucciones = 0;
 
     // Ahora en función del código recibido procedemos a deserializar el resto
     switch (paquete->codigo_operacion) {
-        case ENVIO_INSTRUCCION:
-            t_instruccion *instruccion = malloc(sizeof(t_instruccion));
-            instruccion = instruccion_deserializar(paquete->buffer);
-            int resultado_exec = ejecutar_instruccion(instruccion, pcb); //
-
-            if(resultado_exec == 1) {
-                printf("Salgo porque el proceso se va a BLOCKED");
-                return;
-            }
-
-            if (hay_interrupcion) {
-                printf("Hubo una interrupcion.\n");
-                guardar_estado(pcb);
-                // enviar_pcb(pcb, client_dispatch, INTERRUPCION_QUANTUM, NULL, 0); // Podria usar desalojar?
-                hay_interrupcion = 0;
-                return;
-            }
-
-            free(instruccion);
-            break;
         case ENVIO_CANTIDAD_INSTRUCCIONES:
-            int cantidad_instrucciones = cantidad_instrucciones_deserializar(paquete->buffer);
-
-            printf("Recibi que la cantidad de instrucciones del proceso %d es %d.\n", pcb->pid, cantidad_instrucciones);
-
-            while (pcb->program_counter < cantidad_instrucciones && !hay_interrupcion) {
-                printf("Numero de vuelta: %d\n", pcb->program_counter);
-                pedir_instruccion_a_memoria(socket_memoria, pcb);
-                recibir(socket_memoria, pcb); // recibir cada instruccion
-                pcb->program_counter++;
-            }
+            cantidad_instrucciones = cantidad_instrucciones_deserializar(paquete->buffer);
+            printf("Recibi que la cantidad de instrucciones del proceso %d es %d.\n", pid, cantidad_instrucciones);
             break;
         default:
             printf("Error: Fallo!\n");
             break;
     }
 
+    free(paquete->buffer->stream);
+    free(paquete->buffer);  
+    free(paquete);
+
+    return cantidad_instrucciones;
+}
+
+t_instruccion* recibir_instruccion(int socket_memoria, t_pcb *pcb) {
+    t_paquete* paquete = recibir_memoria(socket_memoria);
+    t_instruccion *instruccion;
+
+    // Ahora en función del código recibido procedemos a deserializar el resto
+    switch (paquete->codigo_operacion) {
+        case ENVIO_INSTRUCCION:
+            instruccion = instruccion_deserializar(paquete->buffer);
+
+            /* 
+            int resultado_exec = ejecutar_instruccion(instruccion, pcb); //
+
+                if(resultado_exec == 1) {
+                    printf("Salgo porque el proceso se va a BLOCKED");
+                    desalojado = 1;
+                    break;
+                }
+
+                if (hay_interrupcion) {
+                    printf("Hubo una interrupcion.\n");
+                    guardar_estado(pcb);
+                    // enviar_pcb(pcb, client_dispatch, INTERRUPCION_QUANTUM, NULL, 0); // Podria usar desalojar?
+                    hay_interrupcion = 0;
+                    break;
+                }
+
+                free(instruccion);
+                */
+                break;
+            default:
+                printf("Error: Fallo!\n");
+                break;
+        }
+        
     // Liberamos memoria
     free(paquete->buffer->stream);
     free(paquete->buffer);
     free(paquete);
+
+    return instruccion; // Podria ser NULL si recibe mal el codop
 }
 
 t_instruccion *instruccion_deserializar(t_buffer *buffer) {
@@ -487,10 +524,10 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         t_buffer* buffer;
         buffer = llenar_buffer_dormir_IO(interfazSeleccionada, unidadesDeTrabajo);
-
+        
         // el puntero al buffer de abajo YA ESTA SERIALIZADO
-
-        desalojar(pcb, DORMIR_INTERFAZ, (void*)buffer, sizeof(t_operacion_io));
+        
+        desalojar(pcb, DORMIR_INTERFAZ, buffer);
         // recv(client_dispatch, &solicitud_unidades_trabajo, sizeof(int), MSG_WAITALL);
         // solicitud_dormirIO_kernel(interfazSeleccionada, unidadesDeTrabajo);
 
@@ -516,23 +553,23 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         break;
     case EXIT_INSTRUCCION:
         // guardar_estado(pcb); -> No estoy seguro si esta es necesaria, pero de todas formas nos va a servir cuando se interrumpa por quantum
-        desalojar(pcb, FIN_PROCESO, NULL, 0); // Envio 0 ya que no me importa size
+        desalojar(pcb, FIN_PROCESO, NULL); // Envio 0 ya que no me importa size
         break;
     default:
         printf("Error: No existe ese tipo de intruccion\n");
         break;
 
-        if (pcb->program_counter == 10){
+        if (pcb->program_counter == 10) {
             imprimir_pcb(pcb); // Solo para ver.
         }
     }
     return 0;
 }
 
-void desalojar(t_pcb* pcb, DesalojoCpu motivo, void* datos_adicionales, int datos_add_size) {
+void desalojar(t_pcb* pcb, DesalojoCpu motivo, t_buffer* datos_adicionales) {
     guardar_estado(pcb);
-    setear_registros_cpu();
-    enviar_pcb(pcb, client_dispatch, motivo, datos_adicionales, datos_add_size);
+    setear_registros_cpu(); 
+    enviar_pcb(pcb, client_dispatch, motivo, datos_adicionales);
 }
 
 void solicitud_dormirIO_kernel(char* interfaz, int unidades) {
@@ -543,7 +580,7 @@ void solicitud_dormirIO_kernel(char* interfaz, int unidades) {
     paquete->codigo_operacion = DORMIR_INTERFAZ; // Podemos usar una constante por operación
     paquete->buffer = buffer; // Nuestro buffer de antes.
 
-    // Armamos el stream a enviar
+    // Armamos el stream a enviar   
     void* a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
     int offset = 0;
 
@@ -615,6 +652,7 @@ t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
     io->nombre_interfaz = malloc(length_interfaz);
     strcpy(io->nombre_interfaz, interfaz);
     io->unidadesDeTrabajo = unidades;
+    printf("Este es el nombre de la Interfaz segun operaciones.c: %s\n", io->nombre_interfaz);
 
     buffer->size = sizeof(int) * 2 + length_interfaz;
 
@@ -628,7 +666,8 @@ t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
     buffer->offset += sizeof(int);
 
     memcpy(buffer->stream + buffer->offset, io->nombre_interfaz, io->nombre_interfaz_largo);
-    buffer->offset += sizeof(io->nombre_interfaz_largo);
+    printf("nombre interfaz lalala %s",  io->nombre_interfaz);
+    // buffer->offset += io->nombre_interfaz_largo;
     
     free(io->nombre_interfaz);
     free(io);

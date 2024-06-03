@@ -11,6 +11,7 @@
 
 extern t_dictionary* diccionario_io;
 extern t_list* lista_io;
+extern t_list* lista_procesos;
 extern sem_t sem_cola_io;
 extern pthread_mutex_t mutex_lista_io;
 

@@ -18,13 +18,16 @@ typedef struct {
 
 void ejecutar_pcb(t_pcb* pcb, int socket_memoria);
 void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria);
+void check_interrupt(t_pcb* pcb);
 int cantidad_instrucciones_deserializar(t_buffer *buffer);
 void pedir_instruccion_a_memoria(int socket_memoria, t_pcb *pcb);
 t_buffer* llenar_buffer_solicitud_instruccion(t_solicitud_instruccion* solicitud_instruccion);
-void recibir(int socket_memoria, t_pcb *pcb);
+t_paquete* recibir_memoria(int socket_memoria);
+int recibir_cantidad_instrucciones(int socket_memoria, int pid);
+t_instruccion* recibir_instruccion(int socket_memoria, t_pcb *pcb);
 t_instruccion* instruccion_deserializar(t_buffer* buffer);
 int ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb);
-void desalojar(t_pcb* pcb, DesalojoCpu motivo, void* add, int size);
+void desalojar(t_pcb* pcb, DesalojoCpu motivo, t_buffer* add);
 void solicitud_dormirIO_kernel(char* interfaz, int unidades);
 t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades);
 void enviar_fin_programa(t_pcb *pcb);

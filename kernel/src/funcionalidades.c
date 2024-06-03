@@ -44,8 +44,7 @@ void *interaccion_consola(t_sockets* sockets) {
         printf("8- Finalizar modulo\n");
         scanf("%d", &respuesta);
 
-        switch (respuesta)
-        {
+        switch (respuesta) {
         case 1:
             EJECUTAR_SCRIPT(/* pathing del conjunto de instrucciones*/);
             break;
@@ -60,7 +59,10 @@ void *interaccion_consola(t_sockets* sockets) {
             // home/utnso/c-comenta/pruebas -> Esto tendria en memoria y lo uno con este que le mando -> Ver sockets como variable global
             break;
         case 3:
-            FINALIZAR_PROCESO();
+           // int pid_deseado;
+            printf("Ingrese  el pid del proceso que quiere finalizar\n");
+            // scanf(&pid_deseado);
+            // FINALIZAR_PROCESO(pid_deseado);
             break;
         case 4:
             INICIAR_PLANIFICACION(); // Esto depende del algoritmo vigente (FIFO, RR,VRR), se deben poder cambiar
@@ -98,7 +100,7 @@ void INICIAR_PROCESO(char* path_instrucciones, t_sockets* sockets)
 
     t_pcb *pcb = crear_nuevo_pcb(pid_actual); // Aca dentro recibo el set de instrucciones del path
     // en el enunciado dice "en caso de que el grado de multiprogramacion lo permita"
-
+    //   list_add(lista_procesos,pcb);
     encolar_a_new(pcb);
 }
 
@@ -172,8 +174,7 @@ t_buffer* llenar_buffer_path(t_path* pathNuevo) {
 }
 
 
-int obtener_siguiente_pid()
-{
+int obtener_siguiente_pid(){
     contador_pid++;
     return contador_pid;
 }
@@ -228,6 +229,7 @@ void pasar_a_ready(t_pcb *pcb, Estado estadoAnterior) {
 void pasar_a_exit(t_pcb* pcb) {
     change_status(pcb, EXIT);
     liberar_memoria(pcb);
+    // liberar_pcb(pcb);
     sem_post(&sem_grado_multiprogramacion);
 }
 
@@ -249,7 +251,7 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
         sem_wait(&sem_hay_para_planificar); 
         pcb = proximo_a_ejecutar();
         pasar_a_exec(pcb);
-        enviar_pcb(pcb, socket_CPU, ENVIO_PCB, NULL, 0); // Serializar antes de enviar 
+        enviar_pcb(pcb, socket_CPU, ENVIO_PCB, NULL); // Serializar antes de enviar 
 
         // FIFO ya esta hecho con lo de arriba
         if(strcmp(algoritmo_planificacion,"RR") == 0) {
@@ -316,14 +318,13 @@ t_paquete* recibir_cpu() {
 }
 
 void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
-    t_paquete* package = malloc(sizeof(t_pcb));
     DesalojoCpu devolucion_cpu;
     
-    package = recibir_cpu(); // pcb y codigo de operacion (devolucion_cpu)
+    t_paquete* package = recibir_cpu(); // pcb y codigo de operacion (devolucion_cpu)
     devolucion_cpu = package->codigo_operacion;
     // Deserializo antes el pcb, me ahorro cierta logica y puedo hacer send si es IO_BLOCKED
     pcb = deserializar_pcb(package->buffer);
-    
+    imprimir_pcb(pcb);
     
     switch (devolucion_cpu) {
         case INTERRUPCION_QUANTUM:
@@ -336,7 +337,7 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             // dormir_io(operacion_io);
             break;
         case FIN_PROCESO:
-            pcb = deserializar_pcb(package->buffer); 
+            // pcb = deserializar_pcb(package->buffer); 
             pasar_a_exec(pcb);
             //liberar_memoria(); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
             //change_status(pcb, EXIT); 
@@ -348,15 +349,20 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             break;
     }
     
+    free(package->buffer->stream); // Liberar memoria
+    free(package->buffer);
     free(package); 
 }
 
 t_operacion_io* deserializar_io(t_buffer* buffer) {
     t_operacion_io* operacion_io = malloc(sizeof(t_operacion_io));
 
-    void* stream = buffer->stream;
+    // Lo siguiente es el tamaño del pcb
+    void* stream = buffer->stream + sizeof(int) * 3 + sizeof(Estado) * 2 + sizeof(uint8_t) * 4 + sizeof(uint32_t) * 6;
 
     // Deserializamos los campos que tenemos en el buffer
+    // stream += sizeof(t_pcb);
+    
     memcpy(&(operacion_io->unidadesDeTrabajo), stream, sizeof(int));
     stream += sizeof(int);
 
@@ -369,6 +375,7 @@ t_operacion_io* deserializar_io(t_buffer* buffer) {
     
     printf("Interfaz: %s\n", operacion_io->nombre_interfaz);
     printf("Unidades de trabajo: %d\n", operacion_io->unidadesDeTrabajo);
+
     return operacion_io;
 }
 
@@ -402,7 +409,6 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
     io_gen_sleep* datos_sleep = malloc(sizeof(io_gen_sleep));
     // bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
 
-    pthread_mutex_lock(&mutex_lista_io);
     t_list_io* elemento_encontrado = validar_io(io, pcb); 
     // Aca tambien deberia cambiar su estado a blocked o Exit respectivamnete
 
@@ -417,6 +423,7 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
         
         queue_push(elemento_encontrado->cola_blocked, datos_sleep);
 
+        // use lo que estaba, antes decia sem_post al mutex, por eso, era un binario o eso entendi
         pthread_mutex_lock(&mutex_lista_io);
         sem_post(elemento_encontrado->semaforo_cola_procesos_blocked);
         printf("La operacion deberia realizarse...\n");
@@ -469,16 +476,18 @@ t_list_io* validar_io(t_operacion_io* io, t_pcb* pcb) {
         return strcmp(((t_list_io*)nodo_lista)->nombreInterfaz, io->nombre_interfaz) == 0;
     };
     
+    pthread_mutex_lock(&mutex_lista_io);
     t_list_io* elemento_encontrado = list_find(lista_io, match_nombre); // Aca deberia buscar la interfaz en la lista de io
 
     if(elemento_encontrado == NULL || elemento_encontrado->TipoInterfaz != GENERICA) { // Deberia ser global
         // pasar_a_exit(pcb);
-        pthread_mutex_lock(&mutex_lista_io);
+        pthread_mutex_unlock(&mutex_lista_io);
         printf("No existe la io o no admite operacion");
     } else { 
         pthread_mutex_unlock(&mutex_lista_io);
         return elemento_encontrado;    
     }
+    
     return NULL;
 }
 
@@ -583,29 +592,36 @@ void* escuchar_consola(int socket_kernel_escucha, t_config* config){
     return NULL;
 }
 */
-
-
-/*
-void* FINALIZAR_PROCESO(t_pcb* pcb) {
-    queue_push(cola_exit, pcb);
-    liberar_pcb(pcb_a_eliminar);
-}
-
-void* liberar_pcb(t_pcb* pcb) {
-    free(pcb->instrucciones);
-    free(pcb);
-}
-*/
-
+  
 void EJECUTAR_SCRIPT() {
     // Aca se deberia recibir el path del script y desarmarlo para obtener las instrucciones
     // Luego se le pasan a memoria para que esta las guarde en su tabla de paginas
 }
 
-void FINALIZAR_PROCESO() {
+void FINALIZAR_PROCESO(int pid) {
+    /*
+    t_pcb* pcb = list_find(lista_procesos, (proceso\->proceso->pid == pid));
+    t_queue* cola = encontrar_en_que_cola_esta(pcb);
+    sacarDe(cola, pcb);
+    pasar_a_exit(pcb);
+    */
 }
 
+/*
+sacarDe(t_queue* cola,t_pcb* pcb){
+    t_queue* colaAux;
+    while(cola_ready != NULL){
+        t_pcb* pcbAux = queue_pop(cola);
+        if(pcbAux != pcb){
+            queue_push(colaAux,pcbAux); 
+        }
+    }
+    cola = colaAux;   
+}
+*/
+
 void INICIAR_PLANIFICACION() {
+
 }
 
 void DETENER_PLANIFICACION() {
@@ -680,7 +696,7 @@ void mostrar_pcb_proceso(t_pcb* pcb)
     // TODO: Revisar mostrar los registros por pantalla y probarlo
 
     if(strcmp(algoritmo_planificacion, "FIFO") == 0) {
-    printf("Quantum: %d\n", pcb->quantum);
+        printf("Quantum: %d\n", pcb->quantum);
     }
 }
 
