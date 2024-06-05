@@ -60,7 +60,6 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
         switch(paquete->codigo_operacion) { 
             case QUIERO_INSTRUCCION:
-                // TO DO
                 t_solicitud_instruccion* solicitud_cpu = deserializar_solicitud(paquete->buffer);
                 enviar_instruccion(solicitud_cpu, socket_cpu);
                 free(solicitud_cpu);

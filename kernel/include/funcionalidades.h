@@ -34,7 +34,7 @@ typedef struct {
 } t_list;
 */
 
-//Si no podemos usar bien las variables globales, va a tener que pasar por consola
+//Si no podemos usar bien las variables globales, va a tener que por consola
 /*typedef struct {
     int contador_pid;
     int quantum;
@@ -48,6 +48,8 @@ extern int grado_multiprogramacion;
 extern int quantum;
 extern int contador_pid;  
 
+t_sockets* sockets;
+
 extern pthread_mutex_t mutex_estado_new;
 extern pthread_mutex_t mutex_estado_ready;
 extern pthread_mutex_t mutex_estado_exec;
@@ -59,14 +61,14 @@ extern sem_t sem_contador_quantum;
 extern t_queue* cola_new;
 extern t_queue* cola_ready;
 extern t_queue* cola_blocked;
-extern t_queue* cola_exec;
+// extern t_queue* cola_exec;
 extern t_queue* cola_exit;
 
 extern char* algoritmo_planificacion; // Tomamos en convencion que los algoritmos son "FIFO", "VRR" , "RR" (siempre en mayuscula)
 extern t_log* logger_kernel;
 
 // Funciones
-void* interaccion_consola(t_sockets* sockets);
+void* interaccion_consola();
 void encolar_a_new(t_pcb* pcb);
 void* a_ready(); // Para hilo 
 t_pcb* crear_nuevo_pcb(int pid);
@@ -89,13 +91,14 @@ void hilo_dormir_io(t_operacion_io* operacion_io);
 void change_status(t_pcb* pcb, Estado new_status);
 bool match_nombre(char* interfaz);
 t_list_io* validar_io(t_operacion_io* operacion_io, t_pcb* pcb);
+void ejecutarComando(char* linea_leida);
 
-void EJECUTAR_SCRIPT();
-void INICIAR_PROCESO(char* path, t_sockets* sockets);
+void EJECUTAR_SCRIPT(char* path);
+void INICIAR_PROCESO(char* path);
 void FINALIZAR_PROCESO(int pid);
 void INICIAR_PLANIFICACION();
 void DETENER_PLANIFICACION();
 void PROCESO_ESTADO();
-void MULTIPROGRAMACION();
+void MULTIPROGRAMACION(int valor);
 
 #endif

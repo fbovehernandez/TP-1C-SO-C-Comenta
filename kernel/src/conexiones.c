@@ -126,7 +126,7 @@ void* handle_io_generica(void* socket) {
             printf("Termino io: %d\n", termino_io);
             if(termino_io == 1) { // El send de termino io envia 1.
                 printf("Termino la IO\n");
-                pasar_a_ready(datos_sleep->pcb, datos_sleep->pcb->estadoAnterior);
+                pasar_a_ready(datos_sleep->pcb);
             } 
             
         } else {

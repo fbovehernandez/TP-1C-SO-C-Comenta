@@ -19,19 +19,20 @@ sem_t sem_contador_quantum;
 t_queue* cola_new;
 t_queue* cola_ready;
 t_queue* cola_blocked;
-t_queue* cola_exec;
+//t_queue* cola_exec;
 t_queue* cola_exit;
 
 char* algoritmo_planificacion; // Tomamos en convencion que los algoritmos son "FIFO", "VRR" , "RR" (siempre en mayuscula)
 t_log* logger_kernel;
+t_sockets* sockets;
 
-void *interaccion_consola(t_sockets* sockets) {
-
-    //char* respuesta_por_consola;
+void *interaccion_consola() { //no se si deberian pasarse los sockets
+    char *path_ejecutable;
     int respuesta = 0;
-
+    int valor;
     while (respuesta != 8)
     {
+        sleep(5);
         printf("--------------- Consola interactiva Kernel ---------------\n");
         printf("Elija una opcion (numero)\n");
         printf("1- Ejecutar Script \n");
@@ -46,21 +47,22 @@ void *interaccion_consola(t_sockets* sockets) {
 
         switch (respuesta) {
         case 1:
-            EJECUTAR_SCRIPT(/* pathing del conjunto de instrucciones*/);
+            printf("Ingrese el path del script a ejecutar %s\n", path_ejecutable);
+            scanf("%s", path_ejecutable);
+            EJECUTAR_SCRIPT(path_ejecutable);
             break;
         case 2:
-            /*char path_ejecutable[100]; // chicos vean si pueden usar un getline aca, les dejo el problema je
             printf("Ingrese el path del script a ejecutar %s\n", path_ejecutable);
-            scanf("%s", &path_ejecutable);
-            INICIAR_PROCESO(path_ejecutable, sockets);*/ // Ver problemas con caracteres como _ o /
+            scanf("%s", path_ejecutable);
+            INICIAR_PROCESO(path_ejecutable); // Ver problemas con caracteres como _ o /
 
-            INICIAR_PROCESO("/script_io_basico_1", sockets);
+            //INICIAR_PROCESO("/script_io_basico_1", sockets);
 
             // home/utnso/c-comenta/pruebas -> Esto tendria en memoria y lo uno con este que le mando -> Ver sockets como variable global
             break;
         case 3:
            // int pid_deseado;
-            printf("Ingrese  el pid del proceso que quiere finalizar\n");
+            printf("Ingrese el pid del proceso que quiere finalizar\n");
             // scanf(&pid_deseado);
             // FINALIZAR_PROCESO(pid_deseado);
             break;
@@ -74,32 +76,45 @@ void *interaccion_consola(t_sockets* sockets) {
             PROCESO_ESTADO();
             break;
         case 7:
-            MULTIPROGRAMACION();
+            printf("Ingrese grado de multiprogramacion a cambiar %d\n", valor);
+            scanf("%d",&valor);
+            MULTIPROGRAMACION(valor);
             break;
         case 8:
             printf("Finalizacion del modulo\n");
             exit(1);
             break;
         default:
-            printf("No se encuentra el numero dentro de las opciones, porfavor elija una correcta\n");
             break;
         }
-    } 
-
+    }
     return NULL;
 }
 
-void INICIAR_PROCESO(char* path_instrucciones, t_sockets* sockets)
-{
+void EJECUTAR_SCRIPT(char* path) {
+    // Abrir el archivo en modo de lectura (r)
+    size_t length = 0;
+    FILE* file = fopen(path, "r");
+    char* linea_leida = NULL;
+    // Verificar si el archivo se abrió correctamente
+    if (file == NULL) {
+        printf("Error al abrir el archivo.\n");
+    }
+    while (getline(&linea_leida, &length, file) != -1) {
+    	if(strcmp(linea_leida,"\n")){
+        	ejecutarComando(linea_leida);
+    	}
+    }
+    // Cerrar el archivo
+    fclose(file);
+}
+
+void INICIAR_PROCESO(char* path_instrucciones) {
     int pid_actual = obtener_siguiente_pid();
     printf("El pid del proceso es: %d\n", pid_actual);
     // Primero envio el path de instruccion a memoria y luego el PCB...
-    enviar_path_a_memoria(path_instrucciones, sockets, pid_actual);
-
-    sleep(3); // Sacar esto
-
-    t_pcb *pcb = crear_nuevo_pcb(pid_actual); // Aca dentro recibo el set de instrucciones del path
-    // en el enunciado dice "en caso de que el grado de multiprogramacion lo permita"
+    enviar_path_a_memoria(path_instrucciones, sockets, pid_actual);    
+    t_pcb *pcb = crear_nuevo_pcb(pid_actual); 
     //   list_add(lista_procesos,pcb);
     encolar_a_new(pcb);
 }
@@ -173,14 +188,12 @@ t_buffer* llenar_buffer_path(t_path* pathNuevo) {
     return(buffer);
 }
 
-
 int obtener_siguiente_pid(){
     contador_pid++;
     return contador_pid;
 }
 
-void encolar_a_new(t_pcb *pcb)
-{
+void encolar_a_new(t_pcb *pcb) {
     // Bloquear el acceso a la cola de procesos
     pthread_mutex_lock(&mutex_estado_new);
     // Sacar el proceso de la cola
@@ -208,7 +221,7 @@ void* a_ready() {
         pthread_mutex_unlock(&mutex_estado_new);
 
         // Pasar el proceso a ready
-        pasar_a_ready(pcb, NEW);
+        pasar_a_ready(pcb);
         
         // sem_post(&sem_hay_pcb_esperando_ready); 
     }
@@ -222,7 +235,7 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
     pthread_t hilo_quantum; // uff las malas practicas
 
     t_sockets* sockets = (t_sockets*)sockets_necesarios;
-    int contexto_devolucion = 0;
+    //int contexto_devolucion = 0;
     t_pcb *pcb = malloc(sizeof(t_pcb));
 
     int socket_CPU = sockets->socket_cpu;
@@ -234,7 +247,6 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
         printf("Hay un proceso para planificar\n");
         pcb = proximo_a_ejecutar();
         pasar_a_exec(pcb);
-        enviar_pcb(pcb, socket_CPU, ENVIO_PCB, NULL); // Serializar antes de enviar 
 
         // FIFO ya esta hecho con lo de arriba
         if(strcmp(algoritmo_planificacion,"RR") == 0) {
@@ -312,7 +324,7 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
     switch (devolucion_cpu) {
         case INTERRUPCION_QUANTUM:
             // pcb = deserializar_pcb(package->buffer);
-            pasar_a_ready(pcb, EXEC);
+            pasar_a_ready(pcb);
             break;
         case DORMIR_INTERFAZ:
             t_operacion_io* operacion_io = deserializar_io(package->buffer);
@@ -321,7 +333,7 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             break;
         case FIN_PROCESO:
             // pcb = deserializar_pcb(package->buffer); 
-            pasar_a_exec(pcb);
+            pasar_a_exit(pcb);
             //liberar_memoria(); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
             //change_status(pcb, EXIT); 
             //sem_post(&sem_grado_multiprogramacion); // Esto deberia liberar un grado de memoria para que acceda un proceso
@@ -434,9 +446,9 @@ t_list_io* validar_io(t_operacion_io* io, t_pcb* pcb) {
     if(elemento_encontrado == NULL || elemento_encontrado->TipoInterfaz != GENERICA) { // Deberia ser global
         // pasar_a_exit(pcb);
         pthread_mutex_unlock(&mutex_lista_io);
-        printf("No existe la io o no admite operacion");
+        printf("No existe la io o no admite operacion\n");
     } else { 
-        pasar_a_blocked(pcb, EXEC);
+        pasar_a_blocked(pcb);
         pthread_mutex_unlock(&mutex_lista_io);
         return elemento_encontrado;    
     }
@@ -528,10 +540,34 @@ void* escuchar_consola(int socket_kernel_escucha, t_config* config){
     return NULL;
 }
 */
-  
-void EJECUTAR_SCRIPT() {
-    // Aca se deberia recibir el path del script y desarmarlo para obtener las instrucciones
-    // Luego se le pasan a memoria para que esta las guarde en su tabla de paginas
+
+void ejecutarComando(char* linea_leida) {
+    char comando[20]; 
+    char parametro[20]; 
+    int parametroAux;
+
+    if (sscanf(linea_leida, "%s %s", comando, parametro) == 2) {
+        printf("Palabra 1: %s, Palabra 2: %s\n", comando, parametro);
+        if(strcmp(comando, "INICIAR_PROCESO")) {
+            INICIAR_PROCESO(parametro);
+        } else if(strcmp(comando, "FINALIZAR_PROCESO")) {
+            parametroAux = atoi(parametro);
+            FINALIZAR_PROCESO(parametroAux);
+        } else if(strcmp(comando, "MULTIPROGRAMACION")) {
+            parametroAux = atoi(parametro);
+            MULTIPROGRAMACION(parametroAux);
+        }
+    } else {
+        sscanf(linea_leida, "%s", comando);
+        printf("Palabra única: %s\n", comando);
+        if(strcmp(comando, "INICIAR_PLANIFICACION")) {
+            INICIAR_PLANIFICACION();
+        } else if(strcmp(comando, "DETENER_PLANIFICACION")) {
+            DETENER_PLANIFICACION();
+        } else if(strcmp(comando, "PROCESO_ESTADO")) {
+            PROCESO_ESTADO();
+        } 
+    }
 }
 
 void FINALIZAR_PROCESO(int pid) {
@@ -564,7 +600,7 @@ void DETENER_PLANIFICACION() {
 }
 
 
-void MULTIPROGRAMACION() {
+void MULTIPROGRAMACION(int valor) {
     /* 
     int nuevo_grado_multiprogramacion;
     printf("Ingrese el nuevo grado de multiprogramacion\n");
@@ -580,12 +616,13 @@ void PROCESO_ESTADO() {
 /* 
 void PROCESO_ESTADO()
 {
-    enum Estado estadoNuevo;
+    char* estadoNuevo;
     printf("Ingrese el estado en mayusculas que quiere listar\n");
-    scanf(&estadoNuevo);
+    scanf("%s",estadoNuevo);
+    Estado estado = estadoDeString(estadoNuevo);
 
     printf("--------Listado de procesos--------\n");
-    switch (estadoNuevo)
+    switch (estado)
     {
     case NEW:
         cola_new = mostrarCola(cola_new);
@@ -604,6 +641,15 @@ void PROCESO_ESTADO()
         break;
     }
     // No es necesario default porque ya te rompe el enum
+}
+
+enum Estado estadoDeString(char *estadoStr) {
+    if (strcmp(estadoStr, "NEW") == 0) return NEW;
+    if (strcmp(estadoStr, "READY") == 0) return READY;
+    if (strcmp(estadoStr, "BLOCKED") == 0) return BLOCKED;
+    if (strcmp(estadoStr, "EXEC") == 0) return EXEC;
+    if (strcmp(estadoStr, "EXIT") == 0) return EXIT;
+    return -1; 
 }
 
 t_queue* mostrar_cola(t_queue* cola)
@@ -625,12 +671,8 @@ void mostrar_pcb_proceso(t_pcb* pcb)
 {
     printf("PID: %d\n", pcb->pid);
     printf("Program Counter: %d\n", pcb->program_counter);
-    // printf("Instrucciones: %d\n", pcb->instrucciones);
     printf("Estado Actual: %d\n", pcb->estadoActual);
     printf("Estado Anterior: %d\n", pcb->estadoAnterior);
-
-    // TODO: Revisar mostrar los registros por pantalla y probarlo
-
     if(strcmp(algoritmo_planificacion, "FIFO") == 0) {
         printf("Quantum: %d\n", pcb->quantum);
     }

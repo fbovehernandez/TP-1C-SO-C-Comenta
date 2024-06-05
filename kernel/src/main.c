@@ -6,7 +6,7 @@ int main(int argc, char* argv[]) {
     cola_new     = queue_create(); 
     cola_ready   = queue_create();
     cola_blocked = queue_create();
-    cola_exec    = queue_create();
+    //cola_exec    = queue_create();
     cola_exit    = queue_create();
     
     t_config* config_kernel   = iniciar_config("./kernel.config");
@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
     // Hilo 3 -> Hacer un hilo para interrupt
     int socket_interrupt = conectar_kernel_cpu_interrupt(logger_kernel, datos_kernel->ip_cpu, datos_kernel->puerto_cpu_interrupt);
 
-    t_sockets* sockets = malloc(sizeof(t_sockets));
+    sockets = malloc(sizeof(t_sockets));
     sockets->socket_cpu = socket_cpu;
     sockets->socket_memoria = socket_memoria_kernel;
     sockets->socket_int = socket_interrupt;
@@ -70,7 +70,7 @@ int main(int argc, char* argv[]) {
     pthread_create(&hilo_io, NULL, (void*) escuchar_IO, (void*) kernel_io); 
 
     pthread_t socket_escucha_consola;
-    pthread_create(&socket_escucha_consola, NULL, (void*) interaccion_consola, sockets); 
+    pthread_create(&socket_escucha_consola, NULL, (void*) interaccion_consola, NULL); 
 
     pthread_join(socket_escucha_consola, NULL);
     pthread_join(pasar_a_ready, NULL);
