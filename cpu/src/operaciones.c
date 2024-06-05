@@ -16,14 +16,14 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         int resultado_ok = ejecutar_instruccion(instruccion, pcb);
         printf("resultado %d\n", resultado_ok); // Validar valor
 
-        pcb->program_counter++;
-
         if(resultado_ok == 1) {
             return;
         }
+
+        pcb->program_counter++; // Ojo con esto! porque esta despues del return, osea q en el IO_GEN_SLEEP antes de desalojar hay que aumentar el pc
         // Podria ser una funcion directa -> Por ahora no es esencial
         check_interrupt(pcb);
-        
+
         free(instruccion);
     }
 
@@ -528,6 +528,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         
         // el puntero al buffer de abajo YA ESTA SERIALIZADO
         
+        pcb->program_counter++;
         desalojar(pcb, DORMIR_INTERFAZ, buffer);
         // recv(client_dispatch, &solicitud_unidades_trabajo, sizeof(int), MSG_WAITALL);
         // solicitud_dormirIO_kernel(interfazSeleccionada, unidadesDeTrabajo);
