@@ -16,13 +16,14 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         int resultado_ok = ejecutar_instruccion(instruccion, pcb);
         printf("resultado %d\n", resultado_ok); // Validar valor
 
+        pcb->program_counter++;
+
         if(resultado_ok == 1) {
             return;
         }
         // Podria ser una funcion directa -> Por ahora no es esencial
         check_interrupt(pcb);
-
-        pcb->program_counter++;
+        
         free(instruccion);
     }
 

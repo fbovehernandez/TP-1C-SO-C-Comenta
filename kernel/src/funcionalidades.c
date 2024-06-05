@@ -214,25 +214,6 @@ void* a_ready() {
     }
 }
 
-void pasar_a_ready(t_pcb *pcb, Estado estadoAnterior) {
-    pcb->estadoAnterior = estadoAnterior;
-    change_status(pcb, READY);
-
-    pthread_mutex_lock(&mutex_estado_ready);
-    queue_push(cola_ready, (void *)pcb);
-    pthread_mutex_unlock(&mutex_estado_ready);
-
-    log_info(logger_kernel, "PID: %d - Estado Anterior: %d - Estado Actual: %d", pcb->pid, pcb->estadoAnterior, pcb->estadoActual);
-    sem_post(&sem_hay_para_planificar);
-}
-
-void pasar_a_exit(t_pcb* pcb) {
-    change_status(pcb, EXIT);
-    liberar_memoria(pcb);
-    // liberar_pcb(pcb);
-    sem_post(&sem_grado_multiprogramacion);
-}
-
 void liberar_memoria(t_pcb* pcb) {
     //Le mandaria a memoria que debe eliminar el pcb y toda la cosa
 }
@@ -248,7 +229,9 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
     int socket_INT = sockets->socket_int; 
     
     while(1) {
+        printf("Esperando a que haya un proceso para planificar\n");
         sem_wait(&sem_hay_para_planificar); 
+        printf("Hay un proceso para planificar\n");
         pcb = proximo_a_ejecutar();
         pasar_a_exec(pcb);
         enviar_pcb(pcb, socket_CPU, ENVIO_PCB, NULL); // Serializar antes de enviar 
@@ -325,7 +308,7 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
     // Deserializo antes el pcb, me ahorro cierta logica y puedo hacer send si es IO_BLOCKED
     pcb = deserializar_pcb(package->buffer);
     imprimir_pcb(pcb);
-    
+
     switch (devolucion_cpu) {
         case INTERRUPCION_QUANTUM:
             // pcb = deserializar_pcb(package->buffer);
@@ -373,8 +356,8 @@ t_operacion_io* deserializar_io(t_buffer* buffer) {
 
     memcpy(operacion_io->nombre_interfaz, stream, operacion_io->nombre_interfaz_largo);
     
-    printf("Interfaz: %s\n", operacion_io->nombre_interfaz);
-    printf("Unidades de trabajo: %d\n", operacion_io->unidadesDeTrabajo);
+    printf("Interfaz (funcionalidades): %s\n", operacion_io->nombre_interfaz);
+    printf("Unidades de trabajo (unidades): %d\n", operacion_io->unidadesDeTrabajo);
 
     return operacion_io;
 }
@@ -421,7 +404,9 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
         datos_sleep->ut = io->unidadesDeTrabajo;
         datos_sleep->pcb = pcb;
         
+        pthread_mutex_lock(&mutex_cola_io_generica);
         queue_push(elemento_encontrado->cola_blocked, datos_sleep);
+        pthread_mutex_unlock(&mutex_cola_io_generica);
 
         // use lo que estaba, antes decia sem_post al mutex, por eso, era un binario o eso entendi
         pthread_mutex_lock(&mutex_lista_io);
@@ -429,41 +414,6 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
         printf("La operacion deberia realizarse...\n");
         pthread_mutex_unlock(&mutex_lista_io);
     }
-
-        /* 
-        t_paquete* paquete = malloc(sizeof(t_paquete));
-        t_buffer* buffer = malloc(sizeof(t_buffer));
-
-        buffer->size = sizeof(int);
-
-        buffer->offset = 0;
-        buffer->stream = malloc(buffer->size);
-
-        memcpy(buffer->stream + buffer->offset, &(operacion_io->unidadesDeTrabajo), sizeof(uint32_t));
-       
-        paquete->codigo_operacion = DORMITE; // Podemos usar una constante por operación
-        paquete->buffer = buffer; // Nuestro buffer de antes.
-
-        // Armamos el stream a enviar
-        void* a_enviar = malloc(buffer->size + sizeof(int));
-        int offset = 0;
-
-        memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-        offset += sizeof(int);
-        memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-        offset += sizeof(int);
-        memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-        // Por último enviamos
-        send(&elemento, a_enviar, buffer->size + sizeof(int), 0); 
-
-        // No nos olvidamos de liberar la memoria que ya no usaremos
-        free(a_enviar);
-        free(paquete->buffer->stream);
-        free(paquete->buffer);
-        free(paquete);
-        */
-    
 } 
 
 /*  Al recibir una petición de I/O de parte de la CPU primero se deberá validar que exista y esté
@@ -475,6 +425,8 @@ t_list_io* validar_io(t_operacion_io* io, t_pcb* pcb) {
     bool match_nombre(void* nodo_lista) {
         return strcmp(((t_list_io*)nodo_lista)->nombreInterfaz, io->nombre_interfaz) == 0;
     };
+
+    printf("Valida la io\n");
     
     pthread_mutex_lock(&mutex_lista_io);
     t_list_io* elemento_encontrado = list_find(lista_io, match_nombre); // Aca deberia buscar la interfaz en la lista de io
@@ -484,27 +436,11 @@ t_list_io* validar_io(t_operacion_io* io, t_pcb* pcb) {
         pthread_mutex_unlock(&mutex_lista_io);
         printf("No existe la io o no admite operacion");
     } else { 
+        pasar_a_blocked(pcb, EXEC);
         pthread_mutex_unlock(&mutex_lista_io);
         return elemento_encontrado;    
     }
     
-    return NULL;
-}
-
-void change_status(t_pcb* pcb, Estado new_status) {
-    pcb->estadoAnterior = pcb -> estadoActual;
-    pcb->estadoActual   = new_status;
-}
-
-void* pasar_a_exec(t_pcb* pcb) {
-    change_status(pcb, EXEC);
-
-    pthread_mutex_lock(&mutex_estado_exec);
-    queue_push(cola_exec, (void *)pcb);
-    pthread_mutex_unlock(&mutex_estado_exec);
-
-    log_info(logger_kernel, "PID: %d - Estado Anterior en exec: %d - Estado Actual: %d", pcb->pid, pcb->estadoAnterior, pcb->estadoActual);
-
     return NULL;
 }
 

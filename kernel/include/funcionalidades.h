@@ -69,12 +69,10 @@ extern t_log* logger_kernel;
 void* interaccion_consola(t_sockets* sockets);
 void encolar_a_new(t_pcb* pcb);
 void* a_ready(); // Para hilo 
-void pasar_a_ready(t_pcb *pcb, Estado estadoAnterior);
 t_pcb* crear_nuevo_pcb(int pid);
 void* contar_quantum(void* socket_CPU);
 t_registros* inicializar_registros_cpu();
 void print_queue(Estado estado);
-void pasar_a_exit(t_pcb* pcb);
 int obtener_siguiente_pid();
 // t_queue* mostrar_cola(t_queue* cola);
 void mostrar_pcb_proceso(t_pcb* pcb);
@@ -82,7 +80,6 @@ void* planificar_corto_plazo(void* sockets_kernel);
 void* enviar_path_a_memoria(char* path, t_sockets* sockets, int pid);
 t_buffer* llenar_buffer_path(t_path* pathNuevo);
 t_pcb* proximo_a_ejecutar();
-void* pasar_a_exec(t_pcb* pcb);
 void esperar_cpu(t_pcb* pcb);
 t_operacion_io* deserializar_io(t_buffer* buffer);
 t_paquete* recibir_cpu();
@@ -92,7 +89,6 @@ void hilo_dormir_io(t_operacion_io* operacion_io);
 void change_status(t_pcb* pcb, Estado new_status);
 bool match_nombre(char* interfaz);
 t_list_io* validar_io(t_operacion_io* operacion_io, t_pcb* pcb);
-void pasar_a_exit(t_pcb* pcb);
 
 void EJECUTAR_SCRIPT();
 void INICIAR_PROCESO(char* path, t_sockets* sockets);

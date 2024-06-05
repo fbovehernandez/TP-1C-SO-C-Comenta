@@ -48,8 +48,6 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     io->tipo = tipo_interfaz;
     io->nombre_interfaz = nombre_interfaz;
 
-    printf("holu holu %s\n", io->nombre_interfaz);
-
     t_buffer* buffer = malloc(sizeof(t_buffer));
     t_paquete* paquete = malloc(sizeof(t_paquete));
 
@@ -74,7 +72,7 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     paquete->buffer = buffer;                                  // Nuestro buffer de antes.
 
     // Armamos el stream a enviar
-    void *a_enviar = malloc(buffer->size + sizeof(int));
+    void *a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
     int offset = 0;
 
     memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
@@ -82,8 +80,9 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
     offset += sizeof(int);
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+    // offset += paquete->buffer->size;
 
-    send(kernelfd, a_enviar, buffer->size + sizeof(int), 0); 
+    send(kernelfd, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0); 
 
     free(a_enviar);
     free(paquete->buffer->stream);
@@ -108,11 +107,12 @@ void recibir_solicitud_kernel() {
 }
 */
 
-void recibir_kernel(t_config* config_io) {
+void recibir_kernel(t_config* config_io, int socket_kernel_io) {
     while(1) {
         t_paquete* paquete = malloc(sizeof(t_paquete));
         paquete->buffer = malloc(sizeof(t_buffer));
 
+        printf("Esperando paquete...\n");
         recv(socket_kernel_io, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
         printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
 
@@ -123,11 +123,13 @@ void recibir_kernel(t_config* config_io) {
 
         switch(paquete->codigo_operacion) {
             case DORMITE:
-                printf("Me voy a dormir...\n");
                 int unidadesDeTrabajo = serializar_unidades_trabajo(paquete->buffer);
                 int tiempoUnidadesTrabajo = config_get_int_value(config_io,"TIEMPO_UNIDAD_TRABAJO");
-                // tiempoUnidadesTrabajo esta en el config
+                printf("Unidades de trabajo: %d\n", unidadesDeTrabajo);
+                printf("Tiempo de unidades de trabajo: %d\n", tiempoUnidadesTrabajo);
                 sleep(unidadesDeTrabajo * tiempoUnidadesTrabajo);
+                int termino_io = 1;
+                send(socket_kernel_io, &termino_io, sizeof(int), 0);
             default:
                 break;
         }
@@ -135,7 +137,8 @@ void recibir_kernel(t_config* config_io) {
 }
 
 int serializar_unidades_trabajo(t_buffer* buffer) {
+   // void* stream = buffer->stream;
     int unidades_de_trabajo;
-    memcpy(&unidades_de_trabajo, buffer->stream, sizeof(int));
+    memcpy(&unidades_de_trabajo, buffer->stream, sizeof(int)); // stream
     return unidades_de_trabajo;
 }

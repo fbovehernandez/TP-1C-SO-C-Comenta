@@ -52,8 +52,8 @@ void iniciar_interfaz_generica(char* nombreInterfaz, t_config* config_io, char* 
     // Saco el unico dato que tiene esta interfaz
     int tiempo_unidad_trabajo = config_get_int_value(config_io, "TIEMPO_UNIDAD_TRABAJO");
     printf("Tiempo de unidad de trabajo: %d\n", tiempo_unidad_trabajo);
-    conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, GENERICA); 
-    recibir_kernel(config_io); 
+    int kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, GENERICA); 
+    recibir_kernel(config_io, kernelfd); 
 }
 
 

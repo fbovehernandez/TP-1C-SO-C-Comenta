@@ -8,12 +8,14 @@
 #include <commons/collections/list.h>
 #include "../../utils/include/sockets.h" 
 #include "../../utils/include/logconfig.h"
+#include "planificador.h"
 
 extern t_dictionary* diccionario_io;
 extern t_list* lista_io;
 extern t_list* lista_procesos;
 extern sem_t sem_cola_io;
 extern pthread_mutex_t mutex_lista_io;
+extern pthread_mutex_t mutex_cola_io_generica;
 
 // Aca va el struct del PCB 
 typedef struct {
@@ -45,7 +47,7 @@ int conectar_kernel_cpu_dispatch(t_log* logger_kernel, char* ip, char* puerto);
 int conectar_kernel_cpu_interrupt(t_log* logger_kernel,char* IP_CPU,char* puerto_cpu_dispatch);
 int esperar_cliente(int socket_escucha, t_log* logger);
 void* handle_io_generica(void* socket);
-int ejecutar_io(int socket_io);
+int ejecutar_io_generica(int socket_io, int unidades_trabajo);
 int recibir_operacion(int socket_cliente);
 void liberar_conexion(int socket_cliente);
 // void escuchar_STDOUT(t_config* config_kernel, t_log* logger_kernel);
