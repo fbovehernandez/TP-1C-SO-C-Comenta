@@ -17,7 +17,7 @@ typedef struct {
     
 } t_instrucciones;
 
-//Me lleve t_pcb al utils, lo mismo que Registros y Estado
+// Me lleve t_pcb al utils, lo mismo que Registros y Estado
 
 // Los 2 de abajo no los usamos todavia
 typedef struct {
@@ -48,7 +48,7 @@ extern int grado_multiprogramacion;
 extern int quantum;
 extern int contador_pid;  
 
-t_sockets* sockets;
+extern t_sockets* sockets;
 
 extern pthread_mutex_t mutex_estado_new;
 extern pthread_mutex_t mutex_estado_ready;

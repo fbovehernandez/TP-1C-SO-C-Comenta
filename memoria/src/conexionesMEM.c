@@ -4,6 +4,7 @@ pthread_t cpu_thread;
 pthread_t kernel_thread;
 t_config* config_memoria;
 t_dictionary* diccionario_instrucciones;
+char* path_config;
 
 //Acepta el handshake del cliente, se podria hacer mas generico y que cada uno tenga un valor diferente
 int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
@@ -328,11 +329,12 @@ t_instruccion* build_instruccion(char* line) {
     return instruccion;
 }
 
-//Encuentra la carpeta en la que se va a encontrar el path y la suma al nombre del path
+// Posible mem leak, fix para el futuro
 char* agrupar_path(t_path* path) {
-    char* pathConfig = config_get_string_value(config_memoria, "PATH_INSTRUCCIONES");
-    char* path_completo = malloc(strlen(pathConfig) + path->path_length); // 69  + 20  + 1
-    path_completo = strcat(pathConfig, path->path);
+    // char* pathConfig = config_get_string_value(config_memoria, "PATH_INSTRUCCIONES");
+    char* pathConfig_local = strdup(path_config);
+    char* path_completo = malloc(strlen(pathConfig_local) + path->path_length); // 69  + 20  + 1
+    path_completo = strcat(pathConfig_local, path->path);
     printf("Path completo: %s\n", path_completo);
     return path_completo;
 }

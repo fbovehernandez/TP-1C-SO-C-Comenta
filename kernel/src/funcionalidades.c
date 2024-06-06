@@ -27,12 +27,12 @@ t_log* logger_kernel;
 t_sockets* sockets;
 
 void *interaccion_consola() { //no se si deberian pasarse los sockets
-    char *path_ejecutable;
+    char *path_ejecutable = malloc(sizeof(char) * 100); // Cantidad?
     int respuesta = 0;
     int valor;
     while (respuesta != 8)
     {
-        sleep(5);
+        sleep(5); // Borrar
         printf("--------------- Consola interactiva Kernel ---------------\n");
         printf("Elija una opcion (numero)\n");
         printf("1- Ejecutar Script \n");
@@ -56,7 +56,7 @@ void *interaccion_consola() { //no se si deberian pasarse los sockets
             scanf("%s", path_ejecutable);
             INICIAR_PROCESO(path_ejecutable); // Ver problemas con caracteres como _ o /
 
-            //INICIAR_PROCESO("/script_io_basico_1", sockets);
+            // INICIAR_PROCESO("/script_io_basico_1", sockets);
 
             // home/utnso/c-comenta/pruebas -> Esto tendria en memoria y lo uno con este que le mando -> Ver sockets como variable global
             break;
@@ -88,6 +88,8 @@ void *interaccion_consola() { //no se si deberian pasarse los sockets
             break;
         }
     }
+
+    free(path_ejecutable);
     return NULL;
 }
 
@@ -113,7 +115,8 @@ void INICIAR_PROCESO(char* path_instrucciones) {
     int pid_actual = obtener_siguiente_pid();
     printf("El pid del proceso es: %d\n", pid_actual);
     // Primero envio el path de instruccion a memoria y luego el PCB...
-    enviar_path_a_memoria(path_instrucciones, sockets, pid_actual);    
+    enviar_path_a_memoria(path_instrucciones, sockets, pid_actual); 
+    sleep(10);   
     t_pcb *pcb = crear_nuevo_pcb(pid_actual); 
     //   list_add(lista_procesos,pcb);
     encolar_a_new(pcb);

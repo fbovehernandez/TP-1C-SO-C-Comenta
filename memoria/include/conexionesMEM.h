@@ -12,6 +12,7 @@ extern pthread_t kernel_thread;
 extern pthread_t cpu_thread;
 extern t_config* config_memoria;
 extern t_dictionary* diccionario_instrucciones;
+extern char* path_config;
 
 typedef struct {
     int socket;

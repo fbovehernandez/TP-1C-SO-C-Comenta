@@ -7,6 +7,7 @@ int main(int argc, char* argv[]) {
     t_log* logger_memoria = iniciar_logger("memoria.log");
 
     char* puerto_escucha = config_get_string_value(config_memoria, "PUERTO_ESCUCHA");
+    path_config = config_get_string_value(config_memoria, "PATH_INSTRUCCIONES");
 
     // Levanto el servidor y devuelvo el socket de escucha
     int escucha_fd = iniciar_servidor(puerto_escucha);
