@@ -12,6 +12,7 @@ int main(int argc, char* argv[]) {
     t_config* config_kernel   = iniciar_config("./kernel.config");
     logger_kernel = iniciar_logger("kernel.log");
     ptr_kernel* datos_kernel = solicitar_datos(config_kernel);
+    path_kernel = "/home/utnso/operativos/tp4/tp-2024-1c-Sofa-Cama/kernel/scripts-comandos"; // hardcodeado nashe
 
     quantum = datos_kernel->quantum;
     grado_multiprogramacion = datos_kernel->grado_multiprogramacion;

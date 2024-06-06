@@ -118,6 +118,7 @@ void recibir_cliente_interrupt(int client_interrupt) {
         // Posible if si no hay mas codigos de operacion para interrumpir
         switch (cod_op) {
             case INTERRUPCION_CPU:
+                printf("Entre por interrupcion");
                 hay_interrupcion = 1;
                 break;         
             default:

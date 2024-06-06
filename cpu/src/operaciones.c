@@ -13,6 +13,7 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         pedir_instruccion_a_memoria(socket_memoria, pcb);
         t_instruccion* instruccion = recibir_instruccion(socket_memoria, pcb); // Se ejecuta la instruccion tambien
         // sem_post(pedir_instruccion);
+        printf("Esta ejecutando %d\n", pcb->pid);    
         int resultado_ok = ejecutar_instruccion(instruccion, pcb);
         printf("resultado %d\n", resultado_ok); // Validar valor
 

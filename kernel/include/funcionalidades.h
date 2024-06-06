@@ -66,6 +66,7 @@ extern t_queue* cola_exit;
 
 extern char* algoritmo_planificacion; // Tomamos en convencion que los algoritmos son "FIFO", "VRR" , "RR" (siempre en mayuscula)
 extern t_log* logger_kernel;
+extern char* path_kernel;
 
 // Funciones
 void* interaccion_consola();

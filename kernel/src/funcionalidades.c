@@ -25,6 +25,7 @@ t_queue* cola_exit;
 char* algoritmo_planificacion; // Tomamos en convencion que los algoritmos son "FIFO", "VRR" , "RR" (siempre en mayuscula)
 t_log* logger_kernel;
 t_sockets* sockets;
+char* path_kernel;
 
 void *interaccion_consola() { //no se si deberian pasarse los sockets
     char *path_ejecutable = malloc(sizeof(char) * 100); // Cantidad?
@@ -32,7 +33,6 @@ void *interaccion_consola() { //no se si deberian pasarse los sockets
     int valor;
     while (respuesta != 8)
     {
-        sleep(5); // Borrar
         printf("--------------- Consola interactiva Kernel ---------------\n");
         printf("Elija una opcion (numero)\n");
         printf("1- Ejecutar Script \n");
@@ -44,7 +44,10 @@ void *interaccion_consola() { //no se si deberian pasarse los sockets
         printf("7- Cambiar el grado de multiprogramacion\n");
         printf("8- Finalizar modulo\n");
         scanf("%d", &respuesta);
-
+        // /script_solo_cpu_1
+        // /script_io_basico_1
+        // /script_solo_cpu_3
+        // /script_1
         switch (respuesta) {
         case 1:
             printf("Ingrese el path del script a ejecutar %s\n", path_ejecutable);
@@ -96,7 +99,10 @@ void *interaccion_consola() { //no se si deberian pasarse los sockets
 void EJECUTAR_SCRIPT(char* path) {
     // Abrir el archivo en modo de lectura (r)
     size_t length = 0;
-    FILE* file = fopen(path, "r");
+    char* path_local_kernel = strdup(path_kernel);
+    char* path_completo = malloc(strlen(path_local_kernel) + strlen(path));
+    path_completo = strcat(path_local_kernel, path);
+    FILE* file = fopen(path_completo, "r");
     char* linea_leida = NULL;
     // Verificar si el archivo se abrió correctamente
     if (file == NULL) {
@@ -268,13 +274,14 @@ void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por ti
     }
 }
 
-void* contar_quantum(void* sockets_CPU) {
-    int socket_CPU = (intptr_t)sockets_CPU;
+void* contar_quantum(void* sockets_Int) {
+    int socket_Int = (intptr_t)sockets_Int;
     sem_wait(&sem_contador_quantum);
-    sleep(quantum);
+    usleep(quantum);
 
-    int interrupcion_cpu = INTERRUPCION_QUANTUM;
-    send(socket_CPU, &interrupcion_cpu, sizeof(int), 0);
+    int interrupcion_cpu = INTERRUPCION_CPU;
+    send(socket_Int, &interrupcion_cpu, sizeof(int), 0);
+    printf("Envie interrupcion despues de %d\n", quantum);
     return NULL;
 }
 
@@ -327,6 +334,7 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
     switch (devolucion_cpu) {
         case INTERRUPCION_QUANTUM:
             // pcb = deserializar_pcb(package->buffer);
+            printf("Volvio a ready");
             pasar_a_ready(pcb);
             break;
         case DORMIR_INTERFAZ:
@@ -551,23 +559,23 @@ void ejecutarComando(char* linea_leida) {
 
     if (sscanf(linea_leida, "%s %s", comando, parametro) == 2) {
         printf("Palabra 1: %s, Palabra 2: %s\n", comando, parametro);
-        if(strcmp(comando, "INICIAR_PROCESO")) {
+        if(strcmp(comando, "INICIAR_PROCESO") == 0) {
             INICIAR_PROCESO(parametro);
-        } else if(strcmp(comando, "FINALIZAR_PROCESO")) {
+        } else if(strcmp(comando, "FINALIZAR_PROCESO") == 0) {
             parametroAux = atoi(parametro);
             FINALIZAR_PROCESO(parametroAux);
-        } else if(strcmp(comando, "MULTIPROGRAMACION")) {
+        } else if(strcmp(comando, "MULTIPROGRAMACION") == 0) {
             parametroAux = atoi(parametro);
             MULTIPROGRAMACION(parametroAux);
         }
     } else {
         sscanf(linea_leida, "%s", comando);
         printf("Palabra única: %s\n", comando);
-        if(strcmp(comando, "INICIAR_PLANIFICACION")) {
+        if(strcmp(comando, "INICIAR_PLANIFICACION") == 0) {
             INICIAR_PLANIFICACION();
-        } else if(strcmp(comando, "DETENER_PLANIFICACION")) {
+        } else if(strcmp(comando, "DETENER_PLANIFICACION") == 0) {
             DETENER_PLANIFICACION();
-        } else if(strcmp(comando, "PROCESO_ESTADO")) {
+        } else if(strcmp(comando, "PROCESO_ESTADO") == 0) {
             PROCESO_ESTADO();
         } 
     }

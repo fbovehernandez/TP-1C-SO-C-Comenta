@@ -9,6 +9,8 @@ int main(int argc, char* argv[]) {
     char* puerto_escucha = config_get_string_value(config_memoria, "PUERTO_ESCUCHA");
     path_config = config_get_string_value(config_memoria, "PATH_INSTRUCCIONES");
 
+    diccionario_instrucciones = dictionary_create();
+
     // Levanto el servidor y devuelvo el socket de escucha
     int escucha_fd = iniciar_servidor(puerto_escucha);
     log_info(logger_memoria, "Servidor iniciado, esperando conexiones!");

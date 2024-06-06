@@ -62,6 +62,8 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
         switch(paquete->codigo_operacion) { 
             case QUIERO_INSTRUCCION:
                 t_solicitud_instruccion* solicitud_cpu = deserializar_solicitud(paquete->buffer);
+                printf("Se va a dormir un ratito\n");
+                usleep(1000); // Harcodeado nashe para probar
                 enviar_instruccion(solicitud_cpu, socket_cpu);
                 free(solicitud_cpu);
                 break;
@@ -74,6 +76,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 //enviar_cantidad_parametros(socket_cpu);
                 enviar_cantidad_instrucciones_pedidas(pid_string, socket_cpu);
                 //free(cantidad_instrucciones);
+                free(pid_string);
                 break;
             default:
                 printf("Rompio todo?\n");
@@ -235,11 +238,10 @@ void crear_estructuras(char* path_completo, int pid) {
     // pid_char = (char*)pid;
     // char *pidchar = (char *)&pid;
     
-    diccionario_instrucciones = dictionary_create();
     dictionary_put(diccionario_instrucciones, pid_char, instrucciones);
 
     // ->  
-    //free(pid_char);
+    free(pid_char);
     free(line);
     fclose(file);
 }
@@ -481,6 +483,8 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu, int socket_cpu) 
     send(socket_cpu, a_enviar, buffer->size + sizeof(codigo_operacion) + sizeof(int), 0);
 
     // Liberamos memoria
+    // free(instruccion);
+    free(pid_char);
     free(a_enviar);
     free(paquete->buffer->stream);
     free(paquete->buffer);
@@ -528,6 +532,8 @@ void enviar_cantidad_parametros(int socket_cpu){
 
 void enviar_cantidad_instrucciones_pedidas(char* pid, int socket_cpu) {
     t_list* instrucciones = dictionary_get(diccionario_instrucciones, pid);
+    printf("Cantidad instrucciones del proceso %s: %d\n", pid, instrucciones->elements_count);
+    printf("PID: %s\n", pid);
     int cantidad_instrucciones = list_size(instrucciones);
 
     printf("Cant de instrucciones del proceso %s: %d\n", pid, cantidad_instrucciones);
@@ -541,7 +547,7 @@ void enviar_cantidad_instrucciones_pedidas(char* pid, int socket_cpu) {
     buffer->stream = malloc(buffer->size);
     void* stream = buffer->stream;
 
-    memcpy(stream+buffer->offset, &cantidad_instrucciones, sizeof(int));
+    memcpy(stream + buffer->offset, &cantidad_instrucciones, sizeof(int));
 
     buffer->stream = stream;
 
