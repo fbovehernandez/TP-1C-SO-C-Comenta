@@ -18,7 +18,7 @@ typedef struct {
 
 void ejecutar_pcb(t_pcb* pcb, int socket_memoria);
 void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria);
-void check_interrupt(t_pcb* pcb);
+int check_interrupt(t_pcb* pcb);
 int cantidad_instrucciones_deserializar(t_buffer *buffer);
 void pedir_instruccion_a_memoria(int socket_memoria, t_pcb *pcb);
 t_buffer* llenar_buffer_solicitud_instruccion(t_solicitud_instruccion* solicitud_instruccion);

@@ -15,7 +15,6 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         // sem_post(pedir_instruccion);
         printf("Esta ejecutando %d\n", pcb->pid);    
         int resultado_ok = ejecutar_instruccion(instruccion, pcb);
-        printf("resultado %d\n", resultado_ok); // Validar valor
 
         if(resultado_ok == 1) {
             return;
@@ -23,7 +22,18 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
 
         pcb->program_counter++; // Ojo con esto! porque esta despues del return, osea q en el IO_GEN_SLEEP antes de desalojar hay que aumentar el pc
         // Podria ser una funcion directa -> Por ahora no es esencial
-        check_interrupt(pcb);
+        printf("Registro_actual->AX: %d\n", registros_cpu->AX);
+        printf("pcb->AX: %d\n", pcb->registros->AX);
+        printf("Registro_actual->BX: %d\n", registros_cpu->BX);
+        printf("pcb->BX: %d\n", pcb->registros->BX);
+        printf("pcb->CX %d\n", pcb->registros->CX);
+        printf("Registro_actual->CX: %d\n", registros_cpu->CX);
+
+        int result_int = check_interrupt(pcb);
+        if(result_int == 1) {
+            printf("Hubo una interrupcion, y salgo...\n");
+            return;
+        }
 
         free(instruccion);
     }
@@ -38,12 +48,13 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
     // La unica que le encuentro es llevarlo al switch
 }
 
-void check_interrupt(t_pcb* pcb) {
+int check_interrupt(t_pcb* pcb) {
     if(hay_interrupcion) {
-        printf("Hubo una interrupcion.\n");
+        // printf("Hubo una interrupcion.\n");
         desalojar(pcb, INTERRUPCION_QUANTUM, NULL);
         hay_interrupcion = 0;
     } 
+    return 1;
 }
 
 void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria) {
@@ -76,7 +87,7 @@ void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria) {
     offset += sizeof(int);
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
-    printf("Pedi la cantidad de instrucciones del proceso %d.\n", pid);
+    // printf("Pedi la cantidad de instrucciones del proceso %d.\n", pid);
     // Por último enviamos
     send(socket_memoria, a_enviar, buffer->size + sizeof(int) * 2, 0);
 
@@ -88,7 +99,7 @@ void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria) {
 }
 
 int cantidad_instrucciones_deserializar(t_buffer *buffer) {
-    printf("Deserializa la cantidad de instrucciones.\n");
+    // printf("Deserializa la cantidad de instrucciones.\n");
     int cantidad_instrucciones;
 
     void *stream = buffer->stream;
@@ -122,7 +133,7 @@ void pedir_instruccion_a_memoria(int socket_memoria, t_pcb *pcb) {
 
     // Por último enviamos
     send(socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-    printf("Paquete enviado!\n");
+    // printf("Paquete enviado!\n");
 
     // Falta liberar todo
     free(a_enviar);
@@ -163,7 +174,7 @@ t_paquete* recibir_memoria(int socket_memoria) {
         printf("Codigo de operacion: %d\n", paquete->codigo_operacion);
 
         recv(socket_memoria, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
-        printf("paquete->buffer->size: %d\n", paquete->buffer->size);
+        // printf("paquete->buffer->size: %d\n", paquete->buffer->size);
 
         paquete->buffer->stream = malloc(paquete->buffer->size);
         // recv(socket_memoria, paquete->buffer->stream, paquete->buffer->size, 0);
@@ -248,7 +259,7 @@ t_instruccion *instruccion_deserializar(t_buffer *buffer) {
     memcpy(&(instruccion->cantidad_parametros), stream, sizeof(int));
     stream += sizeof(int);
 
-    printf("Recibimos la instruccion de enum %d con %d parametros.\n", instruccion->nombre, instruccion->cantidad_parametros);
+    // printf("Recibimos la instruccion de enum %d con %d parametros.\n", instruccion->nombre, instruccion->cantidad_parametros);
 
     if (instruccion->cantidad_parametros == 0)
     {
@@ -259,7 +270,7 @@ t_instruccion *instruccion_deserializar(t_buffer *buffer) {
     {
         t_parametro *parametro = malloc(sizeof(t_parametro));
         memcpy(&(parametro->length), stream, sizeof(int));
-        printf("Este es el largo del parametro %d que llego: %d\n", i, parametro->length);
+        // printf("Este es el largo del parametro %d que llego: %d\n", i, parametro->length);
         stream += sizeof(int);
 
         parametro->nombre = malloc(sizeof(char) * parametro->length + 1);
@@ -267,7 +278,7 @@ t_instruccion *instruccion_deserializar(t_buffer *buffer) {
 
         parametro->nombre[parametro->length] = '\0';
         stream += parametro->length;
-        printf("Parametro: %s\n", parametro->nombre);
+        // printf("Parametro: %s\n", parametro->nombre);
 
         list_add(instruccion->parametros, parametro);
         // free(parametro->nombre);
@@ -420,7 +431,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     TipoInstruccion nombreInstruccion = instruccion->nombre;
     t_list *list_parametros = instruccion->parametros;
 
-    printf("La instruccion es de numero %d y tiene %d parametros\n", instruccion->nombre, instruccion->cantidad_parametros);
+    // printf("La instruccion es de numero %d y tiene %d parametros\n", instruccion->nombre, instruccion->cantidad_parametros);
 
     char* registro1;
     switch (nombreInstruccion) // Ver la repeticion de logica... -> Abstraer
@@ -596,7 +607,7 @@ void solicitud_dormirIO_kernel(char* interfaz, int unidades) {
     // Por último enviamos
     // hay que poner el socket kernel globallll
     send(client_dispatch, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-    printf("Paquete enviado!");
+    // printf("Paquete enviado!");
 
     // Falta liberar todo
     free(a_enviar);
@@ -692,7 +703,9 @@ void enviar_fin_programa(t_pcb *pcb) {
 
 void guardar_estado(t_pcb *pcb) {
     pcb->registros->AX = registros_cpu->AX;
+    printf("Guardo el AX: %d\n", pcb->registros->AX);
     pcb->registros->BX = registros_cpu->BX;
+    printf("Guardo el BX: %d\n", pcb->registros->BX);
     pcb->registros->CX = registros_cpu->CX;
     pcb->registros->DX = registros_cpu->DX;
     pcb->registros->EAX = registros_cpu->EAX;

@@ -50,7 +50,9 @@ void* iniciar_servidor_dispatch(void* datos_dispatch) {
 }
 
 void cargar_registros_en_cpu(t_registros* registros_pcb) {
+    printf("Voy a cargar registros->pcb->AX: %d\n", registros_pcb->AX);
     registros_cpu->AX = registros_pcb->AX;
+    printf("Cargue en los registros CPU->AX: %d\n", registros_cpu->AX);
     registros_cpu->BX = registros_pcb->BX;
     registros_cpu->CX = registros_pcb->CX;
     registros_cpu->DX = registros_pcb->DX;
