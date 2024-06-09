@@ -26,6 +26,18 @@ typedef enum {
 } TipoInterfaz;
 
 typedef struct {
+    int pid;
+    int pagina;
+    int marco;
+    long timestamps;
+} t_tlb;
+
+typedef struct {
+    int numero_pagina;
+    int desplazamiento;
+} t_direccion_logica;
+
+typedef struct {
     int PID;
     int path_length;
     char* path;
@@ -88,7 +100,9 @@ typedef enum {
     INTERRUPCION_CPU,
     QUIERO_NOMBRE,
     DORMITE,
-    CONEXION_INTERFAZ
+    CONEXION_INTERFAZ,
+    DIRECCION_FISICA,
+    REGISTRO_DATOS
 } codigo_operacion;
 
 typedef struct {

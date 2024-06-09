@@ -9,8 +9,10 @@
 #include "../../utils/include/logconfig.h"
 #include <commons/string.h>
 #include "conexionesCPU.h"
+#include "mmu.h"
 
 extern int hay_interrupcion;
+extern t_log* logger;
 
 typedef struct {
     int cantidad;
@@ -41,7 +43,5 @@ void sum(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, boo
 void jnz(void* registro, int valor, t_pcb* pcb);
 bool sonTodosDigitosDe(char *palabra);
 //void sum(void* registro,void* valor, bool es_8_bits, t_pcb* pcb);
-
-extern t_log* logger;
 
 #endif 

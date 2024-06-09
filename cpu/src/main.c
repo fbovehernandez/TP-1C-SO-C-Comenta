@@ -14,6 +14,11 @@ int main(int argc, char* argv[]) {
     registros_cpu = malloc(sizeof(t_registros));
     registros_cpu = inicializar_registros_cpu(registros_cpu);
 
+    t_queue* TLB = queue_create();
+
+    //va en el main
+    algoritmo_reemplazo_TLB = algoritmo_reemplazo_to_int(config_get_string_value(config, "REEMPLAZO_TLB"));
+
     // Aca lo conecto a memoria -> creo que esto SI deberia ser un hilo
     socket_memoria = conectar_memoria(IP_MEMORIA, puerto_memoria, logger_CPU);
     

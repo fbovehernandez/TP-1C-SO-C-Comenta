@@ -2,6 +2,8 @@
 
 t_log *logger;
 int hay_interrupcion;
+int tamanio_pagina;
+
 // t_cantidad_instrucciones* cantidad_instrucciones;
 
 void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
@@ -109,7 +111,7 @@ int cantidad_instrucciones_deserializar(t_buffer *buffer) {
 }
 
 // Manda a memoria el pcb, espera una instruccion y la devuelve
-void pedir_instruccion_a_memoria(int socket_memoria, t_pcb *pcb) {
+void pedir_instruccion_a_memoria(int socket_memoria, t_pcb* pcb) {
     // Recibimos cada parámetro
     t_solicitud_instruccion *pid_pc = malloc(sizeof(t_solicitud_instruccion));
     pid_pc->pid = pcb->pid;
@@ -292,137 +294,7 @@ bool es_de_8_bits(char *registro) {
             strcmp(registro, "CX") == 0 || strcmp(registro, "DX") == 0);
 }
 
-/*
-    typedef struct {
-        int pid;
-        int pagina;
-        int marco;
-        long timestamps;
-    } t_tlb;
-
-    typedef struct {
-        int numero_pagina;
-        int desplazamiento;
-    } t_direccion_logica;
-
-    int traer_tamanio_pagina_mem(int socket_mem) {
-        recv(socket_mem,&tamanio_pagina, sizeof(int), 0);
-        return tamanio_pagina;
-    }
-
-    void crear_direccion_logica(int tamanio_pagina) {
-        t_direccion_logica* direccion_logica;
-        int tamanio_pagina = traer_tamanio_pagina_mem();
-        direccion_logica->numero_página = floor(direccion_lógica / tamanio_pagina);
-        direccion_logica->desplazamiento = direccion_logica - direccion_logica->numero_página * tamanio_pagina;
-    }
-
-    CANTIDAD_ENTRADAS_TLB=32
-    ALGORITMO_TLB=FIFO
-
-    void* crear_tlb() {
-        t_tlb tlb;
-        int cant_entradas = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
-        char* algoritmo_tlb = config_get_string_value(config_CPU, "ALGORITMO_TLB");
-        if(cant_entradas == 0){
-            deshabilitar_tlb();
-        }
-        return;
-    }
-
-t_queue* TLB = queue_create();
-
-//va en el main
-algoritmo_reemplazo_TLB = algoritmo_reemplazo_to_int(config_get_string_value(config, "REEMPLAZO_TLB"));
-
-long tiempoEnMilisecs() {
-  struct timeval time;
-  gettimeofday(&time, NULL);
-
-  return time.tv_sec * 1000 + time.tv_usec / 1000;
-}
-
-void guardar_en_TLB(int pid, int nro_pagina, int nro_marco) {
-	t_tlb* nueva_entrada = malloc(sizeof(t_tlb));
-	
-    nueva_entrada->pid = pid;
-	nueva_entrada->pagina = nro_pagina;
-	nueva_entrada->marco = nro_marco;
-    nueva_entrada->timestamp = tiempoEnMilisecs();
-
-	int cant_entradas = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
-    char* algoritmo_tlb = config_get_string_value(config_CPU, "ALGORITMO_TLB");
-
-    switch(algoritmo_TLB)
-    {
-        case FIFO:
-            queue_push(TLB, nueva_entrada);
-            break;
-        case LRU:
-            algoritmo_LRU(nueva_entrada);
-            break;
-    }
-}
-
-void algoritmo_LRU(t_tlb* nueva_entrada){
-	t_tlb* auxiliar1 = malloc(sizeof(t_tlb));
-	t_tlb* auxiliar2 = malloc(sizeof(t_tlb));
-
-	int tamanio = queue_size(TLB);
-	auxiliar1 = queue_pop(TLB);
-
-	for(int i = 1; i < tamanio; i++){
-		auxiliar2 = queue_pop(TLB);
-
-		if(auxiliar1->timestamp > auxiliar2->timestamp) {
-			queue_push(TLB, auxiliar1);
-			auxiliar1 = auxiliar2;
-		}
-        // Si el aux1 es más nuevo en la TLB que el aux2, pushea el auxiliar 1 y le asigna el más viejo, o sea auxiliar 2. 
-        // De esta forma, en auxiliar 1 nos queda la entrada que esta hace mas tiempo en TLB para volver a comparar
-		else
-			queue_push(TLB, auxiliar2);
-	}
-	
-	queue_push(TLB, nueva_entrada);
-}
-
-int esta_en_TLB(int nro_pagina){
-	int se_encontro = 0;	
-	for(int i = 0; i < queue_size(TLB); i++){
-		t_tlb* una_entrada = queue_pop(TLB);
-		if (una_entrada->pagina == nro_pagina){
-			una_entrada->timestamp = tiempoEnMilisecs();
-			se_encontro = 1;
-		}
-		queue_push(TLB, una_entrada);
-	}
-    
-    if(se_encontro == 1)  
-        logger(socket_cpu,"PID: %s - TLB HIT - Pagina: %d",una_entrada->pid,nro_pagina );
-    else 
-        logger(socket_cpu,"PID: %s - TLB MISS - Pagina: %d",una_entrada->pid,nro_pagina);
-    
-    return se_encontro;
-}
-
-int numero_pagina(int direccion_logica){
-	// el tamaño página se solicita a la memoria al comenzar la ejecución // falta hacerlo
-	return direccion_logica / tamanio_pagina; // ---> la división ya retorna el entero truncado a la unidad
-}
-
-int desplazamiento_memoria(int direccion_logica, int nro_pagina){
-	return direccion_logica - nro_pagina * tamanio_pagina;
-}
-
-void vaciar_tlb(){
-	while(queue_size(TLB) > 0){
-		t_tlb* una_entrada = queue_pop(TLB);
-		free(una_entrada);
-	}
-}
-
-*/
+    // se podrian env en handshake
 
 int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
@@ -434,6 +306,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     // printf("La instruccion es de numero %d y tiene %d parametros\n", instruccion->nombre, instruccion->cantidad_parametros);
 
     char* registro1;
+
     switch (nombreInstruccion) // Ver la repeticion de logica... -> Abstraer
     {
     case SET:
@@ -457,26 +330,34 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         printf("Cuando hace SET BX 1 queda asi el registro BX del CPU: %u\n", registros_cpu->BX);*/
         sleep(2);
         break;
-    case MOV_IN: // MOV_IN AX BX
-    /*
+    case MOV_IN: // MOV_IN EDX ECX
         t_parametro *registro_datos = list_get(list_parametros, 0);
         t_parametro *registro_direccion = list_get(list_parametros, 1);
-        
-        void* puntero_registro_direccion = seleccionar_registro_cpu(registro_direccion);
-        int num_pag = numero_pagina(puntero_registro_direccion);
-        int desp = desplazamiento(puntero_registro_direccion, num_pag);
-        void valor = num_pag * desp; // no se si es asi, hay que ver como acceder al valor teniendo la direccion. nadie lo pregunto en el foro todavia :(
-	
-        set(registro_datos, valor);
-    */;
+        char* nombre_registro_dato = registro_datos->nombre;
+        char* nombre_registro_dir = registro_direccion->nombre;
+
+        void* registro_dato_1 = seleccionar_registro_cpu(nombre_registro_dato);
+        bool es_registro_uint8_dato = es_de_8_bits(nombre_registro_dato);
+        void* registro_direccion_1 = seleccionar_registro_cpu(nombre_registro_dir);
+        // bool es_registro_uint8_direccion = es_de_8_bits(nombre_registro_dir);
+
+        int direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, registro_direccion_1); // el tamanio deberia ser global
+
+        mandar_direccion_fisica_a_mem(direccion_fisica);
+
+        recv(socket_memoria, &valor, sizeof(int), MSG_WAITALL);
+
+        set(registro_datos, valor, es_registro_uint8_dato);
         break;
-    case MOV_OUT:
-    /*
+    case MOV_OUT: // MOV_OUT EDX ECX
         t_parametro *registro_direccion = list_get(list_parametros, 0);
         t_parametro *registro_datos = list_get(list_parametros, 1);
 
+        void *registro_direccion_cpu= seleccionar_registro_cpu(registro_datos); // este es la direccion logica
+        int direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, registro_direccion_cpu);
+        void *registro_datos_cpu = seleccionar_registro_cpu(registro_datos);
+        escribir_registro_datos_en(registro_datos_cpu, direccion_fisica);
 
-    */
         break;
     case SUM:
         t_parametro *registro_param1 = list_get(list_parametros, 0);
@@ -578,6 +459,84 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         }
     }
     return 0;
+}
+
+void escribir_registro_datos_en(void* registro_datos, int direccion_fisica) {
+    t_paquete *paquete = malloc(sizeof(t_paquete));
+    t_buffer *buffer = malloc(sizeof(t_buffer));
+
+    buffer->size = sizeof(int) * 2 + registro_datos->length;
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    void *stream = buffer->stream;
+
+    // Para el nombre primero mandamos el tamaño y luego el texto en sí:
+    memcpy(stream + buffer->offset, &direccion_fisica, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, &registro_datos, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+
+    buffer->stream = stream;
+
+    paquete->codigo_operacion = ESCRIBIR_REGISTRO_DATOS; // Podemos usar una constante por operación
+
+    void *a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
+    int offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
+    offset += sizeof(int); 
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    // Por último enviamos
+    send(socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
+    // printf("Paquete enviado!\n");
+
+    // Falta liberar todo
+    free(a_enviar);
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+}
+
+void mandar_direccion_fisica_a_mem(int direccion_fisica) {
+    t_paquete *paquete = malloc(sizeof(t_paquete));
+    t_buffer *buffer = malloc(sizeof(t_buffer));
+
+    buffer->size = sizeof(int) * 2;
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    void *stream = buffer->stream;
+
+    // Para el nombre primero mandamos el tamaño y luego el texto en sí:
+    memcpy(stream + buffer->offset, &direccion_fisica, sizeof(int));
+    buffer->offset += sizeof(int);
+
+    buffer->stream = stream;
+
+    paquete->codigo_operacion = DIRECCION_FISICA; // Podemos usar una constante por operación
+
+    void *a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
+    int offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
+    offset += sizeof(int); 
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    // Por último enviamos
+    send(socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
+    // printf("Paquete enviado!\n");
+
+    // Falta liberar todo
+    free(a_enviar);
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
 }
 
 void desalojar(t_pcb* pcb, DesalojoCpu motivo, t_buffer* datos_adicionales) {

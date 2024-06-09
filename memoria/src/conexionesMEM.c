@@ -4,7 +4,10 @@ pthread_t cpu_thread;
 pthread_t kernel_thread;
 t_config* config_memoria;
 t_dictionary* diccionario_instrucciones;
+t_dictionary* diccionario_tablas_paginas;
 char* path_config;
+int tamanio_pagina;
+int tamanio_memoria;
 
 //Acepta el handshake del cliente, se podria hacer mas generico y que cada uno tenga un valor diferente
 int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
@@ -39,7 +42,9 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
     int resultOk = 0;
     // Envio confirmacion de handshake!
     send(socket_cpu, &resultOk, sizeof(int), 0);
-    printf("Se conecto un el cpu!\n");
+    printf("Se conecto la cpu!\n");
+    
+    send(socket_cpu, &tamanio_pagina, sizeof(int), 0);
     
     while(1) {
         t_paquete* paquete = malloc(sizeof(t_paquete));
@@ -78,6 +83,30 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 //free(cantidad_instrucciones);
                 free(pid_string);
                 break;
+            case DIRECCION_FISICA:
+            // Aca es donde aparecer todas mis dudas ddel issue del ivanabete
+                int direccion_fisica = deserializar_direccion_fisica(paquete->buffer);
+                int valor = user_space[direccion_fisica]; // no se si esta bien, hay q probarlo
+                printf("el valor es : %d\n", valor);
+                send(socket_cpu, &valor, sizeof(int), 0);
+                // mover_user_space_al_marco0();
+                // *(user_space + direccion_fisica); // Ver si esto esta bien
+                break;
+            case ESCRIBIR_REGISTRO_DATOS:
+                t_buffer* buffer = malloc(sizeof(t_persona));
+                
+                int direccion_fisica;
+                uint32_t registro_datos;
+                void* stream = buffer->stream;
+                // Deserializamos los campos que tenemos en el buffer
+                memcpy(&direccion_fisica, stream, sizeof(int));
+                stream += sizeof(int);
+                memcpy(&registro_datos, stream, sizeof(uint32_t));
+                stream += sizeof(uint32_t);
+
+                // escribir registro_datos en la direccion_fisica
+                escribir_dato_en_direccion_fisica(direccion_fisica, registro_datos);
+                break;
             default:
                 printf("Rompio todo?\n");
                 // close(socket_cpu); NO cierro conexion
@@ -90,6 +119,22 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
     }
     // Liberamos memoria
     return NULL;
+}
+
+void escribir_dato_en_direccion_fisica(int *direccion, uint32_t dato) {
+    *direccion = dato;
+}
+
+int deserializar_direccion_fisica(t_buffer* buffer) {
+    int direccion_fisica;
+
+    void* stream = buffer->stream;
+    
+    
+    memcpy(&direccion_fisica, stream, sizeof(int));
+    stream += sizeof(int);
+
+    return direccion_fisica;
 }
 
 // Ver error
@@ -214,6 +259,7 @@ void crear_estructuras(char* path_completo, int pid) {
     */
 
     t_list* instrucciones = list_create();
+    t_list* tablas_paginas = list_create();
 
     char* line = NULL;
     //size_t bufsize = 0;
@@ -238,6 +284,7 @@ void crear_estructuras(char* path_completo, int pid) {
     // pid_char = (char*)pid;
     // char *pidchar = (char *)&pid;
     
+    dictionary_put(diccionario_tablas_paginas, pid_char, tablas_paginas); // En un inicio, es una lista vacia, con la key que es el PID
     dictionary_put(diccionario_instrucciones, pid_char, instrucciones);
 
     // ->  

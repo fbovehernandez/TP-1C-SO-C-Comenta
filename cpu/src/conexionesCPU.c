@@ -9,6 +9,8 @@ int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) 
 
     int memoriafd = crear_conexion(IP_MEMORIA, puerto_memoria, valor);
     log_info(logger_CPU, "Conexion establecida con Memoria");
+    memoriafd = esperar_cliente(memoriafd, logger_CPU);
+    recv(memoriafd, &tamanio_pagina, sizeof(int), MSG_WAITALL);
     
     // send(memoriafd, &message_cpu, sizeof(int), 0); // Me conecto y envio un mensaje a memoria
 
@@ -26,7 +28,7 @@ int esperar_cliente(int socket_servidor, t_log *logger_cpu) {
 	recv(socket_cliente, &handshake, sizeof(uint32_t), MSG_WAITALL);
 	if(handshake == 1) {
 		send(socket_cliente, &resultOk, sizeof(uint32_t), 0);
-        log_info(logger_cpu, "Se conecto un cliente de dispatch!\n");
+        log_info(logger_cpu, "Se conecto un cliente!\n");
     } else {
         send(socket_cliente, &resultError, sizeof(uint32_t), 0);
     }

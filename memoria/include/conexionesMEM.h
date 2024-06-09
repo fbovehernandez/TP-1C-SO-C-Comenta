@@ -12,7 +12,10 @@ extern pthread_t kernel_thread;
 extern pthread_t cpu_thread;
 extern t_config* config_memoria;
 extern t_dictionary* diccionario_instrucciones;
+extern t_dictionary* diccionario_tablas_paginas;
 extern char* path_config;
+extern int tamanio_pagina;
+extern int tamanio_memoria;
 
 typedef struct {
     int socket;
@@ -46,5 +49,6 @@ TipoInstruccion pasar_a_enum(char* nombre);//
 //t_cantidad_instrucciones* deserializar_cantidad(t_buffer* buffer);
 int deserializar_pid(t_buffer* buffer);
 void enviar_cantidad_instrucciones_pedidas(char* pid, int socket_cpu);
+int deserializar_direccion_fisica(t_buffer* buffer);
 
 #endif // CONEXIONES_H
