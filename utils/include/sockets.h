@@ -33,6 +33,11 @@ typedef struct {
 } t_tlb;
 
 typedef struct {
+    int pid;
+    int nro_pagina;
+} t_solicitud_frame;
+
+typedef struct {
     int numero_pagina;
     int desplazamiento;
 } t_direccion_logica;
@@ -102,7 +107,10 @@ typedef enum {
     DORMITE,
     CONEXION_INTERFAZ,
     DIRECCION_FISICA,
-    REGISTRO_DATOS
+    REGISTRO_DATOS,
+    LIBERAR_PROCESO,
+    ESCRIBIR_REGISTRO_DATOS,
+    QUIERO_FRAME
 } codigo_operacion;
 
 typedef struct {

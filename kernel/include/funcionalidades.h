@@ -86,7 +86,7 @@ t_pcb* proximo_a_ejecutar();
 void esperar_cpu(t_pcb* pcb);
 t_operacion_io* deserializar_io(t_buffer* buffer);
 t_paquete* recibir_cpu();
-void liberar_memoria(t_pcb* pcb);
+void liberar_memoria(int pid);
 void dormir_io(t_operacion_io* operacion_io, t_pcb* pcb);
 void hilo_dormir_io(t_operacion_io* operacion_io);
 void change_status(t_pcb* pcb, Estado new_status);

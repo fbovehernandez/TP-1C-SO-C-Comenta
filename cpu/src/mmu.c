@@ -1,10 +1,11 @@
 #include "../include/mmu.h"
 
+/* 
 void* crear_tlb() {
     t_tlb tlb;
     int cant_entradas = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
     char* algoritmo_tlb = config_get_string_value(config_CPU, "ALGORITMO_TLB");
-    if(cant_entradas == 0){
+    if(cant_entradas == 0) {
         deshabilitar_tlb();
     }
     return;
@@ -28,8 +29,7 @@ void guardar_en_TLB(int pid, int nro_pagina, int nro_marco) {
 	int cant_entradas   = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
     char* algoritmo_tlb = config_get_string_value(config_CPU, "ALGORITMO_TLB");
 
-    switch(algoritmo_TLB)
-    {
+    switch(algoritmo_TLB) {
         case FIFO:
             queue_push(TLB, nueva_entrada);
             break;
@@ -81,55 +81,68 @@ int esta_en_TLB(int nro_pagina) {
     return se_encontro;
 }
 
-/*            -------------------> POSIBLE SOLUCION FACU <-------------------
-int traducir_direccion_logica_a_fisica_2(int tamanio_pagina, int direccion_logica) {
-    t_direccion_logica* direccion_logica_a_crear;
+*/ 
+
+int traducir_direccion_logica_a_fisica(int tamanio_pagina, int direccion_logica, int pid) { 
+    int frame;
+    t_direccion_logica* direccion_logica_a_crear; 
     direccion_logica_a_crear->numero_página = floor(direccion_logica / tamanio_pagina);
     direccion_logica_a_crear->desplazamiento = direccion_logica - direccion_logica->numero_página * tamanio_pagina;
+
+    pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina, pid); 
     
-    // Ahora si, yo le pido el frame a la memoria y calculo la dir fisica que me da el acceso directo al void* (falta implementar pedir frame a mem)
-    int frame = pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina);
+    recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
+    
+    printf("Frame %s\n", frame);
+    
     int direccion_fisica = frame * tamanio_pagina + direccion_logica_a_crear->desplazamiento;
+    printf("Direccion fisica %s\n", direccion_fisica);
 
     return direccion_fisica;
 }
 
-int pedir_frame_a_memoria(int nro_pagina) { -> Reajustar
-    send(socket_mem, &nro_pagina, sizeof(int), 0);
-    recv(socket_mem, &frame, sizeof(int), 0);
-    return frame;
+void pedir_frame_a_memoria(int nro_pagina, int pid) { 
+    t_solicitud_frame* solicitud_frame = malloc(sizeof(t_solicitud_frame));
+
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+
+    buffer->size = sizeof(char) + sizeof(int); 
+
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    memcpy(buffer->stream + buffer->offset, &solicitud_frame->nro_pagina, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(buffer->stream + buffer->offset, &solicitud_frame->pid, sizeof(int));
+    buffer->offset += sizeof(int);
+
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+
+    paquete->codigo_operacion = QUIERO_FRAME; 
+    paquete->buffer = buffer; 
+
+    void* a_enviar = malloc(buffer->size + sizeof(int) * 2);
+    int offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+    
+    send(socket_memoria, a_enviar, buffer->size + sizeof(int) * 2, 0);
+
+    free(a_enviar);
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
 }
-*/
 
-
-// Solucion 1 - Dir fisica con la pagina (?
-int traducir_direccion_logica_a_fisica(int tamanio_pagina, int direccion_logica) {
-    t_direccion_logica* direccion_logica_a_crear;
-    direccion_logica_a_crear->numero_página = floor(direccion_logica / tamanio_pagina);
-    direccion_logica_a_crear->desplazamiento = direccion_logica - direccion_logica->numero_página * tamanio_pagina;
-    // yo creo que esta es la dir fisica pero en funcion de la pagina, no del frame
-    int direccion_fisica = direccion_logica_a_crear->numero_pagina * tamanio_pagina + direccion_logica_a_crear->desplazamiento;
-
-    return direccion_fisica;
-}
-
-int traer_tamanio_pagina_mem(int socket_mem) {
-    recv(socket_mem,&tamanio_pagina, sizeof(int), 0);
-    return tamanio_pagina;
-}
-
-int numero_pagina(int direccion_logica) {
-	// el tamaño página se solicita a la memoria al comenzar la ejecución // falta hacerlo
-	return direccion_logica / tamanio_pagina; // ---> la división ya retorna el entero truncado a la unidad
-}
-
-int desplazamiento_memoria(int direccion_logica, int nro_pagina) {
-	return direccion_logica - nro_pagina * tamanio_pagina;
-}
-
+/* 
 void vaciar_tlb() {
 	while(queue_size(TLB) > 0){
 		t_tlb* una_entrada = queue_pop(TLB);
 		free(una_entrada);
 	}
 }
+*/

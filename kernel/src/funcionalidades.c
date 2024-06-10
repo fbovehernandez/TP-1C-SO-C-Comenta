@@ -236,8 +236,41 @@ void* a_ready() {
     }
 }
 
-void liberar_memoria(t_pcb* pcb) {
+void liberar_memoria(int pid) {
     //Le mandaria a memoria que debe eliminar el pcb y toda la cosa
+    t_buffer* buffer = malloc(sizeof(t_buffer)); // Creo que no hace falta reservar memoria
+    buffer->size = sizeof(int);
+
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+    
+    memcpy(buffer->stream + buffer->offset, &pid, sizeof(int));
+
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+
+    paquete->codigo_operacion = LIBERAR_PROCESO; // Podemos usar una constante por operación
+    paquete->buffer = buffer; // Nuestro buffer de antes.
+
+    // Armamos el stream a enviar
+    void* a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
+    int offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    // Por último enviamos
+    // hay que poner el socket kernel globallll
+    send(sockets->socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
+    printf("Paquete enviado!");
+
+    // Falta liberar todo
+    free(a_enviar);
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
 }
 
 void* planificar_corto_plazo(void* sockets_necesarios) { // Ver el cambio por tipo void....
@@ -345,7 +378,7 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
         case FIN_PROCESO:
             // pcb = deserializar_pcb(package->buffer); 
             pasar_a_exit(pcb);
-            //liberar_memoria(); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
+            liberar_memoria(pcb->pid); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
             //change_status(pcb, EXIT); 
             //sem_post(&sem_grado_multiprogramacion); // Esto deberia liberar un grado de memoria para que acceda un proceso
             free(pcb);

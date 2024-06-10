@@ -7,6 +7,7 @@
 #include <commons/string.h>
 #include "../../utils/include/sockets.h" 
 #include "../../utils/include/logconfig.h"
+#include "conexionesMEM.h"
 
 typedef struct {
     bool valido; // Esto se hace con el bitmap, creo que es mas facil que lo tenga la pagina

@@ -9,14 +9,16 @@ int main(int argc, char *argv[]) {
     char *puerto_escucha = config_get_string_value(config_memoria, "PUERTO_ESCUCHA");
     path_config = config_get_string_value(config_memoria, "PATH_INSTRUCCIONES");
 
-    // Aca creo el user_space con el tam de la memoria
+    // Aca creo el espacio de usuario con el tam de la memoria
     tamanio_memoria = config_get_int_value(config_memoria, "TAM_MEMORIA");
+
+    espacio_usuario = malloc(sizeof(tamanio_memoria));
+	memset(espacio_usuario, 0, tamanio_memoria); // seteo memoria en 0
     
-    void *user_space = malloc(sizeof(tamanio_memoria));
     tamanio_pagina = config_get_int_value(config_memoria, "TAM_PAGINA");
 
     int cant_frames = tamanio_memoria / tamanio_pagina;
-    // t_bitarray* bitmap = bitarray_create_with_mode(user_space, cant_frames, MSB_FIRST);
+    //t_bitarray* bitmap = bitarray_create_with_mode(user_space, cant_frames, MSB_FIRST);
 
     diccionario_instrucciones = dictionary_create();
     diccionario_tablas_paginas = dictionary_create();

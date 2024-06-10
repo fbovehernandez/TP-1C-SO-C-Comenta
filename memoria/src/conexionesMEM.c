@@ -8,6 +8,7 @@ t_dictionary* diccionario_tablas_paginas;
 char* path_config;
 int tamanio_pagina;
 int tamanio_memoria;
+void* espacio_usuario;
 
 //Acepta el handshake del cliente, se podria hacer mas generico y que cada uno tenga un valor diferente
 int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
@@ -37,6 +38,7 @@ int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
 }
 
 void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa en handle_kernel, se va a recibir peticiones de cpu y se va a hacer algo con ellas (iternado switch)
+    int direccion_fisica;
     int socket_cpu = (intptr_t)socket;
     // free(socket); 
     int resultOk = 0;
@@ -64,9 +66,11 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
         //recv(socket_cpu, paquete->buffer->stream, paquete->buffer->size, 0);
         recv(socket_cpu, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
 
+        void* stream = paquete->buffer->stream;
+
         switch(paquete->codigo_operacion) { 
             case QUIERO_INSTRUCCION:
-                t_solicitud_instruccion* solicitud_cpu = deserializar_solicitud(paquete->buffer);
+                t_solicitud_instruccion* solicitud_cpu = deserializar_solicitud_instruccion(paquete->buffer);
                 printf("Se va a dormir un ratito\n");
                 usleep(1000); // Harcodeado nashe para probar
                 enviar_instruccion(solicitud_cpu, socket_cpu);
@@ -84,20 +88,26 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 free(pid_string);
                 break;
             case DIRECCION_FISICA:
-            // Aca es donde aparecer todas mis dudas ddel issue del ivanabete
-                int direccion_fisica = deserializar_direccion_fisica(paquete->buffer);
-                int valor = user_space[direccion_fisica]; // no se si esta bien, hay q probarlo
-                printf("el valor es : %d\n", valor);
-                send(socket_cpu, &valor, sizeof(int), 0);
-                // mover_user_space_al_marco0();
-                // *(user_space + direccion_fisica); // Ver si esto esta bien
+                int es_uint8;
+    
+                memcpy(&direccion_fisica, stream, sizeof(int));
+                stream += sizeof(int);
+                memcpy(&es_uint8, stream, sizeof(bool));
+                stream += sizeof(bool);
+                printf("la dir fis recib es %d\n", direccion_fisica);
+
+                uint32_t registro;
+                if (es_uint8) { // esta func hacerla en socket.h
+                    memcpy((uint8_t*)&registro, (uint8_t*) (espacio_usuario + direccion_fisica), sizeof(uint8_t)); // todo esto me hace un poco de ruido igual
+                } else {
+                    memcpy(&registro, (uint32_t*) (espacio_usuario + direccion_fisica), sizeof(uint32_t));
+                }
+
+                printf("el valor es : %d\n", registro);
+                send(socket_cpu, &registro, sizeof(int), 0);
                 break;
             case ESCRIBIR_REGISTRO_DATOS:
-                t_buffer* buffer = malloc(sizeof(t_persona));
-                
-                int direccion_fisica;
                 uint32_t registro_datos;
-                void* stream = buffer->stream;
                 // Deserializamos los campos que tenemos en el buffer
                 memcpy(&direccion_fisica, stream, sizeof(int));
                 stream += sizeof(int);
@@ -105,7 +115,13 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 stream += sizeof(uint32_t);
 
                 // escribir registro_datos en la direccion_fisica
-                escribir_dato_en_direccion_fisica(direccion_fisica, registro_datos);
+                memcpy(&direccion_fisica, &registro_datos, sizeof(uint32_t));
+                break;
+            case QUIERO_FRAME:
+                int valor_hardcode = 12;
+                t_solicitud_frame* pedido_frame = deserializar_solicitud_frame(paquete->buffer);
+                // int frame = buscar_frame(pedido_frame);
+                send(socket_cpu, &valor_hardcode, sizeof(int), 0); 
                 break;
             default:
                 printf("Rompio todo?\n");
@@ -121,20 +137,25 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
     return NULL;
 }
 
-void escribir_dato_en_direccion_fisica(int *direccion, uint32_t dato) {
-    *direccion = dato;
+int buscar_frame(t_solicitud_frame* pedido_frame) {
+    t_list* tabla_paginas = dictionary_get(diccionario_tablas_paginas, string_itoa(pedido_frame->pid)); // el diccionario tiene como key el pid y la lista de pags asociado a ese pid
+    int numero_frame = *(int*) list_get(tabla_paginas, pedido_frame->nro_pagina);
+    
+    // if(numero_frame == NULL) return -1;
+    return numero_frame;
 }
 
-int deserializar_direccion_fisica(t_buffer* buffer) {
-    int direccion_fisica;
+t_solicitud_frame* deserializar_solicitud_frame(t_buffer* buffer) {
+    t_solicitud_frame* solicitud_frame = malloc(sizeof(t_solicitud_frame));
 
     void* stream = buffer->stream;
-    
-    
-    memcpy(&direccion_fisica, stream, sizeof(int));
+ 
+    memcpy(&solicitud_frame->pid, stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&solicitud_frame->nro_pagina, stream, sizeof(int));
     stream += sizeof(int);
 
-    return direccion_fisica;
+    return solicitud_frame;
 }
 
 // Ver error
@@ -180,6 +201,15 @@ void* handle_kernel(void* socket) {
 
                 free(path);
                 break;
+            case LIBERAR_PROCESO:
+                int pid;
+                void* stream = paquete->buffer->stream;
+                memcpy(&(pid), stream, sizeof(int));
+                stream += sizeof(int);
+                
+                dictionary_remove_and_destroy(diccionario_instrucciones, string_itoa(pid), (void*) eliminar_instrucciones);
+                dictionary_remove_and_destroy(diccionario_tablas_paginas, string_itoa(pid), (void*) eliminar_tablas_paginas);
+                break;
             default: 
                 break;
         }
@@ -191,6 +221,21 @@ void* handle_kernel(void* socket) {
     }
 
     return NULL;
+}
+
+void eliminar_instrucciones(t_list* instrucciones) {
+    list_clean_and_destroy_elements(instrucciones, (void*)eliminar_instruccion);
+}
+
+void eliminar_instruccion(t_instruccion* instruccion) {
+    list_clean_and_destroy_elements(instruccion->parametros, (void*)free);
+
+    free(instruccion);
+}
+
+//TO DO: Como es la estructura de una lista de tablas de paginas?
+void eliminar_tablas_paginas(t_list* tablas_paginas) {
+    
 }
     
 void imprimir_diccionario() {
@@ -416,7 +461,7 @@ void imprimir_path(t_path* path) {
     printf("Path: %s\n", path->path);
 }
 
-t_solicitud_instruccion* deserializar_solicitud(t_buffer* buffer) {
+t_solicitud_instruccion* deserializar_solicitud_instruccion(t_buffer* buffer) {
     t_solicitud_instruccion* instruccion = malloc(sizeof(t_solicitud_instruccion));
     printf("Deserializando solicitud\n");
     void* stream = buffer->stream;

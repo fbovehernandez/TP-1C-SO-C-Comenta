@@ -1,5 +1,6 @@
 #include "../include/gestionDeMemoria.h"
 
+/* 
 Memoria inicializarMemoria(t_config* config_memoria) {
     Memoria mem;
 
@@ -24,12 +25,4 @@ Memoria inicializarMemoria(t_config* config_memoria) {
     
     return mem;
 }
-
-int recibir_solicitud_frame(int PID, int nroPagina) {
-    t_list* tablaPaginas = dictionary_get(diccionario_tablas_paginas, string_itoa(PID)); // hacer ghlobal la tabla de paginas
-    int frame = list_get(tablaPaginas, nroPagina);
-    return frame;
-
-    // Buscar en la tabla de páginas del PID la página nroPagina
-    // Voy a considerar de que no puede recibir un frame que no existe
-}
+*/

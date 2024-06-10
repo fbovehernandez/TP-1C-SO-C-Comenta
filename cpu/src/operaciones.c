@@ -339,23 +339,28 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         void* registro_dato_1 = seleccionar_registro_cpu(nombre_registro_dato);
         bool es_registro_uint8_dato = es_de_8_bits(nombre_registro_dato);
         void* registro_direccion_1 = seleccionar_registro_cpu(nombre_registro_dir);
-        // bool es_registro_uint8_direccion = es_de_8_bits(nombre_registro_dir);
+        bool es_registro_uint8_direccion = es_de_8_bits(nombre_registro_dir);
 
-        int direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, registro_direccion_1); // el tamanio deberia ser global
+        int direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, &registro_direccion_1, pcb->pid, es_registro_uint8_direccion); 
+        printf("direccion fisica que vamos a usar %d \n", direccion_fisica);
 
-        mandar_direccion_fisica_a_mem(direccion_fisica);
+        mandar_direccion_fisica_a_mem(direccion_fisica, es_registro_uint8_direccion);
 
         recv(socket_memoria, &valor, sizeof(int), MSG_WAITALL);
-
-        set(registro_datos, valor, es_registro_uint8_dato);
+        printf(" el valor es %d \n", valor);
+        set(registro_dato_1, valor, es_registro_uint8_dato);
+        printf("Registro datos: %d\n", registro_dato_1);
+        
         break;
     case MOV_OUT: // MOV_OUT EDX ECX
-        t_parametro *registro_direccion = list_get(list_parametros, 0);
-        t_parametro *registro_datos = list_get(list_parametros, 1);
+        t_parametro *registro_direccion1 = list_get(list_parametros, 0);
+        t_parametro *registro_datos1 = list_get(list_parametros, 1);
 
-        void *registro_direccion_cpu= seleccionar_registro_cpu(registro_datos); // este es la direccion logica
-        int direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, registro_direccion_cpu);
-        void *registro_datos_cpu = seleccionar_registro_cpu(registro_datos);
+        uint32_t *registro_direccion_cpu= seleccionar_registro_cpu(registro_direccion1); // este es la direccion logica
+        
+        //FALTA PONERLE SI ES DE 8 BITS O 32 EN REGISTRO_DIRECCION_CPU
+        int direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, registro_direccion_cpu, pcb->pid);
+        void *registro_datos_cpu = seleccionar_registro_cpu(registro_datos1);
         escribir_registro_datos_en(registro_datos_cpu, direccion_fisica);
 
         break;
@@ -407,7 +412,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         break;
     case SIGNAL:
         break;
-    case IO_GEN_SLEEP:
+    case IO_GEN_SLEEP: 
         t_parametro *interfaz1 = list_get(list_parametros, 0);
         char *interfazSeleccionada = interfaz1->nombre;
 
@@ -461,11 +466,17 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     return 0;
 }
 
-void escribir_registro_datos_en(void* registro_datos, int direccion_fisica) {
+void escribir_registro_datos_en(void* registro_datos, int direccion_fisica, bool esDe8bits) {
     t_paquete *paquete = malloc(sizeof(t_paquete));
     t_buffer *buffer = malloc(sizeof(t_buffer));
-
-    buffer->size = sizeof(int) * 2 + registro_datos->length;
+    
+    buffer->size = sizeof(int) * 2;
+    if(esDe8bits) {
+        buffer->size += sizeof(uint8_t);    
+    }else{
+        buffer->size += sizeof(uint32_t);    
+    }
+    
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
@@ -474,8 +485,13 @@ void escribir_registro_datos_en(void* registro_datos, int direccion_fisica) {
     // Para el nombre primero mandamos el tamaño y luego el texto en sí:
     memcpy(stream + buffer->offset, &direccion_fisica, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &registro_datos, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
+    if(esDe8bits) {
+        memcpy(stream + buffer->offset, &registro_datos, sizeof(uint8_t));
+        buffer->offset += sizeof(uint8_t); 
+    }else{
+        memcpy(stream + buffer->offset, &registro_datos, sizeof(uint32_t));
+        buffer->offset += sizeof(uint32_t);  
+    } 
 
     buffer->stream = stream;
 
@@ -501,7 +517,7 @@ void escribir_registro_datos_en(void* registro_datos, int direccion_fisica) {
     free(paquete);
 }
 
-void mandar_direccion_fisica_a_mem(int direccion_fisica) {
+void mandar_direccion_fisica_a_mem(int direccion_fisica, bool es_de_8_bits) {
     t_paquete *paquete = malloc(sizeof(t_paquete));
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
@@ -514,12 +530,14 @@ void mandar_direccion_fisica_a_mem(int direccion_fisica) {
     // Para el nombre primero mandamos el tamaño y luego el texto en sí:
     memcpy(stream + buffer->offset, &direccion_fisica, sizeof(int));
     buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, &es_de_8_bits, sizeof(bool));
+    buffer->offset += sizeof(bool);
 
     buffer->stream = stream;
 
     paquete->codigo_operacion = DIRECCION_FISICA; // Podemos usar una constante por operación
 
-    void *a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
+    void *a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int) + sizeof(bool));
     int offset = 0;
 
     memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
@@ -529,7 +547,7 @@ void mandar_direccion_fisica_a_mem(int direccion_fisica) {
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
     // Por último enviamos
-    send(socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
+    send(socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int) + sizeof(bool), 0);
     // printf("Paquete enviado!\n");
 
     // Falta liberar todo
