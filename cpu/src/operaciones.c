@@ -356,10 +356,10 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         t_parametro *registro_direccion1 = list_get(list_parametros, 0);
         t_parametro *registro_datos1 = list_get(list_parametros, 1);
 
-        uint32_t *registro_direccion_cpu= seleccionar_registro_cpu(registro_direccion1); // este es la direccion logica
-        
+        void *registro_direccion_cpu= seleccionar_registro_cpu(registro_direccion1); // este es la direccion logica
+        bool es_registro_uint8_direccion = es_de_8_bits(registro_direccion_cpu);
         //FALTA PONERLE SI ES DE 8 BITS O 32 EN REGISTRO_DIRECCION_CPU
-        int direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, registro_direccion_cpu, pcb->pid);
+        int direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, registro_direccion_cpu, pcb->pid, es_registro_uint8_direccion);
         void *registro_datos_cpu = seleccionar_registro_cpu(registro_datos1);
         escribir_registro_datos_en(registro_datos_cpu, direccion_fisica);
 

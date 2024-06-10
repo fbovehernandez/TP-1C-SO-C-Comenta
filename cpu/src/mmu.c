@@ -83,11 +83,17 @@ int esta_en_TLB(int nro_pagina) {
 
 */ 
 
-int traducir_direccion_logica_a_fisica(int tamanio_pagina, int direccion_logica, int pid) { 
+int traducir_direccion_logica_a_fisica(int tamanio_pagina, void* direccion_logica, int pid, bool es_uint8) { 
     int frame;
     t_direccion_logica* direccion_logica_a_crear; 
-    direccion_logica_a_crear->numero_página = floor(direccion_logica / tamanio_pagina);
-    direccion_logica_a_crear->desplazamiento = direccion_logica - direccion_logica->numero_página * tamanio_pagina;
+    if(es_uint8) {
+        uint8_t dir_log = &direccion_logica;
+    } else {
+        uint32_t dir_log = &direccion_logica;
+    }
+    //REVISAR TO DO
+    direccion_logica_a_crear->numero_página = floor(dir_log / tamanio_pagina);
+    direccion_logica_a_crear->desplazamiento = dir_log - direccion_logica_a_crear->numero_página * tamanio_pagina;
 
     pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina, pid); 
     
