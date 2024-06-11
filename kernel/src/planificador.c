@@ -30,7 +30,7 @@ void pasar_a_blocked(t_pcb* pcb) {
 
 void pasar_a_exit(t_pcb* pcb) {
     change_status(pcb, EXIT);
-    liberar_memoria(pcb);
+    // liberar_memoria(pcb);
     // liberar_pcb(pcb);
     sem_post(&sem_grado_multiprogramacion);
 }

@@ -29,7 +29,7 @@ int recibir_cantidad_instrucciones(int socket_memoria, int pid);
 t_instruccion* recibir_instruccion(int socket_memoria, t_pcb *pcb);
 t_instruccion* instruccion_deserializar(t_buffer* buffer);
 int ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb);
-void escribir_registro_datos_en(uint32_t* registro_datos, int direccion_fisica);
+// void escribir_registro_datos_en(uint32_t* registro_datos, int direccion_fisica);
 void mandar_direccion_fisica_a_mem(int direccion_fisica, bool es_de_8_bits);
 void desalojar(t_pcb* pcb, DesalojoCpu motivo, t_buffer* add);
 void solicitud_dormirIO_kernel(char* interfaz, int unidades);

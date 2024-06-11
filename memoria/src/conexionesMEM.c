@@ -88,7 +88,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 free(pid_string);
                 break;
             case DIRECCION_FISICA:
-                int es_uint8;
+                bool es_uint8;
     
                 memcpy(&direccion_fisica, stream, sizeof(int));
                 stream += sizeof(int);
@@ -98,7 +98,9 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
                 uint32_t registro;
                 if (es_uint8) { // esta func hacerla en socket.h
-                    memcpy((uint8_t*)&registro, (uint8_t*) (espacio_usuario + direccion_fisica), sizeof(uint8_t)); // todo esto me hace un poco de ruido igual
+                    uint8_t valor_bit_8;
+                    memcpy(&valor_bit_8, (uint8_t*) (espacio_usuario + direccion_fisica), sizeof(uint8_t)); // puntero auxiliar
+                    registro = valor_bit_8;
                 } else {
                     memcpy(&registro, (uint32_t*) (espacio_usuario + direccion_fisica), sizeof(uint32_t));
                 }

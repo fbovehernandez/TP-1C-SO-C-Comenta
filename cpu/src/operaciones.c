@@ -2,7 +2,6 @@
 
 t_log *logger;
 int hay_interrupcion;
-int tamanio_pagina;
 
 // t_cantidad_instrucciones* cantidad_instrucciones;
 
@@ -83,7 +82,6 @@ void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria) {
     int offset = 0;
 
     memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-
     offset += sizeof(int);
     memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
     offset += sizeof(int);
@@ -91,7 +89,7 @@ void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria) {
 
     // printf("Pedi la cantidad de instrucciones del proceso %d.\n", pid);
     // Por último enviamos
-    send(socket_memoria, a_enviar, buffer->size + sizeof(int) * 2, 0);
+    send(socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
 
     // No nos olvidamos de liberar la memoria que ya no usaremos
     free(a_enviar);
@@ -331,6 +329,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         sleep(2);
         break;
     case MOV_IN: // MOV_IN EDX ECX
+        uint32_t valor_en_mem;
         t_parametro *registro_datos = list_get(list_parametros, 0);
         t_parametro *registro_direccion = list_get(list_parametros, 1);
         char* nombre_registro_dato = registro_datos->nombre;
@@ -338,31 +337,32 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         void* registro_dato_1 = seleccionar_registro_cpu(nombre_registro_dato);
         bool es_registro_uint8_dato = es_de_8_bits(nombre_registro_dato);
-        void* registro_direccion_1 = seleccionar_registro_cpu(nombre_registro_dir);
+        uint32_t* registro_direccion_1 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_dir);
         bool es_registro_uint8_direccion = es_de_8_bits(nombre_registro_dir);
 
-        int direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, &registro_direccion_1, pcb->pid, es_registro_uint8_direccion); 
+        int direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, *registro_direccion_1, pcb->pid); 
         printf("direccion fisica que vamos a usar %d \n", direccion_fisica);
 
-        mandar_direccion_fisica_a_mem(direccion_fisica, es_registro_uint8_direccion);
+        mandar_direccion_fisica_a_mem(direccion_fisica, es_registro_uint8_dato);
 
-        recv(socket_memoria, &valor, sizeof(int), MSG_WAITALL);
-        printf(" el valor es %d \n", valor);
-        set(registro_dato_1, valor, es_registro_uint8_dato);
-        printf("Registro datos: %d\n", registro_dato_1);
+        recv(socket_memoria, &valor_en_mem, sizeof(uint32_t), MSG_WAITALL);
+        printf(" el valor es %d \n", valor_en_mem);
+        set(registro_dato_1, valor_en_mem, es_registro_uint8_dato);
+       //  printf("Registro datos: %d\n", registro_dato_1);
         
         break;
     case MOV_OUT: // MOV_OUT EDX ECX
+    /* 
         t_parametro *registro_direccion1 = list_get(list_parametros, 0);
         t_parametro *registro_datos1 = list_get(list_parametros, 1);
 
-        void *registro_direccion_cpu= seleccionar_registro_cpu(registro_direccion1); // este es la direccion logica
+        // void *registro_direccion_cpu= seleccionar_registro_cpu(registro_direccion1); // este es la direccion logica
         bool es_registro_uint8_direccion = es_de_8_bits(registro_direccion_cpu);
         //FALTA PONERLE SI ES DE 8 BITS O 32 EN REGISTRO_DIRECCION_CPU
         int direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, registro_direccion_cpu, pcb->pid, es_registro_uint8_direccion);
         void *registro_datos_cpu = seleccionar_registro_cpu(registro_datos1);
         escribir_registro_datos_en(registro_datos_cpu, direccion_fisica);
-
+*/
         break;
     case SUM:
         t_parametro *registro_param1 = list_get(list_parametros, 0);
@@ -466,6 +466,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     return 0;
 }
 
+/* 
 void escribir_registro_datos_en(void* registro_datos, int direccion_fisica, bool esDe8bits) {
     t_paquete *paquete = malloc(sizeof(t_paquete));
     t_buffer *buffer = malloc(sizeof(t_buffer));
@@ -516,7 +517,7 @@ void escribir_registro_datos_en(void* registro_datos, int direccion_fisica, bool
     free(paquete->buffer);
     free(paquete);
 }
-
+*/
 void mandar_direccion_fisica_a_mem(int direccion_fisica, bool es_de_8_bits) {
     t_paquete *paquete = malloc(sizeof(t_paquete));
     t_buffer *buffer = malloc(sizeof(t_buffer));

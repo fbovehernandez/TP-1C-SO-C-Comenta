@@ -83,26 +83,20 @@ int esta_en_TLB(int nro_pagina) {
 
 */ 
 
-int traducir_direccion_logica_a_fisica(int tamanio_pagina, void* direccion_logica, int pid, bool es_uint8) { 
+int traducir_direccion_logica_a_fisica(int tamanio_pagina, uint32_t direccion_logica, int pid) { 
     int frame;
-    t_direccion_logica* direccion_logica_a_crear; 
-    if(es_uint8) {
-        uint8_t dir_log = &direccion_logica;
-    } else {
-        uint32_t dir_log = &direccion_logica;
-    }
-    //REVISAR TO DO
-    direccion_logica_a_crear->numero_página = floor(dir_log / tamanio_pagina);
-    direccion_logica_a_crear->desplazamiento = dir_log - direccion_logica_a_crear->numero_página * tamanio_pagina;
+    t_direccion_logica* direccion_logica_a_crear = malloc(sizeof(t_direccion_logica)); 
+
+    direccion_logica_a_crear->numero_pagina = floor(direccion_logica / tamanio_pagina);
+    direccion_logica_a_crear->desplazamiento = direccion_logica - direccion_logica_a_crear->numero_pagina * tamanio_pagina;
 
     pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina, pid); 
     
     recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
     
-    printf("Frame %s\n", frame);
+    printf("Frame %d\n", frame);
     
     int direccion_fisica = frame * tamanio_pagina + direccion_logica_a_crear->desplazamiento;
-    printf("Direccion fisica %s\n", direccion_fisica);
 
     return direccion_fisica;
 }
@@ -112,7 +106,7 @@ void pedir_frame_a_memoria(int nro_pagina, int pid) {
 
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
-    buffer->size = sizeof(char) + sizeof(int); 
+    buffer->size = sizeof(int) + sizeof(int); 
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);

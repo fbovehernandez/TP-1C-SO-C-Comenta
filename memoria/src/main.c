@@ -11,11 +11,11 @@ int main(int argc, char *argv[]) {
 
     // Aca creo el espacio de usuario con el tam de la memoria
     tamanio_memoria = config_get_int_value(config_memoria, "TAM_MEMORIA");
-
-    espacio_usuario = malloc(sizeof(tamanio_memoria));
-	memset(espacio_usuario, 0, tamanio_memoria); // seteo memoria en 0
     
     tamanio_pagina = config_get_int_value(config_memoria, "TAM_PAGINA");
+
+    espacio_usuario = malloc(tamanio_memoria);
+	memset(espacio_usuario, 0, tamanio_memoria); // seteo memoria en 0
 
     int cant_frames = tamanio_memoria / tamanio_pagina;
     //t_bitarray* bitmap = bitarray_create_with_mode(user_space, cant_frames, MSB_FIRST);
