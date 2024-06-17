@@ -17,9 +17,11 @@ void inicializar_tlb(t_config* config_CPU) {
     tlb = dictionary_create();
 }
 
+/* 
 bool estaEnLaTLB(int pid, int pagina) {
     
 }
+*/
 
 /* 
 void* crear_tlb() {

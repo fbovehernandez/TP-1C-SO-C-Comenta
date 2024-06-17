@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
     registros_cpu = malloc(sizeof(t_registros));
     registros_cpu = inicializar_registros_cpu(registros_cpu);
 
-    tlb = inicializar_tlb(config_CPU);
+    //tlb = inicializar_tlb(config_CPU);
 
     // Aca lo conecto a memoria -> creo que esto SI deberia ser un hilo
     socket_memoria = conectar_memoria(IP_MEMORIA, puerto_memoria, logger_CPU);

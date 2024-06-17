@@ -58,12 +58,6 @@ typedef struct {
     int desplazamiento;
 } t_direccion_logica;
 
-typedef struct {
-    int direccion_fisica;
-    int tamanio;
-    int cantidad_paginas;
-}t_direccion_fisica;
-
 // Posible idea, crear un struct para el nombre, pero serian mas mallocs y mas frees.
 typedef struct { // usa io para pasarlo al kernel
     int nombre_interfaz_largo;
@@ -230,8 +224,9 @@ typedef enum {
 
 typedef struct {
     int direccion_fisica;
-    bool tamanio;
+    int tamanio;
     int cantidad_paginas;
+    int direccion_logica;
 } t_direccion_fisica;
 
 typedef struct {

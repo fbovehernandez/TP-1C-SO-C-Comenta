@@ -269,7 +269,7 @@ void *planificar_corto_plazo(void *sockets_necesarios)
         pasar_a_exec(pcb);
         pthread_mutex_unlock(&no_hay_nadie_en_cpu);
 
-        if (esRR())
+        /*if (esRR())
         {
             pthread_create(&hilo_quantum, NULL, (void *)esperar_RR, (void *)(intptr_t)socket_INT);
             sem_post(&sem_contador_quantum);
@@ -278,26 +278,26 @@ void *planificar_corto_plazo(void *sockets_necesarios)
         {
             pthread_create(&hilo_quantum, NULL, (void *)esperar_VRR, (void *)(intptr_t)socket_INT);
             sem_post(&sem_contador_quantum);
-        }
+        }*/
 
         esperar_cpu(pcb);
 
-        if (es_VRR_RR())
+        /*if (es_VRR_RR())
         {
             pthread_cancel(hilo_quantum);
-        }
+        }*/
     }
 }
 
-int es_VRR_RR() {
+/*int es_VRR_RR() {
     return esRR() || esVRR();
-}
+}*/
 
 int esRR() {
     return strcmp(algoritmo_planificacion, "RR") == 0;
 }
 
-int esVRR() {
+/*int esVRR() {
     return strcmp(algoritmo_planificacion, "VRR") == 0;
 }
 
@@ -305,7 +305,7 @@ void *esperar_VRR(void *sockets_Int) {
     timer = temporal_create(); // Crearlo ya empieza a contar
     esperar_RR(sockets_Int);
     return NULL;
-}
+}*/
 
 /*
     int64_t temporal_gettime(t_temporal* temporal);
@@ -326,84 +326,6 @@ void *esperar_RR(void *sockets_Int) {
     return NULL;
 }
 
-void esperar_cpu(t_pcb *pcb) { // Evaluar la idea de que esto sea otro hilo...
-    DesalojoCpu devolucion_cpu;
-
-    t_paquete *package = recibir_cpu(); // pcb y codigo de operacion (devolucion_cpu)
-    devolucion_cpu = package->codigo_operacion;
-    // Deserializo antes el pcb, me ahorro cierta logica y puedo hacer send si es IO_BLOCKED
-    pcb = deserializar_pcb(package->buffer);
-    imprimir_pcb(pcb);
-
-    if (esVRR()) {
-        temporal_stop(timer);
-        ms_transcurridos = temporal_gettime(timer);
-        temporal_destroy(timer);
-        pcb->quantum = max(0, quantum - ms_transcurridos); // Si el quantum es menor a 0, lo seteo en 0, posibles problemas de latencia
-    }
-
-    switch (devolucion_cpu) {
-        case ERROR_STDOUT || ERROR_STDIN:
-                pasar_a_exit(pcb);
-                liberar_pcb(pcb);
-        case INTERRUPCION_QUANTUM:
-            printf("Volvio a ready por interrupción de quantum\n");
-            if (esVRR() && leQuedaTiempoDeQuantum(pcb)) {
-                pasar_a_ready_plus(pcb);
-            }
-            else {
-                pasar_a_ready(pcb);
-            }
-            break;
-        case DORMIR_INTERFAZ:
-            t_operacion_io *operacion_io = deserializar_io(package->buffer);
-            dormir_io(operacion_io, pcb);
-            // dormir_io(operacion_io);
-            break;
-        case WAIT_RECURSO:
-            t_parametro *recurso_wait = deserializar_parametro(package->buffer);
-            printf("el nombre del recurso es %s\n", recurso_wait->nombre);
-            wait_recurso(pcb, recurso_wait->nombre);
-            break;
-        case SIGNAL_RECURSO:
-            t_parametro *recurso_signal = deserializar_parametro(package->buffer);
-            signal_recurso(pcb, recurso_signal->nombre);
-            break;
-        case FIN_PROCESO:
-            // pcb = deserializar_pcb(package->buffer);
-            pasar_a_exit(pcb);
-            // liberar_memoria(pcb->pid); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
-            // change_status(pcb, EXIT);
-            // sem_post(&sem_grado_multiprogramacion); // Esto deberia liberar un grado de memoria para que acceda un proceso
-            free(pcb);
-            break;
-        case PEDIDO_LECTURA:
-            t_pedido_lectura *pedido_lectura = deserializar_pedido_lectura(package->buffer);
-            mandar_datos_io_stdin(pedido_lectura->interfaz, pedido_lectura->registro_direccion, pedido_lectura->registro_tamanio);
-            break;
-        case PEDIDO_ESCRITURA:
-            
-                t_pedido_escritura* pedido_escritura = desearializar_pedido_escritura(package->buffer);
-                if(dictionary_has_key(diccionario_io, pedido_escritura->nombre_interfaz)) {
-                    mandar_a_escribir_a_memoria(pedido_escritura->nombre_interfaz, pedido_escritura->direccion_fisica, pedido_escritura->tamanio);
-                } else {
-                    // I DON'T KNOW WHAT TO DO IF THIS HAPPENS
-                    printf("No existe la io ingresada\n");
-                    exit(1);
-                }
-                free(pedido_escritura->nombre_interfaz);
-                break;
-            default:
-                printf("Llego a default de la 333 en funcionalidades.c\n");
-                break;
-            
-        }
-
-    free(package->buffer->stream); // Liberar memoria
-    free(package->buffer);
-    free(package);
-}
-
 int max(int num1, int num2)
 {
     return num1 > num2 ? num1 : num2;
@@ -422,11 +344,11 @@ t_pcb *proximo_a_ejecutar()
     if (!queue_is_empty(cola_prioritarios_por_signal))
     {
         pcb = queue_pop(cola_prioritarios_por_signal);
-    }
+    }/*
     else if (!queue_is_empty(cola_ready_plus))
     {
         pcb = queue_pop(cola_ready_plus);
-    }
+    }*/
     else if (!queue_is_empty(cola_ready))
     {
         pcb = queue_pop(cola_ready);
@@ -514,10 +436,10 @@ void mandar_datos_io_stdin(char* interfaz_nombre, uint32_t registro_direccion, u
     send(socket_io, a_enviar, buffer->size + sizeof(int) * 2, 0);
     */
     // No nos olvidamos de liberar la memoria que ya no usaremos
-    free(a_enviar);
+    /*free(a_enviar);
     free(paquete->buffer->stream);
     free(paquete->buffer);
-    free(paquete);
+    free(paquete);*/
 } 
 
 void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
@@ -529,14 +451,26 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
     pcb = deserializar_pcb(package->buffer);
     imprimir_pcb(pcb);
 
-    switch (devolucion_cpu) {
+   /* if (esVRR()) {
+        temporal_stop(timer);
+        ms_transcurridos = temporal_gettime(timer);
+        temporal_destroy(timer);
+        pcb->quantum = max(0, quantum - ms_transcurridos); // Si el quantum es menor a 0, lo seteo en 0, posibles problemas de latencia
+    }*/
 
-// facu
+    switch (devolucion_cpu) {
+        case ERROR_STDOUT || ERROR_STDIN:
+            pasar_a_exit(pcb);
+            //liberar_pcb(pcb);
             break;
         case INTERRUPCION_QUANTUM:
-            // pcb = deserializar_pcb(package->buffer);
-            printf("Volvio a ready");
-            pasar_a_ready(pcb);
+            printf("Volvio a ready por interrupción de quantum\n");
+            /*if (esVRR() && leQuedaTiempoDeQuantum(pcb)) {
+                //pasar_a_ready_plus(pcb);
+            }
+            else {
+                pasar_a_ready(pcb);
+            }*/
             break;
         case DORMIR_INTERFAZ:
             t_operacion_io* operacion_io = deserializar_io(package->buffer);
@@ -576,11 +510,11 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             }
             free(pedido_escritura->nombre_interfaz);
             break;
-        case FS_CREATE:
+        //case FS_CREATE:
             /*
             t_pedido_fs_create* pedido_fs = desearializar_pedido_fs_create(package->buffer);
             */
-            break;
+            //break;
         default:
             printf("Llego a default de la 333 en funcionalidades.c\n");
             break;
@@ -995,11 +929,11 @@ void MULTIPROGRAMACION(int valor) {
     */
     if(grado_multiprogramacion < valor) {
         for(int i=0; i < valor-grado_multiprogramacion; i++) {
-            sem_post(&grado_multiprogramacion);
+            sem_post(&sem_grado_multiprogramacion);
         }
     } else if(grado_multiprogramacion > valor) {
         for(int i=0; i < grado_multiprogramacion-valor; i++) {
-            sem_wait(&grado_multiprogramacion);
+            sem_wait(&sem_grado_multiprogramacion);
         }
     }
     grado_multiprogramacion = valor;

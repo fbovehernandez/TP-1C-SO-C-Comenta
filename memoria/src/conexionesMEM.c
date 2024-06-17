@@ -36,10 +36,10 @@ int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
         pthread_create(&cpu_thread, NULL, (void*)handle_cpu, (void*)(intptr_t)socket_cliente);
     } else if(handshake == 91) {
         // pthread_t cpu_thread;
-        pthread_create(&io_stdin_thread, NULL, (void*)handle_io_stdin, (void*)(intptr_t)socket_cliente);
+        pthread_create(&io_stdin_thread, NULL, (void*)handle_io_stdin, (void*)(intptr_t)socket_cliente); // Ver
     } else if(handshake == 79) {
         // pthread_t cpu_thread;
-        pthread_create(&io_stdout_thread, NULL, (void*)handle_io_stdout, (void*)(intptr_t)socket_cliente);
+        pthread_create(&io_stdout_thread, NULL, (void*)handle_io_stdout, (void*)(intptr_t)socket_cliente); // Ver
     } else {
         send(socket_cliente, &resultError, sizeof(int), 0);
         close(socket_cliente);
@@ -51,7 +51,7 @@ int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
 
 
 // Ejemplo de esto numerico considerando un tam_pagina = 4bytes
-/* 
+/*
 
 Tamanio total en cantidad de bytes x frames = 12 bytes
 Tamanio solicitado = 10 bytes
@@ -59,6 +59,7 @@ Tamanio solicitado = 10 bytes
 10 DEBE ser > a 12 - 4 (tam_pagina) = 8 y 10 < 12 (total bytes x frame)
 
 */
+
 bool check_same_page(int tamanio, int cant_bytes_uso) { 
     return tamanio > cant_bytes_uso - tamanio_pagina && tamanio < cant_bytes_uso;
 }
@@ -147,34 +148,54 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 free(pid_string);
                 break;
             case RECIBIR_DIRECCIONES:
-                int respuesta_ok;                t_list* direcciones_restantes = recibir_resto_direcciones(socket_cpu, dir_fisica->cantidad_paginas);
+                int respuesta_ok = 1;
+                t_list* direcciones_restantes = list_create(); // Puede llegar a quedar vacia
+                t_direccion_fisica* dir_fisica = deserializar_direccion_fisica(paquete->buffer);
+
+                send(socket_cpu, &respuesta_ok, sizeof(uint32_t), 0);
+                printf("respuesta: %d", respuesta_ok); 
+                     
+                for(int i = 0; i < dir_fisica->cantidad_paginas; i++) {
+                    recibir_resto_direcciones(socket_cpu, direcciones_restantes);
+                }
                 
+                // Logica de Mov-in con multiples paginasSSS
                 int dir_fisica_actual = dir_fisica->direccion_fisica;
                 int indice_direccion = 0;
 
                 void* registro_lectura = malloc(dir_fisica->tamanio);
 
-                int cant_bytes_lectura = cantidad_posible_lectura(dir_fisica_actual); // cantidad bytes que podes leer en esa pagina
-                memcpy(registro_lectura, (user_space_aux + dir_fisica_actual), min(cant_bytes_lectura, dir_fisica->tamanio));
+                int cant_bytes_lectura = cantidad_posible_lectura(dir_fisica->direccion_logica); // cantidad bytes que podes leer en esa pagina
+
+                int tam_a_leer = min(cant_bytes_lectura, dir_fisica->tamanio); // Tam min a leer
+                memcpy(registro_lectura, (user_space_aux + dir_fisica_actual), tam_a_leer);
+                // printf("valor del registro lectura: %s", registro_lectura);
 
                 int resto_lectura = dir_fisica->tamanio - cant_bytes_lectura;
 
                 while(resto_lectura > 0) {
-                    dir_fisica_actual = list_get(direcciones_restantes, indice_direccion);      
+                    int* dir_fisica_ptr = (int*)list_get(direcciones_restantes, indice_direccion);  
+                    dir_fisica_actual = *dir_fisica_ptr;
+
                     // int cant_bytes_lectura = cantidad_posible_lectura(dir_fisica_actual); -> Yo se siempre que es tam_pag?
                     int cant_bytes_lectura = tamanio_pagina;
 
-                    memcpy(registro_lectura, (user_space_aux + dir_fisica_actual), min(cant_bytes_lectura, resto_lectura));
+                    user_space_aux = espacio_usuario; // Con esto lo devuelvo al inicio
+
+                    tam_a_leer = min(cant_bytes_lectura, resto_lectura); // Minimo tamanio a leer
+                    memcpy(registro_lectura, (user_space_aux + dir_fisica_actual), tam_a_leer);
+                    // printf("valor del registro lectura: %s", registro_lectura);
 
                     resto_lectura -= cant_bytes_lectura;
                     
                     // aca quiero obtener la proxima direccion de la lista inmediata y por eso aumento el indice
                     indice_direccion++;
+                    free(dir_fisica_ptr);
                 }
                 
-                printf("Leo en MOV_IN Registro : %d\n", registro);
+                //printf("Leo en MOV_IN Registro : %d\n", registro);
 
-                send(socket_cpu, &registro, sizeof(uint32_t), 0);
+                send(socket_cpu, &registro_lectura, sizeof(uint32_t), 0);
                 break;
             case ESCRIBIR_DATO_EN_MEM: 
                 user_space_aux = espacio_usuario;
@@ -217,14 +238,18 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
     return NULL;
 }
 
-int cantidad_posible_lectura(int direccion_fisica) {
-    
+int min(int a, int b) {
+    return (a < b) ? a : b;
 }
 
-t_list* recibir_resto_direcciones(int socket_cpu, int cant_paginas) {
-    t_list* lista_direcciones = list_create();
-    itt pagi_paquete* paquete = malloc(sizeof(t_paquete));
-    paquete-na = direccion>buffer = malloc(sizeof(t_buffer));
+int cantidad_posible_lectura(int direccion_logica) {
+    int offset = direccion_logica % tamanio_pagina;
+    return tamanio_pagina - offset + 1;
+}
+
+void recibir_resto_direcciones(int socket_cpu, t_list* lista_direcciones) {
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+    paquete->buffer = malloc(sizeof(t_buffer));
 
     // Primero recibimos el codigo de operacion
     printf("Esperando recibir paquete de CPU\n");
@@ -232,16 +257,25 @@ t_list* recibir_resto_direcciones(int socket_cpu, int cant_paginas) {
     printf("Recibi el codigo de operacion de CPU: %d\n", paquete->codigo_operacion);
 
     recv(socket_cpu, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
-    paquete->buffer->strea_fisicm = malloc(paquete->buffer->size);
+    paquete->buffer->stream = malloc(paquete->buffer->size);
         
-    recv(socket_cpu, paquete->buaf/ tamanio_pagina;
-    fer->stream, paquete->buffer->size, MSG_WAITALL);
+    recv(socket_cpu, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+
     int direccion_fisica;
+    int* cast_dir_fisica;
  
-    if(paquete->codigo_operacion == RECIBIR_DIR_FISICA) {
-    int offset = direccion_fisica % tamanio_pagina;
-    return tamanio_pagina - offset;    for(int i = 0; i < cant_paginas; i++) {
- 
+    if(paquete->codigo_operacion == RECIBIR_DIR_FISICA) {    
+        memcpy(&direccion_fisica, paquete->buffer->stream, sizeof(int));
+        paquete->buffer->stream += sizeof(int); 
+
+        cast_dir_fisica = malloc(sizeof(int));
+        *cast_dir_fisica = direccion_fisica;
+
+        printf("La direccion fisica es: %d\n", direccion_fisica);
+        
+        list_add(lista_direcciones, cast_dir_fisica); // Despues habria que hacerle todos los free correspondientes
+    }
+}
 
 t_direccion_fisica* deserializar_direccion_fisica(t_buffer* buffer) {
     t_direccion_fisica* dir_fisica = malloc(sizeof(t_direccion_fisica));
@@ -250,22 +284,17 @@ t_direccion_fisica* deserializar_direccion_fisica(t_buffer* buffer) {
 
     memcpy(&dir_fisica->direccion_fisica, stream, sizeof(int));
     stream += sizeof(int);
-    memcpy(&dir_fisica->tamanio, stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
+    memcpy(&dir_fisica->tamanio, stream, sizeof(int));
+    stream += sizeof(int);
     memcpy(&dir_fisica->cantidad_paginas, stream, sizeof(int));
+    stream += sizeof(int);
+    
+    memcpy(&dir_fisica->direccion_logica, stream, sizeof(int));
     stream += sizeof(int);
 
     buffer->stream = stream;
 
     return dir_fisica;
-}           memcpy(&direccion_fisica, paquete->buffer->stream, sizeof(int));
-            paquete->buffer->stream += sizeof(int); 
-            printf("La direccion fisica es: %d\n", direccion_fisica);
-            
-            list_add(lista_direcciones, direccion_fisica);
-        }
-    }
-    return lista_direcciones;
 }
 
 int resize_memory(void* stream) {
@@ -483,7 +512,7 @@ void* handle_kernel(void* socket) {
                 break;
             case ESCRIBIR_STDOUT:
                 t_pedido_escritura* pedido_escritura = desearializar_pedido_escritura(paquete->buffer);
-                char* valor_leido = leer(pedido_escritura->tamanio, pedido_escritura->direccion_fisica);
+                //char* valor_leido = leer(pedido_escritura->tamanio, pedido_escritura->direccion_fisica);
                 //send(socket_interfaz, &valor_leido, sizeof(char*), 0); // ver como sacar el socket de la interfaz
                 //list_add(lista_valores_a_leer, valor_leido);
                 //sem_post(hay_valores_para_leer);
@@ -524,12 +553,6 @@ void* handle_io_stdout(void* socket) {
 
     send(socket_io, &tamanio_pagina, sizeof(int), MSG_WAITALL);
     void* user_space_aux = espacio_usuario;
-    sem_wait(hay_valores_para_leer);
-    for(int i=0; i<list_size(lista_valores_a_leer); i++) {
-        char* valor_leido = list_get(lista_valores_a_leer, i);
-        printf("El valor es: %s ", valor_leido);
-        list_remove(lista_valores_a_leer, i);
-    }
 
     while(1) {
         t_paquete* paquete = malloc(sizeof(t_paquete));

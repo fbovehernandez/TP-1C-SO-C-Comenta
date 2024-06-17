@@ -99,6 +99,7 @@ void change_status(t_pcb* pcb, Estado new_status);
 bool match_nombre(char* interfaz);
 t_list_io* validar_io(t_operacion_io* operacion_io, t_pcb* pcb);
 void ejecutarComando(char* linea_leida);
+void *esperar_RR(void *sockets_Int) ;
 // t_pcb* sacarDe(t_queue* cola, int pid);
 // t_queue* encontrar_en_que_cola_esta(int pid);
 // int queue_find(t_queue* cola, int pid);

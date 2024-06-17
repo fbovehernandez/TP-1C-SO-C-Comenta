@@ -36,8 +36,8 @@ typedef struct {
     int cantidad;
 } t_cantidad_instrucciones;
 
+int min(int a, int b);
 void recortar_tamanio(int tamanio, char* pid_string, int cant_bytes_uso);
-t_list* recibir_resto_direcciones(int socket_cpu);
 int resize_memory(void* stream);
 int buscar_frame_libre();
 void marcar_frame_en_tabla_paginas(t_list* tabla_paginas, int frame);
@@ -80,6 +80,7 @@ void* handle_io_stdout(void* socket);
 t_pedido_escritura* desearializar_pedido_escritura(t_buffer* buffer);
 char* leer(int tamanio, int direccion_fisica);
 t_buffer* llenar_buffer_stdout(char* valor);
-t_list* recibir_resto_direcciones(int socket_cpu);
+void recibir_resto_direcciones(int socket_cpu, t_list* lista_direcciones);
+int cantidad_posible_lectura(int direccion_logica);
 
 #endif // CONEXIONES_H
