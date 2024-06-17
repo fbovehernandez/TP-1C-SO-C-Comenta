@@ -20,6 +20,24 @@ ptr_kernel* solicitar_datos(t_config* config_kernel){
     datos->grado_multiprogramacion  = config_get_int_value(config_kernel, "GRADO_MULTIPROGRAMACION");
     datos->algoritmo_planificacion  = config_get_string_value(config_kernel, "ALGORITMO_PLANIFICACION");
 
+    char** recursos            = config_get_array_value(config_kernel, "RECURSOS");
+    char** instancias_recursos = config_get_array_value(config_kernel, "INSTANCIAS_RECURSOS");
+
+    datos->diccionario_recursos = dictionary_create();
+    
+    for(int i=0; i<string_array_size(recursos); i++) {
+        t_recurso *recurso = malloc(sizeof(t_recurso));
+        recurso->instancias = atoi(instancias_recursos[i]);
+        recurso->procesos_bloqueados = queue_create();
+        dictionary_put(datos->diccionario_recursos, recursos[i], recurso); //Mas tarde para sumar o restar deberemos castear a int instancias_recursos[i]
+        /*printf("Recurso: %s\n", recursos[i]);
+        printf("Diccionario en instancias recursos: %d\n", ((t_recurso*)(dictionary_get(datos->diccionario_recursos, recursos[i])))->instancias);    */
+    }
+
+    for(int i=0; i<string_array_size(recursos); i++){
+        printf("Recurso: %s\n", recursos[i]);
+        printf("Diccionario en instancias recursos: %d\n", ((t_recurso*)(dictionary_get(datos->diccionario_recursos, recursos[i])))->instancias);  
+    }
     return datos;
 }
 
@@ -42,6 +60,14 @@ int esperar_cliente(int socket_escucha, t_log* logger) {
         pthread_t hilo_io;
         pthread_create(&hilo_io, NULL, (void*) handle_io_generica, (void*)(intptr_t) socket_cliente);
         pthread_detach(hilo_io);
+    } else if( handshake == 13) {
+        pthread_t hilo_io;
+        pthread_create(&hilo_io, NULL, (void*) handle_io_stdin, (void*)(intptr_t) socket_cliente);
+        pthread_detach(hilo_io);
+    } if( handshake == 15) {
+        pthread_t hilo_io;
+        pthread_create(&hilo_io, NULL, (void*) handle_io_stdout, (void*)(intptr_t) socket_cliente);
+        pthread_detach(hilo_io);
     } else {
         send(socket_cliente, &resultError, sizeof(int), 0);
         close(socket_cliente);
@@ -52,19 +78,14 @@ int esperar_cliente(int socket_escucha, t_log* logger) {
 }
 
     // Habria que ver de scar logica
-void handle_STD_IN(void* socket) {
 
-}
-
-void* handle_io_generica(void* socket) {
+void* handle_io_stdin(void* socket) {
     int socket_io = (intptr_t) socket;
     int resultOk = 0;
     send(socket_io, &resultOk, sizeof(int), 0);
     printf("Conexion establecida con I/O\n");
 
-    // Recibo el cliente i/o, con todos sus datos
-    t_queue* cola_io = queue_create();
-    t_list_io* io = malloc(sizeof(t_list_io));
+    t_list_io* io = malloc(sizeof(t_list_io)); 
 
     t_paquete* paquete = malloc(sizeof(t_paquete));
     paquete->buffer = malloc(sizeof(t_buffer));
@@ -83,6 +104,99 @@ void* handle_io_generica(void* socket) {
     switch (paquete->codigo_operacion) {
         case CONEXION_INTERFAZ:
             t_info_io* interfaz = deserializar_interfaz(paquete->buffer);
+            io->socket = socket_io;
+            io->TipoInterfaz = interfaz->tipo;
+            io->nombreInterfaz = interfaz->nombre_interfaz;
+            io->cola_blocked = queue_create();
+            sem_init(io->semaforo_cola_procesos_blocked, 0, 0);
+            
+            dictionary_put(diccionario_io, interfaz->nombre_interfaz, (void*) io);
+            mostrar_elem_diccionario(interfaz->nombre_interfaz);
+            break;
+        default:
+            printf("Llega al default.");
+            return NULL;
+    }
+
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+    return NULL;
+}
+
+void* handle_io_stdout(void* socket) {
+    int socket_io = (intptr_t) socket;
+    int resultOk = 0;
+    send(socket_io, &resultOk, sizeof(int), 0);
+    printf("Conexion establecida con I/O\n");
+
+    t_list_io* io = malloc(sizeof(t_list_io)); 
+
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+    paquete->buffer = malloc(sizeof(t_buffer));
+
+    printf("Esperando recibir paquete de IO\n");
+    recv(socket_io, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
+
+    printf("Recibi el codigo de operacion de IO: %d\n", paquete->codigo_operacion);
+
+    recv(socket_io, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
+
+    paquete->buffer->stream = malloc(paquete->buffer->size);
+
+    recv(socket_io, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+
+    switch (paquete->codigo_operacion) {
+        case CONEXION_INTERFAZ:
+            t_info_io* interfaz = deserializar_interfaz(paquete->buffer);
+            io->socket = socket_io;
+            io->TipoInterfaz = interfaz->tipo;
+            io->nombreInterfaz = interfaz->nombre_interfaz;
+            io->cola_blocked = queue_create();
+            sem_init(io->semaforo_cola_procesos_blocked, 0, 0);
+            
+            dictionary_put(diccionario_io, interfaz->nombre_interfaz, (void*) io);
+            mostrar_elem_diccionario(interfaz->nombre_interfaz);
+            break;
+        default:
+            printf("Llega al default.");
+            return NULL;
+    }
+
+    free(io->semaforo_cola_procesos_blocked);
+    free(io->nombreInterfaz);
+    free(io);
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+    return NULL;
+}
+
+void* handle_io_generica(void* socket) {
+    int socket_io = (intptr_t) socket;
+    int resultOk = 0;
+    send(socket_io, &resultOk, sizeof(int), 0);
+    printf("Conexion establecida con I/O\n");
+
+    t_list_io* io = malloc(sizeof(t_list_io)); 
+
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+    paquete->buffer = malloc(sizeof(t_buffer));
+
+    printf("Esperando recibir paquete de IO\n");
+    recv(socket_io, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
+
+    printf("Recibi el codigo de operacion de IO: %d\n", paquete->codigo_operacion);
+
+    recv(socket_io, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
+
+    paquete->buffer->stream = malloc(paquete->buffer->size);
+
+    recv(socket_io, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+
+    switch (paquete->codigo_operacion) {
+        case CONEXION_INTERFAZ:
+            /*t_info_io* interfaz = deserializar_interfaz(paquete->buffer);
             io->nombreInterfaz = malloc(interfaz->nombre_interfaz_largo);
 
             io->socket = socket_io;
@@ -97,7 +211,16 @@ void* handle_io_generica(void* socket) {
             pthread_mutex_lock(&mutex_lista_io);
             list_add(lista_io, io);
             pthread_mutex_unlock(&mutex_lista_io);
-
+*/
+            t_info_io* interfaz = deserializar_interfaz(paquete->buffer);
+            io->socket = socket_io;
+            io->TipoInterfaz = interfaz->tipo;
+            io->nombreInterfaz = interfaz->nombre_interfaz;
+            io->cola_blocked = queue_create();
+            sem_init(io->semaforo_cola_procesos_blocked, 0, 0);
+            
+            dictionary_put(diccionario_io, interfaz->nombre_interfaz, (void*) io);
+            mostrar_elem_diccionario(interfaz->nombre_interfaz);
             break;
         default:
             printf("Llega al default.");
@@ -244,10 +367,9 @@ void* escuchar_IO(void* kernel_io) { //kernel_io es el socket del kernel
     return NULL;
 }
 
-/* 
 void mostrar_elem_diccionario(char* nombre_interfaz) {
-    t_conjuntoInterfaz* interfaz = dictionary_get(diccionario_io, nombre_interfaz);
+    t_list_io* interfaz = dictionary_get(diccionario_io, nombre_interfaz);
     printf("Nombre Interfaz: %s\n", nombre_interfaz);
-    printf("Tipo Interfaz (enum): %d\n", interfaz->tipoInterfaz);
+    printf("Tipo Interfaz (enum): %d\n", interfaz->TipoInterfaz);
     printf("Socket: %d\n", interfaz->socket);
-}*/
+}

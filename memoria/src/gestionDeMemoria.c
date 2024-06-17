@@ -1,17 +1,17 @@
 #include "../include/gestionDeMemoria.h"
-
 /* 
 Memoria inicializarMemoria(t_config* config_memoria) {
     Memoria mem;
 
     int tamanioMemoria = config_get_int_value(config_memoria,"TAM_MEMORIA");
-    int tamanioPagina  = config_get_int_value(config_memoria,"TAM_PAGINA");
+    int tamanioPagina  = config_get_int_value(config_memoria,"TAM_MEMORIA");
 
     mem.tamanioMemoria = tamanioMemoria;
     mem.memoria = malloc(tamanioMemoria);
     
     // Inicializar la tabla de páginas
     int numPaginas = tamanioMemoria / tamanioPagina;
+
 
     mem.tablaPaginas.numPaginas = numPaginas;
     mem.tablaPaginas.paginas = malloc(numPaginas * sizeof(Pagina));
@@ -25,4 +25,5 @@ Memoria inicializarMemoria(t_config* config_memoria) {
     
     return mem;
 }
-*/
+ */
+

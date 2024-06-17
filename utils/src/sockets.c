@@ -1,5 +1,6 @@
 #include "../include/sockets.h"
 
+sem_t sem_cargo_instrucciones;
 sem_t sem_memoria_instruccion;
 t_registros* registros_cpu;
 
@@ -185,7 +186,7 @@ void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* dato
     void* stream = malloc(total_size);
     int offset_add = 0;
 
-    memcpy(stream + offset_add, buffer->stream, buffer->size);
+    memcpy(stream + offset_add, buffer->stream, buffer->size); // antes decia buffer->size en el parametro 3
     offset_add += buffer->size;
 
     if (datos_add) {
@@ -217,9 +218,12 @@ void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* dato
 
     // Falta liberar todo
     free(a_enviar);
+    // free(datos_add->stream); // Libero esto aca -> Ver de liberal en algo lado
+    // free(datos_add);
     free(paquete->buffer->stream);
     free(paquete->buffer);
     free(paquete);
+    // Creo que no hace falta el free stream que apunta a lo mismo que paquete->buffer->stream
     return 0;
 }
 

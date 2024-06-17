@@ -1,12 +1,12 @@
 #include "../include/main.h"
 
-int main(int argc, char* argv[]) {    
+int main(int argc, char* argv[]) {
     t_log* logger_CPU    = iniciar_logger("cpu.log"); 
     t_config* config_CPU = iniciar_config("./cpu.config");
     
     char* escucha_dispatch  = config_get_string_value(config_CPU, "PUERTO_ESCUCHA_DISPATCH");
     char* escucha_interrupt = config_get_string_value(config_CPU, "PUERTO_ESCUCHA_INTERRUPT");
-    config_get_string_value(config_CPU, "IP_CPU");
+    //config_get_string_value(config_CPU, "IP_CPU");
 
     char* IP_MEMORIA     = config_get_string_value(config_CPU, "IP_MEMORIA");
     char* puerto_memoria = config_get_string_value(config_CPU, "PUERTO_MEMORIA");
@@ -14,10 +14,7 @@ int main(int argc, char* argv[]) {
     registros_cpu = malloc(sizeof(t_registros));
     registros_cpu = inicializar_registros_cpu(registros_cpu);
 
-    // t_queue* TLB = queue_create();
-
-    //va en el main
-    // algoritmo_reemplazo_TLB = algoritmo_reemplazo_to_int(config_get_string_value(config_CPU, "REEMPLAZO_TLB"));
+    tlb = inicializar_tlb(config_CPU);
 
     // Aca lo conecto a memoria -> creo que esto SI deberia ser un hilo
     socket_memoria = conectar_memoria(IP_MEMORIA, puerto_memoria, logger_CPU);

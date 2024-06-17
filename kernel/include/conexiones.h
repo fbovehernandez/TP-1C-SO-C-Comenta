@@ -6,6 +6,7 @@
 #include <string.h>
 #include <commons/collections/queue.h>
 #include <commons/collections/list.h>
+#include <commons/string.h>
 #include "../../utils/include/sockets.h" 
 #include "../../utils/include/logconfig.h"
 #include "planificador.h"
@@ -40,12 +41,20 @@ typedef struct {
     int quantum;
     int grado_multiprogramacion;   
     char* algoritmo_planificacion;
+    t_dictionary* diccionario_recursos;
 } ptr_kernel;
+
+typedef struct {
+    int instancias;
+    t_queue* procesos_bloqueados;
+} t_recurso;
 
 int conectar_kernel_memoria(char* ip, char* puerto, t_log* logger_kernel);
 int conectar_kernel_cpu_dispatch(t_log* logger_kernel, char* ip, char* puerto);
 int conectar_kernel_cpu_interrupt(t_log* logger_kernel,char* IP_CPU,char* puerto_cpu_dispatch);
 int esperar_cliente(int socket_escucha, t_log* logger);
+void* handle_io_stdout(void* socket);
+void* handle_io_stdin(void* socket);
 void* handle_io_generica(void* socket);
 int ejecutar_io_generica(int socket_io, int unidades_trabajo);
 int recibir_operacion(int socket_cliente);

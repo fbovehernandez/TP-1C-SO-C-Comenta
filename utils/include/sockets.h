@@ -16,6 +16,9 @@
 
 extern sem_t sem_memoria_instruccion;
 extern sem_t pedir_instruccion;
+extern sem_t sem_cargo_instrucciones;
+
+
 
 typedef enum {
     GENERICA, 
@@ -24,6 +27,19 @@ typedef enum {
     DIALFS,
     NON
 } TipoInterfaz;
+
+typedef struct {
+    int PID;
+    int path_length;
+    char* path;
+} t_path;
+
+typedef struct {
+    int registro_direccion;
+    uint32_t registro_tamanio;
+    int length_interfaz;
+    char* interfaz;
+} t_pedido_lectura;
 
 typedef struct {
     int pid;
@@ -43,10 +59,10 @@ typedef struct {
 } t_direccion_logica;
 
 typedef struct {
-    int PID;
-    int path_length;
-    char* path;
-} t_path;
+    int direccion_fisica;
+    int tamanio;
+    int cantidad_paginas;
+}t_direccion_fisica;
 
 // Posible idea, crear un struct para el nombre, pero serian mas mallocs y mas frees.
 typedef struct { // usa io para pasarlo al kernel
@@ -64,7 +80,7 @@ typedef struct {
 
 typedef struct {
     int socket;
-    char* nombreInterfaz; // Aaca tenia un dato_io que le sque
+    char* nombreInterfaz; // Aca tenia un dato_io que le sque
     TipoInterfaz TipoInterfaz;
     t_queue* cola_blocked;
     sem_t* semaforo_cola_procesos_blocked;
@@ -80,8 +96,13 @@ typedef enum {
     IO_BLOCKED,
     DORMIR_INTERFAZ,
     LEER_INTERFAZ,
+    PEDIDO_LECTURA,
+    PEDIDO_ESCRITURA,
     WAIT_RECURSO,
-    FIN_PROCESO
+    SIGNAL_RECURSO,
+    FIN_PROCESO,
+    ERROR_STDOUT,
+    ERROR_STDIN
 } DesalojoCpu;
 
 typedef struct {
@@ -103,15 +124,32 @@ typedef enum {
     QUIERO_CANTIDAD_INSTRUCCIONES,
     ENVIO_CANTIDAD_INSTRUCCIONES,
     INTERRUPCION_CPU,
+    INTERRUPCION_FIN_PROCESO,
     QUIERO_NOMBRE,
     DORMITE,
     CONEXION_INTERFAZ,
+    QUIERO_FRAME,
     DIRECCION_FISICA,
-    REGISTRO_DATOS,
-    LIBERAR_PROCESO,
-    ESCRIBIR_REGISTRO_DATOS,
-    QUIERO_FRAME
+    ESCRIBIR_DATO_EN_MEM,
+    RESIZE_MEMORIA,
+    COPY_STRING_MEMORIA,
+    OUT_OF_MEMORY,
+    LEETE,
+    GUARDAR_VALOR,
+    ESCRIBIR_EN_INTERFAZ,
+    ESCRIBIR_STDOUT,
+    RECIBIR_DIR_FISICA,
+    RECIBIR_DIRECCIONES,
+    FS_CREATE,
+    MOSTRAR
 } codigo_operacion;
+
+typedef struct{
+    int direccion_fisica;
+    int tamanio;
+    int longitud_nombre_interfaz;
+    char* nombre_interfaz;
+} t_pedido_escritura;
 
 typedef struct {
 	int size;
@@ -191,6 +229,12 @@ typedef enum {
 } TipoInstruccion;
 
 typedef struct {
+    int direccion_fisica;
+    bool tamanio;
+    int cantidad_paginas;
+} t_direccion_fisica;
+
+typedef struct {
     TipoInstruccion nombre;
     int cantidad_parametros;
     t_list* parametros; // Cada una de las instrucciones
@@ -200,6 +244,31 @@ typedef struct {
     char* nombre;
     int length;
 } t_parametro;
+
+typedef struct {
+    int cantidad_frames;
+    t_list* tabla_paginas;
+} t_proceso_paginas;
+
+typedef struct {
+    int numero_pagina;
+    int frame;
+} t_pagina;
+// enviar_buffer_copy_string(direccionFisica,pcb->registros->DI,tamanio);
+
+typedef struct{
+    int tamanio;
+    int direccionFisicaSI;
+    int direccionFisicaDI;
+} t_copy_string;
+
+typedef struct{
+    int longitud_nombre_interfaz;
+    char* nombre_interfaz;
+    int longitud_nombre_archivo;
+    char* nombre_archivo;
+} t_pedido_fs_create;
+
 
 void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* buffer);
 int iniciar_servidor(char*);

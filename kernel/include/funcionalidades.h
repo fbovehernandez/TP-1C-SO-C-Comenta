@@ -53,20 +53,25 @@ extern t_sockets* sockets;
 extern pthread_mutex_t mutex_estado_new;
 extern pthread_mutex_t mutex_estado_ready;
 extern pthread_mutex_t mutex_estado_exec;
+extern pthread_mutex_t mutex_estado_blocked;
 extern sem_t sem_grado_multiprogramacion;
 extern sem_t sem_hay_pcb_esperando_ready;
 extern sem_t sem_hay_para_planificar;
+extern pthread_mutex_t no_hay_nadie_en_cpu;
 extern sem_t sem_contador_quantum;
 
 extern t_queue* cola_new;
 extern t_queue* cola_ready;
 extern t_queue* cola_blocked;
 // extern t_queue* cola_exec;
+extern t_pcb* pcb_exec;
 extern t_queue* cola_exit;
+extern t_queue* cola_prioritarios_por_signal;
 
 extern char* algoritmo_planificacion; // Tomamos en convencion que los algoritmos son "FIFO", "VRR" , "RR" (siempre en mayuscula)
 extern t_log* logger_kernel;
 extern char* path_kernel;
+extern ptr_kernel* datos_kernel;
 
 // Funciones
 void* interaccion_consola();
@@ -84,15 +89,28 @@ void* enviar_path_a_memoria(char* path, t_sockets* sockets, int pid);
 t_buffer* llenar_buffer_path(t_path* pathNuevo);
 t_pcb* proximo_a_ejecutar();
 void esperar_cpu(t_pcb* pcb);
+void mandar_datos_io(char* interfaz_nombre, uint32_t registro_direccion, uint32_t registro_tamanio);
 t_operacion_io* deserializar_io(t_buffer* buffer);
 t_paquete* recibir_cpu();
-void liberar_memoria(int pid);
+// void liberar_memoria(t_pcb* pcb, int pid);
 void dormir_io(t_operacion_io* operacion_io, t_pcb* pcb);
 void hilo_dormir_io(t_operacion_io* operacion_io);
 void change_status(t_pcb* pcb, Estado new_status);
 bool match_nombre(char* interfaz);
 t_list_io* validar_io(t_operacion_io* operacion_io, t_pcb* pcb);
 void ejecutarComando(char* linea_leida);
+// t_pcb* sacarDe(t_queue* cola, int pid);
+// t_queue* encontrar_en_que_cola_esta(int pid);
+// int queue_find(t_queue* cola, int pid);
+// t_pcb* sacarPCBDeDondeEste(int pid);
+
+t_parametro* deserializar_parametro(t_buffer* buffer);
+t_pedido_lectura* deserializar_pedido_lectura(t_buffer* buffer);
+void wait_recurso(t_pcb* pcb, char* recurso);
+void signal_recurso(t_pcb* pcb, char* recurso);
+t_pedido_escritura* desearializar_pedido_escritura(t_buffer* buffer);
+void mandar_a_escribir_a_memoria(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio);
+t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, int tamanio);
 
 void EJECUTAR_SCRIPT(char* path);
 void INICIAR_PROCESO(char* path);

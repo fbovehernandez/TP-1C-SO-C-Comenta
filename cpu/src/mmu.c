@@ -1,5 +1,26 @@
 #include "../include/mmu.h"
 
+int tamanio_pagina;
+t_dictionary* tlb;
+
+/*
+typedef struct {
+    int pid;
+    int pagina;
+    int marco;
+    long timestamps;
+} t_tlb;
+*/
+
+void inicializar_tlb(t_config* config_CPU) {
+    //int cant_entradas = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
+    tlb = dictionary_create();
+}
+
+bool estaEnLaTLB(int pid, int pagina) {
+    
+}
+
 /* 
 void* crear_tlb() {
     t_tlb tlb;
@@ -88,15 +109,22 @@ int traducir_direccion_logica_a_fisica(int tamanio_pagina, uint32_t direccion_lo
     t_direccion_logica* direccion_logica_a_crear = malloc(sizeof(t_direccion_logica)); 
 
     direccion_logica_a_crear->numero_pagina = floor(direccion_logica / tamanio_pagina);
+    printf("Numero de pagina %d\n", direccion_logica_a_crear->numero_pagina);
     direccion_logica_a_crear->desplazamiento = direccion_logica - direccion_logica_a_crear->numero_pagina * tamanio_pagina;
+    printf("Desplazamiento %d\n", direccion_logica_a_crear->desplazamiento);
 
     pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina, pid); 
     
     recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
     
+    // Es antes? o despues? 
+    printf("Pido el marco %d de la pagina %d del proceso %d\n", frame, direccion_logica_a_crear->numero_pagina, pid);
+
     printf("Frame %d\n", frame);
     
     int direccion_fisica = frame * tamanio_pagina + direccion_logica_a_crear->desplazamiento;
+    
+    free(direccion_logica_a_crear);
 
     return direccion_fisica;
 }

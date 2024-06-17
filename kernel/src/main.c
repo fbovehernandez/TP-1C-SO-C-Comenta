@@ -3,21 +3,21 @@
 int main(int argc, char* argv[]) {
     
     // Inicializo colas con queue_create
-    cola_new     = queue_create(); 
-    cola_ready   = queue_create();
-    cola_blocked = queue_create();
-    //cola_exec    = queue_create();
-    cola_exit    = queue_create();
+    cola_new                     = queue_create(); 
+    cola_ready                   = queue_create();
+    cola_blocked                 = queue_create();
+    cola_exit                    = queue_create();
+    cola_prioritarios_por_signal = queue_create();
+    // pcb_exec = malloc(t_pcb);
     
     t_config* config_kernel   = iniciar_config("./kernel.config");
     logger_kernel = iniciar_logger("kernel.log");
-    ptr_kernel* datos_kernel = solicitar_datos(config_kernel);
-    path_kernel = "/home/utnso/operativos/tp6/tp-2024-1c-Sofa-Cama/kernel/scripts-comandos"; // hardcodeado nashe
+    datos_kernel = solicitar_datos(config_kernel);
+    path_kernel = "/home/utnso/operativos/tp-lio-caro/tp-2024-1c-Sofa-Cama/kernel/scripts-comandos"; // hardcodeado nashe
 
     quantum = datos_kernel->quantum;
     grado_multiprogramacion = datos_kernel->grado_multiprogramacion;
     algoritmo_planificacion = datos_kernel->algoritmo_planificacion;
-
     diccionario_io = dictionary_create();
 
     // Lista global para manejo de I/O
@@ -25,15 +25,18 @@ int main(int argc, char* argv[]) {
     lista_procesos = list_create();
 
     pthread_mutex_init(&mutex_estado_new, NULL);
+    pthread_mutex_init(&mutex_estado_blocked, NULL);
     pthread_mutex_init(&mutex_estado_ready, NULL);
     sem_init(&sem_contador_quantum, 0, 0);
     sem_init(&sem_hay_para_planificar, 0, 0);
     sem_init(&sem_hay_pcb_esperando_ready, 0, 0);
     sem_init(&sem_grado_multiprogramacion, 0, grado_multiprogramacion); // No testeado
     sem_init(&sem_memoria_instruccion, 0, 0);
+    sem_init(&sem_cargo_instrucciones, 0 ,0);
     pthread_mutex_init(&mutex_lista_io, NULL);
     pthread_mutex_init(&mutex_cola_io_generica, NULL);
-
+    pthread_mutex_init(&no_hay_nadie_en_cpu, NULL);
+    
     // Hilo 1 -> Hacer un hilo para gestionar la comunicacion con memoria?
     int socket_memoria_kernel = conectar_kernel_memoria(datos_kernel->ip_mem, datos_kernel->puerto_memoria, logger_kernel);
 
@@ -79,6 +82,7 @@ int main(int argc, char* argv[]) {
     // pthread_join(hilo_io, NULL);
 
     // Libero conexiones
+    // free(pcb_exec);
     free(config_kernel);
     free(kernel_io);
     liberar_conexion(escucha_fd);   

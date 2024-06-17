@@ -9,11 +9,13 @@
 #include <commons/string.h>
 #include "instrucciones_io.h"
 
-extern int socket_kernel_io;
+extern int kernelfd;
+extern int memoriafd;
 extern t_log* logger_io;
 extern char* nombre_io;
 
-int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, char* nombre_interfaz, TipoInterfaz tipo_interfaz);
+int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, char* nombre_interfaz, TipoInterfaz tipo_interfaz, int handshake);
+int conectar_io_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_io, char* nombre_interfaz, TipoInterfaz tipo_interfaz, int handshake);
 void recibir_solicitud_kernel();
 void recibir_kernel(t_config* config_io, int socket_io);
 int serializar_unidades_trabajo(t_buffer* buffer);

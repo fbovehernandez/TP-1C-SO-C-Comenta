@@ -2,7 +2,6 @@
 
 int socket_memoria;
 int client_dispatch; //socket_kernel
-int tamanio_pagina;
 
 int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) {
     int valor = 2;
@@ -10,7 +9,7 @@ int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) 
 
     int memoriafd = crear_conexion(IP_MEMORIA, puerto_memoria, valor);
     log_info(logger_CPU, "Conexion establecida con Memoria");
-    memoriafd = esperar_cliente(memoriafd, logger_CPU);
+    
     recv(memoriafd, &tamanio_pagina, sizeof(int), MSG_WAITALL);
     
     // send(memoriafd, &message_cpu, sizeof(int), 0); // Me conecto y envio un mensaje a memoria
@@ -22,19 +21,22 @@ int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) 
 // Modificar para que me devuelva un struct con los sockets y el sv_type
 int esperar_cliente(int socket_servidor, t_log *logger_cpu) {
     uint32_t handshake;
-	uint32_t resultOk = 0;
-	uint32_t resultError = -1;
-	int socket_cliente = accept(socket_servidor, NULL, NULL);
+    uint32_t resultOk = 0;
+    uint32_t resultError = -1;
+    int socket_cliente = accept(socket_servidor, NULL, NULL);
 
-	recv(socket_cliente, &handshake, sizeof(uint32_t), MSG_WAITALL);
-	if(handshake == 1) {
-		send(socket_cliente, &resultOk, sizeof(uint32_t), 0);
-        log_info(logger_cpu, "Se conecto un cliente!\n");
+    recv(socket_cliente, &handshake, sizeof(uint32_t), MSG_WAITALL);
+    if(handshake == 1) {
+        send(socket_cliente, &resultOk, sizeof(uint32_t), 0);
+        log_info(logger_cpu, "Se conecto un cliente de dispatch!\n");
+    } else if(handshake == 3){
+        send(socket_cliente, &resultOk, sizeof(uint32_t), 0);
+        log_info(logger_cpu, "Se conecto un cliente de interrupt!\n");
     } else {
         send(socket_cliente, &resultError, sizeof(uint32_t), 0);
     }
-    
-	return socket_cliente;
+
+    return socket_cliente;
 }
 
 // Es esta funcion la que se encarga de recibir el codigo de operacion y a partir de eso actuar? Tiene codop = recibirOperacion()!!!!!
@@ -123,9 +125,13 @@ void recibir_cliente_interrupt(int client_interrupt) {
         // Posible if si no hay mas codigos de operacion para interrumpir
         switch (cod_op) {
             case INTERRUPCION_CPU:
-                printf("Entre por interrupcion");
+                printf("Entre por interrupcion\n");
                 hay_interrupcion = 1;
-                break;         
+                break;      
+            case INTERRUPCION_FIN_PROCESO:
+                printf("Entre por interrupcion de fin de proceso\n");
+                hay_interrupcion = 1;
+                break;   
             default:
                 break;
         }
