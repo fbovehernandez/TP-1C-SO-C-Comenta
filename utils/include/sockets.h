@@ -135,7 +135,7 @@ typedef enum {
     RECIBIR_DIR_FISICA,
     RECIBIR_DIRECCIONES,
     FS_CREATE,
-    MOSTRAR
+    MOSTRAR,
 } codigo_operacion;
 
 typedef struct{
@@ -264,6 +264,13 @@ typedef struct{
     char* nombre_archivo;
 } t_pedido_fs_create;
 
+typedef struct {
+    int direccion_fisica;
+    int tamanio;
+    int cantidad_paginas;
+    int direccion_logica;
+    uint32_t valor;
+} t_direccion_fisica_mov_out;
 
 void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* buffer);
 int iniciar_servidor(char*);

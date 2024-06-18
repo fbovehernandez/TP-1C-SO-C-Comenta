@@ -16,7 +16,7 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         printf("Esta ejecutando %d\n", pcb->pid);   
         int resultado_ok = ejecutar_instruccion(instruccion, pcb);
 
-        free(instruccion); // double free
+        // free(instruccion); // double free
         
         if(resultado_ok == 1) {
             hay_interrupcion = 0;
@@ -455,12 +455,14 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         
         set(registro_dato_mov_in, *registro_lectura, es_registro_uint8_dato);
         //  printf("Registro datos: %d\n", registro_dato_1);
+        printf("Si sale todo bien, AX es 2");
         break;
     case MOV_OUT: // MOV_OUT (Registro Dirección, Registro Datos)
         t_parametro *registro_direccion1 = list_get(list_parametros, 0);
         t_parametro *registro_datos1 = list_get(list_parametros, 1);
         char* nombre_registro_dato1 = registro_datos1->nombre;
         char* nombre_registro_dir1 = registro_direccion1->nombre;
+        respuesta_ok = 2;
 
         uint32_t* registro_dato = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dato1);
         es_registro_uint8_dato = es_de_8_bits(nombre_registro_dato1);
@@ -468,14 +470,18 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         registro_direccion_1 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_dir1); // este es la direccion logica
         es_registro_uint8_direccion = es_de_8_bits(nombre_registro_dir1);
 
-        direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, *registro_direccion_1, pcb->pid); 
+        tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato);
+        pagina = floor(*registro_direccion_1 / tamanio_pagina);
+        cantidad_paginas = cantidad_de_paginas_a_leer(*registro_direccion_1, tamanio_en_byte, pagina);
+
+        int direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, *registro_direccion_1, pcb->pid); 
         printf("direccion fisica que vamos a usar %d \n", direccion_fisica);
 
-        uint32_t valor_registro = *registro_dato;
-        
-        // mandamos a mem el valor y la dir fisica para que escriba el valor en la misma
-        escribir_direccion_fisica_a_mem(direccion_fisica, es_registro_uint8_dato, valor_registro); 
-        printf("se mando dir fisica a mem\n");
+        mandar_direccion_fisica_a_mem_mov_out(direccion_fisica, tamanio_en_byte, cantidad_paginas, *registro_direccion_1, *registro_dato); 
+        printf("se mando dir fisica a memoria : %d \n", direccion_fisica);
+
+        recv(socket_memoria, &respuesta_ok, sizeof(int), MSG_WAITALL);
+        enviar_direcciones_fisicas(pagina, pcb->pid, cantidad_paginas-1); 
         break;
     case SUM:
         t_parametro *registro_param1 = list_get(list_parametros, 0);
@@ -667,11 +673,12 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         break;
     default:
         printf("Error: No existe ese tipo de intruccion\n");
-        break;
-
         if (pcb->program_counter == 10) {
             imprimir_pcb(pcb); // Solo para ver.
         }
+        desalojar(pcb, FIN_PROCESO, NULL);
+        // Hasta que encontremos como hacer con el EXIT que recibe como E X I T
+        break;
     }
     return 0;
 }
@@ -682,6 +689,50 @@ void enviar_primer_pagina(uint32_t direccion_logica, int pid, int tamanio_en_byt
 
     mandar_direccion_fisica_a_mem(direccion_fisica, tamanio_en_bytes, cant_paginas, direccion_logica); 
     printf("se mando dir fisica a memoria %d : \n", direccion_fisica);
+}  
+
+void mandar_direccion_fisica_a_mem_mov_out(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, int direccion_logica, uint32_t valor) {
+t_paquete *paquete = malloc(sizeof(t_paquete));
+    t_buffer *buffer = malloc(sizeof(t_buffer));
+
+    buffer->size = sizeof(int) * 4 + sizeof(uint32_t);
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    // Para el nombre primero mandamos el tamaño y luego el texto en sí:
+    memcpy(buffer->stream + buffer->offset, &direccion_fisica, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(buffer->stream + buffer->offset, &tamanio_en_bytes, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(buffer->stream + buffer->offset, &cantidad_paginas, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(buffer->stream + buffer->offset, &direccion_logica, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(buffer->stream + buffer->offset, &valor, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+ 
+    paquete->codigo_operacion = ESCRIBIR_DATO_EN_MEM; // Podemos usar una constante por operación
+    
+    paquete->buffer = buffer;
+
+    void *a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
+    int offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
+    offset += sizeof(int); 
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+    
+    // Por último enviamos
+    send(socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
+    // printf("Paquete enviado!\n");
+
+    // Falta liberar todo
+    free(a_enviar);
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
 }
 
 void pedir_lectura(char* interfaz, int direccion_fisica, uint32_t* registro_tamanio) {
@@ -898,46 +949,6 @@ void mandar_direccion_fisica_a_mem(int direccion_fisica, int tamanio_en_bytes, i
     free(paquete->buffer);
     free(paquete);
 }
-
-void escribir_direccion_fisica_a_mem(int direccion_fisica, bool es_registro_uint8_dato, uint32_t valor) {
-    t_paquete *paquete = malloc(sizeof(t_paquete));
-    t_buffer *buffer = malloc(sizeof(t_buffer));
-
-    buffer->size = sizeof(int) + sizeof(bool) + sizeof(uint32_t);
-    buffer->offset = 0;
-    buffer->stream = malloc(buffer->size);
-
-    // Para el nombre primero mandamos el tamaño y luego el texto en sí:
-    memcpy(buffer->stream + buffer->offset, &direccion_fisica, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, &valor, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
-    memcpy(buffer->stream + buffer->offset, &es_registro_uint8_dato, sizeof(bool));
-    buffer->offset += sizeof(bool);
-
-    paquete->codigo_operacion = ESCRIBIR_DATO_EN_MEM; // Podemos usar una constante por operación
-    
-    paquete->buffer = buffer;
-
-    void *a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int); 
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-    // Por último enviamos
-    send(socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-    // printf("Paquete enviado!\n");
-
-    // Falta liberar todo
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
-}
-
 
 void desalojar(t_pcb* pcb, DesalojoCpu motivo, t_buffer* datos_adicionales) {
     guardar_estado(pcb);

@@ -25,7 +25,6 @@ void enviar_tamanio_memoria(int nuevo_tamanio, int pid);
 void ejecutar_pcb(t_pcb* pcb, int socket_memoria);
 void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria);
 void enviar_direcciones_fisicas(int pagina, int pid, int cant_paginas);
-void escribir_direccion_fisica_a_mem(int direccion_fisica, bool es_registro_uint8_dato, uint32_t valor);
 int check_interrupt(t_pcb* pcb);
 int cantidad_instrucciones_deserializar(t_buffer *buffer);
 void pedir_instruccion_a_memoria(int socket_memoria, t_pcb *pcb);
@@ -60,5 +59,6 @@ void pedir_lectura(char* interfaz, int direccion_fisica, uint32_t* registro_tama
 // void enviar_kernel_stdout(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio);
 t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, uint32_t tamanio);
 void mandar_una_dir_fisica(int direccion_fisica);
+void mandar_direccion_fisica_a_mem_mov_out(int direccion_fisica, int tamanio_en_byte, int cantidad_paginas, int registro_direccion_1, uint32_t registro_dato);
 
 #endif 

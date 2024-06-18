@@ -81,6 +81,7 @@ t_pedido_escritura* desearializar_pedido_escritura(t_buffer* buffer);
 char* leer(int tamanio, int direccion_fisica);
 t_buffer* llenar_buffer_stdout(char* valor);
 void recibir_resto_direcciones(int socket_cpu, t_list* lista_direcciones);
-int cantidad_posible_lectura(int direccion_logica);
+t_direccion_fisica_mov_out* deserializar_direccion_fisica_mov_out(t_buffer* buffer);
+int cantidad_posible(int direccion_logica);
 
 #endif // CONEXIONES_H
