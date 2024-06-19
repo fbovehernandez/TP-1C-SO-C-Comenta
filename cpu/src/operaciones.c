@@ -5,6 +5,8 @@ int hay_interrupcion;
 // t_cantidad_instrucciones* cantidad_instrucciones;
 
 void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
+    //int esperar_confirm;
+
     pedir_cantidad_instrucciones_a_memoria(pcb->pid, socket_memoria);
     int cantidad_instrucciones = recibir_cantidad_instrucciones(socket_memoria, pcb->pid);
 
@@ -15,7 +17,7 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         // sem_post(pedir_instruccion);
         printf("Esta ejecutando %d\n", pcb->pid);   
         int resultado_ok = ejecutar_instruccion(instruccion, pcb);
-
+        
         // free(instruccion); // double free
         
         if(resultado_ok == 1) {
@@ -32,16 +34,16 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
             hay_interrupcion = 0;
             return;
         }
+        /*
+        recv(socket_memoria, &esperar_confirm, sizeof(int), MSG_WAITALL);
+        
+        printf("Esperar confirmacion: %d\n", esperar_confirm);
+
+        if(esperar_confirm != 1) {
+            return;
+        }*/
     }
 
-    /*while(pcb->estadoActual < cantidad_instrucciones) {
-        pedir_instruccion_a_memoria(socket_memoria, pcb);
-        //sem_wait(&sem_memori, pcbtr
-        recibir(socket_memoria,pcb); // recibir cada instruccion
-        pcb->program_counter++;
-    }*/
-
-    // La unica que le encuentro es llevarlo al switch
 }
 
 void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria) {
@@ -440,7 +442,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         bool es_registro_uint8_dato = es_de_8_bits(nombre_registro_dato);
         uint32_t* registro_direccion_1 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_dir);
-        bool es_registro_uint8_direccion = es_de_8_bits(nombre_registro_dir); // not used
+        // bool es_registro_uint8_direccion = es_de_8_bits(nombre_registro_dir); // not used
 
         int tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato);
         int pagina = floor(*registro_direccion_1 / tamanio_pagina);
@@ -458,30 +460,36 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         printf("Si sale todo bien, AX es 2");
         break;
     case MOV_OUT: // MOV_OUT (Registro Dirección, Registro Datos)
+        int esperar_confirm;
         t_parametro *registro_direccion1 = list_get(list_parametros, 0);
         t_parametro *registro_datos1 = list_get(list_parametros, 1);
         char* nombre_registro_dato1 = registro_datos1->nombre;
         char* nombre_registro_dir1 = registro_direccion1->nombre;
-        respuesta_ok = 2;
+        int respuesta_ok_mv = 2;
 
-        uint32_t* registro_dato = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dato1);
-        es_registro_uint8_dato = es_de_8_bits(nombre_registro_dato1);
+        uint32_t* registro_dato_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dato1);
+        bool es_registro_uint8_dato_mov_out = es_de_8_bits(nombre_registro_dato1);
         
-        registro_direccion_1 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_dir1); // este es la direccion logica
-        es_registro_uint8_direccion = es_de_8_bits(nombre_registro_dir1);
+        uint32_t* registro_direccion_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dir1); // este es la direccion logica
+        // bool es_registro_uint8_direccion_mov_out = es_de_8_bits(nombre_registro_dir1);
 
-        tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato);
-        pagina = floor(*registro_direccion_1 / tamanio_pagina);
-        cantidad_paginas = cantidad_de_paginas_a_leer(*registro_direccion_1, tamanio_en_byte, pagina);
+        int tamanio_en_byte_mv = tamanio_byte_registro(es_registro_uint8_dato_mov_out);
+        int pagina_mv = floor(*registro_direccion_mov_out / tamanio_pagina);
+        int cantidad_paginas_mv = cantidad_de_paginas_a_leer(*registro_direccion_mov_out, tamanio_en_byte_mv, pagina_mv);
 
-        int direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, *registro_direccion_1, pcb->pid); 
+        direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, *registro_direccion_mov_out, pcb->pid); 
         printf("direccion fisica que vamos a usar %d \n", direccion_fisica);
 
-        mandar_direccion_fisica_a_mem_mov_out(direccion_fisica, tamanio_en_byte, cantidad_paginas, *registro_direccion_1, *registro_dato); 
+        mandar_direccion_fisica_a_mem_mov_out(direccion_fisica, tamanio_en_byte_mv, cantidad_paginas_mv, *registro_direccion_mov_out, *registro_dato_mov_out); 
         printf("se mando dir fisica a memoria : %d \n", direccion_fisica);
 
-        recv(socket_memoria, &respuesta_ok, sizeof(int), MSG_WAITALL);
-        enviar_direcciones_fisicas(pagina, pcb->pid, cantidad_paginas-1); 
+        recv(socket_memoria, &respuesta_ok_mv, sizeof(int), MSG_WAITALL);
+        enviar_direcciones_fisicas(pagina_mv, pcb->pid, cantidad_paginas_mv-1); 
+        // para mi no va - CARO
+        recv(socket_memoria, &esperar_confirm, sizeof(int), MSG_WAITALL);
+        
+        printf("Esperar confirmacion: %d\n", esperar_confirm);
+        
         break;
     case SUM:
         t_parametro *registro_param1 = list_get(list_parametros, 0);
@@ -672,7 +680,8 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     case IO_FS_WRITE:
         break;
     default:
-        printf("Error: No existe ese tipo de intruccion\n");
+        printf("Error: No existe ese tipo de instruccion\n");
+        printf("La instruccion recibida es: %d\n", nombreInstruccion);
         if (pcb->program_counter == 10) {
             imprimir_pcb(pcb); // Solo para ver.
         }
@@ -790,6 +799,7 @@ void pedir_lectura(char* interfaz, int direccion_fisica, uint32_t* registro_tama
 
 void enviar_direcciones_fisicas(int pagina, int pid, int cant_paginas) {  
     int frame, devolucion_ok;
+    int mandame_sig_direccion;
     // t_list* lista_direcciones_fisicas = list_create();
 
     for(int i = 0; i < cant_paginas; i++) {
@@ -799,14 +809,22 @@ void enviar_direcciones_fisicas(int pagina, int pid, int cant_paginas) {
         int direccion_fisica = frame * tamanio_pagina + 0; // 0 es el offset
         // list_add(lista_direcciones_fisicas, direccion_fisica);
 
-        mandar_una_dir_fisica(direccion_fisica);         
-        // mandar_direccion_fisica_a_mem(direccion_fisica, es_registro_uint8_dato, RECIBIR_DIR_FISICA);
+        // mandar_una_dir_fisica(direccion_fisica);   
+        send(socket_memoria, &direccion_fisica, sizeof(int), 0);    
         printf("se mando dir fisica a memoria %d : \n", direccion_fisica);
-        recv(socket_memoria, &devolucion_ok, sizeof(int), MSG_WAITALL);
+        recv(socket_memoria, &mandame_sig_direccion, sizeof(int), MSG_WAITALL);  
+        printf("llega acaaaa");
+        if(mandame_sig_direccion != 1) {
+            return;
+        }
+        // mandar_direccion_fisica_a_mem(direccion_fisica, es_registro_uint8_dato, RECIBIR_DIR_FISICA);
+        
+        //// recv(socket_memoria, &devolucion_ok, sizeof(int), MSG_WAITALL);
         pagina++;
     }
 }
 
+/*
 void mandar_una_dir_fisica(int direccion_fisica) {
     t_paquete *paquete = malloc(sizeof(t_paquete));
     t_buffer *buffer = malloc(sizeof(t_buffer));
@@ -842,6 +860,7 @@ void mandar_una_dir_fisica(int direccion_fisica) {
     free(paquete->buffer);
     free(paquete);
 }
+*/
 
 int tamanio_byte_registro(bool es_registro_uint8) {
     return es_registro_uint8 ? 1 : 4;

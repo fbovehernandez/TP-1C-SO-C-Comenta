@@ -68,6 +68,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
     int socket_cpu = (intptr_t)socket;
     // free(socket); 
     int resultOk = 0;
+    int confirm_finish = 1;
     // Envio confirmacion de handshake!
     send(socket_cpu, &resultOk, sizeof(int), 0);
     printf("Se conecto un el cpu!\n");
@@ -155,7 +156,9 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 printf("respuesta mov in: %d\n", respuesta_ok); 
                      
                 for(int i = 0; i < dir_fisica->cantidad_paginas; i++) {
-                    recibir_resto_direcciones(socket_cpu, direcciones_restantes);
+                    recv(socket_cpu, &direccion_fisica, sizeof(int), MSG_WAITALL);
+                    list_add(direcciones_restantes, &direccion_fisica);
+                    // recibir_resto_direcciones(socket_cpu, direcciones_restantes);
                 }
                 
                 // Logica de Mov-in con multiples paginas
@@ -190,8 +193,9 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
                     resto_lectura -= cant_bytes_lectura;
                     
-                    // aca quiero obtener la proxima direccion de la lista inmediata y por eso aumento el indice
+                    // Aca quiero obtener la proxima direccion de la lista inmediata y por eso aumento el indice
                     list_remove(direcciones_restantes, indice_direccion);
+
                     indice_direccion++;
                     free(dir_fisica_ptr);
                 }
@@ -203,20 +207,21 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 break;
             case ESCRIBIR_DATO_EN_MEM: 
                 user_space_aux = espacio_usuario;
-                uint32_t valor;
-                respuesta_ok = 2;
+                // uint32_t valor;
+                int respuesta_ok_mv = 2;
 
                 t_direccion_fisica_mov_out* df = deserializar_direccion_fisica_mov_out(paquete->buffer);
                 printf("la direccion fisica recibida es %d\n", df->direccion_fisica);
 
-                direcciones_restantes = list_create(); // Puede llegar a quedar vacia
-
-                send(socket_cpu, &respuesta_ok, sizeof(int), 0);
-                printf("respuesta mov out: %d\n", respuesta_ok); 
-                    
+                send(socket_cpu, &respuesta_ok_mv, sizeof(int), 0);
+                printf("respuesta mov out: %d\n", respuesta_ok_mv); 
+                int mandame_sig_direccion = 1;
                 for(int i = 0; i < df->cantidad_paginas; i++) {
                     printf("llego al for\n");
-                    recibir_resto_direcciones(socket_cpu, direcciones_restantes);
+                    recv(socket_cpu, &direccion_fisica, sizeof(int), MSG_WAITALL);
+                    list_add(direcciones_restantes, &direccion_fisica);
+                    send(socket_cpu, &mandame_sig_direccion, sizeof(int), 0);
+                    // recibir_resto_direcciones(socket_cpu, direcciones_restantes);
                 }
                 
                 // Logica de Mov-in con multiples paginas
@@ -243,7 +248,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                     user_space_aux = espacio_usuario; // Con esto lo devuelvo al inicio
 
                     tam_a_escribir = min(cant_bytes_escritura, resto_escritura); // Minimo tamanio a leer
-                    memcpy((user_space_aux + df_actual), registro_lectura,  tam_a_escribir);
+                    memcpy((user_space_aux + df_actual), registro_escritura,  tam_a_escribir);
                     // printf("valor del registro lectura: %s", registro_lectura);
 
                     resto_escritura -= cant_bytes_escritura;
@@ -252,7 +257,10 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                     indice_direccion++;
                     free(df);
                 }
+                
+                printf("holaa");
                 free(registro_escritura);
+                //send confirm
                 break;
             default:
                 printf("Rompio todo?\n");
@@ -260,6 +268,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 return NULL;
         }
     }
+
     // Liberamos memoria
     free(paquete->buffer->stream); // Por alguna razon no le gusta esto
     free(paquete->buffer);
@@ -297,6 +306,7 @@ int cantidad_posible(int direccion_logica) {
     return tamanio_pagina - offset + 1;
 }
 
+/* 
 void recibir_resto_direcciones(int socket_cpu, t_list* lista_direcciones) {
     t_paquete* paquete = malloc(sizeof(t_paquete));
     paquete->buffer = malloc(sizeof(t_buffer));
@@ -330,6 +340,7 @@ void recibir_resto_direcciones(int socket_cpu, t_list* lista_direcciones) {
     free(paquete->buffer);
     free(paquete);
 }
+*/
 
 t_direccion_fisica* deserializar_direccion_fisica(t_buffer* buffer) {
     t_direccion_fisica* dir_fisica = malloc(sizeof(t_direccion_fisica));
