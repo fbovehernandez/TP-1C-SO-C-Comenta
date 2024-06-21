@@ -23,8 +23,7 @@ int main(int argc, char* argv[]) {
     char *bitarray_memory = malloc(bitarray_size_in_bytes);
 
     // Aca hay que tener cuidado con los bits adicionales cuando se recorre el bityarray
-    bitmap =  
-        bitarray_create_with_mode(bitarray_memory , bitarray_size_in_bytes, LSB_FIRST);
+    bitmap = bitarray_create_with_mode(bitarray_memory , bitarray_size_in_bytes, LSB_FIRST);
 
     size_t max_bits = bitarray_get_max_bit(bitmap); // retorna la cantidad total de bits, + los adicionales
     for (size_t i = 0; i < max_bits; i++) {
@@ -45,7 +44,7 @@ int main(int argc, char* argv[]) {
     memory_struct_cpu->logger = logger_memoria;
 
     esperar_cliente(escucha_fd, logger_memoria);
-    esperar_cliente(escucha_fd, logger_memoria);
+    esperar_cliente(escucha_fd, logger_memoria); // Comente esto porque no se si es necesario
     
     // Hago los join aca para que no se cierre el hilo principal ->  TODO: Ver mejor implementacion o volver al while(1)
     pthread_join(cpu_thread, NULL); 

@@ -15,6 +15,7 @@ void* espacio_usuario;
 int cant_frames;
 //sem_t* hay_valores_para_leer;
 t_bitarray* bitmap;
+int socket_cpu;
 
 //Acepta el handshake del cliente, se podria hacer mas generico y que cada uno tenga un valor diferente
 int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
@@ -65,7 +66,7 @@ bool check_same_page(int tamanio, int cant_bytes_uso) {
 }
 
 void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa en handle_kernel, se va a recibir peticiones de cpu y se va a hacer algo con ellas (iternado switch)
-    int socket_cpu = (intptr_t)socket;
+    socket_cpu = (intptr_t)socket;
     // free(socket); 
     int resultOk = 0;
     int confirm_finish = 1;
@@ -126,9 +127,9 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 send(socket_cpu, &devolucion_resize_ok, sizeof(int), 0);
                 break;
             case QUIERO_FRAME:
-                t_solicitud_frame* pedido_frame = deserializar_solicitud_frame(paquete->buffer);
-                int frame = buscar_frame(pedido_frame);
-                send(socket_cpu, &frame, sizeof(int), 0); 
+                // Aca abstraigo para recibir el frame
+                printf("llego al QUIERO FRAME en mem\n");
+                quiero_frame(paquete->buffer); // Recibe mal pid y pagina
                 break;
             case QUIERO_INSTRUCCION:
                 t_solicitud_instruccion* solicitud_cpu = deserializar_solicitud_instruccion(paquete->buffer);
@@ -148,136 +149,138 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 free(pid_string);
                 break;
             case RECIBIR_DIRECCIONES:
-                int respuesta_ok = 1;
-                t_list* direcciones_restantes = list_create(); // Puede llegar a quedar vacia
+                printf("entro aca 2 veces??");
+                int respuesta_ok_l = 1;
+                user_space_aux = espacio_usuario;
+
+                t_list* direcciones_restantes = list_create(); 
                 t_direccion_fisica* dir_fisica = deserializar_direccion_fisica(paquete->buffer);
-
-                send(socket_cpu, &respuesta_ok, sizeof(uint32_t), 0);
-                printf("respuesta mov in: %d\n", respuesta_ok); 
-                     
-                for(int i = 0; i < dir_fisica->cantidad_paginas; i++) {
-                    recv(socket_cpu, &direccion_fisica, sizeof(int), MSG_WAITALL);
-                    list_add(direcciones_restantes, &direccion_fisica);
-                    // recibir_resto_direcciones(socket_cpu, direcciones_restantes);
-                }
-                
-                // Logica de Mov-in con multiples paginas
-                int dir_fisica_actual = dir_fisica->direccion_fisica;
-                int indice_direccion = 0;
-
+            
                 void* registro_lectura = malloc(dir_fisica->tamanio);
 
-                int cant_bytes_lectura = cantidad_posible(dir_fisica->direccion_logica); // cantidad bytes que podes leer en esa pagina
-
-                int tam_a_leer = min(cant_bytes_lectura, dir_fisica->tamanio); // Tam min a leer
-                memcpy(registro_lectura, (user_space_aux + dir_fisica_actual), tam_a_leer);
-                // log_info(logger_memoria,"PID: (imaginen que aqui hay un pcb) - ESCRIBIR - Direccion fisica: %s - Valor escrito: %s", dir_fisica_actual,(user_space_aux + dir_fisica_actual));
-                // printf("valor del registro lectura: %s", registro_lectura);
-
-                int resto_lectura = dir_fisica->tamanio - cant_bytes_lectura;
-                free(dir_fisica);
-
-                while(resto_lectura > 0) {
-                    int* dir_fisica_ptr = (int*)list_get(direcciones_restantes, indice_direccion);  
-                    dir_fisica_actual = *dir_fisica_ptr;
-
-                    // int cant_bytes_lectura = cantidad_posible_lectura(dir_fisica_actual); -> Yo se siempre que es tam_pag?
-                    int cant_bytes_lectura = tamanio_pagina;
-
-                    user_space_aux = espacio_usuario; // Con esto lo devuelvo al inicio
-
-                    tam_a_leer = min(cant_bytes_lectura, resto_lectura); // Minimo tamanio a leer
-                    memcpy(registro_lectura + tam_a_leer, (user_space_aux + dir_fisica_actual), tam_a_leer);
-                    
-                    // printf("valor del registro lectura: %s", registro_lectura);
-
-                    resto_lectura -= cant_bytes_lectura;
-                    
-                    // Aca quiero obtener la proxima direccion de la lista inmediata y por eso aumento el indice
-                    list_remove(direcciones_restantes, indice_direccion);
-
-                    indice_direccion++;
-                    free(dir_fisica_ptr);
-                }
+                send(socket_cpu, &respuesta_ok_l, sizeof(uint32_t), 0);
+            
+                realizar_operacion(LECTURA, direcciones_restantes, user_space_aux, dir_fisica, NULL, registro_lectura);
                 
-                //printf("Leo en MOV_IN Registro : %d\n", registro);
+                uint32_t* ptr = (uint32_t*)registro_lectura;
+                printf("El valor leido es: %d\n", *ptr);
 
-                send(socket_cpu, &registro_lectura, sizeof(uint32_t), 0);
+                send(socket_cpu, ptr, sizeof(uint32_t), 0);
+                
                 free(registro_lectura);
                 break;
             case ESCRIBIR_DATO_EN_MEM: 
                 user_space_aux = espacio_usuario;
-                // uint32_t valor;
                 int respuesta_ok_mv = 2;
+                confirm_finish = 1;
 
-                t_direccion_fisica_mov_out* df = deserializar_direccion_fisica_mov_out(paquete->buffer);
+                // recibir_datos_escritura();
+                t_list* direcciones_restantes_mov_out = list_create();
+
+                t_direccion_fisica* df = deserializar_direccion_fisica(paquete->buffer);
                 printf("la direccion fisica recibida es %d\n", df->direccion_fisica);
 
                 send(socket_cpu, &respuesta_ok_mv, sizeof(int), 0);
-                printf("respuesta mov out: %d\n", respuesta_ok_mv); 
-                int mandame_sig_direccion = 1;
-                for(int i = 0; i < df->cantidad_paginas; i++) {
-                    printf("llego al for\n");
-                    recv(socket_cpu, &direccion_fisica, sizeof(int), MSG_WAITALL);
-                    list_add(direcciones_restantes, &direccion_fisica);
-                    send(socket_cpu, &mandame_sig_direccion, sizeof(int), 0);
-                    // recibir_resto_direcciones(socket_cpu, direcciones_restantes);
-                }
-                
-                // Logica de Mov-in con multiples paginas
-                int df_actual = df->direccion_fisica;
-                indice_direccion = 0;
 
-                void* registro_escritura = malloc(df->tamanio);
+                uint32_t* registro_escritura = &df->valor;
 
-                int cant_bytes_escritura = cantidad_posible(df->direccion_logica); // cantidad bytes que podes leer en esa pagina
-
-                int tam_a_escribir = min(cant_bytes_escritura, df->tamanio); // Tam min a leer
-                memcpy((user_space_aux + df_actual), registro_escritura, tam_a_escribir);
-                // printf("valor del registro lectura: %s", registro_lectura);
-
-                int resto_escritura = df->tamanio - cant_bytes_escritura;
-
-                while(resto_escritura > 0) {
-                    int* df_ptr = (int*)list_get(direcciones_restantes, indice_direccion);  
-                    df_actual = *df_ptr;
-
-                    // int cant_bytes_lectura = cantidad_posible_lectura(df_actual); -> Yo se siempre que es tam_pag?
-                    int cant_bytes_escritura = tamanio_pagina;
-
-                    user_space_aux = espacio_usuario; // Con esto lo devuelvo al inicio
-
-                    tam_a_escribir = min(cant_bytes_escritura, resto_escritura); // Minimo tamanio a leer
-                    memcpy((user_space_aux + df_actual), registro_escritura,  tam_a_escribir);
-                    // printf("valor del registro lectura: %s", registro_lectura);
-
-                    resto_escritura -= cant_bytes_escritura;
-                    
-                    // aca quiero obtener la proxima direccion de la lista inmediata y por eso aumento el indice
-                    indice_direccion++;
-                    free(df);
-                }
-                
-                printf("holaa");
-                free(registro_escritura);
-                //send confirm
+                realizar_operacion(ESCRITURA, direcciones_restantes_mov_out, user_space_aux, df, registro_escritura, NULL);
+                send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
                 break;
             default:
-                printf("Rompio todo?\n");
-                // close(socket_cpu); NO cierro conexion
+                printf("No reconozco ese cod-op...\n"); 
                 return NULL;
         }
     }
 
-    // Liberamos memoria
     free(paquete->buffer->stream); // Por alguna razon no le gusta esto
     free(paquete->buffer);
     free(paquete);
     return NULL;
 }
 
-t_direccion_fisica_mov_out* deserializar_direccion_fisica_mov_out(t_buffer* buffer) {
-    t_direccion_fisica_mov_out* dir_fisica = malloc(sizeof(t_direccion_fisica_mov_out));
+/**** 
+ 
+Pequeños detalles de esta implemenetacion :  la funcion recibe 2 punteros, ya que tanto es MOV-IN, como en MOV-OUT, funcionan de forma diferente estos punteros.
+De todas formas se usan solo cuando se tienen que usar, ya que en la llamada se les pasa NULL.
+El 0 en el tercer parametro del a primera llamada a interaccion_user_space es para que la prmera vez simplemente no se mueva de su lugar
+Ahora dir fisica es una misma estructura, solo que en el MOV-IN no se usa el apartado del valor. No se si esta es la mejor idea, pero la otra era
+hacer un send y recv + para el valor, y me parecio que era mas paja.
+ 
+******/
+void realizar_operacion(tipo_operacion operacion, t_list* direcciones_restantes, void* user_space_aux, t_direccion_fisica* df, uint32_t* registro_escritura, void* registro_lectura) {
+
+    /***** Ver existe algun forma de simplificar esto *****/
+    if(df->cantidad_paginas > 1) {
+        for(int i = 0; i < (df->cantidad_paginas-1) * 2; i++) {
+            printf("Entro al for por %d vez\n", i);
+            recibir_resto_direcciones(direcciones_restantes);
+        }
+    }
+    /****                                             *****/
+
+    int df_actual = df->direccion_fisica;
+    int indice_direccion = 0;
+    
+    int cant_bytes_usables = bytes_usables_por_pagina(df->direccion_logica); // Esto podria enviarlo CPU   
+
+    int tam_a_escribir = min(cant_bytes_usables, df->tamanio); 
+    interaccion_user_space(operacion, df_actual, user_space_aux, 0, tam_a_escribir, registro_escritura, registro_lectura);
+    // memcpy((user_space_aux + df_actual), registro, tam_a_escribir);
+
+    int resto_usable = df->tamanio - cant_bytes_usables;
+
+    while(resto_usable > 0) {
+        int* df_ptr = (int*)list_get(direcciones_restantes, indice_direccion);  
+        df_actual = *df_ptr;
+
+        int tam_escrito_anterior = tam_a_escribir;
+        int cant_bytes_usables = tamanio_pagina;
+
+        user_space_aux = espacio_usuario; // Con esto lo devuelvo inicio al ptr_aux
+        
+        tam_a_escribir = min(cant_bytes_usables, resto_usable); 
+
+        interaccion_user_space(operacion, df_actual, user_space_aux, tam_escrito_anterior, tam_a_escribir, registro_escritura, registro_lectura);
+        // memcpy((user_space_aux + df_actual), registro + tam_escrito_anterior, tam_a_escribir); -> Escritura
+
+        resto_usable -= cant_bytes_usables;
+        list_remove(direcciones_restantes, indice_direccion);
+
+        // aca quiero obtener la proxima direccion de la lista inmediata y por eso aumento el indice
+        indice_direccion++;
+    }
+
+    /***  Esto solo a modo de prueba, luego no iria  ***/
+    if(operacion == LECTURA) {
+        printf("valor del registro lectura: %d\n", *(uint32_t*)(registro_lectura));
+    } else {
+        printf("valor del registro escritura: %d\n", *(uint32_t*)(user_space_aux + df->direccion_fisica));
+    }
+   
+    free(df);
+}
+
+void interaccion_user_space(tipo_operacion operacion, int df_actual, void* user_space_aux, int tam_escrito_anterior, int tamanio, uint32_t* registro_escritura, void* registro_lectura) {
+    if(operacion == ESCRITURA) {
+        memcpy((user_space_aux + df_actual), registro_escritura + tam_escrito_anterior, tamanio);
+    } else { // == LECTURA
+        memcpy(registro_lectura + tam_escrito_anterior, (user_space_aux + df_actual), tamanio);
+    }
+}
+
+void quiero_frame(t_buffer* buffer) {
+    t_solicitud_frame* pedido_frame = deserializar_solicitud_frame(buffer);
+
+    int frame = buscar_frame(pedido_frame);
+
+    printf("el frame es: %d\n", frame);
+    send(socket_cpu, &frame, sizeof(int), 0); 
+    free(pedido_frame);
+}
+
+t_direccion_fisica* deserializar_direccion_fisica(t_buffer* buffer) {
+    t_direccion_fisica* dir_fisica = malloc(sizeof(t_direccion_fisica));
 
     void* stream = buffer->stream;
 
@@ -301,47 +304,62 @@ int min(int a, int b) {
     return (a < b) ? a : b;
 }
 
-int cantidad_posible(int direccion_logica) {
+// Esta funcion podria cambiar en un futuro, si yo ya envio esa cantidad a memoria, que seria lo logico
+int bytes_usables_por_pagina(int direccion_logica) {
     int offset = direccion_logica % tamanio_pagina;
-    return tamanio_pagina - offset + 1;
+    int dev_lectura =  tamanio_pagina - offset;
+    return dev_lectura;
+}
+
+void recibir_resto_direcciones(t_list* lista_direcciones_mv) {
+    
+        t_paquete* paquete = malloc(sizeof(t_paquete));
+        paquete->buffer = malloc(sizeof(t_buffer));
+
+        // Primero recibimos el codigo de operacion
+        printf("Esperando recibir paquete de CPU\n");
+        recv(socket_cpu, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
+        printf("Recibi el codigo de operacion de CPU: %d\n", paquete->codigo_operacion);
+
+        recv(socket_cpu, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
+        
+        paquete->buffer->stream = malloc(paquete->buffer->size);
+            
+        recv(socket_cpu, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+
+        void* stream = paquete->buffer->stream;
+
+        int direccion_fisica;
+        // int mandameSiguienteDireccion = 1;
+        int* cast_dir_fisica;
+        
+        switch(paquete->codigo_operacion) {
+            case RECIBIR_DIR_FISICA :   
+                    memcpy(&direccion_fisica, paquete->buffer->stream, sizeof(int));
+                    stream += sizeof(int);
+
+                    cast_dir_fisica = malloc(sizeof(int)); // Ver free
+                    *cast_dir_fisica = direccion_fisica;
+
+                    printf("La direccion fisica es: %d\n", direccion_fisica);
+                    list_add(lista_direcciones_mv, cast_dir_fisica); // Despues habria que hacerle todos los free correspondientes
+                    
+                    // send(socket_cpu, &mandameSiguienteDireccion, sizeof(int), 0);
+                break;
+            case QUIERO_FRAME :
+                quiero_frame(paquete->buffer);
+                break;
+            default :
+                printf("No recibio ni quiero frame ni quiero dirrecion\n");
+        }
+        
+        // Liberamos memoria
+        free(paquete->buffer->stream);
+        free(paquete->buffer);
+        free(paquete);
 }
 
 /* 
-void recibir_resto_direcciones(int socket_cpu, t_list* lista_direcciones) {
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-    paquete->buffer = malloc(sizeof(t_buffer));
-
-    // Primero recibimos el codigo de operacion
-    printf("Esperando recibir paquete de CPU\n");
-    recv(socket_cpu, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
-    printf("Recibi el codigo de operacion de CPU: %d\n", paquete->codigo_operacion);
-
-    recv(socket_cpu, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
-    paquete->buffer->stream = malloc(paquete->buffer->size);
-        
-    recv(socket_cpu, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
-
-    int direccion_fisica;
-    int* cast_dir_fisica;
- 
-    if(paquete->codigo_operacion == RECIBIR_DIR_FISICA) {    
-        memcpy(&direccion_fisica, paquete->buffer->stream, sizeof(int));
-        paquete->buffer->stream += sizeof(int); 
-
-        cast_dir_fisica = malloc(sizeof(int));
-        *cast_dir_fisica = direccion_fisica;
-
-        printf("La direccion fisica es: %d\n", direccion_fisica);
-        
-        list_add(lista_direcciones, cast_dir_fisica); // Despues habria que hacerle todos los free correspondientes
-    }
-    // Liberamos memoria
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
-}
-*/
-
 t_direccion_fisica* deserializar_direccion_fisica(t_buffer* buffer) {
     t_direccion_fisica* dir_fisica = malloc(sizeof(t_direccion_fisica));
 
@@ -361,6 +379,7 @@ t_direccion_fisica* deserializar_direccion_fisica(t_buffer* buffer) {
 
     return dir_fisica;
 }
+*/
 
 int resize_memory(void* stream) {
     int tamanio, pid;
@@ -374,6 +393,7 @@ int resize_memory(void* stream) {
 
     // Luego verifico si tengo espacio suficiente en memoria
     int out_of_memory = validar_out_of_memory(tamanio);
+    
     if(out_of_memory == 1) {
         printf("No hay espacio suficiente en memoria\n");
         return 1; // 1 es out of memory
@@ -505,22 +525,34 @@ int contar_frames_libres(/* bit map es global*/) {
 }
 
 int buscar_frame(t_solicitud_frame* pedido_frame) {
-    /*t_list* tabla_paginas = dictionary_get(diccionario_tablas_paginas, string_itoa(pedido_frame->pid)); // el diccionario tiene como key el pid y la lista de pags asociado a ese pid
-    int numero_frame = *(int*) list_get(tabla_paginas, pedido_frame->nro_pagina);
+    bool _es_la_pagina_buscada(t_pagina* pagina) {
+        return pagina->numero_pagina == pedido_frame->nro_pagina; 
+    }
+
+    printf("Busco el frame con el pid %s\n", string_itoa(pedido_frame->pid));
+    t_proceso_paginas* proceso_paginas = dictionary_get(diccionario_tablas_paginas, string_itoa(pedido_frame->pid)); // el diccionario tiene como key el pid y la lista de pags asociado a ese pid
+    t_list* tabla_paginas = proceso_paginas->tabla_paginas;
     
-    if(numero_frame == NULL) return -1;*/
-    return 5;
+    if(list_find(tabla_paginas, (void*) _es_la_pagina_buscada) == NULL) return -1;
+    printf("llego aca lalal");
+    
+    int numero_frame = *(int*) list_get(tabla_paginas, pedido_frame->nro_pagina);
+    printf("el marco es: %d\n", numero_frame);
+    
+    return numero_frame;
 }
 
 t_solicitud_frame* deserializar_solicitud_frame(t_buffer* buffer) {
     t_solicitud_frame* solicitud_frame = malloc(sizeof(t_solicitud_frame));
 
     void* stream = buffer->stream;
- 
+
+    memcpy(&solicitud_frame->nro_pagina, stream, sizeof(int));
+    printf("El nro de pagina: %d\n", solicitud_frame->nro_pagina);
+    stream += sizeof(int);
     memcpy(&solicitud_frame->pid, stream, sizeof(int));
     stream += sizeof(int);
-    memcpy(&solicitud_frame->nro_pagina, stream, sizeof(int));
-    stream += sizeof(int);
+    printf("el PID es:%d \n", solicitud_frame->pid);
 
     return solicitud_frame;
 }
@@ -786,17 +818,6 @@ void crear_estructuras(char* path_completo, int pid) {
         printf("No se pudo abrir el archivo\n");
         return;
     }
-
-    /* 
-         char* linea_leida = NULL;
-    size_t length = 0;
-
-    while (getline(&linea_leida, &length, archivo_pseudocodigo) != -1) {
-    	if(strcmp(linea_leida,"\n")){
-        	list_add(instrucciones_leidas, parsear_instruccion(linea_leida));
-    	}
-    }
-    */
 
     t_list* instrucciones = list_create();
 

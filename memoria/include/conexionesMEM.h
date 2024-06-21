@@ -27,6 +27,8 @@ extern void* espacio_usuario;
 extern int cant_frames;
 extern t_bitarray* bitmap;
 
+extern int socket_cpu;
+
 typedef struct {
     int socket;
     t_log* logger;
@@ -80,8 +82,9 @@ void* handle_io_stdout(void* socket);
 t_pedido_escritura* desearializar_pedido_escritura(t_buffer* buffer);
 char* leer(int tamanio, int direccion_fisica);
 t_buffer* llenar_buffer_stdout(char* valor);
-void recibir_resto_direcciones(int socket_cpu, t_list* lista_direcciones);
-t_direccion_fisica_mov_out* deserializar_direccion_fisica_mov_out(t_buffer* buffer);
-int cantidad_posible(int direccion_logica);
-
+void recibir_resto_direcciones(t_list* lista_direcciones);
+int bytes_usables_por_pagina(int direccion_logica);
+void quiero_frame(t_buffer* buffer);
+void realizar_operacion(tipo_operacion operacion, t_list* direcciones_restantes, void* user_space_aux, t_direccion_fisica* df, uint32_t* registro_escritura, void* registro_lectura);
+void interaccion_user_space(tipo_operacion operacion, int df_actual, void* user_space_aux, int tam_escrito_anterior, int tamanio, uint32_t* registro_escritura, void* registro_lectura);
 #endif // CONEXIONES_H
