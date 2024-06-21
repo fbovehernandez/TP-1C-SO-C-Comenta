@@ -402,7 +402,6 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
     // printf("La instruccion es de numero %d y tiene %d parametros\n", instruccion->nombre, instruccion->cantidad_parametros);
     
-    t_parametro* registro_datos;
     bool es_registro_uint8_dato;
     t_parametro* registro_direccion;
     void* registro1;
@@ -436,9 +435,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         printf("Cuando hace SET BX 1 queda asi el registro BX del CPU: %u\n", registros_cpu->BX);*/
         break;
     case MOV_IN: // MOV_IN EDX SI
-        
         uint32_t valor_en_mem;
-        int respuesta_ok;
          
         t_parametro *registro_datos = list_get(list_parametros, 0);
         t_parametro *registro_direccion = list_get(list_parametros, 1);
@@ -452,19 +449,13 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         // bool es_registro_uint8_direccion = es_de_8_bits(nombre_registro_dir); // not used
 
         tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato);
-        pagina = floor(*registro_direccion_1 / tamanio_pagina);
-        int cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_direccion_1, tamanio_en_byte, pagina);
 
-        enviar_primer_pagina(*registro_direccion_1, pcb->pid, tamanio_en_byte, cantidad_paginas, 0, RECIBIR_DIRECCIONES);
-        recv(socket_memoria, &respuesta_ok, sizeof(uint32_t), MSG_WAITALL);
-        
-        enviar_direcciones_fisicas(pagina, pcb->pid, cantidad_paginas-1); 
+        realizar_operacion(registro_direccion_1, tamanio_en_byte, pcb->pid, RECIBIR_DIRECCIONES);
         
         recv(socket_memoria, &valor_en_mem, sizeof(uint32_t), MSG_WAITALL);
         printf("Recibi el valor de memoria \n");
 
         printf("El valor de memoria es: %d\n", valor_en_mem);
-       
         set(registro_dato_mov_in, valor_en_mem, es_registro_uint8_dato);
         break;
     case MOV_OUT: // MOV_OUT (Registro Dirección, Registro Datos)
@@ -478,27 +469,52 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         uint32_t* registro_direccion_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dir); // este es la direccion logica
 
         tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato);
-        pagina = floor(*registro_direccion_mov_out / tamanio_pagina);
 
-        // Devuelve la cantidad de paginas a utilizar + 1
-        int cantidad_paginas_a_escribir = cantidad_de_paginas_a_utilizar(*registro_direccion_mov_out, tamanio_en_byte, pagina);
-
-        enviar_primer_pagina(*registro_direccion_mov_out, pcb->pid, tamanio_en_byte, cantidad_paginas_a_escribir, *registro_dato_mov_out, ESCRIBIR_DATO_EN_MEM);
-        
-        recv(socket_memoria, &respuesta_ok_mv, sizeof(int), MSG_WAITALL);
-
-        if(respuesta_ok_mv != 2) {
-            printf("Codigo de respuesta inesperado...\n");
-            return 1;
-        }
-
-        enviar_direcciones_fisicas(pagina, pcb->pid, cantidad_paginas_a_escribir-1); 
+        realizar_operacion(registro_direccion_mov_out, tamanio_en_byte, pcb->pid, ESCRIBIR_DATO_EN_MEM);
 
         recv(socket_memoria, &esperar_confirm, sizeof(int), MSG_WAITALL);
         
         printf("Esperar confirmacion: %d\n", esperar_confirm);
-        
         break;
+    case COPY_STRING: // COPY_STRING 1212
+        t_parametro* tamanio_a_copiar_de_lista = list_get(list_parametros, 0);
+        int tamanio_a_copiar = atoi(tamanio_a_copiar_de_lista->nombre);
+        printf("Le hago atoi al tamanio a copiar\n");
+
+        uint32_t* registro_SI = (uint32_t*)seleccionar_registro_cpu(pcb->registros->SI);
+        uint32_t* registro_DI = (uint32_t*)seleccionar_registro_cpu(pcb->registros->DI);
+        uint32_t* registro_auxiliar;
+
+        realizar_operacion(registro_SI, tamanio_a_copiar, pcb->pid, RECIBIR_DIRECCIONES);
+        recv(socket_memoria, &valor_en_mem, sizeof(uint32_t), MSG_WAITALL);
+        printf("Recibi el valor de memoria \n");
+        printf("El valor de memoria es: %d\n", valor_en_mem);
+        set(registro_auxiliar, valor_en_mem, es_registro_uint8_dato);
+
+        realizar_operacion(registro_DI, tamanio_a_copiar, pcb->pid, ESCRIBIR_DATO_EN_MEM);
+
+        recv(socket_memoria, &esperar_confirm, sizeof(int), MSG_WAITALL);
+        
+        printf("Esperar confirmacion: %d\n", esperar_confirm);
+
+        /*t_instruccion* instruccionMOVIN;
+        instruccionMOVIN->nombre = MOV_IN;
+        list_add(instruccionMOVIN->parametros, registro_auxiliar);
+        list_add(instruccionMOVIN->parametros, registro_SI);
+        ejecutar_instruccion(instruccionMOVIN, pcb);
+        printf("valor del registro_auxiliar:%d", registro_auxiliar);
+        void* reg_achicado = achicar_registro(registro_auxiliar, tamanio_a_copiar);
+        t_instruccion* instruccionMOVOUT;
+        instruccionMOVOUT->nombre = MOV_OUT;
+        list_add(instruccionMOVOUT->parametros, registro_DI);
+        list_add(instruccionMOVOUT->parametros, reg_achicado);*/
+
+
+        /*int direccion_fisicaSI = traducir_direccion_logica_a_fisica(pcb->registros->SI, pcb->pid);
+        int direccion_fisicaDI = traducir_direccion_logica_a_fisica(pcb->registros->DI, pcb->pid);
+        printf("Tengo la direccionn fisica\n");
+        enviar_buffer_copy_string(direccion_fisicaSI , direccion_fisicaDI, tamanio_a_copiar);
+        */break;
     case SUM:
         t_parametro *registro_param1 = list_get(list_parametros, 0);
         registro1 = registro_param1->nombre;
@@ -553,15 +569,6 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         }
 
         printf("Se redimensiono la memoria\n"); 
-        break;
-    case COPY_STRING: // COPY_STRING 1212
-        t_parametro* tamanio_a_copiar_de_lista = list_get(list_parametros,0);
-        int tamanio_a_copiar = atoi(tamanio_a_copiar_de_lista->nombre);
-        printf("Le hago atoi al tamanio a copiar\n");
-        int direccion_fisicaSI = traducir_direccion_logica_a_fisica(pcb->registros->SI, pcb->pid);
-        int direccion_fisicaDI = traducir_direccion_logica_a_fisica(pcb->registros->DI, pcb->pid);
-        printf("Tengo la direccionn fisica\n");
-        enviar_buffer_copy_string(direccion_fisicaSI , direccion_fisicaDI, tamanio_a_copiar);
         break;
     case WAIT:
         //Manda a kernel a asignar una instancia del recurso pasado por parametro
@@ -698,6 +705,18 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         break;
     }
     return 0;
+}
+
+void realizar_operacion(uint32_t* registro_direccion_1, int tamanio_en_byte, int pid, codigo_operacion codigo_operacion) {
+    int respuesta_ok;
+
+    int pagina = floor(*registro_direccion_1 / tamanio_pagina);
+    int cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_direccion_1, tamanio_en_byte, pagina);
+
+    enviar_primer_pagina(*registro_direccion_1, pid, tamanio_en_byte, cantidad_paginas, 0, codigo_operacion);
+    recv(socket_memoria, &respuesta_ok, sizeof(uint32_t), MSG_WAITALL);
+    
+    enviar_direcciones_fisicas(pagina, pid, cantidad_paginas-1); 
 }
 
 void recibir_parametros_mov_out(t_list* list_parametros, t_parametro **registro_direccion, t_parametro **registro_datos, char** nombre_registro_dato, char** nombre_registro_dir) {

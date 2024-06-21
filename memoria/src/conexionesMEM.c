@@ -102,7 +102,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
         
         // Evaluamos el codigo de operacion
         switch(paquete->codigo_operacion) { 
-            case COPY_STRING_MEMORIA: // "Ver cuando se copia en mem de agregar el \0, podria dar problemas"
+            /*case COPY_STRING_MEMORIA: // "Ver cuando se copia en mem de agregar el \0, podria dar problemas"
                 printf("llegue aca al copy string\n");
                 user_space_aux = espacio_usuario;       
                 t_copy_string* memoria_copy_string = deserializarCopyString(paquete->buffer);
@@ -118,7 +118,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 memcpy(&direccion_fisica_DI, (user_space_aux + direccion_fisica_SI), memoria_copy_string->tamanio);
                 //printf("Se modifico la direcccion fisica a: %s \n", (char*)direccion_fisica_DI);
                 free(memoria_copy_string);
-                break;
+                break;*/
              case RESIZE_MEMORIA: 
                 // int tamanio, pid;
                 int devolucion_resize_ok = -1;

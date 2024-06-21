@@ -61,6 +61,7 @@ void pedir_lectura(char* interfaz, int direccion_fisica, uint32_t* registro_tama
 // void enviar_kernel_stdout(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio);
 t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, uint32_t tamanio);
 void mandar_una_dir_fisica(int direccion_fisica);
+void realizar_operacion(uint32_t* registro_direccion_1, int tamanio_en_byte, int pid, codigo_operacion codigo_operacion);
 
 
 #endif 

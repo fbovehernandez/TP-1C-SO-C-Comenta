@@ -883,3 +883,29 @@
 [INFO] 03:27:52:054 LOGGER/(37937:37947): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
 [INFO] 03:27:52:056 LOGGER/(37937:37948): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
 [INFO] 03:27:59:108 LOGGER/(37937:37948): PID: 1 - Estado Anterior: 3 - Estado Actual: 4
+[INFO] 02:28:52:666 LOGGER/(7363:7363): Conexion establecida con Memoria
+[INFO] 02:28:52:710 LOGGER/(7363:7363): Conexion establecida con Dispatcher
+[INFO] 02:28:52:716 LOGGER/(7363:7363): Conexion establecida con Interrupt
+[INFO] 02:28:52:763 LOGGER/(7363:7363): Servidor iniciado, esperando conexiones!
+[INFO] 02:29:50:445 LOGGER/(7363:7372): Se armo un paquete con este PATH: /script_solo_cpu_5
+
+[INFO] 02:30:00:451 LOGGER/(7363:7372): Se crea el proceso: 1 en NEW
+[INFO] 02:30:00:456 LOGGER/(7363:7369): Hay proceso esperando en la cola de NEW!
+
+[INFO] 02:30:00:456 LOGGER/(7363:7369): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 02:30:00:457 LOGGER/(7363:7369): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 02:30:00:462 LOGGER/(7363:7370): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 02:32:28:532 LOGGER/(8132:8132): Conexion establecida con Memoria
+[INFO] 02:32:28:588 LOGGER/(8132:8132): Conexion establecida con Dispatcher
+[INFO] 02:32:28:596 LOGGER/(8132:8132): Conexion establecida con Interrupt
+[INFO] 02:32:28:636 LOGGER/(8132:8132): Servidor iniciado, esperando conexiones!
+[INFO] 02:32:36:552 LOGGER/(8132:8144): Se armo un paquete con este PATH: /script_solo_cpu_5
+
+[INFO] 02:32:46:561 LOGGER/(8132:8144): Se crea el proceso: 1 en NEW
+[INFO] 02:32:46:564 LOGGER/(8132:8141): Hay proceso esperando en la cola de NEW!
+
+[INFO] 02:32:46:565 LOGGER/(8132:8141): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 02:32:46:566 LOGGER/(8132:8141): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 02:32:46:567 LOGGER/(8132:8142): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
