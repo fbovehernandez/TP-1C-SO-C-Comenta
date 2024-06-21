@@ -534,7 +534,6 @@ int buscar_frame(t_solicitud_frame* pedido_frame) {
     t_list* tabla_paginas = proceso_paginas->tabla_paginas;
     
     if(list_find(tabla_paginas, (void*) _es_la_pagina_buscada) == NULL) return -1;
-    printf("llego aca lalal");
     
     int numero_frame = *(int*) list_get(tabla_paginas, pedido_frame->nro_pagina);
     printf("el marco es: %d\n", numero_frame);

@@ -459,8 +459,6 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         set(registro_dato_mov_in, valor_en_mem, es_registro_uint8_dato);
         break;
     case MOV_OUT: // MOV_OUT (Registro Dirección, Registro Datos)
-        int respuesta_ok_mv;
-
         recibir_parametros_mov_out(list_parametros, &registro_direccion, &registro_datos, &nombre_registro_dato, &nombre_registro_dir);
 
         uint32_t* registro_dato_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dato);
@@ -469,20 +467,20 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         uint32_t* registro_direccion_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dir); // este es la direccion logica
 
         tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato);
-
+        printf("entro a realizar_operacion");
         realizar_operacion(registro_direccion_mov_out, tamanio_en_byte, pcb->pid, ESCRIBIR_DATO_EN_MEM);
 
         recv(socket_memoria, &esperar_confirm, sizeof(int), MSG_WAITALL);
         
-        printf("Esperar confirmacion: %d\n", esperar_confirm);
+        printf("Esperar confirmacion MOV OUT: %d\n", esperar_confirm);
         break;
     case COPY_STRING: // COPY_STRING 1212
         t_parametro* tamanio_a_copiar_de_lista = list_get(list_parametros, 0);
         int tamanio_a_copiar = atoi(tamanio_a_copiar_de_lista->nombre);
         printf("Le hago atoi al tamanio a copiar\n");
 
-        uint32_t* registro_SI = (uint32_t*)seleccionar_registro_cpu(pcb->registros->SI);
-        uint32_t* registro_DI = (uint32_t*)seleccionar_registro_cpu(pcb->registros->DI);
+        uint32_t* registro_SI = (uint32_t*)seleccionar_registro_cpu("SI");
+        uint32_t* registro_DI = (uint32_t*)seleccionar_registro_cpu("DI");
         uint32_t* registro_auxiliar;
 
         realizar_operacion(registro_SI, tamanio_a_copiar, pcb->pid, RECIBIR_DIRECCIONES);
@@ -495,7 +493,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         recv(socket_memoria, &esperar_confirm, sizeof(int), MSG_WAITALL);
         
-        printf("Esperar confirmacion: %d\n", esperar_confirm);
+        printf("Esperar confirmacion COPY STRING: %d\n", esperar_confirm);
 
         /*t_instruccion* instruccionMOVIN;
         instruccionMOVIN->nombre = MOV_IN;
@@ -715,6 +713,7 @@ void realizar_operacion(uint32_t* registro_direccion_1, int tamanio_en_byte, int
 
     enviar_primer_pagina(*registro_direccion_1, pid, tamanio_en_byte, cantidad_paginas, 0, codigo_operacion);
     recv(socket_memoria, &respuesta_ok, sizeof(uint32_t), MSG_WAITALL);
+    printf("la respuesta ok es:%d\n", respuesta_ok);
     
     enviar_direcciones_fisicas(pagina, pid, cantidad_paginas-1); 
 }
@@ -840,6 +839,7 @@ void enviar_direcciones_fisicas(int pagina, int pid, int cant_paginas) {
         pedir_frame_a_memoria(pagina + 1, pid); 
  
         recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
+        printf("el frame es:%d", frame);
 
         int direccion_fisica = frame * tamanio_pagina + 0; // 0 es el offset
 
@@ -912,7 +912,6 @@ int cantidad_de_paginas_a_utilizar(uint32_t direccion_logica, int tamanio_en_byt
     return cantidad_paginas;
 }
 
-
 void enviar_tamanio_memoria(int nuevo_tamanio, int pid) {
     t_paquete *paquete = malloc(sizeof(t_paquete));
     t_buffer *buffer = malloc(sizeof(t_buffer));
@@ -949,50 +948,6 @@ void enviar_tamanio_memoria(int nuevo_tamanio, int pid) {
     free(paquete);
 }
 
-/* 
-void mandar_direccion_fisica_a_mem(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, uint32_t direccion_logica) {
-    t_paquete *paquete = malloc(sizeof(t_paquete));
-    t_buffer *buffer = malloc(sizeof(t_buffer));
-
-    buffer->size = sizeof(int) * 3 + sizeof(uint32_t);
-    buffer->offset = 0;
-    buffer->stream = malloc(buffer->size);
-
-    // Para el nombre primero mandamos el tamaño y luego el texto en sí:
-    memcpy(buffer->stream + buffer->offset, &direccion_fisica, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, &tamanio_en_bytes, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, &cantidad_paginas, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, &direccion_logica, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
- 
-    paquete->codigo_operacion = RECIBIR_DIRECCIONES; // Podemos usar una constante por operación
-    
-    paquete->buffer = buffer;
-
-    void *a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int); 
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-    
-    // Por último enviamos
-    send(socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-    // printf("Paquete enviado!\n");
-
-    // Falta liberar todo
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
-}
-*/
-
 void desalojar(t_pcb* pcb, DesalojoCpu motivo, t_buffer* datos_adicionales) {
     guardar_estado(pcb);
     setear_registros_cpu(); 
@@ -1028,17 +983,6 @@ void solicitud_dormirIO_kernel(char* interfaz, int unidades) {
     free(paquete->buffer);
     free(paquete);
 }
-
-/*
-void* sacarParametroParaConseguirRegistro(t_list* list_parametros, bool esDe8bits, int nroParametro){
-    t_parametro *parametro_registro_direccion = list_get(list_parametros, nroParametro);
-    char* nombre_registro1 = parametro_registro_direccion->nombre;
-    esDe8bits = es_de_8_bits(nombre_registro1);
-    return seleccionar_registro_cpu(nombre_registro1);
-}
-*/
-
-
 /*
 void solicitud_lecturaIO_kernel(char* interfaz,void* valorRegistroDestino,void* valorRegistroTamanio){
     t_buffer* buffer = malloc(sizeof(t_buffer));
@@ -1111,12 +1055,6 @@ t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
     free(io);
     return buffer;
 }
-
-/*
-t_buffer* llenar_buffer_leer_IO(interfaz, valorRegistroDestino,valorRegistroTamanio){
-    return NULL; // TODO
-}
-*/
 
 /* 
 void enviar_fin_programa(t_pcb *pcb) {
