@@ -34,6 +34,7 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
             hay_interrupcion = 0;
             return;
         }
+        
         /*
         recv(socket_memoria, &esperar_confirm, sizeof(int), MSG_WAITALL);
         
@@ -401,11 +402,16 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
     // printf("La instruccion es de numero %d y tiene %d parametros\n", instruccion->nombre, instruccion->cantidad_parametros);
     
-    void* registro_datos;
-    bool es_registro_uint8;
-    void* registro_direccion;
+    t_parametro* registro_datos;
+    bool es_registro_uint8_dato;
+    t_parametro* registro_direccion;
     void* registro1;
     int direccion_fisica;
+    char* nombre_registro_dato;
+    char* nombre_registro_dir;
+    int tamanio_en_byte;
+    int pagina;
+    int esperar_confirm;
 
     switch (nombreInstruccion) // Ver la repeticion de logica... -> Abstraer
     {
@@ -430,62 +436,64 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         printf("Cuando hace SET BX 1 queda asi el registro BX del CPU: %u\n", registros_cpu->BX);*/
         break;
     case MOV_IN: // MOV_IN EDX SI
-        void* valor_en_mem;   
+        
+        uint32_t valor_en_mem;
         int respuesta_ok;
          
         t_parametro *registro_datos = list_get(list_parametros, 0);
         t_parametro *registro_direccion = list_get(list_parametros, 1);
-        char* nombre_registro_dato = registro_datos->nombre;
-        char* nombre_registro_dir = registro_direccion->nombre; 
+        nombre_registro_dato = registro_datos->nombre;
+        nombre_registro_dir = registro_direccion->nombre; 
 
         void *registro_dato_mov_in = seleccionar_registro_cpu(nombre_registro_dato);
 
-        bool es_registro_uint8_dato = es_de_8_bits(nombre_registro_dato);
+        es_registro_uint8_dato = es_de_8_bits(nombre_registro_dato);
         uint32_t* registro_direccion_1 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_dir);
         // bool es_registro_uint8_direccion = es_de_8_bits(nombre_registro_dir); // not used
 
-        int tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato);
-        int pagina = floor(*registro_direccion_1 / tamanio_pagina);
-        int cantidad_paginas = cantidad_de_paginas_a_leer(*registro_direccion_1, tamanio_en_byte, pagina);
+        tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato);
+        pagina = floor(*registro_direccion_1 / tamanio_pagina);
+        int cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_direccion_1, tamanio_en_byte, pagina);
 
-        enviar_primer_pagina(*registro_direccion_1, pcb->pid, tamanio_en_byte, cantidad_paginas);
+        enviar_primer_pagina(*registro_direccion_1, pcb->pid, tamanio_en_byte, cantidad_paginas, 0, RECIBIR_DIRECCIONES);
         recv(socket_memoria, &respuesta_ok, sizeof(uint32_t), MSG_WAITALL);
+        
         enviar_direcciones_fisicas(pagina, pcb->pid, cantidad_paginas-1); 
         
         recv(socket_memoria, &valor_en_mem, sizeof(uint32_t), MSG_WAITALL);
-        uint32_t* registro_lectura = (uint32_t*)valor_en_mem; // Aca siempre recibo un uint32_t para enviarle a set el valor a agregar en el registro...
-        
-        set(registro_dato_mov_in, *registro_lectura, es_registro_uint8_dato);
-        //  printf("Registro datos: %d\n", registro_dato_1);
-        printf("Si sale todo bien, AX es 2");
+        printf("Recibi el valor de memoria \n");
+
+        printf("El valor de memoria es: %d\n", valor_en_mem);
+       
+        set(registro_dato_mov_in, valor_en_mem, es_registro_uint8_dato);
         break;
     case MOV_OUT: // MOV_OUT (Registro Dirección, Registro Datos)
-        int esperar_confirm;
-        t_parametro *registro_direccion1 = list_get(list_parametros, 0);
-        t_parametro *registro_datos1 = list_get(list_parametros, 1);
-        char* nombre_registro_dato1 = registro_datos1->nombre;
-        char* nombre_registro_dir1 = registro_direccion1->nombre;
-        int respuesta_ok_mv = 2;
+        int respuesta_ok_mv;
 
-        uint32_t* registro_dato_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dato1);
-        bool es_registro_uint8_dato_mov_out = es_de_8_bits(nombre_registro_dato1);
+        recibir_parametros_mov_out(list_parametros, &registro_direccion, &registro_datos, &nombre_registro_dato, &nombre_registro_dir);
+
+        uint32_t* registro_dato_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dato);
+        es_registro_uint8_dato = es_de_8_bits(nombre_registro_dato);
         
-        uint32_t* registro_direccion_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dir1); // este es la direccion logica
-        // bool es_registro_uint8_direccion_mov_out = es_de_8_bits(nombre_registro_dir1);
+        uint32_t* registro_direccion_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dir); // este es la direccion logica
 
-        int tamanio_en_byte_mv = tamanio_byte_registro(es_registro_uint8_dato_mov_out);
-        int pagina_mv = floor(*registro_direccion_mov_out / tamanio_pagina);
-        int cantidad_paginas_mv = cantidad_de_paginas_a_leer(*registro_direccion_mov_out, tamanio_en_byte_mv, pagina_mv);
+        tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato);
+        pagina = floor(*registro_direccion_mov_out / tamanio_pagina);
 
-        direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, *registro_direccion_mov_out, pcb->pid); 
-        printf("direccion fisica que vamos a usar %d \n", direccion_fisica);
+        // Devuelve la cantidad de paginas a utilizar + 1
+        int cantidad_paginas_a_escribir = cantidad_de_paginas_a_utilizar(*registro_direccion_mov_out, tamanio_en_byte, pagina);
 
-        mandar_direccion_fisica_a_mem_mov_out(direccion_fisica, tamanio_en_byte_mv, cantidad_paginas_mv, *registro_direccion_mov_out, *registro_dato_mov_out); 
-        printf("se mando dir fisica a memoria : %d \n", direccion_fisica);
-
+        enviar_primer_pagina(*registro_direccion_mov_out, pcb->pid, tamanio_en_byte, cantidad_paginas_a_escribir, *registro_dato_mov_out, ESCRIBIR_DATO_EN_MEM);
+        
         recv(socket_memoria, &respuesta_ok_mv, sizeof(int), MSG_WAITALL);
-        enviar_direcciones_fisicas(pagina_mv, pcb->pid, cantidad_paginas_mv-1); 
-        // para mi no va - CARO
+
+        if(respuesta_ok_mv != 2) {
+            printf("Codigo de respuesta inesperado...\n");
+            return 1;
+        }
+
+        enviar_direcciones_fisicas(pagina, pcb->pid, cantidad_paginas_a_escribir-1); 
+
         recv(socket_memoria, &esperar_confirm, sizeof(int), MSG_WAITALL);
         
         printf("Esperar confirmacion: %d\n", esperar_confirm);
@@ -550,8 +558,8 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         t_parametro* tamanio_a_copiar_de_lista = list_get(list_parametros,0);
         int tamanio_a_copiar = atoi(tamanio_a_copiar_de_lista->nombre);
         printf("Le hago atoi al tamanio a copiar\n");
-        int direccion_fisicaSI = traducir_direccion_logica_a_fisica(tamanio_pagina,pcb->registros->SI, pcb->pid);
-        int direccion_fisicaDI = traducir_direccion_logica_a_fisica(tamanio_pagina,pcb->registros->DI, pcb->pid);
+        int direccion_fisicaSI = traducir_direccion_logica_a_fisica(pcb->registros->SI, pcb->pid);
+        int direccion_fisicaDI = traducir_direccion_logica_a_fisica(pcb->registros->DI, pcb->pid);
         printf("Tengo la direccionn fisica\n");
         enviar_buffer_copy_string(direccion_fisicaSI , direccion_fisicaDI, tamanio_a_copiar);
         break;
@@ -692,15 +700,22 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     return 0;
 }
 
-void enviar_primer_pagina(uint32_t direccion_logica, int pid, int tamanio_en_bytes, int cant_paginas) {
-    int direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, direccion_logica, pid); 
+void recibir_parametros_mov_out(t_list* list_parametros, t_parametro **registro_direccion, t_parametro **registro_datos, char** nombre_registro_dato, char** nombre_registro_dir) {
+    *registro_direccion = list_get(list_parametros, 0);
+    *registro_datos = list_get(list_parametros, 1);
+    *nombre_registro_dato = (*registro_datos)->nombre;
+    *nombre_registro_dir = (*registro_direccion)->nombre;
+}
+
+void enviar_primer_pagina(uint32_t direccion_logica, int pid, int tamanio_en_bytes, int cant_paginas, uint32_t valor, codigo_operacion cod_op) {
+    int direccion_fisica = traducir_direccion_logica_a_fisica(direccion_logica, pid); 
     printf("direccion fisica que vamos a usar %d \n", direccion_fisica);
 
-    mandar_direccion_fisica_a_mem(direccion_fisica, tamanio_en_bytes, cant_paginas, direccion_logica); 
+    mandar_direccion_fisica_a_mem(direccion_fisica, tamanio_en_bytes, cant_paginas, direccion_logica, valor, cod_op); 
     printf("se mando dir fisica a memoria %d : \n", direccion_fisica);
 }  
 
-void mandar_direccion_fisica_a_mem_mov_out(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, int direccion_logica, uint32_t valor) {
+void mandar_direccion_fisica_a_mem(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, int direccion_logica, uint32_t valor, codigo_operacion cod_op) {
 t_paquete *paquete = malloc(sizeof(t_paquete));
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
@@ -720,7 +735,7 @@ t_paquete *paquete = malloc(sizeof(t_paquete));
     memcpy(buffer->stream + buffer->offset, &valor, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
  
-    paquete->codigo_operacion = ESCRIBIR_DATO_EN_MEM; // Podemos usar una constante por operación
+    paquete->codigo_operacion = cod_op; // Podemos usar una constante por operación
     
     paquete->buffer = buffer;
 
@@ -798,33 +813,24 @@ void pedir_lectura(char* interfaz, int direccion_fisica, uint32_t* registro_tama
 }
 
 void enviar_direcciones_fisicas(int pagina, int pid, int cant_paginas) {  
-    int frame, devolucion_ok;
-    int mandame_sig_direccion;
-    // t_list* lista_direcciones_fisicas = list_create();
-
+    int frame;
+    // int termine_envio = 10; 
+    
     for(int i = 0; i < cant_paginas; i++) {
-        printf("Pido el marco de la pagina %d del proceso %d\n", pagina + 1, pid);
+        printf("Pido el marco de la pagina %d del proceso %d\n", pagina + 1, pid); // El uno es para que siempre pida la sig
         pedir_frame_a_memoria(pagina + 1, pid); 
+ 
         recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
-        int direccion_fisica = frame * tamanio_pagina + 0; // 0 es el offset
-        // list_add(lista_direcciones_fisicas, direccion_fisica);
 
-        // mandar_una_dir_fisica(direccion_fisica);   
-        send(socket_memoria, &direccion_fisica, sizeof(int), 0);    
-        printf("se mando dir fisica a memoria %d : \n", direccion_fisica);
-        recv(socket_memoria, &mandame_sig_direccion, sizeof(int), MSG_WAITALL);  
-        printf("llega acaaaa");
-        if(mandame_sig_direccion != 1) {
-            return;
-        }
-        // mandar_direccion_fisica_a_mem(direccion_fisica, es_registro_uint8_dato, RECIBIR_DIR_FISICA);
-        
-        //// recv(socket_memoria, &devolucion_ok, sizeof(int), MSG_WAITALL);
+        int direccion_fisica = frame * tamanio_pagina + 0; // 0 es el offset
+
+        printf("Direccion fisica a enviar y agregar en lista: %d\n", direccion_fisica);
+        mandar_una_dir_fisica(direccion_fisica);
         pagina++;
     }
+
 }
 
-/*
 void mandar_una_dir_fisica(int direccion_fisica) {
     t_paquete *paquete = malloc(sizeof(t_paquete));
     t_buffer *buffer = malloc(sizeof(t_buffer));
@@ -860,14 +866,12 @@ void mandar_una_dir_fisica(int direccion_fisica) {
     free(paquete->buffer);
     free(paquete);
 }
-*/
 
 int tamanio_byte_registro(bool es_registro_uint8) {
     return es_registro_uint8 ? 1 : 4;
 }
 
-int cantidad_de_paginas_a_leer(uint32_t direccion_logica, int tamanio_en_bytes, int pagina) { 
-    // cantidad_de_paginas_a_leer(30, 4, 0) -> tam_pag = 32b
+int cantidad_de_paginas_a_utilizar(uint32_t direccion_logica, int tamanio_en_bytes, int pagina) { 
     int cantidad_paginas = 1;
     
     int offset = direccion_logica - pagina * tamanio_pagina;
@@ -926,7 +930,7 @@ void enviar_tamanio_memoria(int nuevo_tamanio, int pid) {
     free(paquete);
 }
 
-// Serializo ahora tam_bytes
+/* 
 void mandar_direccion_fisica_a_mem(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, uint32_t direccion_logica) {
     t_paquete *paquete = malloc(sizeof(t_paquete));
     t_buffer *buffer = malloc(sizeof(t_buffer));
@@ -968,6 +972,7 @@ void mandar_direccion_fisica_a_mem(int direccion_fisica, int tamanio_en_bytes, i
     free(paquete->buffer);
     free(paquete);
 }
+*/
 
 void desalojar(t_pcb* pcb, DesalojoCpu motivo, t_buffer* datos_adicionales) {
     guardar_estado(pcb);
@@ -1185,10 +1190,10 @@ void *seleccionar_registro_cpu(char *nombreRegistro) {
 
 void set(void *registro, uint32_t valor, bool es_8_bits) {
     // registro = &valor;
+
     if (es_8_bits) {
         *(uint8_t *)registro = (uint8_t)valor; // NO va a haber ninguno registro de 8 bits que pase el limite
-    }
-    else {
+    } else {
         *(uint32_t *)registro = valor;
     }
 }

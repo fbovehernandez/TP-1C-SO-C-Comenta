@@ -106,9 +106,9 @@ int esta_en_TLB(int nro_pagina) {
 
 */ 
 
-int traducir_direccion_logica_a_fisica(int tamanio_pagina, uint32_t direccion_logica, int pid) { 
-    int frame;
+int traducir_direccion_logica_a_fisica(uint32_t direccion_logica, int pid) { 
     t_direccion_logica* direccion_logica_a_crear = malloc(sizeof(t_direccion_logica)); 
+    int frame;
 
     direccion_logica_a_crear->numero_pagina = floor(direccion_logica / tamanio_pagina);
     printf("Numero de pagina %d\n", direccion_logica_a_crear->numero_pagina);
@@ -118,13 +118,10 @@ int traducir_direccion_logica_a_fisica(int tamanio_pagina, uint32_t direccion_lo
     pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina, pid); 
     
     recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
-    
-    // Es antes? o despues? 
-    printf("Pido el marco %d de la pagina %d del proceso %d\n", frame, direccion_logica_a_crear->numero_pagina, pid);
-
-    printf("Frame %d\n", frame);
+    printf("Frame %d recibido de memoria para el PID %d\n", frame, pid);
     
     int direccion_fisica = frame * tamanio_pagina + direccion_logica_a_crear->desplazamiento;
+    printf("valor de la direccion fisica:%d\n", direccion_fisica);
     
     free(direccion_logica_a_crear);
 
@@ -132,8 +129,11 @@ int traducir_direccion_logica_a_fisica(int tamanio_pagina, uint32_t direccion_lo
 }
 
 void pedir_frame_a_memoria(int nro_pagina, int pid) { 
-    t_solicitud_frame* solicitud_frame = malloc(sizeof(t_solicitud_frame));
 
+    printf("Nro de pagina %d\n", nro_pagina);
+    printf("PID %d\n", pid);
+
+    t_paquete* paquete = malloc(sizeof(t_paquete));
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
     buffer->size = sizeof(int) + sizeof(int); 
@@ -141,12 +141,11 @@ void pedir_frame_a_memoria(int nro_pagina, int pid) {
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
-    memcpy(buffer->stream + buffer->offset, &solicitud_frame->nro_pagina, sizeof(int));
+    // Ver posible problema de free moviendo el buffer->stream
+    memcpy(buffer->stream + buffer->offset, &nro_pagina, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, &solicitud_frame->pid, sizeof(int));
+    memcpy(buffer->stream + buffer->offset, &pid, sizeof(int));
     buffer->offset += sizeof(int);
-
-    t_paquete* paquete = malloc(sizeof(t_paquete));
 
     paquete->codigo_operacion = QUIERO_FRAME; 
     paquete->buffer = buffer; 
