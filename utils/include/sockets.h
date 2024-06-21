@@ -138,6 +138,11 @@ typedef enum {
     MOSTRAR,
 } codigo_operacion;
 
+typedef enum {
+    ESCRITURA,
+    LECTURA
+} tipo_operacion;
+
 typedef struct{
     int direccion_fisica;
     int tamanio;
@@ -222,12 +227,14 @@ typedef enum {
     ERROR_INSTRUCCION
 } TipoInstruccion;
 
+/* 
 typedef struct {
     int direccion_fisica;
     int tamanio;
     int cantidad_paginas;
     int direccion_logica;
 } t_direccion_fisica;
+*/
 
 typedef struct {
     TipoInstruccion nombre;
@@ -269,8 +276,8 @@ typedef struct {
     int tamanio;
     int cantidad_paginas;
     int direccion_logica;
-    uint32_t valor;
-} t_direccion_fisica_mov_out;
+    uint32_t valor; // No usado en ciertas ocasiones
+} t_direccion_fisica;
 
 void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* buffer);
 int iniciar_servidor(char*);
