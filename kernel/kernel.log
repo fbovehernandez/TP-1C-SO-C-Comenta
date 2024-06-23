@@ -1690,3 +1690,93 @@
 
 [INFO] 03:42:21:173 LOGGER/(50337:50339): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
 [INFO] 03:42:21:175 LOGGER/(50337:50340): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 14:43:12:154 LOGGER/(3194:3194): Conexion establecida con Memoria
+[INFO] 14:43:12:194 LOGGER/(3194:3194): Conexion establecida con Dispatcher
+[INFO] 14:43:12:201 LOGGER/(3194:3194): Conexion establecida con Interrupt
+[INFO] 14:43:12:263 LOGGER/(3194:3194): Servidor iniciado, esperando conexiones!
+[INFO] 14:43:19:474 LOGGER/(3194:3201): Se armo un paquete con este PATH: /script_solo_cpu_5
+
+[INFO] 14:43:29:481 LOGGER/(3194:3201): Se crea el proceso: 1 en NEW
+[INFO] 14:43:29:483 LOGGER/(3194:3196): Hay proceso esperando en la cola de NEW!
+
+[INFO] 14:43:29:483 LOGGER/(3194:3196): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 14:43:29:484 LOGGER/(3194:3196): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 14:43:29:487 LOGGER/(3194:3197): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 14:55:02:234 LOGGER/(3194:3197): PID: 1 - Estado Anterior: 3 - Estado Actual: 4
+[INFO] 15:16:23:495 LOGGER/(4342:4342): Conexion establecida con Memoria
+[INFO] 15:16:23:543 LOGGER/(4342:4342): Conexion establecida con Dispatcher
+[INFO] 15:16:23:550 LOGGER/(4342:4342): Conexion establecida con Interrupt
+[INFO] 15:16:23:595 LOGGER/(4342:4342): Servidor iniciado, esperando conexiones!
+[INFO] 15:16:27:756 LOGGER/(4342:4347): Se armo un paquete con este PATH: /script_solo_cpu_5
+
+[INFO] 15:16:37:763 LOGGER/(4342:4347): Se crea el proceso: 1 en NEW
+[INFO] 15:16:37:764 LOGGER/(4342:4344): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:16:37:765 LOGGER/(4342:4344): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 15:16:37:766 LOGGER/(4342:4344): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 15:16:37:769 LOGGER/(4342:4345): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 15:17:55:145 LOGGER/(4342:4345): PID: 1 - Estado Anterior: 3 - Estado Actual: 4
+[INFO] 15:19:47:424 LOGGER/(4902:4902): Conexion establecida con Memoria
+[INFO] 15:19:47:449 LOGGER/(4902:4902): Conexion establecida con Dispatcher
+[INFO] 15:19:47:455 LOGGER/(4902:4902): Conexion establecida con Interrupt
+[INFO] 15:19:47:513 LOGGER/(4902:4902): Servidor iniciado, esperando conexiones!
+[INFO] 15:19:53:468 LOGGER/(4902:4918): Se armo un paquete con este PATH: /script_solo_cpu_%
+
+[INFO] 15:29:55:640 LOGGER/(5322:5322): Conexion establecida con Memoria
+[INFO] 15:29:55:677 LOGGER/(5322:5322): Conexion establecida con Dispatcher
+[INFO] 15:29:55:680 LOGGER/(5322:5322): Conexion establecida con Interrupt
+[INFO] 15:29:55:740 LOGGER/(5322:5322): Servidor iniciado, esperando conexiones!
+[INFO] 15:30:06:881 LOGGER/(5322:5327): Se armo un paquete con este PATH: /script_solo_cpu_5
+
+[INFO] 15:30:16:890 LOGGER/(5322:5327): Se crea el proceso: 1 en NEW
+[INFO] 15:30:16:891 LOGGER/(5322:5324): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:30:16:891 LOGGER/(5322:5324): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 15:30:16:892 LOGGER/(5322:5324): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 15:30:16:894 LOGGER/(5322:5325): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 15:30:49:341 LOGGER/(5322:5325): PID: 1 - Estado Anterior: 3 - Estado Actual: 4
+[INFO] 15:33:33:352 LOGGER/(5939:5939): Conexion establecida con Memoria
+[INFO] 15:33:33:395 LOGGER/(5939:5939): Conexion establecida con Dispatcher
+[INFO] 15:33:33:397 LOGGER/(5939:5939): Conexion establecida con Interrupt
+[INFO] 15:33:33:456 LOGGER/(5939:5939): Servidor iniciado, esperando conexiones!
+[INFO] 15:33:39:657 LOGGER/(5939:5951): Se armo un paquete con este PATH: /script_solo_cpu_5
+
+[INFO] 15:33:49:667 LOGGER/(5939:5951): Se crea el proceso: 1 en NEW
+[INFO] 15:33:49:669 LOGGER/(5939:5948): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:33:49:669 LOGGER/(5939:5948): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 15:33:49:670 LOGGER/(5939:5948): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 15:33:49:672 LOGGER/(5939:5949): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 15:58:11:550 LOGGER/(5939:5949): PID: 1 - Estado Anterior: 3 - Estado Actual: 4
+[INFO] 15:59:38:077 LOGGER/(6776:6776): Conexion establecida con Memoria
+[INFO] 15:59:38:117 LOGGER/(6776:6776): Conexion establecida con Dispatcher
+[INFO] 15:59:38:120 LOGGER/(6776:6776): Conexion establecida con Interrupt
+[INFO] 15:59:38:158 LOGGER/(6776:6776): Servidor iniciado, esperando conexiones!
+[INFO] 15:59:42:785 LOGGER/(6776:6781): Se armo un paquete con este PATH: /script_solo_cpu_5
+
+[INFO] 15:59:52:792 LOGGER/(6776:6781): Se crea el proceso: 1 en NEW
+[INFO] 15:59:52:793 LOGGER/(6776:6778): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:59:52:793 LOGGER/(6776:6778): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 15:59:52:794 LOGGER/(6776:6778): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 15:59:52:797 LOGGER/(6776:6779): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 16:25:12:338 LOGGER/(6776:6779): PID: 1 - Estado Anterior: 3 - Estado Actual: 4
+[INFO] 16:26:28:166 LOGGER/(7627:7627): Conexion establecida con Memoria
+[INFO] 16:26:28:193 LOGGER/(7627:7627): Conexion establecida con Dispatcher
+[INFO] 16:26:28:201 LOGGER/(7627:7627): Conexion establecida con Interrupt
+[INFO] 16:26:28:253 LOGGER/(7627:7627): Servidor iniciado, esperando conexiones!
+[INFO] 16:26:32:564 LOGGER/(7627:7635): Se armo un paquete con este PATH: /script_solo_cpu_5
+
+[INFO] 16:26:42:571 LOGGER/(7627:7635): Se crea el proceso: 1 en NEW
+[INFO] 16:26:42:572 LOGGER/(7627:7632): Hay proceso esperando en la cola de NEW!
+
+[INFO] 16:26:42:572 LOGGER/(7627:7632): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 16:26:42:573 LOGGER/(7627:7632): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 16:26:42:576 LOGGER/(7627:7633): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 16:30:36:393 LOGGER/(7627:7633): PID: 1 - Estado Anterior: 3 - Estado Actual: 4

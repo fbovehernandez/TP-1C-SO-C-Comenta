@@ -747,12 +747,11 @@ t_buffer* serializar_escritura(int direccion_fisica, int tamanio_en_bytes, int c
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
     if(length_valor > 0) {
-        buffer->size = sizeof(int) * 4 + sizeof(uint32_t) + sizeof(codigo_operacion) + length_valor;
+        buffer->size = sizeof(int) * 4 + sizeof(uint32_t) + length_valor;
     } else {
-        buffer->size = sizeof(int) * 4 + sizeof(uint32_t) + sizeof(codigo_operacion) + tamanio_en_bytes;
+        buffer->size = sizeof(int) * 4 + sizeof(uint32_t) + tamanio_en_bytes;
     }
 
-    buffer->size = sizeof(int) * 4 + sizeof(uint32_t) + sizeof(codigo_operacion);
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 

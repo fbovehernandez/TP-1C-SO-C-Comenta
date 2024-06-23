@@ -111,7 +111,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 break;
             case QUIERO_FRAME:
                 // Aca abstraigo para recibir el frame
-                quiero_frame(paquete->buffer); // Recibe mal pid y pagina
+                quiero_frame(paquete->buffer); 
                 break;
             case QUIERO_INSTRUCCION:
                 t_solicitud_instruccion* solicitud_cpu = deserializar_solicitud_instruccion(paquete->buffer);
@@ -144,7 +144,9 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 send(socket_cpu, &respuesta_ok_l, sizeof(uint32_t), 0);
             
                 realizar_operacion(LECTURA, direcciones_restantes, user_space_aux, datos_lectura, NULL, registro_lectura);
-                
+                // Agrego el \0 para leer el string"
+
+                // ((char*)registro_lectura)[datos_lectura->tamanio] = '\0';
                 printf("El valor leido es: %s\n", (char*)registro_lectura);
 
                 // uint32_t* ptr = (uint32_t*)registro_lectura;
@@ -174,10 +176,10 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 send(socket_cpu, &respuesta_ok_mv, sizeof(int), 0);
 
                 void* registro_escritura = df_escritura_general->valor_a_escribir;
-                printf("El valor a escribir es: %s\n", (char*)registro_escritura); // Prueba con un uint32_t, romperia si length es > 0
+                // printf("El valor a escribir es: %s\n", (char*)registro_escritura); // Prueba con un uint32_t, romperia si length es > 0
                 // printf("El valor a escribir es: %d\n", *(uint32_t*)registro_escritura); // Prueba con un uint32_t, romperia si length es > 0
 
-                realizar_operacion(ESCRITURA, direcciones_restantes_mov_out, user_space_aux, datos_escritura, registro_escritura, NULL);
+                realizar_operacion(ESCRITURA, direcciones_restantes_mov_out, user_space_aux, datos_escritura, registro_escritura, NULL); // df_escritura_general->datos_direccion
                 send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
 
                 free(datos_escritura);
@@ -230,24 +232,27 @@ void realizar_operacion(tipo_operacion operacion, t_list* direcciones_restantes,
     /****                                             *****/
 
     int df_actual = df->direccion_fisica;
+    printf("La direccion fisica actual es: %d\n", df_actual);
     int indice_direccion = 0;
     
     int cant_bytes_usables = bytes_usables_por_pagina(df->direccion_logica); // Esto podria enviarlo CPU   
+    printf("Los bytes usables son: %d\n", cant_bytes_usables);
 
+    // Cambiar por tamanio a operar
     int tam_a_escribir = min(cant_bytes_usables, df->tamanio); 
     interaccion_user_space(operacion, df_actual, user_space_aux, 0, tam_a_escribir, registro_escritura, registro_lectura);
     // memcpy((user_space_aux + df_actual), registro, tam_a_escribir);
 
-    int resto_usable = df->tamanio - cant_bytes_usables;
+    int resto_usable = df->tamanio - cant_bytes_usables; // 4
 
     while(resto_usable > 0) {
         int* df_ptr = (int*)list_get(direcciones_restantes, indice_direccion);  
         df_actual = *df_ptr;
 
-        int tam_escrito_anterior = tam_a_escribir;
-        int cant_bytes_usables = tamanio_pagina;
+        int tam_escrito_anterior = tam_a_escribir; // 3
+        int cant_bytes_usables = tamanio_pagina; // 4
 
-        user_space_aux = espacio_usuario; // Con esto lo devuelvo inicio al ptr_aux
+        // user_space_aux = espacio_usuario; // Con esto lo devuelvo inicio al ptr_aux
         
         tam_a_escribir = min(cant_bytes_usables, resto_usable); 
 
@@ -265,6 +270,7 @@ void realizar_operacion(tipo_operacion operacion, t_list* direcciones_restantes,
 void interaccion_user_space(tipo_operacion operacion, int df_actual, void* user_space_aux, int tam_escrito_anterior, int tamanio, void* registro_escritura, void* registro_lectura) {
     if(operacion == ESCRITURA) {
         memcpy((user_space_aux + df_actual), registro_escritura + tam_escrito_anterior, tamanio);
+        printf("El valor a leer luego de copiarlo en el register es: %s\n", (char*)(user_space_aux + df_actual));
     } else { // == LECTURA
         memcpy(registro_lectura + tam_escrito_anterior, (user_space_aux + df_actual), tamanio);
     }
