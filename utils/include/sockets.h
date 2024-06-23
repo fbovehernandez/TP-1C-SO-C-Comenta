@@ -271,13 +271,19 @@ typedef struct{
     char* nombre_archivo;
 } t_pedido_fs_create;
 
+// Este dir_fisica abarca todo lo que se envia como primer pagina para que la memoria pueda leer/escribir datos
 typedef struct {
     int direccion_fisica;
     int tamanio;
     int cantidad_paginas;
     int direccion_logica;
-    uint32_t valor; // No usado en ciertas ocasiones
 } t_direccion_fisica;
+
+typedef struct {
+    t_direccion_fisica* datos_direccion;
+    void* valor_a_escribir;
+    uint32_t length_valor;
+} t_direccion_fisica_escritura;
 
 void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* buffer);
 int iniciar_servidor(char*);

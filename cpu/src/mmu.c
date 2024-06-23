@@ -111,17 +111,16 @@ int traducir_direccion_logica_a_fisica(uint32_t direccion_logica, int pid) {
     int frame;
 
     direccion_logica_a_crear->numero_pagina = floor(direccion_logica / tamanio_pagina);
-    printf("Numero de pagina %d\n", direccion_logica_a_crear->numero_pagina);
     direccion_logica_a_crear->desplazamiento = direccion_logica - direccion_logica_a_crear->numero_pagina * tamanio_pagina;
-    printf("Desplazamiento %d\n", direccion_logica_a_crear->desplazamiento);
+
+    printf("Numero de pagina %d + Desplazamiento %d\n", direccion_logica_a_crear->numero_pagina, direccion_logica_a_crear->desplazamiento);
 
     pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina, pid); 
     
     recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
-    printf("Frame %d recibido de memoria para el PID %d\n", frame, pid);
+    printf("Frame %d recibido de memoria %d\n", frame, pid);
     
     int direccion_fisica = frame * tamanio_pagina + direccion_logica_a_crear->desplazamiento;
-    printf("valor de la direccion fisica:%d\n", direccion_fisica);
     
     free(direccion_logica_a_crear);
 
@@ -129,9 +128,6 @@ int traducir_direccion_logica_a_fisica(uint32_t direccion_logica, int pid) {
 }
 
 void pedir_frame_a_memoria(int nro_pagina, int pid) { 
-
-    printf("Nro de pagina %d\n", nro_pagina);
-    printf("PID %d\n", pid);
 
     t_paquete* paquete = malloc(sizeof(t_paquete));
     t_buffer* buffer = malloc(sizeof(t_buffer));

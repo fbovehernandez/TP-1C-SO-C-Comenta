@@ -19,7 +19,7 @@ typedef struct {
 } t_cantidad_instrucciones;
 
 void recibir_parametros_mov_out(t_list* list_parametros, t_parametro **registro_direccion, 
-                t_parametro **registro_datos, char** nombre_registro_dato, char** nombre_registro_dir);
+t_parametro **registro_datos, char** nombre_registro_dato, char** nombre_registro_dir);
 int cantidad_de_paginas_a_utilizar(uint32_t direccion_logica, int tamanio_en_bytes, int pagina);
 int tamanio_byte_registro(bool es_registro_uint8);
 int recibir_resultado_resize();
@@ -36,7 +36,7 @@ int recibir_cantidad_instrucciones(int socket_memoria, int pid);
 t_instruccion* recibir_instruccion(int socket_memoria, t_pcb *pcb);
 t_instruccion* instruccion_deserializar(t_buffer* buffer);
 int ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb);
-void enviar_primer_pagina(uint32_t direccion_logica, int pid, int tamanio_en_bytes, int cant_paginas, uint32_t valor, codigo_operacion cod_op);
+void enviar_primer_pagina(uint32_t direccion_logica, int pid, int tamanio_en_bytes, int cant_paginas, void* valor_a_escribir, uint32_t length_valor, codigo_operacion cod_op);
 void desalojar(t_pcb* pcb, DesalojoCpu motivo, t_buffer* add);
 void solicitud_dormirIO_kernel(char* interfaz, int unidades);
 t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades);
@@ -50,7 +50,7 @@ void sub(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, boo
 void sum(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, bool es_8_bits_destino);
 void jnz(void* registro, int valor, t_pcb* pcb);
 bool sonTodosDigitosDe(char *palabra);
-void mandar_direccion_fisica_a_mem(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, int direccion_logica, uint32_t valor, codigo_operacion cod_op);
+void mandar_direccion_fisica_a_mem(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, int direccion_logica, void* valor, uint32_t length_valor, codigo_operacion cod_op);
 //void sum(void* registro,void* valor, bool es_8_bits, t_pcb* pcb);
 void* sacarParametroParaConseguirRegistro(t_list* list_parametros,bool es_registro_uint8);
 t_buffer* llenar_buffer_copy_string(int direccion_fisica_SI, int direccion_fisica_DI, int tamanio);
@@ -61,7 +61,10 @@ void pedir_lectura(char* interfaz, int direccion_fisica, uint32_t* registro_tama
 // void enviar_kernel_stdout(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio);
 t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, uint32_t tamanio);
 void mandar_una_dir_fisica(int direccion_fisica);
-void realizar_operacion(uint32_t* registro_direccion_1, int tamanio_en_byte, int pid, codigo_operacion codigo_operacion);
+void realizar_operacion(uint32_t* registro_direccion_1, int tamanio_en_byte, void* valor_a_escribir, uint32_t length_valor, int pid, codigo_operacion codigo_operacion);
+t_buffer* serializar_lectura(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, int direccion_logica);
+t_buffer* serializar_escritura(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, int direccion_logica, void* valor, uint32_t length_valor);
+
 
 
 #endif 
