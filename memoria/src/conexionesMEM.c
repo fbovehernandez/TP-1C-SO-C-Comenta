@@ -234,6 +234,7 @@ void realizar_operacion(tipo_operacion operacion, t_list* direcciones_restantes,
     int df_actual = df->direccion_fisica;
     printf("La direccion fisica actual es: %d\n", df_actual);
     int indice_direccion = 0;
+    int tam_escrito_anterior = 0;
     
     int cant_bytes_usables = bytes_usables_por_pagina(df->direccion_logica); // Esto podria enviarlo CPU   
     printf("Los bytes usables son: %d\n", cant_bytes_usables);
@@ -248,8 +249,9 @@ void realizar_operacion(tipo_operacion operacion, t_list* direcciones_restantes,
     while(resto_usable > 0) {
         int* df_ptr = (int*)list_get(direcciones_restantes, indice_direccion);  
         df_actual = *df_ptr;
+        printf("La direccion fisica actual es: %d\n", df_actual);
 
-        int tam_escrito_anterior = tam_a_escribir; // 3
+        tam_escrito_anterior += tam_a_escribir; // 3
         int cant_bytes_usables = tamanio_pagina; // 4
 
         // user_space_aux = espacio_usuario; // Con esto lo devuelvo inicio al ptr_aux
@@ -260,7 +262,7 @@ void realizar_operacion(tipo_operacion operacion, t_list* direcciones_restantes,
         // memcpy((user_space_aux + df_actual), registro + tam_escrito_anterior, tam_a_escribir); -> Escritura
 
         resto_usable -= cant_bytes_usables;
-        list_remove(direcciones_restantes, indice_direccion);
+        // list_remove(direcciones_restantes, indice_direccion);
 
         // aca quiero obtener la proxima direccion de la lista inmediata y por eso aumento el indice
         indice_direccion++;
@@ -269,10 +271,13 @@ void realizar_operacion(tipo_operacion operacion, t_list* direcciones_restantes,
 
 void interaccion_user_space(tipo_operacion operacion, int df_actual, void* user_space_aux, int tam_escrito_anterior, int tamanio, void* registro_escritura, void* registro_lectura) {
     if(operacion == ESCRITURA) {
-        memcpy((user_space_aux + df_actual), registro_escritura + tam_escrito_anterior, tamanio);
-        printf("El valor a leer luego de copiarlo en el register es: %s\n", (char*)(user_space_aux + df_actual));
+        memcpy(user_space_aux + df_actual, registro_escritura + tam_escrito_anterior, tamanio);
+        printf("Escritura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
+        printf("Contenido escrito: %.*s\n", tamanio, (char*)(user_space_aux + df_actual));
     } else { // == LECTURA
         memcpy(registro_lectura + tam_escrito_anterior, (user_space_aux + df_actual), tamanio);
+        printf("Lectura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
+        printf("Contenido leído: %.*s\n", tamanio, (char*)(registro_lectura + tam_escrito_anterior));
     }
 }
 
@@ -307,7 +312,6 @@ t_direccion_fisica_escritura* deserializar_direccion_fisica_escritura(t_buffer* 
     if(datos_escritura->length_valor > 0) {
         datos_escritura->valor_a_escribir = malloc(datos_escritura->length_valor);
         memcpy(datos_escritura->valor_a_escribir, stream, datos_escritura->length_valor);
-        printf("El valor a escribir justo despues de serializar es: %s\n", (char*)datos_escritura->valor_a_escribir);
     } else {
         datos_escritura->valor_a_escribir = malloc(datos_escritura->datos_direccion->tamanio);
         memcpy(datos_escritura->valor_a_escribir, stream, datos_escritura->datos_direccion->tamanio);
@@ -384,7 +388,7 @@ void recibir_resto_direcciones(t_list* lista_direcciones_mv) {
                     int* ultimo_valor = list_get(lista_direcciones_mv, list_size(lista_direcciones_mv) - 1);
                     printf("Agregue la direccion en la lista y es : %d\n", *ultimo_valor);
 
-                    free(cast_dir_fisica);
+                    // free(cast_dir_fisica);
                     // send(socket_cpu, &mandameSiguienteDireccion, sizeof(int), 0);
                 break;
             case QUIERO_FRAME :

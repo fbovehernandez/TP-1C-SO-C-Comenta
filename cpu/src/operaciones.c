@@ -951,23 +951,24 @@ int tamanio_byte_registro(bool es_registro_uint8) {
     return es_registro_uint8 ? 1 : 4;
 }
 
+/***** ACLARACION *******/
 int cantidad_de_paginas_a_utilizar(uint32_t direccion_logica, int tamanio_en_bytes, int pagina) { 
-    int cantidad_paginas = 1;
+    int cantidad_paginas = 1; // (5)
     
-    int offset = direccion_logica - pagina * tamanio_pagina; // 5 - 1*4 = 1
+    int offset = direccion_logica - pagina * tamanio_pagina; // 1
     
     while(1) { // Hay una situacion en que haga mas de 2 iteraciones? -> tam pag 2b registro 4b -> frame 2 frame 3 frame 4
-        int posible_lectura = tamanio_pagina - offset + 1; // 4 -1 +1 = 4 CUANDO EN REALIDAD ES 3
-        int sobrante_de_pagina = tamanio_en_bytes - posible_lectura; // 17-4 = 13 -> 14
+        int posible_lectura = tamanio_pagina - offset; // 
+        int sobrante_de_pagina = tamanio_en_bytes - posible_lectura; // 17-3 = 14 -4 = 10 -4 = 6 -4 = 2
         
         if(sobrante_de_pagina <= 0) {
             break;
         }
 
-        cantidad_paginas++; // Aca ya se que me va a llevar mas de una page
+        cantidad_paginas++; // 2 (8) -> 3 (12) -> 4 (16) -> 5 (20)
         offset = 0;
         
-        tamanio_en_bytes = sobrante_de_pagina; // 13
+        tamanio_en_bytes = sobrante_de_pagina; // 14 -> 10 -> 6 -> 2
     } 
 
     return cantidad_paginas;
