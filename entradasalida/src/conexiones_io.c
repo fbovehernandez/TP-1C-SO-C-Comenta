@@ -5,35 +5,6 @@ int memoriafd;
 t_log* logger_io;
 char* nombre_io;
 
-/*
-void gestionar_STDOUT(t_config* config_io, t_log* logger_io) {
-    // char* IP_CPU = config_get_string_value(config_kernel, "IP_CPU");
-    char* ip_kernel = config_get_string_value(config_io, "IP_KERNEL_IO");
-    char* puerto_kernel = config_get_string_value(config_io, "PUERTO_KERNEL_IO");
-
-    printf("IP_IO: %s\n", ip_kernel);
-    printf("PUERTO_IO_STDOUT: %s\n", puerto_kernel);
-
-    // El handshake de stdout es: 45
-    int stdout_fd = crear_conexion(ip_kernel, puerto_kernel, 45 Handshake inventado);
-    log_info(logger_io, "Conexion establecida con kernel desde IO STDOUT"); 
-    sendMessage(stdout_fd);
-    close(stdout_fd); // Si no quisiese que se desconecte, se puede comentar
-}
-
-void gestionar_STDIN(t_config *config_io){
-
-}
-
-void gestionar_GENERICA(t_config *config_io){
-
-}
-
-void gestionar_DIALFS(t_config *config_io) {
-
-}
-*/
-
 int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, char* nombre_interfaz, TipoInterfaz tipo_interfaz, int handshake) {
     // int message_io = 12; // nro de codop
     //int valor = 5; // handshake, 5 = I/O
@@ -50,7 +21,6 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     io->nombre_interfaz = nombre_interfaz;
 
     t_buffer* buffer = malloc(sizeof(t_buffer));
-    t_paquete* paquete = malloc(sizeof(t_paquete));
 
     buffer->size = sizeof(int) + str_interfaz + sizeof(int); // sizeof(x2)
     buffer->offset = 0;
@@ -68,28 +38,7 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     buffer->offset += sizeof(TipoInterfaz);
 
     buffer->stream = stream;
-
-    paquete->codigo_operacion = CONEXION_INTERFAZ; // Podemos usar una constante por operación
-    paquete->buffer = buffer;                                  // Nuestro buffer de antes.
-
-    // Armamos el stream a enviar
-    void *a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-    // offset += paquete->buffer->size;
-
-    send(kernelfd, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0); 
-
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
-
+    enviar_paquete(buffer, CONEXION_INTERFAZ, kernelfd);
     return kernelfd;
 }
 
@@ -124,7 +73,6 @@ int conectar_io_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_io
     io->nombre_interfaz = nombre_interfaz;
 
     t_buffer* buffer = malloc(sizeof(t_buffer));
-    t_paquete* paquete = malloc(sizeof(t_paquete));
 
     buffer->size = sizeof(int) + str_interfaz + sizeof(int); // sizeof(x2)
     buffer->offset = 0;
@@ -142,32 +90,11 @@ int conectar_io_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_io
     buffer->offset += sizeof(TipoInterfaz);
 
     buffer->stream = stream;
-
-    paquete->codigo_operacion = CONEXION_INTERFAZ; // Podemos usar una constante por operación
-    paquete->buffer = buffer;                                  // Nuestro buffer de antes.
-
-    // Armamos el stream a enviar
-    void *a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-    // offset += paquete->buffer->size;
-
-    send(memoriafd, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0); 
-
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
-
+    enviar_paquete(buffer, CONEXION_INTERFAZ, memoriafd);
     return memoriafd;
 }
 
-void mandar_valor_a_memoria(char* valor, int registro_direccion) {
+void mandar_valor_a_memoria(char* valor, t_pid_dirfisica_tamanio* pid_dirfisica_tamanio) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
     int largo_valor = string_length(valor);
 
@@ -177,10 +104,11 @@ void mandar_valor_a_memoria(char* valor, int registro_direccion) {
     buffer->stream = malloc(buffer->size);
 
     void* stream = buffer->stream;
-
-    memcpy(stream + buffer->offset, &registro_direccion, sizeof(int));
+    
+    memcpy(stream + buffer->offset, &pid_dirfisica_tamanio->pid, sizeof(int));
     buffer->offset += sizeof(int);
-
+    memcpy(stream + buffer->offset, &pid_dirfisica_tamanio->direccion_fisica, sizeof(int));
+    buffer->offset += sizeof(int);
     // Para el nombre primero mandamos el tamaño y luego el texto en sí:
     memcpy(stream + buffer->offset, &largo_valor, sizeof(int));
     buffer->offset += sizeof(int);
@@ -192,30 +120,7 @@ void mandar_valor_a_memoria(char* valor, int registro_direccion) {
     // Si usamos memoria dinámica para el nombre, y no la precisamos más, ya podemos liberarla:
     free(valor);
 
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-
-    paquete->codigo_operacion = GUARDAR_VALOR; // Podemos usar una constante por operación
-    paquete->buffer = buffer; // Nuestro buffer de antes.
-
-    // Armamos el stream a enviar
-    void* a_enviar = malloc(buffer->size + sizeof(int) * 2);
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(uint8_t));
-
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    // Por último enviamos
-    send(memoriafd, a_enviar, buffer->size + sizeof(int) * 2, 0);
-
-    // No nos olvidamos de liberar la memoria que ya no usaremos
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    enviar_paquete(buffer, GUARDAR_VALOR, memoriafd);
 }
 
 void recibir_kernel(t_config* config_io, int socket_kernel_io) {
@@ -234,46 +139,86 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
 
         switch(paquete->codigo_operacion) {
             case DORMITE:
-                int unidadesDeTrabajo = serializar_unidades_trabajo(paquete->buffer);
+                t_pid_unidades_trabajo* pid_unidades_trabajo = serializar_unidades_trabajo(paquete->buffer);
+                int pid = pid_unidades_trabajo->pid;
+                int unidades_trabajo = pid_unidades_trabajo->unidades_trabajo;
                 int tiempoUnidadesTrabajo = config_get_int_value(config_io,"TIEMPO_UNIDAD_TRABAJO");
-                printf("Unidades de trabajo: %d\n", unidadesDeTrabajo);
+                printf("Unidades de trabajo: %d\n", unidades_trabajo);
                 printf("Tiempo de unidades de trabajo: %d\n", tiempoUnidadesTrabajo);
-                sleep(unidadesDeTrabajo * tiempoUnidadesTrabajo);
+                sleep(unidades_trabajo * tiempoUnidadesTrabajo);
+                log_info(logger_io, "PID %d - Operacion: DORMIR_IO", pid);
                 int termino_io = 1;
                 send(socket_kernel_io, &termino_io, sizeof(int), 0);
             case LEETE: 
-                uint32_t registro_tamanio;                    
-                int registro_direccion;    
-          
-                void* stream = paquete->buffer->stream;
-                // Deserializamos tamanios que tenemos en el buffer
-                memcpy(&(registro_direccion), stream, sizeof(int));
-                stream += sizeof(int);
-                memcpy(&(registro_tamanio), stream, sizeof(uint32_t));
-                stream += sizeof(uint32_t);
+                t_pid_dirfisica_tamanio* pid_dirfisica_tamanio = deserializar_pid_dirfisica_tamanio(paquete->buffer);
                 
                 // Leer valor
-                char *valor = malloc(sizeof(char) * registro_tamanio);
-                printf("Ingrese lo que quiera guardar (hasta %d caracteres): \n", registro_tamanio);
+                char *valor = malloc(sizeof(char) * pid_dirfisica_tamanio->registro_tamanio);
+                printf("Ingrese lo que quiera guardar (hasta %d caracteres): \n", pid_dirfisica_tamanio->registro_tamanio);
                 scanf("%s", valor); 
                 // Mandarlo a memoria
                 
-                mandar_valor_a_memoria(valor, registro_direccion);
-
+                mandar_valor_a_memoria(valor, pid_dirfisica_tamanio);
+                free(pid_dirfisica_tamanio);
                 break;
             default:
                 break;
         }
+        liberar_paquete(paquete);        
+    }
+    
+}
+
+void recibir_memoria() {
+    while(1) {
+        t_paquete* paquete = malloc(sizeof(t_paquete));
+        paquete->buffer = malloc(sizeof(t_buffer));
+
+        printf("Esperando paquete...\n");
+        recv(memoriafd, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
+        printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
+
+        recv(memoriafd, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
+        paquete->buffer->stream = malloc(paquete->buffer->size);
+
+        recv(memoriafd, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+
+        switch(paquete->codigo_operacion) {
+            /*case MOSTRAR:
+                char* valor = deserializar_valor(paquete->buffer);
+                printf("El valor leido en memoria es: %s\n", valor);
+                free(valor);
+                break;
+            */
+            default:
+                break;
+        }
+
+        liberar_paquete(paquete);
     }
 }
 
-/*
- HAY QUE HACER UN RECIBIR MEMORIA
-*/
+t_pid_unidades_trabajo* serializar_unidades_trabajo(t_buffer* buffer) {
+    t_pid_unidades_trabajo* pid_unidades_trabajo  = malloc(sizeof(t_pid_unidades_trabajo));
+    void* stream = buffer->stream;
+    memcpy(&(pid_unidades_trabajo->pid), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(pid_unidades_trabajo->unidades_trabajo), stream, sizeof(int));
+    stream += sizeof(int);
+    return pid_unidades_trabajo;
+}
 
-int serializar_unidades_trabajo(t_buffer* buffer) {
-   // void* stream = buffer->stream;
-    int unidades_de_trabajo;
-    memcpy(&unidades_de_trabajo, buffer->stream, sizeof(int)); // stream
-    return unidades_de_trabajo;
+t_pid_dirfisica_tamanio* deserializar_pid_dirfisica_tamanio(t_buffer* buffer) {
+    t_pid_dirfisica_tamanio* pid_dirfisica_tamanio = malloc(sizeof(t_pid_dirfisica_tamanio)); 
+    
+    void* stream = buffer->stream;
+    // Deserializamos tamanios que tenemos en el buffer
+    memcpy(&(pid_dirfisica_tamanio->pid), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(pid_dirfisica_tamanio->direccion_fisica), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(pid_dirfisica_tamanio->registro_tamanio), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    
+    return pid_dirfisica_tamanio;
 }

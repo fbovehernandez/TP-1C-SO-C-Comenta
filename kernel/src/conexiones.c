@@ -79,49 +79,78 @@ int esperar_cliente(int socket_escucha, t_log* logger) {
 
     // Habria que ver de scar logica
 
-void* handle_io_stdin(void* socket) {
-    int socket_io = (intptr_t) socket;
-    int resultOk = 0;
-    send(socket_io, &resultOk, sizeof(int), 0);
-    printf("Conexion establecida con I/O\n");
-
-    t_list_io* io = malloc(sizeof(t_list_io)); 
-
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-    paquete->buffer = malloc(sizeof(t_buffer));
-
-    printf("Esperando recibir paquete de IO\n");
-    recv(socket_io, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
-
-    printf("Recibi el codigo de operacion de IO: %d\n", paquete->codigo_operacion);
-
-    recv(socket_io, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
-
-    paquete->buffer->stream = malloc(paquete->buffer->size);
-
-    recv(socket_io, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
-
+void *handle_io_stdin(void *socket_io) {
+    int socket = (intptr_t)socket_io;
+    t_paquete *paquete = inicializarIO_recibirPaquete(socket);
+    t_list_io* io;
+    
     switch (paquete->codigo_operacion) {
         case CONEXION_INTERFAZ:
-            t_info_io* interfaz = deserializar_interfaz(paquete->buffer);
-            io->socket = socket_io;
-            io->TipoInterfaz = interfaz->tipo;
-            io->nombreInterfaz = interfaz->nombre_interfaz;
-            io->cola_blocked = queue_create();
-            sem_init(io->semaforo_cola_procesos_blocked, 0, 0);
-            
-            dictionary_put(diccionario_io, interfaz->nombre_interfaz, (void*) io);
-            mostrar_elem_diccionario(interfaz->nombre_interfaz);
+            io = establecer_conexion(paquete->buffer, socket);
             break;
         default:
             printf("Llega al default.");
             return NULL;
-    }
+    }    
 
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    t_pid_dirfisica_tamanio* pid_dirfisica_tamanio = malloc(sizeof(t_pid_dirfisica_tamanio));
+
+    while (true) {
+        sem_wait(io->semaforo_cola_procesos_blocked);
+
+        printf("Llega al sem y mutex\n");
+
+        pthread_mutex_lock(&mutex_cola_io_generica);
+        io_stdin *datos_stdin = queue_pop(io->cola_blocked);
+        pthread_mutex_unlock(&mutex_cola_io_generica);
+        // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
+
+        pid_dirfisica_tamanio->pid = datos_stdin->pcb->pid;
+        pid_dirfisica_tamanio->direccion_fisica = datos_stdin->direccion_fisica;
+        pid_dirfisica_tamanio->registro_tamanio = datos_stdin->registro_tamanio;
+        
+        int respuesta_ok = ejecutar_io_stdin(io->socket, pid_dirfisica_tamanio);
+
+        if (!respuesta_ok) {
+            printf("Se ejecuto correctamente la IO...\n");
+            // printf("Estado pcb: %d\n", datos_sleep->pcb->estadoActual);
+            // datos_sleep->pcb->estadoActual = READY;
+            // printf("Estado pcb : %d\n", datos_sleep->pcb->estadoActual);
+            int termino_io;
+            recv(socket, &termino_io, sizeof(int), MSG_WAITALL);
+
+            printf("Termino io: %d\n", termino_io);
+            if (termino_io == 1) { // El send de termino io envia 1.
+                printf("Termino la IO\n");
+                pasar_a_ready(datos_stdin->pcb);
+            }
+        } else {
+            printf("No se pudo ejecutar la IO\n");
+            break;
+        }
+    }
+    free(pid_dirfisica_tamanio);
+    liberar_paquete(paquete);
     return NULL;
+}
+
+int ejecutar_io_stdin(int socket, t_pid_dirfisica_tamanio* pid_dirfisica_tamanio) {
+    t_buffer* buffer = malloc(sizeof(t_buffer)); // jiji ( Con voz de caro) - SOFIIIIIIIIII, CHANGE STAYUS
+
+    buffer->size = sizeof(int) + sizeof(t_pid_dirfisica_tamanio);
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    memcpy(buffer->stream + buffer->offset, &pid_dirfisica_tamanio->pid, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(buffer->stream + buffer->offset, &pid_dirfisica_tamanio->direccion_fisica, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(buffer->stream + buffer->offset, &pid_dirfisica_tamanio->registro_tamanio, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+
+    enviar_paquete(buffer, LEETE, socket);
+
+    return 0;
 }
 
 void* handle_io_stdout(void* socket) {
@@ -166,163 +195,74 @@ void* handle_io_stdout(void* socket) {
     free(io->semaforo_cola_procesos_blocked);
     free(io->nombreInterfaz);
     free(io);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    liberar_paquete(paquete);
     return NULL;
 }
 
-void* handle_io_generica(void* socket) {
-    int socket_io = (intptr_t) socket;
-    int resultOk = 0;
-    send(socket_io, &resultOk, sizeof(int), 0);
-    printf("Conexion establecida con I/O\n");
-
-    t_list_io* io = malloc(sizeof(t_list_io)); 
-
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-    paquete->buffer = malloc(sizeof(t_buffer));
-
-    printf("Esperando recibir paquete de IO\n");
-    recv(socket_io, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
-
-    printf("Recibi el codigo de operacion de IO: %d\n", paquete->codigo_operacion);
-
-    recv(socket_io, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
-
-    paquete->buffer->stream = malloc(paquete->buffer->size);
-
-    recv(socket_io, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
-
+void *handle_io_generica(void *socket_io) {
+    int socket = (intptr_t)socket_io;
+    t_paquete *paquete = inicializarIO_recibirPaquete(socket);
+    t_list_io* io;
     switch (paquete->codigo_operacion) {
-        case CONEXION_INTERFAZ:
-            /*t_info_io* interfaz = deserializar_interfaz(paquete->buffer);
-            io->nombreInterfaz = malloc(interfaz->nombre_interfaz_largo);
-
-            io->socket = socket_io;
-            strcpy(io->nombreInterfaz, interfaz->nombre_interfaz);
-            printf("Interfaz (conexiones): %s\n", io->nombreInterfaz);
-            io->TipoInterfaz = interfaz->tipo;
-            io->cola_blocked = cola_io;
-            io->semaforo_cola_procesos_blocked = malloc(sizeof(sem_t));
-            sem_init(io->semaforo_cola_procesos_blocked, 0, 0); // posible problema
-            
-            // Ver que sea asi -> agrego a la lista global de io
-            pthread_mutex_lock(&mutex_lista_io);
-            list_add(lista_io, io);
-            pthread_mutex_unlock(&mutex_lista_io);
-*/
-            t_info_io* interfaz = deserializar_interfaz(paquete->buffer);
-            io->socket = socket_io;
-            io->TipoInterfaz = interfaz->tipo;
-            io->nombreInterfaz = interfaz->nombre_interfaz;
-            io->cola_blocked = queue_create();
-            sem_init(io->semaforo_cola_procesos_blocked, 0, 0);
-            
-            dictionary_put(diccionario_io, interfaz->nombre_interfaz, (void*) io);
-            mostrar_elem_diccionario(interfaz->nombre_interfaz);
-            break;
-        default:
-            printf("Llega al default.");
-            return NULL;
+    case CONEXION_INTERFAZ:
+        io = establecer_conexion(paquete->buffer, socket);
+        break;
+    default:
+        printf("Llega al default.");
+        return NULL;
     }
-        
-    while(true) {
+
+    t_pid_unidades_trabajo* pid_unidades_trabajo = malloc(sizeof(t_pid_unidades_trabajo));
+
+    while (true) {
         sem_wait(io->semaforo_cola_procesos_blocked);
-        
+
         printf("Llega al sem y mutex\n");
 
         pthread_mutex_lock(&mutex_cola_io_generica);
-        io_gen_sleep* datos_sleep = queue_pop(io->cola_blocked);
+        io_gen_sleep *datos_sleep = queue_pop(io->cola_blocked);
         pthread_mutex_unlock(&mutex_cola_io_generica);
         // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
-        
-        int respuesta_ok = ejecutar_io_generica(io->socket, datos_sleep->ut);
+        pid_unidades_trabajo->pid = datos_sleep->pcb->pid;
+        pid_unidades_trabajo->unidades_trabajo = datos_sleep->unidad_trabajo;
+
+        int respuesta_ok = ejecutar_io_generica(io->socket, pid_unidades_trabajo);
         if (!respuesta_ok) {
             printf("Se ejecuto correctamente la IO...\n");
             // printf("Estado pcb: %d\n", datos_sleep->pcb->estadoActual);
             // datos_sleep->pcb->estadoActual = READY;
             // printf("Estado pcb : %d\n", datos_sleep->pcb->estadoActual);
             int termino_io;
-            recv(socket_io, &termino_io, sizeof(int), MSG_WAITALL); 
-            
+            recv(socket, &termino_io, sizeof(int), MSG_WAITALL);
+
             printf("Termino io: %d\n", termino_io);
-            if(termino_io == 1) { // El send de termino io envia 1.
+            if (termino_io == 1) { // El send de termino io envia 1.
                 printf("Termino la IO\n");
                 pasar_a_ready(datos_sleep->pcb);
-            } 
-            
+            }
         } else {
-            printf("No se pudo ejecutar la IO\n");
-            break;
-        }
+            printf("No se pudo ejecutar");
+        }    
     }
-
-        free(io->semaforo_cola_procesos_blocked);
-        free(io->nombreInterfaz);
-        free(io);
-        free(paquete->buffer->stream);
-        free(paquete->buffer);
-        free(paquete);
-        return NULL;
+    free(pid_unidades_trabajo);
+    liberarIOyPaquete(paquete, io);
+    
+    return NULL;
 }
 
-int ejecutar_io_generica(int socket_io, int unidades_trabajo) {
-    // Armado del paquete para enviar a io y que duerma
-    
-    t_buffer* buffer = malloc(sizeof(t_buffer)); // Creo que no hace falta reservar memoria
-    buffer->size = sizeof(int);
+int ejecutar_io_generica(int socket_io, t_pid_unidades_trabajo* pid_unidades_trabajo) {
+    t_buffer *buffer = malloc(sizeof(t_buffer)); // Creo que no hace falta reservar memoria
+    buffer->size = sizeof(int) * 2;
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
-    
-    memcpy(buffer->stream + buffer->offset, &unidades_trabajo, sizeof(int));
 
-    t_paquete* paquete = malloc(sizeof(t_paquete));
+    memcpy(buffer->stream + buffer->offset, &pid_unidades_trabajo->pid, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(buffer->stream + buffer->offset, &pid_unidades_trabajo->unidades_trabajo, sizeof(int));
 
-    paquete->codigo_operacion = DORMITE; // Podemos usar una constante por operación
-    paquete->buffer = buffer; // Nuestro buffer de antes.
-
-    // Armamos el stream a enviar
-    void* a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    // Por último enviamos
-    // hay que poner el socket kernel globallll
-    send(socket_io, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-    printf("Paquete enviado!");
-
-    // Falta liberar todo
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
-
+    enviar_paquete(buffer, DORMITE, socket_io);
     return 0;
-}
-
-t_info_io* deserializar_interfaz(t_buffer* buffer) {
-    t_info_io* interfaz = malloc(sizeof(t_info_io));
-    void* stream = buffer->stream;
-    // Deserializamos los campos que tenemos en el buffer
-    memcpy(&(interfaz->nombre_interfaz_largo), stream, sizeof(int));
-    stream += sizeof(int);
-    
-    interfaz->nombre_interfaz = malloc(interfaz->nombre_interfaz_largo);
-    
-    memcpy(interfaz->nombre_interfaz, stream, interfaz->nombre_interfaz_largo);
-    stream += interfaz->nombre_interfaz_largo;
-
-    memcpy(&(interfaz->tipo), stream, sizeof(TipoInterfaz));
-    stream += sizeof(TipoInterfaz);
-
-    return interfaz;
 }
 
 int conectar_kernel_cpu_interrupt(t_log* logger_kernel, char* IP_CPU, char* puerto_interrupt) {
@@ -372,4 +312,31 @@ void mostrar_elem_diccionario(char* nombre_interfaz) {
     printf("Nombre Interfaz: %s\n", nombre_interfaz);
     printf("Tipo Interfaz (enum): %d\n", interfaz->TipoInterfaz);
     printf("Socket: %d\n", interfaz->socket);
+}
+
+void liberarIOyPaquete(t_paquete *paquete, t_list_io *io) {
+    liberar_io(io);
+    liberar_paquete(paquete);
+}
+
+void liberar_io(t_list_io* io) {
+    free(io->semaforo_cola_procesos_blocked);
+    free(io->nombreInterfaz);
+    free(io);
+}
+
+t_list_io* establecer_conexion(t_buffer *buffer, int socket_io) {
+    t_list_io *io = malloc(sizeof(t_list_io));
+    t_info_io *interfaz = deserializar_interfaz(buffer); 
+
+    io->socket         = socket_io;
+    io->TipoInterfaz   = interfaz->tipo;
+    io->nombreInterfaz = interfaz->nombre_interfaz;
+    io->cola_blocked   = queue_create();
+    
+    sem_init(io->semaforo_cola_procesos_blocked, 0, 0);
+    dictionary_put(diccionario_io, interfaz->nombre_interfaz, (void *)io);
+    mostrar_elem_diccionario(interfaz->nombre_interfaz);
+    
+    return io;
 }

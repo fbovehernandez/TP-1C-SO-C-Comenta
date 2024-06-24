@@ -50,42 +50,13 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
 void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria) {
     t_buffer *buffer = malloc(sizeof(t_buffer));
     // t_cantidad_instrucciones* cantidad = malloc(sizeof(t_cantidad_instrucciones));
-
     buffer->size = sizeof(int);
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
-
     void *stream = buffer->stream;
-
     memcpy(stream + buffer->offset, &pid, sizeof(int));
-
     buffer->stream = stream;
-
-    t_paquete *paquete = malloc(sizeof(t_paquete));
-
-    paquete->codigo_operacion = QUIERO_CANTIDAD_INSTRUCCIONES; // Podemos usar una constante por operación
-    paquete->buffer = buffer;                                  // Nuestro buffer de antes.
-
-    // Armamos el stream a enviar
-    void *a_enviar = malloc(buffer->size + sizeof(int) * 2);
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    // printf("Pedi la cantidad de instrucciones del proceso %d.\n", pid);
-    // Por último enviamos
-    send(socket_memoria, a_enviar, buffer->size + sizeof(int) * 2, 0);
-
-    // No nos olvidamos de liberar la memoria que ya no usaremos
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    enviar_paquete(buffer, QUIERO_CANTIDAD_INSTRUCCIONES, socket_memoria);
 }
 
 int cantidad_instrucciones_deserializar(t_buffer *buffer) {
@@ -106,31 +77,7 @@ void pedir_instruccion_a_memoria(int socket_memoria, t_pcb *pcb) {
     pid_pc->pc = pcb->program_counter;
 
     t_buffer *buffer = llenar_buffer_solicitud_instruccion(pid_pc);
-
-    t_paquete *paquete = malloc(sizeof(t_paquete));
-
-    paquete->codigo_operacion = QUIERO_INSTRUCCION; // Podemos usar una constante por operación
-    paquete->buffer = buffer;                       // Nuestro buffer de antes.
-
-    void *a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int); // siceof
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    // Por último enviamos
-    send(socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-    // printf("Paquete enviado!\n");
-
-    // Falta liberar todo
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
-    // free(pid_pc); -> ver si va aca
+    enviar_paquete(buffer, QUIERO_INSTRUCCION, socket_memoria);
 }
 
 t_buffer *llenar_buffer_solicitud_instruccion(t_solicitud_instruccion *solicitud_instruccion) {
@@ -188,18 +135,13 @@ int recibir_cantidad_instrucciones(int socket_memoria, int pid) {
             break;
     }
 
-    free(paquete->buffer->stream);
-    free(paquete->buffer);  
-    free(paquete);
-
+    liberar_paquete(paquete);
     return cantidad_instrucciones;
 }
 
 t_instruccion* recibir_instruccion(int socket_memoria, t_pcb *pcb) {
     t_paquete* paquete = recibir_memoria(socket_memoria);
-
     t_instruccion *instruccion;
-
     // Ahora en función del código recibido procedemos a deserializar el resto
     switch (paquete->codigo_operacion) {
         case ENVIO_INSTRUCCION:
@@ -209,11 +151,8 @@ t_instruccion* recibir_instruccion(int socket_memoria, t_pcb *pcb) {
             printf("Error: Fallo!\n");
             break;
         }
-        
     // Liberamos memoria
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    liberar_paquete(paquete);
 
     return instruccion; // Podria ser NULL si recibe mal el codop
 }
@@ -394,22 +333,16 @@ void vaciar_tlb(){
 */
 
 int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
-
     // log_info(logger, "PID: %d - Ejecutando: %d ", pcb->pid, instruccion->nombre);
-
     TipoInstruccion nombreInstruccion = instruccion->nombre;
     t_list *list_parametros = instruccion->parametros;
-
     // printf("La instruccion es de numero %d y tiene %d parametros\n", instruccion->nombre, instruccion->cantidad_parametros);
-    
     bool es_registro_uint8_dato;
-    t_parametro* registro_direccion;
     void* registro1;
     int direccion_fisica;
     char* nombre_registro_dato;
     char* nombre_registro_dir;
     size_t tamanio_en_byte;
-    int pagina;
     int esperar_confirm;
 
     switch (nombreInstruccion) // Ver la repeticion de logica... -> Abstraer
@@ -484,7 +417,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         break;
     case COPY_STRING: // COPY_STRING 1212
         // Hardcodeo
-        char* cadena_a_copiar = "HOLA COMO ESTAS";
+        char* cadena_a_copiar = "CARO CHANGE STATUS";
         int tamanio_cadena = strlen(cadena_a_copiar);
         printf("El tamanio de la cadena a copiar es: %d\n", tamanio_cadena);
 
@@ -504,22 +437,13 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         recv(socket_memoria, &esperar_confirm, sizeof(uint32_t), MSG_WAITALL);
 
         printf("Esperar confirmacion COPY STRING: %d\n", esperar_confirm);
-        sleep(2); // NO va, era para probar algo
 
         realizar_operacion(registro_SI, tamanio_a_copiar, NULL, 0, pcb->pid, RECIBIR_DIRECCIONES);
-
-        printf("recibi algo...");
+        
         recv(socket_memoria, valor_leido_cs, tamanio_a_copiar, MSG_WAITALL);
         ((char*)valor_leido_cs)[tamanio_a_copiar] = '\0';
-
         printf("El valor de memoria es: %s\n", (char*)valor_leido_cs);
-
-        // set(registro_auxiliar, valor_leido_cs, es_registro_uint8_dato);
-
-        // realizar_operacion(registro_DI, tamanio_a_copiar, cadena_a_copiar, tamanio_cadena, ->pid, ESCRIBIR_DATO_EN_MEM); -> Por ahora no
-
         recv(socket_memoria, &esperar_confirm, sizeof(int), MSG_WAITALL);
-        
         printf("Esperar confirmacion COPY STRING: %d\n", esperar_confirm);
         free(valor_leido_cs);
         break;
@@ -603,17 +527,10 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         
         pcb->program_counter++;
         desalojar(pcb, DORMIR_INTERFAZ, buffer);
-        // recv(client_dispatch, &solicitud_unidades_trabajo, sizeof(int), MSG_WAITALL);
-        // solicitud_dormirIO_kernel(interfazSeleccionada, unidadesDeTrabajo);
-
-        // free(buffer->stream); -> Entiendo qeu esto ya lo libere en desalojar
-        // free(buffer);
-
         printf("Hizo IO_GEN_SLEEP\n");
         return 1; // Retorna 1 si desalojo PCB...
         break;
-    case IO_STDIN_READ:
-    /* 
+    case IO_STDIN_READ: 
         t_parametro* interfaz = list_get(list_parametros,0);
         registro_direccion = list_get(list_parametros, 1);
         t_parametro *registro_tamanio = list_get(list_parametros, 2);
@@ -624,13 +541,13 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         uint32_t* registro_direccion_2 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_direccion);
         uint32_t* registro_tamanio_1 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio);
 
-        direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, *registro_direccion_2, pcb->pid); 
+        direccion_fisica = traducir_direccion_logica_a_fisica(*registro_direccion_2, pcb->pid); 
 
-        pedir_lectura(interfaz->nombre, direccion_fisica, &registro_tamanio_1);
-
-        desalojar(pcb, PEDIDO_LECTURA, buffer);
+        t_buffer* buffer_lectura = pedir_buffer_lectura(interfaz->nombre, direccion_fisica, registro_tamanio_1);
+        
+        desalojar(pcb, PEDIDO_LECTURA, buffer_lectura);
+        free(buffer_lectura);
         break;
-        */
     case EXIT_INSTRUCCION:
         // guardar_estado(pcb); -> No estoy seguro si esta es necesaria, pero de todas formas nos va a servir cuando se interrumpa por quantum
         desalojar(pcb, FIN_PROCESO, NULL); // Envio 0 ya que no me importa size
@@ -650,7 +567,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         uint32_t* registro_direccion11 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_direccion_stdout);
         uint32_t* registro_tamanio1 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio_stdout);
         
-*        direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, *registro_direccion11, pcb->pid);
+        direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, *registro_direccion11, pcb->pid);
 
         // CPU -> KERNEL -> MEMORIA -> ENTRADA SALIDA -> SEGFAULT
         enviar_kernel_stdout(nombre_interfaz, direccion_fisica, registro_tamanio1);
@@ -803,38 +720,13 @@ t_buffer* serializar_lectura(int direccion_fisica, int tamanio_en_bytes, int can
 }
 
 void mandar_direccion_fisica_a_mem(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, int direccion_logica, void* valor, uint32_t length_valor, codigo_operacion cod_op) {
-    
-    t_paquete *paquete = malloc(sizeof(t_paquete));
     t_buffer* buffer;
-    
     if(cod_op == ESCRIBIR_DATO_EN_MEM) {
         buffer = serializar_escritura(direccion_fisica, tamanio_en_bytes, cantidad_paginas, direccion_logica, valor, length_valor);
     } else {
         buffer = serializar_lectura(direccion_fisica, tamanio_en_bytes, cantidad_paginas, direccion_logica);
     }
-   
-    paquete->codigo_operacion = cod_op; // Podemos usar una constante por operación
-    
-    paquete->buffer = buffer;
-
-    void *a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int); 
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-    
-    // Por último enviamos
-    send(socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-    // printf("Paquete enviado!\n");
-
-    // Falta liberar todo
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    enviar_paquete(buffer, cod_op, socket_memoria);
 }
 
 void pedir_lectura(char* interfaz, int direccion_fisica, uint32_t* registro_tamanio) {
@@ -862,32 +754,8 @@ void pedir_lectura(char* interfaz, int direccion_fisica, uint32_t* registro_tama
     // No tiene sentido seguir calculando el desplazamiento, ya ocupamos el buffer completo
 
     buffer->stream = stream;
-
-    // Si usamos memoria dinámica para el nombre, y no la precisamos más, ya podemos liberarla:
-
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-
-    paquete->codigo_operacion = PEDIDO_LECTURA; // Podemos usar una constante por operación
-    paquete->buffer = buffer; // Nuestro buffer de antes.
-
-    // Armamos el stream a enviar
-    void* a_enviar = malloc(buffer->size + sizeof(int) * 2);
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    // Por último enviamos
-    send(client_dispatch, a_enviar, buffer->size + sizeof(int) * 2, 0);
-
-    // No nos olvidamos de liberar la memoria que ya no usaremos
+    enviar_paquete(buffer,PEDIDO_LECTURA, client_dispatch);
     free(pedido_lectura);
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
 }
 
 void enviar_direcciones_fisicas(int pagina, int pid, int cant_paginas) {  
@@ -913,7 +781,6 @@ void enviar_direcciones_fisicas(int pagina, int pid, int cant_paginas) {
 }
 
 void mandar_una_dir_fisica(int direccion_fisica) {
-    t_paquete *paquete = malloc(sizeof(t_paquete));
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
     buffer->size = sizeof(int);
@@ -924,27 +791,7 @@ void mandar_una_dir_fisica(int direccion_fisica) {
     memcpy(buffer->stream + buffer->offset, &direccion_fisica, sizeof(int));
     buffer->offset += sizeof(int);
 
-    paquete->codigo_operacion = RECIBIR_DIR_FISICA; // Podemos usar una constante por operación
-    
-    paquete->buffer = buffer;
-
-    void *a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int); 
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-    
-    // Por último enviamos
-    send(socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-
-    // Falta liberar todo
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    enviar_paquete(buffer, RECIBIR_DIR_FISICA, socket_memoria);
 }
 
 int tamanio_byte_registro(bool es_registro_uint8) {
@@ -975,7 +822,6 @@ int cantidad_de_paginas_a_utilizar(uint32_t direccion_logica, int tamanio_en_byt
 }
 
 void enviar_tamanio_memoria(int nuevo_tamanio, int pid) {
-    t_paquete *paquete = malloc(sizeof(t_paquete));
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
     buffer->size = sizeof(int) * 2; 
@@ -988,26 +834,7 @@ void enviar_tamanio_memoria(int nuevo_tamanio, int pid) {
     buffer->offset += sizeof(int);
     memcpy(stream + buffer->offset, &pid, sizeof(int));
 
-    paquete->codigo_operacion = RESIZE_MEMORIA; // Podemos usar una constante por operación
-    paquete->buffer = buffer; // Nuestro buffer de antes.
-
-    void *a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int); 
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    // Por último enviamos
-    send(socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-
-    // Liberamos memoria
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    enviar_paquete(buffer, RESIZE_MEMORIA, socket_memoria); 
 }
 
 void desalojar(t_pcb* pcb, DesalojoCpu motivo, t_buffer* datos_adicionales) {
@@ -1017,33 +844,8 @@ void desalojar(t_pcb* pcb, DesalojoCpu motivo, t_buffer* datos_adicionales) {
 }
 
 void solicitud_dormirIO_kernel(char* interfaz, int unidades) {
-    t_buffer* buffer; // Creo que no hace falta reservar memoria
-    buffer = llenar_buffer_dormir_IO(interfaz, unidades);
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-
-    paquete->codigo_operacion = DORMIR_INTERFAZ; // Podemos usar una constante por operación
-    paquete->buffer = buffer; // Nuestro buffer de antes.
-
-    // Armamos el stream a enviar   
-    void* a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    // Por último enviamos
-    // hay que poner el socket kernel globallll
-    send(client_dispatch, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-    // printf("Paquete enviado!");
-
-    // Falta liberar todo
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    t_buffer* buffer = llenar_buffer_dormir_IO(interfaz, unidades);
+    enviar_paquete(buffer, DORMIR_INTERFAZ, client_dispatch);
 }
 /*
 void solicitud_lecturaIO_kernel(char* interfaz,void* valorRegistroDestino,void* valorRegistroTamanio){
@@ -1071,9 +873,7 @@ void solicitud_lecturaIO_kernel(char* interfaz,void* valorRegistroDestino,void* 
 
     // Falta liberar todo
     free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+   liberar_paquete(paquete)
 }
 */
 // ver
@@ -1320,30 +1120,7 @@ void manejar_recursos(t_pcb* pcb, t_parametro* recurso, DesalojoCpu codigo) {
 void enviar_buffer_copy_string(int direccion_fisica_SI, int direccion_fisica_DI, int tamanio) {
     t_buffer* buffer;
     buffer = llenar_buffer_copy_string(direccion_fisica_SI,direccion_fisica_DI,tamanio);
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-
-    paquete->codigo_operacion = COPY_STRING_MEMORIA; 
-    paquete->buffer = buffer; 
-    printf("llego a enviar buffer copy");
-
-    // Armamos el stream a enviar   
-    void* a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    // Por último enviamos
-    send(socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-
-    // Falta liberar todo
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    enviar_paquete(buffer,COPY_STRING_MEMORIA,socket_memoria);
 }
 
 t_buffer* llenar_buffer_copy_string(int direccion_fisica_SI, int direccion_fisica_DI, int tamanio){ 
@@ -1370,31 +1147,7 @@ t_buffer* llenar_buffer_copy_string(int direccion_fisica_SI, int direccion_fisic
 void enviar_kernel_stdout(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio){
     t_buffer* buffer;
     buffer = llenar_buffer_stdout(direccion_fisica, nombre_interfaz, tamanio);
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-
-    paquete->codigo_operacion = PEDIDO_ESCRITURA; 
-    paquete->buffer = buffer; 
-    printf("llego a enviar buffer stdout\n");
-    int largo = string_length(nombre_interfaz);
-
-    // Armamos el stream a enviar   
-    void* a_enviar = malloc(buffer->size + sizeof(int) * 2 + sizeof(largo));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    // Por último enviamos
-    send(client_dispatch, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-
-    // Falta liberar todo
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    enviar_paquete(buffer, PEDIDO_ESCRITURA, client_dispatch);
 }
 
 t_buffer* llenar_buffer_stdout(int direccion_fisica, char* nombre_interfaz, uint32_t tamanio){
@@ -1446,9 +1199,7 @@ void enviar_buffer_fs_create(char* nombre_interaz,char* nombre_archivo){
 
     // Falta liberar todo
     free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+   liberar_paquete(paquete)
 }
 
 
@@ -1477,3 +1228,33 @@ t_buffer* llenar_buffer_fs_create(char* nombre_interfaz,char* nombre_archivo){
 }
 
 */  
+
+
+t_buffer* pedir_buffer_lectura(char* interfaz, int direccion_fisica, uint32_t* registro_tamanio) {
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+    int largo_interfaz = string_length(interfaz) + 1;
+    t_pedido_lectura* pedido_lectura = malloc(sizeof(t_pedido_lectura));
+
+    buffer->size = sizeof(int) + sizeof(uint32_t) + largo_interfaz;
+
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+    int offset = 0;
+
+    void* stream = buffer->stream;
+
+    memcpy(stream + offset, &pedido_lectura->registro_direccion, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + offset, &pedido_lectura->registro_tamanio, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+
+    // Para el nombre primero mandamos el tamaño y luego el texto en sí:
+    memcpy(stream + offset, &largo_interfaz, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + offset, pedido_lectura->interfaz, largo_interfaz);
+    // No tiene sentido seguir calculando el desplazamiento, ya ocupamos el buffer completo
+
+    buffer->stream = stream;
+
+    return buffer;
+}

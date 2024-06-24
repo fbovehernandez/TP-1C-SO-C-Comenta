@@ -18,8 +18,6 @@ extern sem_t sem_memoria_instruccion;
 extern sem_t pedir_instruccion;
 extern sem_t sem_cargo_instrucciones;
 
-
-
 typedef enum {
     GENERICA, 
     STDIN,
@@ -46,7 +44,7 @@ typedef struct {
     int pagina;
     int marco;
     long timestamps;
-} t_tlb;
+} t_entrada_tlb;
 
 typedef struct {
     int pid;
@@ -200,9 +198,38 @@ typedef struct {
 } t_pcb;
 
 typedef struct {
-    int ut;
+    int pid;
+    int unidades_trabajo;
+} t_pid_unidades_trabajo;
+
+typedef struct {
+    int pid;
+    int direccion_fisica;
+    uint32_t registro_tamanio;
+} t_pid_dirfisica_tamanio;
+
+typedef struct {
+    char* nombre_interfaz;
+    t_pid_dirfisica_tamanio* pid_dirfisica_registroTamanio; 
+} t_interfaz_pid_dirfisica_tamanio;
+
+typedef struct {
+    int unidad_trabajo;
     t_pcb* pcb;
 } io_gen_sleep;
+
+typedef struct {
+    int direccion_fisica;
+    uint32_t registro_tamanio;
+    t_pcb* pcb;
+} io_stdin;
+
+typedef struct {
+    int direccion_fisica;
+    uint32_t registro_tamanio;
+    char* nombre_interfaz;
+    t_pcb* pcb;
+} io_stdout;
 
 typedef enum {
     SET,  
@@ -296,5 +323,10 @@ t_registros* inicializar_registros_cpu(t_registros* registro_pcb);
 t_pcb* deserializar_pcb(t_buffer* buffer);
 t_buffer* llenar_buffer_pcb(t_pcb* pcb);
 void imprimir_pcb(t_pcb* pcb);
+void liberar_paquete(t_paquete* paquete);
+void liberar_paquete_y_a_enviar(t_paquete* paquete,void* a_enviar);
+void enviar_paquete(t_buffer* buffer, codigo_operacion codigo, int socket);
+t_info_io *deserializar_interfaz(t_buffer *buffer);
+t_paquete *inicializarIO_recibirPaquete(int socket);
 
 #endif // SOCKET_H

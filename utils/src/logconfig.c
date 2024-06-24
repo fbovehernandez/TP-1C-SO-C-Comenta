@@ -3,7 +3,7 @@
 t_config* iniciar_config(char* path) {
     t_config* nuevo_config;
 	if((nuevo_config = config_create(path)) == NULL) {
-		printf("%s", "config not created");
+		printf("%s", "config not created\n");
 		exit(1);
 	}
 
@@ -13,7 +13,7 @@ t_config* iniciar_config(char* path) {
 t_log* iniciar_logger(char* path) {
 	t_log* nuevo_logger = log_create(path, "LOGGER", true, LOG_LEVEL_INFO);
 	if(nuevo_logger == NULL) {
-		perror("Hay un error!");
+		perror("Hay un error!\n");
 		exit(EXIT_FAILURE);
 	}
 	

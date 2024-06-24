@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
     t_config* config_kernel   = iniciar_config("./kernel.config");
     logger_kernel = iniciar_logger("kernel.log");
     datos_kernel = solicitar_datos(config_kernel);
-    path_kernel = "/home/utnso/operativos/tp2/tp-2024-1c-Sofa-Cama/kernel/scripts-comandos"; // hardcodeado nashe
+    path_kernel = "/home/utnso/tp-2024-1c-Sofa-Cama/kernel/scripts-comandos"; // hardcodeado nashe
 
     quantum = datos_kernel->quantum;
     grado_multiprogramacion = datos_kernel->grado_multiprogramacion;
@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
     diccionario_io = dictionary_create();
 
     // Lista global para manejo de I/O
-    lista_io = list_create();
+    // lista_io = list_create();
     lista_procesos = list_create();
 
     pthread_mutex_init(&mutex_estado_new, NULL);

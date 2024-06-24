@@ -127,40 +127,20 @@ int traducir_direccion_logica_a_fisica(uint32_t direccion_logica, int pid) {
     return direccion_fisica;
 }
 
-void pedir_frame_a_memoria(int nro_pagina, int pid) { 
-
-    t_paquete* paquete = malloc(sizeof(t_paquete));
+void pedir_frame_a_memoria(int nro_pagina, int pid) {
+    t_solicitud_frame* solicitud_frame = malloc(sizeof(t_solicitud_frame));
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
     buffer->size = sizeof(int) + sizeof(int); 
-
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
-    // Ver posible problema de free moviendo el buffer->stream
-    memcpy(buffer->stream + buffer->offset, &nro_pagina, sizeof(int));
+    memcpy(buffer->stream + buffer->offset, &solicitud_frame->nro_pagina, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, &pid, sizeof(int));
+    memcpy(buffer->stream + buffer->offset, &solicitud_frame->pid, sizeof(int));
     buffer->offset += sizeof(int);
-
-    paquete->codigo_operacion = QUIERO_FRAME; 
-    paquete->buffer = buffer; 
-
-    void* a_enviar = malloc(buffer->size + sizeof(int) * 2);
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
     
-    send(socket_memoria, a_enviar, buffer->size + sizeof(int) * 2, 0);
-
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    enviar_paquete(buffer, QUIERO_FRAME, socket_memoria);
 }
 
 /* 

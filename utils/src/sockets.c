@@ -220,9 +220,7 @@ void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* dato
     free(a_enviar);
     // free(datos_add->stream); // Libero esto aca -> Ver de liberal en algo lado
     // free(datos_add);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    liberar_paquete(paquete);
     // Creo que no hace falta el free stream que apunta a lo mismo que paquete->buffer->stream
     return 0;
 }
@@ -352,3 +350,71 @@ void paquete(int conexion) {
 	eliminar_paquete(paquete);
 }
 */
+
+void liberar_paquete(t_paquete* paquete) {
+    free(paquete->buffer->stream);
+    free(paquete->buffer);
+    free(paquete);
+}
+
+void liberar_paquete_y_a_enviar(t_paquete* paquete,void* a_enviar) {
+    free(a_enviar);
+    liberar_paquete(paquete);
+}
+
+void enviar_paquete(t_buffer* buffer, codigo_operacion codigo, int socket) {
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+
+    paquete->codigo_operacion = codigo;
+    paquete->buffer = buffer; 
+
+    void* a_enviar = malloc(buffer->size + sizeof(int) * 2);
+    int offset = 0;
+
+    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
+    offset += sizeof(int);
+    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
+
+    send(socket, a_enviar, buffer->size + sizeof(int) * 2, 0);
+    printf("Paquete enviado!\n");
+
+    liberar_paquete_y_a_enviar(paquete, a_enviar);
+}
+
+t_info_io *deserializar_interfaz(t_buffer *buffer) {
+    t_info_io *interfaz = malloc(sizeof(t_info_io));
+    void *stream = buffer->stream;
+    
+    memcpy(&(interfaz->nombre_interfaz_largo), stream, sizeof(int));
+    stream += sizeof(int);
+
+    interfaz->nombre_interfaz = malloc(interfaz->nombre_interfaz_largo);
+
+    memcpy(interfaz->nombre_interfaz, stream, interfaz->nombre_interfaz_largo);
+    stream += interfaz->nombre_interfaz_largo;
+    memcpy(&(interfaz->tipo), stream, sizeof(TipoInterfaz));
+    stream += sizeof(TipoInterfaz);
+
+    return interfaz;
+}
+
+t_paquete* inicializarIO_recibirPaquete(int socket) {
+    int resultOk = 0;
+    send(socket, &resultOk, sizeof(int), 0);
+    printf("Conexion establecida con I/O\n");
+
+    t_paquete *paquete = malloc(sizeof(t_paquete));
+    paquete->buffer = malloc(sizeof(t_buffer));
+    printf("Esperando recibir paquete de IO\n");
+    
+    recv(socket, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
+    printf("Recibi el codigo de operacion de IO: %d\n", paquete->codigo_operacion);
+    
+    recv(socket, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
+    paquete->buffer->stream = malloc(paquete->buffer->size);
+    recv(socket, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+    
+    return paquete;
+}

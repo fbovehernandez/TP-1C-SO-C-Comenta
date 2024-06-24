@@ -24,6 +24,8 @@ int main(int argc, char* argv[2]) {
     char* tipo_interfaz = config_get_string_value(config_io, "TIPO_INTERFAZ"); // TOdos
     char* IP_KERNEL = config_get_string_value(config_io, "IP_KERNEL"); // Todos
     char* puerto_kernel = config_get_string_value(config_io, "PUERTO_KERNEL"); // Todos
+    char* IP_MEMORIA = config_get_string_value(config_io, "IP_MEMORIA"); // Todos
+    char* puerto_memoria = config_get_string_value(config_io, "PUERTO_MEMORIA"); // Todos
 
     // int socket_kernel_io = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombre_io);     
     // close(socket_kernel_io);
@@ -32,13 +34,13 @@ int main(int argc, char* argv[2]) {
     printf("Tipo de interfaz: %s\n", tipo_interfaz);
 
     if (strcmp(tipo_interfaz, "STDOUT") == 0) {
-        // iniciar_stdin_stdout(nombre_io, config_io, IP_KERNEL, puerto_kernel, 15, STDOUT);
+        iniciar_stdout(nombre_io, config_io, IP_KERNEL,IP_MEMORIA, puerto_kernel, puerto_memoria);
     } else if (strcmp(tipo_interfaz, "STDIN") == 0) {
-        // iniciar_stdin_stdout(nombre_io, config_io, IP_KERNEL, puerto_kernel, 13, STDIN) ;      
+        iniciar_stdin(nombre_io, config_io, IP_KERNEL, IP_MEMORIA, puerto_kernel, puerto_memoria) ;      
     } else if (strcmp(tipo_interfaz, "GENERICA") == 0) {
         iniciar_interfaz_generica(nombre_io, config_io, IP_KERNEL, puerto_kernel);
     } else if (strcmp(tipo_interfaz, "DialFS") == 0) {
-        // iniciar_DIALFS(nombre_io,config_io,IP_KERNEL,puerto_kernel);
+        // iniciar_DIALFS(nombre_io,config_io,IP_KERNEL,IP_MEMORIA,puerto_kernel,puerte_memoria);
     } else {
         printf("No trates de hacer mi experiencia con operativos peor\n");
         // insert logica
@@ -56,7 +58,6 @@ void iniciar_interfaz_generica(char* nombreInterfaz, t_config* config_io, char* 
     recibir_kernel(config_io, kernelfd); 
 }
 
-
 // tiempo_unidad_trabajo: Tiempo que dura una unidad de trabajo en milisegundos
 // unidad_trabajo: Cantidad de unidades de trabajo que va a dormir segun la instruccion de CPU
 
@@ -66,18 +67,16 @@ void iniciar_stdin(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, c
     recibir_kernel(config_io, kernelfd);
 }
 
-/*
-void iniciar_stdin_stdout(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, char* IP_MEMORIA, char* puerto_kernel, char* puerto_memoria,int handshake,Tipointerfaz tipo) {
-    kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, tipo, handshake); 
-    memoriafd = conectar_io_memoria(IP_MEMORIA, puerto_memoria, logger_io, nombreInterfaz, tipo, handshake);
+void iniciar_stdout(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, char* IP_MEMORIA, char* puerto_kernel, char* puerto_memoria) {
+    kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, STDOUT, 15); 
+    memoriafd = conectar_io_memoria(IP_MEMORIA, puerto_memoria, logger_io, nombreInterfaz, STDOUT, 79);
     recibir_kernel(config_io, kernelfd);
 } 
 
-*/
-
-
-/*
-void iniciar_dialfs
-*/
+void iniciar_dialfs(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, char* IP_MEMORIA, char* puerto_kernel, char* puerto_memoria){
+    kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, DIALFS, 17); 
+    memoriafd = conectar_io_memoria(IP_MEMORIA, puerto_memoria, logger_io, nombreInterfaz, DIALFS, 81);
+    recibir_kernel(config_io, kernelfd);
+}
 
 

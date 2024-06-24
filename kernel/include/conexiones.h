@@ -55,8 +55,9 @@ int conectar_kernel_cpu_interrupt(t_log* logger_kernel,char* IP_CPU,char* puerto
 int esperar_cliente(int socket_escucha, t_log* logger);
 void* handle_io_stdout(void* socket);
 void* handle_io_stdin(void* socket);
+int ejecutar_io_stdin(int socket, t_pid_dirfisica_tamanio* pid_dirfisica_tamanio);
 void* handle_io_generica(void* socket);
-int ejecutar_io_generica(int socket_io, int unidades_trabajo);
+int ejecutar_io_generica(int socket_io, t_pid_unidades_trabajo* pid_unidades_trabajo);
 int recibir_operacion(int socket_cliente);
 void liberar_conexion(int socket_cliente);
 // void escuchar_STDOUT(t_config* config_kernel, t_log* logger_kernel);
@@ -64,6 +65,9 @@ void* escuchar_IO(void* kernel_io);
 ptr_kernel* solicitar_datos(t_config* config_kernel);
 void solicitar_nombre_io(int socket);
 t_info_io* deserializar_interfaz(t_buffer* buffer);
+t_list_io* establecer_conexion(t_buffer *buffer, int socket_io);
 void mostrar_elem_diccionario(char* nombre_interfaz);
+void liberarIOyPaquete(t_paquete *paquete, t_list_io *io);
+void liberar_io(t_list_io* io);
 
 #endif // CONEXIONES_H

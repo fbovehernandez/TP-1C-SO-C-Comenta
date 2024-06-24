@@ -5,7 +5,7 @@ int main(int argc, char* argv[]) {
     // Creo los configs y logs   
     pthread_mutex_init(&mutex_diccionario_instrucciones, NULL);
     config_memoria = iniciar_config("./memoria.config");
-    t_log* logger_memoria = iniciar_logger("memoria.log");
+    logger_memoria = iniciar_logger("memoria.log");
 
     char* puerto_escucha = config_get_string_value(config_memoria, "PUERTO_ESCUCHA");
     path_config = config_get_string_value(config_memoria, "PATH_INSTRUCCIONES");
@@ -32,6 +32,7 @@ int main(int argc, char* argv[]) {
 
     diccionario_tablas_paginas = dictionary_create();
     diccionario_instrucciones = dictionary_create();
+    diccionario_io = dictionary_create();
 
     // t_list* lista_valores_a_leer = list_create();
 

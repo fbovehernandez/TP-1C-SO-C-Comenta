@@ -146,32 +146,9 @@ void* enviar_path_a_memoria(char* path_instrucciones, t_sockets* sockets, int pi
 
     t_buffer* buffer = llenar_buffer_path(pathNuevo);
 
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-
-    paquete->codigo_operacion = PATH; // Podemos usar una constante por operación
-    paquete->buffer = buffer; // Nuestro buffer de antes.
-
-    // Armamos el stream a enviar
-    void* a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
-    int offset = 0; 
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    log_info(logger_kernel, "Se armo un paquete con este PATH: %s\n", pathNuevo->path);
-
-    // Por último enviamos
-    send(sockets->socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-
-    // No nos olvidamos de liberar la memoria que ya no usaremos
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
-
+    enviar_paquete(buffer, PATH, sockets->socket_memoria);
+    // log_info(logger_kernel, "Se armo un paquete con este PATH: %s\n", pathNuevo->path);
+    
     free(pathNuevo->path);
     free(pathNuevo);
 
@@ -437,9 +414,7 @@ void mandar_datos_io_stdin(char* interfaz_nombre, uint32_t registro_direccion, u
     */
     // No nos olvidamos de liberar la memoria que ya no usaremos
     /*free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);*/
+    liberar_paquete(paquete);*/
 } 
 
 void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
@@ -495,21 +470,19 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             free(pcb);
             break;
         case PEDIDO_LECTURA:
-            t_pedido_lectura* pedido_lectura = deserializar_pedido_lectura(package->buffer);
-            mandar_datos_io_stdin(pedido_lectura->interfaz, pedido_lectura->registro_direccion, pedido_lectura->registro_tamanio);
-            break;
+            t_pedido_lectura *pedido_lectura = deserializar_pedido_lectura(package->buffer);
+            //mandar_io_blocked(pcb, pedido_lectura->interfaz);
+            //mandar_datos_io_stdin(pcb, pedido_lectura->interfaz, pedido_lectura->direccion_fisica, pedido_lectura->registro_tamanio);
+            encolar_datos_stdin(pcb, pedido_lectura->interfaz, pedido_lectura->registro_direccion, pedido_lectura->registro_tamanio);
+            log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, pedido_lectura->interfaz);    
         case PEDIDO_ESCRITURA:
+            /*
             t_pedido_escritura* pedido_escritura = desearializar_pedido_escritura(package->buffer);
-            if(dictionary_has_key(diccionario_io, pedido_escritura->nombre_interfaz)) {
-                mandar_a_escribir_a_memoria(pedido_escritura->nombre_interfaz, pedido_escritura->direccion_fisica, pedido_escritura->tamanio);
-            } else {
-                // I DON'T KNOW WHAT TO DO IF THIS HAPPENS 
-                pasar_a_exit(pcb);
-                int desalojar_pcb_en_kernel = 1;
-                send(sockets->socket_cpu, &desalojar_pcb_en_kernel, sizeof(pcb), 0);
-            }
+            encolar_datos_stdout(pcb, pedido_escritura->nombre_interfaz, pedido_escritura->direccion_fisica, pedido_escritura->tamanio);
+            log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->nombre_interfaz);
             free(pedido_escritura->nombre_interfaz);
             break;
+            */
         //case FS_CREATE:
             /*
             t_pedido_fs_create* pedido_fs = desearializar_pedido_fs_create(package->buffer);
@@ -520,10 +493,66 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             break;
     }
     
-    free(package->buffer->stream); // Liberar memoria
-    free(package->buffer);
-    free(package); 
+    liberar_paquete(package);
 }
+
+t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre) {
+    if(dictionary_has_key(diccionario_io, interfaz_nombre)) {
+        t_list_io* interfaz = malloc(sizeof(t_list_io));
+        interfaz = dictionary_get(diccionario_io, interfaz_nombre);
+        return interfaz;
+    } else {
+        log_info(logger_kernel,"Finaliza el proceso %d - Motivo: INVALID_INTERFACE",pcb->pid);
+        pasar_a_exit(pcb);
+        return NULL;
+    }
+}
+
+void encolar_datos_stdin(t_pcb* pcb, char* interfaz_nombre, int direccion_fisica, uint32_t registro_tamanio) {
+    t_list_io* interfaz;
+    interfaz = io_esta_en_diccionario(pcb, interfaz_nombre);
+
+    if(interfaz != NULL) {
+        int socket_io = interfaz->socket;
+
+    /*
+    IO_STDIN_READ: Cadena de comunicaccion
+    CPU                     -->             KERNEL                                    -->       IO                                                       --> Memoria 
+    Traduce dir fisica a     | 1- Coincide la interfaz con                             |   Ingresar por Teclado un valor con tam maximo registro_tamanio | En la direccionn fisica copia el valor mandado por la io con el tamanio registro tamanio
+    partir de un registro    | la operacion?                                           |   y ese valor se lo  manda a memoria para que lo guarde         | 
+    direccion                | 2- Se agrega el pcb, dir_fisica y reg_tam a la cola de  |   cod: GUARDAR_VALOR                                            |
+                            | blocked de esa io                                       |   datos: direccion_fisica                                       |
+    cod:   PEDIDO_LECTURA    | 3-Sino EXIT                       -                      |          registro_tamanio                                       |
+    datos: nombre_interfaz   | cod: LEETE                                              |          valor_leido                                            |
+        direccion_fisica  | datos: direccion_fisica                                 |
+        registro_tamanio  |        registro_tamanio                                 |
+    */
+        io_stdin* datos_stdin = malloc(sizeof(io_stdin));
+        // bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
+
+        /*t_list_io* elemento_encontrado = validar_io(interfaz->nombreInterfaz, pcb, STDIN); 
+        // Aca tambien deberia cambiar su estado a blocked o Exit respectivamnete
+
+        if(elemento_encontrado == NULL) {
+            // Aca estaria tamb la logica de matar al hilo
+            return;
+        }*/
+
+        datos_stdin->direccion_fisica = direccion_fisica;
+        datos_stdin->registro_tamanio = registro_tamanio;
+        datos_stdin->pcb = pcb;
+        
+        pthread_mutex_lock(&mutex_cola_io_generica);
+        queue_push(interfaz->cola_blocked, datos_stdin);
+        pthread_mutex_unlock(&mutex_cola_io_generica);
+        // use lo que estaba, antes decia sem_post al mutex, por eso, era un binario o eso entendi
+        pthread_mutex_lock(&mutex_lista_io);
+        sem_post(interfaz->semaforo_cola_procesos_blocked);
+        printf("La operacion deberia realizarse...\n");
+        pthread_mutex_unlock(&mutex_lista_io);
+        free(interfaz);
+    }
+} 
 
 t_pedido_lectura* deserializar_pedido_lectura(t_buffer* buffer) {
     t_pedido_lectura* pedido_lectura = malloc(sizeof(t_pedido_lectura));
@@ -590,7 +619,7 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
     }
 
     if(1) { // resultado_okey
-        datos_sleep->ut = io->unidadesDeTrabajo;
+        datos_sleep->unidad_trabajo = io->unidadesDeTrabajo;
         datos_sleep->pcb = pcb;
         
         pthread_mutex_lock(&mutex_cola_io_generica);
@@ -1217,35 +1246,10 @@ t_pedido_escritura* desearializar_pedido_escritura(t_buffer* buffer) {
     return pedido_escritura;    
 }
 
-void  mandar_a_escribir_a_memoria(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio){
-    t_buffer* buffer;
-    buffer = llenar_buffer_stdout(direccion_fisica, nombre_interfaz, tamanio);
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-
-    paquete->codigo_operacion = ESCRIBIR_STDOUT; 
-    paquete->buffer = buffer; 
-    printf("llego a enviar buffer escritura_memoria \n");
-
-    // Armamos el stream a enviar   
-    void* a_enviar = malloc(buffer->size + sizeof(int) * 2);
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
+void mandar_a_escribir_a_memoria(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio){
+    t_buffer* buffer = llenar_buffer_stdout(direccion_fisica, nombre_interfaz, tamanio);
     int socket_memoria = sockets->socket_memoria;
-
-    // Por último enviamos
-    send(socket_memoria, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-
-    // Falta liberar todo
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    enviar_paquete(buffer, ESCRIBIR_STDOUT, sockets->socket_memoria);
 }
 
 t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, int tamanio){

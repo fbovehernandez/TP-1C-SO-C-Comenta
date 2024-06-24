@@ -1904,3 +1904,46 @@
 [INFO] 02:04:24:879 LOGGER/(10376:10378): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
 [INFO] 02:04:24:881 LOGGER/(10376:10379): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
 [INFO] 02:07:09:196 LOGGER/(10376:10379): PID: 1 - Estado Anterior: 3 - Estado Actual: 4
+[INFO] 18:20:33:747 LOGGER/(4036:4036): Conexion establecida con Memoria
+[INFO] 18:20:33:788 LOGGER/(4036:4036): Conexion establecida con Dispatcher
+[INFO] 18:20:33:796 LOGGER/(4036:4036): Conexion establecida con Interrupt
+[INFO] 18:20:33:841 LOGGER/(4036:4036): Servidor iniciado, esperando conexiones!
+[INFO] 18:20:46:494 LOGGER/(4036:4055): Se armo un paquete con este PATH: /script_solo_cpu_5
+
+[INFO] 18:20:56:508 LOGGER/(4036:4055): Se crea el proceso: 1 en NEW
+[INFO] 18:20:56:513 LOGGER/(4036:4052): Hay proceso esperando en la cola de NEW!
+
+[INFO] 18:20:56:513 LOGGER/(4036:4052): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 18:20:56:515 LOGGER/(4036:4052): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 18:20:56:521 LOGGER/(4036:4053): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 18:23:30:082 LOGGER/(4802:4802): Conexion establecida con Memoria
+[INFO] 18:23:30:129 LOGGER/(4802:4802): Conexion establecida con Dispatcher
+[INFO] 18:23:30:138 LOGGER/(4802:4802): Conexion establecida con Interrupt
+[INFO] 18:23:30:226 LOGGER/(4802:4802): Servidor iniciado, esperando conexiones!
+[INFO] 18:23:42:457 LOGGER/(4802:4808): Se armo un paquete con este PATH: /script_solo_cpu_5
+
+[INFO] 18:23:52:476 LOGGER/(4802:4808): Se crea el proceso: 1 en NEW
+[INFO] 18:23:52:486 LOGGER/(4802:4805): Hay proceso esperando en la cola de NEW!
+
+[INFO] 18:23:52:487 LOGGER/(4802:4805): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 18:23:52:488 LOGGER/(4802:4805): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 18:23:52:520 LOGGER/(4802:4806): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 18:24:04:217 LOGGER/(4802:4806): PID: 1 - Estado Anterior: 3 - Estado Actual: 4
+[INFO] 20:08:16:425 LOGGER/(18075:18075): Conexion establecida con Memoria
+[INFO] 20:08:16:483 LOGGER/(18075:18075): Conexion establecida con Dispatcher
+[INFO] 20:08:16:492 LOGGER/(18075:18075): Conexion establecida con Interrupt
+[INFO] 20:08:16:572 LOGGER/(18075:18075): Servidor iniciado, esperando conexiones!
+[INFO] 20:22:23:025 LOGGER/(20592:20592): Conexion establecida con Memoria
+[INFO] 20:22:23:148 LOGGER/(20592:20592): Conexion establecida con Dispatcher
+[INFO] 20:22:23:161 LOGGER/(20592:20592): Conexion establecida con Interrupt
+[INFO] 20:22:23:343 LOGGER/(20592:20592): Servidor iniciado, esperando conexiones!
+[INFO] 20:28:40:725 LOGGER/(22357:22357): Conexion establecida con Memoria
+[INFO] 20:28:40:750 LOGGER/(22357:22357): Conexion establecida con Dispatcher
+[INFO] 20:28:40:766 LOGGER/(22357:22357): Conexion establecida con Interrupt
+[INFO] 20:28:40:820 LOGGER/(22357:22357): Servidor iniciado, esperando conexiones!
+[INFO] 20:32:09:936 LOGGER/(23706:23706): Conexion establecida con Memoria
+[INFO] 20:32:10:015 LOGGER/(23706:23706): Conexion establecida con Dispatcher
+[INFO] 20:32:10:030 LOGGER/(23706:23706): Conexion establecida con Interrupt
+[INFO] 20:32:10:102 LOGGER/(23706:23706): Servidor iniciado, esperando conexiones!

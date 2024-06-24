@@ -99,9 +99,7 @@ void recibir_cliente() { // Se supone que desde aca se conecta el kernel
                 break;
         }
 
-        free(paquete->buffer->stream);
-        free(paquete->buffer);
-        free(paquete);
+        liberar_paquete(paquete);
     }
 }
 

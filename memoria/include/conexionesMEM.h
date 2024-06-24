@@ -18,8 +18,9 @@ extern t_config* config_memoria;
 extern t_dictionary* diccionario_instrucciones;
 extern char* path_config;
 extern t_dictionary* diccionario_tablas_paginas;
-extern t_dictionary* diccionario_ios;
+extern t_dictionary* diccionario_io;
 extern sem_t* hay_valores_para_leer;
+extern t_log* logger_memoria;
 
 extern int tamanio_pagina;
 extern int tamanio_memoria;
@@ -89,4 +90,6 @@ void interaccion_user_space(tipo_operacion operacion, int df_actual, void* user_
 t_direccion_fisica_escritura* deserializar_direccion_fisica_escritura(t_buffer* buffer);
 t_direccion_fisica* deserializar_direccion_fisica_lectura(t_buffer* buffer);
 t_direccion_fisica* armar_dir_lectura(t_direccion_fisica_escritura* df);
+void agregar_interfaz_en_el_diccionario(t_paquete* paquete, int socket);
+
 #endif // CONEXIONES_H

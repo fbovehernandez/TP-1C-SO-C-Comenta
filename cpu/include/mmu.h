@@ -18,7 +18,7 @@ void inicializar_tlb(t_config* config_CPU);
 //void* crear_tlb();
 long tiempoEnMilisecs() ;
 void guardar_en_TLB(int pid, int nro_pagina, int nro_marco);
-void algoritmo_LRU(t_tlb* nueva_entrada);
+void algoritmo_LRU(t_entrada_tlb* nueva_entrada);
 int esta_en_TLB(int nro_pagina);
 int traducir_direccion_logica_a_fisica(uint32_t direccion_logica, int pid);
 int desplazamiento_memoria(int direccion_logica, int nro_pagina);

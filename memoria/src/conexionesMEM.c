@@ -8,6 +8,7 @@ pthread_mutex_t mutex_diccionario_instrucciones;
 t_config* config_memoria;
 t_dictionary* diccionario_instrucciones;
 t_dictionary* diccionario_tablas_paginas;
+t_dictionary* diccionario_io;
 char* path_config;
 int tamanio_pagina;
 int tamanio_memoria;
@@ -16,6 +17,7 @@ int cant_frames;
 //sem_t* hay_valores_para_leer;
 t_bitarray* bitmap;
 int socket_cpu;
+t_log* logger_memoria;
 
 //Acepta el handshake del cliente, se podria hacer mas generico y que cada uno tenga un valor diferente
 int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
@@ -40,7 +42,9 @@ int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
         pthread_create(&io_stdin_thread, NULL, (void*)handle_io_stdin, (void*)(intptr_t)socket_cliente); // Ver
     } else if(handshake == 79) {
         // pthread_t cpu_thread;
-        pthread_create(&io_stdout_thread, NULL, (void*)handle_io_stdout, (void*)(intptr_t)socket_cliente); // Ver
+        //pthread_create(&io_stdout_thread, NULL, (void*)handle_io_stdout, (void*)(intptr_t)socket_cliente); // Ver
+    } else if(handshake == 81) { 
+        //pthread_create(&io_stdout_thread, NULL, (void*)handle_io_dialfs, (void*)(intptr_t)socket_cliente);
     } else {
         send(socket_cliente, &resultError, sizeof(int), 0);
         close(socket_cliente);
@@ -144,14 +148,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 send(socket_cpu, &respuesta_ok_l, sizeof(uint32_t), 0);
             
                 realizar_operacion(LECTURA, direcciones_restantes, user_space_aux, datos_lectura, NULL, registro_lectura);
-                // Agrego el \0 para leer el string"
-
-                // ((char*)registro_lectura)[datos_lectura->tamanio] = '\0';
                 printf("El valor leido es: %s\n", (char*)registro_lectura);
-
-                // uint32_t* ptr = (uint32_t*)registro_lectura;
-                // printf("El valor leido es: %d\n", *ptr);
-
                 printf("tamanio : %d\n", datos_lectura->tamanio);
                 send(socket_cpu, registro_lectura, datos_lectura->tamanio, 0);
                 
@@ -176,9 +173,6 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 send(socket_cpu, &respuesta_ok_mv, sizeof(int), 0);
 
                 void* registro_escritura = df_escritura_general->valor_a_escribir;
-                // printf("El valor a escribir es: %s\n", (char*)registro_escritura); // Prueba con un uint32_t, romperia si length es > 0
-                // printf("El valor a escribir es: %d\n", *(uint32_t*)registro_escritura); // Prueba con un uint32_t, romperia si length es > 0
-
                 realizar_operacion(ESCRITURA, direcciones_restantes_mov_out, user_space_aux, datos_escritura, registro_escritura, NULL); // df_escritura_general->datos_direccion
                 send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
 
@@ -192,9 +186,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
         }
     }
 
-    free(paquete->buffer->stream); // Por alguna razon no le gusta esto
-    free(paquete->buffer);
-    free(paquete);
+    liberar_paquete(paquete);
     return NULL;
 }
 
@@ -399,9 +391,7 @@ void recibir_resto_direcciones(t_list* lista_direcciones_mv) {
         }
         
         // Liberamos memoria
-        free(paquete->buffer->stream);
-        free(paquete->buffer);
-        free(paquete);
+        liberar_paquete(paquete);
 }
 
 /* 
@@ -672,14 +662,18 @@ void* handle_kernel(void* socket) {
         }
 
         // Liberamos memoria
-        free(paquete->buffer->stream);
-        free(paquete->buffer);
-        free(paquete);
+        liberar_paquete(paquete);
     }
 
     return NULL;
 }
 
+/*
+void* handle_io_dialfs() {
+
+}
+*/
+/* 
 void* handle_io_stdout(void* socket) {
     int socket_io = *(int*) socket;
     int resultOk = 0;
@@ -734,13 +728,12 @@ void* handle_io_stdout(void* socket) {
                 return NULL;
         }
 
-        free(paquete->buffer->stream);
-        free(paquete->buffer);
-        free(paquete);
+        liberar_paquete(paquete);
     }
     // Liberamos memoria
     return NULL;
 } 
+*/
 
 void* handle_io_stdin(void* socket) {
     int socket_io = *(int*) socket;
@@ -750,6 +743,8 @@ void* handle_io_stdin(void* socket) {
     send(socket_io, &resultOk, sizeof(int), 0);
 
     // Recibir nombre de la IO
+    t_paquete* paquete_inicial = inicializarIO_recibirPaquete(socket_io);
+    agregar_interfaz_en_el_diccionario(paquete_inicial, socket_io);
 
     printf("Se conecto una io oojoo!\n");
     void* user_space_aux = espacio_usuario;
@@ -777,33 +772,35 @@ void* handle_io_stdin(void* socket) {
         void* stream = paquete->buffer->stream;
         switch(paquete->codigo_operacion) { 
             case GUARDAR_VALOR:                  
-                int registro_direccion;    
-                int largo_valor;
+                int largo_valor, pid, direccion_fisica;
 
-                // Deserializamos tamanios que tenemos en el buffer
-                memcpy(&(registro_direccion), stream, sizeof(int));
+                memcpy(&(pid), stream, sizeof(int));
+                stream += sizeof(int);
+                memcpy(&(direccion_fisica), stream, sizeof(int));
                 stream += sizeof(int);
                 memcpy(&(largo_valor), stream, sizeof(int));
                 stream += sizeof(int);
+
                 char* valor = malloc(largo_valor);
                 memcpy(valor, stream, largo_valor);
 
-                // guardamos el valor en la direccion fisica
-                memcpy((uint32_t*) (user_space_aux + registro_direccion), &valor, sizeof(uint32_t));
-                uint32_t mostrar_valor = *((uint32_t*)(user_space_aux + registro_direccion));
-                printf("el valor guardado en dir fisica por STDIN: %d\n", mostrar_valor);
-                free(valor);
+
+                // ver si se tiene que guardar en varias paginas 
+                memcpy((user_space_aux + direccion_fisica), &valor, largo_valor);
+                char* mostrar_valor = (char*)(user_space_aux + direccion_fisica);
+
+                printf("el valor guardado en dir fisica por STDIN: %s\n", mostrar_valor);
+                log_info(logger_memoria,"PID %d - Accion: LEER - Direccion fisica: %d - Tamanio %d", pid, direccion_fisica, largo_valor);
+                free(valor);   
                 break;
             default:
                 printf("Rompio todo?\n");
                 return NULL;
-        }
-
-        free(paquete->buffer->stream);
-        free(paquete->buffer);
-        free(paquete);
+            }
+        liberar_paquete(paquete);
     }
     // Liberamos memoria
+    liberar_paquete(paquete_inicial);
     return NULL;
 }
     
@@ -1064,7 +1061,6 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu, int socket_cpu) 
     t_instruccion* instruccion = list_get(instrucciones, pc);
     printf("Instruccion a enviar: %s\n", instruccion_a_string(instruccion->nombre));
     
-    t_paquete* paquete = malloc(sizeof(t_paquete));
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
     buffer->size = sizeof(TipoInstruccion) + sizeof(int);
@@ -1114,38 +1110,7 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu, int socket_cpu) 
     }
 
     buffer->stream = stream;
-
-    paquete->codigo_operacion = ENVIO_INSTRUCCION; 
-    paquete->buffer = buffer;
-
-    // Armamos el stream a enviar
-    void* a_enviar = malloc(buffer->size + sizeof(codigo_operacion) + sizeof(int));
-    //void* a_enviar = malloc(buffer->size + sizeof(uint8_t) + sizeof(uint32_t));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(codigo_operacion));
-    offset += sizeof(codigo_operacion);
-    
-    /*memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(uint32_t));
-    offset += sizeof(uint32_t);*/
-    
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    // Por último enviamos
-    //send(socket_cpu, a_enviar, buffer->size + sizeof(uint8_t) + sizeof(uint32_t), 0);
-    //sem_post(&sem_memoria_instruccion);
-
-    send(socket_cpu, a_enviar, buffer->size + sizeof(codigo_operacion) + sizeof(int), 0);
-
-    // Liberamos memoria
-    // free(instruccion);
-    free(pid_char);
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    enviar_paquete(buffer,ENVIO_INSTRUCCION,socket_cpu);
 }
 
 /*
@@ -1181,9 +1146,7 @@ void enviar_cantidad_parametros(int socket_cpu){
 
     // Liberamos memoria
     free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    liberar_paquete(paquete);
 }
 */
 
@@ -1212,7 +1175,6 @@ void enviar_cantidad_instrucciones_pedidas(char* pid, int socket_cpu) {
 
     printf("Cant de instrucciones del proceso %s: %d\n", pid, cantidad_instrucciones);
     
-    t_paquete* paquete = malloc(sizeof(t_paquete));
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
     buffer->size = sizeof(int);
@@ -1224,28 +1186,7 @@ void enviar_cantidad_instrucciones_pedidas(char* pid, int socket_cpu) {
     memcpy(stream + buffer->offset, &cantidad_instrucciones, sizeof(int));
 
     buffer->stream = stream;
-
-    paquete->codigo_operacion = ENVIO_CANTIDAD_INSTRUCCIONES; 
-    paquete->buffer = buffer;
-
-    // Armamos el stream a enviar
-    void* a_enviar = malloc(buffer->size + sizeof(codigo_operacion) + sizeof(int));
-    //void* a_enviar = malloc(buffer->size + sizeof(uint8_t) + sizeof(uint32_t));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(codigo_operacion));
-    offset += sizeof(codigo_operacion);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-    
-    send(socket_cpu, a_enviar, buffer->size + sizeof(codigo_operacion) + sizeof(int), 0);
-
-    // Liberamos memoria
-    free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    enviar_paquete(buffer,ENVIO_CANTIDAD_INSTRUCCIONES,socket_cpu);
 }
 
 /*
@@ -1313,9 +1254,7 @@ void mostrar_en_io(int socket_io, char* valor_leido) {
     send(socket_io, a_enviar, buffer->size + string_length(valor_leido), 0);
 
     free(a_enviar);
-    free(paquete->buffer->stream);
-    free(paquete->buffer);
-    free(paquete);
+    liberar_paquete(paquete);
 }
 
 t_buffer* llenar_buffer_stdout(char* valor) {
@@ -1348,4 +1287,9 @@ t_pedido_escritura* desearializar_pedido_escritura(t_buffer* buffer){
     memcpy(&(pedido_escritura->nombre_interfaz), stream, sizeof(longitud_nombre_interfaz));
 
     return pedido_escritura;
+}
+
+void agregar_interfaz_en_el_diccionario(t_paquete* paquete, int socket) {
+    t_info_io* interfaz = deserializar_interfaz(paquete->buffer);
+    dictionary_put(diccionario_io, interfaz->nombre_interfaz, &socket); // Ver est
 }
