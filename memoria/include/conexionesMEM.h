@@ -56,6 +56,7 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io);
 void imprimir_path(t_path* path);//
 t_path* deserializar_path(t_buffer* buffer);//
 t_instruccion* build_instruccion(char*);//
+t_stdin* deserializar_stdin(t_buffer* buffer);
 t_solicitud_instruccion* deserializar_solicitud_instruccion(t_buffer* buffer);//
 void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu,int socket_cpu);//
 char* agrupar_path(t_path* path);//

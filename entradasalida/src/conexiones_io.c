@@ -96,9 +96,10 @@ int conectar_io_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_io
 
 void mandar_valor_a_memoria(char* valor, t_pid_dirfisica_tamanio* pid_dirfisica_tamanio) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
+
     int largo_valor = string_length(valor);
 
-    buffer->size = sizeof(int) + largo_valor; 
+    buffer->size = sizeof(int) * 3 + largo_valor; 
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
@@ -150,11 +151,12 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
                 int termino_io = 1;
                 send(socket_kernel_io, &termino_io, sizeof(int), 0);
             case LEETE: 
-                t_pid_dirfisica_tamanio* pid_dirfisica_tamanio = deserializar_pid_dirfisica_tamanio(paquete->buffer);
+                t_pid_dirfisica_tamanio_pags* pid_dirfisica_tamanio_pags = deserializar_pid_dirfisica_tamanio_pags(paquete->buffer);
                 
                 // Leer valor
-                char *valor = malloc(sizeof(char) * pid_dirfisica_tamanio->registro_tamanio);
+                char *valor = malloc(pid_dirfisica_tamanio->registro_tamanio);
                 printf("Ingrese lo que quiera guardar (hasta %d caracteres): \n", pid_dirfisica_tamanio->registro_tamanio);
+
                 scanf("%s", valor); 
                 // Mandarlo a memoria
                 
@@ -208,8 +210,8 @@ t_pid_unidades_trabajo* serializar_unidades_trabajo(t_buffer* buffer) {
     return pid_unidades_trabajo;
 }
 
-t_pid_dirfisica_tamanio* deserializar_pid_dirfisica_tamanio(t_buffer* buffer) {
-    t_pid_dirfisica_tamanio* pid_dirfisica_tamanio = malloc(sizeof(t_pid_dirfisica_tamanio)); 
+t_pid_dirfisica_tamanio_pags* deserializar_pid_dirfisica_tamanio_pags(t_buffer* buffer) {
+    t_pid_dirfisica_tamanio_pags* pid_dirfisica_tamanio = malloc(sizeof(t_pid_dirfisica_tamanio_pags)); 
     
     void* stream = buffer->stream;
     // Deserializamos tamanios que tenemos en el buffer

@@ -81,6 +81,7 @@ int esperar_cliente(int socket_escucha, t_log* logger) {
 
 void *handle_io_stdin(void *socket_io) {
     int socket = (intptr_t)socket_io;
+
     t_paquete *paquete = inicializarIO_recibirPaquete(socket);
     t_list_io* io;
     
@@ -93,7 +94,7 @@ void *handle_io_stdin(void *socket_io) {
             return NULL;
     }    
 
-    t_pid_dirfisica_tamanio* pid_dirfisica_tamanio = malloc(sizeof(t_pid_dirfisica_tamanio));
+    t_pid_dirfisica_tamanio_pags* pid_dirfisica_tamanio_pags = malloc(sizeof(t_pid_dirfisica_tamanio_pags));
 
     while (true) {
         sem_wait(io->semaforo_cola_procesos_blocked);
@@ -103,13 +104,16 @@ void *handle_io_stdin(void *socket_io) {
         pthread_mutex_lock(&mutex_cola_io_generica);
         io_stdin *datos_stdin = queue_pop(io->cola_blocked);
         pthread_mutex_unlock(&mutex_cola_io_generica);
+
         // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
 
-        pid_dirfisica_tamanio->pid = datos_stdin->pcb->pid;
-        pid_dirfisica_tamanio->direccion_fisica = datos_stdin->direccion_fisica;
-        pid_dirfisica_tamanio->registro_tamanio = datos_stdin->registro_tamanio;
+        pid_dirfisica_tamanio_pags->pid = datos_stdin->pcb->pid;
+        pid_dirfisica_tamanio_pags->direccion_fisica = datos_stdin->direccion_fisica;
+        pid_dirfisica_tamanio_pags->registro_tamanio = datos_stdin->registro_tamanio;
+        pid_dirfisica_tamanio_pags->pagina = datos_stdin->pagina;
+        pid_dirfisica_tamanio_pags->cantidad_paginas = datos_stdin->cantidad_paginas;
         
-        int respuesta_ok = ejecutar_io_stdin(io->socket, pid_dirfisica_tamanio);
+        int respuesta_ok = ejecutar_io_stdin(io->socket, pid_dirfisica_tamanio_pags);
 
         if (!respuesta_ok) {
             printf("Se ejecuto correctamente la IO...\n");
@@ -129,24 +133,29 @@ void *handle_io_stdin(void *socket_io) {
             break;
         }
     }
+
     free(pid_dirfisica_tamanio);
     liberar_paquete(paquete);
     return NULL;
 }
 
-int ejecutar_io_stdin(int socket, t_pid_dirfisica_tamanio* pid_dirfisica_tamanio) {
-    t_buffer* buffer = malloc(sizeof(t_buffer)); // jiji ( Con voz de caro) - SOFIIIIIIIIII, CHANGE STAYUS
+int ejecutar_io_stdin(int socket, t_pid_dirfisica_tamanio_pags* pid_dirfisica_tamanio_pags) {
+    t_buffer* buffer = malloc(sizeof(t_buffer)); 
 
-    buffer->size = sizeof(int) + sizeof(t_pid_dirfisica_tamanio);
+    buffer->size = sizeof(int) * 4 + sizeof(uint32_t);
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
-    memcpy(buffer->stream + buffer->offset, &pid_dirfisica_tamanio->pid, sizeof(int));
+    memcpy(buffer->stream + buffer->offset, &pid_dirfisica_tamanio_pags->pid, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, &pid_dirfisica_tamanio->direccion_fisica, sizeof(int));
+    memcpy(buffer->stream + buffer->offset, &pid_dirfisica_tamanio_pags->direccion_fisica, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, &pid_dirfisica_tamanio->registro_tamanio, sizeof(uint32_t));
+    memcpy(buffer->stream + buffer->offset, &pid_dirfisica_tamanio_pags->registro_tamanio, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
+    memcpy(buffer->stream + buffer->offset, &pid_dirfisica_tamanio_pags->pagina, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(buffer->stream + buffer->offset, &pid_dirfisica_tamanio_pags->cantidad_paginas, sizeof(int));
+    buffer->offset += sizeof(int);
 
     enviar_paquete(buffer, LEETE, socket);
 

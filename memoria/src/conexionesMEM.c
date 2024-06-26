@@ -33,18 +33,20 @@ int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
 	if(handshake == 1) {
         // pthread_t kernel_thread;
         pthread_create(&kernel_thread, NULL, (void*)handle_kernel, (void*)(intptr_t)socket_cliente);
-        
+        pthread_detach(kernel_thread); // Agregue detach ver si rompe
     } else if(handshake == 2) {
         // pthread_t cpu_thread;
         pthread_create(&cpu_thread, NULL, (void*)handle_cpu, (void*)(intptr_t)socket_cliente);
+        pthread_detach(cpu_thread); // Agregue detach ver si rompe
     } else if(handshake == 91) {
         // pthread_t cpu_thread;
         pthread_create(&io_stdin_thread, NULL, (void*)handle_io_stdin, (void*)(intptr_t)socket_cliente); // Ver
+        pthread_detach(io_stdin_thread); // Agregue detach ver si rompe
     } else if(handshake == 79) {
         // pthread_t cpu_thread;
-        //pthread_create(&io_stdout_thread, NULL, (void*)handle_io_stdout, (void*)(intptr_t)socket_cliente); // Ver
+        // pthread_create(&io_stdout_thread, NULL, (void*)handle_io_stdout, (void*)(intptr_t)socket_cliente); // Ver
     } else if(handshake == 81) { 
-        //pthread_create(&io_stdout_thread, NULL, (void*)handle_io_dialfs, (void*)(intptr_t)socket_cliente);
+        // pthread_create(&io_stdout_thread, NULL, (void*)handle_io_dialfs, (void*)(intptr_t)socket_cliente);
     } else {
         send(socket_cliente, &resultError, sizeof(int), 0);
         close(socket_cliente);
@@ -163,7 +165,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 // recibir_datos_escritura();
                 t_list* direcciones_restantes_mov_out = list_create();
 
-                t_direccion_fisica_escritura* df_escritura_general = deserializar_direccion_fisica_escritura(paquete->buffer);
+                t_direccion_fisica_escritura* df_escritura_general = deserializar_direccion_fisica_escritura(paquete->buffer, direcciones_restantes_mov_out);
 
                 t_direccion_fisica* datos_escritura = malloc(sizeof(t_direccion_fisica));
                 datos_escritura = armar_dir_lectura(df_escritura_general);
@@ -173,7 +175,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 send(socket_cpu, &respuesta_ok_mv, sizeof(int), 0);
 
                 void* registro_escritura = df_escritura_general->valor_a_escribir;
-                realizar_operacion(ESCRITURA, direcciones_restantes_mov_out, user_space_aux, datos_escritura, registro_escritura, NULL); // df_escritura_general->datos_direccion
+                realizar_operacion(ESCRITURA, paquete->buffer, user_space_aux, datos_escritura, registro_escritura, NULL); // df_escritura_general->datos_direccion
                 send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
 
                 free(datos_escritura);
@@ -213,15 +215,16 @@ hacer un send y recv + para el valor, y me parecio que era mas paja.
 
 void realizar_operacion(tipo_operacion operacion, t_list* direcciones_restantes, void* user_space_aux, t_direccion_fisica* df, void* registro_escritura, void* registro_lectura) {
 
-    printf("Antes de entrar al for, necesito %d paginas\n", df->cantidad_paginas);
-    /***** Ver existe algun forma de simplificar esto *****/
+    // printf("Antes de entrar al for, necesito %d paginas\n", df->cantidad_paginas);
+
+    /*
     if(df->cantidad_paginas > 1) {
         for(int i = 0; i < (df->cantidad_paginas-1) * 2; i++) {
             printf("Entro al for por %d vez\n", i+1);
             recibir_resto_direcciones(direcciones_restantes);
         }
     }
-    /****                                             *****/
+    */
 
     int df_actual = df->direccion_fisica;
     printf("La direccion fisica actual es: %d\n", df_actual);
@@ -337,12 +340,13 @@ int min(int a, int b) {
     return (a < b) ? a : b;
 }
 
-// Esta funcion podria cambiar en un futuro, si yo ya envio esa cantidad a memoria, que seria lo logico
+/* 
 int bytes_usables_por_pagina(int direccion_logica) {
     int offset = direccion_logica % tamanio_pagina;
     int dev_lectura =  tamanio_pagina - offset;
     return dev_lectura;
 }
+*/
 
 void recibir_resto_direcciones(t_list* lista_direcciones_mv) {
     
@@ -746,7 +750,7 @@ void* handle_io_stdin(void* socket) {
     t_paquete* paquete_inicial = inicializarIO_recibirPaquete(socket_io);
     agregar_interfaz_en_el_diccionario(paquete_inicial, socket_io);
 
-    printf("Se conecto una io oojoo!\n");
+    printf("Se conecto una io!\n");
     void* user_space_aux = espacio_usuario;
 
     send(socket_io, &tamanio_pagina, sizeof(int), MSG_WAITALL);
@@ -770,27 +774,49 @@ void* handle_io_stdin(void* socket) {
         recv(socket_io, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
 
         void* stream = paquete->buffer->stream;
+
         switch(paquete->codigo_operacion) { 
             case GUARDAR_VALOR:                  
                 int largo_valor, pid, direccion_fisica;
+                // pid, cantidad_paginas, direcciones_fisicas: esto necesito
+                // direcciones_fisicas es una lista de direcciones fisicas a ser utilizadas
 
-                memcpy(&(pid), stream, sizeof(int));
-                stream += sizeof(int);
-                memcpy(&(direccion_fisica), stream, sizeof(int));
-                stream += sizeof(int);
-                memcpy(&(largo_valor), stream, sizeof(int));
-                stream += sizeof(int);
+                /* 
+typedef struct {
+    int pid;
+    int direccion_fisica;
+    int largo_valor;
+    int direccion_logica;
+    int cantidad_paginas;
+} t_io_stdin_memoria;
 
-                char* valor = malloc(largo_valor);
+                */
+                t_list* direcciones_restantes_stdin = list_create();
+
+                t_io_stdin_memoria* df_stdin = deserializar_stdin(paquete->buffer);
+
+                t_io_stdin_memoria* datos_stdin = malloc(sizeof(t_io_stdin_memoria));
+                datos_stdin = armar_dir_lectura(df_stdin);
+                
+                printf("la direccion fisica recibida es %d\n", df_stdin->direccion_fisica);
+
+                send(socket_cpu, &respuesta_ok_mv, sizeof(int), 0);
+
+                void* registro_escritura = valor; // Copio valor en registro_escritura
+
+                realizar_operacion(ESCRITURA, direcciones_restantes_stdin, user_space_aux, datos_escritura, registro_escritura, NULL); // df_escritura_general->datos_direccion
+
+                /* 
                 memcpy(valor, stream, largo_valor);
 
 
                 // ver si se tiene que guardar en varias paginas 
                 memcpy((user_space_aux + direccion_fisica), &valor, largo_valor);
                 char* mostrar_valor = (char*)(user_space_aux + direccion_fisica);
+                */
 
                 printf("el valor guardado en dir fisica por STDIN: %s\n", mostrar_valor);
-                log_info(logger_memoria,"PID %d - Accion: LEER - Direccion fisica: %d - Tamanio %d", pid, direccion_fisica, largo_valor);
+                log_info(logger_memoria,"PID %d - Accion: ESCRIBIR - Direccion fisica: %d - Tamanio %d", pid, direccion_fisica, largo_valor);
                 free(valor);   
                 break;
             default:
@@ -799,11 +825,27 @@ void* handle_io_stdin(void* socket) {
             }
         liberar_paquete(paquete);
     }
+    
     // Liberamos memoria
     liberar_paquete(paquete_inicial);
     return NULL;
 }
     
+t_stdin* deserializar_stdin(t_buffer* buffer) {
+    t_stdin* stdin = malloc(sizeof(t_stdin));
+    void* stream = buffer->stream;
+
+    memcpy(&(stdin->pid), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(stdin->direccion_fisica), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(stdin->largo_valor), stream, sizeof(int));
+    stream += sizeof(int);
+    char* valor = malloc(largo_valor);
+    memcpy(stdin->valor, stream, largo_valor);
+    return stdin;
+}
+
 void imprimir_diccionario() {
     // t_list* instrucciones = dictionary_elements(diccionario_instrucciones);
     dictionary_iterator(diccionario_instrucciones, (void*)print_instrucciones);  

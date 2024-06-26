@@ -401,6 +401,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     case MOV_OUT: // MOV_OUT (Registro Dirección, Registro Datos)
         recibir_parametros_mov_out(list_parametros, &registro_direccion, &registro_datos, &nombre_registro_dato, &nombre_registro_dir);
 
+    // Ver si se podria usar directo como un void*
         uint32_t* registro_dato_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dato);
         es_registro_uint8_dato = es_de_8_bits(nombre_registro_dato);
         
@@ -538,15 +539,41 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         char* nombre_registro_direccion = registro_direccion->nombre;
         char* nombre_registro_tamanio = registro_tamanio->nombre;
 
-        uint32_t* registro_direccion_2 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_direccion);
+        uint32_t* registro_direccion_stdin = (uint32_t*) seleccionar_registro_cpu(nombre_registro_direccion);
+        bool es_registro_uint8_dato = es_de_8_bits(nombre_registro_tamanio);
+
         uint32_t* registro_tamanio_1 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio);
 
-        direccion_fisica = traducir_direccion_logica_a_fisica(*registro_direccion_2, pcb->pid); 
-
-        t_buffer* buffer_lectura = pedir_buffer_lectura(interfaz->nombre, direccion_fisica, registro_tamanio_1);
+        /*
+        struct typedef {
+            int direccion_fisica;
+            int tamanio_que_queda_en_pag;
+        } t_bloque_direcciones_fisicas;
+        */
         
+        int pagina = floor(*registro_direccion_stdin / tamanio_pagina);
+
+        tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato);
+        int cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_direccion_stdin, tamanio_en_byte, pagina); // Cantidad de paginas + la primera
+        
+        int bytes_usables_primer_pagina = bytes_usables_por_pagina(*registro_direccion_stdin);
+        /* Aca pido todos los frames de todas las paginas*/
+        t_list* bloques_direcciones_fisicas = list_create(); 
+        
+        for(int i=0; i < cantidad_paginas; i++) {
+            t_bloque_direcciones_fisicas bloque;
+            bloque->direccion_fisica = traducir_direccion_logica_a_fisica(*registro_direccion_stdin, pcb->pid);
+            bloque->tamanio_que_queda_en_pag = bytes_usables_por_pagina(*registro_direccion_stdin); //ver
+            
+            list_add(bloques_direcciones_fisicas, &bloque_direccion_fisica);
+        }
+    
+        // Pagina si o pagina no?????
+        t_buffer* buffer_lectura = pedir_buffer_lectura(interfaz->nombre, direcciones_fisicas, tamanio_en_byte, pagina, cantidad_paginas, bytes_usables_primer_pagina);
         desalojar(pcb, PEDIDO_LECTURA, buffer_lectura);
+
         free(buffer_lectura);
+        return 1;
         break;
     case EXIT_INSTRUCCION:
         // guardar_estado(pcb); -> No estoy seguro si esta es necesaria, pero de todas formas nos va a servir cuando se interrumpa por quantum
@@ -630,6 +657,12 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         break;
     }
     return 0;
+}
+
+int bytes_usables_por_pagina(int direccion_logica) {
+    int offset = direccion_logica % tamanio_pagina;
+    int devolucion_lectura =  tamanio_pagina - offset;
+    return devolucion_lectura;
 }
 
 void realizar_operacion(uint32_t* registro_direccion_1, int tamanio_en_byte, void* valor_a_escribir, uint32_t length_valor, int pid, codigo_operacion codigo_operacion) {
@@ -847,44 +880,6 @@ void solicitud_dormirIO_kernel(char* interfaz, int unidades) {
     t_buffer* buffer = llenar_buffer_dormir_IO(interfaz, unidades);
     enviar_paquete(buffer, DORMIR_INTERFAZ, client_dispatch);
 }
-/*
-void solicitud_lecturaIO_kernel(char* interfaz,void* valorRegistroDestino,void* valorRegistroTamanio){
-    t_buffer* buffer = malloc(sizeof(t_buffer));
-    buffer = llenar_buffer_leer_IO(interfaz, valorRegistroDestino,valorRegistroTamanio);
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-
-    paquete->codigo_operacion = LEER_INTERFAZ; // Podemos usar una constante por operación
-    paquete->buffer = buffer; // Nuestro buffer de antes.
-
-    // Armamos el stream a enviar
-    void* a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    // Por último enviamos
-    // hay que poner el socket kernel globallll
-    send(client_dispatch, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-    printf("Paquete enviado!");
-
-    // Falta liberar todo
-    free(a_enviar);
-   liberar_paquete(paquete)
-}
-*/
-// ver
-/*
-typedef struct {
-    int nombre_interfaz_largo;
-    char* nombre_interfaz;
-    int unidadesDeTrabajo;
-} t_operacion_io; 
-*/
-
 
 t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
     int length_interfaz = string_length(interfaz) + 1;
@@ -1067,35 +1062,11 @@ void sum(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, boo
     set(registroDestino, resultado_suma, es_8_bits_destino);
 }
 
-
-// Lo mismo que sum pero negativo
-/*void sub(void* registroOrigen, void* registroDestino, bool es_8_bits, t_pcb* pcb) {
-   if (es_8_bits) {
-        *(uint8_t *)registroOrigen -= *(uint8_t *)registroDestino; // NO va a haber ninguno registro de 8 bits que pase el limite
-    } else {
-        *(uint32_t *)registroOrigen -= *(uint32_t *)registroDestino;
-    }
-}*/
-
 void jnz(void* registro, int valor, t_pcb* pcb) {
     if (*(int*) registro != 0) {
         pcb->program_counter = valor;
     }
 }
-
-/*
-bool sonTodosDigitosDe(char *palabra) {
-    while (*palabra)
-    {
-        if (!isdigit(*palabra))
-        {
-            return false;
-        }
-        palabra++;
-    }
-    return true;
-}
-*/
 
 void manejar_recursos(t_pcb* pcb, t_parametro* recurso, DesalojoCpu codigo) {
     t_buffer *buffer = malloc(sizeof(t_buffer));
@@ -1230,31 +1201,54 @@ t_buffer* llenar_buffer_fs_create(char* nombre_interfaz,char* nombre_archivo){
 */  
 
 
-t_buffer* pedir_buffer_lectura(char* interfaz, int direccion_fisica, uint32_t* registro_tamanio) {
+t_buffer* pedir_buffer_lectura(char* interfaz, t_list* direcciones_fisicas, int tamanio_en_byte, int pagina, int cantidad_paginas, int bytes_usables) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
     int largo_interfaz = string_length(interfaz) + 1;
-    t_pedido_lectura* pedido_lectura = malloc(sizeof(t_pedido_lectura));
+    int size_direcciones_fisicas = list_size(direcciones_fisicas); 
 
-    buffer->size = sizeof(int) + sizeof(uint32_t) + largo_interfaz;
+    //* pedido_lectura = malloc(sizeof(t_pedido_lectura));
+
+/*
+typedef struct {
+    uint32_t id_segmento;
+    uint32_t direccion_base;
+    uint32_t tamanio;
+}t_segmento;
+
+    int tam_segmentos = list_size(tabla->segmentos);
+    log_info(logger, "el tam es: %d", tam_segmentos);
+
+    int bytes = tam_segmentos*3*sizeof(uint32_t) + sizeof(uint32_t) + sizeof(int);
+*/
+
+    buffer->size = sizeof(int) * 4 + (size_direcciones_fisicas * sizeof(int)) + largo_interfaz;
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
     int offset = 0;
 
+    // Ver posible problema de serializacion como paso la otra vez que lo adjuntamos al pcb
     void* stream = buffer->stream;
 
-    memcpy(stream + offset, &pedido_lectura->registro_direccion, sizeof(int));
+    
+    
+    memcpy(stream + offset, &direccion_fisica, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(stream + offset, &pedido_lectura->registro_tamanio, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
+    memcpy(stream + offset, &tamanio_en_byte, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + offset, &cantidad_paginas, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + offset, &pagina, sizeof(int));
+    buffer->offset += sizeof(int);
 
     // Para el nombre primero mandamos el tamaño y luego el texto en sí:
     memcpy(stream + offset, &largo_interfaz, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(stream + offset, pedido_lectura->interfaz, largo_interfaz);
+    memcpy(stream + offset, interfaz, largo_interfaz);
     // No tiene sentido seguir calculando el desplazamiento, ya ocupamos el buffer completo
 
     buffer->stream = stream;
 
     return buffer;
 }
+

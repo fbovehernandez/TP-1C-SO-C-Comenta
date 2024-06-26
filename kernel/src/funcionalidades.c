@@ -471,9 +471,11 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             break;
         case PEDIDO_LECTURA:
             t_pedido_lectura *pedido_lectura = deserializar_pedido_lectura(package->buffer);
-            //mandar_io_blocked(pcb, pedido_lectura->interfaz);
-            //mandar_datos_io_stdin(pcb, pedido_lectura->interfaz, pedido_lectura->direccion_fisica, pedido_lectura->registro_tamanio);
-            encolar_datos_stdin(pcb, pedido_lectura->interfaz, pedido_lectura->registro_direccion, pedido_lectura->registro_tamanio);
+            printf("El pedido de lectura es: %d\n", pedido_lectura->registro_direccion);
+
+            // mandar_io_blocked(pcb, pedido_lectura->interfaz);
+            // mandar_datos_io_stdin(pcb, pedido_lectura->interfaz, pedido_lectura->direccion_fisica, pedido_lectura->registro_tamanio);
+            encolar_datos_stdin(pcb, pedido_lectura);
             log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, pedido_lectura->interfaz);    
         case PEDIDO_ESCRITURA:
             /*
@@ -508,14 +510,7 @@ t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre) {
     }
 }
 
-void encolar_datos_stdin(t_pcb* pcb, char* interfaz_nombre, int direccion_fisica, uint32_t registro_tamanio) {
-    t_list_io* interfaz;
-    interfaz = io_esta_en_diccionario(pcb, interfaz_nombre);
-
-    if(interfaz != NULL) {
-        int socket_io = interfaz->socket;
-
-    /*
+/*
     IO_STDIN_READ: Cadena de comunicaccion
     CPU                     -->             KERNEL                                    -->       IO                                                       --> Memoria 
     Traduce dir fisica a     | 1- Coincide la interfaz con                             |   Ingresar por Teclado un valor con tam maximo registro_tamanio | En la direccionn fisica copia el valor mandado por la io con el tamanio registro tamanio
@@ -526,32 +521,34 @@ void encolar_datos_stdin(t_pcb* pcb, char* interfaz_nombre, int direccion_fisica
     datos: nombre_interfaz   | cod: LEETE                                              |          valor_leido                                            |
         direccion_fisica  | datos: direccion_fisica                                 |
         registro_tamanio  |        registro_tamanio                                 |
-    */
+*/
+
+void encolar_datos_stdin(t_pcb* pcb, t_pedido_lectura* pedido_lectura) {
+    t_list_io* interfaz;
+    interfaz = io_esta_en_diccionario(pcb, pedido_lectura->interfaz);
+
+    if(interfaz != NULL) {
+        int socket_io = interfaz->socket;
+
         io_stdin* datos_stdin = malloc(sizeof(io_stdin));
-        // bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
-
-        /*t_list_io* elemento_encontrado = validar_io(interfaz->nombreInterfaz, pcb, STDIN); 
-        // Aca tambien deberia cambiar su estado a blocked o Exit respectivamnete
-
-        if(elemento_encontrado == NULL) {
-            // Aca estaria tamb la logica de matar al hilo
-            return;
-        }*/
-
-        datos_stdin->direccion_fisica = direccion_fisica;
-        datos_stdin->registro_tamanio = registro_tamanio;
+    
+        datos_stdin->direccion_fisica = pedido_lectura->direccion_fisica;
+        datos_stdin->registro_tamanio = pedido_lectura->registro_tamanio;
+        datos_stdin->pagina = pedido_lectura->registro_tamanio;
+        datos_stdin->cantidad_paginas = pedido_lectura->cantidad_paginas;
         datos_stdin->pcb = pcb;
         
-        pthread_mutex_lock(&mutex_cola_io_generica);
+        pthread_mutex_lock(&mutex_cola_io_generica); // cambiar nombre_mutex
         queue_push(interfaz->cola_blocked, datos_stdin);
         pthread_mutex_unlock(&mutex_cola_io_generica);
+
         // use lo que estaba, antes decia sem_post al mutex, por eso, era un binario o eso entendi
         pthread_mutex_lock(&mutex_lista_io);
         sem_post(interfaz->semaforo_cola_procesos_blocked);
         printf("La operacion deberia realizarse...\n");
         pthread_mutex_unlock(&mutex_lista_io);
-        free(interfaz);
     }
+    free(interfaz);
 } 
 
 t_pedido_lectura* deserializar_pedido_lectura(t_buffer* buffer) {
@@ -561,12 +558,15 @@ t_pedido_lectura* deserializar_pedido_lectura(t_buffer* buffer) {
     // Deserializamos los campos que tenemos en el buffer
     memcpy(&pedido_lectura->registro_direccion, stream, sizeof(int));
     stream += sizeof(int);
-    memcpy(&(pedido_lectura->registro_tamanio), stream, sizeof(uint8_t));
-    stream += sizeof(uint8_t);
-
-    // Por último, para obtener el nombre, primero recibimos el tamaño y luego el texto en sí:
+    memcpy(&(pedido_lectura->registro_tamanio), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(pedido_lectura->cantidad_paginas), stream, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(&(pedido_lectura->pagina),stream, sizeof(int));
+    buffer->offset += sizeof(int);
     memcpy(&(pedido_lectura->length_interfaz), stream, sizeof(int));
     stream += sizeof(int);
+
     pedido_lectura->interfaz = malloc(pedido_lectura->length_interfaz);
     memcpy(pedido_lectura->interfaz, stream, pedido_lectura->length_interfaz);
 

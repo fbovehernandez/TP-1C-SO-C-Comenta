@@ -33,8 +33,10 @@ typedef struct {
 } t_path;
 
 typedef struct {
-    int registro_direccion;
+    int direccion_fisica;
     uint32_t registro_tamanio;
+    int cantidad_paginas;
+    int pagina;
     int length_interfaz;
     char* interfaz;
 } t_pedido_lectura;
@@ -206,7 +208,9 @@ typedef struct {
     int pid;
     int direccion_fisica;
     uint32_t registro_tamanio;
-} t_pid_dirfisica_tamanio;
+    int pagina;
+    int cantidad_paginas;
+} t_pid_dirfisica_tamanio_pags;
 
 typedef struct {
     char* nombre_interfaz;
@@ -221,6 +225,8 @@ typedef struct {
 typedef struct {
     int direccion_fisica;
     uint32_t registro_tamanio;
+    int pagina;
+    int cantidad_paginas;
     t_pcb* pcb;
 } io_stdin;
 
