@@ -20,13 +20,12 @@ typedef struct {
 
 void recibir_parametros_mov_out(t_list* list_parametros, t_parametro **registro_direccion, 
 t_parametro **registro_datos, char** nombre_registro_dato, char** nombre_registro_dir);
-int cantidad_de_paginas_a_utilizar(uint32_t direccion_logica, int tamanio_en_bytes, int pagina);
+int cantidad_de_paginas_a_utilizar(uint32_t direccion_logica, int tamanio_en_bytes, int pagina, t_list* lista_bytes_lectura);
 int tamanio_byte_registro(bool es_registro_uint8);
 int recibir_resultado_resize();
 void enviar_tamanio_memoria(int nuevo_tamanio, int pid);
 void ejecutar_pcb(t_pcb* pcb, int socket_memoria);
 void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria);
-void enviar_direcciones_fisicas(int pagina, int pid, int cant_paginas);
 int check_interrupt(t_pcb* pcb);
 int cantidad_instrucciones_deserializar(t_buffer *buffer);
 void pedir_instruccion_a_memoria(int socket_memoria, t_pcb *pcb);
@@ -65,6 +64,8 @@ void realizar_operacion(uint32_t* registro_direccion_1, int tamanio_en_byte, voi
 t_buffer* serializar_lectura(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, int direccion_logica);
 t_buffer* serializar_escritura(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, int direccion_logica, void* valor, uint32_t length_valor);
 t_buffer* pedir_buffer_lectura(char* interfaz, int direccion_fisica, uint32_t registro_tamanio);
-
+t_buffer* serializar_direcciones_fisicas(int cantidad_paginas, t_list* direcciones_fisicas, void* registro_dato_mov_out, int tamanio_valor, int pid);
+void enviar_direcciones_fisicas(int cantidad_paginas, t_list* direcciones_fisicas, void* registro_dato_mov_out, int tamanio_valor, int pid, codigo_operacion cod_op);
+void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectura, uint32_t direccion_logica, int pid, t_list* direcciones_fisicas, int pagina);
 
 #endif 

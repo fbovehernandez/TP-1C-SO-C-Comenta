@@ -56,7 +56,6 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io);
 void imprimir_path(t_path* path);//
 t_path* deserializar_path(t_buffer* buffer);//
 t_instruccion* build_instruccion(char*);//
-t_stdin* deserializar_stdin(t_buffer* buffer);
 t_solicitud_instruccion* deserializar_solicitud_instruccion(t_buffer* buffer);//
 void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu,int socket_cpu);//
 char* agrupar_path(t_path* path);//
@@ -86,11 +85,12 @@ t_buffer* llenar_buffer_stdout(char* valor);
 void recibir_resto_direcciones(t_list* lista_direcciones);
 int bytes_usables_por_pagina(int direccion_logica);
 void quiero_frame(t_buffer* buffer);
-void realizar_operacion(tipo_operacion operacion, t_list* direcciones_restantes, void* user_space_aux, t_direccion_fisica* df, void* registro_escritura, void* registro_lectura);
+void realizar_operacion(tipo_operacion operacion, t_list* direcciones_restantes, void* user_space_aux, void* registro_escritura, void* registro_lectura);
 void interaccion_user_space(tipo_operacion operacion, int df_actual, void* user_space_aux, int tam_escrito_anterior, int tamanio, void* registro_escritura, void* registro_lectura);
 t_direccion_fisica_escritura* deserializar_direccion_fisica_escritura(t_buffer* buffer);
 t_direccion_fisica* deserializar_direccion_fisica_lectura(t_buffer* buffer);
 t_direccion_fisica* armar_dir_lectura(t_direccion_fisica_escritura* df);
 void agregar_interfaz_en_el_diccionario(t_paquete* paquete, int socket);
+t_pedido_memoria* deserializar_direccion_fisica(t_buffer* buffer, t_list* direcciones_restantes);
 
 #endif // CONEXIONES_H

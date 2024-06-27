@@ -344,6 +344,9 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     char* nombre_registro_dir;
     size_t tamanio_en_byte;
     int esperar_confirm;
+    int pagina;
+    uint32_t default_value = 0;
+    int cantidad_paginas;
 
     switch (nombreInstruccion) // Ver la repeticion de logica... -> Abstraer
     {
@@ -376,16 +379,22 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         void *registro_dato_mov_in = seleccionar_registro_cpu(nombre_registro_dato);
 
         es_registro_uint8_dato = es_de_8_bits(nombre_registro_dato);
-        uint32_t* registro_direccion_1 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_dir);
+        uint32_t* registro_direccion_mov_in = (uint32_t*) seleccionar_registro_cpu(nombre_registro_dir);
         // bool es_registro_uint8_direccion = es_de_8_bits(nombre_registro_dir); // not used
 
+        t_list* lista_bytes_lectura_mov_in = list_create();
+        t_list* lista_direcciones_fisicas_mov_in = list_create(); 
+
+        pagina = floor(*registro_direccion_mov_in / tamanio_pagina);
         tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato);
+        cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_direccion_mov_in, tamanio_en_byte, pagina, lista_bytes_lectura_mov_in); // Cantidad de paginas + la primera
+        
+        cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_lectura_mov_in, *registro_direccion_mov_in, pcb->pid, lista_direcciones_fisicas_mov_in, pagina);
+        
+        enviar_direcciones_fisicas(cantidad_paginas, lista_direcciones_fisicas_mov_in, &default_value, tamanio_en_byte, pcb->pid, LEER_DATO_MEMORIA);
 
         void* valor_en_mem = malloc(tamanio_en_byte);
 
-        // Por mas de que le pase NULL o 0, en la funcion no se usa
-        realizar_operacion(registro_direccion_1, tamanio_en_byte, NULL, 0, pcb->pid, RECIBIR_DIRECCIONES); // NULL, 0 ya que no envia ni valor ni length
-    
         recv(socket_memoria, valor_en_mem, tamanio_en_byte, MSG_WAITALL); // Deberia leer el tamanio 
         
         printf("Recibi el valor de memoria \n");
@@ -401,52 +410,73 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     case MOV_OUT: // MOV_OUT (Registro Dirección, Registro Datos)
         recibir_parametros_mov_out(list_parametros, &registro_direccion, &registro_datos, &nombre_registro_dato, &nombre_registro_dir);
 
-    // Ver si se podria usar directo como un void*
+        t_list* lista_bytes_lectura = list_create();
+        t_list* lista_direcciones_fisicas_mov_out = list_create(); 
+
         uint32_t* registro_dato_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dato);
         es_registro_uint8_dato = es_de_8_bits(nombre_registro_dato);
         
         uint32_t* registro_direccion_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dir); // este es la direccion logica
 
+        pagina = floor(*registro_direccion_mov_out / tamanio_pagina);
         tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato);
-        printf("entro a realizar_operacion");
 
-        realizar_operacion(registro_direccion_mov_out, tamanio_en_byte, (void*)registro_dato_mov_out , 0, pcb->pid, ESCRIBIR_DATO_EN_MEM);
+        cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_direccion_mov_out, tamanio_en_byte, pagina, lista_bytes_lectura); // Cantidad de paginas + la primera
+        // imprimir lista de bytes
+        // printf("Cantidad primera a copiar %d\n", *(int*)list_get(lista_bytes_lectura, 0));
+
+        cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_lectura, *registro_direccion_mov_out, pcb->pid, lista_direcciones_fisicas_mov_out, pagina);
+        
+        enviar_direcciones_fisicas(cantidad_paginas, lista_direcciones_fisicas_mov_out, (void*)registro_dato_mov_out, tamanio_en_byte, pcb->pid, ESCRIBIR_DATO_EN_MEM);
+        // realizar_operacion(registro_direccion_mov_out, tamanio_en_byte, (void*)registro_dato_mov_out , 0, pcb->pid, ESCRIBIR_DATO_EN_MEM);
 
         recv(socket_memoria, &esperar_confirm, sizeof(int), MSG_WAITALL);
         
         printf("Esperar confirmacion MOV OUT: %d\n", esperar_confirm);
         break;
-    case COPY_STRING: // COPY_STRING 1212
-        // Hardcodeo
-        char* cadena_a_copiar = "CARO CHANGE STATUS";
-        int tamanio_cadena = strlen(cadena_a_copiar);
-        printf("El tamanio de la cadena a copiar es: %d\n", tamanio_cadena);
+    case COPY_STRING:
+        // int esperar_confirm_2;
+
+        t_list* lista_bytes_lectura_cs = list_create();
+        t_list* lista_direcciones_fisicas_cs = list_create(); 
 
         t_parametro* tamanio_a_copiar_de_lista = list_get(list_parametros, 0);
         int tamanio_a_copiar = atoi(tamanio_a_copiar_de_lista->nombre);
 
-        uint32_t valor_prueba = 5;
-        uint32_t* registro_prueba = &valor_prueba;
         uint32_t* registro_SI = (uint32_t*)seleccionar_registro_cpu("SI");
         uint32_t* registro_DI = (uint32_t*)seleccionar_registro_cpu("DI");
 
         void* valor_leido_cs = malloc(tamanio_a_copiar); // A mi no me importa si me traigo 50 bytes, quiero leer el tamanio que me pasaste
+
+        pagina = floor(*registro_SI / tamanio_pagina);
+
+        cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_SI, tamanio_a_copiar, pagina, lista_bytes_lectura_cs); // Cantidad de paginas + la primera
+
+        cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_lectura_cs, *registro_SI, pcb->pid, lista_direcciones_fisicas_cs, pagina);
         
-        printf("String a escribir en memoria: %s\n", cadena_a_copiar);
+        enviar_direcciones_fisicas(cantidad_paginas, lista_direcciones_fisicas_cs, &default_value, tamanio_a_copiar, pcb->pid, LEER_DATO_MEMORIA);
+        // realizar_operacion(registro_direccion_mov_out, tamanio_en_byte, (void*)registro_dato_mov_out , 0, pcb->pid, ESCRIBIR_DATO_EN_MEM);
 
-        realizar_operacion(registro_prueba, tamanio_a_copiar, cadena_a_copiar, tamanio_cadena, pcb->pid, ESCRIBIR_DATO_EN_MEM);
-        recv(socket_memoria, &esperar_confirm, sizeof(uint32_t), MSG_WAITALL);
-
-        printf("Esperar confirmacion COPY STRING: %d\n", esperar_confirm);
-
-        realizar_operacion(registro_SI, tamanio_a_copiar, NULL, 0, pcb->pid, RECIBIR_DIRECCIONES);
-        
         recv(socket_memoria, valor_leido_cs, tamanio_a_copiar, MSG_WAITALL);
-        ((char*)valor_leido_cs)[tamanio_a_copiar] = '\0';
-        printf("El valor de memoria es: %s\n", (char*)valor_leido_cs);
+        // ((char*)valor_leido_cs)[tamanio_a_copiar] = '\0';
+        // printf("El valor de memoria es: %s\n", (char*)valor_leido_cs);
+
+        // Ahora hago lo mismo pero para escribir en DI
+        t_list* lista_bytes_escritura_cs = list_create();
+        t_list* lista_direcciones_fisicas_escritura_cs = list_create();
+
+        pagina = floor(*registro_DI / tamanio_pagina);
+
+        cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_DI, tamanio_a_copiar, pagina, lista_bytes_escritura_cs); // Cantidad de paginas + la primera
+
+        cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_escritura_cs, *registro_DI, pcb->pid, lista_direcciones_fisicas_escritura_cs, pagina);
+
+        enviar_direcciones_fisicas(cantidad_paginas, lista_direcciones_fisicas_escritura_cs, valor_leido_cs, tamanio_a_copiar, pcb->pid, ESCRIBIR_DATO_EN_MEM);
+
         recv(socket_memoria, &esperar_confirm, sizeof(int), MSG_WAITALL);
         printf("Esperar confirmacion COPY STRING: %d\n", esperar_confirm);
         free(valor_leido_cs);
+        
         break;
     case SUM:
         t_parametro *registro_param1 = list_get(list_parametros, 0);
@@ -532,6 +562,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         return 1; // Retorna 1 si desalojo PCB...
         break;
     case IO_STDIN_READ: 
+    /*
         t_parametro* interfaz = list_get(list_parametros,0);
         registro_direccion = list_get(list_parametros, 1);
         t_parametro *registro_tamanio = list_get(list_parametros, 2);
@@ -544,12 +575,12 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         uint32_t* registro_tamanio_1 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio);
 
-        /*
+        
         struct typedef {
             int direccion_fisica;
             int tamanio_que_queda_en_pag;
         } t_bloque_direcciones_fisicas;
-        */
+        
         
         int pagina = floor(*registro_direccion_stdin / tamanio_pagina);
 
@@ -557,23 +588,24 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         int cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_direccion_stdin, tamanio_en_byte, pagina); // Cantidad de paginas + la primera
         
         int bytes_usables_primer_pagina = bytes_usables_por_pagina(*registro_direccion_stdin);
-        /* Aca pido todos los frames de todas las paginas*/
+        Aca pido todos los frames de todas las paginas
         t_list* bloques_direcciones_fisicas = list_create(); 
         
         for(int i=0; i < cantidad_paginas; i++) {
             t_bloque_direcciones_fisicas bloque;
             bloque->direccion_fisica = traducir_direccion_logica_a_fisica(*registro_direccion_stdin, pcb->pid);
-            bloque->tamanio_que_queda_en_pag = bytes_usables_por_pagina(*registro_direccion_stdin); //ver
+            bloque->tamanio_que_queda_en_pag = bytes_usables_por_pagina(pagina, bloque->direccion); // ver
             
             list_add(bloques_direcciones_fisicas, &bloque_direccion_fisica);
         }
     
-        // Pagina si o pagina no?????
+        // Pagina si o pagina no????? Por si o por no
         t_buffer* buffer_lectura = pedir_buffer_lectura(interfaz->nombre, direcciones_fisicas, tamanio_en_byte, pagina, cantidad_paginas, bytes_usables_primer_pagina);
         desalojar(pcb, PEDIDO_LECTURA, buffer_lectura);
 
         free(buffer_lectura);
         return 1;
+        */
         break;
     case EXIT_INSTRUCCION:
         // guardar_estado(pcb); -> No estoy seguro si esta es necesaria, pero de todas formas nos va a servir cuando se interrumpa por quantum
@@ -659,12 +691,88 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     return 0;
 }
 
+/* 
 int bytes_usables_por_pagina(int direccion_logica) {
     int offset = direccion_logica % tamanio_pagina;
     int devolucion_lectura =  tamanio_pagina - offset;
     return devolucion_lectura;
 }
+*/
 
+void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectura, uint32_t direccion_logica, int pid, t_list* direcciones_fisicas, int pagina) {
+    int frame;
+
+    t_dir_fisica_tamanio *dir_fisica_tamanio = malloc(sizeof(t_dir_fisica_tamanio));
+    printf("Direccion logica: %d\n", direccion_logica);
+
+    dir_fisica_tamanio->direccion_fisica = traducir_direccion_logica_a_fisica(direccion_logica, pid);
+    dir_fisica_tamanio->bytes_lectura = *(int*)list_get(lista_bytes_lectura, 0); 
+    printf("tamanio guardado: %d\n", dir_fisica_tamanio->bytes_lectura);
+            
+    list_add(direcciones_fisicas, dir_fisica_tamanio);
+
+    for(int i = 0; i < cantidad_paginas-1; i++) {
+        printf("Iteracion %d\n", i);
+        printf("Pido el marco de la pagina %d del proceso %d\n", pagina + 1, pid); // El uno es para que siempre pida la sig
+        pedir_frame_a_memoria(pagina + 1, pid); 
+ 
+        recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
+        printf("el frame es:%d\n", frame);
+
+        int direccion_fisica = frame * tamanio_pagina + 0; // 0 es el offset
+
+        t_dir_fisica_tamanio *dir_fisica_tamanio = malloc(sizeof(t_dir_fisica_tamanio));
+        dir_fisica_tamanio->direccion_fisica = direccion_fisica;
+        dir_fisica_tamanio->bytes_lectura = *(int*)list_get(lista_bytes_lectura, i+1); 
+
+        list_add(direcciones_fisicas, dir_fisica_tamanio);
+
+        pagina++;
+    }
+}
+
+void enviar_direcciones_fisicas(int cantidad_paginas, t_list* direcciones_fisicas, void* registro_dato_mov_out, int tamanio_valor, int pid, codigo_operacion cod_op) {
+    t_buffer* buffer = serializar_direcciones_fisicas(cantidad_paginas, direcciones_fisicas, registro_dato_mov_out, tamanio_valor, pid);
+    enviar_paquete(buffer, cod_op, socket_memoria);
+}
+
+t_buffer* serializar_direcciones_fisicas(int cantidad_paginas, t_list* direcciones_fisicas, void* registro_dato_mov_out, int tamanio_valor, int pid) {
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+
+    int cant_elementos_lista = list_size(direcciones_fisicas);
+
+    buffer->size = sizeof(int) * 4 + (cant_elementos_lista * sizeof(t_dir_fisica_tamanio)) + tamanio_valor;
+
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    void* stream = buffer->stream;
+
+    memcpy(stream + buffer->offset, &pid, sizeof(int));
+    buffer->offset += sizeof(int);
+
+    memcpy(stream + buffer->offset, &cantidad_paginas, sizeof(int));
+    buffer->offset += sizeof(int);
+
+    for(int i=0; i < cantidad_paginas; i++) {
+        t_dir_fisica_tamanio* dir_fisica_tam = list_get(direcciones_fisicas, i);
+        memcpy(stream + buffer->offset, &dir_fisica_tam->direccion_fisica, sizeof(int));
+        buffer->offset += sizeof(int);
+        memcpy(stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
+        buffer->offset += sizeof(int);
+    }
+
+    memcpy(stream + buffer->offset, &tamanio_valor, sizeof(int));
+    buffer->offset += sizeof(int);
+
+    memcpy(stream + buffer->offset, registro_dato_mov_out, tamanio_valor);
+    
+    buffer->stream = stream;
+
+    return buffer;
+}
+
+/* 
 void realizar_operacion(uint32_t* registro_direccion_1, int tamanio_en_byte, void* valor_a_escribir, uint32_t length_valor, int pid, codigo_operacion codigo_operacion) {
     int respuesta_ok;
 
@@ -675,8 +783,9 @@ void realizar_operacion(uint32_t* registro_direccion_1, int tamanio_en_byte, voi
     printf("la respuesta ok es:%d\n", respuesta_ok);
     
     printf("Ya recibi la primera, ahora va el resto y son %d\n", cantidad_paginas);
-    enviar_direcciones_fisicas(pagina, pid, cantidad_paginas-1); 
+    enviar_direcciones_fisicas_2(pagina, pid, cantidad_paginas-1); 
 }
+*/
 
 void recibir_parametros_mov_out(t_list* list_parametros, t_parametro **registro_direccion, t_parametro **registro_datos, char** nombre_registro_dato, char** nombre_registro_dir) {
     *registro_direccion = list_get(list_parametros, 0);
@@ -685,14 +794,16 @@ void recibir_parametros_mov_out(t_list* list_parametros, t_parametro **registro_
     *nombre_registro_dir = (*registro_direccion)->nombre;
 }
 
+/* 
 void enviar_primer_pagina(uint32_t direccion_logica, int pid, int tamanio_en_bytes, int cant_paginas, void* valor_a_escribir, uint32_t length_valor, codigo_operacion cod_op) {
     int direccion_fisica = traducir_direccion_logica_a_fisica(direccion_logica, pid); 
 
     mandar_direccion_fisica_a_mem(direccion_fisica, tamanio_en_bytes, cant_paginas, direccion_logica, valor_a_escribir, length_valor, cod_op); 
     printf("se mando la direccion fisica a memoria %d : \n", direccion_fisica);
 }  
+*/
 
-// Probably the most ugly serialization function ever
+/* 
 t_buffer* serializar_escritura(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, int direccion_logica, void* valor, uint32_t length_valor) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
@@ -730,7 +841,9 @@ t_buffer* serializar_escritura(int direccion_fisica, int tamanio_en_bytes, int c
 
     return buffer;
 }
+*/
 
+/*
 t_buffer* serializar_lectura(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, int direccion_logica) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
@@ -751,7 +864,9 @@ t_buffer* serializar_lectura(int direccion_fisica, int tamanio_en_bytes, int can
 
     return buffer;
 }
+ */
 
+/* 
 void mandar_direccion_fisica_a_mem(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, int direccion_logica, void* valor, uint32_t length_valor, codigo_operacion cod_op) {
     t_buffer* buffer;
     if(cod_op == ESCRIBIR_DATO_EN_MEM) {
@@ -761,7 +876,9 @@ void mandar_direccion_fisica_a_mem(int direccion_fisica, int tamanio_en_bytes, i
     }
     enviar_paquete(buffer, cod_op, socket_memoria);
 }
+*/
 
+/* 
 void pedir_lectura(char* interfaz, int direccion_fisica, uint32_t* registro_tamanio) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
     int largo_interfaz = string_length(interfaz) + 1;
@@ -790,8 +907,10 @@ void pedir_lectura(char* interfaz, int direccion_fisica, uint32_t* registro_tama
     enviar_paquete(buffer,PEDIDO_LECTURA, client_dispatch);
     free(pedido_lectura);
 }
+*/
 
-void enviar_direcciones_fisicas(int pagina, int pid, int cant_paginas) {  
+/* 
+void enviar_direcciones_fisicas_2(int pagina, int pid, int cant_paginas) {  
     int frame;
     // int termine_envio = 10; 
     
@@ -812,7 +931,9 @@ void enviar_direcciones_fisicas(int pagina, int pid, int cant_paginas) {
 
     printf("Termine de enviar las direcciones fisicas\n");
 }
+*/
 
+/* 
 void mandar_una_dir_fisica(int direccion_fisica) {
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
@@ -826,27 +947,40 @@ void mandar_una_dir_fisica(int direccion_fisica) {
 
     enviar_paquete(buffer, RECIBIR_DIR_FISICA, socket_memoria);
 }
+*/
 
 int tamanio_byte_registro(bool es_registro_uint8) {
     return es_registro_uint8 ? 1 : 4;
 }
 
 /***** ACLARACION *******/
-int cantidad_de_paginas_a_utilizar(uint32_t direccion_logica, int tamanio_en_bytes, int pagina) { 
+int cantidad_de_paginas_a_utilizar(uint32_t direccion_logica, int tamanio_en_bytes, int pagina, t_list* lista_bytes_lectura) { // Dir logica 5 tamanio 17
     int cantidad_paginas = 1; // (5)
     
-    int offset = direccion_logica - pagina * tamanio_pagina; // 1
+    int offset_movido = direccion_logica - pagina * tamanio_pagina; // 5 dir logica -> 16 tam pagina EAX = 4 BYTES
     
-    while(1) { // Hay una situacion en que haga mas de 2 iteraciones? -> tam pag 2b registro 4b -> frame 2 frame 3 frame 4
-        int posible_lectura = tamanio_pagina - offset; // 
-        int sobrante_de_pagina = tamanio_en_bytes - posible_lectura; // 17-3 = 14 -4 = 10 -4 = 6 -4 = 2
+    while(1) { 
+        int posible_lectura = tamanio_pagina - offset_movido;  // 16 -5  = 11;
+
+        int sobrante_de_pagina = tamanio_en_bytes - posible_lectura; // 4 -11 = -7
         
         if(sobrante_de_pagina <= 0) {
+            int* tam_bytes = malloc(sizeof(int));
+            *tam_bytes = tamanio_en_bytes; 
+            printf("Tamanio LECTURA: %d\n", *tam_bytes); // 17 -> 14 -> 10 -> 6 -> 2
+            list_add(lista_bytes_lectura, tam_bytes);
             break;
         }
+        
+        // Si sobra espacio en la pagina, se agrega a la lista de bytes a leer
+        int* tam_posible_lectura = malloc(sizeof(int));
+        *tam_posible_lectura = posible_lectura; 
+
+        printf("Tamanio posible lectura: %d\n", *tam_posible_lectura); // 3 -> 4 -> 4 -> 4
+        list_add(lista_bytes_lectura, tam_posible_lectura); 
 
         cantidad_paginas++; // 2 (8) -> 3 (12) -> 4 (16) -> 5 (20)
-        offset = 0;
+        offset_movido = 0;
         
         tamanio_en_bytes = sobrante_de_pagina; // 14 -> 10 -> 6 -> 2
     } 
@@ -1200,15 +1334,13 @@ t_buffer* llenar_buffer_fs_create(char* nombre_interfaz,char* nombre_archivo){
 
 */  
 
-
+/* 
 t_buffer* pedir_buffer_lectura(char* interfaz, t_list* direcciones_fisicas, int tamanio_en_byte, int pagina, int cantidad_paginas, int bytes_usables) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
     int largo_interfaz = string_length(interfaz) + 1;
     int size_direcciones_fisicas = list_size(direcciones_fisicas); 
 
-    //* pedido_lectura = malloc(sizeof(t_pedido_lectura));
 
-/*
 typedef struct {
     uint32_t id_segmento;
     uint32_t direccion_base;
@@ -1221,7 +1353,7 @@ typedef struct {
     int bytes = tam_segmentos*3*sizeof(uint32_t) + sizeof(uint32_t) + sizeof(int);
 */
 
-    buffer->size = sizeof(int) * 4 + (size_direcciones_fisicas * sizeof(int)) + largo_interfaz;
+   /* buffer->size = sizeof(int) * 4 + (size_direcciones_fisicas * sizeof(int)) + largo_interfaz;
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
@@ -1251,4 +1383,4 @@ typedef struct {
 
     return buffer;
 }
-
+*/

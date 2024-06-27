@@ -110,6 +110,12 @@ typedef enum {
 	PAQUETE
 } op_code;
 
+typedef struct {
+    int pid;
+    int cantidad_paginas;
+    void* valor_a_escribir;
+    uint32_t length_valor;
+} t_pedido_memoria;
 typedef enum {
     PATH,
 	ENVIO_PCB,
@@ -133,7 +139,7 @@ typedef enum {
     ESCRIBIR_EN_INTERFAZ,
     ESCRIBIR_STDOUT,
     RECIBIR_DIR_FISICA,
-    RECIBIR_DIRECCIONES,
+    LEER_DATO_MEMORIA,
     FS_CREATE,
     MOSTRAR,
 } codigo_operacion;
@@ -212,11 +218,12 @@ typedef struct {
     int cantidad_paginas;
 } t_pid_dirfisica_tamanio_pags;
 
+/* 
 typedef struct {
     char* nombre_interfaz;
     t_pid_dirfisica_tamanio* pid_dirfisica_registroTamanio; 
 } t_interfaz_pid_dirfisica_tamanio;
-
+*/
 typedef struct {
     int unidad_trabajo;
     t_pcb* pcb;
@@ -236,6 +243,11 @@ typedef struct {
     char* nombre_interfaz;
     t_pcb* pcb;
 } io_stdout;
+
+typedef struct {
+    int direccion_fisica;
+    int bytes_lectura;
+} t_dir_fisica_tamanio;
 
 typedef enum {
     SET,  

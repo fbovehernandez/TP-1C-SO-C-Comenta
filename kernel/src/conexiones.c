@@ -134,7 +134,7 @@ void *handle_io_stdin(void *socket_io) {
         }
     }
 
-    free(pid_dirfisica_tamanio);
+    free(pid_dirfisica_tamanio_pags);
     liberar_paquete(paquete);
     return NULL;
 }

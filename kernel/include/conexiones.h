@@ -55,7 +55,7 @@ int conectar_kernel_cpu_interrupt(t_log* logger_kernel,char* IP_CPU,char* puerto
 int esperar_cliente(int socket_escucha, t_log* logger);
 void* handle_io_stdout(void* socket);
 void* handle_io_stdin(void* socket);
-int ejecutar_io_stdin(int socket, t_pid_dirfisica_tamanio* pid_dirfisica_tamanio);
+int ejecutar_io_stdin(int socket, t_pid_dirfisica_tamanio_pags* pid_dirfisica_tamanio_pags);
 void* handle_io_generica(void* socket);
 int ejecutar_io_generica(int socket_io, t_pid_unidades_trabajo* pid_unidades_trabajo);
 int recibir_operacion(int socket_cliente);

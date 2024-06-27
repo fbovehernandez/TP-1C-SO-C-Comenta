@@ -470,6 +470,7 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             free(pcb);
             break;
         case PEDIDO_LECTURA:
+        /*
             t_pedido_lectura *pedido_lectura = deserializar_pedido_lectura(package->buffer);
             printf("El pedido de lectura es: %d\n", pedido_lectura->registro_direccion);
 
@@ -478,7 +479,7 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             encolar_datos_stdin(pcb, pedido_lectura);
             log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, pedido_lectura->interfaz);    
         case PEDIDO_ESCRITURA:
-            /*
+            
             t_pedido_escritura* pedido_escritura = desearializar_pedido_escritura(package->buffer);
             encolar_datos_stdout(pcb, pedido_escritura->nombre_interfaz, pedido_escritura->direccion_fisica, pedido_escritura->tamanio);
             log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->nombre_interfaz);
@@ -523,6 +524,7 @@ t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre) {
         registro_tamanio  |        registro_tamanio                                 |
 */
 
+/* 
 void encolar_datos_stdin(t_pcb* pcb, t_pedido_lectura* pedido_lectura) {
     t_list_io* interfaz;
     interfaz = io_esta_en_diccionario(pcb, pedido_lectura->interfaz);
@@ -550,7 +552,9 @@ void encolar_datos_stdin(t_pcb* pcb, t_pedido_lectura* pedido_lectura) {
     }
     free(interfaz);
 } 
+*/
 
+/* 
 t_pedido_lectura* deserializar_pedido_lectura(t_buffer* buffer) {
     t_pedido_lectura* pedido_lectura = malloc(sizeof(t_pedido_lectura));
 
@@ -572,6 +576,7 @@ t_pedido_lectura* deserializar_pedido_lectura(t_buffer* buffer) {
 
     return pedido_lectura;
 }
+*/
 
 t_operacion_io* deserializar_io(t_buffer* buffer) {
     t_operacion_io* operacion_io = malloc(sizeof(t_operacion_io));

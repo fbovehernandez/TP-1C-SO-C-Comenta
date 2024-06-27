@@ -118,7 +118,7 @@ int traducir_direccion_logica_a_fisica(uint32_t direccion_logica, int pid) {
     pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina, pid); 
     
     recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
-    printf("Frame %d recibido de memoria %d\n", frame, pid);
+    printf("Frame %d recibido de memoria con PID %d\n", frame, pid);
     
     int direccion_fisica = frame * tamanio_pagina + direccion_logica_a_crear->desplazamiento;
     
@@ -131,15 +131,24 @@ void pedir_frame_a_memoria(int nro_pagina, int pid) {
     t_solicitud_frame* solicitud_frame = malloc(sizeof(t_solicitud_frame));
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
+    solicitud_frame->nro_pagina = nro_pagina;
+    solicitud_frame->pid = pid;
+    
     buffer->size = sizeof(int) + sizeof(int); 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
-    memcpy(buffer->stream + buffer->offset, &solicitud_frame->nro_pagina, sizeof(int));
+    void* stream = buffer->stream;
+
+    memcpy(stream + buffer->offset, &solicitud_frame->nro_pagina, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, &solicitud_frame->pid, sizeof(int));
+    memcpy(stream + buffer->offset, &solicitud_frame->pid, sizeof(int));
     buffer->offset += sizeof(int);
-    
+
+    buffer->stream = stream;
+
+    printf("Pid de parametro %d\n", pid);
+    printf("PID %d -\n", solicitud_frame->pid);
     enviar_paquete(buffer, QUIERO_FRAME, socket_memoria);
 }
 
