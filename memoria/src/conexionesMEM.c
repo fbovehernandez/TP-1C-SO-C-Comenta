@@ -38,8 +38,7 @@ int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
         pthread_create(&cpu_thread, NULL, (void*)handle_cpu, (void*)(intptr_t)socket_cliente);
     } else if(handshake == 91) {
         // pthread_t cpu_thread;
-        //pthread_create(&io_stdin_thread, NULL, (void*)handle_io_stdin, (void*)(intptr_t)socket_cliente); // Ver
-        //pthread_detach(io_stdin_thread); // Agregue detach ver si rompe
+        pthread_create(&io_stdin_thread, NULL, (void*)handle_io_stdin, (void*)(intptr_t)socket_cliente); // Ver
     } else if(handshake == 79) {
         // pthread_t cpu_thread;
         // pthread_create(&io_stdout_thread, NULL, (void*)handle_io_stdout, (void*)(intptr_t)socket_cliente); // Ver
@@ -694,7 +693,7 @@ void* handle_io_stdout(void* socket) {
 } 
 */
 
-/* 
+// Descomente esto pero tiene varios errores que no vi
 void* handle_io_stdin(void* socket) {
     int socket_io = *(int*) socket;
     // free(socket); 
@@ -785,7 +784,7 @@ t_stdin* deserializar_stdin(t_buffer* buffer) {
     memcpy(stdin->valor, stream, largo_valor);
     return stdin;
 }
-*/
+
 
 void imprimir_diccionario() {
     // t_list* instrucciones = dictionary_elements(diccionario_instrucciones);

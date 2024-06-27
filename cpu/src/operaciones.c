@@ -562,50 +562,34 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         return 1; // Retorna 1 si desalojo PCB...
         break;
     case IO_STDIN_READ: 
-    /*
+
+        t_list* lista_bytes_stdin = list_create();
+        t_list* lista_direcciones_fisicas_stdin = list_create();
+
         t_parametro* interfaz = list_get(list_parametros,0);
-        registro_direccion = list_get(list_parametros, 1);
+        registro_direccion = list_get(list_parametros, 1); // Cambiar, usa el de arriba, mejor nombre?
         t_parametro *registro_tamanio = list_get(list_parametros, 2);
 
         char* nombre_registro_direccion = registro_direccion->nombre;
         char* nombre_registro_tamanio = registro_tamanio->nombre;
 
         uint32_t* registro_direccion_stdin = (uint32_t*) seleccionar_registro_cpu(nombre_registro_direccion);
-        bool es_registro_uint8_dato = es_de_8_bits(nombre_registro_tamanio);
+        es_registro_uint8_dato = es_de_8_bits(nombre_registro_tamanio);
 
-        uint32_t* registro_tamanio_1 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio);
-
-        
-        struct typedef {
-            int direccion_fisica;
-            int tamanio_que_queda_en_pag;
-        } t_bloque_direcciones_fisicas;
-        
+        uint32_t* registro_tamanio_stdin = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio);
         
         int pagina = floor(*registro_direccion_stdin / tamanio_pagina);
+        // tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
 
-        tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato);
-        int cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_direccion_stdin, tamanio_en_byte, pagina); // Cantidad de paginas + la primera
+        int cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_direccion_stdin, tamanio_en_byte, pagina, lista_bytes_stdin); // Cantidad de paginas + la primera
         
-        int bytes_usables_primer_pagina = bytes_usables_por_pagina(*registro_direccion_stdin);
-        Aca pido todos los frames de todas las paginas
-        t_list* bloques_direcciones_fisicas = list_create(); 
-        
-        for(int i=0; i < cantidad_paginas; i++) {
-            t_bloque_direcciones_fisicas bloque;
-            bloque->direccion_fisica = traducir_direccion_logica_a_fisica(*registro_direccion_stdin, pcb->pid);
-            bloque->tamanio_que_queda_en_pag = bytes_usables_por_pagina(pagina, bloque->direccion); // ver
-            
-            list_add(bloques_direcciones_fisicas, &bloque_direccion_fisica);
-        }
-    
-        // Pagina si o pagina no????? Por si o por no
-        t_buffer* buffer_lectura = pedir_buffer_lectura(interfaz->nombre, direcciones_fisicas, tamanio_en_byte, pagina, cantidad_paginas, bytes_usables_primer_pagina);
+        cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdin, *registro_direccion_stdin, pcb->pid, lista_direcciones_fisicas_stdin, pagina);
+
+        t_buffer* buffer_lectura = pedir_buffer_lectura(interfaz->nombre, lista_direcciones_fisicas_stdin, *registro_tamanio, cantidad_paginas);
         desalojar(pcb, PEDIDO_LECTURA, buffer_lectura);
 
         free(buffer_lectura);
-        return 1;
-        */
+        return 1; // El return esta para que cuando se desaloje el pcb no siga ejecutando, si hace el break sigue pidiendo instrucciones, porfa no lo saquen o les va a romper
         break;
     case EXIT_INSTRUCCION:
         // guardar_estado(pcb); -> No estoy seguro si esta es necesaria, pero de todas formas nos va a servir cuando se interrumpa por quantum
@@ -699,9 +683,13 @@ int bytes_usables_por_pagina(int direccion_logica) {
 }
 */
 
+/* NOTA FACU -> ESTO HABRIA QUE VER DE OPTIMIZARLO MAS, LO HICE ASI PARA QUE FUNCIONE, PERO CAMBIANDO UN PAR DE COSAS EN LA TRADUCCION CREO QUE
+           SE PUEDE HACER MEJOR Y AHORRAR UNA BANDA DE CODIGO (PARA DESPUES)                    */
+
 void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectura, uint32_t direccion_logica, int pid, t_list* direcciones_fisicas, int pagina) {
     int frame;
 
+    // Aca cargo la primera
     t_dir_fisica_tamanio *dir_fisica_tamanio = malloc(sizeof(t_dir_fisica_tamanio));
     printf("Direccion logica: %d\n", direccion_logica);
 
@@ -711,6 +699,7 @@ void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectur
             
     list_add(direcciones_fisicas, dir_fisica_tamanio);
 
+    // Aca cargo el resto
     for(int i = 0; i < cantidad_paginas-1; i++) {
         printf("Iteracion %d\n", i);
         printf("Pido el marco de la pagina %d del proceso %d\n", pagina + 1, pid); // El uno es para que siempre pida la sig
@@ -1332,55 +1321,50 @@ t_buffer* llenar_buffer_fs_create(char* nombre_interfaz,char* nombre_archivo){
 
 }
 
-*/  
+*/ 
 
-/* 
-t_buffer* pedir_buffer_lectura(char* interfaz, t_list* direcciones_fisicas, int tamanio_en_byte, int pagina, int cantidad_paginas, int bytes_usables) {
+/****
+ NOTA -> Ya lo puse en un issue pero igual lo pongo tambien por aca asi lo ven. Cuando arregle el ultimo problema de serializacion del manejo del recurso, lo hice igual que aca, 
+ hay memory leak pero es la unica forma que encontre por ahora de que funcione, sino se serializaba mal y no se mandaba bien el buffer. Con el stream solo no hay problema de mem leak, porque 
+ no se pierde la referencia, pero no funciona nose porque. Esto pasa con todas los buffers que se mandan adicional al PCB (creo que hasta ahora son 3 o 4)
+ *****/
+
+t_buffer* pedir_buffer_lectura(char* interfaz, t_list* direcciones_fisicas_stdin, int tamanio_a_copiar, int cantidad_paginas) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
     int largo_interfaz = string_length(interfaz) + 1;
-    int size_direcciones_fisicas = list_size(direcciones_fisicas); 
 
+    int size_direcciones_fisicas = list_size(direcciones_fisicas_stdin); 
 
-typedef struct {
-    uint32_t id_segmento;
-    uint32_t direccion_base;
-    uint32_t tamanio;
-}t_segmento;
-
-    int tam_segmentos = list_size(tabla->segmentos);
-    log_info(logger, "el tam es: %d", tam_segmentos);
-
-    int bytes = tam_segmentos*3*sizeof(uint32_t) + sizeof(uint32_t) + sizeof(int);
-*/
-
-   /* buffer->size = sizeof(int) * 4 + (size_direcciones_fisicas * sizeof(int)) + largo_interfaz;
+    buffer->size = sizeof(int) * 2 + (size_direcciones_fisicas * sizeof(int)) + largo_interfaz;
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
-    int offset = 0;
 
     // Ver posible problema de serializacion como paso la otra vez que lo adjuntamos al pcb
-    void* stream = buffer->stream;
+    // void* stream = buffer->stream;
 
-    
-    
-    memcpy(stream + offset, &direccion_fisica, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(stream + offset, &tamanio_en_byte, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(stream + offset, &cantidad_paginas, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(stream + offset, &pagina, sizeof(int));
+    memcpy(buffer->stream + buffer->offset, &cantidad_paginas, sizeof(int));
     buffer->offset += sizeof(int);
 
-    // Para el nombre primero mandamos el tamaño y luego el texto en sí:
-    memcpy(stream + offset, &largo_interfaz, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(stream + offset, interfaz, largo_interfaz);
-    // No tiene sentido seguir calculando el desplazamiento, ya ocupamos el buffer completo
+    // Serializacion de la lista -> Ahora con la lista es una incognita si esto funciona bien inclusive con el mem leak, una cagada
+    for(int i=0; i < cantidad_paginas; i++) {
+        t_dir_fisica_tamanio* dir_fisica_tam = list_get(direcciones_fisicas_stdin, i);
+        memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->direccion_fisica, sizeof(int));
+        buffer->offset += sizeof(int);
+        memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
+        buffer->offset += sizeof(int);
+    }
 
-    buffer->stream = stream;
+    memcpy(buffer->stream + buffer->offset, &tamanio_a_copiar, sizeof(int));
+    buffer->offset += sizeof(int);
+
+    memcpy(buffer->stream + buffer->offset, &largo_interfaz, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(buffer->stream + buffer->offset, interfaz, largo_interfaz);
+
+    // buffer->stream = stream;
 
     return buffer;
 }
-*/
+
