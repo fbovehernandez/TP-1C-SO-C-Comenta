@@ -10,6 +10,8 @@
 #include "../../utils/include/logconfig.h"
 
 extern pthread_t kernel_thread;
+extern pthread_t cpu_thread;
+extern pthread_t kernel_thread;
 extern pthread_t io_stdin_thread;
 extern pthread_t io_stdout_thread;
 extern pthread_mutex_t mutex_diccionario_instrucciones;
@@ -92,5 +94,7 @@ t_direccion_fisica* deserializar_direccion_fisica_lectura(t_buffer* buffer);
 t_direccion_fisica* armar_dir_lectura(t_direccion_fisica_escritura* df);
 void agregar_interfaz_en_el_diccionario(t_paquete* paquete, int socket);
 t_pedido_memoria* deserializar_direccion_fisica(t_buffer* buffer, t_list* direcciones_restantes);
+t_escritura_stdin* deserializar_escritura_stdin(void* stream, t_list* direcciones_restantes);
+
 
 #endif // CONEXIONES_H

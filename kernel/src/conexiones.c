@@ -217,6 +217,7 @@ void *handle_io_generica(void *socket_io) {
     switch (paquete->codigo_operacion) {
     case CONEXION_INTERFAZ:
         io = establecer_conexion(paquete->buffer, socket);
+        free(io);
         break;
     default:
         printf("Llega al default.");

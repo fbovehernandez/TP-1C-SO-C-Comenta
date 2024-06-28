@@ -579,13 +579,13 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         uint32_t* registro_tamanio_stdin = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio);
         
         int pagina = floor(*registro_direccion_stdin / tamanio_pagina);
-        // tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
+        tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); //Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
 
         int cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_direccion_stdin, tamanio_en_byte, pagina, lista_bytes_stdin); // Cantidad de paginas + la primera
         
         cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdin, *registro_direccion_stdin, pcb->pid, lista_direcciones_fisicas_stdin, pagina);
 
-        t_buffer* buffer_lectura = pedir_buffer_lectura(interfaz->nombre, lista_direcciones_fisicas_stdin, *registro_tamanio, cantidad_paginas);
+        t_buffer* buffer_lectura = pedir_buffer_lectura(interfaz->nombre, lista_direcciones_fisicas_stdin, *registro_tamanio_stdin, cantidad_paginas);
         desalojar(pcb, PEDIDO_LECTURA, buffer_lectura);
 
         free(buffer_lectura);
@@ -1329,7 +1329,7 @@ t_buffer* llenar_buffer_fs_create(char* nombre_interfaz,char* nombre_archivo){
  no se pierde la referencia, pero no funciona nose porque. Esto pasa con todas los buffers que se mandan adicional al PCB (creo que hasta ahora son 3 o 4)
  *****/
 
-t_buffer* pedir_buffer_lectura(char* interfaz, t_list* direcciones_fisicas_stdin, int tamanio_a_copiar, int cantidad_paginas) {
+t_buffer* pedir_buffer_lectura(char* interfaz, t_list* direcciones_fisicas_stdin, uint32_t tamanio_a_copiar, int cantidad_paginas) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
     int largo_interfaz = string_length(interfaz) + 1;
 

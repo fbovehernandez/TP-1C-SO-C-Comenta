@@ -2269,3 +2269,71 @@
 [INFO] 02:52:53:959 LOGGER/(38574:38576): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
 [INFO] 02:52:53:960 LOGGER/(38574:38577): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
 [INFO] 02:52:59:010 LOGGER/(38574:38577): PID: 1 - Estado Anterior: 3 - Estado Actual: 4
+[INFO] 18:39:57:731 LOGGER/(14910:14910): Conexion establecida con Memoria
+[INFO] 18:39:57:756 LOGGER/(14910:14910): Conexion establecida con Dispatcher
+[INFO] 18:39:57:758 LOGGER/(14910:14910): Conexion establecida con Interrupt
+[INFO] 18:39:57:795 LOGGER/(14910:14910): Servidor iniciado, esperando conexiones!
+[INFO] 18:42:39:791 LOGGER/(15803:15803): Conexion establecida con Memoria
+[INFO] 18:42:39:841 LOGGER/(15803:15803): Conexion establecida con Dispatcher
+[INFO] 18:42:39:843 LOGGER/(15803:15803): Conexion establecida con Interrupt
+[INFO] 18:42:39:879 LOGGER/(15803:15803): Servidor iniciado, esperando conexiones!
+[INFO] 18:46:10:094 LOGGER/(16859:16859): Conexion establecida con Memoria
+[INFO] 18:46:10:123 LOGGER/(16859:16859): Conexion establecida con Dispatcher
+[INFO] 18:46:10:125 LOGGER/(16859:16859): Conexion establecida con Interrupt
+[INFO] 18:46:10:161 LOGGER/(16859:16859): Servidor iniciado, esperando conexiones!
+[INFO] 18:50:16:729 LOGGER/(18121:18121): Conexion establecida con Memoria
+[INFO] 18:50:16:762 LOGGER/(18121:18121): Conexion establecida con Dispatcher
+[INFO] 18:50:16:764 LOGGER/(18121:18121): Conexion establecida con Interrupt
+[INFO] 18:50:16:802 LOGGER/(18121:18121): Servidor iniciado, esperando conexiones!
+[INFO] 18:50:46:137 LOGGER/(18121:18126): Se crea el proceso: 1 en NEW
+[INFO] 18:50:46:142 LOGGER/(18121:18123): Hay proceso esperando en la cola de NEW!
+
+[INFO] 18:50:46:144 LOGGER/(18121:18123): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 18:50:46:147 LOGGER/(18121:18123): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 18:50:46:149 LOGGER/(18121:18124): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 18:54:36:225 LOGGER/(20093:20093): Conexion establecida con Memoria
+[INFO] 18:54:36:258 LOGGER/(20093:20093): Conexion establecida con Dispatcher
+[INFO] 18:54:36:260 LOGGER/(20093:20093): Conexion establecida con Interrupt
+[INFO] 18:54:36:292 LOGGER/(20093:20093): Servidor iniciado, esperando conexiones!
+[INFO] 18:56:15:955 LOGGER/(20708:20708): Conexion establecida con Memoria
+[INFO] 18:56:15:987 LOGGER/(20708:20708): Conexion establecida con Dispatcher
+[INFO] 18:56:15:989 LOGGER/(20708:20708): Conexion establecida con Interrupt
+[INFO] 18:56:16:024 LOGGER/(20708:20708): Servidor iniciado, esperando conexiones!
+[INFO] 18:58:44:309 LOGGER/(22125:22125): Conexion establecida con Memoria
+[INFO] 18:58:44:333 LOGGER/(22125:22125): Conexion establecida con Dispatcher
+[INFO] 18:58:44:335 LOGGER/(22125:22125): Conexion establecida con Interrupt
+[INFO] 18:58:44:368 LOGGER/(22125:22125): Servidor iniciado, esperando conexiones!
+[INFO] 19:01:36:926 LOGGER/(23934:23934): Conexion establecida con Memoria
+[INFO] 19:01:36:955 LOGGER/(23934:23934): Conexion establecida con Dispatcher
+[INFO] 19:01:36:957 LOGGER/(23934:23934): Conexion establecida con Interrupt
+[INFO] 19:01:36:996 LOGGER/(23934:23934): Servidor iniciado, esperando conexiones!
+[INFO] 19:02:07:963 LOGGER/(23934:23939): Se crea el proceso: 1 en NEW
+[INFO] 19:02:07:965 LOGGER/(23934:23936): Hay proceso esperando en la cola de NEW!
+
+[INFO] 19:02:07:966 LOGGER/(23934:23936): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 19:02:07:967 LOGGER/(23934:23936): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 19:02:07:968 LOGGER/(23934:23937): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 19:04:31:950 LOGGER/(24939:24939): Conexion establecida con Memoria
+[INFO] 19:04:31:976 LOGGER/(24939:24939): Conexion establecida con Dispatcher
+[INFO] 19:04:31:978 LOGGER/(24939:24939): Conexion establecida con Interrupt
+[INFO] 19:04:32:014 LOGGER/(24939:24939): Servidor iniciado, esperando conexiones!
+[INFO] 19:05:01:377 LOGGER/(24939:24945): Se crea el proceso: 1 en NEW
+[INFO] 19:05:01:379 LOGGER/(24939:24942): Hay proceso esperando en la cola de NEW!
+
+[INFO] 19:05:01:380 LOGGER/(24939:24942): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 19:05:01:381 LOGGER/(24939:24942): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 19:05:01:382 LOGGER/(24939:24943): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 19:06:49:740 LOGGER/(25952:25952): Conexion establecida con Memoria
+[INFO] 19:06:49:769 LOGGER/(25952:25952): Conexion establecida con Dispatcher
+[INFO] 19:06:49:774 LOGGER/(25952:25952): Conexion establecida con Interrupt
+[INFO] 19:06:49:817 LOGGER/(25952:25952): Servidor iniciado, esperando conexiones!
+[INFO] 19:07:18:827 LOGGER/(25952:25957): Se crea el proceso: 1 en NEW
+[INFO] 19:07:18:829 LOGGER/(25952:25954): Hay proceso esperando en la cola de NEW!
+
+[INFO] 19:07:18:830 LOGGER/(25952:25954): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 19:07:18:831 LOGGER/(25952:25954): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 19:07:18:833 LOGGER/(25952:25955): PID: 1 - Estado Anterior: 1 - Estado Actual: 3

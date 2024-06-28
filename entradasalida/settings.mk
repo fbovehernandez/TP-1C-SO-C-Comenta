@@ -10,7 +10,7 @@ CRELEASE=-O3 -Wall -DNDEBUG -fcommon
 
 # Arguments when executing with start, memcheck or helgrind
 ARGS="../entradasalida/stdout.config"
-ARGS2 = "sdtin.config"
+ARGS2 = "stdin.config"
 NOMBRE_INTERFAZ = caro
 
 # Valgrind flags
