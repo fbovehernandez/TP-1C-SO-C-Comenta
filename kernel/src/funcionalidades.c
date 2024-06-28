@@ -470,12 +470,12 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             free(pcb);
             break;
         case PEDIDO_LECTURA:
-        /*
             t_pedido_lectura *pedido_lectura = deserializar_pedido_lectura(package->buffer);
             printf("El pedido de lectura es: %d\n", pedido_lectura->registro_direccion);
 
             // mandar_io_blocked(pcb, pedido_lectura->interfaz);
             // mandar_datos_io_stdin(pcb, pedido_lectura->interfaz, pedido_lectura->direccion_fisica, pedido_lectura->registro_tamanio);
+            
             encolar_datos_stdin(pcb, pedido_lectura);
             log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, pedido_lectura->interfaz);    
         case PEDIDO_ESCRITURA:
@@ -485,7 +485,6 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->nombre_interfaz);
             free(pedido_escritura->nombre_interfaz);
             break;
-            */
         //case FS_CREATE:
             /*
             t_pedido_fs_create* pedido_fs = desearializar_pedido_fs_create(package->buffer);
@@ -524,7 +523,38 @@ t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre) {
         registro_tamanio  |        registro_tamanio                                 |
 */
 
-/* 
+
+void encolar_datos_stdin(t_pcb* pcb, t_pedido_lectura* pedido_lectura) {
+    t_list_io* interfaz;
+    interfaz = io_esta_en_diccionario(pcb, pedido_lectura->interfaz);
+
+    if(interfaz != NULL) {
+        int socket_io = interfaz->socket;
+
+        io_stdin* datos_stdin = malloc(sizeof(io_stdin));
+
+        datos_stdin->lista_direcciones = pedido_lectura->lista_dir_tamanio;
+        datos_stdin->registro_tamanio = pedido_lectura->registro_tamanio;
+        datos_stdin->cantidad_paginas = pedido_lectura->cantidad_paginas;
+        datos_stdin->pcb = pcb;
+        
+        pthread_mutex_lock(&mutex_cola_io_generica); // cambiar nombre_mutex
+        queue_push(interfaz->cola_blocked, datos_stdin);
+        pthread_mutex_unlock(&mutex_cola_io_generica);
+
+        // use lo que estaba, antes decia sem_post al mutex, por eso, era un binario o eso entendi
+        pthread_mutex_lock(&mutex_lista_io);
+        sem_post(interfaz->semaforo_cola_procesos_blocked);
+        printf("La operacion deberia realizarse...\n");
+        pthread_mutex_unlock(&mutex_lista_io);
+    }
+
+    // Habria que liberar toda la lista que se cargo adentro de pedido_lectura
+    free(pedido_lectura);
+    free(interfaz);
+} 
+
+/*
 void encolar_datos_stdin(t_pcb* pcb, t_pedido_lectura* pedido_lectura) {
     t_list_io* interfaz;
     interfaz = io_esta_en_diccionario(pcb, pedido_lectura->interfaz);
@@ -552,9 +582,40 @@ void encolar_datos_stdin(t_pcb* pcb, t_pedido_lectura* pedido_lectura) {
     }
     free(interfaz);
 } 
-*/
+ */
 
-/* 
+t_pedido_lectura* deserializar_pedido_lectura(t_buffer* buffer) {
+    t_pedido_lectura* pedido_lectura = malloc(sizeof(t_pedido_lectura));
+
+    void* stream = buffer->stream;
+
+    memcpy(&(pedido_lectura->cantidad_paginas), stream, sizeof(int));
+    buffer->offset += sizeof(int);
+
+    // Deserializar lista con dir fisica y tamanio en bytes a leer segun la cant de pags
+    for(int i =0; i < pedido_lectura->cantidad_paginas; i++) {
+        t_dir_fisica_tamanio* dir_fisica_tam = malloc(sizeof(t_dir_fisica_tamanio));
+        memcpy(&(dir_fisica_tam->direccion_fisica), stream, sizeof(int));
+        buffer->offset += sizeof(int);
+        memcpy(&(dir_fisica_tam->bytes_lectura), stream, sizeof(int));
+        buffer->offset += sizeof(int);
+
+        list_add(pedido_lectura->lista_dir_tamanio, dir_fisica_tam);
+    }
+
+    memcpy(&(pedido_lectura->registro_tamanio), stream, sizeof(int));
+    stream += sizeof(int);
+
+    memcpy(&(pedido_lectura->length_interfaz), stream, sizeof(int));
+    stream += sizeof(int);
+
+    pedido_lectura->interfaz = malloc(pedido_lectura->length_interfaz);
+    memcpy(pedido_lectura->interfaz, stream, pedido_lectura->length_interfaz);
+
+    return pedido_lectura;
+}
+
+/*
 t_pedido_lectura* deserializar_pedido_lectura(t_buffer* buffer) {
     t_pedido_lectura* pedido_lectura = malloc(sizeof(t_pedido_lectura));
 

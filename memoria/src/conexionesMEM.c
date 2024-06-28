@@ -732,12 +732,17 @@ void* handle_io_stdin(void* socket) {
 
         switch(paquete->codigo_operacion) { 
             case GUARDAR_VALOR:                  
-                int largo_valor, pid, direccion_fisica;
+                int largo_valor, pid;
+                t_escritura_stdin* pid_stdin = deserializar_escritura_stdin(stream);
+                
+                
+                
+                
                 // pid, cantidad_paginas, direcciones_fisicas: esto necesito
                 // direcciones_fisicas es una lista de direcciones fisicas a ser utilizadas
-
+            
                
-                t_list* direcciones_restantes_stdin = list_create();
+                /*t_list* direcciones_restantes_stdin = list_create();
 
                 t_io_stdin_memoria* df_stdin = deserializar_stdin(paquete->buffer);
 
@@ -748,15 +753,16 @@ void* handle_io_stdin(void* socket) {
 
                 send(socket_cpu, &respuesta_ok_mv, sizeof(int), 0);
 
-                void* registro_escritura = valor; // Copio valor en registro_escritura
+                void* registro_escritura = valor; // Copio valor en registro_escritura*/
 
-                realizar_operacion(ESCRITURA, direcciones_restantes_stdin, user_space_aux, datos_escritura, registro_escritura, NULL); // df_escritura_general->datos_direccion
+                // realizar_operacion(ESCRITURA, direcciones_restantes_stdin, user_space_aux, datos_escritura, registro_escritura, NULL); // df_escritura_general->datos_direccion
 
                 
 
                 printf("el valor guardado en dir fisica por STDIN: %s\n", mostrar_valor);
                 log_info(logger_memoria,"PID %d - Accion: ESCRIBIR - Direccion fisica: %d - Tamanio %d", pid, direccion_fisica, largo_valor);
-                free(valor);   
+                free(valor);
+                   
                 break;
             default:
                 printf("Rompio todo?\n");
@@ -770,6 +776,51 @@ void* handle_io_stdin(void* socket) {
     return NULL;
 }
    
+/*
+typedef struct {
+    t_list* lista_direcciones;
+    int registro_tamanio;
+    int cantidad_paginas;
+    int pid;
+} t_pid_stdin;
+
+typedef struct {
+    t_pid_stdin* pid_stdin;
+    int valor_length;
+    char* valor;
+} t_escritura_stdin;
+*/
+
+t_escritura_stdin* deserializar_escritura_stdin(void* stream) {
+    t_escritura_stdin* escritura_stdin = malloc(sizeof(t_escritura_stdin));
+    
+    memcpy(&escritura_stdin->pid_stdin->pid, stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&escritura_stdin->pid_stdin->registro_tamanio, stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&escritura_stdin->cantidad_paginas, stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&escritura_stdin->valor_length, stream, sizeof(int)); // Ojo con el "&" aca
+    stream += sizeof(int);
+    memcpy(&escritura_stdin->valor, stream, largo_valor);
+    stream += largo_valor;
+
+    escritura_stdin->pid_stdin->lista_direcciones = list_create();
+    
+    for(int i=0; i < pid_stdin->cantidad_paginas; i++) {
+        t_dir_fisica_tamanio* dir_fisica_tam;
+        memcpy(&dir_fisica_tam->direccion_fisica, stream, sizeof(int));
+        stream += sizeof(int);
+        memcpy(&dir_fisica_tam->bytes_lectura, stream, sizeof(int));
+        stream += sizeof(int);
+        list_add(escritura_stdin->lista_direcciones, dir_fisica_tam);
+    }
+    
+    return escritura_stdin;
+}
+
+
+
 t_stdin* deserializar_stdin(t_buffer* buffer) {
     t_stdin* stdin = malloc(sizeof(t_stdin));
     void* stream = buffer->stream;

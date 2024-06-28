@@ -33,12 +33,11 @@ typedef struct {
 } t_path;
 
 typedef struct {
-    int direccion_fisica;
     uint32_t registro_tamanio;
     int cantidad_paginas;
-    int pagina;
     int length_interfaz;
     char* interfaz;
+    t_list* lista_dir_tamanio;
 } t_pedido_lectura;
 
 typedef struct {
@@ -230,12 +229,24 @@ typedef struct {
 } io_gen_sleep;
 
 typedef struct {
-    int direccion_fisica;
-    uint32_t registro_tamanio;
-    int pagina;
+    t_list* lista_direcciones;
+    int registro_tamanio;
     int cantidad_paginas;
     t_pcb* pcb;
 } io_stdin;
+
+typedef struct {
+    t_list* lista_direcciones;
+    int registro_tamanio;
+    int cantidad_paginas;
+    int pid;
+} t_pid_stdin;
+
+typedef struct {
+    t_pid_stdin* pid_stdin;
+    int valor_length;
+    char* valor;
+} t_escritura_stdin;
 
 typedef struct {
     int direccion_fisica;

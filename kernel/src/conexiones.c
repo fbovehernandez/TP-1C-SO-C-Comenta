@@ -77,7 +77,7 @@ int esperar_cliente(int socket_escucha, t_log* logger) {
     return socket_cliente;
 }
 
-    // Habria que ver de scar logica
+// Habria que ver de scar logica
 
 void *handle_io_stdin(void *socket_io) {
     int socket = (intptr_t)socket_io;
@@ -94,7 +94,7 @@ void *handle_io_stdin(void *socket_io) {
             return NULL;
     }    
 
-    t_pid_dirfisica_tamanio_pags* pid_dirfisica_tamanio_pags = malloc(sizeof(t_pid_dirfisica_tamanio_pags));
+    t_pid_stdin* pid_stdin = malloc(sizeof(t_pid_stdin));
 
     while (true) {
         sem_wait(io->semaforo_cola_procesos_blocked);
@@ -107,13 +107,12 @@ void *handle_io_stdin(void *socket_io) {
 
         // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
 
-        pid_dirfisica_tamanio_pags->pid = datos_stdin->pcb->pid;
-        pid_dirfisica_tamanio_pags->direccion_fisica = datos_stdin->direccion_fisica;
-        pid_dirfisica_tamanio_pags->registro_tamanio = datos_stdin->registro_tamanio;
-        pid_dirfisica_tamanio_pags->pagina = datos_stdin->pagina;
-        pid_dirfisica_tamanio_pags->cantidad_paginas = datos_stdin->cantidad_paginas;
+        pid_stdin->pid = datos_stdin->pcb->pid;
+        pid_stdin->cantidad_paginas = datos_stdin->cantidad_paginas;
+        pid_stdin->lista_direcciones = datos_stdin->lista_direcciones;
+        pid_stdin->registro_tamanio = datos_stdin->registro_tamanio;
         
-        int respuesta_ok = ejecutar_io_stdin(io->socket, pid_dirfisica_tamanio_pags);
+        int respuesta_ok = ejecutar_io_stdin(io->socket, pid_stdin);
 
         if (!respuesta_ok) {
             printf("Se ejecuto correctamente la IO...\n");
@@ -134,28 +133,31 @@ void *handle_io_stdin(void *socket_io) {
         }
     }
 
-    free(pid_dirfisica_tamanio_pags);
+    free(pid_stdin);
     liberar_paquete(paquete);
     return NULL;
 }
 
-int ejecutar_io_stdin(int socket, t_pid_dirfisica_tamanio_pags* pid_dirfisica_tamanio_pags) {
+int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin) {
     t_buffer* buffer = malloc(sizeof(t_buffer)); 
 
-    buffer->size = sizeof(int) * 4 + sizeof(uint32_t);
+    buffer->size = sizeof(int) * 3 + pid_stdin->cantidad_paginas;
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
-    memcpy(buffer->stream + buffer->offset, &pid_dirfisica_tamanio_pags->pid, sizeof(int));
+    memcpy(buffer->stream + buffer->offset, &pid_stdin->pid, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, &pid_dirfisica_tamanio_pags->direccion_fisica, sizeof(int));
+    memcpy(buffer->stream + buffer->offset, &pid_stdin->registro_tamanio, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, &pid_dirfisica_tamanio_pags->registro_tamanio, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
-    memcpy(buffer->stream + buffer->offset, &pid_dirfisica_tamanio_pags->pagina, sizeof(int));
+    memcpy(buffer->stream + buffer->offset, &pid_stdin->cantidad_paginas, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, &pid_dirfisica_tamanio_pags->cantidad_paginas, sizeof(int));
-    buffer->offset += sizeof(int);
+    for(int i=0; i < pid_stdin->cantidad_paginas; i++) {
+        t_dir_fisica_tamanio* dir_fisica_tam = list_get(pid_stdin->lista_direcciones, i);
+        memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->direccion_fisica, sizeof(int));
+        buffer->offset += sizeof(int);
+        memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
+        buffer->offset += sizeof(int);
+    }
 
     enviar_paquete(buffer, LEETE, socket);
 

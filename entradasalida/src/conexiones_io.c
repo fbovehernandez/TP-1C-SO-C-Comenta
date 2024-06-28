@@ -94,33 +94,40 @@ int conectar_io_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_io
     return memoriafd;
 }
 
-void mandar_valor_a_memoria(char* valor, t_pid_dirfisica_tamanio* pid_dirfisica_tamanio) {
+void mandar_valor_a_memoria(char* valor, t_pid_stdin* pid_stdin) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
     int largo_valor = string_length(valor);
 
-    buffer->size = sizeof(int) * 3 + largo_valor; 
+    buffer->size = largo_valor + sizeof(int) * 4 + pid_stdin->cantidad_paginas; 
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
     void* stream = buffer->stream;
     
-    memcpy(stream + buffer->offset, &pid_dirfisica_tamanio->pid, sizeof(int));
+    memcpy(buffer->stream + buffer->offset, &pid_stdin->pid, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &pid_dirfisica_tamanio->direccion_fisica, sizeof(int));
+    memcpy(buffer->stream + buffer->offset, &pid_stdin->registro_tamanio, sizeof(int));
     buffer->offset += sizeof(int);
-    // Para el nombre primero mandamos el tamaño y luego el texto en sí:
-    memcpy(stream + buffer->offset, &largo_valor, sizeof(int));
+    memcpy(buffer->stream + buffer->offset, &pid_stdin->cantidad_paginas, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, valor, largo_valor);
-    // No tiene sentido seguir calculando el desplazamiento, ya ocupamos el buffer completo
+    memcpy(buffer->stream + buffer->offset, &largo_valor, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(buffer->stream + buffer->offset, valor, largo_valor);
+    buffer->offset += largo_valor;
 
-    buffer->stream = stream;
 
+    for(int i=0; i < pid_stdin->cantidad_paginas; i++) {
+        t_dir_fisica_tamanio* dir_fisica_tam = list_get(pid_stdin->lista_direcciones, i);
+        memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->direccion_fisica, sizeof(int));
+        buffer->offset += sizeof(int);
+        memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
+        buffer->offset += sizeof(int);
+    }
+    
     // Si usamos memoria dinámica para el nombre, y no la precisamos más, ya podemos liberarla:
     free(valor);
-
     enviar_paquete(buffer, GUARDAR_VALOR, memoriafd);
 }
 
@@ -151,17 +158,16 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
                 int termino_io = 1;
                 send(socket_kernel_io, &termino_io, sizeof(int), 0);
             case LEETE: 
-                t_pid_dirfisica_tamanio_pags* pid_dirfisica_tamanio_pags = deserializar_pid_dirfisica_tamanio_pags(paquete->buffer);
+                t_pid_stdin* pid_stdin = deserializar_pid_stdin(paquete->buffer);
                 
                 // Leer valor
-                char *valor = malloc(pid_dirfisica_tamanio->registro_tamanio);
-                printf("Ingrese lo que quiera guardar (hasta %d caracteres): \n", pid_dirfisica_tamanio->registro_tamanio);
-
+                char *valor = malloc(pid_stdin->registro_tamanio);
+                printf("Ingrese lo que quiera guardar (hasta %d caracteres): \n", pid_stdin->registro_tamanio);
                 scanf("%s", valor); 
                 // Mandarlo a memoria
                 
-                mandar_valor_a_memoria(valor, pid_dirfisica_tamanio);
-                free(pid_dirfisica_tamanio);
+                mandar_valor_a_memoria(valor, pid_stdin);
+                free(pid_stdin);
                 break;
             default:
                 break;
@@ -210,17 +216,29 @@ t_pid_unidades_trabajo* serializar_unidades_trabajo(t_buffer* buffer) {
     return pid_unidades_trabajo;
 }
 
-t_pid_dirfisica_tamanio_pags* deserializar_pid_dirfisica_tamanio_pags(t_buffer* buffer) {
-    t_pid_dirfisica_tamanio_pags* pid_dirfisica_tamanio = malloc(sizeof(t_pid_dirfisica_tamanio_pags)); 
+t_pid_stdin* deserializar_pid_stdin(t_buffer* buffer) {
+    t_pid_stdin* pid_stdin = malloc(sizeof(t_pid_stdin)); 
     
     void* stream = buffer->stream;
-    // Deserializamos tamanios que tenemos en el buffer
-    memcpy(&(pid_dirfisica_tamanio->pid), stream, sizeof(int));
+
+    memcpy(&pid_stdin->pid, stream, sizeof(int));
     stream += sizeof(int);
-    memcpy(&(pid_dirfisica_tamanio->direccion_fisica), stream, sizeof(int));
+    memcpy(pid_stdin->registro_tamanio, stream, sizeof(int));
     stream += sizeof(int);
-    memcpy(&(pid_dirfisica_tamanio->registro_tamanio), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
+    memcpy(pid_stdin->cantidad_paginas, stream, sizeof(int));
+    stream += sizeof(int);
+
+    pid_stdin->lista_direcciones = malloc(pid_stdin->cantidad_paginas);
+    pid_stdin->lista_direcciones = list_create();
     
-    return pid_dirfisica_tamanio;
+    for(int i=0; i < pid_stdin->cantidad_paginas; i++) {
+        t_dir_fisica_tamanio* dir_fisica_tam;
+        memcpy(dir_fisica_tam->direccion_fisica, stream, sizeof(int));
+        stream += sizeof(int);
+        memcpy(dir_fisica_tam->bytes_lectura, stream, sizeof(int));
+        stream += sizeof(int);
+        list_add(pid_stdin->lista_direcciones, dir_fisica_tam);
+    }
+    
+    return pid_stdin;
 }
