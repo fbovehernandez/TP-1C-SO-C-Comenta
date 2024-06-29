@@ -150,6 +150,7 @@ void pedir_frame_a_memoria(int nro_pagina, int pid) {
     printf("Pid de parametro %d\n", pid);
     printf("PID %d -\n", solicitud_frame->pid);
     enviar_paquete(buffer, QUIERO_FRAME, socket_memoria);
+    free(solicitud_frame);
 }
 
 /* 

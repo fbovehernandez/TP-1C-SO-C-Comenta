@@ -436,7 +436,7 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
     switch (devolucion_cpu) {
         case ERROR_STDOUT || ERROR_STDIN:
             pasar_a_exit(pcb);
-            //liberar_pcb(pcb);
+            free(pcb);
             break;
         case INTERRUPCION_QUANTUM:
             printf("Volvio a ready por interrupción de quantum\n");
@@ -451,15 +451,19 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             t_operacion_io* operacion_io = deserializar_io(package->buffer);
             dormir_io(operacion_io, pcb);
             // dormir_io(operacion_io);
+            free(operacion_io);
+            free(pcb);
             break;
         case WAIT_RECURSO:
             t_parametro* recurso_wait = deserializar_parametro(package->buffer);
             printf("el nombre del recurso es %s\n", recurso_wait->nombre);
             wait_recurso(pcb, recurso_wait->nombre);
+            free(recurso_wait);
             break;
         case SIGNAL_RECURSO:
             t_parametro* recurso_signal = deserializar_parametro(package->buffer);
             signal_recurso(pcb, recurso_signal->nombre);
+            free(recurso_signal);
             break;
         case FIN_PROCESO:
             // pcb = deserializar_pcb(package->buffer); 
@@ -479,11 +483,12 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, pedido_lectura->interfaz);    
             free(pedido_lectura);
         case PEDIDO_ESCRITURA:
-            
+            /*
             t_pedido_escritura* pedido_escritura = desearializar_pedido_escritura(package->buffer);
             //encolar_datos_stdout(pcb, pedido_escritura->nombre_interfaz, pedido_escritura->direccion_fisica, pedido_escritura->tamanio);
             log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->nombre_interfaz);
             free(pedido_escritura->nombre_interfaz);
+            */
             break;
         //case FS_CREATE:
             /*
@@ -494,7 +499,6 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             printf("Llego a default de la 333 en funcionalidades.c\n");
             break;
     }
-    free(pcb);
     liberar_paquete(package);
 }
 
@@ -561,9 +565,9 @@ t_pedido_lectura* deserializar_pedido_lectura(t_buffer* buffer) {
 
     memcpy(&(pedido_lectura->cantidad_paginas), stream, sizeof(int));
     buffer->offset += sizeof(int);
-
+    pedido_lectura->lista_dir_tamanio = list_create();
     // Deserializar lista con dir fisica y tamanio en bytes a leer segun la cant de pags
-    for(int i =0; i < pedido_lectura->cantidad_paginas; i++) {
+    for(int i = 0; i < pedido_lectura->cantidad_paginas; i++) {
         t_dir_fisica_tamanio* dir_fisica_tam = malloc(sizeof(t_dir_fisica_tamanio));
         memcpy(&(dir_fisica_tam->direccion_fisica), stream, sizeof(int));
         buffer->offset += sizeof(int);
@@ -571,11 +575,10 @@ t_pedido_lectura* deserializar_pedido_lectura(t_buffer* buffer) {
         buffer->offset += sizeof(int);
 
         list_add(pedido_lectura->lista_dir_tamanio, dir_fisica_tam);
-        free(dir_fisica_tam);
     }
 
-    memcpy(&(pedido_lectura->registro_tamanio), stream, sizeof(int));
-    stream += sizeof(int);
+    memcpy(&(pedido_lectura->registro_tamanio), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
 
     memcpy(&(pedido_lectura->length_interfaz), stream, sizeof(int));
     stream += sizeof(int);

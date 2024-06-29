@@ -702,8 +702,8 @@ void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectur
     // Aca cargo el resto
     for(int i = 0; i < cantidad_paginas-1; i++) {
         printf("Iteracion %d\n", i);
-        printf("Pido el marco de la pagina %d del proceso %d\n", pagina + 1, pid); // El uno es para que siempre pida la sig
-        pedir_frame_a_memoria(pagina + 1, pid); 
+        printf("Pido el marco de la pagina %d del proceso %d\n", pagina+1, pid); // El uno es para que siempre pida la sig
+        pedir_frame_a_memoria(pagina+1, pid); 
  
         recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
         printf("el frame es:%d\n", frame);
