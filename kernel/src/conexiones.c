@@ -62,6 +62,7 @@ int esperar_cliente(int socket_escucha, t_log* logger) {
         pthread_detach(hilo_io);
     } else if( handshake == 13) {
         pthread_t hilo_io;
+        printf("llego hasta crear el hilo stdin");
         pthread_create(&hilo_io, NULL, (void*) handle_io_stdin, (void*)(intptr_t) socket_cliente);
         pthread_detach(hilo_io);
     } if( handshake == 15) {
@@ -80,15 +81,19 @@ int esperar_cliente(int socket_escucha, t_log* logger) {
 // Habria que ver de scar logica
 
 void *handle_io_stdin(void *socket_io) {
+    printf("llego hasta handle io stdin 1\n");    
     int socket = (intptr_t)socket_io;
 
     t_paquete *paquete = inicializarIO_recibirPaquete(socket);
-    t_list_io* io;
+    printf("llego hasta handle io stdin 2\n");
     
+    t_list_io* io;
+    printf("codigo de op: %d\n", paquete->codigo_operacion); // recibe 0, por eso no entra
     switch (paquete->codigo_operacion) {
-        case CONEXION_INTERFAZ:
+        case CONEXION_INTERFAZ: 
+            printf("llego hasta handle io stdin 3\n");
             io = establecer_conexion(paquete->buffer, socket);
-            liberar_io(io);
+            free(io);
             break;
         default:
             printf("Llega al default.");
@@ -341,7 +346,7 @@ void liberar_io(t_list_io* io) {
 t_list_io* establecer_conexion(t_buffer *buffer, int socket_io) {
     t_list_io *io = malloc(sizeof(t_list_io));
     t_info_io *interfaz = deserializar_interfaz(buffer); 
-
+    printf("llego hasta establecer conexion");
     io->socket         = socket_io;
     io->TipoInterfaz   = interfaz->tipo;
     io->nombreInterfaz = interfaz->nombre_interfaz;

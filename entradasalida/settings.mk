@@ -9,7 +9,7 @@ CDEBUG=-g -Wall -DDEBUG -fdiagnostics-color=always
 CRELEASE=-O3 -Wall -DNDEBUG -fcommon
 
 # Arguments when executing with start, memcheck or helgrind
-ARGS="../entradasalida/stdout.config"
+ARGS="../entradasalida/stdin.config"
 ARGS2 = "stdin.config"
 NOMBRE_INTERFAZ = caro
 

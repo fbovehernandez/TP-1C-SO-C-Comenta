@@ -9,36 +9,41 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     // int message_io = 12; // nro de codop
     //int valor = 5; // handshake, 5 = I/O
     kernelfd = crear_conexion(IP_KERNEL, puerto_kernel, handshake);
+    if (kernelfd == -1) {
+        log_error(logger_io, "Error al conectar con Kernel\n");
+        return -1;
+    }
     log_info(logger_io, "Conexion establecida con Kernel\n");
     
     // send(kernelfd, &message_io, sizeof(int), 0); 
 
     int str_interfaz = strlen(nombre_interfaz) + 1;
-    
-    t_info_io* io = malloc(sizeof(int) + str_interfaz);
-    io->nombre_interfaz_largo = str_interfaz;
-    io->tipo = tipo_interfaz;
-    io->nombre_interfaz = nombre_interfaz;
 
+
+    // Crear y configurar el buffer
     t_buffer* buffer = malloc(sizeof(t_buffer));
-
-    buffer->size = sizeof(int) + str_interfaz + sizeof(int); // sizeof(x2)
+    buffer->size = sizeof(int) + str_interfaz + sizeof(TipoInterfaz);
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
+    // Construir el paquete en el buffer
     void* stream = buffer->stream;
 
-    memcpy(stream + buffer->offset, &io->nombre_interfaz_largo, sizeof(int));
+    memcpy(stream + buffer->offset, &str_interfaz, sizeof(int));
     buffer->offset += sizeof(int);
 
-    memcpy(stream + buffer->offset, io->nombre_interfaz, io->nombre_interfaz_largo);
-    buffer->offset += io->nombre_interfaz_largo;
+    memcpy(stream + buffer->offset, nombre_interfaz, str_interfaz);
+    buffer->offset += str_interfaz;
 
-    memcpy(stream + buffer->offset, &io->tipo, sizeof(TipoInterfaz));
+    memcpy(stream + buffer->offset, &tipo_interfaz, sizeof(TipoInterfaz));
     buffer->offset += sizeof(TipoInterfaz);
 
-    buffer->stream = stream;
+    // Enviar el paquete al Kernel
     enviar_paquete(buffer, CONEXION_INTERFAZ, kernelfd);
+
+    // Liberar memoria y retornar el descriptor de socket
+    free(buffer->stream);
+    free(buffer);
     return kernelfd;
 }
 
@@ -74,20 +79,17 @@ int conectar_io_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_io
 
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
-    buffer->size = sizeof(int) + str_interfaz + sizeof(int); // sizeof(x2)
+    buffer->size = sizeof(int) + str_interfaz + sizeof(TipoInterfaz); // sizeof(x2)
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
     void* stream = buffer->stream;
-
+    
     memcpy(stream + buffer->offset, &io->nombre_interfaz_largo, sizeof(int));
     buffer->offset += sizeof(int);
-
-    memcpy(stream + buffer->offset, io->nombre_interfaz, io->nombre_interfaz_largo);
-    buffer->offset += io->nombre_interfaz_largo;
-
     memcpy(stream + buffer->offset, &io->tipo, sizeof(TipoInterfaz));
     buffer->offset += sizeof(TipoInterfaz);
+    memcpy(stream + buffer->offset, io->nombre_interfaz, io->nombre_interfaz_largo);
 
     buffer->stream = stream;
     enviar_paquete(buffer, CONEXION_INTERFAZ, memoriafd);

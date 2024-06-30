@@ -406,7 +406,16 @@ t_paquete* inicializarIO_recibirPaquete(int socket) {
     printf("Conexion establecida con I/O\n");
 
     t_paquete *paquete = malloc(sizeof(t_paquete));
+    if (!paquete) {
+        perror("No hay paquete");
+        return NULL;
+    }
     paquete->buffer = malloc(sizeof(t_buffer));
+    if (!paquete->buffer) {
+        perror("Error");
+        free(paquete);
+        return NULL;
+    }
     printf("Esperando recibir paquete de IO\n");
     
     recv(socket, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
@@ -414,6 +423,12 @@ t_paquete* inicializarIO_recibirPaquete(int socket) {
     
     recv(socket, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
     paquete->buffer->stream = malloc(paquete->buffer->size);
+    if (!paquete->buffer->stream) {
+        perror("Error allocating memory for paquete buffer stream");
+        free(paquete->buffer);
+        free(paquete);
+        return NULL;
+    }
     recv(socket, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
     
     return paquete;

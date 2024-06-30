@@ -1440,3 +1440,84 @@
 [INFO] 00:06:25:426 LOGGER/(26225:26269): Esperando cliente...
 [INFO] 00:06:25:430 LOGGER/(26225:26270): Se conecto un cliente de interrupt!
 
+[INFO] 00:15:08:976 LOGGER/(28312:28312): Conexion establecida con Memoria
+[INFO] 00:15:12:055 LOGGER/(28312:28356): Servidor iniciado, esperando conexiones!
+[INFO] 00:15:18:186 LOGGER/(28312:28356): Se conecto un cliente de dispatch!
+
+[INFO] 00:15:18:187 LOGGER/(28312:28356): Esperando cliente...
+[INFO] 00:15:18:189 LOGGER/(28312:28357): Se conecto un cliente de interrupt!
+
+[INFO] 00:21:12:353 LOGGER/(30381:30381): Conexion establecida con Memoria
+[INFO] 00:21:15:467 LOGGER/(30381:30418): Servidor iniciado, esperando conexiones!
+[INFO] 00:21:17:957 LOGGER/(30381:30418): Se conecto un cliente de dispatch!
+
+[INFO] 00:21:17:958 LOGGER/(30381:30418): Esperando cliente...
+[INFO] 00:21:17:960 LOGGER/(30381:30419): Se conecto un cliente de interrupt!
+
+[INFO] 00:26:17:837 LOGGER/(31451:31451): Conexion establecida con Memoria
+[INFO] 00:26:20:919 LOGGER/(31451:31491): Servidor iniciado, esperando conexiones!
+[INFO] 00:26:22:507 LOGGER/(31451:31491): Se conecto un cliente de dispatch!
+
+[INFO] 00:26:22:507 LOGGER/(31451:31491): Esperando cliente...
+[INFO] 00:26:22:511 LOGGER/(31451:31492): Se conecto un cliente de interrupt!
+
+[INFO] 00:34:17:265 LOGGER/(32430:32430): Conexion establecida con Memoria
+[INFO] 00:34:20:344 LOGGER/(32430:32492): Servidor iniciado, esperando conexiones!
+[INFO] 00:34:22:127 LOGGER/(32430:32492): Se conecto un cliente de dispatch!
+
+[INFO] 00:34:22:128 LOGGER/(32430:32492): Esperando cliente...
+[INFO] 00:34:22:129 LOGGER/(32430:32493): Se conecto un cliente de interrupt!
+
+[INFO] 00:37:51:689 LOGGER/(33459:33459): Conexion establecida con Memoria
+[INFO] 00:37:54:797 LOGGER/(33459:33509): Servidor iniciado, esperando conexiones!
+[INFO] 00:37:56:534 LOGGER/(33459:33509): Se conecto un cliente de dispatch!
+
+[INFO] 00:37:56:534 LOGGER/(33459:33509): Esperando cliente...
+[INFO] 00:37:56:536 LOGGER/(33459:33510): Se conecto un cliente de interrupt!
+
+[INFO] 00:43:10:606 LOGGER/(34226:34226): Conexion establecida con Memoria
+[INFO] 00:43:13:729 LOGGER/(34226:34270): Servidor iniciado, esperando conexiones!
+[INFO] 00:45:44:656 LOGGER/(35078:35078): Conexion establecida con Memoria
+[INFO] 00:45:47:736 LOGGER/(35078:35123): Servidor iniciado, esperando conexiones!
+[INFO] 00:45:50:010 LOGGER/(35078:35123): Se conecto un cliente de dispatch!
+
+[INFO] 00:45:50:011 LOGGER/(35078:35123): Esperando cliente...
+[INFO] 00:45:50:014 LOGGER/(35078:35124): Se conecto un cliente de interrupt!
+
+[INFO] 00:49:21:422 LOGGER/(35968:35968): Conexion establecida con Memoria
+[INFO] 00:49:24:514 LOGGER/(35968:36012): Servidor iniciado, esperando conexiones!
+[INFO] 00:49:26:379 LOGGER/(35968:36012): Se conecto un cliente de dispatch!
+
+[INFO] 00:49:26:379 LOGGER/(35968:36012): Esperando cliente...
+[INFO] 00:49:26:382 LOGGER/(35968:36013): Se conecto un cliente de interrupt!
+
+[INFO] 00:55:03:378 LOGGER/(36745:36745): Conexion establecida con Memoria
+[INFO] 00:55:06:500 LOGGER/(36745:36857): Servidor iniciado, esperando conexiones!
+[INFO] 00:56:34:010 LOGGER/(37167:37167): Conexion establecida con Memoria
+[INFO] 00:56:37:093 LOGGER/(37167:37241): Servidor iniciado, esperando conexiones!
+[INFO] 00:56:37:197 LOGGER/(37167:37241): Se conecto un cliente de dispatch!
+
+[INFO] 00:56:37:197 LOGGER/(37167:37241): Esperando cliente...
+[INFO] 00:56:37:209 LOGGER/(37167:37242): Se conecto un cliente de interrupt!
+
+[INFO] 00:59:31:571 LOGGER/(38349:38349): Conexion establecida con Memoria
+[INFO] 00:59:34:648 LOGGER/(38349:38399): Servidor iniciado, esperando conexiones!
+[INFO] 00:59:36:733 LOGGER/(38349:38399): Se conecto un cliente de dispatch!
+
+[INFO] 00:59:36:734 LOGGER/(38349:38399): Esperando cliente...
+[INFO] 00:59:36:735 LOGGER/(38349:38400): Se conecto un cliente de interrupt!
+
+[INFO] 01:08:16:797 LOGGER/(39783:39783): Conexion establecida con Memoria
+[INFO] 01:08:19:869 LOGGER/(39783:39827): Servidor iniciado, esperando conexiones!
+[INFO] 01:08:21:990 LOGGER/(39783:39827): Se conecto un cliente de dispatch!
+
+[INFO] 01:08:21:991 LOGGER/(39783:39827): Esperando cliente...
+[INFO] 01:08:21:993 LOGGER/(39783:39828): Se conecto un cliente de interrupt!
+
+[INFO] 01:18:06:798 LOGGER/(40815:40815): Conexion establecida con Memoria
+[INFO] 01:18:09:864 LOGGER/(40815:40859): Servidor iniciado, esperando conexiones!
+[INFO] 01:18:10:862 LOGGER/(40815:40859): Se conecto un cliente de dispatch!
+
+[INFO] 01:18:10:863 LOGGER/(40815:40859): Esperando cliente...
+[INFO] 01:18:10:866 LOGGER/(40815:40860): Se conecto un cliente de interrupt!
+
