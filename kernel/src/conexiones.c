@@ -93,7 +93,7 @@ void *handle_io_stdin(void *socket_io) {
         default:
             printf("Llega al default.");
             return NULL;
-    }    
+    }
 
     t_pid_stdin* pid_stdin = malloc(sizeof(t_pid_stdin));
 
@@ -142,7 +142,7 @@ void *handle_io_stdin(void *socket_io) {
 int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin) {
     t_buffer* buffer = malloc(sizeof(t_buffer)); 
 
-    buffer->size = sizeof(int) * 3 + pid_stdin->cantidad_paginas;
+    buffer->size =  sizeof(int) * 3 + pid_stdin->cantidad_paginas * 2 * sizeof(int); sizeof(int) * 3 + pid_stdin->cantidad_paginas * 2 * sizeof(int);
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
@@ -348,8 +348,13 @@ t_list_io* establecer_conexion(t_buffer *buffer, int socket_io) {
     io->cola_blocked   = queue_create();
     
     sem_init(io->semaforo_cola_procesos_blocked, 0, 0);
-    dictionary_put(diccionario_io, interfaz->nombre_interfaz, (void *)io);
+    printf("paso el sem init");
+    dictionary_put(diccionario_io, interfaz->nombre_interfaz, (void*)io);
+    printf("el nombre de la interfaz es: %s", interfaz->nombre_interfaz);
     mostrar_elem_diccionario(interfaz->nombre_interfaz);
+
+    free(interfaz->nombre_interfaz);
+    free(interfaz);
     
     return io;
 }

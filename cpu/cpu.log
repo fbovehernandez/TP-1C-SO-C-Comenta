@@ -1405,3 +1405,38 @@
 [INFO] 22:59:05:957 LOGGER/(15496:15557): Esperando cliente...
 [INFO] 22:59:05:958 LOGGER/(15496:15558): Se conecto un cliente de interrupt!
 
+[INFO] 23:40:51:380 LOGGER/(19113:19113): Conexion establecida con Memoria
+[INFO] 23:40:54:461 LOGGER/(19113:19151): Servidor iniciado, esperando conexiones!
+[INFO] 23:41:10:533 LOGGER/(19113:19151): Se conecto un cliente de dispatch!
+
+[INFO] 23:41:10:533 LOGGER/(19113:19151): Esperando cliente...
+[INFO] 23:41:10:546 LOGGER/(19113:19152): Se conecto un cliente de interrupt!
+
+[INFO] 23:43:39:511 LOGGER/(20589:20589): Conexion establecida con Memoria
+[INFO] 23:43:42:596 LOGGER/(20589:20662): Servidor iniciado, esperando conexiones!
+[INFO] 23:43:51:021 LOGGER/(20589:20662): Se conecto un cliente de dispatch!
+
+[INFO] 23:43:51:022 LOGGER/(20589:20662): Esperando cliente...
+[INFO] 23:43:51:031 LOGGER/(20589:20663): Se conecto un cliente de interrupt!
+
+[INFO] 23:57:21:069 LOGGER/(23648:23648): Conexion establecida con Memoria
+[INFO] 23:57:24:162 LOGGER/(23648:23692): Servidor iniciado, esperando conexiones!
+[INFO] 23:57:37:086 LOGGER/(23648:23692): Se conecto un cliente de dispatch!
+
+[INFO] 23:57:37:086 LOGGER/(23648:23692): Esperando cliente...
+[INFO] 23:57:37:088 LOGGER/(23648:23693): Se conecto un cliente de interrupt!
+
+[INFO] 00:01:16:329 LOGGER/(25152:25152): Conexion establecida con Memoria
+[INFO] 00:01:19:460 LOGGER/(25152:25207): Servidor iniciado, esperando conexiones!
+[INFO] 00:01:23:001 LOGGER/(25152:25207): Se conecto un cliente de dispatch!
+
+[INFO] 00:01:23:003 LOGGER/(25152:25207): Esperando cliente...
+[INFO] 00:01:23:006 LOGGER/(25152:25208): Se conecto un cliente de interrupt!
+
+[INFO] 00:06:18:833 LOGGER/(26225:26225): Conexion establecida con Memoria
+[INFO] 00:06:21:902 LOGGER/(26225:26269): Servidor iniciado, esperando conexiones!
+[INFO] 00:06:25:426 LOGGER/(26225:26269): Se conecto un cliente de dispatch!
+
+[INFO] 00:06:25:426 LOGGER/(26225:26269): Esperando cliente...
+[INFO] 00:06:25:430 LOGGER/(26225:26270): Se conecto un cliente de interrupt!
+

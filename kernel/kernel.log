@@ -2424,3 +2424,64 @@
 [INFO] 22:59:52:179 LOGGER/(15846:15849): PID: 1 - Estado Anterior: 3 - Estado Actual: 4
 [INFO] 22:59:52:180 LOGGER/(15846:15849): PID: 1 - Bloqueado por: æ
 
+[INFO] 23:41:10:506 LOGGER/(19460:19460): Conexion establecida con Memoria
+[INFO] 23:41:10:533 LOGGER/(19460:19460): Conexion establecida con Dispatcher
+[INFO] 23:41:10:557 LOGGER/(19460:19460): Conexion establecida con Interrupt
+[INFO] 23:41:10:612 LOGGER/(19460:19460): Servidor iniciado, esperando conexiones!
+[INFO] 23:41:32:580 LOGGER/(19460:19476): Se crea el proceso: 1 en NEW
+[INFO] 23:41:32:581 LOGGER/(19460:19467): Hay proceso esperando en la cola de NEW!
+
+[INFO] 23:41:32:582 LOGGER/(19460:19467): Grado de multiprogramaci√≥n permite agregar proceso a ready
+
+[INFO] 23:41:32:583 LOGGER/(19460:19467): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 23:41:32:585 LOGGER/(19460:19470): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 23:41:41:684 LOGGER/(19460:19470): PID: 1 - Estado Anterior: 3 - Estado Actual: 4
+[INFO] 23:43:50:978 LOGGER/(20875:20875): Conexion establecida con Memoria
+[INFO] 23:43:51:022 LOGGER/(20875:20875): Conexion establecida con Dispatcher
+[INFO] 23:43:51:033 LOGGER/(20875:20875): Conexion establecida con Interrupt
+[INFO] 23:43:51:086 LOGGER/(20875:20875): Servidor iniciado, esperando conexiones!
+[INFO] 23:57:37:061 LOGGER/(23881:23881): Conexion establecida con Memoria
+[INFO] 23:57:37:086 LOGGER/(23881:23881): Conexion establecida con Dispatcher
+[INFO] 23:57:37:088 LOGGER/(23881:23881): Conexion establecida con Interrupt
+[INFO] 23:57:37:120 LOGGER/(23881:23881): Servidor iniciado, esperando conexiones!
+[INFO] 23:58:05:948 LOGGER/(23881:23886): Se crea el proceso: 1 en NEW
+[INFO] 23:58:05:952 LOGGER/(23881:23883): Hay proceso esperando en la cola de NEW!
+
+[INFO] 23:58:05:954 LOGGER/(23881:23883): Grado de multiprogramaci√≥n permite agregar proceso a ready
+
+[INFO] 23:58:05:955 LOGGER/(23881:23883): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 23:58:05:956 LOGGER/(23881:23884): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 23:58:10:005 LOGGER/(23881:23884): Finaliza el proceso 1 - Motivo: INVALID_INTERFACE
+[INFO] 23:58:10:005 LOGGER/(23881:23884): PID: 1 - Estado Anterior: 3 - Estado Actual: 4
+[INFO] 23:58:10:005 LOGGER/(23881:23884): PID: 1 - Bloqueado por: æ
+
+[INFO] 00:01:22:961 LOGGER/(25274:25274): Conexion establecida con Memoria
+[INFO] 00:01:23:003 LOGGER/(25274:25274): Conexion establecida con Dispatcher
+[INFO] 00:01:23:007 LOGGER/(25274:25274): Conexion establecida con Interrupt
+[INFO] 00:01:23:050 LOGGER/(25274:25274): Servidor iniciado, esperando conexiones!
+[INFO] 00:01:47:410 LOGGER/(25274:25279): Se crea el proceso: 1 en NEW
+[INFO] 00:01:47:414 LOGGER/(25274:25276): Hay proceso esperando en la cola de NEW!
+
+[INFO] 00:01:47:419 LOGGER/(25274:25276): Grado de multiprogramaci√≥n permite agregar proceso a ready
+
+[INFO] 00:01:47:421 LOGGER/(25274:25276): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 00:01:47:424 LOGGER/(25274:25277): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 00:01:51:477 LOGGER/(25274:25277): Finaliza el proceso 1 - Motivo: INVALID_INTERFACE
+[INFO] 00:01:51:477 LOGGER/(25274:25277): PID: 1 - Estado Anterior: 3 - Estado Actual: 4
+[INFO] 00:01:51:477 LOGGER/(25274:25277): PID: 1 - Bloqueado por: æ
+
+[INFO] 00:06:25:387 LOGGER/(26343:26343): Conexion establecida con Memoria
+[INFO] 00:06:25:428 LOGGER/(26343:26343): Conexion establecida con Dispatcher
+[INFO] 00:06:25:431 LOGGER/(26343:26343): Conexion establecida con Interrupt
+[INFO] 00:06:25:489 LOGGER/(26343:26343): Servidor iniciado, esperando conexiones!
+[INFO] 00:07:51:056 LOGGER/(26343:26348): Se crea el proceso: 1 en NEW
+[INFO] 00:07:51:059 LOGGER/(26343:26345): Hay proceso esperando en la cola de NEW!
+
+[INFO] 00:07:51:060 LOGGER/(26343:26345): Grado de multiprogramaci√≥n permite agregar proceso a ready
+
+[INFO] 00:07:51:061 LOGGER/(26343:26345): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 00:07:51:062 LOGGER/(26343:26346): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 00:07:55:131 LOGGER/(26343:26346): Finaliza el proceso 1 - Motivo: INVALID_INTERFACE
+[INFO] 00:07:55:132 LOGGER/(26343:26346): PID: 1 - Estado Anterior: 3 - Estado Actual: 4
+[INFO] 00:07:55:132 LOGGER/(26343:26346): PID: 1 - Bloqueado por: æ
+

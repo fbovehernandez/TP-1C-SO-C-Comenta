@@ -481,7 +481,7 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             
             encolar_datos_stdin(pcb, pedido_lectura);
             log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, pedido_lectura->interfaz);    
-            free(pedido_lectura);
+            //free(pedido_lectura);
         case PEDIDO_ESCRITURA:
             /*
             t_pedido_escritura* pedido_escritura = desearializar_pedido_escritura(package->buffer);
