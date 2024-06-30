@@ -84,17 +84,17 @@ int crear_conexion(char *ip, char* puerto, int valor) {
                     server_info->ai_socktype,
                     server_info->ai_protocol);
 	
-	corroborar_exito(socket_cliente, "crear el socket cliente.");
+	corroborar_exito(socket_cliente, "crear el socket cliente.\n");
 
 	// Ahora que tenemos el socket, vamos a conectarlo
 	int conexion_cliente = connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen);
 
-	corroborar_exito(conexion_cliente, "conectar al cliente.");
+	corroborar_exito(conexion_cliente, "conectar al cliente.\n");
 
 	// Envio handshake
 	send(socket_cliente, &handshake, sizeof(int), 0);
 	recv(socket_cliente, &result, sizeof(int), MSG_WAITALL); 
-
+    printf("recibo %d como result\n", result);
 	// Hacer con logger
 	
 	if(!result)
@@ -377,7 +377,7 @@ void enviar_paquete(t_buffer* buffer, codigo_operacion codigo, int socket) {
     offset += sizeof(int);
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
-    send(socket, a_enviar, buffer->size + sizeof(int) * 2, 0);
+    send(socket, a_enviar, buffer->size + sizeof(uint8_t) + sizeof(uint32_t), 0);
     printf("Paquete enviado!\n");
 
     liberar_paquete_y_a_enviar(paquete, a_enviar);
@@ -401,18 +401,16 @@ t_info_io *deserializar_interfaz(t_buffer *buffer) {
 }
 
 t_paquete* inicializarIO_recibirPaquete(int socket) {
-    int resultOk = 0;
-    send(socket, &resultOk, sizeof(int), 0);
     printf("Conexion establecida con I/O\n");
 
     t_paquete *paquete = malloc(sizeof(t_paquete));
     if (!paquete) {
-        perror("No hay paquete");
+        perror("No hay paquete\n");
         return NULL;
     }
     paquete->buffer = malloc(sizeof(t_buffer));
     if (!paquete->buffer) {
-        perror("Error");
+        perror("Error\n");
         free(paquete);
         return NULL;
     }
@@ -423,13 +421,14 @@ t_paquete* inicializarIO_recibirPaquete(int socket) {
     
     recv(socket, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
     paquete->buffer->stream = malloc(paquete->buffer->size);
+    recv(socket, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+    
     if (!paquete->buffer->stream) {
-        perror("Error allocating memory for paquete buffer stream");
+        perror("Error allocating memory for paquete buffer stream\n");
         free(paquete->buffer);
         free(paquete);
         return NULL;
     }
-    recv(socket, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
     
     return paquete;
 }
