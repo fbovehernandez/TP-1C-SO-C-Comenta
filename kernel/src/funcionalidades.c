@@ -533,7 +533,7 @@ void encolar_datos_stdin(t_pcb* pcb, t_pedido_lectura* pedido_lectura) {
     interfaz = io_esta_en_diccionario(pcb, pedido_lectura->interfaz);
 
     if(interfaz != NULL) {
-        int socket_io = interfaz->socket;
+        int socket_io = interfaz->socket; // lo voy a necesitar?
 
         io_stdin* datos_stdin = malloc(sizeof(io_stdin));
 
@@ -542,6 +542,9 @@ void encolar_datos_stdin(t_pcb* pcb, t_pedido_lectura* pedido_lectura) {
         datos_stdin->cantidad_paginas = pedido_lectura->cantidad_paginas;
         datos_stdin->pcb = pcb;
         
+        printf("Voy a imprimir los datos stdin antes de agregarlos a la cola de bloqueados de la interfaz\n");
+        imprimir_datos_stdin(datos_stdin);
+
         pthread_mutex_lock(&mutex_cola_io_generica); // cambiar nombre_mutex
         queue_push(interfaz->cola_blocked, datos_stdin);
         pthread_mutex_unlock(&mutex_cola_io_generica);
@@ -557,6 +560,17 @@ void encolar_datos_stdin(t_pcb* pcb, t_pedido_lectura* pedido_lectura) {
     free(pedido_lectura);
     free(interfaz);
 } 
+
+void imprimir_datos_stdin(io_stdin* datos_stdin) {
+    printf("Cantidad de paginas: %d\n", datos_stdin->cantidad_paginas);
+    printf("Registro tamanio: %d\n", datos_stdin->registro_tamanio);
+    printf("Cantidad de direcciones: %d\n", list_size(datos_stdin->lista_direcciones));
+    for(int i = 0; i < list_size(datos_stdin->lista_direcciones); i++) {
+        t_dir_fisica_tamanio* dir_fisica_tam = list_get(datos_stdin->lista_direcciones, i);
+        printf("Direccion fisica: %d\n", dir_fisica_tam->direccion_fisica);
+        printf("Tamanio: %d\n", dir_fisica_tam->bytes_lectura);
+    }
+}
 
 t_pedido_lectura* deserializar_pedido_lectura(t_buffer* buffer) {
     t_pedido_lectura* pedido_lectura = malloc(sizeof(t_pedido_lectura));

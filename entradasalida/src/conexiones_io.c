@@ -44,8 +44,9 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     enviar_paquete(buffer, CONEXION_INTERFAZ, kernelfd);
 
     // Liberar memoria y retornar el descriptor de socket
-    //free(buffer->stream);
-    //free(buffer);
+    // free(buffer->stream);
+    // free(buffer);
+
     return kernelfd;
 }
 

@@ -378,7 +378,7 @@ void enviar_paquete(t_buffer* buffer, codigo_operacion codigo, int socket) {
     offset += sizeof(int);
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
-    send(socket, a_enviar, buffer->size + sizeof(uint8_t) + sizeof(uint32_t), 0);
+    send(socket, a_enviar, buffer->size + sizeof(int) *2, 0);
     printf("Paquete enviado!\n");
 
     liberar_paquete_y_a_enviar(paquete, a_enviar);
@@ -421,9 +421,13 @@ t_paquete* inicializarIO_recibirPaquete(int socket) {
     printf("Recibi el codigo de operacion de IO: %d\n", paquete->codigo_operacion);
     
     recv(socket, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
+
+    printf("Recibe el size de IO: %d\n", paquete->buffer->size);
+
     paquete->buffer->stream = malloc(paquete->buffer->size);
     recv(socket, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
-    
+    printf("Recibi el buffer de IO\n");
+
     if (!paquete->buffer->stream) {
         perror("Error allocating memory for paquete buffer stream\n");
         free(paquete->buffer);

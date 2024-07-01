@@ -89,10 +89,10 @@ void *handle_io_stdin(void *socket_io) {
     send(socket, &result, sizeof(int), 0);
     
     t_paquete *paquete = inicializarIO_recibirPaquete(socket);
-    printf("llego hasta handle io stdin 2\n");
     
     t_list_io* io;
-    printf("codigo de op: %d\n", paquete->codigo_operacion); // recibe 0, por eso no entra
+
+    printf("codigo de op: %d\n", paquete->codigo_operacion); // Ahora no imprime esto
     switch (paquete->codigo_operacion) {
         case CONEXION_INTERFAZ: 
             printf("llego hasta handle io stdin 3\n");
@@ -121,7 +121,10 @@ void *handle_io_stdin(void *socket_io) {
         pid_stdin->cantidad_paginas = datos_stdin->cantidad_paginas;
         pid_stdin->lista_direcciones = datos_stdin->lista_direcciones;
         pid_stdin->registro_tamanio = datos_stdin->registro_tamanio;
-        
+
+        printf(" mE CLAVO ANTES DEL SLEEP\n");
+        sleep(50);
+
         int respuesta_ok = ejecutar_io_stdin(io->socket, pid_stdin);
 
         if (!respuesta_ok) {
@@ -285,6 +288,8 @@ void *handle_io_generica(void *socket_io) {
     t_pid_unidades_trabajo* pid_unidades_trabajo = malloc(sizeof(t_pid_unidades_trabajo));
 
     while (true) {
+        printf("Esperando semaforo\n");
+        
         sem_wait(io->semaforo_cola_procesos_blocked);
 
         printf("Llega al sem y mutex\n");
@@ -399,13 +404,16 @@ t_list_io* establecer_conexion(t_buffer *buffer, int socket_io) {
     t_list_io *io = malloc(sizeof(t_list_io));
     t_info_io *interfaz = deserializar_interfaz(buffer); 
     printf("llego hasta establecer conexion\n");
+
     io->socket         = socket_io;
     io->TipoInterfaz   = interfaz->tipo;
     io->nombreInterfaz = interfaz->nombre_interfaz;
     io->cola_blocked   = queue_create();
     
+    // Esta memoria la liberamos cuando la io se desconecte
+    io->semaforo_cola_procesos_blocked = malloc(sizeof(sem_t));
     sem_init(io->semaforo_cola_procesos_blocked, 0, 0);
-    printf("paso el sem init");
+
     dictionary_put(diccionario_io, interfaz->nombre_interfaz, (void*)io);
     printf("el nombre de la interfaz es: %s", interfaz->nombre_interfaz);
     mostrar_elem_diccionario(interfaz->nombre_interfaz);
