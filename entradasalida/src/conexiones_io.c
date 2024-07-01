@@ -9,10 +9,12 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     // int message_io = 12; // nro de codop
     //int valor = 5; // handshake, 5 = I/O
     kernelfd = crear_conexion(IP_KERNEL, puerto_kernel, handshake);
+    
     if (kernelfd == -1) {
         log_error(logger_io, "Error al conectar con Kernel\n");
         return -1;
     }
+
     log_info(logger_io, "Conexion establecida con Kernel\n");
     
     // send(kernelfd, &message_io, sizeof(int), 0); 

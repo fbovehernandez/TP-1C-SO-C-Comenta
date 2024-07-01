@@ -65,12 +65,13 @@ int esperar_cliente(int socket_escucha, t_log* logger) {
         printf("llego hasta crear el hilo stdin\n");
         pthread_create(&hilo_io, NULL, (void*) handle_io_stdin, (void*)(intptr_t) socket_cliente);
         pthread_detach(hilo_io);
-    } if( handshake == 15) {
+    } else if( handshake == 15) {
         pthread_t hilo_io;
         pthread_create(&hilo_io, NULL, (void*) handle_io_stdout, (void*)(intptr_t) socket_cliente);
         pthread_detach(hilo_io);
     } else {
         send(socket_cliente, &resultError, sizeof(int), 0);
+        printf("ENTRO POR ACA");
         close(socket_cliente);
         return -1;
     }

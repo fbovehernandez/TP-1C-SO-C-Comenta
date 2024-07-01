@@ -94,6 +94,7 @@ int crear_conexion(char *ip, char* puerto, int valor) {
 	// Envio handshake
 	send(socket_cliente, &handshake, sizeof(int), 0);
 	recv(socket_cliente, &result, sizeof(int), MSG_WAITALL); 
+    
     printf("recibo %d como result\n", result);
 	// Hacer con logger
 	

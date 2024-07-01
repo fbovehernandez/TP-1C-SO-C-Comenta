@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
     pthread_join(socket_escucha_consola, NULL);
     pthread_join(pasar_a_ready, NULL);
     pthread_join(planificador_corto_plazo, NULL);
-    // pthread_join(hilo_io, NULL);
+    pthread_join(hilo_io, NULL);
 
     // Libero conexiones
     // free(pcb_exec);
