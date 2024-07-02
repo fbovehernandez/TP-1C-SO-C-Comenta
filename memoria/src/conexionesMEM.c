@@ -30,15 +30,18 @@ int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
     }
     
 	recv(socket_cliente, &handshake, sizeof(int), MSG_WAITALL); 
+    printf("recibi este handshake: %d\n", handshake);
+
 	if(handshake == 1) {
         // pthread_t kernel_thread;
-        pthread_create(&kernel_thread, NULL, (void*)handle_kernel, (void*)(intptr_t)socket_cliente);
+        // pthread_create(&kernel_thread, NULL, (void*)handle_kernel, (void*)(intptr_t)socket_cliente);
     } else if(handshake == 2) {
         // pthread_t cpu_thread;
         pthread_create(&cpu_thread, NULL, (void*)handle_cpu, (void*)(intptr_t)socket_cliente);
     } else if(handshake == 91) {
         // pthread_t cpu_thread;
         pthread_create(&io_stdin_thread, NULL, (void*)handle_io_stdin, (void*)(intptr_t)socket_cliente); // Ver
+        printf("Se creo el hilo STDIN\n");
     } else if(handshake == 79) {
         // pthread_t cpu_thread;
         // pthread_create(&io_stdout_thread, NULL, (void*)handle_io_stdout, (void*)(intptr_t)socket_cliente); // Ver
@@ -695,11 +698,12 @@ void* handle_io_stdout(void* socket) {
 
 // Descomente esto pero tiene varios errores que no vi
 void* handle_io_stdin(void* socket) {
-    int socket_io = *(int*) socket;
+    int socket_io = (intptr_t)socket;
     // free(socket); 
     int resultOk = 0;
     // Envio confirmacion de handshake!
     send(socket_io, &resultOk, sizeof(int), 0);
+    printf("holu holu mande resultado ok porque se conecto el io\n");
 
     // Recibir nombre de la IO
     t_paquete* paquete_inicial = inicializarIO_recibirPaquete(socket_io);
@@ -732,9 +736,14 @@ void* handle_io_stdin(void* socket) {
 
         switch(paquete->codigo_operacion) { 
             case GUARDAR_VALOR:                  
-                t_list* direcciones_restantes_escritura = list_create();
-                t_escritura_stdin* escritura_stdin = deserializar_escritura_stdin(stream, direcciones_restantes_escritura);
+                t_escritura_stdin* escritura_stdin = deserializar_escritura_stdin(stream);
 
+                imprimir_datos_stdin_escritura(escritura_stdin);
+
+
+                printf("voy a dormir para probar serializacion\n"); 
+                
+                /* 
                 user_space_aux = espacio_usuario;
                 int confirm_finish = 1;
 
@@ -742,13 +751,16 @@ void* handle_io_stdin(void* socket) {
 
                 char* registro_escritura = escritura_stdin->valor;
 
-                realizar_operacion(ESCRITURA, direcciones_restantes_escritura, user_space_aux, registro_escritura, NULL); 
+                // realizar_operacion(ESCRITURA, direcciones_restantes_escritura, user_space_aux, registro_escritura, NULL); 
                 printf("Registro escrito como char* %s\n", ((char*)registro_escritura));
 
                 //send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
                 printf("el valor guardado en dir fisica por STDIN: %s\n", registro_escritura);
                 void* primera_direccion = list_get(escritura_stdin->pid_stdin->lista_direcciones, 0);
                 log_info(logger_memoria,"PID %d - Accion: ESCRIBIR - Direccion fisica: %d - Tamanio %d", escritura_stdin->pid_stdin->pid, *(int*)primera_direccion, escritura_stdin->valor_length);
+                
+                */
+                free(escritura_stdin->pid_stdin);
                 free(escritura_stdin->valor); 
                 free(escritura_stdin);
                 break;
@@ -762,6 +774,22 @@ void* handle_io_stdin(void* socket) {
     // Liberamos memoria
     liberar_paquete(paquete_inicial);
     return NULL;
+}
+
+void imprimir_datos_stdin_escritura(t_escritura_stdin* escritura)  {
+    printf("PID: %d\n", escritura->pid_stdin->pid);
+    printf("Tamanio registro: %d\n", escritura->pid_stdin->registro_tamanio);
+    printf("Cantidad paginas: %d\n", escritura->pid_stdin->cantidad_paginas);
+    printf("Valor length: %d\n", escritura->valor_length);
+    printf("Valor: %s\n", escritura->valor);
+
+    printf("Lista direcciones: \n");
+
+    for(int i = 0; i < list_size(escritura->pid_stdin->lista_direcciones); i++) {
+        t_dir_fisica_tamanio* dir_fisica_tam = list_get(escritura->pid_stdin->lista_direcciones, i);
+        printf("Direccion fisica: %d\n", dir_fisica_tam->direccion_fisica);
+        printf("Tamanio: %d\n", dir_fisica_tam->bytes_lectura);
+    }
 }
    
 /*
@@ -779,9 +807,10 @@ typedef struct {
 } t_escritura_stdin;
 */
 
-t_escritura_stdin* deserializar_escritura_stdin(void* stream, t_list* direcciones_restantes) {
+t_escritura_stdin* deserializar_escritura_stdin(void* stream) {
     t_escritura_stdin* escritura_stdin = malloc(sizeof(t_escritura_stdin));
-    
+    escritura_stdin->pid_stdin = malloc(sizeof(t_pid_stdin));
+
     memcpy(&escritura_stdin->pid_stdin->pid, stream, sizeof(int));
     stream += sizeof(int);
     memcpy(&escritura_stdin->pid_stdin->registro_tamanio, stream, sizeof(int));
@@ -790,19 +819,20 @@ t_escritura_stdin* deserializar_escritura_stdin(void* stream, t_list* direccione
     stream += sizeof(int);
     memcpy(&escritura_stdin->valor_length, stream, sizeof(int)); // Ojo con el "&" aca
     stream += sizeof(int);
-    memcpy(&escritura_stdin->valor, stream, escritura_stdin->valor_length);
+    memcpy(escritura_stdin->valor, stream, escritura_stdin->valor_length);
     stream += escritura_stdin->valor_length;
 
     escritura_stdin->pid_stdin->lista_direcciones = list_create();
     
     for(int i=0; i < escritura_stdin->pid_stdin->cantidad_paginas; i++) {
-        t_dir_fisica_tamanio* dir_fisica_tam;
+        t_dir_fisica_tamanio* dir_fisica_tam = malloc(sizeof(t_dir_fisica_tamanio));
         memcpy(&dir_fisica_tam->direccion_fisica, stream, sizeof(int));
         stream += sizeof(int);
         memcpy(&dir_fisica_tam->bytes_lectura, stream, sizeof(int));
         stream += sizeof(int);
+
         list_add(escritura_stdin->pid_stdin->lista_direcciones, dir_fisica_tam);
-        list_add(direcciones_restantes, dir_fisica_tam);
+        // list_add(direcciones_restantes, dir_fisica_tam);
     }
     
     return escritura_stdin;

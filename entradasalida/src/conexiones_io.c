@@ -68,6 +68,7 @@ void recibir_solicitud_kernel() {
 int conectar_io_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_io, char* nombre_interfaz, TipoInterfaz tipo_interfaz, int handshake) {
     // int message_io = 12; // nro de codop
     //int valor = 5; 
+    
     memoriafd = crear_conexion(IP_MEMORIA, puerto_memoria, handshake);
     log_info(logger_io, "Conexion establecida con Memoria\n");
     
@@ -105,7 +106,7 @@ void mandar_valor_a_memoria(char* valor, t_pid_stdin* pid_stdin) {
 
     int largo_valor = string_length(valor);
 
-    buffer->size = largo_valor + sizeof(int) * 4 + pid_stdin->cantidad_paginas; 
+    buffer->size = largo_valor + sizeof(int) * 4 + (sizeof(int) * pid_stdin->cantidad_paginas * 2); 
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
@@ -122,7 +123,6 @@ void mandar_valor_a_memoria(char* valor, t_pid_stdin* pid_stdin) {
     buffer->offset += sizeof(int);
     memcpy(buffer->stream + buffer->offset, valor, largo_valor);
     buffer->offset += largo_valor;
-
 
     for(int i=0; i < pid_stdin->cantidad_paginas; i++) {
         t_dir_fisica_tamanio* dir_fisica_tam = list_get(pid_stdin->lista_direcciones, i);
@@ -164,8 +164,13 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
                 int termino_io = 1;
                 send(socket_kernel_io, &termino_io, sizeof(int), 0);
             case LEETE: 
-                t_pid_stdin* pid_stdin = deserializar_pid_stdin(paquete->buffer);
+                int result_ok_io = 0;
                 
+                t_pid_stdin* pid_stdin = deserializar_pid_stdin(paquete->buffer);
+                send(socket_kernel_io, &result_ok_io, sizeof(int), 0);
+
+                imprimir_datos_stdin(pid_stdin);
+                printf("llego hasta LEETE\n");
                 // Leer valor
                 char *valor = malloc(pid_stdin->registro_tamanio);
                 printf("Ingrese lo que quiera guardar (hasta %d caracteres): \n", pid_stdin->registro_tamanio);
@@ -229,8 +234,8 @@ t_pid_stdin* deserializar_pid_stdin(t_buffer* buffer) {
 
     memcpy(&pid_stdin->pid, stream, sizeof(int));
     stream += sizeof(int);
-    memcpy(&pid_stdin->registro_tamanio, stream, sizeof(int));
-    stream += sizeof(int);
+    memcpy(&pid_stdin->registro_tamanio, stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
     memcpy(&pid_stdin->cantidad_paginas, stream, sizeof(int));
     stream += sizeof(int);
 
@@ -244,8 +249,8 @@ t_pid_stdin* deserializar_pid_stdin(t_buffer* buffer) {
         memcpy(&dir_fisica_tam->bytes_lectura, stream, sizeof(int));
         stream += sizeof(int);
         list_add(pid_stdin->lista_direcciones, dir_fisica_tam);
-        free(dir_fisica_tam);
+        // free(dir_fisica_tam); //LIBERAR CUANDO SE DESCONECTE LA IO
     }
-    
+    printf("llego hasta deserializar pid stdin\n");
     return pid_stdin;
 }

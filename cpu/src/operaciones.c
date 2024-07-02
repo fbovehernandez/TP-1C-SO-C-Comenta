@@ -685,7 +685,6 @@ int bytes_usables_por_pagina(int direccion_logica) {
 
 /* NOTA FACU -> ESTO HABRIA QUE VER DE OPTIMIZARLO MAS, LO HICE ASI PARA QUE FUNCIONE, PERO CAMBIANDO UN PAR DE COSAS EN LA TRADUCCION CREO QUE
            SE PUEDE HACER MEJOR Y AHORRAR UNA BANDA DE CODIGO (PARA DESPUES)                    */
-
 void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectura, uint32_t direccion_logica, int pid, t_list* direcciones_fisicas, int pagina) {
     int frame;
 
@@ -1214,7 +1213,7 @@ void manejar_recursos(t_pcb* pcb, t_parametro* recurso, DesalojoCpu codigo) {
 void enviar_buffer_copy_string(int direccion_fisica_SI, int direccion_fisica_DI, int tamanio) {
     t_buffer* buffer;
     buffer = llenar_buffer_copy_string(direccion_fisica_SI,direccion_fisica_DI,tamanio);
-    enviar_paquete(buffer,COPY_STRING_MEMORIA,socket_memoria);
+    enviar_paquete(buffer, COPY_STRING_MEMORIA ,socket_memoria);
 }
 
 t_buffer* llenar_buffer_copy_string(int direccion_fisica_SI, int direccion_fisica_DI, int tamanio){ 
@@ -1256,7 +1255,7 @@ t_buffer* llenar_buffer_stdout(int direccion_fisica, char* nombre_interfaz, uint
 
     memcpy(stream + buffer->offset, &direccion_fisica, sizeof(int));
     buffer->offset += sizeof(int);
-     memcpy(stream + buffer->offset, &tamanio, sizeof(uint32_t));
+    memcpy(stream + buffer->offset, &tamanio, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
     memcpy(stream + buffer->offset, &(largo_nombre), sizeof(int));
     buffer->offset += sizeof(int);
@@ -1332,10 +1331,11 @@ t_buffer* llenar_buffer_fs_create(char* nombre_interfaz,char* nombre_archivo){
 t_buffer* pedir_buffer_lectura(char* interfaz, t_list* direcciones_fisicas_stdin, uint32_t tamanio_a_copiar, int cantidad_paginas) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
     int largo_interfaz = string_length(interfaz) + 1;
+    printf("Largo de la interfaz: %d\n", largo_interfaz);
 
     int size_direcciones_fisicas = list_size(direcciones_fisicas_stdin); 
 
-    buffer->size = sizeof(int) * 2 + (size_direcciones_fisicas * sizeof(int)) + largo_interfaz;
+    buffer->size = sizeof(int) * 2 + sizeof(uint32_t) + (size_direcciones_fisicas * sizeof(int) * 2) + largo_interfaz;
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
@@ -1343,7 +1343,6 @@ t_buffer* pedir_buffer_lectura(char* interfaz, t_list* direcciones_fisicas_stdin
     // Ver posible problema de serializacion como paso la otra vez que lo adjuntamos al pcb
     // void* stream = buffer->stream;
 
-    buffer->offset += sizeof(int);
     memcpy(buffer->stream + buffer->offset, &cantidad_paginas, sizeof(int));
     buffer->offset += sizeof(int);
 
@@ -1356,11 +1355,12 @@ t_buffer* pedir_buffer_lectura(char* interfaz, t_list* direcciones_fisicas_stdin
         buffer->offset += sizeof(int);
     }
 
-    memcpy(buffer->stream + buffer->offset, &tamanio_a_copiar, sizeof(int));
-    buffer->offset += sizeof(int);
+    memcpy(buffer->stream + buffer->offset, &tamanio_a_copiar, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
 
     memcpy(buffer->stream + buffer->offset, &largo_interfaz, sizeof(int));
     buffer->offset += sizeof(int);
+    
     memcpy(buffer->stream + buffer->offset, interfaz, largo_interfaz);
 
     // buffer->stream = stream;
@@ -1368,3 +1368,37 @@ t_buffer* pedir_buffer_lectura(char* interfaz, t_list* direcciones_fisicas_stdin
     return buffer;
 }
 
+/* 
+t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
+    int length_interfaz = string_length(interfaz) + 1;
+
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+    t_operacion_io* io = malloc(sizeof(t_operacion_io));
+
+    io->nombre_interfaz_largo = length_interfaz;
+    io->nombre_interfaz = malloc(length_interfaz);
+    strcpy(io->nombre_interfaz, interfaz);
+    io->unidadesDeTrabajo = unidades;
+    printf("Este es el nombre de la Interfaz segun operaciones.c: %s\n", io->nombre_interfaz);
+
+    buffer->size = sizeof(int) * 2 + length_interfaz;
+
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    memcpy(buffer->stream + buffer->offset, &io->unidadesDeTrabajo, sizeof(int));
+    buffer->offset += sizeof(int);
+
+    memcpy(buffer->stream + buffer->offset, &io->nombre_interfaz_largo, sizeof(int));
+    buffer->offset += sizeof(int);
+
+    memcpy(buffer->stream + buffer->offset, io->nombre_interfaz, io->nombre_interfaz_largo);
+    printf("nombre interfaz lalala %s",  io->nombre_interfaz);
+    // buffer->offset += io->nombre_interfaz_largo;
+    
+    free(io->nombre_interfaz);
+    free(io);
+    return buffer;
+}
+
+*/

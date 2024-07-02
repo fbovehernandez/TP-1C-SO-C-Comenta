@@ -97,7 +97,7 @@ void *handle_io_stdin(void *socket_io) {
         case CONEXION_INTERFAZ: 
             printf("llego hasta handle io stdin 3\n");
             io = establecer_conexion(paquete->buffer, socket);
-            free(io);
+            // free(io);
             break;
         default:
             printf("Llega al default en handle_io_stdin.\n");
@@ -122,16 +122,15 @@ void *handle_io_stdin(void *socket_io) {
         pid_stdin->lista_direcciones = datos_stdin->lista_direcciones;
         pid_stdin->registro_tamanio = datos_stdin->registro_tamanio;
 
-        printf(" mE CLAVO ANTES DEL SLEEP\n");
-        sleep(50);
-
         int respuesta_ok = ejecutar_io_stdin(io->socket, pid_stdin);
 
         if (!respuesta_ok) {
             printf("Se ejecuto correctamente la IO...\n");
+        
             // printf("Estado pcb: %d\n", datos_sleep->pcb->estadoActual);
             // datos_sleep->pcb->estadoActual = READY;
             // printf("Estado pcb : %d\n", datos_sleep->pcb->estadoActual);
+            
             int termino_io;
             recv(socket, &termino_io, sizeof(int), MSG_WAITALL);
 
@@ -200,16 +199,17 @@ void* handle_io_stdin(void* socket) {
 */
 
 int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin) {
+    printf("Voy a ejecutar stdin!\n");
     t_buffer* buffer = malloc(sizeof(t_buffer)); 
 
-    buffer->size =  sizeof(int) * 3 + pid_stdin->cantidad_paginas * 2 * sizeof(int); 
+    buffer->size =  sizeof(int) * 2 + sizeof(uint32_t) + pid_stdin->cantidad_paginas * 2 * sizeof(int); 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
     memcpy(buffer->stream + buffer->offset, &pid_stdin->pid, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, &pid_stdin->registro_tamanio, sizeof(int));
-    buffer->offset += sizeof(int);
+    memcpy(buffer->stream + buffer->offset, &pid_stdin->registro_tamanio, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
     memcpy(buffer->stream + buffer->offset, &pid_stdin->cantidad_paginas, sizeof(int));
     buffer->offset += sizeof(int);
     for(int i=0; i < pid_stdin->cantidad_paginas; i++) {
@@ -222,7 +222,11 @@ int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin) {
 
     enviar_paquete(buffer, LEETE, socket);
 
-    return 0;
+    int resultOk;
+
+    recv(socket, &resultOk, sizeof(int), MSG_WAITALL);
+
+    return resultOk; // Ojo que siempre retorna 0 y por ende ejecuta bien
 }
 
 void* handle_io_stdout(void* socket) {
@@ -278,7 +282,7 @@ void *handle_io_generica(void *socket_io) {
     switch (paquete->codigo_operacion) {
     case CONEXION_INTERFAZ:
         io = establecer_conexion(paquete->buffer, socket);
-        free(io);
+        // free(io);
         break;
     default:
         printf("Llega al default.");
@@ -319,8 +323,10 @@ void *handle_io_generica(void *socket_io) {
             printf("No se pudo ejecutar");
         }    
     }
+    
     free(pid_unidades_trabajo);
-    liberarIOyPaquete(paquete, io);
+    // liberarIOyPaquete(paquete, io);
+    liberar_paquete(paquete);
     
     return NULL;
 }
@@ -415,11 +421,11 @@ t_list_io* establecer_conexion(t_buffer *buffer, int socket_io) {
     sem_init(io->semaforo_cola_procesos_blocked, 0, 0);
 
     dictionary_put(diccionario_io, interfaz->nombre_interfaz, (void*)io);
-    printf("el nombre de la interfaz es: %s", interfaz->nombre_interfaz);
+    printf("el nombre de la interfaz es: %s\n", interfaz->nombre_interfaz);
     mostrar_elem_diccionario(interfaz->nombre_interfaz);
 
-    free(interfaz->nombre_interfaz);
-    free(interfaz);
+    // free(interfaz->nombre_interfaz);
+    // free(interfaz);
     
     return io;
 }

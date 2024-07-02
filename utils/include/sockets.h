@@ -237,7 +237,7 @@ typedef struct {
 
 typedef struct {
     t_list* lista_direcciones;
-    int registro_tamanio;
+    uint32_t registro_tamanio;
     int cantidad_paginas;
     int pid;
 } t_pid_stdin;
@@ -357,5 +357,6 @@ void liberar_paquete_y_a_enviar(t_paquete* paquete,void* a_enviar);
 void enviar_paquete(t_buffer* buffer, codigo_operacion codigo, int socket);
 t_info_io *deserializar_interfaz(t_buffer *buffer);
 t_paquete *inicializarIO_recibirPaquete(int socket);
+void imprimir_datos_stdin(t_pid_stdin* datos_stdin);
 
 #endif // SOCKET_H

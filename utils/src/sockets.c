@@ -437,3 +437,14 @@ t_paquete* inicializarIO_recibirPaquete(int socket) {
     
     return paquete;
 }
+
+void imprimir_datos_stdin(t_pid_stdin* datos_stdin) {
+    printf("Cantidad de paginas: %d\n", datos_stdin->cantidad_paginas);
+    printf("Registro tamanio: %d\n", datos_stdin->registro_tamanio);
+    printf("Cantidad de direcciones: %d\n", list_size(datos_stdin->lista_direcciones));
+    for(int i = 0; i < list_size(datos_stdin->lista_direcciones); i++) {
+        t_dir_fisica_tamanio* dir_fisica_tam = list_get(datos_stdin->lista_direcciones, i);
+        printf("Direccion fisica: %d\n", dir_fisica_tam->direccion_fisica);
+        printf("Tamanio: %d\n", dir_fisica_tam->bytes_lectura);
+    }
+}

@@ -542,8 +542,8 @@ void encolar_datos_stdin(t_pcb* pcb, t_pedido_lectura* pedido_lectura) {
         datos_stdin->cantidad_paginas = pedido_lectura->cantidad_paginas;
         datos_stdin->pcb = pcb;
         
-        printf("Voy a imprimir los datos stdin antes de agregarlos a la cola de bloqueados de la interfaz\n");
-        imprimir_datos_stdin(datos_stdin);
+        printf("No voy a imprimir los datos stdin antes de agregarlos a la cola de bloqueados de la interfaz\n");
+        // imprimir_datos_stdin();
 
         pthread_mutex_lock(&mutex_cola_io_generica); // cambiar nombre_mutex
         queue_push(interfaz->cola_blocked, datos_stdin);
@@ -561,32 +561,36 @@ void encolar_datos_stdin(t_pcb* pcb, t_pedido_lectura* pedido_lectura) {
     free(interfaz);
 } 
 
-void imprimir_datos_stdin(io_stdin* datos_stdin) {
-    printf("Cantidad de paginas: %d\n", datos_stdin->cantidad_paginas);
-    printf("Registro tamanio: %d\n", datos_stdin->registro_tamanio);
-    printf("Cantidad de direcciones: %d\n", list_size(datos_stdin->lista_direcciones));
-    for(int i = 0; i < list_size(datos_stdin->lista_direcciones); i++) {
-        t_dir_fisica_tamanio* dir_fisica_tam = list_get(datos_stdin->lista_direcciones, i);
-        printf("Direccion fisica: %d\n", dir_fisica_tam->direccion_fisica);
-        printf("Tamanio: %d\n", dir_fisica_tam->bytes_lectura);
-    }
-}
 
+/* 
+t_operacion_io* operacion_io = malloc(sizeof(t_operacion_io));
+
+    // Lo siguiente es el tamaño del pcb
+    void* stream = buffer->stream + sizeof(int) * 3 + sizeof(Estado) * 2 + sizeof(uint8_t) * 4 + sizeof(uint32_t) * 6;
+
+    // Deserializamos los campos que tenemos en el buffer
+    // stream += sizeof(t_pcb);
+    
+    memcpy(&(operacion_io->unidadesDeTrabajo), stream, sizeof(int));
+    stream += sizeof(int);
+*/
 t_pedido_lectura* deserializar_pedido_lectura(t_buffer* buffer) {
     t_pedido_lectura* pedido_lectura = malloc(sizeof(t_pedido_lectura));
 
-    void* stream = buffer->stream;
+    void* stream = buffer->stream + sizeof(int) * 3 + sizeof(Estado) * 2 + sizeof(uint8_t) * 4 + sizeof(uint32_t) * 6; 
 
     memcpy(&(pedido_lectura->cantidad_paginas), stream, sizeof(int));
-    buffer->offset += sizeof(int);
+    stream += sizeof(int);
+    printf("Cantidad de paginas: %d\n", pedido_lectura->cantidad_paginas);
+
     pedido_lectura->lista_dir_tamanio = list_create();
     // Deserializar lista con dir fisica y tamanio en bytes a leer segun la cant de pags
     for(int i = 0; i < pedido_lectura->cantidad_paginas; i++) {
         t_dir_fisica_tamanio* dir_fisica_tam = malloc(sizeof(t_dir_fisica_tamanio));
         memcpy(&(dir_fisica_tam->direccion_fisica), stream, sizeof(int));
-        buffer->offset += sizeof(int);
+        stream += sizeof(int);
         memcpy(&(dir_fisica_tam->bytes_lectura), stream, sizeof(int));
-        buffer->offset += sizeof(int);
+        stream += sizeof(int);
 
         list_add(pedido_lectura->lista_dir_tamanio, dir_fisica_tam);
     }
@@ -594,11 +598,21 @@ t_pedido_lectura* deserializar_pedido_lectura(t_buffer* buffer) {
     memcpy(&(pedido_lectura->registro_tamanio), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
 
+    printf("Registro tamanio: %d\n", pedido_lectura->registro_tamanio);
+
     memcpy(&(pedido_lectura->length_interfaz), stream, sizeof(int));
     stream += sizeof(int);
 
+    // Se recibe mal el length
+    printf("Length interfaz: %d\n", pedido_lectura->length_interfaz);
+
     pedido_lectura->interfaz = malloc(pedido_lectura->length_interfaz);
     memcpy(pedido_lectura->interfaz, stream, pedido_lectura->length_interfaz);
+
+    // Insertar /0 y leer
+
+    pedido_lectura->interfaz[pedido_lectura->length_interfaz] = '\0';
+    printf("Interfaz: %s\n", pedido_lectura->interfaz);
 
     return pedido_lectura;
 }

@@ -44,8 +44,12 @@ int main(int argc, char* argv[]) {
     memory_struct_cpu->socket = escucha_fd;
     memory_struct_cpu->logger = logger_memoria;
 
-    esperar_cliente(escucha_fd, logger_memoria);
-    esperar_cliente(escucha_fd, logger_memoria); // Comente esto porque no se si es necesario
+    // pthread_create(&cpu_thread, NULL, (void*)handle_cpu, (void*)(intptr_t)socket_cliente);
+    
+    
+    while(1) {
+        int socket_cliente = esperar_cliente(escucha_fd, logger_memoria);
+    }
     
     // Hago los join aca para que no se cierre el hilo principal ->  TODO: Ver mejor implementacion o volver al while(1)
     pthread_join(cpu_thread, NULL); 

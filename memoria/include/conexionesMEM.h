@@ -94,7 +94,8 @@ t_direccion_fisica* deserializar_direccion_fisica_lectura(t_buffer* buffer);
 t_direccion_fisica* armar_dir_lectura(t_direccion_fisica_escritura* df);
 void agregar_interfaz_en_el_diccionario(t_paquete* paquete, int socket);
 t_pedido_memoria* deserializar_direccion_fisica(t_buffer* buffer, t_list* direcciones_restantes);
-t_escritura_stdin* deserializar_escritura_stdin(void* stream, t_list* direcciones_restantes);
+t_escritura_stdin* deserializar_escritura_stdin(void* stream);
+void imprimir_datos_stdin_escritura(t_escritura_stdin* escritura);
 
 
 #endif // CONEXIONES_H
