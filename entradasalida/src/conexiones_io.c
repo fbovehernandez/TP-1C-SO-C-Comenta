@@ -163,6 +163,7 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
                 log_info(logger_io, "PID %d - Operacion: DORMIR_IO", pid);
                 int termino_io = 1;
                 send(socket_kernel_io, &termino_io, sizeof(int), 0);
+                break;
             case LEETE: 
                 int result_ok_io = 0;
                 
@@ -188,33 +189,31 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
     
 }
 
-void recibir_memoria() {
+void recibir_memoria(t_config* config_io, int socket_memoria) {
     while(1) {
         t_paquete* paquete = malloc(sizeof(t_paquete));
         paquete->buffer = malloc(sizeof(t_buffer));
 
         printf("Esperando paquete...\n");
-        recv(memoriafd, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
+        recv(socket_memoria, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
         printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
 
-        recv(memoriafd, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
+        recv(socket_memoria, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
         paquete->buffer->stream = malloc(paquete->buffer->size);
 
-        recv(memoriafd, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+        recv(socket_memoria, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
 
         switch(paquete->codigo_operacion) {
-            /*case MOSTRAR:
-                char* valor = deserializar_valor(paquete->buffer);
-                printf("El valor leido en memoria es: %s\n", valor);
-                free(valor);
+            case RECIBI_VALOR_OK:
+                printf("Recibi el valor ok\n");
                 break;
-            */
             default:
                 break;
         }
 
-        liberar_paquete(paquete);
+        liberar_paquete(paquete);        
     }
+    
 }
 
 t_pid_unidades_trabajo* serializar_unidades_trabajo(t_buffer* buffer) {

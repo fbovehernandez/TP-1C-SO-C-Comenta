@@ -34,7 +34,7 @@ int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
 
 	if(handshake == 1) {
         // pthread_t kernel_thread;
-        // pthread_create(&kernel_thread, NULL, (void*)handle_kernel, (void*)(intptr_t)socket_cliente);
+        pthread_create(&kernel_thread, NULL, (void*)handle_kernel, (void*)(intptr_t)socket_cliente);
     } else if(handshake == 2) {
         // pthread_t cpu_thread;
         pthread_create(&cpu_thread, NULL, (void*)handle_cpu, (void*)(intptr_t)socket_cliente);
@@ -710,9 +710,10 @@ void* handle_io_stdin(void* socket) {
     agregar_interfaz_en_el_diccionario(paquete_inicial, socket_io);
 
     printf("Se conecto una io!\n");
+
     void* user_space_aux = espacio_usuario;
 
-    send(socket_io, &tamanio_pagina, sizeof(int), MSG_WAITALL);
+    // send(socket_io, &tamanio_pagina, sizeof(int), MSG_WAITALL);
 
     while(1) {
         t_paquete* paquete = malloc(sizeof(t_paquete));
@@ -739,11 +740,10 @@ void* handle_io_stdin(void* socket) {
                 t_escritura_stdin* escritura_stdin = deserializar_escritura_stdin(stream);
 
                 imprimir_datos_stdin_escritura(escritura_stdin);
-
-
+                
                 printf("voy a dormir para probar serializacion\n"); 
                 
-                /* 
+                
                 user_space_aux = espacio_usuario;
                 int confirm_finish = 1;
 
@@ -751,15 +751,17 @@ void* handle_io_stdin(void* socket) {
 
                 char* registro_escritura = escritura_stdin->valor;
 
-                // realizar_operacion(ESCRITURA, direcciones_restantes_escritura, user_space_aux, registro_escritura, NULL); 
+
+                realizar_operacion(ESCRITURA, escritura_stdin->pid_stdin->lista_direcciones, user_space_aux, registro_escritura, NULL); 
                 printf("Registro escrito como char* %s\n", ((char*)registro_escritura));
 
-                //send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
-                printf("el valor guardado en dir fisica por STDIN: %s\n", registro_escritura);
-                void* primera_direccion = list_get(escritura_stdin->pid_stdin->lista_direcciones, 0);
-                log_info(logger_memoria,"PID %d - Accion: ESCRIBIR - Direccion fisica: %d - Tamanio %d", escritura_stdin->pid_stdin->pid, *(int*)primera_direccion, escritura_stdin->valor_length);
+                // send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
+                // printf("el valor guardado en dir fisica por STDIN: %s\n", registro_escritura);
+
+                // void* primera_direccion = list_get(escritura_stdin->pid_stdin->lista_direcciones, 0);
+                // log_info(logger_memoria,"PID %d - Accion: ESCRIBIR - Direccion fisica: %d - Tamanio %d", escritura_stdin->pid_stdin->pid, *(int*)primera_direccion, escritura_stdin->valor_length);
                 
-                */
+                
                 free(escritura_stdin->pid_stdin);
                 free(escritura_stdin->valor); 
                 free(escritura_stdin);
@@ -819,6 +821,8 @@ t_escritura_stdin* deserializar_escritura_stdin(void* stream) {
     stream += sizeof(int);
     memcpy(&escritura_stdin->valor_length, stream, sizeof(int)); // Ojo con el "&" aca
     stream += sizeof(int);
+
+    escritura_stdin->valor = malloc(escritura_stdin->valor_length); // +1 posible
     memcpy(escritura_stdin->valor, stream, escritura_stdin->valor_length);
     stream += escritura_stdin->valor_length;
 

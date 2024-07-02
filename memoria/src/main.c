@@ -44,9 +44,6 @@ int main(int argc, char* argv[]) {
     memory_struct_cpu->socket = escucha_fd;
     memory_struct_cpu->logger = logger_memoria;
 
-    // pthread_create(&cpu_thread, NULL, (void*)handle_cpu, (void*)(intptr_t)socket_cliente);
-    
-    
     while(1) {
         int socket_cliente = esperar_cliente(escucha_fd, logger_memoria);
     }

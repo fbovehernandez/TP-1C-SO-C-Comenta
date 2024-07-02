@@ -19,7 +19,7 @@ int conectar_io_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_io
 void recibir_solicitud_kernel();
 void mandar_valor_a_memoria(char* valor, t_pid_stdin* pid_dirfisica_tamanio);
 void recibir_kernel(t_config* config_io, int socket_kernel_io);
-void recibir_memoria();
+void recibir_memoria(t_config* config_io, int socket_memoria);
 t_pid_unidades_trabajo* serializar_unidades_trabajo(t_buffer* buffer);
 t_pid_stdin* deserializar_pid_stdin(t_buffer* buffer);
 
