@@ -142,6 +142,7 @@ typedef enum {
     LEER_DATO_MEMORIA,
     FS_CREATE,
     MOSTRAR,
+    ESCRIBITE
 } codigo_operacion;
 
 typedef enum {
@@ -234,7 +235,7 @@ typedef struct {
     int registro_tamanio;
     int cantidad_paginas;
     t_pcb* pcb;
-} io_stdin;
+} io_std;
 
 typedef struct {
     t_list* lista_direcciones;
@@ -244,17 +245,19 @@ typedef struct {
 } t_pid_stdin;
 
 typedef struct {
+    t_list* lista_direcciones;
+    uint32_t registro_tamanio;
+    int cantidad_paginas;
+    int pid;
+    char* nombre_interfaz;
+    int largo_interfaz;
+} t_pid_stdout;
+
+typedef struct {
     t_pid_stdin* pid_stdin;
     int valor_length;
     char* valor;
 } t_escritura_stdin;
-
-typedef struct {
-    int direccion_fisica;
-    uint32_t registro_tamanio;
-    char* nombre_interfaz;
-    t_pcb* pcb;
-} io_stdout;
 
 typedef struct {
     int direccion_fisica;

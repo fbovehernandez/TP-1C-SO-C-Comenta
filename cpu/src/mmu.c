@@ -105,7 +105,7 @@ int esta_en_TLB(int nro_pagina) {
 }
 
 */ 
-
+// direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, *registro_direccion11, pcb->pid);
 int traducir_direccion_logica_a_fisica(uint32_t direccion_logica, int pid) { 
     t_direccion_logica* direccion_logica_a_crear = malloc(sizeof(t_direccion_logica)); 
     int frame;

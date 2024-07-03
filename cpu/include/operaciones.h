@@ -56,7 +56,7 @@ t_buffer* llenar_buffer_copy_string(int direccion_fisica_SI, int direccion_fisic
 void pedir_todos_los_marcos(int pagina, int cant_paginas, int pid, uint32_t *registro_direccion_1, bool es_registro_uint8_dato);
 void enviar_buffer_copy_string(int direccion_fisica_SI, int direccion_fisica_DI, int tamanio);
 void manejar_recursos(t_pcb* pcb, t_parametro* recurso, DesalojoCpu codigo);
-t_buffer* pedir_buffer_lectura(char* interfaz, t_list* direcciones_fisicas_stdin, uint32_t tamanio_a_copiar, int cantidad_paginas);
+t_buffer* llenar_buffer_stdio(char* interfaz, t_list* direcciones_fisicas, uint32_t tamanio_a_copiar, int cantidad_paginas);
 // void enviar_kernel_stdout(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio);
 t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, uint32_t tamanio);
 void mandar_una_dir_fisica(int direccion_fisica);

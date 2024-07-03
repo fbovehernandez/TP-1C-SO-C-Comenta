@@ -264,27 +264,6 @@ t_pedido_memoria* deserializar_direccion_fisica(t_buffer* buffer, t_list* direcc
     return datos_operacion;
 }
 
-/* 
-t_direccion_fisica* deserializar_direccion_fisica_lectura(t_buffer* buffer) {
-    t_direccion_fisica* datos_lectura = malloc(sizeof(t_direccion_fisica));
-
-    void* stream = buffer->stream;
-
-    memcpy(&datos_lectura->direccion_fisica, stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&datos_lectura->tamanio, stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&datos_lectura->cantidad_paginas, stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&datos_lectura->direccion_logica, stream, sizeof(int));
-    stream += sizeof(int);
-    
-    buffer->stream = stream;
-
-    return datos_lectura;
-}
-*/
-
 int min(int a, int b) {
     return (a < b) ? a : b;
 }
@@ -346,28 +325,6 @@ void recibir_resto_direcciones(t_list* lista_direcciones_mv) {
         
         // Liberamos memoria
         liberar_paquete(paquete);
-}
-*/
-
-/* 
-t_direccion_fisica* deserializar_direccion_fisica(t_buffer* buffer) {
-    t_direccion_fisica* dir_fisica = malloc(sizeof(t_direccion_fisica));
-
-    void* stream = buffer->stream;
-
-    memcpy(&dir_fisica->direccion_fisica, stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&dir_fisica->tamanio, stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&dir_fisica->cantidad_paginas, stream, sizeof(int));
-    stream += sizeof(int);
-    
-    memcpy(&dir_fisica->direccion_logica, stream, sizeof(int));
-    stream += sizeof(int);
-
-    buffer->stream = stream;
-
-    return dir_fisica;
 }
 */
 
@@ -561,6 +518,7 @@ void* handle_kernel(void* socket) {
     char* path_completo;
 
     while(1) {
+        void* user_space_aux;
         t_paquete* paquete = malloc(sizeof(t_paquete));
         paquete->buffer = malloc(sizeof(t_buffer));
 
@@ -601,22 +559,27 @@ void* handle_kernel(void* socket) {
                 free(path);
                 break;
             case ESCRIBIR_STDOUT:
-                t_pedido_escritura* pedido_escritura = desearializar_pedido_escritura(paquete->buffer);
-                //char* valor_leido = leer(pedido_escritura->tamanio, pedido_escritura->direccion_fisica);
-                //send(socket_interfaz, &valor_leido, sizeof(char*), 0); // ver como sacar el socket de la interfaz
-                //list_add(lista_valores_a_leer, valor_leido);
-                //sem_post(hay_valores_para_leer);
-                /*if(dictionary_has_key(diccionario_io, pedido_escritura->nombre_interfaz)) { // hacer diccionario de ios en memoria
-                    t_list_io* interfaz = malloc(sizeof(t_list_io));
-                    interfaz = dictionary_get(diccionario_io, nombre_interfaz);
-                    socket_io = interfaz->socket;
-                    mostrar_en_io(socket_io, valor_leido);
-                    free(interfaz);
-                } else {
-                    printf("No se conecto dicha interfaz con memoria\n");
-                    exit(1);
-                }*/
-                free(pedido_escritura->nombre_interfaz);
+                t_pid_stdout* pid_stdout = desearializar_pid_stdout(paquete->buffer);
+
+                int result_ok = 0;
+                send(socket_kernel, &resultOk, sizeof(int), 0);
+
+                user_space_aux = espacio_usuario;
+                
+                printf("dir_fisica->tamanio total calculado : %d\n", pid_stdout->registro_tamanio);
+
+                void* registro_lectura = malloc(pid_stdout->registro_tamanio);
+            
+                realizar_operacion(LECTURA, pid_stdout->lista_direcciones, user_space_aux, NULL, registro_lectura);
+
+                printf("El valor leido para char* es: %s\n", (char*)registro_lectura);
+                int socket_io = *(int*) dictionary_get(diccionario_io, pid_stdout->nombre_interfaz);
+                
+                enviar_valor_leido_a_io(pid_stdout->pid, socket_io, registro_lectura, pid_stdout->registro_tamanio);
+
+                free(pid_stdout);
+                free(registro_lectura);
+                free(pid_stdout->nombre_interfaz);
                 break;
             default: 
                 break;
@@ -629,71 +592,29 @@ void* handle_kernel(void* socket) {
     return NULL;
 }
 
+void enviar_valor_leido_a_io(int pid, int socket_io, char* valor, int tamanio) {
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+
+    buffer->size = sizeof(int) + tamanio;
+
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    void* stream = buffer->stream;
+    memcpy(stream + buffer->offset, &pid, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, &tamanio, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, valor, tamanio);
+    buffer->stream = stream;
+
+    enviar_paquete(buffer, ESCRIBITE, socket_io);
+}
+
 /*
 void* handle_io_dialfs() {
 
 }
-*/
-/* 
-void* handle_io_stdout(void* socket) {
-    int socket_io = *(int*) socket;
-    int resultOk = 0;
-    send(socket_io, &resultOk, sizeof(int), 0);
-
-    // Recibir nombre de la IO
-
-    printf("Se conecto una io oojoo!\n");
-    //void* user_space_aux;
-
-    send(socket_io, &tamanio_pagina, sizeof(int), MSG_WAITALL);
-    void* user_space_aux = espacio_usuario;
-
-    while(1) {
-        t_paquete* paquete = malloc(sizeof(t_paquete));
-        paquete->buffer = malloc(sizeof(t_buffer));
-
-        // Primero recibimos el codigo de operacion
-        printf("Esperando recibir paquete de IO\n");
-        recv(socket_io, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
-        printf("Recibi el codigo de operacion de IO: %d\n", paquete->codigo_operacion);
-
-        // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
-        //recv(socket_cpu, &(paquete->buffer->size), sizeof(int), 0);
-        recv(socket_io, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
-        paquete->buffer->stream = malloc(paquete->buffer->size);
-        //recv(socket_cpu, paquete->buffer->stream, paquete->buffer->size, 0);
-        recv(socket_io, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
-
-        switch(paquete->codigo_operacion) { 
-            case GUARDAR_VALOR:  
-                int registro_direccion;    
-                int largo_valor;
-
-                // Deserializamos tamanios que tenemos en el buffer
-                memcpy(&(registro_direccion), paquete->buffer->stream, sizeof(int));
-                paquete->buffer->stream += sizeof(int);
-                memcpy(&(largo_valor), paquete->buffer->stream, sizeof(int));
-                paquete->buffer->stream += sizeof(int);
-                char* valor = malloc(largo_valor);
-                memcpy(valor, paquete->buffer->stream, largo_valor);
-
-                // guardamos el valor en la direccion fisica
-                memcpy((uint32_t*) (user_space_aux + registro_direccion), &valor, sizeof(uint32_t));
-                uint32_t mostrar_valor = *((uint32_t*)(user_space_aux + registro_direccion));
-                printf("el valor guardado en dir fisica por STDIN: %d\n", mostrar_valor);
-                free(valor);
-                // hacerlo
-                break;
-            default:
-                printf("Rompio todo?\n");
-                return NULL;
-        }
-
-        liberar_paquete(paquete);
-    }
-    // Liberamos memoria
-    return NULL;
-} 
 */
 
 // Descomente esto pero tiene varios errores que no vi
@@ -743,14 +664,11 @@ void* handle_io_stdin(void* socket) {
                 
                 printf("voy a dormir para probar serializacion\n"); 
                 
-                
                 user_space_aux = espacio_usuario;
-                int confirm_finish = 1;
 
                 // recibir_datos_escritura();
 
                 char* registro_escritura = escritura_stdin->valor;
-
 
                 realizar_operacion(ESCRITURA, escritura_stdin->pid_stdin->lista_direcciones, user_space_aux, registro_escritura, NULL); 
                 printf("Registro escrito como char* %s\n", ((char*)registro_escritura));
@@ -1312,22 +1230,37 @@ t_buffer* llenar_buffer_stdout(char* valor) {
     return buffer;
 }
 
-t_pedido_escritura* desearializar_pedido_escritura(t_buffer* buffer){
-    t_pedido_escritura* pedido_escritura = malloc(sizeof(pedido_escritura));
+t_pid_stdout* desearializar_pid_stdout(t_buffer* buffer){
+    t_pid_stdout* pedido_escritura = malloc(sizeof(t_pid_stdout));
 
     void* stream = buffer->stream;
     // Deserializamos los campos que tenemos en el buffer
-    memcpy(&(pedido_escritura->direccion_fisica), stream, sizeof(int));
+    memcpy(&(pedido_escritura->pid), stream, sizeof(int));
     stream += sizeof(int);
-    memcpy(&(pedido_escritura->tamanio), stream, sizeof(int));
+    memcpy(&(pedido_escritura->registro_tamanio), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(pedido_escritura->cantidad_paginas), stream, sizeof(int));
     stream += sizeof(int);
-    int longitud_nombre_interfaz = string_length(pedido_escritura->nombre_interfaz);
-    memcpy(&(pedido_escritura->nombre_interfaz), stream, sizeof(longitud_nombre_interfaz));
+    memcpy(&(pedido_escritura->largo_interfaz), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(pedido_escritura->nombre_interfaz), stream, pedido_escritura->largo_interfaz);
+    stream += pedido_escritura->largo_interfaz;
+
+    for(int i=0; i < pedido_escritura->cantidad_paginas; i++) {
+        t_dir_fisica_tamanio* dir_fisica_tam = list_get(pedido_escritura->lista_direcciones, i);
+        memcpy(&dir_fisica_tam->direccion_fisica, stream, sizeof(int));
+        buffer->offset += sizeof(int);
+        memcpy(&dir_fisica_tam->bytes_lectura, stream, sizeof(int));
+        buffer->offset += sizeof(int);
+        list_add(pedido_escritura->lista_direcciones, dir_fisica_tam);
+    }
 
     return pedido_escritura;
+    //VER FREE
 }
 
 void agregar_interfaz_en_el_diccionario(t_paquete* paquete, int socket) {
     t_info_io* interfaz = deserializar_interfaz(paquete->buffer);
     dictionary_put(diccionario_io, interfaz->nombre_interfaz, &socket); // Ver est
 }
+

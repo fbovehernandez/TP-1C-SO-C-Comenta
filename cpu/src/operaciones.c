@@ -585,7 +585,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         
         cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdin, *registro_direccion_stdin, pcb->pid, lista_direcciones_fisicas_stdin, pagina);
 
-        t_buffer* buffer_lectura = pedir_buffer_lectura(interfaz->nombre, lista_direcciones_fisicas_stdin, *registro_tamanio_stdin, cantidad_paginas);
+        t_buffer* buffer_lectura = llenar_buffer_stdio(interfaz->nombre, lista_direcciones_fisicas_stdin, *registro_tamanio_stdin, cantidad_paginas);
         desalojar(pcb, PEDIDO_LECTURA, buffer_lectura);
 
         free(buffer_lectura);
@@ -596,8 +596,8 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         desalojar(pcb, FIN_PROCESO, NULL); // Envio 0 ya que no me importa size
         break;
     case IO_STDOUT_WRITE:// IO_STDOUT_WRITE Int3 BX EAX
-    /* 
-        int devolucion_desalojo;
+        t_list* lista_bytes_stdout = list_create();
+        t_list* lista_direcciones_fisicas_stdout = list_create();
         t_parametro* parametro_interfaz = list_get(list_parametros,0);
         char* nombre_interfaz = parametro_interfaz->nombre;
         
@@ -608,25 +608,28 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         char* nombre_registro_tamanio_stdout = parametro_registro_tamanio->nombre;
 
         uint32_t* registro_direccion11 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_direccion_stdout);
-        uint32_t* registro_tamanio1 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio_stdout);
+        uint32_t* registro_tamanio_stdout = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio_stdout);
         
-        direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, *registro_direccion11, pcb->pid);
+        es_registro_uint8_dato = es_de_8_bits(nombre_registro_tamanio_stdout);
+        
+        direccion_fisica = traducir_direccion_logica_a_fisica(*registro_direccion11, pcb->pid);
 
-        // CPU -> KERNEL -> MEMORIA -> ENTRADA SALIDA -> SEGFAULT
-        enviar_kernel_stdout(nombre_interfaz, direccion_fisica, registro_tamanio1);
-        recv(client_dispatch, &devolucion_desalojo, sizeof(int), MSG_WAITALL);
+        // CPU -> KERNEL -> MEMORIA -> ENTRADA SALIDA
+    
+        pagina = floor(*registro_direccion11 / tamanio_pagina);
+        tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); //Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
+
+        cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_direccion11, tamanio_en_byte, pagina, lista_bytes_stdout); // Cantidad de paginas + la primera
         
-        if(devolucion_desalojo == 1) {
-            printf("Hubo un error en la escritura\n");
-            desalojar(pcb, ERROR_STDOUT, NULL);
-            return 1;
-        }
-        
-        desalojar(pcb, PEDIDO_ESCRITURA, buffer);
-        
+        cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdout, *registro_direccion11, pcb->pid, lista_direcciones_fisicas_stdout, pagina);
+
+        t_buffer* buffer_escritura = llenar_buffer_stdio(nombre_interfaz, lista_direcciones_fisicas_stdout, *registro_tamanio_stdout, cantidad_paginas);
+        desalojar(pcb, PEDIDO_ESCRITURA, buffer_escritura);
+
+        free(buffer_escritura);
         break;
     case IO_FS_CREATE: // IO_FS_CREATE Int4 notas.txt
-        
+        /*
         t_parametro* primer_parametro = list_get(list_parametro,0);
         char* nombre_interfaz = primer_parametro->nombre;
 
@@ -1328,12 +1331,13 @@ t_buffer* llenar_buffer_fs_create(char* nombre_interfaz,char* nombre_archivo){
  no se pierde la referencia, pero no funciona nose porque. Esto pasa con todas los buffers que se mandan adicional al PCB (creo que hasta ahora son 3 o 4)
  *****/
 
-t_buffer* pedir_buffer_lectura(char* interfaz, t_list* direcciones_fisicas_stdin, uint32_t tamanio_a_copiar, int cantidad_paginas) {
+
+t_buffer* llenar_buffer_stdio(char* interfaz, t_list* direcciones_fisicas, uint32_t tamanio_a_copiar, int cantidad_paginas) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
     int largo_interfaz = string_length(interfaz) + 1;
     printf("Largo de la interfaz: %d\n", largo_interfaz);
 
-    int size_direcciones_fisicas = list_size(direcciones_fisicas_stdin); 
+    int size_direcciones_fisicas = list_size(direcciones_fisicas); 
 
     buffer->size = sizeof(int) * 2 + sizeof(uint32_t) + (size_direcciones_fisicas * sizeof(int) * 2) + largo_interfaz;
 
@@ -1348,7 +1352,7 @@ t_buffer* pedir_buffer_lectura(char* interfaz, t_list* direcciones_fisicas_stdin
 
     // Serializacion de la lista -> Ahora con la lista es una incognita si esto funciona bien inclusive con el mem leak, una cagada
     for(int i=0; i < cantidad_paginas; i++) {
-        t_dir_fisica_tamanio* dir_fisica_tam = list_get(direcciones_fisicas_stdin, i);
+        t_dir_fisica_tamanio* dir_fisica_tam = list_get(direcciones_fisicas, i);
         memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->direccion_fisica, sizeof(int));
         buffer->offset += sizeof(int);
         memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));

@@ -207,10 +207,19 @@ void recibir_memoria(t_config* config_io, int socket_memoria) {
             case RECIBI_VALOR_OK:
                 printf("Recibi el valor ok\n");
                 break;
+            case ESCRIBITE:
+                int tamanio, pid;
+                memcpy(&pid, paquete->buffer->stream, sizeof(int));
+                stream += sizeof(int);
+                memcpy(&tamanio, paquete->buffer->stream, sizeof(int));
+                stream += sizeof(int);
+                char* valor = malloc(tamanio);
+                memcpy(valor, paquete->buffer->stream, tamanio);
+                printf("El valor leido de memoria es: %s \n", valor);
+                break;
             default:
                 break;
         }
-
         liberar_paquete(paquete);        
     }
     

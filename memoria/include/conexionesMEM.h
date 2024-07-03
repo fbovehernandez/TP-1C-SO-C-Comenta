@@ -96,6 +96,7 @@ void agregar_interfaz_en_el_diccionario(t_paquete* paquete, int socket);
 t_pedido_memoria* deserializar_direccion_fisica(t_buffer* buffer, t_list* direcciones_restantes);
 t_escritura_stdin* deserializar_escritura_stdin(void* stream);
 void imprimir_datos_stdin_escritura(t_escritura_stdin* escritura);
-
+t_pid_stdout* desearializar_pid_stdout(t_buffer* buffer);
+void enviar_valor_leido_a_io(int socket_io, char* registro_lectura, int tamanio); 
 
 #endif // CONEXIONES_H

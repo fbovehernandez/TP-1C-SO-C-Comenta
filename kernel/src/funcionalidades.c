@@ -28,7 +28,6 @@ t_queue* cola_prioritarios_por_signal;
 
 char* algoritmo_planificacion; // Tomamos en convencion que los algoritmos son "FIFO", "VRR" , "RR" (siempre en mayuscula)
 t_log* logger_kernel;
-t_sockets* sockets;
 char* path_kernel;
 ptr_kernel* datos_kernel;
 
@@ -303,18 +302,15 @@ void *esperar_RR(void *sockets_Int) {
     return NULL;
 }
 
-int max(int num1, int num2)
-{
+int max(int num1, int num2) {
     return num1 > num2 ? num1 : num2;
 }
 
-int leQuedaTiempoDeQuantum(t_pcb *pcb)
-{
+int leQuedaTiempoDeQuantum(t_pcb *pcb) {
     return pcb->quantum > 0;
 }
 
-t_pcb *proximo_a_ejecutar()
-{
+t_pcb *proximo_a_ejecutar() {
     t_pcb *pcb = NULL;
 
     pthread_mutex_lock(&mutex_estado_ready);
@@ -342,10 +338,8 @@ t_pcb *proximo_a_ejecutar()
 // TO DO: Esto bloquearia la planificacion hasta que la cpu termine de ejecutar y me devuelva el contexto.
 // Tiene que recibir causa de desalojo y contexto
 
-t_paquete *recibir_cpu()
-{
-    while (1)
-    {
+t_paquete *recibir_cpu() {
+    while (1) {
         t_paquete *paquete = malloc(sizeof(t_paquete));
         paquete->buffer = malloc(sizeof(t_buffer));
 
@@ -474,21 +468,20 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             free(pcb);
             break;
         case PEDIDO_LECTURA:
+
+            /// HAY QUE ACTUALIZAR NO EXISTE ESO ES IO_STD!!!!!!!!
             t_pedido_lectura* pedido_lectura = deserializar_pedido_lectura(package->buffer);
 
             // mandar_io_blocked(pcb, pedido_lectura->interfaz);
             // mandar_datos_io_stdin(pcb, pedido_lectura->interfaz, pedido_lectura->direccion_fisica, pedido_lectura->registro_tamanio);
             
-            encolar_datos_stdin(pcb, pedido_lectura);
+            encolar_datos_std(pcb, pedido_lectura);
             log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, pedido_lectura->interfaz);    
             //free(pedido_lectura);
         case PEDIDO_ESCRITURA:
-            /*
             t_pedido_escritura* pedido_escritura = desearializar_pedido_escritura(package->buffer);
-            //encolar_datos_stdout(pcb, pedido_escritura->nombre_interfaz, pedido_escritura->direccion_fisica, pedido_escritura->tamanio);
+            encolar_datos_std(pcb, pedido_escritura);
             log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->nombre_interfaz);
-            free(pedido_escritura->nombre_interfaz);
-            */
             break;
         //case FS_CREATE:
             /*
@@ -535,7 +528,7 @@ void encolar_datos_stdin(t_pcb* pcb, t_pedido_lectura* pedido_lectura) {
     if(interfaz != NULL) {
         int socket_io = interfaz->socket; // lo voy a necesitar?
 
-        io_stdin* datos_stdin = malloc(sizeof(io_stdin));
+        io_std* datos_stdin = malloc(sizeof(io_std));
 
         datos_stdin->lista_direcciones = pedido_lectura->lista_dir_tamanio;
         datos_stdin->registro_tamanio = pedido_lectura->registro_tamanio;
@@ -546,6 +539,7 @@ void encolar_datos_stdin(t_pcb* pcb, t_pedido_lectura* pedido_lectura) {
         // imprimir_datos_stdin();
 
         pthread_mutex_lock(&mutex_cola_io_generica); // cambiar nombre_mutex
+        printf("entra aca\n");
         queue_push(interfaz->cola_blocked, datos_stdin);
         pthread_mutex_unlock(&mutex_cola_io_generica);
 
@@ -555,10 +549,9 @@ void encolar_datos_stdin(t_pcb* pcb, t_pedido_lectura* pedido_lectura) {
         printf("La operacion deberia realizarse...\n");
         pthread_mutex_unlock(&mutex_lista_io);
     }
-
     // Habria que liberar toda la lista que se cargo adentro de pedido_lectura
     free(pedido_lectura);
-    free(interfaz);
+    // free(interfaz); NECESITAMOS LA INTERFAZ A POSTERIORI
 } 
 
 
