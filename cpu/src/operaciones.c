@@ -1030,7 +1030,7 @@ t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
     buffer->offset += sizeof(int);
 
     memcpy(buffer->stream + buffer->offset, io->nombre_interfaz, io->nombre_interfaz_largo);
-    printf("nombre interfaz lalala %s",  io->nombre_interfaz);
+    printf("nombre interfaz lalala %s\n",  io->nombre_interfaz);
     // buffer->offset += io->nombre_interfaz_largo;
     
     free(io->nombre_interfaz);

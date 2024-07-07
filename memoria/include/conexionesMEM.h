@@ -81,7 +81,7 @@ void printear_bitmap();
 t_copy_string* deserializarCopyString(t_buffer* buffer);
 void* handle_io_stdin(void* socket);
 void* handle_io_stdout(void* socket);
-t_pedido_escritura* desearializar_pedido_escritura(t_buffer* buffer);
+t_pedido* desearializar_pedido_escritura(t_buffer* buffer);
 char* leer(int tamanio, int direccion_fisica);
 t_buffer* llenar_buffer_stdout(char* valor);
 void recibir_resto_direcciones(t_list* lista_direcciones);
@@ -97,6 +97,6 @@ t_pedido_memoria* deserializar_direccion_fisica(t_buffer* buffer, t_list* direcc
 t_escritura_stdin* deserializar_escritura_stdin(void* stream);
 void imprimir_datos_stdin_escritura(t_escritura_stdin* escritura);
 t_pid_stdout* desearializar_pid_stdout(t_buffer* buffer);
-void enviar_valor_leido_a_io(int socket_io, char* registro_lectura, int tamanio); 
+void enviar_valor_leido_a_io(int pid, int socket_io, char* valor, int tamanio);
 
 #endif // CONEXIONES_H

@@ -402,7 +402,7 @@ t_info_io *deserializar_interfaz(t_buffer *buffer) {
 }
 
 t_paquete* inicializarIO_recibirPaquete(int socket) {
-    printf("Conexion establecida con I/O\n");
+    printf("Conexion establecida con I/O en sockets...\n");
 
     t_paquete *paquete = malloc(sizeof(t_paquete));
     if (!paquete) {

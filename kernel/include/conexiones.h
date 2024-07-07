@@ -56,6 +56,7 @@ int esperar_cliente(int socket_escucha, t_log* logger);
 void* handle_io_stdout(void* socket);
 void* handle_io_stdin(void* socket);
 int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin);
+int ejecutar_io_stdout(t_pid_stdout* pid_stdout);
 void* handle_io_generica(void* socket);
 int ejecutar_io_generica(int socket_io, t_pid_unidades_trabajo* pid_unidades_trabajo);
 int recibir_operacion(int socket_cliente);

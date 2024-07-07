@@ -38,7 +38,7 @@ typedef struct {
     int length_interfaz;
     char* interfaz;
     t_list* lista_dir_tamanio;
-} t_pedido_lectura;
+} t_pedido;
 
 typedef struct {
     int pid;
@@ -115,6 +115,7 @@ typedef struct {
     void* valor_a_escribir;
     uint32_t length_valor;
 } t_pedido_memoria;
+
 typedef enum {
     PATH,
 	ENVIO_PCB,
@@ -149,13 +150,6 @@ typedef enum {
     ESCRITURA,
     LECTURA
 } tipo_operacion;
-
-typedef struct{
-    int direccion_fisica;
-    int tamanio;
-    int longitud_nombre_interfaz;
-    char* nombre_interfaz;
-} t_pedido_escritura;
 
 typedef struct {
 	int size;

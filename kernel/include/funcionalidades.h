@@ -106,13 +106,13 @@ void *esperar_RR(void *sockets_Int) ;
 // t_pcb* sacarPCBDeDondeEste(int pid);
 
 t_parametro* deserializar_parametro(t_buffer* buffer);
-t_pedido_lectura* deserializar_pedido_lectura(t_buffer* buffer);
+t_pedido* deserializar_pedido(t_buffer* buffer);
 void wait_recurso(t_pcb* pcb, char* recurso);
 void signal_recurso(t_pcb* pcb, char* recurso);
-t_pedido_escritura* desearializar_pedido_escritura(t_buffer* buffer);
+// t_pedido_escritura* deserializar_pedido_escritura(t_buffer* buffer);
 void mandar_a_escribir_a_memoria(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio);
 t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, int tamanio);
-void encolar_datos_std(t_pcb* pcb, t_pedido_lectura* pedido_lectura);
+void encolar_datos_std(t_pcb* pcb, t_pedido* pedido);
 // void imprimir_datos_stdin(io_stdin* datos_stdin);
 
 void EJECUTAR_SCRIPT(char* path);

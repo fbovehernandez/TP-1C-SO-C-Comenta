@@ -9,8 +9,8 @@ CDEBUG=-g -Wall -DDEBUG -fdiagnostics-color=always
 CRELEASE=-O3 -Wall -DNDEBUG -fcommon
 
 # Arguments when executing with start, memcheck or helgrind
-ARGS="../entradasalida/stdin.config"
-ARGS2 = "stdin.config"
+ARGS="../entradasalida/generica.config"
+ARGS2 = "generica.config"
 NOMBRE_INTERFAZ = caro
 
 # Valgrind flags

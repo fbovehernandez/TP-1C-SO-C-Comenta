@@ -11,6 +11,7 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     kernelfd = crear_conexion(IP_KERNEL, puerto_kernel, handshake);
     
     if (kernelfd == -1) {
+        printf("AYUDAAAAAAAAAA ERROR CON KERNEEEEEEL\n");
         log_error(logger_io, "Error al conectar con Kernel\n");
         return -1;
     }
@@ -32,17 +33,15 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
 
     memcpy(stream + buffer->offset, &str_interfaz, sizeof(int));
     buffer->offset += sizeof(int);
-
     memcpy(stream + buffer->offset, nombre_interfaz, str_interfaz);
     buffer->offset += str_interfaz;
-
     memcpy(stream + buffer->offset, &tipo_interfaz, sizeof(TipoInterfaz));
     buffer->offset += sizeof(TipoInterfaz);
     
     buffer->stream = stream;
     // Enviar el paquete al Kernel
     enviar_paquete(buffer, CONEXION_INTERFAZ, kernelfd);
-
+    printf("ENVIO MI NOMBRE!!!\n");
     // Liberar memoria y retornar el descriptor de socket
     // free(buffer->stream);
     // free(buffer);
@@ -182,6 +181,8 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
                 free(pid_stdin);
                 break;
             default:
+                printf("Se rompio kernel!!!!\n");
+                exit(-1);
                 break;
         }
         liberar_paquete(paquete);        
@@ -210,14 +211,16 @@ void recibir_memoria(t_config* config_io, int socket_memoria) {
             case ESCRIBITE:
                 int tamanio, pid;
                 memcpy(&pid, paquete->buffer->stream, sizeof(int));
-                stream += sizeof(int);
+                paquete->buffer->stream += sizeof(int);
                 memcpy(&tamanio, paquete->buffer->stream, sizeof(int));
-                stream += sizeof(int);
+                paquete->buffer->stream += sizeof(int);
                 char* valor = malloc(tamanio);
                 memcpy(valor, paquete->buffer->stream, tamanio);
                 printf("El valor leido de memoria es: %s \n", valor);
                 break;
             default:
+                printf("Se rompio memoria!!!!\n");
+                exit(-1);
                 break;
         }
         liberar_paquete(paquete);        

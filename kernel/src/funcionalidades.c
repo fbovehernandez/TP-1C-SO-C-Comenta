@@ -35,8 +35,7 @@ void *interaccion_consola() { //no se si deberian pasarse los sockets
     char *path_ejecutable = malloc(sizeof(char) * 100); // Cantidad?
     int respuesta = 0;
     int valor;
-    while (respuesta != 8)
-    {
+    while (respuesta != 8) {
         printf("--------------- Consola interactiva Kernel ---------------\n");
         printf("Elija una opcion (numero)\n");
         printf("1- Ejecutar Script \n");
@@ -470,18 +469,18 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
         case PEDIDO_LECTURA:
 
             /// HAY QUE ACTUALIZAR NO EXISTE ESO ES IO_STD!!!!!!!!
-            t_pedido_lectura* pedido_lectura = deserializar_pedido_lectura(package->buffer);
+            t_pedido* pedido_lectura = deserializar_pedido(package->buffer);
 
             // mandar_io_blocked(pcb, pedido_lectura->interfaz);
             // mandar_datos_io_stdin(pcb, pedido_lectura->interfaz, pedido_lectura->direccion_fisica, pedido_lectura->registro_tamanio);
             
             encolar_datos_std(pcb, pedido_lectura);
-            log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, pedido_lectura->interfaz);    
+            log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, pedido_lectura->interfaz);   
             //free(pedido_lectura);
         case PEDIDO_ESCRITURA:
-            t_pedido_escritura* pedido_escritura = desearializar_pedido_escritura(package->buffer);
+            t_pedido* pedido_escritura = deserializar_pedido(package->buffer);
             encolar_datos_std(pcb, pedido_escritura);
-            log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->nombre_interfaz);
+            log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->interfaz);
             break;
         //case FS_CREATE:
             /*
@@ -521,18 +520,18 @@ t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre) {
 */
 
 
-void encolar_datos_stdin(t_pcb* pcb, t_pedido_lectura* pedido_lectura) {
+void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
     t_list_io* interfaz;
-    interfaz = io_esta_en_diccionario(pcb, pedido_lectura->interfaz);
+    interfaz = io_esta_en_diccionario(pcb, pedido->interfaz);
 
     if(interfaz != NULL) {
         int socket_io = interfaz->socket; // lo voy a necesitar?
 
         io_std* datos_stdin = malloc(sizeof(io_std));
 
-        datos_stdin->lista_direcciones = pedido_lectura->lista_dir_tamanio;
-        datos_stdin->registro_tamanio = pedido_lectura->registro_tamanio;
-        datos_stdin->cantidad_paginas = pedido_lectura->cantidad_paginas;
+        datos_stdin->lista_direcciones = pedido->lista_dir_tamanio;
+        datos_stdin->registro_tamanio = pedido->registro_tamanio;
+        datos_stdin->cantidad_paginas = pedido->cantidad_paginas;
         datos_stdin->pcb = pcb;
         
         printf("No voy a imprimir los datos stdin antes de agregarlos a la cola de bloqueados de la interfaz\n");
@@ -549,10 +548,11 @@ void encolar_datos_stdin(t_pcb* pcb, t_pedido_lectura* pedido_lectura) {
         printf("La operacion deberia realizarse...\n");
         pthread_mutex_unlock(&mutex_lista_io);
     }
-    // Habria que liberar toda la lista que se cargo adentro de pedido_lectura
-    free(pedido_lectura);
+    // Habria que liberar toda la lista que se cargo adentro de pedido
+    free(pedido);
     // free(interfaz); NECESITAMOS LA INTERFAZ A POSTERIORI
 } 
+
 
 
 /* 
@@ -567,47 +567,47 @@ t_operacion_io* operacion_io = malloc(sizeof(t_operacion_io));
     memcpy(&(operacion_io->unidadesDeTrabajo), stream, sizeof(int));
     stream += sizeof(int);
 */
-t_pedido_lectura* deserializar_pedido_lectura(t_buffer* buffer) {
-    t_pedido_lectura* pedido_lectura = malloc(sizeof(t_pedido_lectura));
+t_pedido* deserializar_pedido(t_buffer* buffer) {
+    t_pedido* pedido = malloc(sizeof(t_pedido));
 
     void* stream = buffer->stream + sizeof(int) * 3 + sizeof(Estado) * 2 + sizeof(uint8_t) * 4 + sizeof(uint32_t) * 6; 
 
-    memcpy(&(pedido_lectura->cantidad_paginas), stream, sizeof(int));
+    memcpy(&(pedido->cantidad_paginas), stream, sizeof(int));
     stream += sizeof(int);
-    printf("Cantidad de paginas: %d\n", pedido_lectura->cantidad_paginas);
+    printf("Cantidad de paginas: %d\n", pedido->cantidad_paginas);
 
-    pedido_lectura->lista_dir_tamanio = list_create();
+    pedido->lista_dir_tamanio = list_create();
     // Deserializar lista con dir fisica y tamanio en bytes a leer segun la cant de pags
-    for(int i = 0; i < pedido_lectura->cantidad_paginas; i++) {
+    for(int i = 0; i < pedido->cantidad_paginas; i++) {
         t_dir_fisica_tamanio* dir_fisica_tam = malloc(sizeof(t_dir_fisica_tamanio));
         memcpy(&(dir_fisica_tam->direccion_fisica), stream, sizeof(int));
         stream += sizeof(int);
         memcpy(&(dir_fisica_tam->bytes_lectura), stream, sizeof(int));
         stream += sizeof(int);
 
-        list_add(pedido_lectura->lista_dir_tamanio, dir_fisica_tam);
+        list_add(pedido->lista_dir_tamanio, dir_fisica_tam);
     }
 
-    memcpy(&(pedido_lectura->registro_tamanio), stream, sizeof(uint32_t));
+    memcpy(&(pedido->registro_tamanio), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
 
-    printf("Registro tamanio: %d\n", pedido_lectura->registro_tamanio);
+    printf("Registro tamanio: %d\n", pedido->registro_tamanio);
 
-    memcpy(&(pedido_lectura->length_interfaz), stream, sizeof(int));
+    memcpy(&(pedido->length_interfaz), stream, sizeof(int));
     stream += sizeof(int);
 
     // Se recibe mal el length
-    printf("Length interfaz: %d\n", pedido_lectura->length_interfaz);
+    printf("Length interfaz: %d\n", pedido->length_interfaz);
 
-    pedido_lectura->interfaz = malloc(pedido_lectura->length_interfaz);
-    memcpy(pedido_lectura->interfaz, stream, pedido_lectura->length_interfaz);
+    pedido->interfaz = malloc(pedido->length_interfaz);
+    memcpy(pedido->interfaz, stream, pedido->length_interfaz);
 
     // Insertar /0 y leer
 
-    pedido_lectura->interfaz[pedido_lectura->length_interfaz] = '\0';
-    printf("Interfaz: %s\n", pedido_lectura->interfaz);
+    pedido->interfaz[pedido->length_interfaz] = '\0';
+    printf("Interfaz: %s\n", pedido->interfaz);
 
-    return pedido_lectura;
+    return pedido;
 }
 
 /*
@@ -701,14 +701,15 @@ En caso de que la interfaz exista y esté conectada, se deberá validar que la i
 operación solicitada, en caso de que no sea así, se deberá enviar el proceso a EXIT. */
 
 t_list_io* validar_io(t_operacion_io* io, t_pcb* pcb) {
-    bool match_nombre(void* nodo_lista) {
+    /*bool match_nombre(void* nodo_lista) {
         return strcmp(((t_list_io*)nodo_lista)->nombreInterfaz, io->nombre_interfaz) == 0;
-    };
+    };*/
 
     printf("Valida la io\n");
     
     pthread_mutex_lock(&mutex_lista_io);
-    t_list_io* elemento_encontrado = list_find(lista_io, match_nombre); // Aca deberia buscar la interfaz en la lista de io
+    // t_list_io* elemento_encontrado = list_find(lista_io, match_nombre); // Aca deberia buscar la interfaz en la lista de io
+    t_list_io* elemento_encontrado = dictionary_get(diccionario_io, io->nombre_interfaz);
 
     if(elemento_encontrado == NULL || elemento_encontrado->TipoInterfaz != GENERICA) { // Deberia ser global
         // pasar_a_exit(pcb);
@@ -1291,21 +1292,6 @@ t_pcb *algoritmo_fifo(t_list *lista)
 	return pcb;
 }
 */
-t_pedido_escritura* desearializar_pedido_escritura(t_buffer* buffer) {
-    t_pedido_escritura* pedido_escritura = malloc(sizeof(t_pedido_escritura));
-
-    void* stream = buffer->stream;
-    // Deserializamos los campos que tenemos en el buffer
-    memcpy(&(pedido_escritura->direccion_fisica), stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&(pedido_escritura->longitud_nombre_interfaz), stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&(pedido_escritura->tamanio), stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&(pedido_escritura->nombre_interfaz), stream, sizeof(pedido_escritura->longitud_nombre_interfaz));
-
-    return pedido_escritura;    
-}
 
 void mandar_a_escribir_a_memoria(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio){
     t_buffer* buffer = llenar_buffer_stdout(direccion_fisica, nombre_interfaz, tamanio);
