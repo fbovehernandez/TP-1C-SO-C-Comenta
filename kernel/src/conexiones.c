@@ -96,7 +96,7 @@ int esperar_cliente(int socket_escucha, t_log* logger) {
 void *handle_io_stdin(void *socket_io) {
     printf("llego hasta handle io stdin 1\n");    
     int socket = (intptr_t)socket_io;
-
+    int termino_io;
     // Por que manda esto
     // int result = 0;
     // send(socket, &result, sizeof(int), 0);
@@ -317,12 +317,6 @@ int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
 
     return resultOk;
 }
-
-/*
-void* handle_io_dialfs(void* socket_io){
-    
-}
-*/
 
 void *handle_io_generica(void *socket_io) {
     int socket = (intptr_t)socket_io;

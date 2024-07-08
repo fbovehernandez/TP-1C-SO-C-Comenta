@@ -187,22 +187,20 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
                 free(pid_stdin);
                 break;
             case CREAR_ARCHIVO:
-                /* 
-                t_fs_create_delete pedido_creacion = deserializar_pedido_creacion_destruccion(); // Capaz hay nombres mejores, cualquier cosa culpa de caro (joda xd)
+                t_fs_create_delete* pedido_creacion = deserializar_pedido_creacion_destruccion(paquete->buffer); 
                 FILE* archivo;
                 archivo = fopen(pedido_creacion->nombre_archivo,"w");
 
                 if (archivo == NULL) {
                     printf("Error al abrir el archivo.\n");
                 } else{
-                    log_info(logger_io,PID: %d - Crear Archivo: pedido_creacion->nombre_archivo,pedido_creacion->);
+                    log_info(logger_io,"PID: %d - Crear Archivo: %s",pedido_creacion->pid,pedido_creacion->nombre_archivo);
                 }
-                */
+                
                 break;
-            /*
             case ELIMINAR_ARCHIVO:
+                
                 break;
-            */
             default:
                 printf("Se rompio kernel!!!!\n");
                 exit(-1);
@@ -286,4 +284,18 @@ t_pid_stdin* deserializar_pid_stdin(t_buffer* buffer) {
     }
     printf("llego hasta deserializar pid stdin\n");
     return pid_stdin;
+}
+
+t_fs_create_delete* deserializar_pedido_creacion_destruccion(t_buffer* buffer){
+    t_fs_create_delete* fs_create_delete = malloc(sizeof(t_fs_create_delete));
+    
+    void* stream = buffer->stream;
+
+    memcpy(&fs_create_delete->pid, stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&fs_create_delete->largo_archivo, stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&fs_create_delete->nombre_archivo, stream,fs_create_delete->largo_archivo);
+    
+    return fs_create_delete;
 }

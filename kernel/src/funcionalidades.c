@@ -480,14 +480,14 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->interfaz);
             break;
         case FS_CREATE:
-            /*
+            
             t_pedido_fs_create_delete* pedido_fs_create = deserializar_pedido_fs_create(package->buffer);
-            t_list_io* interfaz = io_esta_en_diccionario(pcb, pedido_fs_create->interfaz);
+            t_list_io* interfaz = io_esta_en_diccionario(pcb, pedido_fs_create->nombre_interfaz);
             if(interfaz != NULL){
                 enviar_buffer_fs(interfaz->socket,pcb->pid,pedido_fs_create->longitud_nombre_archivo,pedido_fs_create->nombre_archivo,CREAR_ARCHIVO);
-                log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid,  pedido_fs_create->interfaz);
+                log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid,pedido_fs_create->nombre_interfaz);
             }
-            */
+            
             break;
         case FS_DELETE:
             /*
@@ -509,7 +509,6 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
 
 t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre) {
     if(dictionary_has_key(diccionario_io, interfaz_nombre)) {
-
         t_list_io* interfaz = dictionary_get(diccionario_io, interfaz_nombre);
         printf("Nombre a comparar buscado %s\n", interfaz_nombre);
         printf("Nombre a comparar recibido %s\n", interfaz->nombreInterfaz);
@@ -538,17 +537,17 @@ t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre) {
         direccion_fisica  | datos: direccion_fisica                                 |
         registro_tamanio  |        registro_tamanio                                 |
 */
-/*
 
-void enviar_buffer_fs(int socker_io,int pid,int longitud_nombre_archivo,char* nombre_archivo, codigo_operacion codigo_operacion) {
+
+void enviar_buffer_fs(int socket_io,int pid,int longitud_nombre_archivo,char* nombre_archivo, codigo_operacion codigo_operacion) {
     t_buffer* buffer = llenar_buffer_nombre_archivo_pid(pid,longitud_nombre_archivo,nombre_archivo);
-    enviar_paquete(socket_io,buffer,codigo_operacion);
+    enviar_paquete(buffer,codigo_operacion,socket_io);
 } 
 
 t_buffer* llenar_buffer_nombre_archivo_pid(int pid,int largo_archivo,char* nombre_archivo){
-    t_buffer *buffer = malloc(sizeof(t_buffer));
+    t_buffer* buffer = malloc(sizeof(t_buffer));
 
-    buffer->size = sizeof(int) + sizeof(largo_interfaz) + sizeof(int);
+    buffer->size = sizeof(int) + sizeof(largo_archivo) + sizeof(int);
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
@@ -556,7 +555,7 @@ t_buffer* llenar_buffer_nombre_archivo_pid(int pid,int largo_archivo,char* nombr
 
     memcpy(stream + buffer->offset, &pid, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &(largo_archivo), sizeof(int)); // sizeof(largo_interfaz) ????
+    memcpy(stream + buffer->offset, &(largo_archivo), sizeof(int)); 
     buffer->offset += sizeof(int);
     memcpy(stream + buffer->offset, &nombre_archivo, largo_archivo);
     
@@ -565,7 +564,7 @@ t_buffer* llenar_buffer_nombre_archivo_pid(int pid,int largo_archivo,char* nombr
     free(nombre_archivo);
     return buffer;
 }
-*/
+
 
 void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
     t_list_io* interfaz;
@@ -1383,9 +1382,9 @@ t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, int t
     return buffer;
 }
 
-/*
-t_pedido_fs_create* deserializar_pedido_fs_create(t_buffer* buffer){
-    t_pedido_fs_create* pedido_fs = malloc(sizeof( t_pedido_fs_create));
+
+t_pedido_fs_create_delete* deserializar_pedido_fs_create(t_buffer* buffer){
+    t_pedido_fs_create_delete* pedido_fs = malloc(sizeof(t_pedido_fs_create_delete));
 
     void* stream = buffer->stream;
     // Deserializamos los campos que tenemos en el buffer
@@ -1400,4 +1399,4 @@ t_pedido_fs_create* deserializar_pedido_fs_create(t_buffer* buffer){
 
     return pedido_fs;    
 }
-*/
+

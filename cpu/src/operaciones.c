@@ -629,8 +629,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         free(buffer_escritura);
         break;
-    /*
-    case IO_FS_CREATE: 
+    case IO_FS_CREATE: // IO_FS_CREATE nombre_interfaz nombre_arch
         t_parametro* primer_parametro1 = list_get(list_parametros, 0);
         char* nombre_interfaz1 = primer_parametro1->nombre;
 
@@ -649,33 +648,21 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         enviar_buffer_fs_create_delete(nombre_interfaz2, nombre_archivo2, FS_DELETE);
         
         break;
-    case IO_FS_DELETE:
-        
-        t_parametro* primer_parametro = list_get(list_parametro,0);
-        char* nombre_interfaz = primer_parametro->nombre;
-
-        t_parametro* segundo_parametro = list_get(list_parametro,1);
-        char* nombre_archivo = segundo_parametro->nombre; 
-        
-        enviar_buffer_fs_delete(nombre_interaz,nombre_archivo);
-        
-        break;
-    
     case IO_FS_TRUNCATE:
-        t_parametro* primer_parametro = list_get(list_parametro,0);
-        char* nombre_interfaz = primer_parametro->nombre;
+        t_parametro* primer_parametro3 = list_get(list_parametros,0);
+        char* nombre_interfaz3 = primer_parametro3->nombre;
 
-        t_parametro* segundo_parametro = list_get(list_parametro,1);
-        char* nombre_archivo = segundo_parametro->nombre; 
+        t_parametro* segundo_parametro3 = list_get(list_parametros,1);
+        char* nombre_archivo3 = segundo_parametro3->nombre; 
         
-        enviar_buffer_fs_create(nombre_interaz,nombre_archivo);
+
         
         break;
     case IO_FS_READ:
         break;
     case IO_FS_WRITE:
         break;
-    */
+    
     default:
         printf("Error: No existe ese tipo de instruccion\n");
         printf("La instruccion recibida es: %d\n", nombreInstruccion);
@@ -1299,7 +1286,7 @@ t_buffer* llenar_buffer_fs_create_delete(char* nombre_interfaz,char* nombre_arch
     buffer->stream = malloc(buffer->size);
 
     void *stream = buffer->stream;
-
+   
     memcpy(stream + buffer->offset, &largo_nombre_interfaz, sizeof(int));
     buffer->offset += sizeof(int);
     memcpy(stream + buffer->offset, nombre_interfaz, largo_nombre_interfaz);

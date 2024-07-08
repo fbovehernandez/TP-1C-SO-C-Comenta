@@ -328,6 +328,12 @@ typedef struct{
     char* nombre_archivo;
 } t_pedido_fs_create_delete;
 
+typedef struct{
+    int pid;
+    int largo_archivo;
+    char* nombre_archivo;
+} t_fs_create_delete;
+
 // Este dir_fisica abarca todo lo que se envia como primer pagina para que la memoria pueda leer/escribir datos
 typedef struct {
     int direccion_fisica;
