@@ -176,6 +176,8 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 free(pedido_operacion->valor_a_escribir);
                 free(pedido_operacion);
                 break;
+            // case FS_CREATE:
+
             default:
                 printf("No reconozco ese cod-op...\n"); 
                 return NULL;

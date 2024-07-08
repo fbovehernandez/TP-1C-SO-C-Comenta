@@ -113,6 +113,8 @@ void signal_recurso(t_pcb* pcb, char* recurso);
 void mandar_a_escribir_a_memoria(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio);
 t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, int tamanio);
 void encolar_datos_std(t_pcb* pcb, t_pedido* pedido);
+//t_pedido_fs_create* deserializar_pedido_fs_create(t_buffer* buffer);
+void mandar_pedido_fs();
 // void imprimir_datos_stdin(io_stdin* datos_stdin);
 
 void EJECUTAR_SCRIPT(char* path);

@@ -629,19 +629,28 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         free(buffer_escritura);
         break;
-    case IO_FS_CREATE: // IO_FS_CREATE Int4 notas.txt
-        /*
-        t_parametro* primer_parametro = list_get(list_parametro,0);
-        char* nombre_interfaz = primer_parametro->nombre;
+    /*
+    case IO_FS_CREATE: 
+        t_parametro* primer_parametro1 = list_get(list_parametros, 0);
+        char* nombre_interfaz1 = primer_parametro1->nombre;
 
-        t_parametro* segundo_parametro = list_get(list_parametro,1);
-        char* nombre_archivo = segundo_parametro->nombre; 
+        t_parametro* segundo_parametro1 = list_get(list_parametros, 1);
+        char* nombre_archivo1 = segundo_parametro1->nombre; 
         
-        enviar_buffer_fs_create(nombre_interaz,nombre_archivo);
-        */
+        enviar_buffer_fs_create_delete(nombre_interfaz1, nombre_archivo1, FS_CREATE);
+        break;
+    case IO_FS_DELETE: // IO_FS_CREATE Int4 notas.txt lo mismo con delete
+        t_parametro* primer_parametro2 = list_get(list_parametros, 0);
+        char* nombre_interfaz2 = primer_parametro2->nombre;
+
+        t_parametro* segundo_parametro2 = list_get(list_parametros, 1);
+        char* nombre_archivo2 = segundo_parametro2->nombre; 
+    
+        enviar_buffer_fs_create_delete(nombre_interfaz2, nombre_archivo2, FS_DELETE);
+        
         break;
     case IO_FS_DELETE:
-        /*
+        
         t_parametro* primer_parametro = list_get(list_parametro,0);
         char* nombre_interfaz = primer_parametro->nombre;
 
@@ -649,10 +658,10 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         char* nombre_archivo = segundo_parametro->nombre; 
         
         enviar_buffer_fs_delete(nombre_interaz,nombre_archivo);
-        */
+        
         break;
+    
     case IO_FS_TRUNCATE:
-        /*
         t_parametro* primer_parametro = list_get(list_parametro,0);
         char* nombre_interfaz = primer_parametro->nombre;
 
@@ -660,12 +669,13 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         char* nombre_archivo = segundo_parametro->nombre; 
         
         enviar_buffer_fs_create(nombre_interaz,nombre_archivo);
-        */
+        
         break;
     case IO_FS_READ:
         break;
     case IO_FS_WRITE:
         break;
+    */
     default:
         printf("Error: No existe ese tipo de instruccion\n");
         printf("La instruccion recibida es: %d\n", nombreInstruccion);
@@ -1270,42 +1280,21 @@ t_buffer* llenar_buffer_stdout(int direccion_fisica, char* nombre_interfaz, uint
 
     return buffer;
 }
-/*
-void enviar_buffer_fs_create(char* nombre_interaz,char* nombre_archivo){
+
+void enviar_buffer_fs_create_delete(char* nombre_interfaz,char* nombre_archivo,codigo_operacion codigo){
     t_buffer* buffer;
-    buffer = llenar_buffer_fs_create(nombre_interfaz,nombre_archivo);
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-
-    paquete->codigo_operacion = FS_CREATE; 
-    paquete->buffer = buffer; 
-    printf("llego a enviar buffer stdout\n");
-    int largo = string_length(nombre_interfaz);
-
-    // Armamos el stream a enviar   
-    void* a_enviar = malloc(buffer->size + sizeof(int) * 2 + sizeof(largo));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    // Por último enviamos
-    send(soccket_kernel, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-
-    // Falta liberar todo
-    free(a_enviar);
-   liberar_paquete(paquete)
+    buffer = llenar_buffer_fs_create_delete(nombre_interfaz,nombre_archivo);
+    enviar_paquete(buffer,codigo,client_dispatch);
 }
 
 
-t_buffer* llenar_buffer_fs_create(char* nombre_interfaz,char* nombre_archivo){
+t_buffer* llenar_buffer_fs_create_delete(char* nombre_interfaz,char* nombre_archivo){
     t_buffer *buffer = malloc(sizeof(t_buffer));
-    int largo_nombre_interfaz = string_length(nombre_interfaz);
-    int largo_nombre_archivo = string_length(nombre_archivo);
+    
+    int largo_nombre_interfaz = string_length(nombre_interfaz);  // + 1?????
+    int largo_nombre_archivo = string_length(nombre_archivo);  // +1 ????????
 
-    buffer->size = sizeof(int) * 2 + largo_nombre_interfaz + largo_nombre_archivo;
+    buffer->size = sizeof(int) * 2 + largo_nombre_interfaz + largo_nombre_archivo; // Revisar esto AYUDAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
@@ -1321,10 +1310,9 @@ t_buffer* llenar_buffer_fs_create(char* nombre_interfaz,char* nombre_archivo){
     buffer->offset += largo_nombre_archivo;
 
     return buffer;
-
 }
 
-*/ 
+
 
 /****
  NOTA -> Ya lo puse en un issue pero igual lo pongo tambien por aca asi lo ven. Cuando arregle el ultimo problema de serializacion del manejo del recurso, lo hice igual que aca, 

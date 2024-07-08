@@ -40,7 +40,7 @@ int main(int argc, char* argv[2]) {
     } else if (strcmp(tipo_interfaz, "GENERICA") == 0) {
         iniciar_interfaz_generica(nombre_io, config_io, IP_KERNEL, puerto_kernel);
     } else if (strcmp(tipo_interfaz, "DialFS") == 0) {
-        // iniciar_DIALFS(nombre_io,config_io,IP_KERNEL,IP_MEMORIA,puerto_kernel,puerte_memoria);
+        // iniciar_dialfs(nombre_io,config_io,IP_KERNEL,IP_MEMORIA,puerto_kernel,puerte_memoria);
     } else {
         printf("No trates de hacer mi experiencia con operativos peor\n");
         // insert logica

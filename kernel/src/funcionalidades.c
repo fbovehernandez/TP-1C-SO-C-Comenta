@@ -459,6 +459,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             break;
         case FIN_PROCESO:
             // pcb = deserializar_pcb(package->buffer); 
+            log_info(logger_kernel, "Finaliza el proceso %d - Motivo: SUCCESS", pcb->pid);
             pasar_a_exit(pcb);
             //liberar_memoria(pcb->pid); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
             //change_status(pcb, EXIT); 
@@ -481,11 +482,10 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             encolar_datos_std(pcb, pedido_escritura);
             log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->interfaz);
             break;
-        //case FS_CREATE:
-            /*
-            t_pedido_fs_create* pedido_fs = desearializar_pedido_fs_create(package->buffer);
-            */
-            //break;
+        case FS_CREATE:
+            // t_pedido_fs_create_delete* pedido_fs_create = deserializar_pedido_fs_create(package->buffer);
+            // mandar_pedido_fs(pedido_fs_create);
+            break;
         default:
             printf("Llego a default de la 333 en funcionalidades.c\n");
             exit(-1);
@@ -493,10 +493,16 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     }
     liberar_paquete(package);
 }
+/*
+void mandar_pedido_fs(t_pedido_fs_create_delete* pedido_fs_create) {
+    
+}
+*/
+
 
 t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre) {
     if(dictionary_has_key(diccionario_io, interfaz_nombre)) {
-        
+
         t_list_io* interfaz = dictionary_get(diccionario_io, interfaz_nombre);
         printf("Nombre a comparar buscado %s\n", interfaz_nombre);
         printf("Nombre a comparar recibido %s\n", interfaz->nombreInterfaz);
@@ -507,7 +513,7 @@ t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre) {
         }
         return interfaz;
     } else {
-        log_info(logger_kernel,"Finaliza el proceso %d - Motivo: INVALID_INTERFACE",pcb->pid);
+        log_info(logger_kernel, "Finaliza el proceso %d - Motivo: INVALID_INTERFACE", pcb->pid);
         pasar_a_exit(pcb);
         return NULL;
     }
@@ -534,19 +540,19 @@ void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
     if(interfaz != NULL) {
         int socket_io = interfaz->socket; // lo voy a necesitar?
 
-        io_std* datos_stdin = malloc(sizeof(io_std));
+        io_std* datos_std = malloc(sizeof(io_std));
 
-        datos_stdin->lista_direcciones = pedido->lista_dir_tamanio;
-        datos_stdin->registro_tamanio = pedido->registro_tamanio;
-        datos_stdin->cantidad_paginas = pedido->cantidad_paginas;
-        datos_stdin->pcb = pcb;
+        datos_std->lista_direcciones = pedido->lista_dir_tamanio;
+        datos_std->registro_tamanio = pedido->registro_tamanio;
+        datos_std->cantidad_paginas = pedido->cantidad_paginas;
+        datos_std->pcb = pcb;
         
         printf("No voy a imprimir los datos stdin antes de agregarlos a la cola de bloqueados de la interfaz\n");
         // imprimir_datos_stdin();
 
         pthread_mutex_lock(&mutex_cola_io_generica); // cambiar nombre_mutex
         printf("entra aca\n");
-        queue_push(interfaz->cola_blocked, datos_stdin);
+        queue_push(interfaz->cola_blocked, datos_std);
         pthread_mutex_unlock(&mutex_cola_io_generica);
 
         // use lo que estaba, antes decia sem_post al mutex, por eso, era un binario o eso entendi
@@ -918,6 +924,7 @@ void wait_recurso(t_pcb* pcb, char* recurso) {
         }
         dictionary_put(datos_kernel->diccionario_recursos, recurso, recurso_removido);
     } else {
+        log_info(logger_kernel,"Finaliza el proceso %d - Motivo: INVALID_RESOURCE", pcb->pid);
         pasar_a_exit(pcb);
     }
 }
@@ -1340,10 +1347,8 @@ t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, int t
 }
 
 /*
-
-// REVISAR SERIALIZACION
-t_pedido_create_fs* desearlizar_pedido_fs_create(t_buffer* buffer){
-    t_pedido_create_fs* pedido_fs = malloc(sizeof(t_pedido_fs));
+t_pedido_fs_create* deserializar_pedido_fs_create(t_buffer* buffer){
+    t_pedido_fs_create* pedido_fs = malloc(sizeof( t_pedido_fs_create));
 
     void* stream = buffer->stream;
     // Deserializamos los campos que tenemos en el buffer
@@ -1357,5 +1362,9 @@ t_pedido_create_fs* desearlizar_pedido_fs_create(t_buffer* buffer){
     memcpy(&(pedido_fs->nombre_interfaz), stream, sizeof(pedido_fs->longitud_nombre_archivo));
 
     return pedido_fs;    
+}
+
+void mandar_pedido_fs(){
+    
 }
 */

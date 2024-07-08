@@ -45,7 +45,7 @@ ptr_kernel* solicitar_datos(t_config* config_kernel){
 int esperar_cliente(int socket_escucha, t_log* logger) {
     int handshake = 0;
     int resultError = -1;
-    int resultOk = 1;
+    int resultOk = 0;
     
     printf("Esperando a la IO\n");
     
@@ -75,7 +75,13 @@ int esperar_cliente(int socket_escucha, t_log* logger) {
         pthread_t hilo_io;
         pthread_create(&hilo_io, NULL, (void*) handle_io_stdout, (void*)(intptr_t) socket_cliente);
         pthread_detach(hilo_io);
-    } else {
+    }//else if{
+        /*
+        pthread_t hilo_io;
+        pthread_create(&hilo_io, NULL, (void*) handle_io_dialfs, (void*)(intptr_t) socket_cliente);
+        pthread_detach(hilo_io);
+        */
+    else {
         send(socket_cliente, &resultError, sizeof(int), 0);
         printf("ENTRO POR ACA\n");
         close(socket_cliente);
@@ -309,6 +315,9 @@ int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
     return resultOk;
 }
 
+void* handle_io_dialfs(void* socket_io){
+    
+}
 
 void *handle_io_generica(void *socket_io) {
     int socket = (intptr_t)socket_io;
@@ -586,18 +595,15 @@ t_list_io* establecer_conexion(t_buffer *buffer, int socket_io) {
 
     io->socket         = socket_io;
     io->TipoInterfaz   = interfaz->tipo;
-    io->nombreInterfaz = interfaz->nombre_interfaz;
+    // io->nombreInterfaz = interfaz->nombre_interfaz;
     io->cola_blocked   = queue_create();
     
     // Esta memoria la liberamos cuando la io se desconecte
     io->semaforo_cola_procesos_blocked = malloc(sizeof(sem_t));
     sem_init(io->semaforo_cola_procesos_blocked, 0, 0);
-    /*
-    t_list_io* nueva_interfaz = malloc(sizeof(t_list_io));
-    nueva_interfaz->nombreInterfaz = strdup(interfaz_nombre); // Asignación del nombre
-    // Otros campos de t_list_io
-    dictionary_put(diccionario_io, interfaz_nombre, nueva_interfaz);
-    */
+    
+    io->nombreInterfaz = strdup(interfaz->nombre_interfaz); // Asignación del nombre
+    
     dictionary_put(diccionario_io, interfaz->nombre_interfaz, (void*)io);
     printf("\n\n el nombre de la interfaz es: %s\n\n", interfaz->nombre_interfaz);
     mostrar_elem_diccionario(interfaz->nombre_interfaz);

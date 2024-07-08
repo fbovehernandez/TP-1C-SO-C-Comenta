@@ -142,6 +142,7 @@ typedef enum {
     RECIBIR_DIR_FISICA,
     LEER_DATO_MEMORIA,
     FS_CREATE,
+    FS_DELETE,
     MOSTRAR,
     ESCRIBITE
 } codigo_operacion;
@@ -323,7 +324,7 @@ typedef struct{
     char* nombre_interfaz;
     int longitud_nombre_archivo;
     char* nombre_archivo;
-} t_pedido_fs_create;
+} t_pedido_fs_create_delete;
 
 // Este dir_fisica abarca todo lo que se envia como primer pagina para que la memoria pueda leer/escribir datos
 typedef struct {

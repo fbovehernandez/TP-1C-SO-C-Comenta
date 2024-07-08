@@ -66,5 +66,7 @@ t_buffer* serializar_escritura(int direccion_fisica, int tamanio_en_bytes, int c
 t_buffer* serializar_direcciones_fisicas(int cantidad_paginas, t_list* direcciones_fisicas, void* registro_dato_mov_out, int tamanio_valor, int pid);
 void enviar_direcciones_fisicas(int cantidad_paginas, t_list* direcciones_fisicas, void* registro_dato_mov_out, int tamanio_valor, int pid, codigo_operacion cod_op);
 void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectura, uint32_t direccion_logica, int pid, t_list* direcciones_fisicas, int pagina);
+t_buffer* llenar_buffer_fs_create_delete(char* nombre_interfaz,char* nombre_archivo);
+void enviar_buffer_fs_create_delete(char* nombre_interfaz,char* nombre_archivo,codigo_operacion codigo);
 
 #endif 

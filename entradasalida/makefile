@@ -54,7 +54,11 @@ start: debug
 
 .PHONY: start2
 start2: debug
-	valgrind --tool=none ./$(BIN) $(ARGS2) $(NOMBRE_INTERFAZ) 
+	valgrind --tool=none ./$(BIN) $(ARGS2) $(NOMBRE_INTERFAZ1) 
+
+.PHONY: start3
+start3: debug
+	valgrind --tool=none ./$(BIN) $(ARGS3) $(NOMBRE_INTERFAZ2) 
 
 .PHONY: memcheck
 memcheck: debug
