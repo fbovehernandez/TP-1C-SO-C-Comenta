@@ -97,8 +97,9 @@ void *handle_io_stdin(void *socket_io) {
     printf("llego hasta handle io stdin 1\n");    
     int socket = (intptr_t)socket_io;
 
-    int result = 0;
-    send(socket, &result, sizeof(int), 0);
+    // Por que manda esto
+    // int result = 0;
+    // send(socket, &result, sizeof(int), 0);
     
     t_paquete *paquete = inicializarIO_recibirPaquete(socket);
     
@@ -134,14 +135,14 @@ void *handle_io_stdin(void *socket_io) {
         pthread_mutex_unlock(&mutex_cola_io_generica);
 
         // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
-
+        
         pid_stdin->pid = datos_stdin->pcb->pid;
         pid_stdin->cantidad_paginas = datos_stdin->cantidad_paginas;
         pid_stdin->lista_direcciones = datos_stdin->lista_direcciones;
         pid_stdin->registro_tamanio = datos_stdin->registro_tamanio;
         // mandar la io a memoria
-        int respuesta_ok = ejecutar_io_stdin(io->socket, pid_stdin);
-
+        int respuesta_ok = ejecutar_io_stdin(socket, pid_stdin);
+        printf("la respuesta ok es: %d\n", respuesta_ok);
         if (!respuesta_ok) {
             printf("Se ejecuto correctamente la IO...\n");
         
@@ -149,17 +150,14 @@ void *handle_io_stdin(void *socket_io) {
             // datos_sleep->pcb->estadoActual = READY;
             // printf("Estado pcb : %d\n", datos_sleep->pcb->estadoActual);
             
-            int termino_io;
-
-            
             recv(socket, &termino_io, sizeof(int), MSG_WAITALL);
             
-
             printf("Termino io: %d\n", termino_io);
             if (termino_io == 1) { // El send de termino io envia 1.
                 printf("Termino la IO\n");
                 pasar_a_ready(datos_stdin->pcb);
             }
+            break;
         } else {
             printf("No se pudo ejecutar la IO\n");
             break;
@@ -184,7 +182,9 @@ int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin) {
     memcpy(buffer->stream + buffer->offset, &pid_stdin->registro_tamanio, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
     memcpy(buffer->stream + buffer->offset, &pid_stdin->cantidad_paginas, sizeof(int));
-    buffer->offset += sizeof(int);
+    buffer->offset += sizeof(int); 
+    printf("la cant de paginas es: %d\n", pid_stdin->cantidad_paginas);
+
     for(int i=0; i < pid_stdin->cantidad_paginas; i++) {
         t_dir_fisica_tamanio* dir_fisica_tam = list_get(pid_stdin->lista_direcciones, i);
         memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->direccion_fisica, sizeof(int));
@@ -193,20 +193,23 @@ int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin) {
         buffer->offset += sizeof(int);
     }
 
+    printf("Va a hacer LEETE... o eso deberia.\n");
     enviar_paquete(buffer, LEETE, socket);
 
     int resultOk;
 
     recv(socket, &resultOk, sizeof(int), MSG_WAITALL);
-
+    printf("el resultOk es: %d\n", resultOk);
     return resultOk; // Ojo que siempre retorna 0 y por ende ejecuta bien
 }
 
 void* handle_io_stdout(void* socket_io) {
     printf("llego hasta handle io stdout 1\n");    
     int socket = (intptr_t)socket_io;
-    int result = 0;
-    send(socket, &result, sizeof(int), 0);
+    
+    /*int result = 0;
+    send(socket, &result, sizeof(int), 0);*/
+
     t_paquete *paquete = inicializarIO_recibirPaquete(socket);
     t_list_io* io;
     switch (paquete->codigo_operacion) {
@@ -315,9 +318,11 @@ int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
     return resultOk;
 }
 
+/*
 void* handle_io_dialfs(void* socket_io){
     
 }
+*/
 
 void *handle_io_generica(void *socket_io) {
     int socket = (intptr_t)socket_io;

@@ -673,15 +673,14 @@ void* handle_io_stdin(void* socket) {
                 char* registro_escritura = escritura_stdin->valor;
 
                 realizar_operacion(ESCRITURA, escritura_stdin->pid_stdin->lista_direcciones, user_space_aux, registro_escritura, NULL); 
-                printf("Registro escrito como char* %s\n", ((char*)registro_escritura));
-
+                printf("\n\nRegistro escrito como char* %s\n\n", ((char*)registro_escritura));
+                
+                int terminoOk = 1;
                 // send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
                 // printf("el valor guardado en dir fisica por STDIN: %s\n", registro_escritura);
-
+                send(socket_io, &terminoOk, sizeof(int), 0);
                 // void* primera_direccion = list_get(escritura_stdin->pid_stdin->lista_direcciones, 0);
                 // log_info(logger_memoria,"PID %d - Accion: ESCRIBIR - Direccion fisica: %d - Tamanio %d", escritura_stdin->pid_stdin->pid, *(int*)primera_direccion, escritura_stdin->valor_length);
-                
-                
                 free(escritura_stdin->pid_stdin);
                 free(escritura_stdin->valor); 
                 free(escritura_stdin);
@@ -797,7 +796,7 @@ char* instruccion_a_string(TipoInstruccion tipo) {
         case WAIT: return "WAIT";
         case SIGNAL: return "SIGNAL";
         case IO_GEN_SLEEP: return "IO_GEN_SLEEP";
-        case IO_STDIN_READ: return "IO_STDIN_READ";
+        case IO_STDIN_READ: return "IO__READ";
         case IO_STDOUT_WRITE: return "IO_STDOUT_WRITE";
         case IO_FS_CREATE: return "IO_FS_CREATE";
         case IO_FS_DELETE: return "IO_FS_DELETE";
@@ -898,7 +897,7 @@ TipoInstruccion pasar_a_enum(char* nombre) {
     } else if (strcmp(nombre, "EXIT") == 0) {
         return EXIT_INSTRUCCION;
     }
-
+    printf("\n\nRompe aca en pasarAEnum\n\n");
     // printf("Salio mal la lectura de instruccion.\n");
     return ERROR_INSTRUCCION; // Ver esto
 }

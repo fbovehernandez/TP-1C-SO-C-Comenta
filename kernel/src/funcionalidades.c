@@ -311,20 +311,16 @@ t_pcb *proximo_a_ejecutar() {
     t_pcb *pcb = NULL;
 
     pthread_mutex_lock(&mutex_estado_ready);
-    if (!queue_is_empty(cola_prioritarios_por_signal))
-    {
+    if (!queue_is_empty(cola_prioritarios_por_signal)) {
         pcb = queue_pop(cola_prioritarios_por_signal);
     }/*
     else if (!queue_is_empty(cola_ready_plus))
     {
         pcb = queue_pop(cola_ready_plus);
     }*/
-    else if (!queue_is_empty(cola_ready))
-    {
+    else if (!queue_is_empty(cola_ready)) {
         pcb = queue_pop(cola_ready);
-    }
-    else
-    {
+    } else {
         printf("No hay procesos para ejecutar.\n");
     }
     pthread_mutex_unlock(&mutex_estado_ready);
@@ -477,14 +473,31 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             encolar_datos_std(pcb, pedido_lectura);
             log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, pedido_lectura->interfaz);   
             //free(pedido_lectura);
+            break;
         case PEDIDO_ESCRITURA:
             t_pedido* pedido_escritura = deserializar_pedido(package->buffer);
             encolar_datos_std(pcb, pedido_escritura);
             log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->interfaz);
             break;
         case FS_CREATE:
-            // t_pedido_fs_create_delete* pedido_fs_create = deserializar_pedido_fs_create(package->buffer);
-            // mandar_pedido_fs(pedido_fs_create);
+            /*
+            t_pedido_fs_create_delete* pedido_fs_create = deserializar_pedido_fs_create(package->buffer);
+            t_list_io* interfaz = io_esta_en_diccionario(pcb, pedido_fs_create->interfaz);
+            if(interfaz != NULL){
+                enviar_buffer_fs(interfaz->socket,pcb->pid,pedido_fs_create->longitud_nombre_archivo,pedido_fs_create->nombre_archivo,CREAR_ARCHIVO);
+                log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid,  pedido_fs_create->interfaz);
+            }
+            */
+            break;
+        case FS_DELETE:
+            /*
+            t_pedido_fs_create_delete* pedido_fs_delete = deserializar_pedido_fs_delete(package->buffer);
+            t_list_io* interfaz = io_esta_en_diccionario(pcb, pedido_fs_delete->interfaz);
+            if(interfaz != NULL){
+                enviar_buffer_fs(interfaz->socket,pcb->pid,pedido_fs_delete->,pedido_fs_delete->nombre_archivo,ELIMINAR_ARCHIVO);
+                log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid,  pedido_fs_delete->interfaz);
+            }
+            */
             break;
         default:
             printf("Llego a default de la 333 en funcionalidades.c\n");
@@ -493,12 +506,6 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     }
     liberar_paquete(package);
 }
-/*
-void mandar_pedido_fs(t_pedido_fs_create_delete* pedido_fs_create) {
-    
-}
-*/
-
 
 t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre) {
     if(dictionary_has_key(diccionario_io, interfaz_nombre)) {
@@ -531,7 +538,34 @@ t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre) {
         direccion_fisica  | datos: direccion_fisica                                 |
         registro_tamanio  |        registro_tamanio                                 |
 */
+/*
 
+void enviar_buffer_fs(int socker_io,int pid,int longitud_nombre_archivo,char* nombre_archivo, codigo_operacion codigo_operacion) {
+    t_buffer* buffer = llenar_buffer_nombre_archivo_pid(pid,longitud_nombre_archivo,nombre_archivo);
+    enviar_paquete(socket_io,buffer,codigo_operacion);
+} 
+
+t_buffer* llenar_buffer_nombre_archivo_pid(int pid,int largo_archivo,char* nombre_archivo){
+    t_buffer *buffer = malloc(sizeof(t_buffer));
+
+    buffer->size = sizeof(int) + sizeof(largo_interfaz) + sizeof(int);
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    void *stream = buffer->stream;
+
+    memcpy(stream + buffer->offset, &pid, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, &(largo_archivo), sizeof(int)); // sizeof(largo_interfaz) ????
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, &nombre_archivo, largo_archivo);
+    
+    buffer->stream = stream;
+
+    free(nombre_archivo);
+    return buffer;
+}
+*/
 
 void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
     t_list_io* interfaz;
@@ -543,11 +577,16 @@ void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
         io_std* datos_std = malloc(sizeof(io_std));
 
         datos_std->lista_direcciones = pedido->lista_dir_tamanio;
-        datos_std->registro_tamanio = pedido->registro_tamanio;
-        datos_std->cantidad_paginas = pedido->cantidad_paginas;
-        datos_std->pcb = pcb;
+        datos_std->registro_tamanio  = pedido->registro_tamanio;
+        datos_std->cantidad_paginas  = pedido->cantidad_paginas;
+        datos_std->pcb               = pcb;
         
-        printf("No voy a imprimir los datos stdin antes de agregarlos a la cola de bloqueados de la interfaz\n");
+        printf("Voy a imprimir los datos std antes de agregarlos a la cola de bloqueados de la interfaz\n");
+        printf("list_size(datos_std->lista_direcciones) = %d\n", list_size(datos_std->lista_direcciones));
+        printf("datos_std->registro_tamanio = %d\n", datos_std->registro_tamanio);
+        printf("datos_std->cantidad_paginas = %d\n", datos_std->cantidad_paginas);
+        printf("datos_std->pcb->pid = %d\n", datos_std->pcb->pid);
+        
         // imprimir_datos_stdin();
 
         pthread_mutex_lock(&mutex_cola_io_generica); // cambiar nombre_mutex
@@ -565,8 +604,6 @@ void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
     free(pedido);
     // free(interfaz); NECESITAMOS LA INTERFAZ A POSTERIORI
 } 
-
-
 
 /* 
 t_operacion_io* operacion_io = malloc(sizeof(t_operacion_io));
@@ -1362,9 +1399,5 @@ t_pedido_fs_create* deserializar_pedido_fs_create(t_buffer* buffer){
     memcpy(&(pedido_fs->nombre_interfaz), stream, sizeof(pedido_fs->longitud_nombre_archivo));
 
     return pedido_fs;    
-}
-
-void mandar_pedido_fs(){
-    
 }
 */

@@ -133,6 +133,7 @@ void mandar_valor_a_memoria(char* valor, t_pid_stdin* pid_stdin) {
     
     // Si usamos memoria dinámica para el nombre, y no la precisamos más, ya podemos liberarla:
     free(valor);
+    printf("Le pide a mem GUARDAR_VALOR... o eso creo.\n");
     enviar_paquete(buffer, GUARDAR_VALOR, memoriafd);
 }
 
@@ -143,7 +144,7 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
 
         printf("Esperando paquete...\n");
         recv(socket_kernel_io, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
-        printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
+        printf("Recibi el codigo de operacion de kernel: %d\n", paquete->codigo_operacion);
 
         recv(socket_kernel_io, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
         paquete->buffer->stream = malloc(paquete->buffer->size);
@@ -165,10 +166,11 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
                 send(socket_kernel_io, &termino_io, sizeof(int), 0);
                 break;
             case LEETE: 
-                int result_ok_io = 0;
+                int resultOk = 0;
+                int terminoOk;
                 
                 t_pid_stdin* pid_stdin = deserializar_pid_stdin(paquete->buffer);
-                send(socket_kernel_io, &result_ok_io, sizeof(int), 0);
+                send(socket_kernel_io, &resultOk, sizeof(int), 0);
 
                 imprimir_datos_stdin(pid_stdin);
                 printf("llego hasta LEETE\n");
@@ -179,8 +181,28 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
                 // Mandarlo a memoria
                 
                 mandar_valor_a_memoria(valor, pid_stdin);
+                recv(memoriafd, &terminoOk, sizeof(int), MSG_WAITALL);
+                printf("el terminoOk es: %d \n", terminoOk);
+                send(socket_kernel_io, &terminoOk, sizeof(int), 0);
                 free(pid_stdin);
                 break;
+            case CREAR_ARCHIVO:
+                /* 
+                t_fs_create_delete pedido_creacion = deserializar_pedido_creacion_destruccion(); // Capaz hay nombres mejores, cualquier cosa culpa de caro (joda xd)
+                FILE* archivo;
+                archivo = fopen(pedido_creacion->nombre_archivo,"w");
+
+                if (archivo == NULL) {
+                    printf("Error al abrir el archivo.\n");
+                } else{
+                    log_info(logger_io,PID: %d - Crear Archivo: pedido_creacion->nombre_archivo,pedido_creacion->);
+                }
+                */
+                break;
+            /*
+            case ELIMINAR_ARCHIVO:
+                break;
+            */
             default:
                 printf("Se rompio kernel!!!!\n");
                 exit(-1);
@@ -188,7 +210,6 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
         }
         liberar_paquete(paquete);        
     }
-    
 }
 
 void recibir_memoria(t_config* config_io, int socket_memoria) {
@@ -198,7 +219,7 @@ void recibir_memoria(t_config* config_io, int socket_memoria) {
 
         printf("Esperando paquete...\n");
         recv(socket_memoria, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
-        printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
+        printf("Recibi el codigo de operacion de memoria: %d\n", paquete->codigo_operacion);
 
         recv(socket_memoria, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
         paquete->buffer->stream = malloc(paquete->buffer->size);

@@ -60,6 +60,10 @@ start2: debug
 start3: debug
 	valgrind --tool=none ./$(BIN) $(ARGS3) $(NOMBRE_INTERFAZ2) 
 
+.PHONY: start_stdin
+start_stdin: debug
+	valgrind --tool=none ./$(BIN) $(ARGS_STDIN) $(NOMBRE_INTERFAZ_STDIN) 
+
 .PHONY: memcheck
 memcheck: debug
 	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(ARGS)

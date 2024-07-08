@@ -378,7 +378,8 @@ void enviar_paquete(t_buffer* buffer, codigo_operacion codigo, int socket) {
     offset += sizeof(int);
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
-    send(socket, a_enviar, buffer->size + sizeof(int) *2, 0);
+    printf("\nCodigo de operacion: %d\n", codigo);
+    send(socket, a_enviar, buffer->size + sizeof(int) * 2, 0);
     printf("Paquete enviado!\n");
 
     liberar_paquete_y_a_enviar(paquete, a_enviar);

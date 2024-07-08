@@ -95,7 +95,9 @@ typedef enum {
     SIGNAL_RECURSO,
     FIN_PROCESO,
     ERROR_STDOUT,
-    ERROR_STDIN
+    ERROR_STDIN,
+    FS_CREATE,
+    FS_DELETE
 } DesalojoCpu;
 
 typedef struct {
@@ -141,9 +143,9 @@ typedef enum {
     ESCRIBIR_STDOUT,
     RECIBIR_DIR_FISICA,
     LEER_DATO_MEMORIA,
-    FS_CREATE,
-    FS_DELETE,
     MOSTRAR,
+    CREAR_ARCHIVO,
+    ELIMINAR_ARCHIVO,
     ESCRIBITE
 } codigo_operacion;
 
