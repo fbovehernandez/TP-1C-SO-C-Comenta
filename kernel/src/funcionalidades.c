@@ -180,7 +180,7 @@ t_buffer* llenar_buffer_path(t_path* pathNuevo) {
     return(buffer);
 }
 
-int obtener_siguiente_pid(){
+int obtener_siguiente_pid() {
     contador_pid++;
     return contador_pid;
 }
@@ -223,8 +223,7 @@ void* a_ready() {
     //Le mandaria a memoria que debe eliminar el pcb y toda la cosa
 // }
 
-void *planificar_corto_plazo(void *sockets_necesarios)
-{
+void *planificar_corto_plazo(void *sockets_necesarios) {
     pthread_t hilo_quantum;
 
     t_sockets *sockets = (t_sockets *)sockets_necesarios;
@@ -233,8 +232,7 @@ void *planificar_corto_plazo(void *sockets_necesarios)
     int socket_CPU = sockets->socket_cpu;
     int socket_INT = sockets->socket_int;
 
-    while (1)
-    {
+    while (1) {
         printf("Esperando a que haya un proceso para planificar\n");
         sem_wait(&sem_hay_para_planificar);
         printf("Hay un proceso para planificar\n");
@@ -255,7 +253,7 @@ void *planificar_corto_plazo(void *sockets_necesarios)
             sem_post(&sem_contador_quantum);
         }*/
 
-        esperar_cpu(pcb);
+        esperar_cpu();
 
         /*if (es_VRR_RR())
         {
@@ -410,14 +408,15 @@ void mandar_datos_io_stdin(char* interfaz_nombre, uint32_t registro_direccion, u
     liberar_paquete(paquete);*/
 } 
 
-void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
+void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     DesalojoCpu devolucion_cpu;
     
     t_paquete* package = recibir_cpu(); // pcb y codigo de operacion (devolucion_cpu)
     devolucion_cpu = package->codigo_operacion;
     // Deserializo antes el pcb, me ahorro cierta logica y puedo hacer send si es IO_BLOCKED
-    pcb = deserializar_pcb(package->buffer);
+    t_pcb* pcb = deserializar_pcb(package->buffer);
     imprimir_pcb(pcb);
+    printf("pid del pcb: %d\n", pcb->pid);
 
    /* if (esVRR()) {
         temporal_stop(timer);
@@ -429,7 +428,7 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
     switch (devolucion_cpu) {
         case ERROR_STDOUT || ERROR_STDIN:
             pasar_a_exit(pcb);
-            free(pcb);
+            // free(pcb);
             break;
         case INTERRUPCION_QUANTUM:
             printf("Volvio a ready por interrupción de quantum\n");
@@ -445,7 +444,7 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             dormir_io(operacion_io, pcb);
             // dormir_io(operacion_io);
             free(operacion_io);
-            free(pcb);
+            // free(pcb);
             break;
         case WAIT_RECURSO:
             t_parametro* recurso_wait = deserializar_parametro(package->buffer);
@@ -464,7 +463,7 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             //liberar_memoria(pcb->pid); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
             //change_status(pcb, EXIT); 
             //sem_post(&sem_grado_multiprogramacion); // Esto deberia liberar un grado de memoria para que acceda un proceso
-            free(pcb);
+            // free(pcb);
             break;
         case PEDIDO_LECTURA:
 
@@ -489,6 +488,7 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
             //break;
         default:
             printf("Llego a default de la 333 en funcionalidades.c\n");
+            exit(-1);
             break;
     }
     liberar_paquete(package);
@@ -496,8 +496,15 @@ void esperar_cpu(t_pcb* pcb) { // Evaluar la idea de que esto sea otro hilo...
 
 t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre) {
     if(dictionary_has_key(diccionario_io, interfaz_nombre)) {
-        t_list_io* interfaz = malloc(sizeof(t_list_io));
-        interfaz = dictionary_get(diccionario_io, interfaz_nombre);
+        
+        t_list_io* interfaz = dictionary_get(diccionario_io, interfaz_nombre);
+        printf("Nombre a comparar buscado %s\n", interfaz_nombre);
+        printf("Nombre a comparar recibido %s\n", interfaz->nombreInterfaz);
+        if(strcmp(interfaz_nombre, interfaz->nombreInterfaz) == 0) {
+            printf("Son iguales los nombres\n");
+        } else {
+            printf("No son iguales los nombres\n");
+        }
         return interfaz;
     } else {
         log_info(logger_kernel,"Finaliza el proceso %d - Motivo: INVALID_INTERFACE",pcb->pid);
@@ -669,23 +676,31 @@ void dormir_io(t_operacion_io* operacion_io) {
 void dormir_io(t_operacion_io* io, t_pcb* pcb) {
 
     io_gen_sleep* datos_sleep = malloc(sizeof(io_gen_sleep));
-    // bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
+    datos_sleep->pcb = malloc(sizeof(t_pcb)); // free cuando se desconecte
 
-    t_list_io* elemento_encontrado = validar_io(io, pcb); 
+    // bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
+    t_list_io* elemento_encontrado = io_esta_en_diccionario(pcb, io->nombre_interfaz);
+    printf("El nombre de la interfaz es: %s\n", elemento_encontrado->nombreInterfaz);
+
+    // t_list_io* elemento_encontrado = validar_io(io, pcb); 
     // Aca tambien deberia cambiar su estado a blocked o Exit respectivamnete
 
     if(elemento_encontrado == NULL) {
         // Aca estaria tamb la logica de matar al hilo
+        printf("Es NULL...\n");
         return;
     }
 
     if(1) { // resultado_okey
         datos_sleep->unidad_trabajo = io->unidadesDeTrabajo;
         datos_sleep->pcb = pcb;
-        
+        printf("El pid de datos_sleep de dormir_io: %d\n", pcb->pid);
+
         pthread_mutex_lock(&mutex_cola_io_generica);
         queue_push(elemento_encontrado->cola_blocked, datos_sleep);
         pthread_mutex_unlock(&mutex_cola_io_generica);
+
+        pasar_a_blocked(pcb);
 
         // use lo que estaba, antes decia sem_post al mutex, por eso, era un binario o eso entendi
         pthread_mutex_lock(&mutex_lista_io);
@@ -1088,8 +1103,7 @@ t_queue* mostrar_cola(t_queue* cola)
     return cola_aux;
 }
 */
-void mostrar_pcb_proceso(t_pcb* pcb)
-{
+void mostrar_pcb_proceso(t_pcb* pcb) {
     printf("PID: %d\n", pcb->pid);
     printf("Program Counter: %d\n", pcb->program_counter);
     printf("Estado Actual: %d\n", pcb->estadoActual);

@@ -558,7 +558,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         
         pcb->program_counter++;
         desalojar(pcb, DORMIR_INTERFAZ, buffer);
-        printf("Hizo IO_GEN_SLEEP\n");
+        printf("Hizo IO_GEN_SLEEP con el PID %d\n", pcb->pid);
         return 1; // Retorna 1 si desalojo PCB...
         break;
     case IO_STDIN_READ: 
@@ -593,6 +593,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         break;
     case EXIT_INSTRUCCION:
         // guardar_estado(pcb); -> No estoy seguro si esta es necesaria, pero de todas formas nos va a servir cuando se interrumpa por quantum
+        printf("Llego a instruccion EXIT\n");
         desalojar(pcb, FIN_PROCESO, NULL); // Envio 0 ya que no me importa size
         break;
     case IO_STDOUT_WRITE:// IO_STDOUT_WRITE Int3 BX EAX

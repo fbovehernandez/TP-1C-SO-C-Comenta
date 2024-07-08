@@ -158,6 +158,7 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
                 int tiempoUnidadesTrabajo = config_get_int_value(config_io,"TIEMPO_UNIDAD_TRABAJO");
                 printf("Unidades de trabajo: %d\n", unidades_trabajo);
                 printf("Tiempo de unidades de trabajo: %d\n", tiempoUnidadesTrabajo);
+                printf("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ\n");
                 sleep(unidades_trabajo * tiempoUnidadesTrabajo);
                 log_info(logger_io, "PID %d - Operacion: DORMIR_IO", pid);
                 int termino_io = 1;

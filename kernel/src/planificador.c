@@ -33,6 +33,7 @@ void pasar_a_exec(t_pcb* pcb) {
 
 void pasar_a_blocked(t_pcb* pcb) {
     change_status(pcb, BLOCKED);
+    
     pthread_mutex_lock(&mutex_estado_blocked);
     queue_push(cola_blocked, (void *)pcb);
     pthread_mutex_unlock(&mutex_estado_blocked);

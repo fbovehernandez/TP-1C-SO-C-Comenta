@@ -96,6 +96,8 @@ void recibir_cliente() { // Se supone que desde aca se conecta el kernel
                 ejecutar_pcb(pcb, socket_memoria); // este ejecutar_pcb(pcb) seria el ejectuar_instrucciones(pcb)
                 break;                
             default:
+                printf("Rompio kernel\n");
+                exit(-1);
                 break;
         }
 
@@ -131,6 +133,7 @@ void recibir_cliente_interrupt(int client_interrupt) {
                 hay_interrupcion = 1;
                 break;   
             default:
+                exit(-1);
                 break;
         }
     }

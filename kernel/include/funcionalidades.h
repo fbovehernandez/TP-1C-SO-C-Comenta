@@ -88,7 +88,7 @@ void* planificar_corto_plazo(void* sockets_kernel);
 void* enviar_path_a_memoria(char* path, t_sockets* sockets, int pid);
 t_buffer* llenar_buffer_path(t_path* pathNuevo);
 t_pcb* proximo_a_ejecutar();
-void esperar_cpu(t_pcb* pcb);
+void esperar_cpu();
 void mandar_datos_io(char* interfaz_nombre, uint32_t registro_direccion, uint32_t registro_tamanio);
 t_operacion_io* deserializar_io(t_buffer* buffer);
 t_paquete* recibir_cpu();

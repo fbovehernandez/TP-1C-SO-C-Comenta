@@ -144,7 +144,10 @@ void *handle_io_stdin(void *socket_io) {
             // printf("Estado pcb : %d\n", datos_sleep->pcb->estadoActual);
             
             int termino_io;
+
+            
             recv(socket, &termino_io, sizeof(int), MSG_WAITALL);
+            
 
             printf("Termino io: %d\n", termino_io);
             if (termino_io == 1) { // El send de termino io envia 1.
@@ -334,17 +337,21 @@ void *handle_io_generica(void *socket_io) {
         pthread_mutex_lock(&mutex_cola_io_generica);
         io_gen_sleep *datos_sleep = queue_pop(io->cola_blocked);
         pthread_mutex_unlock(&mutex_cola_io_generica);
+        
         // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
         pid_unidades_trabajo->pid = datos_sleep->pcb->pid;
         pid_unidades_trabajo->unidades_trabajo = datos_sleep->unidad_trabajo;
+        printf("La cola nos saca esto: PID %d, UT %d\n", datos_sleep->pcb->pid, datos_sleep->unidad_trabajo);
 
         int respuesta_ok = ejecutar_io_generica(io->socket, pid_unidades_trabajo);
+        
         if (!respuesta_ok) {
-            printf("Se ejecuto correctamente la IO...\n");
+            printf("Se ejecuto correctamente la IO... que le mandamos el pid %d\n", pid_unidades_trabajo->pid);
             // printf("Estado pcb: %d\n", datos_sleep->pcb->estadoActual);
             // datos_sleep->pcb->estadoActual = READY;
             // printf("Estado pcb : %d\n", datos_sleep->pcb->estadoActual);
             int termino_io;
+        
             recv(socket, &termino_io, sizeof(int), MSG_WAITALL);
 
             printf("Termino io: %d\n", termino_io);
@@ -554,7 +561,8 @@ void* escuchar_IO(void* kernel_io) { //kernel_io es el socket del kernel
 
 void mostrar_elem_diccionario(char* nombre_interfaz) {
     t_list_io* interfaz = dictionary_get(diccionario_io, nombre_interfaz);
-    printf("Nombre Interfaz: %s\n", nombre_interfaz);
+    printf("Nombre Interfaz que queremos: %s\n", nombre_interfaz);
+    printf("Nombre Interfaz de Dictionary: %s\n", interfaz->nombreInterfaz);
     printf("Tipo Interfaz (enum): %d\n", interfaz->TipoInterfaz);
     printf("Socket: %d\n", interfaz->socket);
 }
@@ -573,7 +581,8 @@ void liberar_io(t_list_io* io) {
 t_list_io* establecer_conexion(t_buffer *buffer, int socket_io) {
     t_list_io *io = malloc(sizeof(t_list_io));
     t_info_io *interfaz = deserializar_interfaz(buffer); 
-    printf("llego hasta establecer conexion\n");
+    io->nombreInterfaz = malloc(string_length(interfaz->nombre_interfaz));
+    printf("\n\nllego hasta establecer conexion\n\n");
 
     io->socket         = socket_io;
     io->TipoInterfaz   = interfaz->tipo;
@@ -583,9 +592,14 @@ t_list_io* establecer_conexion(t_buffer *buffer, int socket_io) {
     // Esta memoria la liberamos cuando la io se desconecte
     io->semaforo_cola_procesos_blocked = malloc(sizeof(sem_t));
     sem_init(io->semaforo_cola_procesos_blocked, 0, 0);
-
+    /*
+    t_list_io* nueva_interfaz = malloc(sizeof(t_list_io));
+    nueva_interfaz->nombreInterfaz = strdup(interfaz_nombre); // Asignación del nombre
+    // Otros campos de t_list_io
+    dictionary_put(diccionario_io, interfaz_nombre, nueva_interfaz);
+    */
     dictionary_put(diccionario_io, interfaz->nombre_interfaz, (void*)io);
-    printf("el nombre de la interfaz es: %s\n", interfaz->nombre_interfaz);
+    printf("\n\n el nombre de la interfaz es: %s\n\n", interfaz->nombre_interfaz);
     mostrar_elem_diccionario(interfaz->nombre_interfaz);
 
     free(interfaz->nombre_interfaz);
