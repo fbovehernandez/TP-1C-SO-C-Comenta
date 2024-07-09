@@ -15,6 +15,9 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         pedir_instruccion_a_memoria(socket_memoria, pcb);
         t_instruccion* instruccion = recibir_instruccion(socket_memoria, pcb); // Se ejecuta la instruccion tambien
         // sem_post(pedir_instruccion);
+
+        if(instruccion->nombre == ERROR_INSTRUCCION) return;
+
         printf("Esta ejecutando %d\n", pcb->pid);   
         int resultado_ok = ejecutar_instruccion(instruccion, pcb);
         
@@ -622,7 +625,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         free(buffer_escritura);
         break;
-    /*
+    
     case IO_FS_CREATE: // IO_FS_CREATE nombre_interfaz nombre_arch
     case IO_FS_DELETE: // IO_FS_DELETE nombre_interfaz nombre_arch
   
@@ -636,9 +639,6 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         enviar_buffer_fs_create_delete(nombre_interfaz1, nombre_archivo,codigo);
   
         break;
-    
-    */
-    /*
     case IO_FS_READ:
     case IO_FS_WRITE:
         t_parametro* primer_parametro2 = list_get(list_parametros, 0);
@@ -658,7 +658,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         enviar_buffer_fs_escritura_lectura(); 
         
         break;
-    */
+    
     default:
         printf("Error: No existe ese tipo de instruccion\n");
         printf("La instruccion recibida es: %d\n", nombreInstruccion);

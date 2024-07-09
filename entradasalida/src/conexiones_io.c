@@ -183,14 +183,14 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
                 mandar_valor_a_memoria(valor, pid_stdin);
                 recv(memoriafd, &terminoOk, sizeof(int), MSG_WAITALL);
                 printf("el terminoOk es: %d \n", terminoOk);
-                // HASTA ACA LLEGA
                 send(socket_kernel_io, &terminoOk, sizeof(int), 0);
                 free(pid_stdin);
                 break;
             case CREAR_ARCHIVO:
+                // Estaria bueno que tenngamos un diccionario con key nombre archiivo y puntero como  atrbuto
                 t_fs_create_delete* pedido_creacion = deserializar_pedido_creacion_destruccion(paquete->buffer); 
                 FILE* archivo;
-                archivo = fopen(pedido_creacion->nombre_archivo,"w");
+                archivo = fopen(pedido_creacion->nombre_archivo,"w"); 
 
                 if (archivo == NULL) {
                     printf("Error al abrir el archivo.\n");
@@ -200,6 +200,12 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
                 
                 break;
             case ELIMINAR_ARCHIVO:
+            
+                t_fs_create_delete* pedido_destruccion = deserializar_pedido_creacion_destruccion(paquete->buffer);
+                // TODO: Hacemos busqueda en el diccionario y si lo encuentra, lo elimina sino, retorna
+                
+                log_info(logger_io,"PID: %d - Eliminar Archivo: %s",pedido_destruccion->pid,pedido_destruccion->nombre_archivo);
+                txt_close_file(archivo); // Es de las commons, sino tenes el fclose de C
                 
                 break;
             default:
@@ -299,4 +305,13 @@ t_fs_create_delete* deserializar_pedido_creacion_destruccion(t_buffer* buffer){
     memcpy(&fs_create_delete->nombre_archivo, stream,fs_create_delete->largo_archivo);
     
     return fs_create_delete;
+}
+
+void inicializar_file_system(t_config* config_io) {
+    int block_size = config_get_int_value(config_io,"BLOCK_SIZE");
+    int block_count = config_get_int_value(config_io,"BLOCK_COUNT");
+    int retraso_compactacion = config_get_int_value(config_io,"RETRASO_COMPACTACION");
+    int path_base = config_get_string_value(config_io,"PATH_BASE_DIALFS");
+    
+    // Inicializar diccionario, bloques.dat, bitmap.dat y archivo metadata
 }

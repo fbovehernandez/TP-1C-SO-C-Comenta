@@ -75,10 +75,12 @@ void iniciar_stdout(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, 
     recibir_memoria(config_io, memoriafd);
 } 
 
-void iniciar_dialfs(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, char* IP_MEMORIA, char* puerto_kernel, char* puerto_memoria){
+void iniciar_dialfs(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, char* IP_MEMORIA, char* puerto_kernel, char* puerto_memoria) {
+    inicializar_file_system(config_io);
     kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, DIALFS, 17); 
     memoriafd = conectar_io_memoria(IP_MEMORIA, puerto_memoria, logger_io, nombreInterfaz, DIALFS, 81);
     recibir_kernel(config_io, kernelfd);
+    // recibir_memoria(config_io, memoriafd); TO DO: CONECTAR CON MEMORIA DESDE MEMORIA
 }
 
 

@@ -306,3 +306,31 @@
 [INFO] 20:18:05:383 LOGGER/(16128:16146): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
 [INFO] 20:18:05:386 LOGGER/(16128:16146): Finaliza el proceso 1 - Motivo: SUCCESS
 [INFO] 20:18:05:386 LOGGER/(16128:16146): PID: 1 - Estado Anterior: 3 - Estado Actual: 4
+[INFO] 20:33:41:052 LOGGER/(18537:18537): Conexion establecida con Memoria
+[INFO] 20:33:41:103 LOGGER/(18537:18537): Conexion establecida con Dispatcher
+[INFO] 20:33:41:106 LOGGER/(18537:18537): Conexion establecida con Interrupt
+[INFO] 20:33:41:148 LOGGER/(18537:18537): Servidor iniciado, esperando conexiones!
+[INFO] 20:34:25:743 LOGGER/(18537:18542): Se crea el proceso: 1 en NEW
+[INFO] 20:34:25:752 LOGGER/(18537:18539): Hay proceso esperando en la cola de NEW!
+
+[INFO] 20:34:25:757 LOGGER/(18537:18539): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 20:34:25:763 LOGGER/(18537:18539): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 20:34:25:765 LOGGER/(18537:18540): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 20:34:30:824 LOGGER/(18537:18540): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 20:34:30:825 LOGGER/(18537:18540): PID: 1 - Estado Anterior: 3 - Estado Actual: 4
+[INFO] 20:47:05:642 LOGGER/(20197:20197): Conexion establecida con Memoria
+[INFO] 20:47:05:697 LOGGER/(20197:20197): Conexion establecida con Dispatcher
+[INFO] 20:47:05:715 LOGGER/(20197:20197): Conexion establecida con Interrupt
+[INFO] 20:47:05:762 LOGGER/(20197:20197): Servidor iniciado, esperando conexiones!
+[INFO] 20:47:32:589 LOGGER/(20197:20205): Se crea el proceso: 1 en NEW
+[INFO] 20:47:32:593 LOGGER/(20197:20202): Hay proceso esperando en la cola de NEW!
+
+[INFO] 20:47:32:593 LOGGER/(20197:20202): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 20:47:32:600 LOGGER/(20197:20202): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 20:47:32:602 LOGGER/(20197:20203): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 20:47:36:658 LOGGER/(20197:20203): PID: 1 - Bloqueado por: caro
+[INFO] 20:47:39:946 LOGGER/(20197:20405): PID: 1 - Estado Anterior: 3 - Estado Actual: 1
+[INFO] 20:47:39:949 LOGGER/(20197:20203): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 20:47:40:960 LOGGER/(20197:20203): PID: 1 - Bloqueado por: caro

@@ -486,7 +486,10 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             
             if (interfaz != NULL) {
                 codigo_operacion operacion = (package->codigo_operacion == FS_CREATE) ? CREAR_ARCHIVO : ELIMINAR_ARCHIVO;
+                
+                // Esto se hace en la conexion, aca tiene que encolar el pedido
                 enviar_buffer_fs(interfaz->socket, pcb->pid, pedido_fs->longitud_nombre_archivo, pedido_fs->nombre_archivo, operacion);
+                
                 log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, pedido_fs->nombre_interfaz);
             }
             
