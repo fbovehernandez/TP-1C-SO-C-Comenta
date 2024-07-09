@@ -55,6 +55,7 @@ int conectar_kernel_cpu_interrupt(t_log* logger_kernel,char* IP_CPU,char* puerto
 int esperar_cliente(int socket_escucha, t_log* logger);
 void* handle_io_stdout(void* socket);
 void* handle_io_stdin(void* socket);
+void* handle_io_dialfs(void* socket);
 int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin);
 int ejecutar_io_stdout(t_pid_stdout* pid_stdout);
 void* handle_io_generica(void* socket);

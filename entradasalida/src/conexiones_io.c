@@ -183,6 +183,7 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
                 mandar_valor_a_memoria(valor, pid_stdin);
                 recv(memoriafd, &terminoOk, sizeof(int), MSG_WAITALL);
                 printf("el terminoOk es: %d \n", terminoOk);
+                // HASTA ACA LLEGA
                 send(socket_kernel_io, &terminoOk, sizeof(int), 0);
                 free(pid_stdin);
                 break;

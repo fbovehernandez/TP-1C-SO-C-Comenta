@@ -113,7 +113,7 @@ void signal_recurso(t_pcb* pcb, char* recurso);
 void mandar_a_escribir_a_memoria(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio);
 t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, int tamanio);
 void encolar_datos_std(t_pcb* pcb, t_pedido* pedido);
-t_pedido_fs_create_delete* deserializar_pedido_fs_create(t_buffer* buffer);
+t_pedido_fs_create_delete* deserializar_pedido_fs_create_delete(t_buffer* buffer);
 void mandar_pedido_fs();
 t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre);
 t_buffer* llenar_buffer_nombre_archivo_pid(int pid,int largo_archivo,char* nombre_archivo);

@@ -480,24 +480,17 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->interfaz);
             break;
         case FS_CREATE:
-            
-            t_pedido_fs_create_delete* pedido_fs_create = deserializar_pedido_fs_create(package->buffer);
-            t_list_io* interfaz = io_esta_en_diccionario(pcb, pedido_fs_create->nombre_interfaz);
-            if(interfaz != NULL){
-                enviar_buffer_fs(interfaz->socket,pcb->pid,pedido_fs_create->longitud_nombre_archivo,pedido_fs_create->nombre_archivo,CREAR_ARCHIVO);
-                log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid,pedido_fs_create->nombre_interfaz);
-            }
-            
-            break;
         case FS_DELETE:
-            /*
-            t_pedido_fs_create_delete* pedido_fs_delete = deserializar_pedido_fs_delete(package->buffer);
-            t_list_io* interfaz = io_esta_en_diccionario(pcb, pedido_fs_delete->interfaz);
-            if(interfaz != NULL){
-                enviar_buffer_fs(interfaz->socket,pcb->pid,pedido_fs_delete->,pedido_fs_delete->nombre_archivo,ELIMINAR_ARCHIVO);
-                log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid,  pedido_fs_delete->interfaz);
+            t_pedido_fs_create_delete* pedido_fs = deserializar_pedido_fs_create_delete(package->buffer);
+            t_list_io* interfaz = io_esta_en_diccionario(pcb, pedido_fs->nombre_interfaz);
+            
+            if (interfaz != NULL) {
+                codigo_operacion operacion = (package->codigo_operacion == FS_CREATE) ? CREAR_ARCHIVO : ELIMINAR_ARCHIVO;
+                enviar_buffer_fs(interfaz->socket, pcb->pid, pedido_fs->longitud_nombre_archivo, pedido_fs->nombre_archivo, operacion);
+                log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, pedido_fs->nombre_interfaz);
             }
-            */
+            
+            free(pedido_fs);
             break;
         default:
             printf("Llego a default de la 333 en funcionalidades.c\n");
@@ -1383,7 +1376,7 @@ t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, int t
 }
 
 
-t_pedido_fs_create_delete* deserializar_pedido_fs_create(t_buffer* buffer){
+t_pedido_fs_create_delete* deserializar_pedido_fs_create_delete(t_buffer* buffer){
     t_pedido_fs_create_delete* pedido_fs = malloc(sizeof(t_pedido_fs_create_delete));
 
     void* stream = buffer->stream;

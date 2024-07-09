@@ -243,3 +243,66 @@
 [INFO] 20:16:26:652 LOGGER/(41253:41511): PID: 1 - Estado Anterior: 3 - Estado Actual: 1
 [INFO] 20:16:26:656 LOGGER/(41253:41256): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
 [INFO] 20:16:27:667 LOGGER/(41253:41256): PID: 1 - Bloqueado por: caro
+[INFO] 19:25:19:837 LOGGER/(5348:5348): Conexion establecida con Memoria
+[INFO] 19:25:19:886 LOGGER/(5348:5348): Conexion establecida con Dispatcher
+[INFO] 19:25:19:897 LOGGER/(5348:5348): Conexion establecida con Interrupt
+[INFO] 19:25:19:958 LOGGER/(5348:5348): Servidor iniciado, esperando conexiones!
+[INFO] 19:25:52:841 LOGGER/(5348:5353): Se crea el proceso: 1 en NEW
+[INFO] 19:25:52:851 LOGGER/(5348:5350): Hay proceso esperando en la cola de NEW!
+
+[INFO] 19:25:52:857 LOGGER/(5348:5350): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 19:25:52:860 LOGGER/(5348:5350): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 19:25:52:863 LOGGER/(5348:5351): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 19:25:56:963 LOGGER/(5348:5351): PID: 1 - Bloqueado por: caro
+[INFO] 19:26:03:338 LOGGER/(5348:5482): PID: 1 - Estado Anterior: 3 - Estado Actual: 1
+[INFO] 19:26:03:342 LOGGER/(5348:5351): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 19:26:04:359 LOGGER/(5348:5351): PID: 1 - Bloqueado por: caro
+[INFO] 19:52:10:705 LOGGER/(9858:9858): Conexion establecida con Memoria
+[INFO] 19:52:10:754 LOGGER/(9858:9858): Conexion establecida con Dispatcher
+[INFO] 19:52:10:776 LOGGER/(9858:9858): Conexion establecida con Interrupt
+[INFO] 19:52:10:823 LOGGER/(9858:9858): Servidor iniciado, esperando conexiones!
+[INFO] 19:52:41:490 LOGGER/(9858:9863): Se crea el proceso: 1 en NEW
+[INFO] 19:52:41:493 LOGGER/(9858:9860): Hay proceso esperando en la cola de NEW!
+
+[INFO] 19:52:41:494 LOGGER/(9858:9860): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 19:52:41:496 LOGGER/(9858:9860): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 19:52:41:503 LOGGER/(9858:9861): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 19:52:45:582 LOGGER/(9858:9861): PID: 1 - Bloqueado por: caro
+[INFO] 19:52:49:200 LOGGER/(9858:9988): PID: 1 - Estado Anterior: 3 - Estado Actual: 1
+[INFO] 19:52:49:203 LOGGER/(9858:9861): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 19:52:49:203 LOGGER/(9858:9861): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 19:52:49:203 LOGGER/(9858:9861): PID: 1 - Estado Anterior: 3 - Estado Actual: 4
+[INFO] 20:04:55:734 LOGGER/(12808:12808): Conexion establecida con Memoria
+[INFO] 20:07:29:963 LOGGER/(14014:14014): Conexion establecida con Memoria
+[INFO] 20:07:30:007 LOGGER/(14014:14014): Conexion establecida con Dispatcher
+[INFO] 20:07:30:019 LOGGER/(14014:14014): Conexion establecida con Interrupt
+[INFO] 20:07:30:093 LOGGER/(14014:14014): Servidor iniciado, esperando conexiones!
+[INFO] 20:08:13:638 LOGGER/(14014:14020): Se crea el proceso: 1 en NEW
+[INFO] 20:08:13:644 LOGGER/(14014:14016): Hay proceso esperando en la cola de NEW!
+
+[INFO] 20:08:13:675 LOGGER/(14014:14016): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 20:08:13:678 LOGGER/(14014:14016): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 20:08:13:686 LOGGER/(14014:14017): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 20:08:17:835 LOGGER/(14014:14017): PID: 1 - Bloqueado por: caro
+[INFO] 20:08:25:980 LOGGER/(14014:14190): PID: 1 - Estado Anterior: 3 - Estado Actual: 1
+[INFO] 20:08:26:061 LOGGER/(14014:14017): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 20:08:27:082 LOGGER/(14014:14017): PID: 1 - Bloqueado por: caro
+[INFO] 20:17:11:666 LOGGER/(16128:16128): Conexion establecida con Memoria
+[INFO] 20:17:11:722 LOGGER/(16128:16128): Conexion establecida con Dispatcher
+[INFO] 20:17:11:727 LOGGER/(16128:16128): Conexion establecida con Interrupt
+[INFO] 20:17:11:782 LOGGER/(16128:16128): Servidor iniciado, esperando conexiones!
+[INFO] 20:17:48:534 LOGGER/(16128:16148): Se crea el proceso: 1 en NEW
+[INFO] 20:17:48:545 LOGGER/(16128:16145): Hay proceso esperando en la cola de NEW!
+
+[INFO] 20:17:48:554 LOGGER/(16128:16145): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 20:17:48:556 LOGGER/(16128:16145): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 20:17:48:559 LOGGER/(16128:16146): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 20:17:52:704 LOGGER/(16128:16146): PID: 1 - Bloqueado por: caro
+[INFO] 20:18:05:369 LOGGER/(16128:16266): PID: 1 - Estado Anterior: 3 - Estado Actual: 1
+[INFO] 20:18:05:383 LOGGER/(16128:16146): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 20:18:05:386 LOGGER/(16128:16146): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 20:18:05:386 LOGGER/(16128:16146): PID: 1 - Estado Anterior: 3 - Estado Actual: 4

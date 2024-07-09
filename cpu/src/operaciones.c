@@ -20,12 +20,14 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         
         // free(instruccion); // double free
         
+        pcb->program_counter++;
+        
         if(resultado_ok == 1) {
             hay_interrupcion = 0;
             return;
         }
 
-        pcb->program_counter++; // Ojo con esto! porque esta despues del return, osea q en el IO_GEN_SLEEP antes de desalojar hay que aumentar el pc
+        // pcb->program_counter++; // Ojo con esto! porque esta despues del return, osea q en el IO_GEN_SLEEP antes de desalojar hay que aumentar el pc
         // Podria ser una funcion directa -> Por ahora no es esencial
 
         if(hay_interrupcion == 1) {
@@ -34,15 +36,6 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
             hay_interrupcion = 0;
             return;
         }
-        
-        /*
-        recv(socket_memoria, &esperar_confirm, sizeof(int), MSG_WAITALL);
-        
-        printf("Esperar confirmacion: %d\n", esperar_confirm);
-
-        if(esperar_confirm != 1) {
-            return;
-        }*/
     }
 
 }
@@ -589,7 +582,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         desalojar(pcb, PEDIDO_LECTURA, buffer_lectura);
 
         free(buffer_lectura);
-        return 1; // El return esta para que cuando se desaloje el pcb no siga ejecutando, si hace el break sigue pidiendo instrucciones, porfa no lo saquen o les va a romper
+        // return 1; // El return esta para que cuando se desaloje el pcb no siga ejecutando, si hace el break sigue pidiendo instrucciones, porfa no lo saquen o les va a romper
         break;
     case EXIT_INSTRUCCION:
         // guardar_estado(pcb); -> No estoy seguro si esta es necesaria, pero de todas formas nos va a servir cuando se interrumpa por quantum
@@ -629,46 +622,46 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         free(buffer_escritura);
         break;
+    /*
     case IO_FS_CREATE: // IO_FS_CREATE nombre_interfaz nombre_arch
+    case IO_FS_DELETE: // IO_FS_DELETE nombre_interfaz nombre_arch
+  
         t_parametro* primer_parametro1 = list_get(list_parametros, 0);
         char* nombre_interfaz1 = primer_parametro1->nombre;
 
         t_parametro* segundo_parametro1 = list_get(list_parametros, 1);
-        char* nombre_archivo1 = segundo_parametro1->nombre; 
-        
-        enviar_buffer_fs_create_delete(nombre_interfaz1, nombre_archivo1, FS_CREATE);
+        char* nombre_archivo = segundo_parametro1->nombre; 
+
+        codigo_operacion codigo = nombreInstruccion == IO_FS_CREATE ? FS_CREATE : FS_DELETE
+        enviar_buffer_fs_create_delete(nombre_interfaz1, nombre_archivo,codigo);
+  
         break;
-    case IO_FS_DELETE: // IO_FS_CREATE Int4 notas.txt lo mismo con delete
+    
+    */
+    /*
+    case IO_FS_READ:
+    case IO_FS_WRITE:
         t_parametro* primer_parametro2 = list_get(list_parametros, 0);
         char* nombre_interfaz2 = primer_parametro2->nombre;
 
         t_parametro* segundo_parametro2 = list_get(list_parametros, 1);
-        char* nombre_archivo2 = segundo_parametro2->nombre; 
-    
-        enviar_buffer_fs_create_delete(nombre_interfaz2, nombre_archivo2, FS_DELETE);
+        char* nombre_archivo = segundo_parametro2->nombre;
         
-        break;
-    case IO_FS_TRUNCATE:
-        t_parametro* primer_parametro3 = list_get(list_parametros,0);
-        char* nombre_interfaz3 = primer_parametro3->nombre;
+        t_parametro* tercer_parametro = list_get(list_parametros, 2);
+        char* nombre_registro_direccion = tercer_parametro->nombre; 
+        
+        t_parametro* cuarto_parametro = list_get(list_parametros, 3);
+        char* nombre_registro_tamanio = cuarto_parametro->nombre; 
+        
+        codigo_operacion codigo = nombreInstruccion == IO_FS_READ ? LECTURA_FS : ESCRITURA_FS;
 
-        t_parametro* segundo_parametro3 = list_get(list_parametros,1);
-        char* nombre_archivo3 = segundo_parametro3->nombre; 
-        
-
+        enviar_buffer_fs_escritura_lectura(); 
         
         break;
-    case IO_FS_READ:
-        break;
-    case IO_FS_WRITE:
-        break;
-    
+    */
     default:
         printf("Error: No existe ese tipo de instruccion\n");
         printf("La instruccion recibida es: %d\n", nombreInstruccion);
-        if (pcb->program_counter == 10) {
-            imprimir_pcb(pcb); // Solo para ver.
-        }
         desalojar(pcb, FIN_PROCESO, NULL);
         // Hasta que encontremos como hacer con el EXIT que recibe como E X I T
         break;

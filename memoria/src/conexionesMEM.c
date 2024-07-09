@@ -613,12 +613,6 @@ void enviar_valor_leido_a_io(int pid, int socket_io, char* valor, int tamanio) {
     enviar_paquete(buffer, ESCRIBITE, socket_io);
 }
 
-/*
-void* handle_io_dialfs() {
-
-}
-*/
-
 // Descomente esto pero tiene varios errores que no vi
 void* handle_io_stdin(void* socket) {
     int socket_io = (intptr_t)socket;
@@ -796,7 +790,7 @@ char* instruccion_a_string(TipoInstruccion tipo) {
         case WAIT: return "WAIT";
         case SIGNAL: return "SIGNAL";
         case IO_GEN_SLEEP: return "IO_GEN_SLEEP";
-        case IO_STDIN_READ: return "IO__READ";
+        case IO_STDIN_READ: return "IO_STDIN_READ";
         case IO_STDOUT_WRITE: return "IO_STDOUT_WRITE";
         case IO_FS_CREATE: return "IO_FS_CREATE";
         case IO_FS_DELETE: return "IO_FS_DELETE";
