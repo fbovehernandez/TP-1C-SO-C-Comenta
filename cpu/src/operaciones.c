@@ -630,7 +630,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         free(buffer_escritura);
         return 1;
         break;
-    /*
+    
     case IO_FS_CREATE: // IO_FS_CREATE nombre_interfaz nombre_arch
     case IO_FS_DELETE: // IO_FS_DELETE nombre_interfaz nombre_arch
   
@@ -638,10 +638,10 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         char* nombre_interfaz1 = primer_parametro1->nombre;
 
         t_parametro* segundo_parametro1 = list_get(list_parametros, 1);
-        char* nombre_archivo = segundo_parametro1->nombre; 
+        char* nombre_archivo1 = segundo_parametro1->nombre; 
 
-        codigo_operacion codigo = nombreInstruccion == IO_FS_CREATE ? FS_CREATE : FS_DELETE
-        enviar_buffer_fs_create_delete(nombre_interfaz1, nombre_archivo,codigo);
+        codigo_operacion codigo1 = nombreInstruccion == IO_FS_CREATE ? FS_CREATE : FS_DELETE;
+        enviar_buffer_fs_create_delete(nombre_interfaz1, nombre_archivo1,codigo1);
   
         break;
     case IO_FS_READ:
@@ -650,21 +650,21 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         char* nombre_interfaz2 = primer_parametro2->nombre;
 
         t_parametro* segundo_parametro2 = list_get(list_parametros, 1);
-        char* nombre_archivo = segundo_parametro2->nombre;
+        char* nombre_archivo2 = segundo_parametro2->nombre;
         
         t_parametro* tercer_parametro = list_get(list_parametros, 2);
-        char* nombre_registro_direccion = tercer_parametro->nombre; 
+        char* nombre_registro_direccion2 = tercer_parametro->nombre; 
+        uint32_t registro_direccion2 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_direccion2);
         
         t_parametro* cuarto_parametro = list_get(list_parametros, 3);
-        char* nombre_registro_tamanio = cuarto_parametro->nombre; 
-        
-        codigo_operacion codigo = nombreInstruccion == IO_FS_READ ? LECTURA_FS : ESCRITURA_FS;
+        char* nombre_registro_tamanio2 = cuarto_parametro->nombre; 
+        uint32_t registro_tamanio2 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio2);
 
-        enviar_buffer_fs_escritura_lectura(); 
+        codigo_operacion codigo2 = nombreInstruccion == IO_FS_READ ? LECTURA_FS : ESCRITURA_FS;
+
+        enviar_buffer_fs_escritura_lectura(nombre_interfaz2,nombre_archivo2,registro_direccion2,registro_tamanio2,codigo2); 
         
         break;
-        */
-    
     default:
         printf("Error: No existe ese tipo de instruccion\n");
         printf("La instruccion recibida es: %d\n", nombreInstruccion);
@@ -1381,3 +1381,38 @@ t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
 }
 
 */
+
+
+void enviar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,codigo_operacion codigo) {
+    t_buffer* buffer = llenar_buffer_fs_escritura_lectura(nombre_interfaz,nombre_archivo,registro_direccion,registro_tamanio);
+    enviar_paquete(buffer,codigo,client_dispatch);
+}
+
+
+t_buffer* llenar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio) {
+    t_buffer *buffer = malloc(sizeof(t_buffer));
+    
+    int largo_nombre_interfaz = string_length(nombre_interfaz);  // + 1?????
+    int largo_nombre_archivo = string_length(nombre_archivo);  // +1 ????????
+
+    buffer->size = sizeof(int) * 2 + largo_nombre_interfaz + largo_nombre_archivo + sizeof(uint32_t) * 2 ; // Revisar esto AYUDAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    void *stream = buffer->stream;
+   
+    memcpy(stream + buffer->offset, &largo_nombre_interfaz, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, nombre_interfaz, largo_nombre_interfaz);
+    buffer->offset += largo_nombre_interfaz;
+    memcpy(stream + buffer->offset, &largo_nombre_archivo, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, nombre_archivo, largo_nombre_archivo);
+    buffer->offset += largo_nombre_archivo;
+    memcpy(stream + buffer->offset, registro_direccion, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+    memcpy(stream + buffer->offset, registro_tamanio, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+    
+    return buffer;
+}

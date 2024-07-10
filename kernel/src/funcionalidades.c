@@ -495,6 +495,18 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             
             free(pedido_fs);
             break;
+        case ESCRITURA_FS:
+        case LECTURA_FS:
+            t_pedido_fs_escritura_lectura* fs_escritura_lectura = deserializar_pedido_fs_escritura_lectura(package->buffer);
+            t_list_io* interfaz = io_esta_en_diccionario(pcb,fs_escritura_lectura->nombre_interfaz);
+
+            if (interfaz != NULL) {
+                codigo_operacion operacion = (package->codigo_operacion == ESCRITURA_FS) ? ESCRIBIR_FS_MEMORIA : LEER_FS_MEMORIA;
+                // Esto se hace en la conexion, aca tiene que encolar el pedido
+                enviar_buffer_fs_escritura_lectura(interfaz->socket, pcb->pid, pedido_fs->longitud_nombre_archivo, pedido_fs->nombre_archivo, operacion);
+                log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, pedido_fs->nombre_interfaz);
+            }
+        
         default:
             printf("Llego a default de la 333 en funcionalidades.c\n");
             exit(-1);
@@ -1383,7 +1395,7 @@ t_pedido_fs_create_delete* deserializar_pedido_fs_create_delete(t_buffer* buffer
     t_pedido_fs_create_delete* pedido_fs = malloc(sizeof(t_pedido_fs_create_delete));
 
     void* stream = buffer->stream;
-    // Deserializamos los campos que tenemos en el buffer
+    
 
     memcpy(&(pedido_fs->longitud_nombre_interfaz), stream, sizeof(int));
     stream += sizeof(int);
@@ -1391,8 +1403,36 @@ t_pedido_fs_create_delete* deserializar_pedido_fs_create_delete(t_buffer* buffer
     stream += pedido_fs->longitud_nombre_interfaz;
     memcpy(&(pedido_fs->longitud_nombre_archivo), stream, sizeof(int));
     stream += sizeof(int);
-    memcpy(&(pedido_fs->nombre_interfaz), stream, sizeof(pedido_fs->longitud_nombre_archivo));
+    memcpy(&(pedido_fs->nombre_interfaz), stream, pedido_fs->longitud_nombre_archivo);
 
     return pedido_fs;    
 }
 
+// HAY QUE SEGUIR ESTO
+void enviar_buffer_fs_escritura_lectura(int socket,int pid,int largo_archivo,char* nombre_archivo,codigo_operacion operacion){
+    t_buffer* buffer = llenar_buffer_
+}
+
+
+t_pedido_fs_escritura_lectura* deserializar_pedido_fs_escritura_lectura(t_buffer* buffer){
+    t_pedido_fs_escritura_lectura* pedido_fs = malloc(sizeof(t_pedido_fs_create_delete));
+
+    void* stream = buffer->stream;
+    
+
+    memcpy(&(pedido_fs->longitud_nombre_interfaz), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(pedido_fs->nombre_interfaz), stream, sizeof(pedido_fs->longitud_nombre_interfaz));
+    stream += pedido_fs->longitud_nombre_interfaz;
+    memcpy(&(pedido_fs->largo_archivo), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(pedido_fs->nombre_interfaz), stream, pedido_fs->largo_archivo);
+    stream += pedido_fs->largo_archivo;
+    memcpy(&(pedido_fs->registro_direccion), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(pedido_fs->registro_tamanio), stream, sizeof(uint32_t));
+    // Si se agregann mas datos no olvidarse de aumentar el stream
+
+    return pedido_fs;    
+
+  }

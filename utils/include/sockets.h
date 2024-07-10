@@ -146,7 +146,9 @@ typedef enum {
     MOSTRAR,
     CREAR_ARCHIVO,
     ELIMINAR_ARCHIVO,
-    ESCRIBITE
+    ESCRIBITE,
+    LECTURA_FS,
+    ESCRITURA_FS
 } codigo_operacion;
 
 typedef enum {
@@ -333,6 +335,18 @@ typedef struct{
     int largo_archivo;
     char* nombre_archivo;
 } t_fs_create_delete;
+
+
+typedef struct{
+    int longitud_nombre_interfaz;
+    char* nombre_interfaz;
+    int largo_archivo;
+    char* nombre_archivo;
+    uint32_t registro_direccion;
+    uint32_t registro_tamanio;
+} t_pedido_fs_escritura_lectura;
+
+
 
 // Este dir_fisica abarca todo lo que se envia como primer pagina para que la memoria pueda leer/escribir datos
 typedef struct {
