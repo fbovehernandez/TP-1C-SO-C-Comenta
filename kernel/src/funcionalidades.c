@@ -482,13 +482,13 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
         case FS_CREATE:
         case FS_DELETE:
             t_pedido_fs_create_delete* pedido_fs = deserializar_pedido_fs_create_delete(package->buffer);
-            t_list_io* interfaz = io_esta_en_diccionario(pcb, pedido_fs->nombre_interfaz);
+            t_list_io* interfaz_crear_destruir = io_esta_en_diccionario(pcb, pedido_fs->nombre_interfaz);
             
-            if (interfaz != NULL) {
+            if (interfaz_crear_destruir != NULL) {
                 codigo_operacion operacion = (package->codigo_operacion == FS_CREATE) ? CREAR_ARCHIVO : ELIMINAR_ARCHIVO;
                 
                 // Esto se hace en la conexion, aca tiene que encolar el pedido
-                enviar_buffer_fs(interfaz->socket, pcb->pid, pedido_fs->longitud_nombre_archivo, pedido_fs->nombre_archivo, operacion);
+                enviar_buffer_fs(interfaz_crear_destruir->socket, pcb->pid, pedido_fs->longitud_nombre_archivo, pedido_fs->nombre_archivo, operacion);
                 
                 log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, pedido_fs->nombre_interfaz);
             }
@@ -503,7 +503,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             if (interfaz != NULL) {
                 codigo_operacion operacion = (package->codigo_operacion == ESCRITURA_FS) ? ESCRIBIR_FS_MEMORIA : LEER_FS_MEMORIA;
                 // Esto se hace en la conexion, aca tiene que encolar el pedido
-                enviar_buffer_fs_escritura_lectura(interfaz->socket,pcb->pid,fs_read_write->longitud_nombre_archivo,
+                enviar_buffer_fs_escritura_lectura(interfaz->socket,pcb->pid,fs_read_write->largo_archivo,
                                                     fs_read_write->nombre_archivo,fs_read_write->registro_direccion,fs_read_write->registro_tamanio,operacion);
                 log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, pedido_fs->nombre_interfaz);
             }
@@ -1370,7 +1370,7 @@ t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, int t
 
     int largo_interfaz = string_length(nombre_interfaz);
 
-    buffer->size = sizeof(int) + sizeof(largo_interfaz) + sizeof(int);
+    buffer->size = sizeof(int) + sizeof(largo_interfaz) + sizeof(int); // Esto esta bien???
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
@@ -1412,7 +1412,7 @@ t_pedido_fs_create_delete* deserializar_pedido_fs_create_delete(t_buffer* buffer
 // HAY QUE SEGUIR ESTO
 void enviar_buffer_fs_escritura_lectura(int socket,int pid,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,codigo_operacion operacion){
     t_buffer* buffer = llenar_buffer_fs_escritura_lectura(pid,socket,largo_archivo,nombre_archivo,registro_direccion,registro_tamanio);
-    enviar_paquete(buffer,operacion,socket_memoria);
+    enviar_paquete(buffer,operacion,sockets->socket_memoria);
 }
 
 t_pedido_fs_escritura_lectura* deserializar_pedido_fs_escritura_lectura(t_buffer* buffer){
@@ -1437,7 +1437,24 @@ t_pedido_fs_escritura_lectura* deserializar_pedido_fs_escritura_lectura(t_buffer
     return pedido_fs;    
 }
 
-t_buffer* lenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio){
+t_buffer* llenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio){
+   t_buffer *buffer = malloc(sizeof(t_buffer));
 
+    buffer->size = sizeof(int) * 2 + largo_archivo + sizeof(uint32_t) * 2;
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
 
+    void *stream = buffer->stream;
+
+    memcpy(stream + buffer->offset, &pid, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, &(largo_archivo), sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, nombre_archivo, largo_archivo);
+    buffer->stream += largo_archivo;
+    memcpy(stream + buffer->offset, registro_direccion, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+    memcpy(stream + buffer->offset, registro_tamanio, sizeof(uint32_t));
+
+    return buffer;
 }

@@ -119,6 +119,8 @@ t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre);
 t_buffer* llenar_buffer_nombre_archivo_pid(int pid,int largo_archivo,char* nombre_archivo);
 void enviar_buffer_fs(int socket_io,int pid,int longitud_nombre_archivo,char* nombre_archivo, codigo_operacion codigo_operacion);
 t_pedido_fs_escritura_lectura* deserializar_pedido_fs_escritura_lectura(t_buffer* buffer);
+t_buffer* llenar_buffer_nombre_archivo_pid(int pid,int largo_archivo,char* nombre_archivo);
+t_buffer* llenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio);
 // void imprimir_datos_stdin(io_stdin* datos_stdin);
 
 void EJECUTAR_SCRIPT(char* path);
