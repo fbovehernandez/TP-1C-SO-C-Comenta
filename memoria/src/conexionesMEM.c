@@ -44,7 +44,8 @@ int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
         printf("Se creo el hilo STDIN\n");
     } else if(handshake == 79) {
         // pthread_t cpu_thread;
-        // pthread_create(&io_stdout_thread, NULL, (void*)handle_io_stdout, (void*)(intptr_t)socket_cliente); // Ver
+        pthread_create(&io_stdout_thread, NULL, (void*)handle_io_stdout, (void*)(intptr_t)socket_cliente); // Ver
+        printf("Se creo el hilo STDOUT\n");
     } else if(handshake == 81) { 
         // pthread_create(&io_stdout_thread, NULL, (void*)handle_io_dialfs, (void*)(intptr_t)socket_cliente);
     } else {
@@ -563,6 +564,8 @@ void* handle_kernel(void* socket) {
             case ESCRIBIR_STDOUT:
                 t_pid_stdout* pid_stdout = desearializar_pid_stdout(paquete->buffer);
 
+                printf("\nEste es el nombre de la interfaz: %s\n", pid_stdout->nombre_interfaz);
+
                 int result_ok = 0;
                 send(socket_kernel, &resultOk, sizeof(int), 0);
 
@@ -575,13 +578,14 @@ void* handle_kernel(void* socket) {
                 realizar_operacion(LECTURA, pid_stdout->lista_direcciones, user_space_aux, NULL, registro_lectura);
 
                 printf("El valor leido para char* es: %s\n", (char*)registro_lectura);
-                int socket_io = *(int*) dictionary_get(diccionario_io, pid_stdout->nombre_interfaz);
+                int socket_io = (intptr_t) dictionary_get(diccionario_io, pid_stdout->nombre_interfaz);
                 
+                printf("El pid que mandaremos a la io es %d\n", pid_stdout->pid);
                 enviar_valor_leido_a_io(pid_stdout->pid, socket_io, registro_lectura, pid_stdout->registro_tamanio);
-
+                
+                // free(pid_stdout->nombre_interfaz);
                 free(pid_stdout);
                 free(registro_lectura);
-                free(pid_stdout->nombre_interfaz);
                 break;
             default: 
                 break;
@@ -611,6 +615,24 @@ void enviar_valor_leido_a_io(int pid, int socket_io, char* valor, int tamanio) {
     buffer->stream = stream;
 
     enviar_paquete(buffer, ESCRIBITE, socket_io);
+}
+
+void* handle_io_stdout(void* socket) {
+    int socket_io = (intptr_t) socket;
+    int resultOk = 0;
+    printf("Llega a handle_io_stdout\n");
+    send(socket_io, &resultOk, sizeof(int), 0);
+
+    // Recibir nombre de la IO
+
+    printf("Se conecto una io oojoo!\n");
+    //void* user_space_aux;
+
+    t_paquete* paquete_inicial = inicializarIO_recibirPaquete(socket_io);
+    agregar_interfaz_en_el_diccionario(paquete_inicial, socket_io);
+
+    liberar_paquete(paquete_inicial);
+    return NULL;
 }
 
 // Descomente esto pero tiene varios errores que no vi
@@ -1227,6 +1249,7 @@ t_buffer* llenar_buffer_stdout(char* valor) {
 
 t_pid_stdout* desearializar_pid_stdout(t_buffer* buffer){
     t_pid_stdout* pedido_escritura = malloc(sizeof(t_pid_stdout));
+    // sizeof(int) * 3 + sizeof(uint32_t) + pid_stdout->cantidad_paginas * 2 * sizeof(int) + pid_stdout->largo_interfaz
 
     void* stream = buffer->stream;
     // Deserializamos los campos que tenemos en el buffer
@@ -1238,11 +1261,14 @@ t_pid_stdout* desearializar_pid_stdout(t_buffer* buffer){
     stream += sizeof(int);
     memcpy(&(pedido_escritura->largo_interfaz), stream, sizeof(int));
     stream += sizeof(int);
+    pedido_escritura->nombre_interfaz = malloc(pedido_escritura->largo_interfaz);
     memcpy(&(pedido_escritura->nombre_interfaz), stream, pedido_escritura->largo_interfaz);
     stream += pedido_escritura->largo_interfaz;
 
+    pedido_escritura->lista_direcciones = list_create();
+
     for(int i=0; i < pedido_escritura->cantidad_paginas; i++) {
-        t_dir_fisica_tamanio* dir_fisica_tam = list_get(pedido_escritura->lista_direcciones, i);
+        t_dir_fisica_tamanio* dir_fisica_tam = malloc(sizeof(t_dir_fisica_tamanio));
         memcpy(&dir_fisica_tam->direccion_fisica, stream, sizeof(int));
         buffer->offset += sizeof(int);
         memcpy(&dir_fisica_tam->bytes_lectura, stream, sizeof(int));

@@ -64,6 +64,10 @@ start3: debug
 start_stdin: debug
 	valgrind --tool=none ./$(BIN) $(ARGS_STDIN) $(NOMBRE_INTERFAZ_STDIN) 
 
+PHONY: start_stdout
+start_stdout: debug
+	valgrind --tool=none ./$(BIN) $(ARGS_STDOUT) $(NOMBRE_INTERFAZ_STDOUT) 
+
 .PHONY: memcheck
 memcheck: debug
 	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(ARGS)

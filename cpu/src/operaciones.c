@@ -24,6 +24,7 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         // free(instruccion); // double free
         
         pcb->program_counter++;
+        printf("\nEl program counter es %d despues de aumentarlo.\n", pcb->program_counter);
         
         if(resultado_ok == 1) {
             hay_interrupcion = 0;
@@ -582,10 +583,12 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdin, *registro_direccion_stdin, pcb->pid, lista_direcciones_fisicas_stdin, pagina);
 
         t_buffer* buffer_lectura = llenar_buffer_stdio(interfaz->nombre, lista_direcciones_fisicas_stdin, *registro_tamanio_stdin, cantidad_paginas);
+        
+        pcb->program_counter++;
         desalojar(pcb, PEDIDO_LECTURA, buffer_lectura);
 
         free(buffer_lectura);
-        // return 1; // El return esta para que cuando se desaloje el pcb no siga ejecutando, si hace el break sigue pidiendo instrucciones, porfa no lo saquen o les va a romper
+        return 1; // El return esta para que cuando se desaloje el pcb no siga ejecutando, si hace el break sigue pidiendo instrucciones, porfa no lo saquen o les va a romper
         break;
     case EXIT_INSTRUCCION:
         // guardar_estado(pcb); -> No estoy seguro si esta es necesaria, pero de todas formas nos va a servir cuando se interrumpa por quantum
@@ -621,11 +624,13 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdout, *registro_direccion11, pcb->pid, lista_direcciones_fisicas_stdout, pagina);
 
         t_buffer* buffer_escritura = llenar_buffer_stdio(nombre_interfaz, lista_direcciones_fisicas_stdout, *registro_tamanio_stdout, cantidad_paginas);
+        pcb->program_counter++;
         desalojar(pcb, PEDIDO_ESCRITURA, buffer_escritura);
 
         free(buffer_escritura);
+        return 1;
         break;
-    
+    /*
     case IO_FS_CREATE: // IO_FS_CREATE nombre_interfaz nombre_arch
     case IO_FS_DELETE: // IO_FS_DELETE nombre_interfaz nombre_arch
   
@@ -658,6 +663,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         enviar_buffer_fs_escritura_lectura(); 
         
         break;
+        */
     
     default:
         printf("Error: No existe ese tipo de instruccion\n");

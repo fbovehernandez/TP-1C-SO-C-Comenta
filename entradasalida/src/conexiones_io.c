@@ -181,6 +181,7 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
                 // Mandarlo a memoria
                 
                 mandar_valor_a_memoria(valor, pid_stdin);
+                log_info(logger_io, "PID: %d - Operacion: LEER", pid_stdin->pid);
                 recv(memoriafd, &terminoOk, sizeof(int), MSG_WAITALL);
                 printf("el terminoOk es: %d \n", terminoOk);
                 send(socket_kernel_io, &terminoOk, sizeof(int), 0);
@@ -236,14 +237,17 @@ void recibir_memoria(t_config* config_io, int socket_memoria) {
                 printf("Recibi el valor ok\n");
                 break;
             case ESCRIBITE:
-                int tamanio, pid;
+                int tamanio, pid, terminoOk = 1;
                 memcpy(&pid, paquete->buffer->stream, sizeof(int));
                 paquete->buffer->stream += sizeof(int);
                 memcpy(&tamanio, paquete->buffer->stream, sizeof(int));
                 paquete->buffer->stream += sizeof(int);
                 char* valor = malloc(tamanio);
                 memcpy(valor, paquete->buffer->stream, tamanio);
-                printf("El valor leido de memoria es: %s \n", valor);
+                printf("\n\nEl valor leido de memoria es: %s \n\n", valor);
+                log_info(logger_io, "PID: %d - Operacion: ESCRIBIR", pid);
+
+                send(kernelfd, &terminoOk, sizeof(int), 0);
                 break;
             default:
                 printf("Se rompio memoria!!!!\n");

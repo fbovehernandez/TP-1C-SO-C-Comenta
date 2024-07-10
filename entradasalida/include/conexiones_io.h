@@ -23,5 +23,6 @@ void recibir_memoria(t_config* config_io, int socket_memoria);
 t_pid_unidades_trabajo* serializar_unidades_trabajo(t_buffer* buffer);
 t_pid_stdin* deserializar_pid_stdin(t_buffer* buffer);
 t_fs_create_delete* deserializar_pedido_creacion_destruccion(t_buffer* buffer);
+void inicializar_file_system(t_config* config_io);
 
 #endif // CONEXIONES_IO_H

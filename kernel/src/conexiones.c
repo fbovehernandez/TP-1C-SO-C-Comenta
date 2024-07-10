@@ -132,6 +132,7 @@ void *handle_io_stdin(void *socket_io) {
         }
         pthread_mutex_unlock(&mutex_cola_io_generica);
 
+        pasar_a_blocked(datos_stdin->pcb);
         // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
         
         pid_stdin->pid = datos_stdin->pcb->pid;
@@ -220,7 +221,7 @@ void* handle_io_stdout(void* socket_io) {
             return NULL;
     }
 
-    // ESTO ES LO MISMO QUE STDIN
+    // ESTO NO ES LO MISMO QUE STDIN
     t_pid_stdout* pid_stdout = malloc(sizeof(t_pid_stdout));
 
     while (true) {
@@ -242,12 +243,16 @@ void* handle_io_stdout(void* socket_io) {
 
         // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
 
+        pasar_a_blocked(datos_stdout->pcb);
+
         pid_stdout->pid = datos_stdout->pcb->pid;
         pid_stdout->cantidad_paginas = datos_stdout->cantidad_paginas;
         pid_stdout->lista_direcciones = datos_stdout->lista_direcciones;
         pid_stdout->registro_tamanio = datos_stdout->registro_tamanio;
+        pid_stdout->nombre_interfaz = malloc(string_length(io->nombreInterfaz));
         pid_stdout->nombre_interfaz = io->nombreInterfaz;
-        pid_stdout->largo_interfaz = string_length(io->nombreInterfaz);
+        printf("\nLa io conectada tiene nombre %s\n\n", io->nombreInterfaz);
+        pid_stdout->largo_interfaz = string_length(io->nombreInterfaz) + 1;
 
         int respuesta_ok = ejecutar_io_stdout(pid_stdout);
 
@@ -281,10 +286,12 @@ void* handle_io_stdout(void* socket_io) {
 
 int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
     // Mandar todo a memoria
-    printf("Voy a ejecutar stdin!\n");
+    printf("Voy a ejecutar stdout!\n");
+    printf("\n\nEL PID QUE SE VA A MANDAR A MEMORIA ES: %d\n\n", pid_stdout->pid);
+
     t_buffer* buffer = malloc(sizeof(t_buffer)); 
 
-    buffer->size =  sizeof(int) * 3 + sizeof(uint32_t) + pid_stdout->cantidad_paginas * 2 * sizeof(int) + pid_stdout->largo_interfaz; 
+    buffer->size = sizeof(int) * 3 + sizeof(uint32_t) + pid_stdout->cantidad_paginas * 2 * sizeof(int) + pid_stdout->largo_interfaz; 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
@@ -294,8 +301,10 @@ int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
     buffer->offset += sizeof(uint32_t);
     memcpy(buffer->stream + buffer->offset, &pid_stdout->cantidad_paginas, sizeof(int));
     buffer->offset += sizeof(int);
+    printf("\nEl largo de la interfaz es: %d\n", pid_stdout->largo_interfaz);
     memcpy(buffer->stream + buffer->offset, &pid_stdout->largo_interfaz, sizeof(int)); 
     buffer->offset += sizeof(int);
+    printf("\n\nLa interfaz a mandar es: %s\n\n", pid_stdout->nombre_interfaz);
     memcpy(buffer->stream + buffer->offset, &pid_stdout->nombre_interfaz, pid_stdout->largo_interfaz);
     buffer->offset += pid_stdout->largo_interfaz;
     
