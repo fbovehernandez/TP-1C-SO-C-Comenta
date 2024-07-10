@@ -660,9 +660,13 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         char* nombre_registro_tamanio2 = cuarto_parametro->nombre; 
         uint32_t registro_tamanio2 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio2);
 
+        t_parametro* quinto_parametro = list_get(list_parametros, 4);
+        char* nombre_quinto_parametro = cuarto_parametro->nombre; 
+        uint32_t registro_puntero_archivo = (uint32_t*) seleccionar_registro_cpu(nombre_quinto_parametro);
+
         codigo_operacion codigo2 = nombreInstruccion == IO_FS_READ ? LECTURA_FS : ESCRITURA_FS;
 
-        enviar_buffer_fs_escritura_lectura(nombre_interfaz2,nombre_archivo2,registro_direccion2,registro_tamanio2,codigo2); 
+        enviar_buffer_fs_escritura_lectura(nombre_interfaz2,nombre_archivo2,registro_direccion2,registro_tamanio2,registro_puntero_archivo,codigo2); 
         
         break;
     default:
@@ -1383,13 +1387,13 @@ t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
 */
 
 
-void enviar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,codigo_operacion codigo) {
-    t_buffer* buffer = llenar_buffer_fs_escritura_lectura(nombre_interfaz,nombre_archivo,registro_direccion,registro_tamanio);
+void enviar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uin32_t registro_archivo,codigo_operacion codigo) {
+    t_buffer* buffer = llenar_buffer_fs_escritura_lectura(nombre_interfaz,nombre_archivo,registro_direccion,registro_archivo,registro_tamanio);
     enviar_paquete(buffer,codigo,client_dispatch);
 }
 
 
-t_buffer* llenar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio) {
+t_buffer* llenar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uint32_t registro_archivo) {
     t_buffer *buffer = malloc(sizeof(t_buffer));
     
     int largo_nombre_interfaz = string_length(nombre_interfaz);  // + 1?????
@@ -1412,6 +1416,8 @@ t_buffer* llenar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_
     memcpy(stream + buffer->offset, registro_direccion, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
     memcpy(stream + buffer->offset, registro_tamanio, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+    memcpy(stream + buffer->offset, registro_archivo, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
     
     return buffer;

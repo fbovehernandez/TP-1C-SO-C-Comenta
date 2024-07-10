@@ -148,7 +148,9 @@ typedef enum {
     ELIMINAR_ARCHIVO,
     ESCRIBITE,
     LECTURA_FS,
-    ESCRITURA_FS
+    ESCRITURA_FS,
+    ESCRIBIR_FS_MEMORIA,
+    LEER_FS_MEMORIA
 } codigo_operacion;
 
 typedef enum {

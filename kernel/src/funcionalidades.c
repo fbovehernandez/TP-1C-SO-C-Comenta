@@ -497,13 +497,14 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             break;
         case ESCRITURA_FS:
         case LECTURA_FS:
-            t_pedido_fs_escritura_lectura* fs_escritura_lectura = deserializar_pedido_fs_escritura_lectura(package->buffer);
-            t_list_io* interfaz = io_esta_en_diccionario(pcb,fs_escritura_lectura->nombre_interfaz);
+            t_pedido_fs_escritura_lectura* fs_read_write = deserializar_pedido_fs_escritura_lectura(package->buffer);
+            t_list_io* interfaz = io_esta_en_diccionario(pcb,fs_read_write->nombre_interfaz);
 
             if (interfaz != NULL) {
                 codigo_operacion operacion = (package->codigo_operacion == ESCRITURA_FS) ? ESCRIBIR_FS_MEMORIA : LEER_FS_MEMORIA;
                 // Esto se hace en la conexion, aca tiene que encolar el pedido
-                enviar_buffer_fs_escritura_lectura(interfaz->socket, pcb->pid, pedido_fs->longitud_nombre_archivo, pedido_fs->nombre_archivo, operacion);
+                enviar_buffer_fs_escritura_lectura(interfaz->socket,pcb->pid,fs_read_write->longitud_nombre_archivo,
+                                                    fs_read_write->nombre_archivo,fs_read_write->registro_direccion,fs_read_write->registro_tamanio,operacion);
                 log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, pedido_fs->nombre_interfaz);
             }
         
@@ -1409,10 +1410,10 @@ t_pedido_fs_create_delete* deserializar_pedido_fs_create_delete(t_buffer* buffer
 }
 
 // HAY QUE SEGUIR ESTO
-void enviar_buffer_fs_escritura_lectura(int socket,int pid,int largo_archivo,char* nombre_archivo,codigo_operacion operacion){
-    t_buffer* buffer = llenar_buffer_
+void enviar_buffer_fs_escritura_lectura(int socket,int pid,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,codigo_operacion operacion){
+    t_buffer* buffer = llenar_buffer_fs_escritura_lectura(pid,socket,largo_archivo,nombre_archivo,registro_direccion,registro_tamanio);
+    enviar_paquete(buffer,operacion,socket_memoria);
 }
-
 
 t_pedido_fs_escritura_lectura* deserializar_pedido_fs_escritura_lectura(t_buffer* buffer){
     t_pedido_fs_escritura_lectura* pedido_fs = malloc(sizeof(t_pedido_fs_create_delete));
@@ -1434,5 +1435,9 @@ t_pedido_fs_escritura_lectura* deserializar_pedido_fs_escritura_lectura(t_buffer
     // Si se agregann mas datos no olvidarse de aumentar el stream
 
     return pedido_fs;    
+}
 
-  }
+t_buffer* lenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio){
+
+
+}
