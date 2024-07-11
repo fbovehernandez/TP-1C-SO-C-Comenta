@@ -11,7 +11,7 @@ CRELEASE=-O3 -Wall -DNDEBUG -fcommon
 # Arguments when executing with start, memcheck or helgrind
 ARGS="../entradasalida/stdin.config"
 ARGS2 = "generica.config"
-ARGS3 = "generica.config"
+ARGS3 = "stdout.config"
 ARGS_STDIN = "stdin.config"
 ARGS_STDOUT = "stdout.config"
 NOMBRE_INTERFAZ1 = caro

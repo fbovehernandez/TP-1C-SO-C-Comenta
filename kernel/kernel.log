@@ -846,3 +846,95 @@
 [INFO] 01:48:53:922 LOGGER/(20781:20785): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
 [INFO] 01:48:55:947 LOGGER/(20781:20785): PID: 1 - Bloqueado por - facu
 [INFO] 01:48:55:949 LOGGER/(20781:21065): PID: 1 - Estado Anterior: 3 - Estado Actual: 2
+[INFO] 01:58:27:216 LOGGER/(22552:22552): Conexion establecida con Memoria
+[INFO] 01:58:27:246 LOGGER/(22552:22552): Conexion establecida con Dispatcher
+[INFO] 01:58:27:249 LOGGER/(22552:22552): Conexion establecida con Interrupt
+[INFO] 01:58:27:300 LOGGER/(22552:22552): Servidor iniciado, esperando conexiones!
+[INFO] 01:58:55:389 LOGGER/(22552:22557): Se crea el proceso: 1 en NEW
+[INFO] 01:58:55:390 LOGGER/(22552:22554): Hay proceso esperando en la cola de NEW!
+
+[INFO] 01:58:55:391 LOGGER/(22552:22554): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 01:58:55:392 LOGGER/(22552:22554): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 01:58:55:394 LOGGER/(22552:22555): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 01:58:59:469 LOGGER/(22552:22555): PID: 1 - Bloqueado por: sofi
+[INFO] 01:58:59:469 LOGGER/(22552:22656): PID: 1 - Estado Anterior: 3 - Estado Actual: 2
+[INFO] 01:59:05:448 LOGGER/(22552:22656): PID: 1 - Estado Anterior: 2 - Estado Actual: 1
+[INFO] 01:59:05:452 LOGGER/(22552:22555): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 01:59:06:455 LOGGER/(22552:22555): PID: 1 - Bloqueado por: facu
+[INFO] 01:59:06:455 LOGGER/(22552:22752): PID: 1 - Estado Anterior: 3 - Estado Actual: 2
+[INFO] 02:02:04:540 LOGGER/(23742:23742): Conexion establecida con Memoria
+[INFO] 02:02:04:568 LOGGER/(23742:23742): Conexion establecida con Dispatcher
+[INFO] 02:02:04:571 LOGGER/(23742:23742): Conexion establecida con Interrupt
+[INFO] 02:02:04:609 LOGGER/(23742:23742): Servidor iniciado, esperando conexiones!
+[INFO] 02:02:58:616 LOGGER/(23742:23747): Se crea el proceso: 1 en NEW
+[INFO] 02:02:58:618 LOGGER/(23742:23744): Hay proceso esperando en la cola de NEW!
+
+[INFO] 02:02:58:619 LOGGER/(23742:23744): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 02:02:58:620 LOGGER/(23742:23744): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 02:02:58:621 LOGGER/(23742:23745): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 02:03:02:720 LOGGER/(23742:23745): PID: 1 - Bloqueado por: sofi
+[INFO] 02:03:02:721 LOGGER/(23742:23899): PID: 1 - Estado Anterior: 3 - Estado Actual: 2
+[INFO] 02:03:23:373 LOGGER/(23742:23899): PID: 1 - Estado Anterior: 2 - Estado Actual: 1
+[INFO] 02:03:23:379 LOGGER/(23742:23745): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 02:03:24:382 LOGGER/(23742:23745): PID: 1 - Bloqueado por: facu
+[INFO] 02:03:24:383 LOGGER/(23742:24091): PID: 1 - Estado Anterior: 3 - Estado Actual: 2
+[INFO] 02:06:04:539 LOGGER/(25004:25004): Conexion establecida con Memoria
+[INFO] 02:06:04:569 LOGGER/(25004:25004): Conexion establecida con Dispatcher
+[INFO] 02:06:04:572 LOGGER/(25004:25004): Conexion establecida con Interrupt
+[INFO] 02:06:04:631 LOGGER/(25004:25004): Servidor iniciado, esperando conexiones!
+[INFO] 02:08:19:673 LOGGER/(25764:25764): Conexion establecida con Memoria
+[INFO] 02:08:19:702 LOGGER/(25764:25764): Conexion establecida con Dispatcher
+[INFO] 02:08:19:704 LOGGER/(25764:25764): Conexion establecida con Interrupt
+[INFO] 02:08:19:743 LOGGER/(25764:25764): Servidor iniciado, esperando conexiones!
+[INFO] 02:08:53:767 LOGGER/(25764:25773): Se crea el proceso: 1 en NEW
+[INFO] 02:08:53:770 LOGGER/(25764:25770): Hay proceso esperando en la cola de NEW!
+
+[INFO] 02:08:53:784 LOGGER/(25764:25770): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 02:08:53:785 LOGGER/(25764:25770): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 02:08:53:787 LOGGER/(25764:25771): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 02:08:57:887 LOGGER/(25764:25771): PID: 1 - Bloqueado por: sofi
+[INFO] 02:08:57:888 LOGGER/(25764:25882): PID: 1 - Estado Anterior: 3 - Estado Actual: 2
+[INFO] 02:09:05:529 LOGGER/(25764:25882): PID: 1 - Estado Anterior: 2 - Estado Actual: 1
+[INFO] 02:09:05:533 LOGGER/(25764:25771): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 02:09:06:538 LOGGER/(25764:25771): PID: 1 - Bloqueado por: sofi
+[INFO] 02:11:18:658 LOGGER/(26912:26912): Conexion establecida con Memoria
+[INFO] 02:11:18:686 LOGGER/(26912:26912): Conexion establecida con Dispatcher
+[INFO] 02:11:18:688 LOGGER/(26912:26912): Conexion establecida con Interrupt
+[INFO] 02:11:18:727 LOGGER/(26912:26912): Servidor iniciado, esperando conexiones!
+[INFO] 02:15:48:542 LOGGER/(28075:28075): Conexion establecida con Memoria
+[INFO] 02:15:48:578 LOGGER/(28075:28075): Conexion establecida con Dispatcher
+[INFO] 02:15:48:580 LOGGER/(28075:28075): Conexion establecida con Interrupt
+[INFO] 02:15:48:645 LOGGER/(28075:28075): Servidor iniciado, esperando conexiones!
+[INFO] 02:16:39:289 LOGGER/(28075:28080): Se crea el proceso: 1 en NEW
+[INFO] 02:16:39:296 LOGGER/(28075:28077): Hay proceso esperando en la cola de NEW!
+
+[INFO] 02:16:39:298 LOGGER/(28075:28077): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 02:16:39:301 LOGGER/(28075:28077): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 02:16:39:305 LOGGER/(28075:28078): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 02:16:43:392 LOGGER/(28075:28269): PID: 1 - Estado Anterior: 3 - Estado Actual: 2
+[INFO] 02:16:43:393 LOGGER/(28075:28078): PID: 1 - Bloqueado por: sofi
+[INFO] 02:16:48:399 LOGGER/(28075:28269): PID: 1 - Estado Anterior: 2 - Estado Actual: 1
+[INFO] 02:16:48:404 LOGGER/(28075:28078): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 02:16:50:416 LOGGER/(28075:28078): PID: 1 - Bloqueado por - facu
+[INFO] 02:16:50:417 LOGGER/(28075:28376): PID: 1 - Estado Anterior: 3 - Estado Actual: 2
+[INFO] 02:19:48:772 LOGGER/(29739:29739): Conexion establecida con Memoria
+[INFO] 02:19:48:797 LOGGER/(29739:29739): Conexion establecida con Dispatcher
+[INFO] 02:19:48:799 LOGGER/(29739:29739): Conexion establecida con Interrupt
+[INFO] 02:19:48:841 LOGGER/(29739:29739): Servidor iniciado, esperando conexiones!
+[INFO] 02:20:25:621 LOGGER/(29739:29744): Se crea el proceso: 1 en NEW
+[INFO] 02:20:25:625 LOGGER/(29739:29741): Hay proceso esperando en la cola de NEW!
+
+[INFO] 02:20:25:626 LOGGER/(29739:29741): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 02:20:25:629 LOGGER/(29739:29741): PID: 1 - Estado Anterior: 0 - Estado Actual: 1
+[INFO] 02:20:25:630 LOGGER/(29739:29742): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 02:20:29:689 LOGGER/(29739:29742): PID: 1 - Bloqueado por: sofi
+[INFO] 02:20:29:690 LOGGER/(29739:29842): PID: 1 - Estado Anterior: 3 - Estado Actual: 2
+[INFO] 02:20:34:277 LOGGER/(29739:29842): PID: 1 - Estado Anterior: 2 - Estado Actual: 1
+[INFO] 02:20:34:281 LOGGER/(29739:29742): PID: 1 - Estado Anterior: 1 - Estado Actual: 3
+[INFO] 02:20:36:290 LOGGER/(29739:29742): PID: 1 - Bloqueado por - facu
+[INFO] 02:20:36:291 LOGGER/(29739:29986): PID: 1 - Estado Anterior: 3 - Estado Actual: 2
