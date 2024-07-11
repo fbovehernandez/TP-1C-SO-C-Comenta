@@ -475,7 +475,9 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             //free(pedido_lectura);
             break;
         case PEDIDO_ESCRITURA:
-            t_pedido* pedido_escritura = deserializar_pedido(package->buffer);
+            printf("LLEGO A PEDIDO ESCRITURAAAAAAAAAAAAAAAAAA");
+            t_pedido* pedido_escritura = deserializar_pedido(package->buffer); // llega bien el nombre de la interfaz
+            printf("NOMBRE PEDIDO ESCRITURA: %s", pedido_escritura->interfaz);
             encolar_datos_std(pcb, pedido_escritura);
             log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->interfaz);
             break;
@@ -1365,12 +1367,12 @@ void mandar_a_escribir_a_memoria(char* nombre_interfaz, int direccion_fisica, ui
     enviar_paquete(buffer, ESCRIBIR_STDOUT, sockets->socket_memoria);
 }
 
-t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, int tamanio){
+t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, uint32_t tamanio){
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
     int largo_interfaz = string_length(nombre_interfaz);
 
-    buffer->size = sizeof(int) + sizeof(largo_interfaz) + sizeof(int); // Esto esta bien???
+    buffer->size = sizeof(int) + largo_interfaz + sizeof(uint32_t); 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
@@ -1378,10 +1380,11 @@ t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, int t
 
     memcpy(stream + buffer->offset, &direccion_fisica, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &(largo_interfaz), sizeof(int)); // sizeof(largo_interfaz) ????
-    buffer->offset += sizeof(int);
     memcpy(stream + buffer->offset, &tamanio, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
+    memcpy(stream + buffer->offset, &(largo_interfaz), sizeof(int)); // sizeof(largo_interfaz) ????
+    buffer->offset += sizeof(int);
+    
     memcpy(stream + buffer->offset, nombre_interfaz, largo_interfaz);
     
     buffer->stream = stream;

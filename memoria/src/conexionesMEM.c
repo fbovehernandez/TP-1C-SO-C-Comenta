@@ -1261,9 +1261,11 @@ t_pid_stdout* desearializar_pid_stdout(t_buffer* buffer){
     stream += sizeof(int);
     memcpy(&(pedido_escritura->largo_interfaz), stream, sizeof(int));
     stream += sizeof(int);
+    printf("el largo de la interfaz es: %d", pedido_escritura->largo_interfaz);
     pedido_escritura->nombre_interfaz = malloc(pedido_escritura->largo_interfaz);
-    memcpy(&(pedido_escritura->nombre_interfaz), stream, pedido_escritura->largo_interfaz);
+    memcpy(pedido_escritura->nombre_interfaz, stream, pedido_escritura->largo_interfaz);
     stream += pedido_escritura->largo_interfaz;
+    printf("El nombre de la interfaz en deserializar stdout es: %s\n", pedido_escritura->nombre_interfaz);
 
     pedido_escritura->lista_direcciones = list_create();
 
@@ -1275,7 +1277,7 @@ t_pid_stdout* desearializar_pid_stdout(t_buffer* buffer){
         buffer->offset += sizeof(int);
         list_add(pedido_escritura->lista_direcciones, dir_fisica_tam);
     }
-
+ 
     return pedido_escritura;
     //VER FREE
 }

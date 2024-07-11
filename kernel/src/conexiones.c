@@ -305,7 +305,7 @@ int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
     memcpy(buffer->stream + buffer->offset, &pid_stdout->largo_interfaz, sizeof(int)); 
     buffer->offset += sizeof(int);
     printf("\n\nLa interfaz a mandar es: %s\n\n", pid_stdout->nombre_interfaz);
-    memcpy(buffer->stream + buffer->offset, &pid_stdout->nombre_interfaz, pid_stdout->largo_interfaz);
+    memcpy(buffer->stream + buffer->offset, pid_stdout->nombre_interfaz, pid_stdout->largo_interfaz);
     buffer->offset += pid_stdout->largo_interfaz;
     
     for(int i=0; i < pid_stdout->cantidad_paginas; i++) {

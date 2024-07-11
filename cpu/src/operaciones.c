@@ -1318,7 +1318,7 @@ t_buffer* llenar_buffer_stdio(char* interfaz, t_list* direcciones_fisicas, uint3
 
     int size_direcciones_fisicas = list_size(direcciones_fisicas); 
 
-    buffer->size = sizeof(int) * 2 + sizeof(uint32_t) + (size_direcciones_fisicas * sizeof(int) * 2) + largo_interfaz;
+    buffer->size = sizeof(int) * 2+ sizeof(uint32_t) + (size_direcciones_fisicas * sizeof(int) * 2) + largo_interfaz; 
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
@@ -1387,7 +1387,7 @@ t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
 */
 
 
-void enviar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uin32_t registro_archivo,codigo_operacion codigo) {
+void enviar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uint32_t registro_archivo,codigo_operacion codigo) {
     t_buffer* buffer = llenar_buffer_fs_escritura_lectura(nombre_interfaz,nombre_archivo,registro_direccion,registro_archivo,registro_tamanio);
     enviar_paquete(buffer,codigo,client_dispatch);
 }
@@ -1399,7 +1399,7 @@ t_buffer* llenar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_
     int largo_nombre_interfaz = string_length(nombre_interfaz);  // + 1?????
     int largo_nombre_archivo = string_length(nombre_archivo);  // +1 ????????
 
-    buffer->size = sizeof(int) * 2 + largo_nombre_interfaz + largo_nombre_archivo + sizeof(uint32_t) * 2 ; // Revisar esto AYUDAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    buffer->size = sizeof(int) * 2 + largo_nombre_interfaz + largo_nombre_archivo + sizeof(uint32_t) * 3;
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
@@ -1413,11 +1413,11 @@ t_buffer* llenar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_
     buffer->offset += sizeof(int);
     memcpy(stream + buffer->offset, nombre_archivo, largo_nombre_archivo);
     buffer->offset += largo_nombre_archivo;
-    memcpy(stream + buffer->offset, registro_direccion, sizeof(uint32_t));
+    memcpy(stream + buffer->offset, &registro_direccion, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
-    memcpy(stream + buffer->offset, registro_tamanio, sizeof(uint32_t));
+    memcpy(stream + buffer->offset, &registro_tamanio, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
-    memcpy(stream + buffer->offset, registro_archivo, sizeof(uint32_t));
+    memcpy(stream + buffer->offset, &registro_archivo, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
     
     return buffer;

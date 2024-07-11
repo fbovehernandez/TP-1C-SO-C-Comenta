@@ -250,8 +250,8 @@ typedef struct {
     uint32_t registro_tamanio;
     int cantidad_paginas;
     int pid;
-    char* nombre_interfaz;
     int largo_interfaz;
+    char* nombre_interfaz;
 } t_pid_stdout;
 
 typedef struct {
