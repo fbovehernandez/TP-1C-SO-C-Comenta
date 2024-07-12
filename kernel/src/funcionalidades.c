@@ -107,16 +107,14 @@ void EJECUTAR_SCRIPT(char* path) {
     char* path_completo = malloc(strlen(path_local_kernel) + strlen(path));
     path_completo = strcat(path_local_kernel, path);
     FILE* file = fopen(path_completo, "r");
-    char* linea_leida = NULL;
+    // char* linea_leida = NULL;
     // Verificar si el archivo se abrió correctamente
     if (file == NULL) {
         printf("Error al abrir el archivo.\n");
     }
-    while (getline(&linea_leida, &length, file) != -1) {
-    	if(strcmp(linea_leida,"\n")){
-        	ejecutarComando(linea_leida);
-    	}
-    }
+
+    aplicar_sobre_cada_linea_del_archivo(file, NULL, (void*) _ejecutarComando);
+    
     // Cerrar el archivo
     fclose(file);
 }
@@ -487,8 +485,9 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             t_list_io* interfaz_crear_destruir = io_esta_en_diccionario(pcb, pedido_fs->nombre_interfaz);
             
             if (interfaz_crear_destruir != NULL) {
-                codigo_operacion operacion = (package->codigo_operacion == FS_CREATE) ? CREAR_ARCHIVO : ELIMINAR_ARCHIVO;
-                
+                // codigo_operacion operacion = (package->codigo_operacion == FS_CREATE) ? CREAR_ARCHIVO : ELIMINAR_ARCHIVO;
+                codigo_operacion operacion = (devolucion_cpu == FS_CREATE) ? CREAR_ARCHIVO : ELIMINAR_ARCHIVO;
+
                 // Esto se hace en la conexion, aca tiene que encolar el pedido
                 enviar_buffer_fs(interfaz_crear_destruir->socket, pcb->pid, pedido_fs->longitud_nombre_archivo, pedido_fs->nombre_archivo, operacion);
                 
@@ -503,11 +502,12 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             t_list_io* interfaz = io_esta_en_diccionario(pcb,fs_read_write->nombre_interfaz);
 
             if (interfaz != NULL) {
-                codigo_operacion operacion = (package->codigo_operacion == ESCRITURA_FS) ? ESCRIBIR_FS_MEMORIA : LEER_FS_MEMORIA;
+                // codigo_operacion operacion = (package->codigo_operacion == ESCRITURA_FS) ? ESCRIBIR_FS_MEMORIA : LEER_FS_MEMORIA;
+                codigo_operacion operacion = (devolucion_cpu == ESCRITURA_FS) ? ESCRIBIR_FS_MEMORIA : LEER_FS_MEMORIA;
                 // Esto se hace en la conexion, aca tiene que encolar el pedido
                 enviar_buffer_fs_escritura_lectura(interfaz->socket,pcb->pid,fs_read_write->largo_archivo,
                                                     fs_read_write->nombre_archivo,fs_read_write->registro_direccion,fs_read_write->registro_tamanio,operacion);
-                log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, pedido_fs->nombre_interfaz);
+                log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, fs_read_write->nombre_interfaz);
             }
         
         default:
@@ -877,7 +877,7 @@ void* escuchar_consola(int socket_kernel_escucha, t_config* config){
 }
 */
 
-void ejecutarComando(char* linea_leida) {
+void _ejecutarComando(void* _, char* linea_leida) {
     char comando[20]; 
     char parametro[20]; 
     int parametroAux;
@@ -1413,9 +1413,9 @@ t_pedido_fs_create_delete* deserializar_pedido_fs_create_delete(t_buffer* buffer
 }
 
 // HAY QUE SEGUIR ESTO
-void enviar_buffer_fs_escritura_lectura(int socket,int pid,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,codigo_operacion operacion){
-    t_buffer* buffer = llenar_buffer_fs_escritura_lectura(pid,socket,largo_archivo,nombre_archivo,registro_direccion,registro_tamanio);
-    enviar_paquete(buffer,operacion,sockets->socket_memoria);
+void enviar_buffer_fs_escritura_lectura(int socket, int pid, int largo_archivo, char* nombre_archivo, uint32_t registro_direccion, uint32_t registro_tamanio, codigo_operacion operacion) {
+    t_buffer* buffer = llenar_buffer_fs_escritura_lectura(pid, socket, largo_archivo, nombre_archivo,registro_direccion, registro_tamanio);
+    enviar_paquete(buffer, operacion, sockets->socket_memoria);
 }
 
 t_pedido_fs_escritura_lectura* deserializar_pedido_fs_escritura_lectura(t_buffer* buffer){
@@ -1455,9 +1455,9 @@ t_buffer* llenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archiv
     buffer->offset += sizeof(int);
     memcpy(stream + buffer->offset, nombre_archivo, largo_archivo);
     buffer->stream += largo_archivo;
-    memcpy(stream + buffer->offset, registro_direccion, sizeof(uint32_t));
+    memcpy(stream + buffer->offset, &registro_direccion, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
-    memcpy(stream + buffer->offset, registro_tamanio, sizeof(uint32_t));
+    memcpy(stream + buffer->offset, &registro_tamanio, sizeof(uint32_t));
 
     return buffer;
 }

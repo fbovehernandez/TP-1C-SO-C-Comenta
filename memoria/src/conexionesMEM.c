@@ -838,28 +838,8 @@ void crear_estructuras(char* path_completo, int pid) {
     proceso_paginas->tabla_paginas = tabla_pagina;
     proceso_paginas->cantidad_frames = 0;
 
-    char* line = NULL;
-    //size_t bufsize = 0;
-    size_t bufsize = 0; // Tamaño inicial del buffer
-    
-    while ((getline(&line, &bufsize, file)) != -1) {
-        printf("Esta es la linea: %s\n",line);
-        if(strcmp(line, "\n") != 0) {
-            //printf("Esta es la linea: %s\n", line);
-            t_instruccion* instruccion = build_instruccion(line);
-            // printf("Instruccion creada %s\n" , instruccion_a_string(instruccion->nombre));
-            list_add(instrucciones, instruccion);
-            // free(instruccion);
-        }
-    }
-    
-    //char* pid_char = malloc(20); // sizeof(int) + 2 VER
     char* pid_char = malloc(sizeof(char) * 4); // Un char es de 1B, un int es de 4B
     sprintf(pid_char, "%d", pid);
-    
-    // char* pid_char = pid + '0'; 
-    // pid_char = (char*)pid;
-    // char *pidchar = (char *)&pid;
     
     dictionary_put(diccionario_tablas_paginas, pid_char, proceso_paginas);
     
@@ -867,10 +847,16 @@ void crear_estructuras(char* path_completo, int pid) {
     dictionary_put(diccionario_instrucciones, pid_char, instrucciones);
     pthread_mutex_unlock(&mutex_diccionario_instrucciones);
 
-    // ->  
+    aplicar_sobre_cada_linea_del_archivo(file, pid_char, (void*) _agregar_instruccion_a_diccionario);
+
     free(pid_char);
-    free(line);
     fclose(file);
+}
+
+void _agregar_instruccion_a_diccionario(char* pid_char, char* linea) {
+    t_list* instrucciones = dictionary_get(diccionario_instrucciones, pid_char);
+    t_instruccion* instruccion = build_instruccion(linea);
+    list_add(instrucciones, instruccion);
 }
 
 TipoInstruccion pasar_a_enum(char* nombre) {
@@ -913,7 +899,7 @@ TipoInstruccion pasar_a_enum(char* nombre) {
     } else if (strcmp(nombre, "EXIT") == 0) {
         return EXIT_INSTRUCCION;
     }
-    printf("\n\nRompe aca en pasarAEnum\n\n");
+    // printf("\n\nRompe aca en pasarAEnum\n\n");
     // printf("Salio mal la lectura de instruccion.\n");
     return ERROR_INSTRUCCION; // Ver esto
 }

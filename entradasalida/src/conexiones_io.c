@@ -312,10 +312,10 @@ t_fs_create_delete* deserializar_pedido_creacion_destruccion(t_buffer* buffer){
 }
 
 void inicializar_file_system(t_config* config_io) {
-    int block_size = config_get_int_value(config_io,"BLOCK_SIZE");
-    int block_count = config_get_int_value(config_io,"BLOCK_COUNT");
-    int retraso_compactacion = config_get_int_value(config_io,"RETRASO_COMPACTACION");
-    int path_base = config_get_string_value(config_io,"PATH_BASE_DIALFS");
+    int block_size = config_get_int_value(config_io, "BLOCK_SIZE");
+    int block_count = config_get_int_value(config_io, "BLOCK_COUNT");
+    int retraso_compactacion = config_get_int_value(config_io, "RETRASO_COMPACTACION");
+    char* path_base = config_get_string_value(config_io, "PATH_BASE_DIALFS");
     
     // Inicializar diccionario, bloques.dat, bitmap.dat y archivo metadata
 }

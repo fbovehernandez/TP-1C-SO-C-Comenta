@@ -16,7 +16,7 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         t_instruccion* instruccion = recibir_instruccion(socket_memoria, pcb); // Se ejecuta la instruccion tambien
         // sem_post(pedir_instruccion);
 
-        if(instruccion->nombre == ERROR_INSTRUCCION) return;
+        // if(instruccion->nombre == ERROR_INSTRUCCION) return;
 
         printf("Esta ejecutando %d\n", pcb->pid);   
         int resultado_ok = ejecutar_instruccion(instruccion, pcb);
@@ -654,15 +654,15 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         
         t_parametro* tercer_parametro = list_get(list_parametros, 2);
         char* nombre_registro_direccion2 = tercer_parametro->nombre; 
-        uint32_t registro_direccion2 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_direccion2);
+        uint32_t registro_direccion2 = *(uint32_t*) seleccionar_registro_cpu(nombre_registro_direccion2);
         
         t_parametro* cuarto_parametro = list_get(list_parametros, 3);
         char* nombre_registro_tamanio2 = cuarto_parametro->nombre; 
-        uint32_t registro_tamanio2 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio2);
+        uint32_t registro_tamanio2 = *(uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio2);
 
         t_parametro* quinto_parametro = list_get(list_parametros, 4);
         char* nombre_quinto_parametro = cuarto_parametro->nombre; 
-        uint32_t registro_puntero_archivo = (uint32_t*) seleccionar_registro_cpu(nombre_quinto_parametro);
+        uint32_t registro_puntero_archivo = *(uint32_t*) seleccionar_registro_cpu(nombre_quinto_parametro);
 
         codigo_operacion codigo2 = nombreInstruccion == IO_FS_READ ? LECTURA_FS : ESCRITURA_FS;
 

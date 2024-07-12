@@ -11,8 +11,10 @@
 #include <commons/log.h>
 #include <commons/config.h>
 #include <commons/collections/queue.h>
+#include <commons/string.h>
 #include <assert.h>
 #include <pthread.h>
+
 
 extern sem_t sem_memoria_instruccion;
 extern sem_t pedir_instruccion;
@@ -97,7 +99,9 @@ typedef enum {
     ERROR_STDOUT,
     ERROR_STDIN,
     FS_CREATE,
-    FS_DELETE
+    FS_DELETE,
+    LECTURA_FS,
+    ESCRITURA_FS
 } DesalojoCpu;
 
 typedef struct {
@@ -147,8 +151,8 @@ typedef enum {
     CREAR_ARCHIVO,
     ELIMINAR_ARCHIVO,
     ESCRIBITE,
-    LECTURA_FS,
-    ESCRITURA_FS,
+    // LECTURA_FS,
+    // ESCRITURA_FS,
     ESCRIBIR_FS_MEMORIA,
     LEER_FS_MEMORIA
 } codigo_operacion;
@@ -381,5 +385,6 @@ void enviar_paquete(t_buffer* buffer, codigo_operacion codigo, int socket);
 t_info_io *deserializar_interfaz(t_buffer *buffer);
 t_paquete *inicializarIO_recibirPaquete(int socket);
 void imprimir_datos_stdin(t_pid_stdin* datos_stdin);
+void aplicar_sobre_cada_linea_del_archivo(FILE* file, void* datos_extra, void(*closure)(void*, void*));
 
 #endif // SOCKET_H

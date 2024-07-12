@@ -449,3 +449,26 @@ void imprimir_datos_stdin(t_pid_stdin* datos_stdin) {
         printf("Tamanio: %d\n", dir_fisica_tam->bytes_lectura);
     }
 }
+
+// Lo uso para evitar el error de EXIT en cuatro lineas distintas al final
+void aplicar_sobre_cada_linea_del_archivo(FILE* file, void* datos_extra, void(*closure)(void*, void*)) {
+    char* line = NULL;
+    char* aux_line = string_new();
+    size_t bufsize = 0;
+
+    while((getline(&line, &bufsize, file)) != -1) {
+        printf("Esta es la linea: %s\n",line);
+        if(string_ends_with(line, "\n")) {
+            closure(datos_extra, line);
+        } else {
+            string_append(&aux_line, line);
+        }
+    }
+
+    if(!string_is_empty(aux_line)) {
+        closure(datos_extra, aux_line);
+    }
+
+    free(line);
+    free(aux_line);
+}

@@ -67,6 +67,7 @@ void imprimir_diccionario(); //
 void print_parametros(t_parametro* parametro); //
 void print_instruccion(t_instruccion* instruccion);//
 void print_instrucciones(char* key, t_list* lista_instrucciones);//
+void _agregar_instruccion_a_diccionario(char* pid_char, char* linea);
 TipoInstruccion pasar_a_enum(char* nombre);//
 //t_cantidad_instrucciones* deserializar_cantidad(t_buffer* buffer);
 int deserializar_pid(t_buffer* buffer);
