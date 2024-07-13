@@ -368,6 +368,10 @@ typedef struct {
     uint32_t length_valor;
 } t_direccion_fisica_escritura;
 
+typedef struct {
+    int socket;
+} socket_estructurado;
+
 void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* buffer);
 int iniciar_servidor(char*);
 int esperar_conexion(int);

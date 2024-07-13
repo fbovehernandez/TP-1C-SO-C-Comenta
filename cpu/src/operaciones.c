@@ -582,6 +582,13 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         
         cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdin, *registro_direccion_stdin, pcb->pid, lista_direcciones_fisicas_stdin, pagina);
 
+        printf("\nAca va la lista de bytes del STDIN READ:\n");
+        for(int i=0; i < list_size(lista_direcciones_fisicas_stdin); i++) {
+            t_dir_fisica_tamanio* dir_stdin = list_get(lista_direcciones_fisicas_stdin, i);
+            printf("Direccion fisica: %d\n", dir_stdin->direccion_fisica);
+            printf("Bytes a leer: %d\n", dir_stdin->bytes_lectura);
+        }
+
         t_buffer* buffer_lectura = llenar_buffer_stdio(interfaz->nombre, lista_direcciones_fisicas_stdin, *registro_tamanio_stdin, cantidad_paginas);
         
         pcb->program_counter++;
@@ -595,9 +602,10 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         printf("Llego a instruccion EXIT\n");
         desalojar(pcb, FIN_PROCESO, NULL); // Envio 0 ya que no me importa size
         break;
-    case IO_STDOUT_WRITE:// IO_STDOUT_WRITE Int3 BX EAX
+    case IO_STDOUT_WRITE: // IO_STDOUT_WRITE Int3 BX EAX
         t_list* lista_bytes_stdout = list_create();
         t_list* lista_direcciones_fisicas_stdout = list_create();
+
         t_parametro* parametro_interfaz = list_get(list_parametros,0);
         char* nombre_interfaz = parametro_interfaz->nombre;
         
@@ -617,14 +625,23 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         // CPU -> KERNEL -> MEMORIA -> ENTRADA SALIDA
     
         pagina = floor(*registro_direccion11 / tamanio_pagina);
-        tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); //Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
+        tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); // Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
 
         cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_direccion11, tamanio_en_byte, pagina, lista_bytes_stdout); // Cantidad de paginas + la primera
         
         cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdout, *registro_direccion11, pcb->pid, lista_direcciones_fisicas_stdout, pagina);
-
+        
+        printf("\nAca va la lista de bytes DEL STDOUT:\n");
+        for(int i=0; i < list_size(lista_direcciones_fisicas_stdout); i++) {
+            t_dir_fisica_tamanio* dir = list_get(lista_direcciones_fisicas_stdout, i);
+            printf("Direccion fisica: %d\n", dir->direccion_fisica);
+            printf("Bytes a leer: %d\n", dir->bytes_lectura);
+        }
+        
+        printf("\n");
         t_buffer* buffer_escritura = llenar_buffer_stdio(nombre_interfaz, lista_direcciones_fisicas_stdout, *registro_tamanio_stdout, cantidad_paginas);
         pcb->program_counter++;
+
         desalojar(pcb, PEDIDO_ESCRITURA, buffer_escritura);
 
         free(buffer_escritura);
@@ -1396,8 +1413,8 @@ void enviar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_archi
 t_buffer* llenar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uint32_t registro_archivo) {
     t_buffer *buffer = malloc(sizeof(t_buffer));
     
-    int largo_nombre_interfaz = string_length(nombre_interfaz);  // + 1?????
-    int largo_nombre_archivo = string_length(nombre_archivo);  // +1 ????????
+    int largo_nombre_interfaz = string_length(nombre_interfaz);  // + 1 ?????
+    int largo_nombre_archivo = string_length(nombre_archivo);  // + 1 ????????
 
     buffer->size = sizeof(int) * 2 + largo_nombre_interfaz + largo_nombre_archivo + sizeof(uint32_t) * 3;
     buffer->offset = 0;

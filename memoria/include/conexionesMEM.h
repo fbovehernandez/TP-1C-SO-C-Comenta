@@ -15,6 +15,7 @@ extern pthread_t kernel_thread;
 extern pthread_t io_stdin_thread;
 extern pthread_t io_stdout_thread;
 extern pthread_mutex_t mutex_diccionario_instrucciones;
+extern pthread_mutex_t mutex_diccionario_io;
 extern pthread_t cpu_thread;
 extern t_config* config_memoria;
 extern t_dictionary* diccionario_instrucciones;

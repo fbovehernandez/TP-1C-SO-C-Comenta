@@ -65,13 +65,13 @@ void iniciar_stdin(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, c
     kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, STDIN, 13); 
     memoriafd = conectar_io_memoria(IP_MEMORIA, puerto_memoria, logger_io, nombreInterfaz, STDIN, 91);
     recibir_kernel(config_io, kernelfd);
-    recibir_memoria(config_io, memoriafd);
+    // recibir_memoria(config_io, memoriafd);
 }
 
 void iniciar_stdout(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, char* IP_MEMORIA, char* puerto_kernel, char* puerto_memoria) {
     kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, STDOUT, 15); 
     memoriafd = conectar_io_memoria(IP_MEMORIA, puerto_memoria, logger_io, nombreInterfaz, STDOUT, 79);
-    recibir_kernel(config_io, kernelfd);
+    // recibir_kernel(config_io, kernelfd);
     recibir_memoria(config_io, memoriafd);
 } 
 

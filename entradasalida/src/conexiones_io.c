@@ -219,11 +219,13 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
 }
 
 void recibir_memoria(t_config* config_io, int socket_memoria) {
+    printf("Voy a recibir memoria!\n");
     while(1) {
         t_paquete* paquete = malloc(sizeof(t_paquete));
         paquete->buffer = malloc(sizeof(t_buffer));
 
         printf("Esperando paquete...\n");
+        
         recv(socket_memoria, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
         printf("Recibi el codigo de operacion de memoria: %d\n", paquete->codigo_operacion);
 
@@ -238,12 +240,13 @@ void recibir_memoria(t_config* config_io, int socket_memoria) {
                 break;
             case ESCRIBITE:
                 int tamanio, pid, terminoOk = 1;
-                memcpy(&pid, paquete->buffer->stream, sizeof(int));
-                paquete->buffer->stream += sizeof(int);
-                memcpy(&tamanio, paquete->buffer->stream, sizeof(int));
-                paquete->buffer->stream += sizeof(int);
+                void* stream = paquete->buffer->stream;
+                memcpy(&pid, stream, sizeof(int));
+                stream += sizeof(int);
+                memcpy(&tamanio, stream, sizeof(int));
+                stream += sizeof(int);
                 char* valor = malloc(tamanio);
-                memcpy(valor, paquete->buffer->stream, tamanio);
+                memcpy(valor, stream, tamanio);
                 printf("\n\nEl valor leido de memoria es: %s \n\n", valor);
                 log_info(logger_io, "PID: %d - Operacion: ESCRIBIR", pid);
 

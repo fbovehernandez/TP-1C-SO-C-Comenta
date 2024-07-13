@@ -592,7 +592,14 @@ void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
         datos_std->pcb               = pcb;
         
         printf("Voy a imprimir los datos std antes de agregarlos a la cola de bloqueados de la interfaz\n");
-        printf("list_size(datos_std->lista_direcciones) = %d\n", list_size(datos_std->lista_direcciones));
+        
+        printf("\nAca va la lista de bytes DEL STDOUT ANTES DE ENCOLAR -> ARA GIL ME DEBES UN ALFAJOR:\n");
+        for(int i=0; i < list_size(datos_std->lista_direcciones); i++) {
+            t_dir_fisica_tamanio* dir = list_get(datos_std->lista_direcciones, i);
+            printf("Direccion fisica: %d\n", dir->direccion_fisica);
+            printf("Bytes a leer: %d\n", dir->bytes_lectura);
+        }
+
         printf("datos_std->registro_tamanio = %d\n", datos_std->registro_tamanio);
         printf("datos_std->cantidad_paginas = %d\n", datos_std->cantidad_paginas);
         printf("datos_std->pcb->pid = %d\n", datos_std->pcb->pid);

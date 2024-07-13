@@ -366,6 +366,8 @@ void liberar_paquete_y_a_enviar(t_paquete* paquete,void* a_enviar) {
 void enviar_paquete(t_buffer* buffer, codigo_operacion codigo, int socket) {
     t_paquete* paquete = malloc(sizeof(t_paquete));
 
+    printf("\nEl socket de la io a la q se va a enviar el paquete es: %d\n", socket);
+
     paquete->codigo_operacion = codigo;
     paquete->buffer = buffer; 
 

@@ -4,6 +4,7 @@ int main(int argc, char* argv[]) {
 
     // Creo los configs y logs   
     pthread_mutex_init(&mutex_diccionario_instrucciones, NULL);
+    pthread_mutex_init(&mutex_diccionario_io, NULL);
     config_memoria = iniciar_config("./memoria.config");
     logger_memoria = iniciar_logger("memoria.log");
 

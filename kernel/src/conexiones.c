@@ -492,3 +492,40 @@ t_list_io* establecer_conexion(t_buffer *buffer, int socket_io) {
     
     return io;
 }
+
+/* 
+
+case IO_STDIN_READ: 
+
+        t_list* lista_bytes_stdin = list_create();
+        t_list* lista_direcciones_fisicas_stdin = list_create();
+
+        t_parametro* interfaz = list_get(list_parametros,0);
+        registro_direccion = list_get(list_parametros, 1); // Cambiar, usa el de arriba, mejor nombre?
+        t_parametro *registro_tamanio = list_get(list_parametros, 2);
+
+        char* nombre_registro_direccion = registro_direccion->nombre;
+        char* nombre_registro_tamanio = registro_tamanio->nombre;
+
+        uint32_t* registro_direccion_stdin = (uint32_t*) seleccionar_registro_cpu(nombre_registro_direccion);
+        es_registro_uint8_dato = es_de_8_bits(nombre_registro_tamanio);
+
+        uint32_t* registro_tamanio_stdin = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio);
+        
+        int pagina = floor(*registro_direccion_stdin / tamanio_pagina);
+        tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); //Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
+
+        int cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_direccion_stdin, tamanio_en_byte, pagina, lista_bytes_stdin); // Cantidad de paginas + la primera
+        
+        cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdin, *registro_direccion_stdin, pcb->pid, lista_direcciones_fisicas_stdin, pagina);
+
+        t_buffer* buffer_lectura = llenar_buffer_stdio(interfaz->nombre, lista_direcciones_fisicas_stdin, *registro_tamanio_stdin, cantidad_paginas);
+        
+        pcb->program_counter++;
+        desalojar(pcb, PEDIDO_LECTURA, buffer_lectura);
+
+        free(buffer_lectura);
+        return 1; // El return esta para que cuando se desaloje el pcb no siga ejecutando, si hace el break sigue pidiendo instrucciones, porfa no lo saquen o les va a romper
+        break;
+
+*/

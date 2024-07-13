@@ -5,6 +5,7 @@ pthread_t kernel_thread;
 pthread_t io_stdin_thread;
 pthread_t io_stdout_thread;
 pthread_mutex_t mutex_diccionario_instrucciones;
+pthread_mutex_t mutex_diccionario_io;
 t_config* config_memoria;
 t_dictionary* diccionario_instrucciones;
 t_dictionary* diccionario_tablas_paginas;
@@ -19,7 +20,7 @@ t_bitarray* bitmap;
 int socket_cpu;
 t_log* logger_memoria;
 
-//Acepta el handshake del cliente, se podria hacer mas generico y que cada uno tenga un valor diferente
+//Acepta el handshake del cliente, se podria hacer mas generico y que cada uno tengadiferente
 int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
 	int handshake = 0;
 	int resultError = -1;
@@ -224,7 +225,7 @@ void interaccion_user_space(tipo_operacion operacion, int df_actual, void* user_
         printf("Lectura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
         printf("Contenido leído: %.*s\n", tamanio, (char*)(registro_lectura + tam_escrito_anterior));
     }
-}
+}                                                                                                                                 
 
 void quiero_frame(t_buffer* buffer) {
     t_solicitud_frame* pedido_frame = deserializar_solicitud_frame(buffer);
@@ -370,7 +371,7 @@ int resize_memory(void* stream) {
     printear_bitmap();
     free(pid_char);
 
-    return 0; // Si llego hasta aca, la op salio bien :)
+    return 0; //hasta aca, la op salio bien :)
 }
 
 void recortar_tamanio(int tamanio, char* pid_string, int cant_bytes_uso) {
@@ -578,16 +579,29 @@ void* handle_kernel(void* socket) {
                 realizar_operacion(LECTURA, pid_stdout->lista_direcciones, user_space_aux, NULL, registro_lectura);
 
                 printf("El valor leido para char* es: %s\n", (char*)registro_lectura);
-                int socket_io = (intptr_t) dictionary_get(diccionario_io, pid_stdout->nombre_interfaz);
-                
+                // int socket_io = (intptr_t) dictionary_get(diccionario_io, pid_stdout->nombre_interfaz);
+
+                pthread_mutex_lock(&mutex_diccionario_io);
+                socket_estructurado* socket_io = dictionary_get(diccionario_io, pid_stdout->nombre_interfaz);
+                pthread_mutex_unlock(&mutex_diccionario_io);
+
                 printf("El pid que mandaremos a la io es %d\n", pid_stdout->pid);
-                enviar_valor_leido_a_io(pid_stdout->pid, socket_io, registro_lectura, pid_stdout->registro_tamanio);
+                printf("El socket es %d\n", socket_io->socket);
+                enviar_valor_leido_a_io(pid_stdout->pid, socket_io->socket, registro_lectura, pid_stdout->registro_tamanio);
                 
                 // free(pid_stdout->nombre_interfaz);
                 free(pid_stdout);
                 free(registro_lectura);
                 break;
-            default: 
+            /*
+            case ESCRIBIR_FS_MEMORIA:
+            case LEER_FS_MEMORIA:
+                t_pedido_escritura_lectura* escritura_lectura = deserializar_escritura_lectura(paquete->buffer);
+                
+            */
+            default:
+                printf("Rompio kernel.\n");
+                exit(-1);
                 break;
         }
 
@@ -599,14 +613,16 @@ void* handle_kernel(void* socket) {
 }
 
 void enviar_valor_leido_a_io(int pid, int socket_io, char* valor, int tamanio) {
+    printf("\nLlega a enviar_valor con: PID %d, socket %d, valor %s, tamanio %d\n", pid, socket_io, valor, tamanio);
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
-    buffer->size = sizeof(int) + tamanio;
+    buffer->size = sizeof(int) * 2 + tamanio;
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
     void* stream = buffer->stream;
+    
     memcpy(stream + buffer->offset, &pid, sizeof(int));
     buffer->offset += sizeof(int);
     memcpy(stream + buffer->offset, &tamanio, sizeof(int));
@@ -1247,7 +1263,7 @@ t_pid_stdout* desearializar_pid_stdout(t_buffer* buffer){
     stream += sizeof(int);
     memcpy(&(pedido_escritura->largo_interfaz), stream, sizeof(int));
     stream += sizeof(int);
-    printf("el largo de la interfaz es: %d", pedido_escritura->largo_interfaz);
+    printf("el largo de la interfaz es: %d\n", pedido_escritura->largo_interfaz);
     pedido_escritura->nombre_interfaz = malloc(pedido_escritura->largo_interfaz);
     memcpy(pedido_escritura->nombre_interfaz, stream, pedido_escritura->largo_interfaz);
     stream += pedido_escritura->largo_interfaz;
@@ -1264,12 +1280,23 @@ t_pid_stdout* desearializar_pid_stdout(t_buffer* buffer){
         list_add(pedido_escritura->lista_direcciones, dir_fisica_tam);
     }
  
-    return pedido_escritura;
-    //VER FREE
+    return pedido_escritura; 
+    // VER FREE
 }
 
 void agregar_interfaz_en_el_diccionario(t_paquete* paquete, int socket) {
     t_info_io* interfaz = deserializar_interfaz(paquete->buffer);
-    dictionary_put(diccionario_io, interfaz->nombre_interfaz, &socket); // Ver est
+    printf("\nSe conecto la interfaz con nombre %s\n", interfaz->nombre_interfaz);
+    printf("La interfaz tiene socket %d\n", socket);
+    socket_estructurado* socket_io = malloc(sizeof(int));
+    socket_io->socket = socket;
+    pthread_mutex_lock(&mutex_diccionario_io);
+    dictionary_put(diccionario_io, interfaz->nombre_interfaz, socket_io); // Ver est
+    pthread_mutex_unlock(&mutex_diccionario_io);
+    
+    pthread_mutex_lock(&mutex_diccionario_io);
+    socket_estructurado* socket_sacado = dictionary_get(diccionario_io, interfaz->nombre_interfaz);
+    pthread_mutex_unlock(&mutex_diccionario_io);
+    printf("El socket del diccionario: %d\n", socket_sacado->socket);
 }
 
