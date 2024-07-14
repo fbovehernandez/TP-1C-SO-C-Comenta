@@ -648,17 +648,20 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         return 1;
         break;
     
-    case IO_FS_CREATE: // IO_FS_CREATE nombre_interfaz nombre_arch
-    case IO_FS_DELETE: // IO_FS_DELETE nombre_interfaz nombre_arch
-  
-        t_parametro* primer_parametro1 = list_get(list_parametros, 0);
-        char* nombre_interfaz1 = primer_parametro1->nombre;
+    case IO_FS_CREATE: case IO_FS_DELETE: // IO_FS_CREATE nombre_interfaz nombre_archivo
+        t_parametro* interfaz_create = list_get(list_parametros, 0);
+        char* nombre_interfaz = interfaz_create->nombre;
 
-        t_parametro* segundo_parametro1 = list_get(list_parametros, 1);
-        char* nombre_archivo1 = segundo_parametro1->nombre; 
+        t_parametro* name_file_create = list_get(list_parametros, 1);
+        char* filename = name_file_create->nombre;
 
-        codigo_operacion codigo1 = nombreInstruccion == IO_FS_CREATE ? FS_CREATE : FS_DELETE;
-        enviar_buffer_fs_create_delete(nombre_interfaz1, nombre_archivo1,codigo1);
+        codigo_operacion codigo_io = (nombreInstruccion == IO_FS_CREATE) ? FS_CREATE : FS_DELETE;
+        t_buffer* buffer_io = llenar_buffer_fs_create_delete(nombre_interfaz, filename);
+        desalojar(pcb, codigo_io, buffer_io);
+
+        // Libero y desalojo...
+        free(buffer_io);
+        return -1;
   
         break;
     case IO_FS_READ:
@@ -1288,38 +1291,6 @@ t_buffer* llenar_buffer_stdout(int direccion_fisica, char* nombre_interfaz, uint
     return buffer;
 }
 
-void enviar_buffer_fs_create_delete(char* nombre_interfaz,char* nombre_archivo,codigo_operacion codigo){
-    t_buffer* buffer;
-    buffer = llenar_buffer_fs_create_delete(nombre_interfaz,nombre_archivo);
-    enviar_paquete(buffer,codigo,client_dispatch);
-}
-
-
-t_buffer* llenar_buffer_fs_create_delete(char* nombre_interfaz,char* nombre_archivo){
-    t_buffer *buffer = malloc(sizeof(t_buffer));
-    
-    int largo_nombre_interfaz = string_length(nombre_interfaz);  // + 1?????
-    int largo_nombre_archivo = string_length(nombre_archivo);  // +1 ????????
-
-    buffer->size = sizeof(int) * 2 + largo_nombre_interfaz + largo_nombre_archivo; // Revisar esto AYUDAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-    buffer->offset = 0;
-    buffer->stream = malloc(buffer->size);
-
-    void *stream = buffer->stream;
-   
-    memcpy(stream + buffer->offset, &largo_nombre_interfaz, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, nombre_interfaz, largo_nombre_interfaz);
-    buffer->offset += largo_nombre_interfaz;
-    memcpy(stream + buffer->offset, &largo_nombre_archivo, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, nombre_archivo, largo_nombre_archivo);
-    buffer->offset += largo_nombre_archivo;
-
-    return buffer;
-}
-
-
 
 /****
  NOTA -> Ya lo puse en un issue pero igual lo pongo tambien por aca asi lo ven. Cuando arregle el ultimo problema de serializacion del manejo del recurso, lo hice igual que aca, 
@@ -1403,39 +1374,3 @@ t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
 
 */
 
-
-void enviar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uint32_t registro_archivo,codigo_operacion codigo) {
-    t_buffer* buffer = llenar_buffer_fs_escritura_lectura(nombre_interfaz,nombre_archivo,registro_direccion,registro_archivo,registro_tamanio);
-    enviar_paquete(buffer,codigo,client_dispatch);
-}
-
-
-t_buffer* llenar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uint32_t registro_archivo) {
-    t_buffer *buffer = malloc(sizeof(t_buffer));
-    
-    int largo_nombre_interfaz = string_length(nombre_interfaz);  // + 1 ?????
-    int largo_nombre_archivo = string_length(nombre_archivo);  // + 1 ????????
-
-    buffer->size = sizeof(int) * 2 + largo_nombre_interfaz + largo_nombre_archivo + sizeof(uint32_t) * 3;
-    buffer->offset = 0;
-    buffer->stream = malloc(buffer->size);
-
-    void *stream = buffer->stream;
-   
-    memcpy(stream + buffer->offset, &largo_nombre_interfaz, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, nombre_interfaz, largo_nombre_interfaz);
-    buffer->offset += largo_nombre_interfaz;
-    memcpy(stream + buffer->offset, &largo_nombre_archivo, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, nombre_archivo, largo_nombre_archivo);
-    buffer->offset += largo_nombre_archivo;
-    memcpy(stream + buffer->offset, &registro_direccion, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
-    memcpy(stream + buffer->offset, &registro_tamanio, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
-    memcpy(stream + buffer->offset, &registro_archivo, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
-    
-    return buffer;
-}

@@ -109,6 +109,8 @@ t_parametro* deserializar_parametro(t_buffer* buffer);
 t_pedido* deserializar_pedido(t_buffer* buffer);
 void wait_recurso(t_pcb* pcb, char* recurso);
 void signal_recurso(t_pcb* pcb, char* recurso);
+void _imprimir_recurso(char* nombre, void* element);
+void imprimir_diccionario_recursos();
 // t_pedido_escritura* deserializar_pedido_escritura(t_buffer* buffer);
 void mandar_a_escribir_a_memoria(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio);
 void encolar_datos_std(t_pcb* pcb, t_pedido* pedido);

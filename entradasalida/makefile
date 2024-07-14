@@ -35,7 +35,7 @@ release: $(BIN)
 clean:
 	-rm -rfv obj bin
 	-rm -f dialfs/bitmap.dat
-	-rm -f dialfs/bloques_data.dat
+	-rm -f dialfs/bloques.dat
 
 $(BIN): $(OBJS) | $(dir $(BIN))
 	$(CC) $(CFLAGS) -o "$@" $^ $(IDIRS:%=-I%) $(LIBDIRS:%=-L%) $(LIBS:%=-l%)

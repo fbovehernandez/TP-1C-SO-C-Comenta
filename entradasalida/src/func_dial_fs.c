@@ -58,13 +58,15 @@ void crear_archivos_iniciales(t_config_dialfs* dialfs_config) {
     bloques_data = mmap(NULL, dialfs_config->block_size * dialfs_config->block_count, PROT_READ | PROT_WRITE, MAP_SHARED, fd_bloques, 0);
     memset(bloques_data, 0, dialfs_config->block_size * dialfs_config->block_count);
 
-    // Escritura de prueba para ver los bytes con el hexdump
+    /* Escritura de prueba para ver los bytes con el hexdump */ 
     char* data = "Hola, mundo!";
-    size_t data_size = strlen(data); // +1 para el carácter nulo al final
+    size_t data_size = strlen(data); // +1 para el carácter nulo al final no se agrega pero si es importante cuando voy a leer del archivo (si en algun momento lo hago)
 
     // Copia los datos en la memoria mapeada
     memcpy(bloques_data, data, data_size);
-    
+
+    /* Fin escritura de prueba */
+
     msync(bloques_data, dialfs_config->block_size * dialfs_config->block_count, MS_SYNC);
 
     // Todo esto iria en la funcion que se encargue de liberarlo

@@ -970,33 +970,50 @@ t_parametro* deserializar_parametro(t_buffer* buffer) {
 void wait_recurso(t_pcb* pcb, char* recurso) {
     printf("Hace wait con el pid %d en recurso %s\n", pcb->pid, recurso);
     if(dictionary_has_key(datos_kernel->diccionario_recursos, recurso)) {
-        t_recurso* recurso_removido = dictionary_remove(datos_kernel->diccionario_recursos, recurso);
-        if(recurso_removido->instancias >= 0) {
-            recurso_removido->instancias --;
+        t_recurso* recurso_obtenido = dictionary_get(datos_kernel->diccionario_recursos, recurso);
+        if(recurso_obtenido->instancias > 0) {
+            recurso_obtenido->instancias --;
         } else {
-            queue_push(recurso_removido->procesos_bloqueados, pcb);
+            pasar_a_blocked(pcb);
+            queue_push(recurso_obtenido->procesos_bloqueados, pcb);
+            log_info(logger_kernel,"PID: %d - Bloqueado por: %s", pcb->pid, recurso);
         }
-        dictionary_put(datos_kernel->diccionario_recursos, recurso, recurso_removido);
+        // dictionary_put(datos_kernel->diccionario_recursos, recurso, recurso_removido);
     } else {
         log_info(logger_kernel,"Finaliza el proceso %d - Motivo: INVALID_RESOURCE", pcb->pid);
         pasar_a_exit(pcb);
     }
+    
+    imprimir_diccionario_recursos();
 }
 
 void signal_recurso(t_pcb* pcb, char* recurso) {
-    printf("Hace signal\n");
+    printf("Hace signal con el pid %d en recurso %s\n", pcb->pid, recurso);
     if(dictionary_has_key(datos_kernel->diccionario_recursos, recurso)) {
-        t_recurso* recurso_removido = dictionary_remove(datos_kernel->diccionario_recursos, recurso);
-        recurso_removido->instancias ++;
-        if(!queue_is_empty(recurso_removido->procesos_bloqueados)) {
-            t_pcb* proceso_liberado = queue_pop(recurso_removido->procesos_bloqueados);
+        t_recurso* recurso_obtenido = dictionary_get(datos_kernel->diccionario_recursos, recurso);
+        recurso_obtenido->instancias ++;
+        queue_push(cola_prioritarios_por_signal, pcb); 
+        if(!queue_is_empty(recurso_obtenido->procesos_bloqueados)) {
+            t_pcb* proceso_liberado = queue_pop(recurso_obtenido->procesos_bloqueados);
             pasar_a_ready(proceso_liberado);
-            queue_push(cola_prioritarios_por_signal, pcb); //corroborar
+            // queue_push(cola_prioritarios_por_signal, proceso_liberado); // corroborar
         }
-        dictionary_put(datos_kernel->diccionario_recursos, recurso, recurso_removido);
     } else {
+        log_info(logger_kernel,"Finaliza el proceso %d - Motivo: INVALID_RESOURCE", pcb->pid);
         pasar_a_exit(pcb);
     }
+    
+    imprimir_diccionario_recursos();
+}
+
+void _imprimir_recurso(char* nombre, void* element) {
+    t_recurso* recurso = (t_recurso*) element;
+    printf("El recurso %s tiene %d instancias y %d procesos bloqueados.\n", nombre, recurso->instancias, queue_size(recurso->procesos_bloqueados));
+}
+
+void imprimir_diccionario_recursos() {
+    printf("\n");
+    dictionary_iterator(datos_kernel->diccionario_recursos, (void*)_imprimir_recurso);
 }
 
 void FINALIZAR_PROCESO(int pid) {
