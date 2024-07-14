@@ -100,5 +100,6 @@ t_escritura_stdin* deserializar_escritura_stdin(void* stream);
 void imprimir_datos_stdin_escritura(t_escritura_stdin* escritura);
 t_pid_stdout* desearializar_pid_stdout(t_buffer* buffer);
 void enviar_valor_leido_a_io(int pid, int socket_io, char* valor, int tamanio);
+void* handle_io_dialfs(void* socket);
 
 #endif // CONEXIONES_H

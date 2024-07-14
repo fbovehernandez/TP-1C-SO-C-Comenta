@@ -95,6 +95,7 @@ void *handle_io_stdin(void *socket_io) {
     printf("llego hasta handle io stdin 1\n");    
     int socket = (intptr_t)socket_io;
     int termino_io;
+
     // Por que manda esto
     // int result = 0;
     // send(socket, &result, sizeof(int), 0);
@@ -118,6 +119,9 @@ void *handle_io_stdin(void *socket_io) {
     t_pid_stdin* pid_stdin = malloc(sizeof(t_pid_stdin));
 
     while (true) {
+        int size_dictionary = dictionary_size(diccionario_io);
+        printf("\nSize del diccionario: %d\n", size_dictionary);
+
         sem_wait(io->semaforo_cola_procesos_blocked);
 
         printf("Llega al sem y mutex\n");
@@ -141,6 +145,7 @@ void *handle_io_stdin(void *socket_io) {
         pid_stdin->registro_tamanio = datos_stdin->registro_tamanio;
         // mandar la io a memoria
         int respuesta_ok = ejecutar_io_stdin(socket, pid_stdin);
+
         printf("la respuesta ok es: %d\n", respuesta_ok);
         if (!respuesta_ok) {
             printf("Se ejecuto correctamente la IO...\n");
@@ -156,7 +161,6 @@ void *handle_io_stdin(void *socket_io) {
                 printf("Termino la IO\n");
                 pasar_a_ready(datos_stdin->pcb);
             }
-            break;
         } else {
             printf("No se pudo ejecutar la IO\n");
             break;
@@ -325,7 +329,28 @@ int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
     return resultOk;
 }
 
-void* handle_io_dialfs(void* socket_io){
+void* handle_io_dialfs(void* socket_io) {
+    int socket = (intptr_t)socket_io;
+
+    t_paquete *paquete = inicializarIO_recibirPaquete(socket);
+    t_list_io* io;
+
+    switch (paquete->codigo_operacion) {
+        case CONEXION_INTERFAZ:
+            printf("Vamos a establecer conexion con dialfs!!!\n");
+            io = establecer_conexion(paquete->buffer, socket);
+            // free(io);
+            break;
+        default:
+            printf("Llega al default.");
+            return NULL;
+    }
+
+    while(true) {
+        // compl, no es espera activa
+    }
+
+    liberar_paquete(paquete);
     return NULL;
 }
 
@@ -333,6 +358,7 @@ void *handle_io_generica(void *socket_io) {
     int socket = (intptr_t)socket_io;
     t_paquete *paquete = inicializarIO_recibirPaquete(socket);
     t_list_io* io;
+
     switch (paquete->codigo_operacion) {
         case CONEXION_INTERFAZ:
             printf("Vamos a establecer conexion generica!!!\n");

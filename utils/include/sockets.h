@@ -372,6 +372,11 @@ typedef struct {
     int socket;
 } socket_estructurado;
 
+typedef struct{
+    int socket_io;
+    t_config* config_io;
+} t_config_socket_io;
+
 void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* buffer);
 int iniciar_servidor(char*);
 int esperar_conexion(int);

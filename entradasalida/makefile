@@ -68,6 +68,10 @@ PHONY: start_stdout
 start_stdout: debug
 	valgrind --tool=none ./$(BIN) $(ARGS_STDOUT) $(NOMBRE_INTERFAZ_STDOUT) 
 
+PHONY: start_dialfs
+start_dialfs: debug
+	valgrind --tool=none ./$(BIN) $(ARGS_DIALFS) $(NOMBRE_INTERFAZ_DIALFS) 
+
 .PHONY: memcheck
 memcheck: debug
 	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(ARGS)

@@ -48,7 +48,7 @@ int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
         pthread_create(&io_stdout_thread, NULL, (void*)handle_io_stdout, (void*)(intptr_t)socket_cliente); // Ver
         printf("Se creo el hilo STDOUT\n");
     } else if(handshake == 81) { 
-        // pthread_create(&io_stdout_thread, NULL, (void*)handle_io_dialfs, (void*)(intptr_t)socket_cliente);
+        pthread_create(&io_stdout_thread, NULL, (void*)handle_io_dialfs, (void*)(intptr_t)socket_cliente);
     } else {
         send(socket_cliente, &resultError, sizeof(int), 0);
         close(socket_cliente);
@@ -68,6 +68,21 @@ Tamanio solicitado = 10 bytes
 10 DEBE ser > a 12 - 4 (tam_pagina) = 8 y 10 < 12 (total bytes x frame)
 
 */
+
+void* handle_io_dialfs(void* socket) {
+    int socket_io = (intptr_t) socket;
+    int resultOk = 0;
+    printf("Llega a handle_io_fs\n");
+    send(socket_io, &resultOk, sizeof(int), 0);
+
+    t_paquete* paquete_inicial = inicializarIO_recibirPaquete(socket_io);
+    agregar_interfaz_en_el_diccionario(paquete_inicial, socket_io);
+
+    // en progreso...
+
+    liberar_paquete(paquete_inicial);
+    return NULL;
+}
 
 bool check_same_page(int tamanio, int cant_bytes_uso) { 
     return tamanio > cant_bytes_uso - tamanio_pagina && tamanio < cant_bytes_uso;
@@ -1273,10 +1288,12 @@ t_pid_stdout* desearializar_pid_stdout(t_buffer* buffer){
 
     for(int i=0; i < pedido_escritura->cantidad_paginas; i++) {
         t_dir_fisica_tamanio* dir_fisica_tam = malloc(sizeof(t_dir_fisica_tamanio));
-        memcpy(&dir_fisica_tam->direccion_fisica, stream, sizeof(int));
-        buffer->offset += sizeof(int);
-        memcpy(&dir_fisica_tam->bytes_lectura, stream, sizeof(int));
-        buffer->offset += sizeof(int);
+        memcpy(&(dir_fisica_tam->direccion_fisica), stream, sizeof(int));
+        stream += sizeof(int);
+        printf("\n\nLa direccion fisica recibida de memoria: %d\n\n", dir_fisica_tam->direccion_fisica);
+        memcpy(&(dir_fisica_tam->bytes_lectura), stream, sizeof(int));
+        stream += sizeof(int);
+        printf("\n\nLos bytes recibidos de memoria: %d\n\n", dir_fisica_tam->bytes_lectura);
         list_add(pedido_escritura->lista_direcciones, dir_fisica_tam);
     }
  

@@ -14,10 +14,12 @@ ARGS2 = "generica.config"
 ARGS3 = "generica2.config"
 ARGS_STDIN = "stdin.config"
 ARGS_STDOUT = "stdout.config"
+ARGS_DIALFS = "dialfs.config"
 NOMBRE_INTERFAZ1 = caro
 NOMBRE_INTERFAZ2 = mati
 NOMBRE_INTERFAZ_STDIN = sofi
 NOMBRE_INTERFAZ_STDOUT = facu
+NOMBRE_INTERFAZ_DIALFS = ara_dialfs 
 
 # Valgrind flags
 MEMCHECK_FLAGS=--track-origins=yes

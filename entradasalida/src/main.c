@@ -55,7 +55,12 @@ void iniciar_interfaz_generica(char* nombreInterfaz, t_config* config_io, char* 
     int tiempo_unidad_trabajo = config_get_int_value(config_io, "TIEMPO_UNIDAD_TRABAJO");
     printf("Tiempo de unidad de trabajo: %d\n", tiempo_unidad_trabajo);
     kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, GENERICA, 5); 
-    recibir_kernel(config_io, kernelfd); 
+    
+    t_config_socket_io* config_generica_io = malloc(sizeof(t_config_socket_io));
+    config_generica_io->config_io = config_io;
+    config_generica_io->socket_io = kernelfd;
+    
+    recibir_kernel((void*) config_generica_io); 
 }
 
 // tiempo_unidad_trabajo: Tiempo que dura una unidad de trabajo en milisegundos
@@ -64,23 +69,54 @@ void iniciar_interfaz_generica(char* nombreInterfaz, t_config* config_io, char* 
 void iniciar_stdin(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, char* IP_MEMORIA, char* puerto_kernel, char* puerto_memoria) {
     kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, STDIN, 13); 
     memoriafd = conectar_io_memoria(IP_MEMORIA, puerto_memoria, logger_io, nombreInterfaz, STDIN, 91);
-    recibir_kernel(config_io, kernelfd);
-    // recibir_memoria(config_io, memoriafd);
+
+    t_config_socket_io* config_stdin_io = malloc(sizeof(t_config_socket_io));
+    config_stdin_io->config_io = config_io;
+    config_stdin_io->socket_io = kernelfd;
+    
+    recibir_kernel((void*) config_stdin_io);
 }
 
 void iniciar_stdout(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, char* IP_MEMORIA, char* puerto_kernel, char* puerto_memoria) {
     kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, STDOUT, 15); 
     memoriafd = conectar_io_memoria(IP_MEMORIA, puerto_memoria, logger_io, nombreInterfaz, STDOUT, 79);
+
+    t_config_socket_io* config_stdout_io = malloc(sizeof(t_config_socket_io));
+    config_stdout_io->config_io = config_io;
+    config_stdout_io->socket_io = memoriafd;
+
     // recibir_kernel(config_io, kernelfd);
-    recibir_memoria(config_io, memoriafd);
+    recibir_memoria((void*) config_stdout_io);
 } 
 
 void iniciar_dialfs(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, char* IP_MEMORIA, char* puerto_kernel, char* puerto_memoria) {
-    inicializar_file_system(config_io);
+    // inicializar_file_system(config_io);
+    // crear_archivos_iniciales(config_io);
+
     kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, DIALFS, 17); 
     memoriafd = conectar_io_memoria(IP_MEMORIA, puerto_memoria, logger_io, nombreInterfaz, DIALFS, 81);
-    recibir_kernel(config_io, kernelfd);
+
+    t_config_socket_io* config_kernel_io = malloc(sizeof(t_config_socket_io));
+    config_kernel_io->config_io = config_io;
+    config_kernel_io->socket_io = kernelfd;
+
+    t_config_socket_io* config_memoria_io = malloc(sizeof(t_config_socket_io));
+    config_memoria_io->config_io = config_io;
+    config_memoria_io->socket_io = memoriafd;
+
+    recibir_kernel_y_memoria(config_kernel_io, config_memoria_io);
     // recibir_memoria(config_io, memoriafd); TO DO: CONECTAR CON MEMORIA DESDE MEMORIA
 }
 
+void recibir_kernel_y_memoria(t_config_socket_io* config_kernel_io, t_config_socket_io* config_memoria_io) {
+    pthread_t hilo_kernel;
+    pthread_t hilo_memoria;
+    
+    pthread_create(&hilo_kernel, NULL, (void*) recibir_kernel, (void*) config_kernel_io);
+    pthread_create(&hilo_memoria, NULL, (void*) recibir_memoria, (void*) config_memoria_io);
+
+    // Uso los join porque sino se me corta el main
+    pthread_join(hilo_kernel, NULL);
+    pthread_join(hilo_memoria, NULL);
+}
 

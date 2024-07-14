@@ -137,7 +137,14 @@ void mandar_valor_a_memoria(char* valor, t_pid_stdin* pid_stdin) {
     enviar_paquete(buffer, GUARDAR_VALOR, memoriafd);
 }
 
-void recibir_kernel(t_config* config_io, int socket_kernel_io) {
+void recibir_kernel(void* config_socket_io) {
+    printf("Voy a recibir kernel!\n");
+    
+    t_config_socket_io* config_io_kernel = (t_config_socket_io*) config_socket_io;
+
+    int socket_kernel_io = config_io_kernel->socket_io;
+    t_config* config_io = config_io_kernel->config_io;
+
     while(1) {
         t_paquete* paquete = malloc(sizeof(t_paquete));
         paquete->buffer = malloc(sizeof(t_buffer));
@@ -153,6 +160,7 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
 
         switch(paquete->codigo_operacion) {
             case DORMITE:
+
                 t_pid_unidades_trabajo* pid_unidades_trabajo = serializar_unidades_trabajo(paquete->buffer);
                 int pid = pid_unidades_trabajo->pid;
                 int unidades_trabajo = pid_unidades_trabajo->unidades_trabajo;
@@ -218,7 +226,12 @@ void recibir_kernel(t_config* config_io, int socket_kernel_io) {
     }
 }
 
-void recibir_memoria(t_config* config_io, int socket_memoria) {
+void recibir_memoria(void* config_socket_io) {
+    t_config_socket_io* config_io_memoria = (t_config_socket_io*) config_socket_io;
+
+    int socket_memoria = config_io_memoria->socket_io;
+    t_config* config_io = config_io_memoria->config_io;
+
     printf("Voy a recibir memoria!\n");
     while(1) {
         t_paquete* paquete = malloc(sizeof(t_paquete));
@@ -314,11 +327,85 @@ t_fs_create_delete* deserializar_pedido_creacion_destruccion(t_buffer* buffer){
     return fs_create_delete;
 }
 
-void inicializar_file_system(t_config* config_io) {
-    int block_size = config_get_int_value(config_io, "BLOCK_SIZE");
-    int block_count = config_get_int_value(config_io, "BLOCK_COUNT");
-    int retraso_compactacion = config_get_int_value(config_io, "RETRASO_COMPACTACION");
-    char* path_base = config_get_string_value(config_io, "PATH_BASE_DIALFS");
+/*
+
+void *handle_io_stdin(void *socket_io) {
+    printf("llego hasta handle io stdin 1\n");    
+    int socket = (intptr_t)socket_io;
+    int termino_io;
+    // Por que manda esto
+    // int result = 0;
+    // send(socket, &result, sizeof(int), 0);
     
-    // Inicializar diccionario, bloques.dat, bitmap.dat y archivo metadata
+    t_paquete *paquete = inicializarIO_recibirPaquete(socket);
+    
+    t_list_io* io;
+
+    printf("codigo de op: %d\n", paquete->codigo_operacion); // Ahora no imprime esto
+    switch (paquete->codigo_operacion) {
+        case CONEXION_INTERFAZ: 
+            printf("llego hasta handle io stdin 3\n");
+            io = establecer_conexion(paquete->buffer, socket);
+            // free(io);
+            break;
+        default:
+            printf("Llega al default en handle_io_stdin.\n");
+            return NULL;
+    }
+
+    t_pid_stdin* pid_stdin = malloc(sizeof(t_pid_stdin));
+
+    while (true) {
+        sem_wait(io->semaforo_cola_procesos_blocked);
+
+        printf("Llega al sem y mutex\n");
+        
+        io_std *datos_stdin = malloc(sizeof(io_std));
+
+        pthread_mutex_lock(&mutex_cola_io_generica);
+        if(queue_is_empty(io->cola_blocked)) {
+            printf("No hay procesos en la cola de bloqueados de la IO\n");
+        } else {
+            datos_stdin = queue_pop(io->cola_blocked);
+        }
+        pthread_mutex_unlock(&mutex_cola_io_generica);
+
+        pasar_a_blocked(datos_stdin->pcb);
+        // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
+        
+        pid_stdin->pid = datos_stdin->pcb->pid;
+        pid_stdin->cantidad_paginas = datos_stdin->cantidad_paginas;
+        pid_stdin->lista_direcciones = datos_stdin->lista_direcciones;
+        pid_stdin->registro_tamanio = datos_stdin->registro_tamanio;
+        // mandar la io a memoria
+        int respuesta_ok = ejecutar_io_stdin(socket, pid_stdin);
+        printf("la respuesta ok es: %d\n", respuesta_ok);
+        if (!respuesta_ok) {
+            printf("Se ejecuto correctamente la IO...\n");
+        
+            // printf("Estado pcb: %d\n", datos_sleep->pcb->estadoActual);
+            // datos_sleep->pcb->estadoActual = READY;
+            // printf("Estado pcb : %d\n", datos_sleep->pcb->estadoActual);
+            
+            recv(socket, &termino_io, sizeof(int), MSG_WAITALL);
+            
+            printf("Termino io: %d\n", termino_io);
+            if (termino_io == 1) { // El send de termino io envia 1.
+                printf("Termino la IO\n");
+                pasar_a_ready(datos_stdin->pcb);
+            }
+            break;
+        } else {
+            printf("No se pudo ejecutar la IO\n");
+            break;
+        }
+    }
+
+    free(pid_stdin);
+    liberar_paquete(paquete);
+    return NULL;
 }
+*/
+
+
+
