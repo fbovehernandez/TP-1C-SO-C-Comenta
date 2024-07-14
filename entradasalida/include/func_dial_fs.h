@@ -9,9 +9,13 @@
 #include "../../utils/include/logconfig.h"
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
 
 extern char* bitmap_data;
 extern t_bitarray* bitmap;
+extern void* bloques_data;
 
 typedef struct {
     int block_size;
@@ -22,4 +26,4 @@ typedef struct {
 
 // void crear_archivos_iniciales(t_config_dialfs* dialfs_config);
 t_config_dialfs* inicializar_file_system(t_config* config_io);
-
+void crear_archivos_iniciales(t_config_dialfs* dialfs);  

@@ -5,6 +5,8 @@
 //   es 1
 //  config es 2
 
+
+
 int main(int argc, char* argv[2]) {
     
     // Este archivo lo recibe por parametro
@@ -90,8 +92,8 @@ void iniciar_stdout(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, 
 } 
 
 void iniciar_dialfs(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, char* IP_MEMORIA, char* puerto_kernel, char* puerto_memoria) {
-    // inicializar_file_system(config_io);
-    // crear_archivos_iniciales(config_io);
+    t_config_dialfs* dialfs = inicializar_file_system(config_io);
+    crear_archivos_iniciales(dialfs);
 
     kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, DIALFS, 17); 
     memoriafd = conectar_io_memoria(IP_MEMORIA, puerto_memoria, logger_io, nombreInterfaz, DIALFS, 81);
@@ -119,4 +121,5 @@ void recibir_kernel_y_memoria(t_config_socket_io* config_kernel_io, t_config_soc
     pthread_join(hilo_kernel, NULL);
     pthread_join(hilo_memoria, NULL);
 }
+
 

@@ -6,6 +6,7 @@
 #include <string.h>
 #include <commons/log.h>
 #include <commons/config.h>
+#include "func_dial_fs.h"
 #include "conexiones_io.h"
 #include "../../utils/include/sockets.h" 
 #include "../../utils/include/logconfig.h"

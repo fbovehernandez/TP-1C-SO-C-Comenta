@@ -34,6 +34,8 @@ release: $(BIN)
 .PHONY: clean
 clean:
 	-rm -rfv obj bin
+	-rm -f dialfs/bitmap.dat
+	-rm -f dialfs/bloques_data.dat
 
 $(BIN): $(OBJS) | $(dir $(BIN))
 	$(CC) $(CFLAGS) -o "$@" $^ $(IDIRS:%=-I%) $(LIBDIRS:%=-L%) $(LIBS:%=-l%)
