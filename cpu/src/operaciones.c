@@ -530,15 +530,13 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         printf("Se redimensiono la memoria\n"); 
         break;
-    case WAIT:
-        //Manda a kernel a asignar una instancia del recurso pasado por parametro
-        t_parametro* parametro_wait = list_get(list_parametros, 0);
-        manejar_recursos(pcb, parametro_wait, WAIT_RECURSO);
-        break;
-    case SIGNAL:
-        //Manda a kernel a liberar una instancia del recurso pasado por parametro
-        manejar_recursos(pcb, list_get(list_parametros, 0), SIGNAL_RECURSO);
-        break;
+    case WAIT: case SIGNAL:
+        DesalojoCpu codigo = (nombreInstruccion == WAIT) ? WAIT_RECURSO : SIGNAL_RECURSO;
+        t_parametro* parametro_recurso = list_get(list_parametros, 0);
+        
+        manejar_recursos(pcb, parametro_recurso, codigo);
+        return 1;
+        break; 
     case IO_GEN_SLEEP:
         t_parametro *interfaz1 = list_get(list_parametros, 0);
         char *interfazSeleccionada = interfaz1->nombre;
@@ -650,13 +648,13 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     
     case IO_FS_CREATE: case IO_FS_DELETE: // IO_FS_CREATE nombre_interfaz nombre_archivo
         t_parametro* interfaz_create = list_get(list_parametros, 0);
-        char* nombre_interfaz = interfaz_create->nombre;
+        char* nombre_interfaz_FS_CREATE = interfaz_create->nombre;
 
         t_parametro* name_file_create = list_get(list_parametros, 1);
         char* filename = name_file_create->nombre;
 
         codigo_operacion codigo_io = (nombreInstruccion == IO_FS_CREATE) ? FS_CREATE : FS_DELETE;
-        t_buffer* buffer_io = llenar_buffer_fs_create_delete(nombre_interfaz, filename);
+        t_buffer* buffer_io = llenar_buffer_fs_create_delete(nombre_interfaz_FS_CREATE, filename);
         desalojar(pcb, codigo_io, buffer_io);
 
         // Libero y desalojo...
@@ -686,7 +684,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         codigo_operacion codigo2 = nombreInstruccion == IO_FS_READ ? LECTURA_FS : ESCRITURA_FS;
 
-        enviar_buffer_fs_escritura_lectura(nombre_interfaz2,nombre_archivo2,registro_direccion2,registro_tamanio2,registro_puntero_archivo,codigo2); 
+        // enviar_buffer_fs_escritura_lectura(nombre_interfaz2,nombre_archivo2,registro_direccion2,registro_tamanio2,registro_puntero_archivo,codigo2); 
         
         break;
     default:
@@ -1221,17 +1219,37 @@ void manejar_recursos(t_pcb* pcb, t_parametro* recurso, DesalojoCpu codigo) {
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
 
-    // void *stream = buffer->stream;
+    void *stream = buffer->stream;
 
-    memcpy(buffer->stream + buffer->offset, &recurso->length, sizeof(int));
+    memcpy(stream + buffer->offset, &recurso->length, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, recurso->nombre, recurso->length);
+    memcpy(stream + buffer->offset, recurso->nombre, recurso->length);
     
     printf("el nombre del rec es %s\n", recurso->nombre);
     printf("el length del rec es %d\n", recurso->length);
 
-    // buffer->stream = stream;    
+    buffer->stream = stream;    
     desalojar(pcb, codigo, buffer);
+    /*t_buffer *buffer = malloc(sizeof(t_buffer));
+
+    int longitud_recurso_nombre = recurso->length + 1;
+
+    buffer->size = sizeof(int) + longitud_recurso_nombre;
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    //void *stream = buffer->stream;
+
+    memcpy(buffer->stream + buffer->offset, &longitud_recurso_nombre, sizeof(int));
+    buffer->stream += sizeof(int);
+    memcpy(buffer->stream + buffer->offset, recurso->nombre, longitud_recurso_nombre);
+    // buffer->stream += longitud_recurso_nombre;
+    
+    printf("el nombre del rec es %s\n", recurso->nombre);
+    printf("el length del rec es %d\n", longitud_recurso_nombre);
+
+    // buffer->stream = stream;    
+    desalojar(pcb, codigo, buffer);*/
 }
 
 void enviar_buffer_copy_string(int direccion_fisica_SI, int direccion_fisica_DI, int tamanio) {

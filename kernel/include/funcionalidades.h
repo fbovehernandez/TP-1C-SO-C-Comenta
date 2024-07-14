@@ -107,8 +107,10 @@ void *esperar_RR(void *sockets_Int) ;
 
 t_parametro* deserializar_parametro(t_buffer* buffer);
 t_pedido* deserializar_pedido(t_buffer* buffer);
-void wait_recurso(t_pcb* pcb, char* recurso);
-void signal_recurso(t_pcb* pcb, char* recurso);
+void wait_signal_recurso(t_pcb* pcb, char* recurso,DesalojoCpu desalojo);
+void ejecutar_signal_recurso(t_recurso* recurso,t_pcb* pcb);
+void ejecutar_wait_recurso(t_recurso* recurso,t_pcb* pcb,char* key_nombre_recurso);
+char* pasar_string_desalojo_recurso(DesalojoCpu desalojoCpu);
 void _imprimir_recurso(char* nombre, void* element);
 void imprimir_diccionario_recursos();
 // t_pedido_escritura* deserializar_pedido_escritura(t_buffer* buffer);

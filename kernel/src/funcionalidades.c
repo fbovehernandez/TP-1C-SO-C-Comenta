@@ -440,16 +440,13 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             free(operacion_io);
             // free(pcb);
             break;
-        case WAIT_RECURSO:
-            t_parametro* recurso_wait = deserializar_parametro(package->buffer);
-            printf("el nombre del recurso es %s\n", recurso_wait->nombre);
-            wait_recurso(pcb, recurso_wait->nombre);
-            free(recurso_wait);
-            break;
-        case SIGNAL_RECURSO:
-            t_parametro* recurso_signal = deserializar_parametro(package->buffer);
-            signal_recurso(pcb, recurso_signal->nombre);
-            free(recurso_signal);
+        case WAIT_RECURSO: case SIGNAL_RECURSO:
+            t_parametro* recurso = deserializar_parametro(package->buffer);
+            printf("el nombre del recurso es %s\n", recurso->nombre);     
+            wait_signal_recurso(pcb, recurso->nombre, devolucion_cpu);
+            
+            free(recurso->nombre);
+            free(recurso);
             break;
         case FIN_PROCESO:
             // pcb = deserializar_pcb(package->buffer); 
@@ -941,6 +938,30 @@ t_operacion_io* deserializar_io(t_buffer* buffer) {
 */
 
 t_parametro* deserializar_parametro(t_buffer* buffer) {
+    /*int largo_parametro;
+    
+    t_parametro* parametro = malloc(sizeof(t_parametro)); // sizeof(t_parametro)
+
+    void* stream = buffer->stream + sizeof(int) * 3 + sizeof(Estado) * 2 + sizeof(uint8_t) * 4 + sizeof(uint32_t) * 6;
+
+    if (stream >= buffer->stream + buffer->size) {
+        printf("No hay nada en el buffer\n");
+        return NULL;
+    }
+
+    memcpy(&largo_parametro, stream, sizeof(int));
+    stream += sizeof(int);
+
+    parametro->length = largo_parametro;
+    parametro->nombre = malloc(parametro->length);
+
+    memcpy(parametro->nombre, stream, parametro->length);
+
+    parametro->nombre[parametro->length] = '\0';
+    
+    printf("el nombre del parametro es %s\n", parametro->nombre);
+
+    return parametro; // free(parametro) y free(parametro->nombre)*/
     int largo_parametro;
     
     t_parametro* parametro = malloc(sizeof(t_parametro)); // sizeof(t_parametro)
@@ -967,18 +988,18 @@ t_parametro* deserializar_parametro(t_buffer* buffer) {
     return parametro; // free(parametro) y free(parametro->nombre)
 }
 
-void wait_recurso(t_pcb* pcb, char* recurso) {
-    printf("Hace wait con el pid %d en recurso %s\n", pcb->pid, recurso);
-    if(dictionary_has_key(datos_kernel->diccionario_recursos, recurso)) {
-        t_recurso* recurso_obtenido = dictionary_get(datos_kernel->diccionario_recursos, recurso);
-        if(recurso_obtenido->instancias > 0) {
-            recurso_obtenido->instancias --;
-        } else {
-            pasar_a_blocked(pcb);
-            queue_push(recurso_obtenido->procesos_bloqueados, pcb);
-            log_info(logger_kernel,"PID: %d - Bloqueado por: %s", pcb->pid, recurso);
+void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desalojoCpu){ 
+    printf("Hace %s con el pid %d en recurso %s\n", pasar_string_desalojo_recurso(desalojoCpu), pcb->pid, key_nombre_recurso);
+    if(dictionary_has_key(datos_kernel->diccionario_recursos, key_nombre_recurso)) {
+        printf("Tiene la llave.\n");
+        t_recurso* recurso_obtenido = dictionary_get(datos_kernel->diccionario_recursos, key_nombre_recurso);
+        if(desalojoCpu == WAIT_RECURSO) {
+            printf("llego hasta WAIT\n");
+            ejecutar_wait_recurso(recurso_obtenido,pcb,key_nombre_recurso);
+        }else{
+            printf("Llega hasta signal\n");
+            ejecutar_signal_recurso(recurso_obtenido,pcb);
         }
-        // dictionary_put(datos_kernel->diccionario_recursos, recurso, recurso_removido);
     } else {
         log_info(logger_kernel,"Finaliza el proceso %d - Motivo: INVALID_RESOURCE", pcb->pid);
         pasar_a_exit(pcb);
@@ -987,23 +1008,62 @@ void wait_recurso(t_pcb* pcb, char* recurso) {
     imprimir_diccionario_recursos();
 }
 
-void signal_recurso(t_pcb* pcb, char* recurso) {
-    printf("Hace signal con el pid %d en recurso %s\n", pcb->pid, recurso);
-    if(dictionary_has_key(datos_kernel->diccionario_recursos, recurso)) {
-        t_recurso* recurso_obtenido = dictionary_get(datos_kernel->diccionario_recursos, recurso);
-        recurso_obtenido->instancias ++;
-        queue_push(cola_prioritarios_por_signal, pcb); 
-        if(!queue_is_empty(recurso_obtenido->procesos_bloqueados)) {
-            t_pcb* proceso_liberado = queue_pop(recurso_obtenido->procesos_bloqueados);
-            pasar_a_ready(proceso_liberado);
-            // queue_push(cola_prioritarios_por_signal, proceso_liberado); // corroborar
-        }
+void ejecutar_wait_recurso(t_recurso* recurso_obtenido,t_pcb* pcb,char* recurso){
+    if(recurso_obtenido->instancias > 0) {
+        recurso_obtenido->instancias --;
+        pasar_a_ready(pcb); 
     } else {
-        log_info(logger_kernel,"Finaliza el proceso %d - Motivo: INVALID_RESOURCE", pcb->pid);
-        pasar_a_exit(pcb);
+        pasar_a_blocked(pcb);
+        queue_push(recurso_obtenido->procesos_bloqueados, pcb);
+        log_info(logger_kernel,"PID: %d - Bloqueado por: %s", pcb->pid,recurso);
+    }
+}
+
+void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
+    recurso_obtenido->instancias ++;
+    
+    //mutex
+    /*pthread_mutex_lock(&no_hay_nadie_en_cpu);
+    pasar_a_exec(pcb);
+    pthread_mutex_unlock(&no_hay_nadie_en_cpu);*/
+    
+    change_status(pcb, READY);
+    queue_push(cola_prioritarios_por_signal, pcb); 
+    sem_post(&sem_hay_para_planificar);
+    
+    if(!queue_is_empty(recurso_obtenido->procesos_bloqueados)) {
+        t_pcb* proceso_liberado = queue_pop(recurso_obtenido->procesos_bloqueados);
+        /*change_status(proceso_liberado, READY);
+        queue_push(cola_prioritarios_por_signal, proceso_liberado); 
+        sem_post(&sem_hay_para_planificar);*/
+        pasar_a_ready(proceso_liberado);
     }
     
-    imprimir_diccionario_recursos();
+    /*
+    change_status(pcb, READY);
+    queue_push(cola_prioritarios_por_signal, pcb); 
+    sem_post(&sem_hay_para_planificar);
+    
+    if(!queue_is_empty(recurso_obtenido->procesos_bloqueados)) {
+        t_pcb* proceso_liberado = queue_pop(recurso_obtenido->procesos_bloqueados);
+        pasar_a_ready(proceso_liberado);
+        // queue_push(cola_prioritarios_por_signal, proceso_liberado); // corroborar
+    }
+    */
+}
+
+char* pasar_string_desalojo_recurso(DesalojoCpu desalojoCpu){
+    switch (desalojoCpu) {
+    case WAIT_RECURSO:
+        return "WAIT";
+        break;
+    case SIGNAL_RECURSO:
+        return "SIGNAL";
+        break;
+    default:
+        return "ERROR";
+        break;
+    }
 }
 
 void _imprimir_recurso(char* nombre, void* element) {

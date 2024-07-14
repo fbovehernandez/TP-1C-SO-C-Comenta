@@ -29,6 +29,7 @@ void pasar_a_exec(t_pcb* pcb) {
     //pthread_mutex_unlock(&mutex_estado_exec);
     // pcb_exec = pcb;
     enviar_pcb(pcb, client_dispatch, ENVIO_PCB, NULL);
+    //esperar_cpu();
 }
 
 void pasar_a_blocked(t_pcb* pcb) {
