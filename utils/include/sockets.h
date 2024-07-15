@@ -100,8 +100,8 @@ typedef enum {
     ERROR_STDIN,
     FS_CREATE,
     FS_DELETE,
-    LECTURA_FS,
-    ESCRITURA_FS
+    //LECTURA_FS,
+    //ESCRITURA_FS
 } DesalojoCpu;
 
 typedef struct {
@@ -156,7 +156,7 @@ typedef enum {
     ESCRIBIR_FS_MEMORIA,
     LEER_FS_MEMORIA,
     ESCRIBIR_EN_FS,
-    LEER_EN_FS;
+    LEER_EN_FS,
 } codigo_operacion;
 
 typedef enum {
@@ -411,9 +411,9 @@ void imprimir_datos_stdin(t_pid_stdin* datos_stdin);
 void aplicar_sobre_cada_linea_del_archivo(FILE* file, void* datos_extra, void(*closure)(void*, void*));
 
 
-t_buffer *buffer_create(uint32_t size);  // Hecho
-void buffer_add(t_buffer *buffer, void *data, uint32_t size);
-void buffer_read(t_buffer *buffer, void *data, uint32_t size);
+t_buffer* buffer_create(int size);  // Hecho
+void buffer_add(t_buffer *buffer, void *data, int size);
+void buffer_read(t_buffer *buffer, void *data, int size);
 void buffer_add_uint32(t_buffer *buffer, uint32_t data);
 
 void buffer_add_int(t_buffer *buffer, int data);

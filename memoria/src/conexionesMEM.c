@@ -624,8 +624,8 @@ void* handle_kernel(void* socket) {
                 
                 */
                 
-                t_buffer* buffer llenar_buffer_fs_read_write_memoria(pid, /*datos restantes*/);
-                enviar_paquete(buffer,codigo_escritura_lectura,socket_io_escritura_lectura);
+                // t_buffer* buffer llenar_buffer_fs_read_write_memoria(pid, /*datos restantes*/);
+                enviar_paquete(paquete->buffer,codigo_escritura_lectura,socket_io_escritura_lectura);
             default:
                 printf("Rompio kernel.\n");
                 exit(-1);

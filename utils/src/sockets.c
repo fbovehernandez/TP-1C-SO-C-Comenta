@@ -475,7 +475,7 @@ void aplicar_sobre_cada_linea_del_archivo(FILE* file, void* datos_extra, void(*c
     free(aux_line);
 }
 
-t_buffer *buffer_create(int size){
+t_buffer* buffer_create(int size){
     t_buffer* buffer = malloc(sizeof(t_buffer));
     buffer -> size = size;
     buffer->offset = 0;
@@ -484,13 +484,13 @@ t_buffer *buffer_create(int size){
 }
 
 // Crea un buffer vacío de tamaño size y offset 0
-t_buffer* buffer_create(int size) {
+/*t_buffer* buffer_create(int size) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
     buffer->size = size;
     buffer->offset = 0;
     buffer->stream = malloc(size);
     return buffer;
-}
+}*/
 
 // Libera la memoria asociada al buffer
 void buffer_destroy(t_buffer *buffer) {

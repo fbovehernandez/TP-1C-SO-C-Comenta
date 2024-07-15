@@ -310,6 +310,7 @@ t_pcb *proximo_a_ejecutar() {
 
     pthread_mutex_lock(&mutex_estado_ready);
     if (!queue_is_empty(cola_prioritarios_por_signal)) {
+        printf("\n\nSE ESTA EJECUTANDO EL PROCESO DESDE COLA DE PRIORITARIOS\n\n");
         pcb = queue_pop(cola_prioritarios_por_signal);
     }/*
     else if (!queue_is_empty(cola_ready_plus))
@@ -442,11 +443,11 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             break;
         case WAIT_RECURSO: case SIGNAL_RECURSO:
             t_parametro* recurso = deserializar_parametro(package->buffer);
-            printf("el nombre del recurso es %s\n", recurso->nombre);     
+            printf("el nombre del recurso es %s\n", recurso->nombre);  
             wait_signal_recurso(pcb, recurso->nombre, devolucion_cpu);
             
-            free(recurso->nombre);
-            free(recurso);
+            // free(recurso->nombre);
+            // free(recurso);
             break;
         case FIN_PROCESO:
             // pcb = deserializar_pcb(package->buffer); 
@@ -476,7 +477,8 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             encolar_datos_std(pcb, pedido_escritura);
             log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->interfaz);
             break;
-        case FS_CREATE:
+        
+        /*case FS_CREATE:
         case FS_DELETE:
             t_pedido_fs_create_delete* pedido_fs = deserializar_pedido_fs_create_delete(package->buffer);
             t_list_io* interfaz_crear_destruir = io_esta_en_diccionario(pcb, pedido_fs->nombre_interfaz);
@@ -506,7 +508,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
                                                     fs_read_write->nombre_archivo,fs_read_write->registro_direccion,fs_read_write->registro_tamanio,fs_read_write->registro_archivo,operacion);
                 log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, fs_read_write->nombre_interfaz);
             }
-        
+        */
         default:
             printf("Llego a default de la 333 en funcionalidades.c\n");
             exit(-1);
@@ -1011,7 +1013,7 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
 void ejecutar_wait_recurso(t_recurso* recurso_obtenido,t_pcb* pcb,char* recurso){
     if(recurso_obtenido->instancias > 0) {
         recurso_obtenido->instancias --;
-        pasar_a_ready(pcb); 
+        pasar_a_ready(pcb);
     } else {
         pasar_a_blocked(pcb);
         queue_push(recurso_obtenido->procesos_bloqueados, pcb);
@@ -1027,7 +1029,7 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
     pasar_a_exec(pcb);
     pthread_mutex_unlock(&no_hay_nadie_en_cpu);*/
     
-    change_status(pcb, READY);
+    // change_status(pcb, READY);
     queue_push(cola_prioritarios_por_signal, pcb); 
     sem_post(&sem_hay_para_planificar);
     
@@ -1497,6 +1499,7 @@ t_pedido_fs_create_delete* deserializar_pedido_fs_create_delete(t_buffer* buffer
 }
 
 // HAY QUE SEGUIR ESTO
+/*
 void enviar_buffer_fs_escritura_lectura(int socket, int pid, int largo_archivo, char* nombre_archivo, uint32_t registro_direccion, uint32_t registro_tamanio, codigo_operacion operacion) {
     t_buffer* buffer = llenar_buffer_fs_escritura_lectura(pid, socket, largo_archivo, nombre_archivo,registro_direccion, registro_tamanio);
     enviar_paquete(buffer, operacion, sockets->socket_memoria);
@@ -1525,7 +1528,8 @@ t_pedido_fs_escritura_lectura* deserializar_pedido_fs_escritura_lectura(t_buffer
 
     return pedido_fs;    
 }
-
+*/
+/*
 t_buffer* llenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uint32_t registro_archivo){
    int size = sizeof(int) * 2 + largo_archivo + sizeof(uint32_t) * 2; 
    t_buffer *buffer = buffer_creates(size);
@@ -1540,3 +1544,4 @@ t_buffer* llenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archiv
 
     return buffer;
 }
+*/

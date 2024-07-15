@@ -12,6 +12,8 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
 
     while(pcb->program_counter < cantidad_instrucciones) {
         // sem_wait(pedir_instruccion);
+        // log_info(logger, "PID: %d - FETCH - Program Counter: %d", pcb->pid, pcb->program_counter);?
+
         pedir_instruccion_a_memoria(socket_memoria, pcb);
         t_instruccion* instruccion = recibir_instruccion(socket_memoria, pcb); // Se ejecuta la instruccion tambien
         // sem_post(pedir_instruccion);
@@ -20,6 +22,8 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
 
         printf("Esta ejecutando %d\n", pcb->pid);   
         int resultado_ok = ejecutar_instruccion(instruccion, pcb);
+        
+        // resultado_ok = ejecutar_instruccion(instruccion, pcb);
         
         // free(instruccion); // double free
         
@@ -534,6 +538,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         DesalojoCpu codigo = (nombreInstruccion == WAIT) ? WAIT_RECURSO : SIGNAL_RECURSO;
         t_parametro* parametro_recurso = list_get(list_parametros, 0);
         
+        pcb->program_counter++;
         manejar_recursos(pcb, parametro_recurso, codigo);
         return 1;
         break; 
@@ -1208,7 +1213,7 @@ void sum(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, boo
 }
 
 void jnz(void* registro, int valor, t_pcb* pcb) {
-    if (*(int*) registro != 0) {
+    if(*(int*) registro != 0) {
         pcb->program_counter = valor;
     }
 }
