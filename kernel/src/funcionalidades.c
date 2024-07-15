@@ -477,7 +477,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->interfaz);
             break;
         
-        /*case FS_CREATE:
+        case FS_CREATE:
         case FS_DELETE:
             t_pedido_fs_create_delete* pedido_fs = deserializar_pedido_fs_create_delete(package->buffer);
             t_list_io* interfaz_crear_destruir = io_esta_en_diccionario(pcb, pedido_fs->nombre_interfaz);
@@ -494,8 +494,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             
             free(pedido_fs);
             break;
-        case ESCRITURA_FS:
-        case LECTURA_FS:
+        case ESCRITURA_FS: case LECTURA_FS:
             t_pedido_fs_escritura_lectura* fs_read_write = deserializar_pedido_fs_escritura_lectura(package->buffer);
             t_list_io* interfaz = io_esta_en_diccionario(pcb,fs_read_write->nombre_interfaz);
 
@@ -507,7 +506,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
                                                     fs_read_write->nombre_archivo,fs_read_write->registro_direccion,fs_read_write->registro_tamanio,fs_read_write->registro_archivo,operacion);
                 log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, fs_read_write->nombre_interfaz);
             }
-        */
+        
         default:
             printf("Llego a default de la 333 en funcionalidades.c\n");
             exit(-1);
@@ -1488,7 +1487,6 @@ t_pedido_fs_create_delete* deserializar_pedido_fs_create_delete(t_buffer* buffer
 
     void* stream = buffer->stream;
     
-
     memcpy(&(pedido_fs->longitud_nombre_interfaz), stream, sizeof(int));
     stream += sizeof(int);
     memcpy(&(pedido_fs->nombre_interfaz), stream, sizeof(pedido_fs->longitud_nombre_interfaz));
@@ -1500,10 +1498,8 @@ t_pedido_fs_create_delete* deserializar_pedido_fs_create_delete(t_buffer* buffer
     return pedido_fs;    
 }
 
-// HAY QUE SEGUIR ESTO
-/*
-void enviar_buffer_fs_escritura_lectura(int socket, int pid, int largo_archivo, char* nombre_archivo, uint32_t registro_direccion, uint32_t registro_tamanio, codigo_operacion operacion) {
-    t_buffer* buffer = llenar_buffer_fs_escritura_lectura(pid, socket, largo_archivo, nombre_archivo,registro_direccion, registro_tamanio);
+void enviar_buffer_fs_escritura_lectura(int socket, int pid, int largo_archivo, char* nombre_archivo, uint32_t registro_direccion, uint32_t registro_tamanio,uint32_t registro_archivo, codigo_operacion operacion) {
+    t_buffer* buffer = llenar_buffer_fs_escritura_lectura(pid, socket, largo_archivo,nombre_archivo,registro_direccion, registro_tamanio,registro_archivo);
     enviar_paquete(buffer, operacion, sockets->socket_memoria);
 }
 
@@ -1530,11 +1526,10 @@ t_pedido_fs_escritura_lectura* deserializar_pedido_fs_escritura_lectura(t_buffer
 
     return pedido_fs;    
 }
-*/
-/*
+
 t_buffer* llenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uint32_t registro_archivo){
    int size = sizeof(int) * 2 + largo_archivo + sizeof(uint32_t) * 2; 
-   t_buffer *buffer = buffer_creates(size);
+   t_buffer *buffer = buffer_create(size);
 
     buffer_add_int(buffer,pid);
     buffer_add_int(buffer,socket);
@@ -1546,4 +1541,3 @@ t_buffer* llenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archiv
 
     return buffer;
 }
-*/

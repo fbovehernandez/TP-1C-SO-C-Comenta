@@ -116,7 +116,7 @@ void imprimir_diccionario_recursos();
 // t_pedido_escritura* deserializar_pedido_escritura(t_buffer* buffer);
 void mandar_a_escribir_a_memoria(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio);
 void encolar_datos_std(t_pcb* pcb, t_pedido* pedido);
-void enviar_buffer_fs_escritura_lectura(int socket, int pid, int largo_archivo, char* nombre_archivo, uint32_t registro_direccion, uint32_t registro_tamanio, codigo_operacion operacion);
+
 t_pedido_fs_create_delete* deserializar_pedido_fs_create_delete(t_buffer* buffer);
 void mandar_pedido_fs();
 t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre);
@@ -124,8 +124,10 @@ t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, uint3
 t_buffer* llenar_buffer_nombre_archivo_pid(int pid,int largo_archivo,char* nombre_archivo);
 void enviar_buffer_fs(int socket_io,int pid,int longitud_nombre_archivo,char* nombre_archivo, codigo_operacion codigo_operacion);
 t_pedido_fs_escritura_lectura* deserializar_pedido_fs_escritura_lectura(t_buffer* buffer);
+
 t_buffer* llenar_buffer_nombre_archivo_pid(int pid,int largo_archivo,char* nombre_archivo);
-t_buffer* llenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio);
+t_buffer* llenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uint32_t registro_archivo);
+void enviar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uint32_t registro_archivo,codigo_operacion codigo);
 // void imprimir_datos_stdin(io_stdin* datos_stdin);
 
 void EJECUTAR_SCRIPT(char* path);
