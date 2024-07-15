@@ -27,7 +27,7 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         
         // free(instruccion); // double free
         
-        pcb->program_counter++;
+        // pcb->program_counter++;
         printf("\nEl program counter es %d despues de aumentarlo.\n", pcb->program_counter);
         
         if(resultado_ok == 1) {
@@ -538,7 +538,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         DesalojoCpu codigo = (nombreInstruccion == WAIT) ? WAIT_RECURSO : SIGNAL_RECURSO;
         t_parametro* parametro_recurso = list_get(list_parametros, 0);
         
-        pcb->program_counter++;
+        // pcb->program_counter++;
         manejar_recursos(pcb, parametro_recurso, codigo);
         return 1;
         break; 
@@ -556,7 +556,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         
         // el puntero al buffer de abajo YA ESTA SERIALIZADO
         
-        pcb->program_counter++;
+        // pcb->program_counter++;
         desalojar(pcb, DORMIR_INTERFAZ, buffer);
         printf("Hizo IO_GEN_SLEEP con el PID %d\n", pcb->pid);
         return 1; // Retorna 1 si desalojo PCB...
@@ -594,7 +594,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         t_buffer* buffer_lectura = llenar_buffer_stdio(interfaz->nombre, lista_direcciones_fisicas_stdin, *registro_tamanio_stdin, cantidad_paginas);
         
-        pcb->program_counter++;
+        // pcb->program_counter++;
         desalojar(pcb, PEDIDO_LECTURA, buffer_lectura);
 
         free(buffer_lectura);
@@ -604,6 +604,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         // guardar_estado(pcb); -> No estoy seguro si esta es necesaria, pero de todas formas nos va a servir cuando se interrumpa por quantum
         printf("Llego a instruccion EXIT\n");
         desalojar(pcb, FIN_PROCESO, NULL); // Envio 0 ya que no me importa size
+        return 1;
         break;
     case IO_STDOUT_WRITE: // IO_STDOUT_WRITE Int3 BX EAX
         t_list* lista_bytes_stdout = list_create();
@@ -643,7 +644,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         
         printf("\n");
         t_buffer* buffer_escritura = llenar_buffer_stdio(nombre_interfaz, lista_direcciones_fisicas_stdout, *registro_tamanio_stdout, cantidad_paginas);
-        pcb->program_counter++;
+        // pcb->program_counter++;
 
         desalojar(pcb, PEDIDO_ESCRITURA, buffer_escritura);
 
@@ -700,6 +701,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         // Hasta que encontremos como hacer con el EXIT que recibe como E X I T
         break;
     }
+    pcb->program_counter++;
     return 0;
 }
 
@@ -1021,6 +1023,7 @@ void enviar_tamanio_memoria(int nuevo_tamanio, int pid) {
 }
 
 void desalojar(t_pcb* pcb, DesalojoCpu motivo, t_buffer* datos_adicionales) {
+    pcb->program_counter++;
     guardar_estado(pcb);
     setear_registros_cpu(); 
     enviar_pcb(pcb, client_dispatch, motivo, datos_adicionales);

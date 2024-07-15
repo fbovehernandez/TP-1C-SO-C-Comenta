@@ -310,7 +310,6 @@ t_pcb *proximo_a_ejecutar() {
 
     pthread_mutex_lock(&mutex_estado_ready);
     if (!queue_is_empty(cola_prioritarios_por_signal)) {
-        printf("\n\nSE ESTA EJECUTANDO EL PROCESO DESDE COLA DE PRIORITARIOS\n\n");
         pcb = queue_pop(cola_prioritarios_por_signal);
     }/*
     else if (!queue_is_empty(cola_ready_plus))
@@ -1013,7 +1012,9 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
 void ejecutar_wait_recurso(t_recurso* recurso_obtenido,t_pcb* pcb,char* recurso){
     if(recurso_obtenido->instancias > 0) {
         recurso_obtenido->instancias --;
-        pasar_a_ready(pcb);
+        // pasar_a_ready(pcb);
+        queue_push(cola_prioritarios_por_signal, pcb);
+        sem_post(&sem_hay_para_planificar);
     } else {
         pasar_a_blocked(pcb);
         queue_push(recurso_obtenido->procesos_bloqueados, pcb);
@@ -1030,7 +1031,8 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
     pthread_mutex_unlock(&no_hay_nadie_en_cpu);*/
     
     // change_status(pcb, READY);
-    queue_push(cola_prioritarios_por_signal, pcb); 
+    
+    queue_push(cola_prioritarios_por_signal, pcb);
     sem_post(&sem_hay_para_planificar);
     
     if(!queue_is_empty(recurso_obtenido->procesos_bloqueados)) {
