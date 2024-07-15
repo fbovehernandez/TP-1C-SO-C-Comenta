@@ -608,12 +608,24 @@ void* handle_kernel(void* socket) {
                 free(pid_stdout);
                 free(registro_lectura);
                 break;
-            /*
+            
             case ESCRIBIR_FS_MEMORIA:
             case LEER_FS_MEMORIA:
-                t_pedido_escritura_lectura* escritura_lectura = deserializar_escritura_lectura(paquete->buffer);
+                t_memoria_fs_escritura_lectura* fs_escritura_lectura = deserializar_escritura_lectura(paquete->buffer);
+                codigo_operacion codigo_escritura_lectura = (paquete->codigo_operacion == ESCRIBIR_FS_MEMORIA) ? ESCRIBIR_EN_FS : LEER_EN_FS;
                 
-            */
+                int socket_io_escritura_lectura = fs_escritura_lectura->socket;
+                int pid = fs_escritura_lectura->pid;
+                
+                /*
+                fs_escritura_lectura ya  tiene los datos necesarios para obtenner la info, una vvez hechho eso hhay que manndarselo a la dialfs 
+                correspondiente al socket.
+                La logica de abajo les sirve como base
+                
+                */
+                
+                t_buffer* buffer llenar_buffer_fs_read_write_memoria(pid, /*datos restantes*/);
+                enviar_paquete(buffer,codigo_escritura_lectura,socket_io_escritura_lectura);
             default:
                 printf("Rompio kernel.\n");
                 exit(-1);
@@ -1317,3 +1329,33 @@ void agregar_interfaz_en_el_diccionario(t_paquete* paquete, int socket) {
     printf("El socket del diccionario: %d\n", socket_sacado->socket);
 }
 
+t_memoria_fs_escritura_lectura* deserializar_escritura_lectura(t_buffer* buffer){
+    t_memoria_fs_escritura_lectura* pedido_escritura_lectura = malloc(sizeof(t_memoria_fs_escritura_lectura));
+
+    void* stream = buffer->stream;
+    
+    memcpy(&(pedido_escritura_lectura->pid), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&(pedido_escritura_lectura->socket), stream, sizeof(int));
+    stream += sizeof(int);
+
+
+    memcpy(&(pedido_escritura_lectura->longitud_nombre_interfaz), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy((pedido_escritura_lectura->nombre_interfaz), stream, pedido_escritura_lectura->longitud_nombre_interfaz);
+    stream += pedido_escritura_lectura->longitud_nombre_interfaz;
+    
+    memcpy(&(pedido_escritura_lectura->largo_archivo), stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy((pedido_escritura_lectura->nombre_archivo), stream, pedido_escritura_lectura->nombre_archivo);
+    stream += pedido_escritura_lectura->largo_archivo;
+    
+    memcpy(&(pedido_escritura_lectura->registro_direccion), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(pedido_escritura_lectura->registro_archivo), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(pedido_escritura_lectura->registro_archivo), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+
+    return pedido_escritura_lectura;
+}

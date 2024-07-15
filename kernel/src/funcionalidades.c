@@ -503,7 +503,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
                 codigo_operacion operacion = (devolucion_cpu == ESCRITURA_FS) ? ESCRIBIR_FS_MEMORIA : LEER_FS_MEMORIA;
                 // Esto se hace en la conexion, aca tiene que encolar el pedido
                 enviar_buffer_fs_escritura_lectura(interfaz->socket,pcb->pid,fs_read_write->largo_archivo,
-                                                    fs_read_write->nombre_archivo,fs_read_write->registro_direccion,fs_read_write->registro_tamanio,operacion);
+                                                    fs_read_write->nombre_archivo,fs_read_write->registro_direccion,fs_read_write->registro_tamanio,fs_read_write->registro_archivo,operacion);
                 log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, fs_read_write->nombre_interfaz);
             }
         
@@ -1518,21 +1518,25 @@ t_pedido_fs_escritura_lectura* deserializar_pedido_fs_escritura_lectura(t_buffer
     memcpy(&(pedido_fs->registro_direccion), stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
     memcpy(&(pedido_fs->registro_tamanio), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(pedido_fs->registro_archivo), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
     // Si se agregann mas datos no olvidarse de aumentar el stream
 
     return pedido_fs;    
 }
 
-t_buffer* llenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio){
+t_buffer* llenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uint32_t registro_archivo){
    int size = sizeof(int) * 2 + largo_archivo + sizeof(uint32_t) * 2; 
    t_buffer *buffer = buffer_creates(size);
 
     buffer_add_int(buffer,pid);
+    buffer_add_int(buffer,socket);
     buffer_add_int(buffer,largo_archivo);
     buffer_add_string(buffer,largo_archivo,nombre_archivo);
     buffer_add_uint32(buffer,registro_direccion);
     buffer_add_uint32(buffer,registro_tamanio);
-    buffer_add_uint32(buffer,registro_archivo); // Arreglar esto
+    buffer_add_uint32(buffer,registro_archivo); 
 
     return buffer;
 }
