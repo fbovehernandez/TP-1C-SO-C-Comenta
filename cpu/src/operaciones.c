@@ -682,10 +682,11 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         char* nombre_quinto_parametro = cuarto_parametro->nombre; 
         uint32_t registro_puntero_archivo = *(uint32_t*) seleccionar_registro_cpu(nombre_quinto_parametro);
 
-        codigo_operacion codigo2 = nombreInstruccion == IO_FS_READ ? LECTURA_FS : ESCRITURA_FS;
+        codigo_operacion codigo_escritura_lectura = nombreInstruccion == IO_FS_READ ? LECTURA_FS : ESCRITURA_FS;
 
-        // enviar_buffer_fs_escritura_lectura(nombre_interfaz2,nombre_archivo2,registro_direccion2,registro_tamanio2,registro_puntero_archivo,codigo2); 
-        
+        t_buffer* buffer_fs_lectura_escritura = llenar_buffer_fs_escritura_lectura(nombre_interfaz2,nombre_archivo2,registro_direccion2,registro_tamanio2,registro_puntero_archivo); 
+        enviar_paquete(buffer_fs_lectura_escritura,codigo_escritura_lectura,client_dispatch);
+
         break;
     default:
         printf("Error: No existe ese tipo de instruccion\n");
@@ -1392,3 +1393,22 @@ t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades) {
 
 */
 
+t_buffer* llenar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uint32_t registro_archivo){ 
+    uint32_t largo_nombre_interfaz = string_length(nombre_interfaz) + 1;
+    uint32_t largo_nombre_archivo  = string_length(nombre_archivo) + 1;
+    int size = sizeof(int) * 2 + largo_nombre_interfaz + largo_nombre_archivo + sizeof(uint32_t) * 3;
+    
+    t_buffer* buffer  = buffer_create(size);
+
+    buffer_add_uint32(buffer,largo_nombre_interfaz);
+    buffer_add_string(buffer,largo_nombre_interfaz,nombre_interfaz);
+    
+    buffer_add_uint32(buffer,largo_nombre_archivo);
+    buffer_add_string(buffer,largo_nombre_archivo,nombre_archivo);
+
+    buffer_add_uint32(buffer,registro_direccion);
+    buffer_add_uint32(buffer,registro_tamanio);
+    buffer_add_uint32(buffer,registro_archivo);
+
+    return buffer;
+}

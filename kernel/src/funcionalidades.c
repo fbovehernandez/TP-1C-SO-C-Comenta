@@ -1507,7 +1507,6 @@ t_pedido_fs_escritura_lectura* deserializar_pedido_fs_escritura_lectura(t_buffer
 
     void* stream = buffer->stream;
     
-
     memcpy(&(pedido_fs->longitud_nombre_interfaz), stream, sizeof(int));
     stream += sizeof(int);
     memcpy(&(pedido_fs->nombre_interfaz), stream, sizeof(pedido_fs->longitud_nombre_interfaz));
@@ -1525,23 +1524,15 @@ t_pedido_fs_escritura_lectura* deserializar_pedido_fs_escritura_lectura(t_buffer
 }
 
 t_buffer* llenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio){
-   t_buffer *buffer = malloc(sizeof(t_buffer));
+   int size = sizeof(int) * 2 + largo_archivo + sizeof(uint32_t) * 2; 
+   t_buffer *buffer = buffer_creates(size);
 
-    buffer->size = sizeof(int) * 2 + largo_archivo + sizeof(uint32_t) * 2;
-    buffer->offset = 0;
-    buffer->stream = malloc(buffer->size);
-
-    void *stream = buffer->stream;
-
-    memcpy(stream + buffer->offset, &pid, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &(largo_archivo), sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, nombre_archivo, largo_archivo);
-    buffer->stream += largo_archivo;
-    memcpy(stream + buffer->offset, &registro_direccion, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
-    memcpy(stream + buffer->offset, &registro_tamanio, sizeof(uint32_t));
+    buffer_add_int(buffer,pid);
+    buffer_add_int(buffer,largo_archivo);
+    buffer_add_string(buffer,largo_archivo,nombre_archivo);
+    buffer_add_uint32(buffer,registro_direccion);
+    buffer_add_uint32(buffer,registro_tamanio);
+    buffer_add_uint32(buffer,registro_archivo); // Arreglar esto
 
     return buffer;
 }
