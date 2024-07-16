@@ -1346,7 +1346,7 @@ t_memoria_fs_escritura_lectura* deserializar_escritura_lectura(t_buffer* buffer)
     
     memcpy(&(pedido_escritura_lectura->largo_archivo), stream, sizeof(int));
     stream += sizeof(int);
-    memcpy((pedido_escritura_lectura->nombre_archivo), stream, pedido_escritura_lectura->nombre_archivo);
+    memcpy((pedido_escritura_lectura->nombre_archivo), stream, pedido_escritura_lectura->largo_archivo);
     stream += pedido_escritura_lectura->largo_archivo;
     
     memcpy(&(pedido_escritura_lectura->registro_direccion), stream, sizeof(uint32_t));

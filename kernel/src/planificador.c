@@ -3,7 +3,11 @@
 void change_status(t_pcb* pcb, Estado new_status) {
     pcb->estadoAnterior = pcb -> estadoActual;
     pcb->estadoActual   = new_status;
-    log_info(logger_kernel, "PID: %d - Estado Anterior: %d - Estado Actual: %d", pcb->pid, pcb->estadoAnterior, pcb->estadoActual);
+
+    char* estado_actual   = pasar_a_string_estado(pcb->estadoActual); 
+    char* estado_anterior = pasar_a_string_estado(pcb->estadoAnterior);
+
+    log_info(logger_kernel, "PID: %d - Estado Anterior: %s - Estado Actual: %s", pcb->pid, estado_anterior, estado_actual);
 }
 
 void pasar_a_ready(t_pcb *pcb) {
@@ -46,21 +50,63 @@ void pasar_a_exit(t_pcb* pcb) {
     sem_post(&sem_grado_multiprogramacion);
 }
 
-/*
-int* obtenerPidsDe(t_queue* cola){
-    t_queue colaAux = NULL;
-    t_pcb* pcbAux;
-    int* pids = NULL; 
-    int indice = 0; 
+void pasar_a_ready_plus(t_pcb* pcb){
+    change_status(pcb, READY_PLUS);
+    
+    pthread_mutex_lock(&mutex_estado_ready_plus);
+    queue_push(cola_ready_plus, (void *)pcb);
+    pthread_mutex_unlock(&mutex_estado_ready_plus);
 
-    while(cola != NULL){
-        pcbAux = queue_pop(&cola);
-        pids[indice] = pcbAux->pid;
-        indice++;
-        queue_push(colaAux,pcbAux);
+    pthread_mutex_lock(&mutex_estado_ready_plus);
+    char* pids = obtener_pid_de(cola_ready_plus);
+    log_info(logger_kernel,"Cola Ready Prioridad: %s\n", pids);
+    pthread_mutex_unlock(&mutex_estado_ready_plus);
+}
+
+char* obtener_pid_de(t_queue* cola){
+    t_queue* colaAux = queue_create(); 
+    t_pcb* pcbAux;
+    char* pids = string_new();
+
+    while(!queue_is_empty(cola)){
+        pcbAux = queue_pop(cola);
+        string_append_with_format(&pids, "%d ", pcbAux->pid); 
+        queue_push(colaAux, pcbAux);
     }
 
-    cola = colaAux;
+    // Restaurar los elementos en la cola original
+    while(!queue_is_empty(colaAux)){
+        pcbAux = queue_pop(colaAux);
+        queue_push(cola, pcbAux);
+    }
+
+    queue_destroy(colaAux); 
     return pids;
 }
-*/
+ 
+char* pasar_a_string_estado(Estado estado){
+    switch (estado) {
+        case READY:
+            return "READY";
+            break;
+        case NEW:
+            return "NEW";
+            break;
+        case BLOCKED:
+            return "BLOCKED";
+            break;
+        case READY_PLUS:
+            return "READY_PLUS";
+            break;
+        case EXEC:
+            return "EXEC";
+            break;
+        case EXIT:
+            return "EXIT";
+            break;
+        default:
+            log_error(logger_kernel,"Invalid state");
+            exit(-1);
+            break;
+    }
+} 

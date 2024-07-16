@@ -532,6 +532,8 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
             return 1;
         }
 
+        
+
         printf("Se redimensiono la memoria\n"); 
         break;
     case WAIT: case SIGNAL:
@@ -651,7 +653,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         free(buffer_escritura);
         return 1;
         break;
-    
+    /*
     case IO_FS_CREATE: case IO_FS_DELETE: // IO_FS_CREATE nombre_interfaz nombre_archivo
         t_parametro* interfaz_create = list_get(list_parametros, 0);
         char* nombre_interfaz_FS_CREATE = interfaz_create->nombre;
@@ -709,6 +711,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         
         return 1;
         break;
+    */
     default:
         printf("Error: No existe ese tipo de instruccion\n");
         printf("La instruccion recibida es: %d\n", nombreInstruccion);
@@ -1038,7 +1041,9 @@ void enviar_tamanio_memoria(int nuevo_tamanio, int pid) {
 }
 
 void desalojar(t_pcb* pcb, DesalojoCpu motivo, t_buffer* datos_adicionales) {
-    pcb->program_counter++;
+    if(motivo  != INTERRUPCION_QUANTUM){
+        pcb->program_counter++;   
+    }
     guardar_estado(pcb);
     setear_registros_cpu(); 
     enviar_pcb(pcb, client_dispatch, motivo, datos_adicionales);
@@ -1206,9 +1211,17 @@ void sub(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, boo
 }
 
 void sum(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, bool es_8_bits_destino) {
-    uint32_t valor_origen;
-    uint32_t valor_destino;
+    //uint32_t valor_origen;
+    //uint32_t valor_destino;
 
+    if(es_8_bits_destino && es_8_bits_origen) {
+        uint8_t* resultado_suma_uint8 = *(uint8_t *)registroOrigen + *(uint8_t *)registroDestino;
+        set(registroDestino, resultado_suma_uint8, es_8_bits_destino);
+    } else {
+        uint32_t* resultado_suma_uint32 = *(uint32_t *)registroOrigen + *(uint32_t *)registroDestino;
+        set(registroDestino, resultado_suma_uint32, es_8_bits_destino);
+    }
+    /*
     // Obtener el valor del registro origen
     if (es_8_bits_origen) {
         valor_origen = *(uint8_t *)registroOrigen;
@@ -1226,8 +1239,14 @@ void sum(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, boo
     // Realizar la suma
     uint32_t resultado_suma = valor_origen + valor_destino;
 
+     // Asegurarse de que el resultado no cause desbordamiento
+    if (resultado_suma < valor_origen) {
+        // Manejo de desbordamiento, si es necesario
+        // Por ejemplo, puedes establecer un flag, lanzar una excepción, etc.
+    }
+
     // Actualizar el registro destino con el resultado usando la función set
-    set(registroDestino, resultado_suma, es_8_bits_destino);
+    set(registroDestino, resultado_suma, es_8_bits_destino);*/
 }
 
 void jnz(void* registro, int valor, t_pcb* pcb) {

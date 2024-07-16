@@ -12,6 +12,8 @@
 #include <pthread.h>
 
 extern int client_dispatch;
+extern t_temporal* timer;
+extern int ms_transcurridos;
 
 typedef struct {
     
@@ -54,6 +56,7 @@ extern pthread_mutex_t mutex_estado_new;
 extern pthread_mutex_t mutex_estado_ready;
 extern pthread_mutex_t mutex_estado_exec;
 extern pthread_mutex_t mutex_estado_blocked;
+extern pthread_mutex_t mutex_estado_ready_plus;
 extern sem_t sem_grado_multiprogramacion;
 extern sem_t sem_hay_pcb_esperando_ready;
 extern sem_t sem_hay_para_planificar;
@@ -67,6 +70,7 @@ extern t_queue* cola_blocked;
 extern t_pcb* pcb_exec;
 extern t_queue* cola_exit;
 extern t_queue* cola_prioritarios_por_signal;
+extern t_queue* cola_ready_plus;
 
 extern char* algoritmo_planificacion; // Tomamos en convencion que los algoritmos son "FIFO", "VRR" , "RR" (siempre en mayuscula)
 extern t_log* logger_kernel;
@@ -131,6 +135,15 @@ void enviar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,cha
 // void imprimir_datos_stdin(io_stdin* datos_stdin);
 t_pedido_fs_truncate* deserializar_fs_truncate(t_buffer* buffer);
 t_buffer* llenar_buffer_fs_truncate(int pid,int largo_archivo,char* nombre_archivo,uint32_t truncador);
+bool es_VRR_RR();
+bool es_RR();
+bool es_VRR();
+void *esperar_VRR(void *sockets_Int);
+void *esperar_RR(void *sockets_Int);
+int max(int num1, int num2);
+int leQuedaTiempoDeQuantum(t_pcb *pcb);
+void mostrar_cola(t_queue* cola);
+void ejecutarComando(char* linea_leida);
 
 void EJECUTAR_SCRIPT(char* path);
 void INICIAR_PROCESO(char* path);

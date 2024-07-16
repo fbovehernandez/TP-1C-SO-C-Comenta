@@ -14,6 +14,7 @@
 #include <commons/string.h>
 #include <assert.h>
 #include <pthread.h>
+#include <commons/temporal.h>
 
 
 extern sem_t sem_memoria_instruccion;
@@ -203,7 +204,8 @@ typedef enum {
     READY,
     BLOCKED,
     EXEC,
-    EXIT
+    EXIT,
+    READY_PLUS
 } Estado;
 
 typedef struct {

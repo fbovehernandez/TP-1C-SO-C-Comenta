@@ -11,8 +11,10 @@ int client_dispatch;
 pthread_mutex_t mutex_estado_new;
 pthread_mutex_t mutex_estado_ready;
 pthread_mutex_t mutex_estado_exec;
+pthread_mutex_t mutex_estado_exit;
 pthread_mutex_t no_hay_nadie_en_cpu;
 pthread_mutex_t mutex_estado_blocked;
+pthread_mutex_t mutex_estado_ready_plus;
 
 sem_t sem_grado_multiprogramacion;
 sem_t sem_hay_pcb_esperando_ready;
@@ -22,14 +24,18 @@ sem_t sem_contador_quantum;
 t_queue* cola_new;
 t_queue* cola_ready;
 t_queue* cola_blocked;
-//t_queue* cola_exec;
 t_queue* cola_exit;
 t_queue* cola_prioritarios_por_signal;
+t_queue* cola_ready_plus;
 
 char* algoritmo_planificacion; // Tomamos en convencion que los algoritmos son "FIFO", "VRR" , "RR" (siempre en mayuscula)
 t_log* logger_kernel;
 char* path_kernel;
 ptr_kernel* datos_kernel;
+
+t_temporal* timer;
+int ms_transcurridos;
+bool planificacion_pausada;
 
 void *interaccion_consola() { //no se si deberian pasarse los sockets
     char *path_ejecutable = malloc(sizeof(char) * 100); // Cantidad?
@@ -100,6 +106,7 @@ void *interaccion_consola() { //no se si deberian pasarse los sockets
     return NULL;
 }
 
+/*
 void EJECUTAR_SCRIPT(char* path) {
     // Abrir el archivo en modo de lectura (r)
     size_t length = 0;
@@ -118,14 +125,64 @@ void EJECUTAR_SCRIPT(char* path) {
     // Cerrar el archivo
     fclose(file);
 }
+*/
+void EJECUTAR_SCRIPT(char* path) {
+    // Abrir el archivo en modo de lectura (r)
+    size_t length = 0;
+    char* path_local_kernel = strdup(path_kernel);
+    char* path_completo = malloc(strlen(path_local_kernel) + strlen(path));
+    path_completo = strcat(path_local_kernel, path);
+    FILE* file = fopen(path_completo, "r");
+    char* linea_leida = NULL;
+    // Verificar si el archivo se abrió correctamente
+    if (file == NULL) {
+        printf("Error al abrir el archivo.\n");
+    }
+    while (getline(&linea_leida, &length, file) != -1) {
+    	if(strcmp(linea_leida,"\n")){
+        	ejecutarComando(linea_leida);
+    	}
+    }
+    // Cerrar el archivo
+    fclose(file);
+}
+
+void ejecutarComando(char* linea_leida) {
+    char comando[20]; 
+    char parametro[20]; 
+    int parametroAux;
+
+    if (sscanf(linea_leida, "%s %s", comando, parametro) == 2) {
+        printf("Palabra 1: %s, Palabra 2: %s\n", comando, parametro);
+        if(strcmp(comando, "INICIAR_PROCESO") == 0) {
+            INICIAR_PROCESO(parametro);
+        } else if(strcmp(comando, "FINALIZAR_PROCESO") == 0) {
+            parametroAux = atoi(parametro);
+            FINALIZAR_PROCESO(parametroAux);
+        } else if(strcmp(comando, "MULTIPROGRAMACION") == 0) {
+            parametroAux = atoi(parametro);
+            MULTIPROGRAMACION(parametroAux);
+        }
+    } else {
+        sscanf(linea_leida, "%s", comando);
+        printf("Palabra única: %s\n", comando);
+        if(strcmp(comando, "INICIAR_PLANIFICACION") == 0) {
+            INICIAR_PLANIFICACION();
+        } else if(strcmp(comando, "DETENER_PLANIFICACION") == 0) {
+            DETENER_PLANIFICACION();
+        } else if(strcmp(comando, "PROCESO_ESTADO") == 0) {
+            PROCESO_ESTADO();
+        }
+    }
+}
 
 void INICIAR_PROCESO(char* path_instrucciones) {
     int pid_actual = obtener_siguiente_pid();
     printf("El pid del proceso es: %d\n", pid_actual);
     // Primero envio el path de instruccion a memoria y luego el PCB...
     enviar_path_a_memoria(path_instrucciones, sockets, pid_actual); 
-    
-    sleep(10); 
+
+    sleep(5);
 
     t_pcb *pcb = crear_nuevo_pcb(pid_actual); 
     //   list_add(lista_procesos,pcb);
@@ -240,35 +297,33 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
         pasar_a_exec(pcb);
         pthread_mutex_unlock(&no_hay_nadie_en_cpu);
 
-        /*if (esRR())
-        {
+        if (es_RR()) {
             pthread_create(&hilo_quantum, NULL, (void *)esperar_RR, (void *)(intptr_t)socket_INT);
             sem_post(&sem_contador_quantum);
         }
-        else if (esVRR())
+        else if (es_VRR())
         {
             pthread_create(&hilo_quantum, NULL, (void *)esperar_VRR, (void *)(intptr_t)socket_INT);
             sem_post(&sem_contador_quantum);
-        }*/
+        }
 
         esperar_cpu();
 
-        /*if (es_VRR_RR())
-        {
+        if (es_VRR_RR()){
             pthread_cancel(hilo_quantum);
-        }*/
+        }
     }
 }
 
-/*int es_VRR_RR() {
-    return esRR() || esVRR();
-}*/
+bool es_VRR_RR() {
+    return es_RR() || es_VRR();
+}
 
-int esRR() {
+bool es_RR() {
     return strcmp(algoritmo_planificacion, "RR") == 0;
 }
 
-/*int esVRR() {
+bool es_VRR() {
     return strcmp(algoritmo_planificacion, "VRR") == 0;
 }
 
@@ -276,7 +331,7 @@ void *esperar_VRR(void *sockets_Int) {
     timer = temporal_create(); // Crearlo ya empieza a contar
     esperar_RR(sockets_Int);
     return NULL;
-}*/
+}
 
 /*
     int64_t temporal_gettime(t_temporal* temporal);
@@ -311,15 +366,13 @@ t_pcb *proximo_a_ejecutar() {
     pthread_mutex_lock(&mutex_estado_ready);
     if (!queue_is_empty(cola_prioritarios_por_signal)) {
         pcb = queue_pop(cola_prioritarios_por_signal);
-    }/*
-    else if (!queue_is_empty(cola_ready_plus))
-    {
+    } else if (!queue_is_empty(cola_ready_plus)){
         pcb = queue_pop(cola_ready_plus);
-    }*/
+    }
     else if (!queue_is_empty(cola_ready)) {
         pcb = queue_pop(cola_ready);
     } else {
-        printf("No hay procesos para ejecutar.\n");
+        log_info(logger_kernel,"No hay procesos para ejecutar.");
     }
     pthread_mutex_unlock(&mutex_estado_ready);
 
@@ -412,12 +465,12 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     imprimir_pcb(pcb);
     printf("pid del pcb: %d\n", pcb->pid);
 
-   /* if (esVRR()) {
+    if (es_VRR()) {
         temporal_stop(timer);
         ms_transcurridos = temporal_gettime(timer);
         temporal_destroy(timer);
         pcb->quantum = max(0, quantum - ms_transcurridos); // Si el quantum es menor a 0, lo seteo en 0, posibles problemas de latencia
-    }*/
+    }
 
     switch (devolucion_cpu) {
         case ERROR_STDOUT || ERROR_STDIN:
@@ -426,12 +479,12 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             break;
         case INTERRUPCION_QUANTUM:
             printf("Volvio a ready por interrupción de quantum\n");
-            /*if (esVRR() && leQuedaTiempoDeQuantum(pcb)) {
-                //pasar_a_ready_plus(pcb);
+            if (es_VRR() && leQuedaTiempoDeQuantum(pcb)) {
+                pasar_a_ready_plus(pcb);
             }
             else {
                 pasar_a_ready(pcb);
-            }*/
+            }
             break;
         case DORMIR_INTERFAZ:
             t_operacion_io* operacion_io = deserializar_io(package->buffer);
@@ -476,7 +529,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             encolar_datos_std(pcb, pedido_escritura);
             log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->interfaz);
             break;
-        
+        /*
         case FS_CREATE:
         case FS_DELETE:
             t_pedido_fs_create_delete* pedido_fs = deserializar_pedido_fs_create_delete(package->buffer);
@@ -515,6 +568,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
                 enviar_paquete(buffer_truncate,TRUNCAR_ARCHIVO,interfaz->socket);
                 log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, fs_read_write->nombre_interfaz);
             }
+        */
         default:
             printf("Llego un codigo de operacion inexistente o rompio algo\n");
             exit(-1);
@@ -1194,64 +1248,59 @@ void MULTIPROGRAMACION(int valor) {
     grado_multiprogramacion = valor;
 }
 
+
 void PROCESO_ESTADO() {
+    
+    /*printf("--------Listado de procesos--------\n");
+    
+    printf("Procesos en new\n");
+    pthread_mutex_lock(&mutex_estado_new);
+    mostrar_cola(cola_new);
+    pthread_mutex_lock(&mutex_estado_new);
+    
+    printf("Procesos en ready\n");
+    pthread_mutex_lock(&mutex_estado_ready);
+    mostrar_cola(cola_ready);
+    pthread_mutex_lock(&mutex_estado_ready);
 
+    printf("Procesos en ready plus\n");
+    pthread_mutex_lock(&mutex_estado_ready_plus);
+    mostrar_cola(cola_ready_plus);
+    pthread_mutex_lock(&mutex_estado_ready_plus );
+
+    printf("Procesos en blocked\n");
+    pthread_mutex_lock(&mutex_estado_blocked);
+    mostrar_cola(cola_blocked);
+    pthread_mutex_lock(&mutex_estado_blocked);
+
+    printf("Procesos en exit\n");
+    pthread_mutex_lock(&mutex_estado_exit);
+    mostrar_cola(cola_exit);
+    pthread_mutex_lock(&mutex_estado_exit);  
+
+    printf("Proceso en exec\n");
+    imprimir_pcb(pcb_exec);
+    */
 }
 
-/* 
-void PROCESO_ESTADO()
-{
-    char* estadoNuevo;
-    printf("Ingrese el estado en mayusculas que quiere listar\n");
-    scanf("%s",estadoNuevo);
-    Estado estado = estadoDeString(estadoNuevo);
-
-    printf("--------Listado de procesos--------\n");
-    switch (estado)
-    {
-    case NEW:
-        cola_new = mostrarCola(cola_new);
-        break;
-    case READY:
-        cola_ready = mostrarCola(cola_ready);
-        break;
-    case BLOCKED:
-        cola_blocked = mostrarCola(cola_blocked);
-        break;
-    case EXEC:
-        cola_exec = mostrarCola(cola_exec);
-        break;
-    case EXIT:
-        cola_new = mostrar_cola(cola_new);
-        break;
-    }
-    // No es necesario default porque ya te rompe el enum
-}
-
-enum Estado estadoDeString(char *estadoStr) {
-    if (strcmp(estadoStr, "NEW") == 0) return NEW;
-    if (strcmp(estadoStr, "READY") == 0) return READY;
-    if (strcmp(estadoStr, "BLOCKED") == 0) return BLOCKED;
-    if (strcmp(estadoStr, "EXEC") == 0) return EXEC;
-    if (strcmp(estadoStr, "EXIT") == 0) return EXIT;
-    return -1; 
-}
-
-t_queue* mostrar_cola(t_queue* cola)
-{
+void mostrar_cola(t_queue* cola) {
     t_pcb *aux;
-    t_queue *cola_aux = NULL;
+    t_queue *cola_aux = queue_create(); 
 
-    while (cola->elements->head != NULL)
-    {
-        aux = queue_pop(&cola);
-        mostrar_pcb_proceso(aux);
-        queue_push(&cola_aux, aux);
+    while (!queue_is_empty(cola)){
+        aux = queue_pop(cola);
+        imprimir_pcb(aux);
+        queue_push(cola_aux, aux);
     }
 
-    return cola_aux;
+    while (!queue_is_empty(cola_aux)){
+        aux = queue_pop(cola_aux);
+        queue_push(cola, aux);
+    }
+
+    queue_destroy(cola_aux); 
 }
-*/
+
 void mostrar_pcb_proceso(t_pcb* pcb) {
     printf("PID: %d\n", pcb->pid);
     printf("Program Counter: %d\n", pcb->program_counter);
@@ -1489,7 +1538,7 @@ t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, uint3
     return buffer;
 }
 
-
+/*
 t_pedido_fs_create_delete* deserializar_pedido_fs_create_delete(t_buffer* buffer){
     t_pedido_fs_create_delete* pedido_fs = malloc(sizeof(t_pedido_fs_create_delete));
 
@@ -1574,4 +1623,4 @@ t_buffer* llenar_buffer_fs_truncate(int pid,int largo_archivo,char* nombre_archi
     buffer_add_uint32(buffer,truncador);
 
     return buffer;
-}
+}*/
