@@ -666,7 +666,21 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         // Libero y desalojo...
         free(buffer_io);
         return -1;
-  
+        break;
+    case IO_FS_TRUNCATE: // IO_FS_TRUNCATE interfaz archivo 
+        t_parametro* interfaz_a_truncar = list_get(list_parametros, 0);
+        char* nombre_interfaz_a_truncar = interfaz_create->nombre;
+
+        t_parametro* parametro_file_truncate = list_get(list_parametros, 1);
+        char* nombre_file_truncate = parametro_file_truncate->nombre;
+
+        t_parametro* parametro_numero = list_get(list_parametros, 2);
+        char* nombre_parametro_numero = parametro_numero->nombre;
+        uint32_t registro_truncador = (uint32_t*) seleccionar_registro_cpu(nombre_parametro_numero);
+        
+        enviar_buffer_fs_truncate(nombre_interfaz_a_truncar,nombre_file_truncate,registro_truncador);
+        
+        return 1;
         break;
     case IO_FS_READ:
     case IO_FS_WRITE:
@@ -692,7 +706,8 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         t_buffer* buffer_fs_lectura_escritura = llenar_buffer_fs_escritura_lectura(nombre_interfaz2,nombre_archivo2,registro_direccion2,registro_tamanio2,registro_puntero_archivo); 
         enviar_paquete(buffer_fs_lectura_escritura,codigo_escritura_lectura,client_dispatch);
-
+        
+        return 1;
         break;
     default:
         printf("Error: No existe ese tipo de instruccion\n");
@@ -1417,6 +1432,28 @@ t_buffer* llenar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_
     buffer_add_uint32(buffer,registro_direccion);
     buffer_add_uint32(buffer,registro_tamanio);
     buffer_add_uint32(buffer,registro_archivo);
+
+    return buffer;
+}
+
+void enviar_buffer_fs_truncate(char* nombre_interfaz_a_truncar,char* nombre_file_truncate,uint32_t registro_truncador){
+    t_buffer* buffer = llenar_buffer_fs_truncate(nombre_interfaz_a_truncar,nombre_file_truncate,registro_truncador);
+    enviar_paquete(buffer,FS_TRUNCATE_KERNEL,client_dispatch);
+}
+
+t_buffer* llenar_buffer_fs_truncate(char* nombre_interfaz_a_truncar,char* nombre_file_truncate,uint32_t registro_truncador){
+    int largo_nombre_interfaz = nombre_interfaz_a_truncar + 1;
+    int largo_nombre_archivo  = nombre_file_truncate + 1; 
+    
+    int size = sizeof(uint32_t) + largo_nombre_archivo + largo_nombre_interfaz + sizeof(int) * 2;
+
+    t_buffer* buffer = buffer_create(size);
+
+    buffer_add_int(buffer,largo_nombre_interfaz);
+    buffer_add_string(buffer,nombre_interfaz_a_truncar,largo_nombre_interfaz);
+    buffer_add_int(buffer,largo_nombre_archivo);
+    buffer_add_string(buffer,nombre_file_truncate);
+    buffer_add_uint32(buffer,registro_truncador);
 
     return buffer;
 }

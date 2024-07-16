@@ -506,9 +506,17 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
                                                     fs_read_write->nombre_archivo,fs_read_write->registro_direccion,fs_read_write->registro_tamanio,fs_read_write->registro_archivo,operacion);
                 log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, fs_read_write->nombre_interfaz);
             }
-        
+        case FS_TRUNCATE_KERNEL:
+            t_pedido_fs_truncate fs_truncate = deserializar_fs_truncate(paquete->buffer);
+            t_list_io* interfaz = io_esta_en_diccionario(pcb,-fs_truncate>nombre_interfaz);
+
+            if (interfaz != NULL) {
+                t_buffer* buffer_truncate = llenar_buffer(fs_truncate->largo_interfaz,fs_truncate->nombre_interfaz,fs_truncate->largo_archivo,fs_truncate->nombre_archivo,fs_truncate->truncador);
+                enviar_paquete(buffer_truncate,TRUNCAR_ARCHIVO,interfaz->socket);
+                log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, fs_read_write->nombre_interfaz);
+            }
         default:
-            printf("Llego a default de la 333 en funcionalidades.c\n");
+            printf("Llego un codigo de operacion inexistente o rompio algo\n");
             exit(-1);
             break;
     }
@@ -1538,6 +1546,31 @@ t_buffer* llenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archiv
     buffer_add_uint32(buffer,registro_direccion);
     buffer_add_uint32(buffer,registro_tamanio);
     buffer_add_uint32(buffer,registro_archivo); 
+
+    return buffer;
+}
+
+
+t_pedido_fs_truncate* deserializar_fs_truncate(t_buffer* buffer){
+    t_pedido_fs_truncate fs_truncate = malloc(t_pedido_fs_truncate);
+
+    fs_truncate->largo_interfaz  = buffer_read_int(buffer);
+    fs_truncate->nombre_interfaz = buffer_read_string(buffer,fs_truncate->largo_interfaz);
+    fs_truncate->largo_archivo   = buffer_read_int(buffer);
+    fs_truncate->nombre_archivo  = buffer_read_string(buffer,fs_truncate->largo_archivo);
+    fs_truncate->truncador       = buffer_add_uint32(buffer);
+
+    return fs_truncate;
+}
+
+t_buffer* llenar_buffer_fs_truncate(nt largo_archivo,char* nombre_archivo,uint32_t truncador){
+    int size = largo_archivo + sizeof(uint32_t) + sizeof(int);
+    
+    t_buffer* buffer = buffer_create(size);
+
+    buffer_add_int(buffer,largo_archivo);
+    buffer_add_string(buffer,nombre_archivo,largo_archivo);
+    buffer_add_uint32(buffer,truncador);
 
     return buffer;
 }

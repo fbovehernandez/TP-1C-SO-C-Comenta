@@ -157,6 +157,8 @@ typedef enum {
     LEER_FS_MEMORIA,
     ESCRIBIR_EN_FS,
     LEER_EN_FS,
+    FS_TRUNCATE_KERNEL,
+    TRUNCAR_ARCHIVO;
 } codigo_operacion;
 
 typedef enum {
@@ -271,6 +273,14 @@ typedef struct {
     int bytes_lectura;
 } t_dir_fisica_tamanio;
 
+typedef struct{
+    int largo_archivo;
+    char* nombre_archivo;
+    int largo_interfaz;
+    char* nombre_interfaz;
+    uint32_t truncador;
+} t_pedido_fs_truncate;
+
 typedef enum {
     SET,  
     MOV_IN,
@@ -293,6 +303,12 @@ typedef enum {
     EXIT_INSTRUCCION,
     ERROR_INSTRUCCION
 } TipoInstruccion;
+
+typedef struct{
+    int largo_archivo;
+    char* nombre_archivo;
+    uint32_t truncador;
+} t_fs_truncate;
 
 /* 
 typedef struct {

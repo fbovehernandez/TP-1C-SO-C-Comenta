@@ -217,6 +217,9 @@ void recibir_kernel(void* config_socket_io) {
                 txt_close_file(archivo); // Es de las commons, sino tenes el fclose de C
                 
                 break;
+            case TRUNCAR_ARCHIVO:
+                t_fs_truncate* fs_truncate = deserializar_fs_truncate(paquete->buffer);
+
             default:
                 printf("Se rompio kernel!!!!\n");
                 exit(-1);
@@ -406,3 +409,13 @@ void *handle_io_stdin(void *socket_io) {
     return NULL;
 }
 */
+
+t_fs_truncate* deserializar_fs_truncate(t_buffer* buffer){
+    t_fs_truncate* fs_truncate = malloc(t_fs_truncate);
+
+    fs_truncate->largo_archivo  = buffer_read_int(buffer);
+    fs_truncate->nombre_archivo = buffer_add_string(buffer,fs_truncate->largo_archivo);
+    fs_truncate->truncador      = buffer_read_uint32(buffer);
+
+    return fs_truncate; 
+}
