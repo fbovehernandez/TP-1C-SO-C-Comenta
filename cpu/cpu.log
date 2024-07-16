@@ -3399,3 +3399,38 @@
 [INFO] 19:05:15:216 LOGGER/(88545:88589): Esperando cliente...
 [INFO] 19:05:15:218 LOGGER/(88545:88590): Se conecto un cliente de interrupt!
 
+[INFO] 19:54:37:040 LOGGER/(3776:3776): Conexion establecida con Memoria
+[INFO] 19:54:40:142 LOGGER/(3776:3834): Servidor iniciado, esperando conexiones!
+[INFO] 19:54:52:390 LOGGER/(3776:3834): Se conecto un cliente de dispatch!
+
+[INFO] 19:54:52:394 LOGGER/(3776:3834): Esperando cliente...
+[INFO] 19:54:52:400 LOGGER/(3776:3835): Se conecto un cliente de interrupt!
+
+[INFO] 19:58:25:787 LOGGER/(5420:5420): Conexion establecida con Memoria
+[INFO] 19:58:28:863 LOGGER/(5420:5464): Servidor iniciado, esperando conexiones!
+[INFO] 19:58:36:416 LOGGER/(5420:5464): Se conecto un cliente de dispatch!
+
+[INFO] 19:58:36:418 LOGGER/(5420:5464): Esperando cliente...
+[INFO] 19:58:36:428 LOGGER/(5420:5465): Se conecto un cliente de interrupt!
+
+[INFO] 20:14:35:422 LOGGER/(8118:8118): Conexion establecida con Memoria
+[INFO] 20:14:38:519 LOGGER/(8118:8180): Servidor iniciado, esperando conexiones!
+[INFO] 20:14:46:019 LOGGER/(8118:8180): Se conecto un cliente de dispatch!
+
+[INFO] 20:14:46:021 LOGGER/(8118:8180): Esperando cliente...
+[INFO] 20:14:46:030 LOGGER/(8118:8181): Se conecto un cliente de interrupt!
+
+[INFO] 20:20:25:593 LOGGER/(10459:10459): Conexion establecida con Memoria
+[INFO] 20:20:28:713 LOGGER/(10459:10506): Servidor iniciado, esperando conexiones!
+[INFO] 20:20:40:036 LOGGER/(10459:10506): Se conecto un cliente de dispatch!
+
+[INFO] 20:20:40:037 LOGGER/(10459:10506): Esperando cliente...
+[INFO] 20:20:40:041 LOGGER/(10459:10507): Se conecto un cliente de interrupt!
+
+[INFO] 20:49:50:055 LOGGER/(14210:14210): Conexion establecida con Memoria
+[INFO] 20:49:53:140 LOGGER/(14210:14254): Servidor iniciado, esperando conexiones!
+[INFO] 20:50:01:362 LOGGER/(14210:14254): Se conecto un cliente de dispatch!
+
+[INFO] 20:50:01:364 LOGGER/(14210:14254): Esperando cliente...
+[INFO] 20:50:01:380 LOGGER/(14210:14255): Se conecto un cliente de interrupt!
+

@@ -4,7 +4,7 @@
 
 // Definicion de variables globales
 int grado_multiprogramacion;
-int quantum;
+int quantum_config;
 int contador_pid = 0;
 int client_dispatch;
 
@@ -301,12 +301,10 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
         pthread_mutex_unlock(&no_hay_nadie_en_cpu);
 
         if (es_RR()) {
-            pthread_create(&hilo_quantum, NULL, (void *)esperar_RR, (void *)(intptr_t)socket_INT);
+            pthread_create(&hilo_quantum, NULL, (void *)esperar_RR, (void *)pcb);
             sem_post(&sem_contador_quantum);
-        }
-        else if (es_VRR())
-        {
-            pthread_create(&hilo_quantum, NULL, (void *)esperar_VRR, (void *)(intptr_t)socket_INT);
+        } else if (es_VRR()) {
+            pthread_create(&hilo_quantum, NULL, (void *)esperar_VRR, (void *)pcb);
             sem_post(&sem_contador_quantum);
         }
 
@@ -330,11 +328,11 @@ bool es_VRR() {
     return strcmp(algoritmo_planificacion, "VRR") == 0;
 }
 
-void *esperar_VRR(void *sockets_Int, t_pcb* pcb) {
+void *esperar_VRR(void* pcb) {
     timer = temporal_create(); // Crearlo ya empieza a contar
-    // esperar_RR(sockets_Int);
-    int socket_Int = (intptr_t)socket_Int;
-    sem_wait(&sem_contador_quantum);
+    esperar_RR(pcb);
+    /*int socket_Int = (intptr_t)socket_Int;
+    sem_wait(&sem_contador_quantum);*/
 
     // posible send de interrupcion
     return NULL;
@@ -346,10 +344,11 @@ void *esperar_VRR(void *sockets_Int, t_pcb* pcb) {
     void temporal_resume(t_temporal* temporal);
 */
 
-void *esperar_RR(void *sockets_Int, t_pcb* _) {
+void *esperar_RR(void* pcb_anterior) {
     /* Esperar_cpu_RR */
-
-    int socket_Int = (intptr_t)sockets_Int;
+    t_pcb* pcb = pcb_anterior;
+    int quantum = pcb->quantum;
+    int socket_Int = sockets->socket_int;
     sem_wait(&sem_contador_quantum);
     usleep(quantum * 1000);
     int interrupcion_cpu = INTERRUPCION_CPU;
@@ -357,6 +356,10 @@ void *esperar_RR(void *sockets_Int, t_pcb* _) {
     printf("Envie interrupcion despues de %d\n", quantum);
 
     return NULL;
+}
+
+void volver_a_settear_quantum(t_pcb* pcb) {
+    pcb->quantum = quantum_config;
 }
 
 int max(int num1, int num2) {
@@ -475,9 +478,9 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     if (es_VRR()) {
         temporal_stop(timer);
         ms_transcurridos = temporal_gettime(timer);
-        printf("\n\n MILISEGUNDOS QUE LE QUEDAN DE REMANENTE: %d \n\n", ms_transcurridos);
+        printf("\n\n MILISEGUNDOS QUE LE QUEDAN DE REMANENTE: %d \n\n", pcb->quantum - ms_transcurridos);
         temporal_destroy(timer);
-        pcb->quantum = max(0, quantum - ms_transcurridos); // Si el quantum es menor a 0, lo seteo en 0, posibles problemas de latencia
+        pcb->quantum = max(0, pcb->quantum - ms_transcurridos); // Si el quantum es menor a 0, lo seteo en 0, posibles problemas de latencia
     }
 
     switch (devolucion_cpu) {
@@ -488,12 +491,16 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
         case INTERRUPCION_QUANTUM:
             printf("Volvio a ready por interrupción de quantum\n");
             log_info(logger_kernel, "PID: %d - Desalojado por fin de Quantum", pcb->pid);
-            if (es_VRR() && leQuedaTiempoDeQuantum(pcb)) {
+            pasar_a_ready(pcb);
+            /*if (es_VRR() && leQuedaTiempoDeQuantum(pcb)) {
                 pasar_a_ready_plus(pcb);
             }
             else {
+                if(es_VRR()) {
+                    volver_a_settear_quantum(pcb);
+                }
                 pasar_a_ready(pcb);
-            }
+            }*/
             break;
         case DORMIR_INTERFAZ:
             t_operacion_io* operacion_io = deserializar_io(package->buffer);
@@ -877,7 +884,7 @@ t_pcb *crear_nuevo_pcb(int pid){
 
     pcb->pid = pid;
     pcb->program_counter = 0; // Deberia ser un num de instruccion de memoria?
-    pcb->quantum = quantum;   // Esto lo saco del config
+    pcb->quantum = quantum_config;   // Esto lo saco del config
     pcb->estadoActual = NEW;
     pcb->estadoAnterior = NEW;
     pcb->registros = inicializar_registros_cpu(registros_pcb);

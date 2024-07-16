@@ -18,6 +18,7 @@ extern sem_t sem_cola_io;
 extern pthread_mutex_t mutex_lista_io;
 extern pthread_mutex_t mutex_cola_io_generica;
 
+
 // Aca va el struct del PCB 
 typedef struct {
     char* puerto_escucha;
@@ -30,6 +31,8 @@ typedef struct {
     int socket_cpu;
     int socket_int;
 } t_sockets;
+
+extern t_sockets* sockets;
 
 typedef struct {
     char* ip_cpu;

@@ -11,19 +11,30 @@ void change_status(t_pcb* pcb, Estado new_status) {
 }
 
 void pasar_a_ready(t_pcb *pcb) {
-    change_status(pcb, READY);
+    if (es_VRR() && leQuedaTiempoDeQuantum(pcb)) {
+        pasar_a_ready_plus(pcb);
+    } else if(es_VRR()) {
+        volver_a_settear_quantum(pcb);
+    } else {
+        pasar_a_ready_normal(pcb);
+    }
+    
+    sem_post(&sem_hay_para_planificar);
+}
 
+void pasar_a_ready_normal(t_pcb* pcb) {
+    change_status(pcb, READY);
+    
     pthread_mutex_lock(&mutex_estado_ready);
     queue_push(cola_ready, (void *)pcb);
     pthread_mutex_unlock(&mutex_estado_ready);
+
     /*
     pthread_mutex_lock(&mutex_estado_ready);
     pids = obtenerPidsDe(&cola_ready);
     loggear_pids_de(pids);
     pthread_mutex_unlock(&mutex_estado_ready);
     */
-    
-    sem_post(&sem_hay_para_planificar);
 }
 
 void pasar_a_exec(t_pcb* pcb) {

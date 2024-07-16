@@ -29,6 +29,8 @@ typedef enum {
     NON
 } TipoInterfaz;
 
+
+
 typedef struct {
     int PID;
     int path_length;

@@ -47,10 +47,8 @@ typedef struct {
 } t_consola;*/
 
 extern int grado_multiprogramacion;
-extern int quantum;
+extern int quantum_config;
 extern int contador_pid;  
-
-extern t_sockets* sockets;
 
 extern pthread_mutex_t mutex_estado_new;
 extern pthread_mutex_t mutex_estado_ready;
@@ -138,8 +136,9 @@ t_buffer* llenar_buffer_fs_truncate(int pid,int largo_archivo,char* nombre_archi
 bool es_VRR_RR();
 bool es_RR();
 bool es_VRR();
-void *esperar_VRR(void *sockets_Int);
-void *esperar_RR(void *sockets_Int);
+void *esperar_VRR(void* pcb);
+void *esperar_RR(void* pcb);
+void volver_a_settear_quantum(t_pcb* pcb);
 int max(int num1, int num2);
 int leQuedaTiempoDeQuantum(t_pcb *pcb);
 void mostrar_cola(t_queue* cola);

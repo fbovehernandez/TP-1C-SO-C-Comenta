@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
     datos_kernel = solicitar_datos(config_kernel);
     path_kernel = "/home/utnso/tp-2024-1c-Sofa-Cama/kernel/scripts-comandos"; // hardcodeado nashe
 
-    quantum = datos_kernel->quantum;
+    quantum_config = datos_kernel->quantum;
     grado_multiprogramacion = datos_kernel->grado_multiprogramacion;
     algoritmo_planificacion = datos_kernel->algoritmo_planificacion;
     diccionario_io = dictionary_create();
