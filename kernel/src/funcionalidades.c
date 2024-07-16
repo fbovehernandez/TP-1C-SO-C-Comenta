@@ -295,6 +295,8 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
 
         pthread_mutex_lock(&no_hay_nadie_en_cpu);
         pcb = proximo_a_ejecutar();
+
+
         pasar_a_exec(pcb);
         pthread_mutex_unlock(&no_hay_nadie_en_cpu);
 
@@ -328,9 +330,12 @@ bool es_VRR() {
     return strcmp(algoritmo_planificacion, "VRR") == 0;
 }
 
-void *esperar_VRR(void *sockets_Int) {
+void *esperar_VRR(void *sockets_Int, t_pcb* pcb) {
     timer = temporal_create(); // Crearlo ya empieza a contar
-    esperar_RR(sockets_Int);
+    // esperar_RR(sockets_Int);
+    int socket_Int = (intptr_t)socket_Int;
+    sem_wait(&sem_contador_quantum);
+
     // posible send de interrupcion
     return NULL;
 }
@@ -341,7 +346,7 @@ void *esperar_VRR(void *sockets_Int) {
     void temporal_resume(t_temporal* temporal);
 */
 
-void *esperar_RR(void *sockets_Int) {
+void *esperar_RR(void *sockets_Int, t_pcb* _) {
     /* Esperar_cpu_RR */
 
     int socket_Int = (intptr_t)sockets_Int;
