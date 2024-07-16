@@ -479,17 +479,18 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         free(valor_leido_cs);
         
         break;
-    case SUM:
-        t_parametro *registro_param1 = list_get(list_parametros, 0);
-        registro1 = registro_param1->nombre;
-
+    case SUM: // SUM DESTINO ORIGEN
+        t_parametro* registro_param1 = list_get(list_parametros, 0);
+        char* registro_nombre = registro_param1->nombre;
+        void* registro_destino = seleccionar_registro_cpu(registro_nombre);
+        bool es_registro_uint8_destino = es_de_8_bits(registro_nombre);
+        
+        
         t_parametro* registro_param2 = list_get(list_parametros, 1); // valor_void = 2do registro
         char *registro2 = registro_param2->nombre;
+        void* registro_origen = seleccionar_registro_cpu(registro2);
+        bool es_registro_uint8_origen = es_de_8_bits(registro2);
 
-        void* registro_origen = seleccionar_registro_cpu(registro1);
-        bool es_registro_uint8_origen = es_de_8_bits(registro1);
-        void* registro_destino = seleccionar_registro_cpu(registro2);
-        bool es_registro_uint8_destino = es_de_8_bits(registro2);
 
         sum(registro_origen, registro_destino, es_registro_uint8_origen, es_registro_uint8_destino);
         break;

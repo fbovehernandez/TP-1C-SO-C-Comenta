@@ -3262,3 +3262,10 @@
 [INFO] 16:08:00:396 LOGGER/(37330:37374): Esperando cliente...
 [INFO] 16:08:00:398 LOGGER/(37330:37375): Se conecto un cliente de interrupt!
 
+[INFO] 16:31:45:816 LOGGER/(39187:39187): Conexion establecida con Memoria
+[INFO] 16:31:48:949 LOGGER/(39187:39231): Servidor iniciado, esperando conexiones!
+[INFO] 16:31:56:348 LOGGER/(39187:39231): Se conecto un cliente de dispatch!
+
+[INFO] 16:31:56:348 LOGGER/(39187:39231): Esperando cliente...
+[INFO] 16:31:56:349 LOGGER/(39187:39232): Se conecto un cliente de interrupt!
+
