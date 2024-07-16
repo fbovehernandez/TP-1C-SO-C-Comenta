@@ -478,9 +478,10 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     if (es_VRR()) {
         temporal_stop(timer);
         ms_transcurridos = temporal_gettime(timer);
-        printf("\n\n MILISEGUNDOS QUE LE QUEDAN DE REMANENTE: %d \n\n", pcb->quantum - ms_transcurridos);
+        printf("\n\n MILISEGUNDOS QUE LE QUEDAN DE REMANENTE: %d \n\n", ms_transcurridos);
         temporal_destroy(timer);
         pcb->quantum = max(0, pcb->quantum - ms_transcurridos); // Si el quantum es menor a 0, lo seteo en 0, posibles problemas de latencia
+        log_info(logger_kernel, "el quantum del proceso restante es: %d", pcb->quantum);
     }
 
     switch (devolucion_cpu) {
@@ -816,17 +817,18 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
 
     // bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
     t_list_io* elemento_encontrado = io_esta_en_diccionario(pcb, io->nombre_interfaz);
-    printf("El nombre de la interfaz es: %s\n", elemento_encontrado->nombreInterfaz);
 
     // t_list_io* elemento_encontrado = validar_io(io, pcb); 
     // Aca tambien deberia cambiar su estado a blocked o Exit respectivamnete
 
     if(elemento_encontrado == NULL) {
         // Aca estaria tamb la logica de matar al hilo
-        printf("Es NULL...\n");
+        printf("Es NULL LA INTERFAZ...\n");
         return;
     }
 
+    printf("El nombre de la interfaz es: %s\n", elemento_encontrado->nombreInterfaz);
+    
     if(1) { // resultado_okey
         datos_sleep->unidad_trabajo = io->unidadesDeTrabajo;
         datos_sleep->pcb = pcb;

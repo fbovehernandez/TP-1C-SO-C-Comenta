@@ -3399,6 +3399,7 @@
 [INFO] 19:05:15:216 LOGGER/(88545:88589): Esperando cliente...
 [INFO] 19:05:15:218 LOGGER/(88545:88590): Se conecto un cliente de interrupt!
 
+<<<<<<< HEAD
 [INFO] 19:54:37:040 LOGGER/(3776:3776): Conexion establecida con Memoria
 [INFO] 19:54:40:142 LOGGER/(3776:3834): Servidor iniciado, esperando conexiones!
 [INFO] 19:54:52:390 LOGGER/(3776:3834): Se conecto un cliente de dispatch!
@@ -3433,4 +3434,33 @@
 
 [INFO] 20:50:01:364 LOGGER/(14210:14254): Esperando cliente...
 [INFO] 20:50:01:380 LOGGER/(14210:14255): Se conecto un cliente de interrupt!
+=======
+[INFO] 22:17:31:101 LOGGER/(2723:2723): Conexion establecida con Memoria
+[INFO] 22:17:34:207 LOGGER/(2723:2767): Servidor iniciado, esperando conexiones!
+[INFO] 22:19:56:445 LOGGER/(2723:2767): Se conecto un cliente de dispatch!
+
+[INFO] 22:19:56:446 LOGGER/(2723:2767): Esperando cliente...
+[INFO] 22:19:56:447 LOGGER/(2723:2768): Se conecto un cliente de interrupt!
+
+[INFO] 22:24:26:196 LOGGER/(4067:4067): Conexion establecida con Memoria
+[INFO] 22:24:29:296 LOGGER/(4067:4111): Servidor iniciado, esperando conexiones!
+[INFO] 22:24:30:232 LOGGER/(4067:4111): Se conecto un cliente de dispatch!
+
+[INFO] 22:24:30:232 LOGGER/(4067:4111): Esperando cliente...
+[INFO] 22:24:30:238 LOGGER/(4067:4112): Se conecto un cliente de interrupt!
+
+[INFO] 22:26:35:145 LOGGER/(5217:5217): Conexion establecida con Memoria
+[INFO] 22:26:38:241 LOGGER/(5217:5250): Servidor iniciado, esperando conexiones!
+[INFO] 22:26:39:804 LOGGER/(5217:5250): Se conecto un cliente de dispatch!
+
+[INFO] 22:26:39:804 LOGGER/(5217:5250): Esperando cliente...
+[INFO] 22:26:39:805 LOGGER/(5217:5251): Se conecto un cliente de interrupt!
+
+[INFO] 22:46:03:137 LOGGER/(7389:7389): Conexion establecida con Memoria
+[INFO] 22:46:06:210 LOGGER/(7389:7433): Servidor iniciado, esperando conexiones!
+[INFO] 22:46:08:489 LOGGER/(7389:7433): Se conecto un cliente de dispatch!
+
+[INFO] 22:46:08:489 LOGGER/(7389:7433): Esperando cliente...
+[INFO] 22:46:08:491 LOGGER/(7389:7434): Se conecto un cliente de interrupt!
+>>>>>>> c007771 (Vrr issues 2.0)
 
