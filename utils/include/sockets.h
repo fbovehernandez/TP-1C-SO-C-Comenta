@@ -158,7 +158,7 @@ typedef enum {
     ESCRIBIR_EN_FS,
     LEER_EN_FS,
     FS_TRUNCATE_KERNEL,
-    TRUNCAR_ARCHIVO;
+    TRUNCAR_ARCHIVO
 } codigo_operacion;
 
 typedef enum {

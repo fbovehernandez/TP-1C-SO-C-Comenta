@@ -1452,7 +1452,7 @@ t_buffer* llenar_buffer_fs_truncate(char* nombre_interfaz_a_truncar,char* nombre
     buffer_add_int(buffer,largo_nombre_interfaz);
     buffer_add_string(buffer,nombre_interfaz_a_truncar,largo_nombre_interfaz);
     buffer_add_int(buffer,largo_nombre_archivo);
-    buffer_add_string(buffer,nombre_file_truncate);
+    buffer_add_string(buffer,nombre_file_truncate,largo_nombre_archivo);
     buffer_add_uint32(buffer,registro_truncador);
 
     return buffer;

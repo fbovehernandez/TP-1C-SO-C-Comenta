@@ -411,10 +411,10 @@ void *handle_io_stdin(void *socket_io) {
 */
 
 t_fs_truncate* deserializar_fs_truncate(t_buffer* buffer){
-    t_fs_truncate* fs_truncate = malloc(t_fs_truncate);
+    t_fs_truncate* fs_truncate  = malloc(sizeof(t_fs_truncate));
 
     fs_truncate->largo_archivo  = buffer_read_int(buffer);
-    fs_truncate->nombre_archivo = buffer_add_string(buffer,fs_truncate->largo_archivo);
+    fs_truncate->nombre_archivo = buffer_read_string(buffer,fs_truncate->largo_archivo);
     fs_truncate->truncador      = buffer_read_uint32(buffer);
 
     return fs_truncate; 
