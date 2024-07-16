@@ -106,7 +106,7 @@ void *interaccion_consola() { //no se si deberian pasarse los sockets
     return NULL;
 }
 
-/*
+
 void EJECUTAR_SCRIPT(char* path) {
     // Abrir el archivo en modo de lectura (r)
     size_t length = 0;
@@ -125,7 +125,7 @@ void EJECUTAR_SCRIPT(char* path) {
     // Cerrar el archivo
     fclose(file);
 }
-*/
+/*
 void EJECUTAR_SCRIPT(char* path) {
     // Abrir el archivo en modo de lectura (r)
     size_t length = 0;
@@ -146,6 +146,7 @@ void EJECUTAR_SCRIPT(char* path) {
     // Cerrar el archivo
     fclose(file);
 }
+*/
 
 void ejecutarComando(char* linea_leida) {
     char comando[20]; 
@@ -330,6 +331,7 @@ bool es_VRR() {
 void *esperar_VRR(void *sockets_Int) {
     timer = temporal_create(); // Crearlo ya empieza a contar
     esperar_RR(sockets_Int);
+    // posible send de interrupcion
     return NULL;
 }
 
@@ -468,6 +470,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     if (es_VRR()) {
         temporal_stop(timer);
         ms_transcurridos = temporal_gettime(timer);
+        printf("\n\n MILISEGUNDOS QUE LE QUEDAN DE REMANENTE: %d \n\n", ms_transcurridos);
         temporal_destroy(timer);
         pcb->quantum = max(0, quantum - ms_transcurridos); // Si el quantum es menor a 0, lo seteo en 0, posibles problemas de latencia
     }
@@ -479,6 +482,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             break;
         case INTERRUPCION_QUANTUM:
             printf("Volvio a ready por interrupción de quantum\n");
+            log_info(logger_kernel, "PID: %d - Desalojado por fin de Quantum", pcb->pid);
             if (es_VRR() && leQuedaTiempoDeQuantum(pcb)) {
                 pasar_a_ready_plus(pcb);
             }
@@ -490,6 +494,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             t_operacion_io* operacion_io = deserializar_io(package->buffer);
             dormir_io(operacion_io, pcb);
             // dormir_io(operacion_io);
+            log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, operacion_io->nombre_interfaz);  
             free(operacion_io);
             // free(pcb);
             break;
@@ -885,11 +890,6 @@ typedef struct {
     int instruccion_length;  
 } t_peticion_io;
 
-typedef struct {
-    uint32_t size; // Tamaño del payload
-    uint32_t offset; // Desplazamiento dentro del payload
-    void* stream; // Payload
-} t_buffer;
 
 void* enviar_peticion_a_io(instruccion) {
     t_peticion_io peticion = {

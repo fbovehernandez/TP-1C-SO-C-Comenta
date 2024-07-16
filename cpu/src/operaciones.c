@@ -109,7 +109,7 @@ t_paquete* recibir_memoria(int socket_memoria) {
         printf("Esperando recibir instruccion...\n");
 
         recv(socket_memoria, &(paquete->codigo_operacion), sizeof(codigo_operacion), MSG_WAITALL);
-        printf("Codigo de operacion: %d\n", string_operacion(paquete->codigo_operacion));
+        printf("Codigo de operacion: %s\n", string_operacion(paquete->codigo_operacion));
 
         recv(socket_memoria, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
         // printf("paquete->buffer->size: %d\n", paquete->buffer->size);
@@ -501,7 +501,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         bool es_8_bits_destino_resta = es_de_8_bits(registro_destino_resta);
         
         t_parametro *registro_origen_param_resta = list_get(list_parametros, 1);
-        char *registro_origen_resta = registro_destino_param_resta->nombre;
+        char *registro_origen_resta = registro_origen_param_resta->nombre;
         void *registro_origen_pcb_resta = seleccionar_registro_cpu(registro_origen_resta);
         bool es_8_bits_origen_resta = es_de_8_bits(registro_origen_resta);
         
@@ -1186,28 +1186,15 @@ void set(void *registro, uint32_t valor, bool es_8_bits) {
 }
 
 void sub(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, bool es_8_bits_destino) {
-    uint32_t valor_origen;
-    uint32_t valor_destino;
+    uint32_t resultado_resta;
 
-    // Obtener el valor del registro origen
-    if (es_8_bits_origen) {
-        valor_origen = *(uint8_t *)registroOrigen;
+    if(es_8_bits_destino && es_8_bits_origen) {
+        resultado_resta = *(uint8_t *)registroDestino - *(uint8_t *)registroOrigen;
+        set(registroDestino, resultado_resta, es_8_bits_destino);
     } else {
-        valor_origen = *(uint32_t *)registroOrigen;
+        resultado_resta = *(uint32_t *)registroDestino - *(uint32_t *)registroOrigen;
+        set(registroDestino, resultado_resta, es_8_bits_destino);
     }
-
-    // Obtener el valor del registro destino
-    if (es_8_bits_destino) {
-        valor_destino = *(uint8_t *)registroDestino;
-    } else {
-        valor_destino = *(uint32_t *)registroDestino;
-    }
-
-    // Realizar la resta
-    uint32_t resultado = valor_destino - valor_origen;
-
-    // Actualizar el registro destino con el resultado usando la función set
-    set(registroDestino, resultado, es_8_bits_destino);
 }
 
 void sum(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, bool es_8_bits_destino) {
