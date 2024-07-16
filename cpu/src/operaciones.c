@@ -109,7 +109,7 @@ t_paquete* recibir_memoria(int socket_memoria) {
         printf("Esperando recibir instruccion...\n");
 
         recv(socket_memoria, &(paquete->codigo_operacion), sizeof(codigo_operacion), MSG_WAITALL);
-        printf("Codigo de operacion: %d\n", paquete->codigo_operacion);
+        printf("Codigo de operacion: %d\n", string_operacion(paquete->codigo_operacion));
 
         recv(socket_memoria, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
         // printf("paquete->buffer->size: %d\n", paquete->buffer->size);
@@ -495,17 +495,16 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         sum(registro_origen, registro_destino, es_registro_uint8_origen, es_registro_uint8_destino);
         break;
     case SUB:
-        t_parametro *registro_origen_param_resta = list_get(list_parametros, 0);
-        char *registro_origen_resta = registro_origen_param_resta->nombre;
-
-        t_parametro *registro_destino_param_resta = list_get(list_parametros, 1);
+        t_parametro *registro_destino_param_resta = list_get(list_parametros, 0);
         char *registro_destino_resta = registro_destino_param_resta->nombre;
-
-        void *registro_origen_pcb_resta = seleccionar_registro_cpu(registro_origen_resta);
         void *registro_destino_pcb_resta = seleccionar_registro_cpu(registro_destino_resta);
-
-        bool es_8_bits_origen_resta = es_de_8_bits(registro_origen_resta);
         bool es_8_bits_destino_resta = es_de_8_bits(registro_destino_resta);
+        
+        t_parametro *registro_origen_param_resta = list_get(list_parametros, 1);
+        char *registro_origen_resta = registro_destino_param_resta->nombre;
+        void *registro_origen_pcb_resta = seleccionar_registro_cpu(registro_origen_resta);
+        bool es_8_bits_origen_resta = es_de_8_bits(registro_origen_resta);
+        
 
         sub(registro_origen_pcb_resta, registro_destino_pcb_resta, es_8_bits_origen_resta, es_8_bits_destino_resta);
         break;

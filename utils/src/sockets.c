@@ -380,7 +380,7 @@ void enviar_paquete(t_buffer* buffer, codigo_operacion codigo, int socket) {
     offset += sizeof(int);
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
-    printf("\nCodigo de operacion: %d\n", codigo);
+    printf("\nCodigo de operacion: %d\n", string_operacion(codigo));
     send(socket, a_enviar, buffer->size + sizeof(int) * 2, 0);
     printf("Paquete enviado!\n");
 
@@ -558,3 +558,46 @@ int buffer_read_int(t_buffer *buffer) {
     buffer_read(buffer, &data, sizeof(int));
     return data;
 }
+
+char* string_operacion(codigo_operacion operacion) {
+    switch(operacion) {
+        case PATH: return "PATH";
+        case ENVIO_PCB: return "ENVIO_PCB";
+        case QUIERO_INSTRUCCION: return "QUIERO_INSTRUCCION";
+        case ENVIO_INSTRUCCION: return "ENVIO_INSTRUCCION";
+        case QUIERO_CANTIDAD_INSTRUCCIONES: return "QUIERO_CANTIDAD_INSTRUCCIONES";
+        case ENVIO_CANTIDAD_INSTRUCCIONES: return "ENVIO_CANTIDAD_INSTRUCCIONES";
+        case INTERRUPCION_CPU: return "INTERRUPCION_CPU";
+        case INTERRUPCION_FIN_PROCESO: return "INTERRUPCION_FIN_PROCESO";
+        case QUIERO_NOMBRE: return "QUIERO_NOMBRE";
+        case DORMITE: return "DORMITE";
+        case CONEXION_INTERFAZ: return "CONEXION_INTERFAZ";
+        case QUIERO_FRAME: return "QUIERO_FRAME";
+        case DIRECCION_FISICA: return "DIRECCION_FISICA";
+        case ESCRIBIR_DATO_EN_MEM: return "ESCRIBIR_DATO_EN_MEM";
+        case RESIZE_MEMORIA: return "RESIZE_MEMORIA";
+        case COPY_STRING_MEMORIA: return "COPY_STRING_MEMORIA";
+        case OUT_OF_MEMORY: return "OUT_OF_MEMORY";
+        case LEETE: return "LEETE";
+        case RECIBI_VALOR_OK: return "RECIBI_VALOR_OK";
+        case GUARDAR_VALOR: return "GUARDAR_VALOR";
+        case ESCRIBIR_EN_INTERFAZ: return "ESCRIBIR_EN_INTERFAZ";
+        case ESCRIBIR_STDOUT: return "ESCRIBIR_STDOUT";
+        case RECIBIR_DIR_FISICA: return "RECIBIR_DIR_FISICA";
+        case LEER_DATO_MEMORIA: return "LEER_DATO_MEMORIA";
+        case MOSTRAR: return "MOSTRAR";
+        case CREAR_ARCHIVO: return "CREAR_ARCHIVO";
+        case ELIMINAR_ARCHIVO: return "ELIMINAR_ARCHIVO";
+        case ESCRIBITE: return "ESCRIBITE";
+        case LECTURA_FS: return "LECTURA_FS";
+        case ESCRITURA_FS: return "ESCRITURA_FS";
+        case ESCRIBIR_FS_MEMORIA: return "ESCRIBIR_FS_MEMORIA";
+        case LEER_FS_MEMORIA: return "LEER_FS_MEMORIA";
+        case ESCRIBIR_EN_FS: return "ESCRIBIR_EN_FS";
+        case LEER_EN_FS: return "LEER_EN_FS";
+        case FS_TRUNCATE_KERNEL: return "FS_TRUNCATE_KERNEL";
+        case TRUNCAR_ARCHIVO: return "TRUNCAR_ARCHIVO";
+        default: return "UNKNOWN_OPERATION";
+    }
+}
+    

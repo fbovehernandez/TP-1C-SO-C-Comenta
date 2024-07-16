@@ -3132,3 +3132,79 @@
 [INFO] 16:32:20:999 LOGGER/(39323:39326): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
 [INFO] 16:32:23:016 LOGGER/(39323:39326): Finaliza el proceso 1 - Motivo: SUCCESS
 [INFO] 16:32:23:017 LOGGER/(39323:39326): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 16:40:49:787 LOGGER/(41500:41500): Conexion establecida con Memoria
+[INFO] 16:40:49:817 LOGGER/(41500:41500): Conexion establecida con Dispatcher
+[INFO] 16:40:49:819 LOGGER/(41500:41500): Conexion establecida con Interrupt
+[INFO] 16:40:49:870 LOGGER/(41500:41500): Servidor iniciado, esperando conexiones!
+[INFO] 16:41:08:005 LOGGER/(41500:41505): Se crea el proceso: 1 en NEW
+[INFO] 16:41:08:008 LOGGER/(41500:41502): Hay proceso esperando en la cola de NEW!
+
+[INFO] 16:41:08:008 LOGGER/(41500:41502): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 16:41:08:010 LOGGER/(41500:41502): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 16:41:08:012 LOGGER/(41500:41503): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 16:41:11:051 LOGGER/(41500:41503): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 16:41:11:052 LOGGER/(41500:41503): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 16:41:14:059 LOGGER/(41500:41503): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 16:41:14:060 LOGGER/(41500:41503): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 16:41:15:067 LOGGER/(41500:41503): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 16:41:15:067 LOGGER/(41500:41503): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 16:43:54:377 LOGGER/(42878:42878): Conexion establecida con Memoria
+[INFO] 16:43:54:402 LOGGER/(42878:42878): Conexion establecida con Dispatcher
+[INFO] 16:43:54:403 LOGGER/(42878:42878): Conexion establecida con Interrupt
+[INFO] 16:43:54:446 LOGGER/(42878:42878): Servidor iniciado, esperando conexiones!
+[INFO] 16:44:10:207 LOGGER/(42878:42883): Se crea el proceso: 1 en NEW
+[INFO] 16:44:10:213 LOGGER/(42878:42880): Hay proceso esperando en la cola de NEW!
+
+[INFO] 16:44:10:219 LOGGER/(42878:42880): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 16:44:10:221 LOGGER/(42878:42880): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 16:44:10:225 LOGGER/(42878:42881): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 16:44:13:289 LOGGER/(42878:42881): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 16:44:13:293 LOGGER/(42878:42881): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 16:44:16:303 LOGGER/(42878:42881): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 16:44:16:304 LOGGER/(42878:42881): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 16:44:17:316 LOGGER/(42878:42881): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 16:44:17:316 LOGGER/(42878:42881): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 16:48:49:393 LOGGER/(44587:44587): Conexion establecida con Memoria
+[INFO] 16:52:19:583 LOGGER/(45633:45633): Conexion establecida con Memoria
+[INFO] 16:52:19:622 LOGGER/(45633:45633): Conexion establecida con Dispatcher
+[INFO] 16:52:19:624 LOGGER/(45633:45633): Conexion establecida con Interrupt
+[INFO] 16:52:19:670 LOGGER/(45633:45633): Servidor iniciado, esperando conexiones!
+[INFO] 16:52:31:899 LOGGER/(45633:45638): Se crea el proceso: 1 en NEW
+[INFO] 16:52:31:900 LOGGER/(45633:45635): Hay proceso esperando en la cola de NEW!
+
+[INFO] 16:52:31:901 LOGGER/(45633:45635): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 16:52:31:902 LOGGER/(45633:45635): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 16:52:31:904 LOGGER/(45633:45636): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 16:52:34:943 LOGGER/(45633:45636): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 16:52:34:944 LOGGER/(45633:45636): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 16:52:37:959 LOGGER/(45633:45636): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 16:52:37:959 LOGGER/(45633:45636): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 16:52:38:963 LOGGER/(45633:45636): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 16:52:38:963 LOGGER/(45633:45636): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 17:05:24:110 LOGGER/(45633:45638): Se crea el proceso: 2 en NEW
+[INFO] 17:05:24:111 LOGGER/(45633:45635): Hay proceso esperando en la cola de NEW!
+
+[INFO] 17:05:24:111 LOGGER/(45633:45635): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 17:05:24:111 LOGGER/(45633:45635): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 17:05:24:112 LOGGER/(45633:45636): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 17:07:34:478 LOGGER/(50553:50553): Conexion establecida con Memoria
+[INFO] 17:07:34:504 LOGGER/(50553:50553): Conexion establecida con Dispatcher
+[INFO] 17:07:34:505 LOGGER/(50553:50553): Conexion establecida con Interrupt
+[INFO] 17:07:34:544 LOGGER/(50553:50553): Servidor iniciado, esperando conexiones!
+[INFO] 17:07:49:386 LOGGER/(50553:50562): Se crea el proceso: 1 en NEW
+[INFO] 17:07:49:387 LOGGER/(50553:50555): Hay proceso esperando en la cola de NEW!
+
+[INFO] 17:07:49:388 LOGGER/(50553:50555): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 17:07:49:389 LOGGER/(50553:50555): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 17:07:49:393 LOGGER/(50553:50556): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 17:07:52:436 LOGGER/(50553:50556): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 17:07:52:436 LOGGER/(50553:50556): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 17:07:55:452 LOGGER/(50553:50556): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 17:07:55:452 LOGGER/(50553:50556): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 17:07:56:475 LOGGER/(50553:50556): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 17:07:56:476 LOGGER/(50553:50556): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT

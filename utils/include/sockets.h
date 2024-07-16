@@ -410,6 +410,7 @@ typedef struct{
     t_config* config_io;
 } t_config_socket_io;
 
+char* string_operacion(codigo_operacion operacion); 
 void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* buffer);
 int iniciar_servidor(char*);
 int esperar_conexion(int);
