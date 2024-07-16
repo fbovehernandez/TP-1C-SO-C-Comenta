@@ -511,7 +511,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             t_list_io* interfaz_truncate = io_esta_en_diccionario(pcb,fs_truncate->nombre_interfaz);
 
             if (interfaz != NULL) {
-                t_buffer* buffer_truncate = llenar_buffer_fs_truncate(fs_truncate->largo_archivo,fs_truncate->nombre_archivo,fs_truncate->truncador);
+                t_buffer* buffer_truncate = llenar_buffer_fs_truncate(pcb->pid,fs_truncate->largo_archivo,fs_truncate->nombre_archivo,fs_truncate->truncador);
                 enviar_paquete(buffer_truncate,TRUNCAR_ARCHIVO,interfaz->socket);
                 log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, fs_read_write->nombre_interfaz);
             }
@@ -1563,11 +1563,12 @@ t_pedido_fs_truncate* deserializar_fs_truncate(t_buffer* buffer){
     return fs_truncate;
 }
 
-t_buffer* llenar_buffer_fs_truncate(int largo_archivo,char* nombre_archivo,uint32_t truncador){
-    int size = largo_archivo + sizeof(uint32_t) + sizeof(int);
+t_buffer* llenar_buffer_fs_truncate(int pid,int largo_archivo,char* nombre_archivo,uint32_t truncador){
+    int size = largo_archivo + sizeof(uint32_t) + sizeof(int) * 2;
     
     t_buffer* buffer = buffer_create(size);
 
+    buffer_add_int(buffer,pid);
     buffer_add_int(buffer,largo_archivo);
     buffer_add_string(buffer,nombre_archivo,largo_archivo);
     buffer_add_uint32(buffer,truncador);

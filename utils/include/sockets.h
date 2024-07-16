@@ -305,6 +305,7 @@ typedef enum {
 } TipoInstruccion;
 
 typedef struct{
+    int pid;
     int largo_archivo;
     char* nombre_archivo;
     uint32_t truncador;

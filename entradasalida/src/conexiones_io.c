@@ -219,7 +219,12 @@ void recibir_kernel(void* config_socket_io) {
                 break;
             case TRUNCAR_ARCHIVO:
                 t_fs_truncate* fs_truncate = deserializar_fs_truncate(paquete->buffer);
-
+                log_info(logger_io,"PID: %d - Truncar Archivo: %s - Tamaño: %d ", fs_truncate->pid,fs_truncate->nombre_archivo,fs_truncate->truncador);
+                free(fs_truncate->nombre_archivo); // Todos los bbuffer add string tienen un malloc, hay que hacer free
+            case ESCRIBIR_EN_FS: case LEER_EN_FS:
+                t_fs_write_read* fs_write_read = deserializar_fs_write_read(paquete->buffer);
+                    
+            
             default:
                 printf("Se rompio kernel!!!!\n");
                 exit(-1);
@@ -413,6 +418,7 @@ void *handle_io_stdin(void *socket_io) {
 t_fs_truncate* deserializar_fs_truncate(t_buffer* buffer){
     t_fs_truncate* fs_truncate  = malloc(sizeof(t_fs_truncate));
 
+    fs_truncate->pid            = buffer_read_int(buffer);
     fs_truncate->largo_archivo  = buffer_read_int(buffer);
     fs_truncate->nombre_archivo = buffer_read_string(buffer,fs_truncate->largo_archivo);
     fs_truncate->truncador      = buffer_read_uint32(buffer);

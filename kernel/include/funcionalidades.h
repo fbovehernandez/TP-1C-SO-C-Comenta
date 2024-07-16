@@ -130,7 +130,7 @@ t_buffer* llenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archiv
 void enviar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uint32_t registro_archivo,codigo_operacion codigo);
 // void imprimir_datos_stdin(io_stdin* datos_stdin);
 t_pedido_fs_truncate* deserializar_fs_truncate(t_buffer* buffer);
-t_buffer* llenar_buffer_fs_truncate(int largo_archivo,char* nombre_archivo,uint32_t truncador);
+t_buffer* llenar_buffer_fs_truncate(int pid,int largo_archivo,char* nombre_archivo,uint32_t truncador);
 
 void EJECUTAR_SCRIPT(char* path);
 void INICIAR_PROCESO(char* path);
