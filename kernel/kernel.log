@@ -3096,3 +3096,20 @@
 [INFO] 16:04:09:494 LOGGER/(36182:36192): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
 [INFO] 16:04:12:518 LOGGER/(36182:36192): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
 [INFO] 16:04:12:519 LOGGER/(36182:36192): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 16:08:00:371 LOGGER/(37550:37550): Conexion establecida con Memoria
+[INFO] 16:08:00:396 LOGGER/(37550:37550): Conexion establecida con Dispatcher
+[INFO] 16:08:00:398 LOGGER/(37550:37550): Conexion establecida con Interrupt
+[INFO] 16:08:00:433 LOGGER/(37550:37550): Servidor iniciado, esperando conexiones!
+[INFO] 16:08:15:279 LOGGER/(37550:37555): Se crea el proceso: 1 en NEW
+[INFO] 16:08:15:281 LOGGER/(37550:37552): Hay proceso esperando en la cola de NEW!
+
+[INFO] 16:08:15:284 LOGGER/(37550:37552): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 16:08:15:286 LOGGER/(37550:37552): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 16:08:15:289 LOGGER/(37550:37553): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 16:08:18:319 LOGGER/(37550:37553): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 16:08:18:320 LOGGER/(37550:37553): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 16:08:21:325 LOGGER/(37550:37553): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 16:08:21:325 LOGGER/(37550:37553): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 16:08:24:347 LOGGER/(37550:37553): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 16:08:24:347 LOGGER/(37550:37553): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC

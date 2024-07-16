@@ -1213,13 +1213,14 @@ void sub(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, boo
 void sum(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, bool es_8_bits_destino) {
     //uint32_t valor_origen;
     //uint32_t valor_destino;
+    uint32_t resultado_suma;
 
     if(es_8_bits_destino && es_8_bits_origen) {
-        uint8_t* resultado_suma_uint8 = *(uint8_t *)registroOrigen + *(uint8_t *)registroDestino;
-        set(registroDestino, resultado_suma_uint8, es_8_bits_destino);
+        resultado_suma = *(uint8_t *)registroOrigen + *(uint8_t *)registroDestino;
+        set(registroDestino, resultado_suma, es_8_bits_destino);
     } else {
-        uint32_t* resultado_suma_uint32 = *(uint32_t *)registroOrigen + *(uint32_t *)registroDestino;
-        set(registroDestino, resultado_suma_uint32, es_8_bits_destino);
+        resultado_suma = *(uint32_t *)registroOrigen + *(uint32_t *)registroDestino;
+        set(registroDestino, resultado_suma, es_8_bits_destino);
     }
     /*
     // Obtener el valor del registro origen
