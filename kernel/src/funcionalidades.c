@@ -25,6 +25,7 @@ sem_t sem_contador_quantum;
 t_queue* cola_new;
 t_queue* cola_ready;
 t_queue* cola_blocked;
+t_pcb* pcb_exec;
 t_queue* cola_exit;
 t_queue* cola_prioritarios_por_signal;
 t_queue* cola_ready_plus;
@@ -1244,20 +1245,12 @@ void INICIAR_PLANIFICACION() {
 }
 
 void DETENER_PLANIFICACION() {
+
+
 }
 
 
 void MULTIPROGRAMACION(int valor) {
-    /* 
-    
-    int nuevo_grado_multiprogramacion;
-    printf("Ingrese el nuevo grado de multiprogramacion\n");
-    scanf("%d",&nuevo_grado_multiprogramacion);
-    grado_multiprogramacion = nuevo_grado_multiprogramacion;
-    // config_set_value(t_config*, char *key, char *value);
-    // tambien puede ser config_set_value(config_kernel,"GRADO_MULTIPROGRAMACION",nuevo_grado_multiprogramacion);
-    
-    */
     if(grado_multiprogramacion < valor) {
         for(int i=0; i < valor-grado_multiprogramacion; i++) {
             sem_post(&sem_grado_multiprogramacion);
@@ -1270,44 +1263,47 @@ void MULTIPROGRAMACION(int valor) {
     grado_multiprogramacion = valor;
 }
 
-
 void PROCESO_ESTADO() {
-    
-    /*printf("--------Listado de procesos--------\n");
+    printf("--------Listado de procesos--------\n");
     
     printf("Procesos en new\n");
-    pthread_mutex_lock(&mutex_estado_new);
-    mostrar_cola(cola_new);
-    pthread_mutex_lock(&mutex_estado_new);
+    mostrar_cola_con_mutex(cola_new,&mutex_estado_new);
     
-    printf("Procesos en ready\n");
-    pthread_mutex_lock(&mutex_estado_ready);
-    mostrar_cola(cola_ready);
-    pthread_mutex_lock(&mutex_estado_ready);
+    printf("Procesos en READY\n");
+    mostrar_cola_con_mutex(cola_ready,&mutex_estado_ready);
 
-    printf("Procesos en ready plus\n");
-    pthread_mutex_lock(&mutex_estado_ready_plus);
-    mostrar_cola(cola_ready_plus);
-    pthread_mutex_lock(&mutex_estado_ready_plus );
+    printf("Procesos en READY+\n");
+    mostrar_cola_con_mutex(cola_ready_plus,&mutex_estado_ready_plus);
+    
+    printf("Procesos en BLOCKED\n");
+    mostrar_cola_con_mutex(cola_blocked,&mutex_estado_blocked);
 
-    printf("Procesos en blocked\n");
-    pthread_mutex_lock(&mutex_estado_blocked);
-    mostrar_cola(cola_blocked);
-    pthread_mutex_lock(&mutex_estado_blocked);
+    printf("Procesos en EXIT\n");
+    mostrar_cola_con_mutex(cola_exit,&mutex_estado_exit);
 
-    printf("Procesos en exit\n");
-    pthread_mutex_lock(&mutex_estado_exit);
-    mostrar_cola(cola_exit);
-    pthread_mutex_lock(&mutex_estado_exit);  
-
-    printf("Proceso en exec\n");
-    imprimir_pcb(pcb_exec);
-    */
+    printf("Proceso en EXEC\n");
+    if(pcb_exec != NULL){
+        imprimir_pcb(pcb_exec);
+    }else{
+        printf("No hay proceso ejecutandose actualmente\n");
+    }
 }
 
+void mostrar_cola_con_mutex(t_queue* cola,pthread_mutex_t* mutex){
+    if(!queue_is_empty(cola)){
+        pthread_mutex_lock(mutex);
+        mostrar_cola(cola);
+        pthread_mutex_unlock(mutex);  
+    }else{
+        printf("Cola vacia\n");
+    }
+      
+}
+
+
 void mostrar_cola(t_queue* cola) {
-    t_pcb *aux;
-    t_queue *cola_aux = queue_create(); 
+    t_pcb* aux;
+    t_queue* cola_aux = queue_create(); 
 
     while (!queue_is_empty(cola)){
         aux = queue_pop(cola);

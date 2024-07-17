@@ -144,6 +144,8 @@ int max(int num1, int num2);
 int leQuedaTiempoDeQuantum(t_pcb *pcb);
 void mostrar_cola(t_queue* cola);
 void ejecutarComando(char* linea_leida);
+void mostrar_cola_con_mutex(t_queue* cola,pthread_mutex_t* mutex);
+
 
 void EJECUTAR_SCRIPT(char* path);
 void INICIAR_PROCESO(char* path);

@@ -40,6 +40,7 @@ void pasar_a_ready_normal(t_pcb* pcb) {
 
 void pasar_a_exec(t_pcb* pcb) {
     change_status(pcb, EXEC);
+    pcb_exec = pcb;
     //pthread_mutex_lock(&mutex_estado_exec);
     //queue_push(cola_exec, (void *)pcb);
     //pthread_mutex_unlock(&mutex_estado_exec);

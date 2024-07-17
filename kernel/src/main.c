@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
     cola_exit                    = queue_create();
     cola_prioritarios_por_signal = queue_create();
     cola_ready_plus              = queue_create();
-    // pcb_exec = malloc(t_pcb);
+
     
     t_config* config_kernel   = iniciar_config("./kernel.config");
     logger_kernel = iniciar_logger("kernel.log");
