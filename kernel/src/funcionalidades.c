@@ -15,6 +15,7 @@ pthread_mutex_t mutex_estado_exit;
 pthread_mutex_t no_hay_nadie_en_cpu;
 pthread_mutex_t mutex_estado_blocked;
 pthread_mutex_t mutex_estado_ready_plus;
+pthread_mutex_t mutex_prioritario_por_signal;
 
 sem_t sem_grado_multiprogramacion;
 sem_t sem_hay_pcb_esperando_ready;
@@ -352,7 +353,7 @@ void *esperar_RR(t_pcb* pcb_anterior) {
     usleep(quantum * 1000);
     int interrupcion_cpu = INTERRUPCION_CPU;
     send(socket_Int, &interrupcion_cpu, sizeof(int), 0);
-    printf("Envie interrupcion despues de %d\n", quantum);
+    log_info(logger_kernel, "envie interrupcion para PID %d despues de %d", pcb_anterior->pid, pcb->quantum);
 
     return NULL;
 }
@@ -372,19 +373,23 @@ int leQuedaTiempoDeQuantum(t_pcb *pcb) {
 t_pcb *proximo_a_ejecutar() {
     t_pcb *pcb = NULL;
 
-    pthread_mutex_lock(&mutex_estado_ready);
     if (!queue_is_empty(cola_prioritarios_por_signal)) {
+        pthread_mutex_lock(&mutex_prioritario_por_signal);
         pcb = queue_pop(cola_prioritarios_por_signal);
+        pthread_mutex_unlock(&mutex_prioritario_por_signal);
     } else if (!queue_is_empty(cola_ready_plus)){
+        pthread_mutex_lock(&mutex_estado_ready_plus);
         pcb = queue_pop(cola_ready_plus);
+        pthread_mutex_unlock(&mutex_estado_ready_plus);
+        log_info(logger_kernel, "Proximo PID de la cola Ready Plus: %d", pcb->pid);
     }
     else if (!queue_is_empty(cola_ready)) {
+        pthread_mutex_lock(&mutex_estado_ready);
         pcb = queue_pop(cola_ready);
+        pthread_mutex_unlock(&mutex_estado_ready);
     } else {
         log_info(logger_kernel,"No hay procesos para ejecutar.");
     }
-    pthread_mutex_unlock(&mutex_estado_ready);
-
     return pcb;
 }
 
@@ -485,12 +490,12 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
         temporal_destroy(timer);
         printf("Tiempo transcurrido: %ld ms\n", tiempo_transcurrido);
       
-        int64_t tiempo_restante = max(0,min(quantum_config,quantum_config - tiempo_transcurrido));  // Fede scarpa orgulloso
+        int64_t tiempo_restante = max(0, min(quantum_config, pcb->quantum - tiempo_transcurrido));  // Fede scarpa orgulloso
         printf("Tiempo restante: %ld ms\n", tiempo_restante);
 
         // Ajustamos el quantum, asegurándonos de que no sea menor a 0
         pcb->quantum = tiempo_restante;
-        log_info(logger_kernel, "El quantum restante del proceso es: %d", pcb->quantum);
+        log_info(logger_kernel, "El quantum restante del proceso con PID %d es: %d", pcb->pid, pcb->quantum);
     }
 
     switch (devolucion_cpu) {
@@ -502,16 +507,6 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             printf("Volvio a ready por interrupción de quantum\n");
             log_info(logger_kernel, "PID: %d - Desalojado por fin de Quantum", pcb->pid);
             pasar_a_ready(pcb);
-            /*
-            if (es_VRR() && leQuedaTiempoDeQuantum(pcb)) {
-                pasar_a_ready_plus(pcb);
-            } else {
-                if(es_VRR()) {
-                    volver_a_settear_quantum(pcb);
-                }
-                pasar_a_ready(pcb);
-            }
-            */
             break;
         case DORMIR_INTERFAZ:
             t_operacion_io* operacion_io = deserializar_io(package->buffer);
@@ -1098,7 +1093,9 @@ void ejecutar_wait_recurso(t_recurso* recurso_obtenido,t_pcb* pcb,char* recurso)
     if(recurso_obtenido->instancias > 0) {
         recurso_obtenido->instancias --;
         // pasar_a_ready(pcb);
+        pthread_mutex_lock(&mutex_prioritario_por_signal);
         queue_push(cola_prioritarios_por_signal, pcb);
+        pthread_mutex_unlock(&mutex_prioritario_por_signal);
         sem_post(&sem_hay_para_planificar);
     } else {
         pasar_a_blocked(pcb);
@@ -1116,8 +1113,9 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
     pthread_mutex_unlock(&no_hay_nadie_en_cpu);*/
     
     // change_status(pcb, READY);
-    
+    pthread_mutex_lock(&mutex_prioritario_por_signal);
     queue_push(cola_prioritarios_por_signal, pcb);
+    pthread_mutex_unlock(&mutex_prioritario_por_signal);
     sem_post(&sem_hay_para_planificar);
     
     if(!queue_is_empty(recurso_obtenido->procesos_bloqueados)) {

@@ -1,7 +1,10 @@
 #include "../include/operaciones.h"
 
 t_log *logger;
-int hay_interrupcion;
+int hay_interrupcion_quantum;
+int hay_interrupcion_fin;
+pthread_mutex_t mutex_interrupcion_quantum;
+pthread_mutex_t mutex_interrupcion_fin;
 // t_cantidad_instrucciones* cantidad_instrucciones;
 
 void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
@@ -21,7 +24,7 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         // if(instruccion->nombre == ERROR_INSTRUCCION) return;
 
         printf("Esta ejecutando %d\n", pcb->pid);   
-        int resultado_ok = ejecutar_instruccion(instruccion, pcb);
+        int resultado_io = ejecutar_instruccion(instruccion, pcb);
         
         // resultado_ok = ejecutar_instruccion(instruccion, pcb);
         
@@ -30,22 +33,48 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         // pcb->program_counter++;
         printf("\nEl program counter es %d despues de aumentarlo.\n", pcb->program_counter);
         
-        if(resultado_ok == 1) {
-            hay_interrupcion = 0;
+        if(resultado_io == 1) {
+            pthread_mutex_lock(&mutex_interrupcion_quantum);
+            hay_interrupcion_quantum = 0;
+            pthread_mutex_unlock(&mutex_interrupcion_quantum);
+            
+            pthread_mutex_lock(&mutex_interrupcion_fin);
+            hay_interrupcion_fin = 0;
+            pthread_mutex_unlock(&mutex_interrupcion_fin);
+            
             return;
         }
 
         // pcb->program_counter++; // Ojo con esto! porque esta despues del return, osea q en el IO_GEN_SLEEP antes de desalojar hay que aumentar el pc
         // Podria ser una funcion directa -> Por ahora no es esencial
-
-        if(hay_interrupcion == 1) {
-            printf("Hubo una interrupcion.\n");
-            desalojar(pcb, INTERRUPCION_QUANTUM, NULL);
-            hay_interrupcion = 0;
+        
+        if(hay_interrupcion()) {
+            hacer_interrupcion(pcb);
             return;
         }
     }
 
+}
+
+int hay_interrupcion() {
+    return hay_interrupcion_quantum || hay_interrupcion_fin;
+}
+
+void hacer_interrupcion(t_pcb* pcb) {
+    printf("Hubo una interrupcion.\n");
+    if(hay_interrupcion_quantum) {
+        printf("Hubo una interrupcion por fin de quantum %d\n", pcb->pid);
+        desalojar(pcb, INTERRUPCION_QUANTUM, NULL);
+        pthread_mutex_lock(&mutex_interrupcion_quantum);
+        hay_interrupcion_quantum = 0;
+        pthread_mutex_unlock(&mutex_interrupcion_quantum);
+    } else if(hay_interrupcion_fin) {
+        printf("Desalojado por fin de proceso %d\n",pcb->pid);
+        desalojar(pcb, INTERRUPCION_FIN_PROCESO, NULL);
+        pthread_mutex_lock(&mutex_interrupcion_fin);
+        hay_interrupcion_fin = 0;
+        pthread_mutex_unlock(&mutex_interrupcion_fin);
+    }
 }
 
 void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria) {

@@ -1,6 +1,7 @@
 #include "../include/funcionalidades.h"
 
 void change_status(t_pcb* pcb, Estado new_status) {
+    printf("El PID es %d, el Estado es %d\n", pcb->pid, new_status);
     pcb->estadoAnterior = pcb -> estadoActual;
     pcb->estadoActual   = new_status;
 
@@ -11,14 +12,14 @@ void change_status(t_pcb* pcb, Estado new_status) {
 }
 
 void pasar_a_ready(t_pcb *pcb) {
-    if (es_VRR() && leQuedaTiempoDeQuantum(pcb)) {
+    if (es_VRR() && leQuedaTiempoDeQuantum(pcb) && quantum_config != pcb->quantum) {
         pasar_a_ready_plus(pcb);
-    } else if(es_VRR()) {
-        volver_a_settear_quantum(pcb);
     } else {
+        if(es_VRR()) {
+            volver_a_settear_quantum(pcb);
+        }
         pasar_a_ready_normal(pcb);
     }
-    
     sem_post(&sem_hay_para_planificar);
 }
 

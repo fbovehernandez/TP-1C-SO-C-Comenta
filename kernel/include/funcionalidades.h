@@ -55,6 +55,7 @@ extern pthread_mutex_t mutex_estado_ready;
 extern pthread_mutex_t mutex_estado_exec;
 extern pthread_mutex_t mutex_estado_blocked;
 extern pthread_mutex_t mutex_estado_ready_plus;
+extern pthread_mutex_t mutex_prioritario_por_signal;
 extern sem_t sem_grado_multiprogramacion;
 extern sem_t sem_hay_pcb_esperando_ready;
 extern sem_t sem_hay_para_planificar;

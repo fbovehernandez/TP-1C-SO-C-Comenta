@@ -126,11 +126,11 @@ void recibir_cliente_interrupt(int client_interrupt) {
         switch (cod_op) {
             case INTERRUPCION_CPU:
                 printf("Entre por interrupcion\n");
-                hay_interrupcion = 1;
+                hay_interrupcion_quantum = 1;
                 break;      
             case INTERRUPCION_FIN_PROCESO:
                 printf("Entre por interrupcion de fin de proceso\n");
-                hay_interrupcion = 1;
+                hay_interrupcion_fin = 1;
                 break;   
             default:
                 exit(-1);

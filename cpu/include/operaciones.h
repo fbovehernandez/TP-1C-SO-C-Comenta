@@ -11,8 +11,12 @@
 #include "conexionesCPU.h"
 #include "mmu.h"
 
-extern int hay_interrupcion;
+extern int hay_interrupcion_fin;
+extern int hay_interrupcion_quantum;
 extern t_log* logger;
+
+extern pthread_mutex_t mutex_interrupcion_quantum;
+extern pthread_mutex_t mutex_interrupcion_fin;
 
 typedef struct {
     int cantidad;
@@ -70,6 +74,7 @@ t_buffer* llenar_buffer_fs_create_delete(char* nombre_interfaz,char* nombre_arch
 void enviar_buffer_fs_create_delete(char* nombre_interfaz,char* nombre_archivo,codigo_operacion codigo);
 t_buffer* llenar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uint32_t registro_archivo);
 t_buffer* llenar_buffer_fs_truncate(char* nombre_interfaz_a_truncar,char* nombre_file_truncate,uint32_t registro_truncador);
-
+int hay_interrupcion();
+void hacer_interrupcion(t_pcb* pcb);
 
 #endif 
