@@ -49,11 +49,10 @@ void eliminar_victima_TLB() {
     t_entrada_tlb* entrada_victima = malloc(sizeof(t_entrada_tlb));
     if(strcmp(algoritmo_tlb, "FIFO") == 0) {
         entrada_victima = list_get(tlb, 0);
-        log_info(logger_CPU, "TLB elimina victima - PID: %d - Pagina: %d", entrada_victima->pid, entrada_victima->pagina);
     } else { // ES LRU
         entrada_victima = (t_entrada_tlb*) list_get_minimum(tlb, (void*) _timestamp_menor_de_entrada);
     }
-
+    log_info(logger_CPU, "TLB elimina victima - PID: %d - Pagina: %d", entrada_victima->pid, entrada_victima->pagina);
     list_remove_element(tlb, entrada_victima);
 }
 
