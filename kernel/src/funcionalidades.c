@@ -21,6 +21,7 @@ sem_t sem_grado_multiprogramacion;
 sem_t sem_hay_pcb_esperando_ready;
 sem_t sem_hay_para_planificar;
 sem_t sem_contador_quantum;
+sem_t sem_planificadores;
 
 t_queue* cola_new;
 t_queue* cola_ready;
@@ -183,6 +184,12 @@ void INICIAR_PROCESO(char* path_instrucciones) {
     int pid_actual = obtener_siguiente_pid();
     printf("El pid del proceso es: %d\n", pid_actual);
     // Primero envio el path de instruccion a memoria y luego el PCB...
+    
+
+    emitir_mensaje_estado_planificacion();
+    sem_wait(&sem_planificadores);
+    emitir_mensaje_estado_planificacion();
+    
     enviar_path_a_memoria(path_instrucciones, sockets, pid_actual); 
 
     sleep(5);
@@ -190,6 +197,7 @@ void INICIAR_PROCESO(char* path_instrucciones) {
     t_pcb *pcb = crear_nuevo_pcb(pid_actual); 
     //   list_add(lista_procesos,pcb);
     encolar_a_new(pcb);
+    sem_post(&sem_planificadores);
 }
 
 void* enviar_path_a_memoria(char* path_instrucciones, t_sockets* sockets, int pid) {
@@ -374,6 +382,10 @@ int leQuedaTiempoDeQuantum(t_pcb *pcb) {
 t_pcb *proximo_a_ejecutar() {
     t_pcb *pcb = NULL;
 
+    emitir_mensaje_estado_planificacion();
+    sem_wait(&sem_planificadores);
+    emitir_mensaje_estado_planificacion();
+
     if (!queue_is_empty(cola_prioritarios_por_signal)) {
         pthread_mutex_lock(&mutex_prioritario_por_signal);
         pcb = queue_pop(cola_prioritarios_por_signal);
@@ -391,6 +403,7 @@ t_pcb *proximo_a_ejecutar() {
     } else {
         log_info(logger_kernel,"No hay procesos para ejecutar.");
     }
+    sem_post(&sem_planificadores);
     return pcb;
 }
 
@@ -499,6 +512,10 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
         log_info(logger_kernel, "El quantum restante del proceso con PID %d es: %d", pcb->pid, pcb->quantum);
     }
 
+    emitir_mensaje_estado_planificacion();
+    sem_wait(&sem_planificadores);
+    emitir_mensaje_estado_planificacion();
+
     switch (devolucion_cpu) {
         case ERROR_STDOUT || ERROR_STDIN:
             pasar_a_exit(pcb);
@@ -598,6 +615,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             exit(-1);
             break;
     }
+    sem_post(&sem_planificadores);
     liberar_paquete(package);
 }
 
@@ -1114,17 +1132,22 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
     pthread_mutex_unlock(&no_hay_nadie_en_cpu);*/
     
     // change_status(pcb, READY);
+    
+    sem_wait(&sem_planificadores);
     pthread_mutex_lock(&mutex_prioritario_por_signal);
     queue_push(cola_prioritarios_por_signal, pcb);
     pthread_mutex_unlock(&mutex_prioritario_por_signal);
     sem_post(&sem_hay_para_planificar);
-    
+    sem_post(&sem_planificadores);
+
     if(!queue_is_empty(recurso_obtenido->procesos_bloqueados)) {
         t_pcb* proceso_liberado = queue_pop(recurso_obtenido->procesos_bloqueados);
         /*change_status(proceso_liberado, READY);
         queue_push(cola_prioritarios_por_signal, proceso_liberado); 
         sem_post(&sem_hay_para_planificar);*/
+        sem_wait(&sem_planificadores);
         pasar_a_ready(proceso_liberado);
+        sem_post(&sem_planificadores);
     }
     
     /*
@@ -1165,17 +1188,27 @@ void imprimir_diccionario_recursos() {
 }
 
 void FINALIZAR_PROCESO(int pid) {
-    /*
+    
+    sem_wait(&sem_planificadores);
+    emitir_mensaje_estado_planificacion(); // esto es parte de detener planificacion
+
+   
+    t_queue* cola = encontrar_en_que_cola_esta(pid);
     t_pcb* pcb = list_find(lista_procesos, (proceso\->proceso->pid == pid));
-    t_queue* cola = encontrar_en_que_cola_esta(pcb);
+    
     sacarDe(cola, pcb);
     pasar_a_exit(pcb);
-    */
-    // t_pcb* pcb = sacarPCBDeDondeEste(int pid);
-    // pasar_a_exit(pcb);
+    
+    t_pcb* pcb = sacarPCBDeDondeEste(pid);
+    pasar_a_exit(pcb);
+
+    sem_post(&sem_planificadores);
+    
+    
+
 }
 
-/* 
+
 t_pcb* sacarPCBDeDondeEste(int pid) {
     t_pcb* pcb;
 
@@ -1183,6 +1216,7 @@ t_pcb* sacarPCBDeDondeEste(int pid) {
         send(socket_Int, &INTERRUPCION_FIN_PROCESO, sizeof(int), 0);
         // TO DO: Diferenciar las distintas interrupciones, por ahora solo recibe una.
         // Recibir pcb junto con motivo de desalojo
+        log_info(logger_kernel,"Finaliza el proceso %d - Motivo: INTERRUPTED_BY_USER", pid);
         recv(socket_int, &pcb, sizeof(t_pcb), MSG_WAITALL);
     } else {
         t_queue* cola = encontrar_en_que_cola_esta(pid);
@@ -1193,37 +1227,47 @@ t_pcb* sacarPCBDeDondeEste(int pid) {
 }
 
 t_queue* encontrar_en_que_cola_esta(int pid) {
-    if(queue_find(cola_new, pid)) {
+    if(esta_en_cola_pid(cola_new,pid,&mutex_estado_new)) {
         return cola_new;
-    } else if(queue_find(cola_ready, pid)) {
+    } else if(esta_en_cola_pid(cola_ready,pid,&mutex_estado_ready)) {
         return cola_ready;
-    } else if(queue_find(cola_blocked), pid) {
+    } else if(esta_en_cola_pid(cola_blocked,pid,&mutex_estado_blocked)) {
         //TO DO: Buscar en las colas_blocked de io
         //Estaba todo borrado cuando llegue
         return cola_blocked;
+    } else if(esta_en_cola_pid(cola_ready_plus,pid,&mutex_estado_ready_plus)){
+        return cola_ready_plus;
     }
 }
-*/
-
-/* 
-int queue_find(t_queue* cola, int pid) {
+int esta_en_cola_pid(t_queue* cola, int pid, pthread_mutex_t* mutex) {
     t_queue* colaAux = queue_create();
     int esta_el_pid = 0;
-    while(!queue_is_empty(cola)){
+    
+    pthread_mutex_lock(mutex); // Se que es una zona critica grande pero podria afectar nnegativamente si lo  pongo cada vez que hago push - pop
+
+    while (!queue_is_empty(cola)) {
         t_pcb* pcbAux = queue_pop(cola);
-        if(pcbAux->pid != pid){
-            queue_push(colaAux,pcbAux); 
-        } else {
+        
+        if (pcbAux->pid != pid) {
+            queue_push(colaAux, pcbAux);
+        } else {   
             esta_el_pid = 1;
+            queue_push(colaAux, pcbAux);
         }
     }
-    cola = colaAux; 
 
+    // Restauro los elementos en la cola original
+    while (!queue_is_empty(colaAux)) {
+        queue_push(cola, queue_pop(colaAux));
+    }
+
+    pthread_mutex_unlock(mutex);
+    
+    queue_destroy(colaAux);
+    
     return esta_el_pid;
 }
-*/
-
-/* 
+ 
 t_pcb* sacarDe(t_queue* cola, int pid){
     t_pcb* pcb;
     t_queue* colaAux = queue_create();
@@ -1238,17 +1282,29 @@ t_pcb* sacarDe(t_queue* cola, int pid){
     cola = colaAux;   
     return pcb;
 }
-*/
+
 
 void INICIAR_PLANIFICACION() {
-
+    if(!planificacion_pausada){
+        printf("La planificacion no esta pausada\n");
+        return;
+    } 
+    sem_post(&sem_planificadores);
 }
 
 void DETENER_PLANIFICACION() {
-
-
+    if(planificacion_pausada){
+        printf("La planificacion ya esta detenida\n");
+        return;
+    }
+    printf("Deteniendo planificaciones\n");    
+    // SE QUEDA TRABADO  EN SCRIPT
+    /*
+    SOLUCION que vi  enn un issue
+    - hacer un hilo con el semaforo de abajo
+    */
+    sem_wait(&sem_planificadores); // corto y largo plazo
 }
-
 
 void MULTIPROGRAMACION(int valor) {
     if(grado_multiprogramacion < valor) {
@@ -1642,3 +1698,11 @@ t_buffer* llenar_buffer_fs_truncate(int pid,int largo_archivo,char* nombre_archi
 
     return buffer;
 }*/
+
+void emitir_mensaje_estado_planificacion(){
+    if (planificacion_pausada) {
+        printf("Planificación pausada\n");
+    } else {
+        printf("La planificación no está detenida\n");
+    }
+}

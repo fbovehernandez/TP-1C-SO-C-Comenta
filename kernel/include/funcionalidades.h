@@ -56,16 +56,17 @@ extern pthread_mutex_t mutex_estado_exec;
 extern pthread_mutex_t mutex_estado_blocked;
 extern pthread_mutex_t mutex_estado_ready_plus;
 extern pthread_mutex_t mutex_prioritario_por_signal;
+extern pthread_mutex_t no_hay_nadie_en_cpu;
+
 extern sem_t sem_grado_multiprogramacion;
 extern sem_t sem_hay_pcb_esperando_ready;
 extern sem_t sem_hay_para_planificar;
-extern pthread_mutex_t no_hay_nadie_en_cpu;
 extern sem_t sem_contador_quantum;
+extern sem_t sem_planificadores;
 
 extern t_queue* cola_new;
 extern t_queue* cola_ready;
 extern t_queue* cola_blocked;
-// extern t_queue* cola_exec;
 extern t_pcb* pcb_exec;
 extern t_queue* cola_exit;
 extern t_queue* cola_prioritarios_por_signal;
@@ -75,6 +76,8 @@ extern char* algoritmo_planificacion; // Tomamos en convencion que los algoritmo
 extern t_log* logger_kernel;
 extern char* path_kernel;
 extern ptr_kernel* datos_kernel;
+
+extern bool planificacion_pausada; 
 
 // Funciones
 void* interaccion_consola();
@@ -145,7 +148,7 @@ int leQuedaTiempoDeQuantum(t_pcb *pcb);
 void mostrar_cola(t_queue* cola);
 void ejecutarComando(char* linea_leida);
 void mostrar_cola_con_mutex(t_queue* cola,pthread_mutex_t* mutex);
-
+void emitir_mensaje_estado_planificacion();
 
 void EJECUTAR_SCRIPT(char* path);
 void INICIAR_PROCESO(char* path);

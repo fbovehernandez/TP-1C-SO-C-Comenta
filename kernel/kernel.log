@@ -65,3 +65,11 @@
 [INFO] 19:12:27:122 LOGGER/(16375:16389): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
 [INFO] 19:12:36:167 LOGGER/(16375:16389): Finaliza el proceso 3 - Motivo: SUCCESS
 [INFO] 19:12:36:168 LOGGER/(16375:16389): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 19:49:56:943 LOGGER/(19469:19469): Conexion establecida con Memoria
+[INFO] 19:49:56:967 LOGGER/(19469:19469): Conexion establecida con Dispatcher
+[INFO] 19:49:56:969 LOGGER/(19469:19469): Conexion establecida con Interrupt
+[INFO] 19:49:57:027 LOGGER/(19469:19469): Servidor iniciado, esperando conexiones!
+[INFO] 19:54:50:637 LOGGER/(20584:20584): Conexion establecida con Memoria
+[INFO] 19:54:50:664 LOGGER/(20584:20584): Conexion establecida con Dispatcher
+[INFO] 19:54:50:667 LOGGER/(20584:20584): Conexion establecida con Interrupt
+[INFO] 19:54:50:708 LOGGER/(20584:20584): Servidor iniciado, esperando conexiones!
