@@ -11,6 +11,7 @@
 extern int socket_memoria;
 extern int client_dispatch;
 extern int tamanio_pagina;
+extern t_config* config_CPU;
 
 typedef struct {
     char* puerto_escucha;

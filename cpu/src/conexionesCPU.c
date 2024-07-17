@@ -2,6 +2,7 @@
 
 int socket_memoria;
 int client_dispatch; //socket_kernel
+t_config* config_CPU;
 
 int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) {
     int valor = 2;

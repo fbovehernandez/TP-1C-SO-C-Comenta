@@ -1,6 +1,6 @@
 #include "../include/operaciones.h"
+#include "../include/mmu.h"
 
-t_log *logger;
 int hay_interrupcion_quantum;
 int hay_interrupcion_fin;
 pthread_mutex_t mutex_interrupcion_quantum;
@@ -231,17 +231,6 @@ bool es_de_8_bits(char *registro) {
 }
 
 /*
-    typedef struct {
-        int pid;
-        int pagina;
-        int marco;
-        long timestamps;
-    } t_tlb;
-
-    typedef struct {
-        int numero_pagina;
-        int desplazamiento;
-    } t_direccion_logica;
 
     int traer_tamanio_pagina_mem(int socket_mem) {
         recv(socket_mem,&tamanio_pagina, sizeof(int), 0);
@@ -280,51 +269,6 @@ long tiempoEnMilisecs() {
   return time.tv_sec * 1000 + time.tv_usec / 1000;
 }
 
-void guardar_en_TLB(int pid, int nro_pagina, int nro_marco) {
-	t_tlb* nueva_entrada = malloc(sizeof(t_tlb));
-	
-    nueva_entrada->pid = pid;
-	nueva_entrada->pagina = nro_pagina;
-	nueva_entrada->marco = nro_marco;
-    nueva_entrada->timestamp = tiempoEnMilisecs();
-
-	int cant_entradas = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
-    char* algoritmo_tlb = config_get_string_value(config_CPU, "ALGORITMO_TLB");
-
-    switch(algoritmo_TLB)
-    {
-        case FIFO:
-            queue_push(TLB, nueva_entrada);
-            break;
-        case LRU:
-            algoritmo_LRU(nueva_entrada);
-            break;
-    }
-}
-
-void algoritmo_LRU(t_tlb* nueva_entrada){
-	t_tlb* auxiliar1 = malloc(sizeof(t_tlb));
-	t_tlb* auxiliar2 = malloc(sizeof(t_tlb));
-
-	int tamanio = queue_size(TLB);
-	auxiliar1 = queue_pop(TLB);
-
-	for(int i = 1; i < tamanio; i++){
-		auxiliar2 = queue_pop(TLB);
-
-		if(auxiliar1->timestamp > auxiliar2->timestamp) {
-			queue_push(TLB, auxiliar1);
-			auxiliar1 = auxiliar2;
-		}
-        // Si el aux1 es más nuevo en la TLB que el aux2, pushea el auxiliar 1 y le asigna el más viejo, o sea auxiliar 2. 
-        // De esta forma, en auxiliar 1 nos queda la entrada que esta hace mas tiempo en TLB para volver a comparar
-		else
-			queue_push(TLB, auxiliar2);
-	}
-	
-	queue_push(TLB, nueva_entrada);
-}
-
 int esta_en_TLB(int nro_pagina){
 	int se_encontro = 0;	
 	for(int i = 0; i < queue_size(TLB); i++){
@@ -351,13 +295,6 @@ int numero_pagina(int direccion_logica){
 
 int desplazamiento_memoria(int direccion_logica, int nro_pagina){
 	return direccion_logica - nro_pagina * tamanio_pagina;
-}
-
-void vaciar_tlb(){
-	while(queue_size(TLB) > 0){
-		t_tlb* una_entrada = queue_pop(TLB);
-		free(una_entrada);
-	}
 }
 
 */
@@ -560,8 +497,6 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
             // desalojar(pcb, OUT_OF_MEMORY, NULL);
             return 1;
         }
-
-        
 
         printf("Se redimensiono la memoria\n"); 
         break;
@@ -1493,3 +1428,5 @@ t_buffer* llenar_buffer_fs_truncate(char* nombre_interfaz_a_truncar,char* nombre
 
     return buffer;
 }
+
+

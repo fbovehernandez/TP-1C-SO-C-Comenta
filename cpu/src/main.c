@@ -1,8 +1,8 @@
 #include "../include/main.h"
 
 int main(int argc, char* argv[]) {
-    t_log* logger_CPU    = iniciar_logger("cpu.log"); 
-    t_config* config_CPU = iniciar_config("./cpu.config");
+    logger_CPU    = iniciar_logger("cpu.log"); 
+    config_CPU = iniciar_config("./cpu.config");
     
     char* escucha_dispatch  = config_get_string_value(config_CPU, "PUERTO_ESCUCHA_DISPATCH");
     char* escucha_interrupt = config_get_string_value(config_CPU, "PUERTO_ESCUCHA_INTERRUPT");
@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
     registros_cpu = malloc(sizeof(t_registros));
     registros_cpu = inicializar_registros_cpu(registros_cpu);
 
-    //tlb = inicializar_tlb(config_CPU);
+    tlb = list_create();
 
     // Aca lo conecto a memoria 
     socket_memoria = conectar_memoria(IP_MEMORIA, puerto_memoria, logger_CPU);

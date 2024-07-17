@@ -1,90 +1,73 @@
 #include "../include/mmu.h"
 
 int tamanio_pagina;
-t_dictionary* tlb;
+t_log* logger_CPU;
+t_list* tlb;
 
-/*
-typedef struct {
-    int pid;
-    int pagina;
-    int marco;
-    long timestamps;
-} t_tlb;
-*/
+/*void inicializar_tlb() {
+    tlb = list_create();
+}*/
 
-void inicializar_tlb(t_config* config_CPU) {
-    //int cant_entradas = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
-    tlb = dictionary_create();
-}
-
-/* 
-bool estaEnLaTLB(int pid, int pagina) {
-    
-}
-*/
-
-/* 
-void* crear_tlb() {
-    t_tlb tlb;
-    int cant_entradas = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
-    char* algoritmo_tlb = config_get_string_value(config_CPU, "ALGORITMO_TLB");
-    if(cant_entradas == 0) {
-        deshabilitar_tlb();
+int buscar_frame_en_TLB(int pid, int pagina) {
+    for(int i=0; i<list_size(tlb); i++){
+        //t_entrada_tlb* entrada = malloc(sizeof(t_entrada_tlb));
+        t_entrada_tlb* entrada = (t_entrada_tlb*) list_get(tlb, i);
+        if(entrada->pid == pid && entrada->pagina == pagina) {
+            log_info(logger_CPU, "PID: %d - TLB HIT - Pagina: %d", pid, pagina);
+            entrada->timestamps = tiempoEnMilisecs();
+            printf("el marco que devuelve buscar_frame_en_TLB es: %d\n", entrada->marco);
+            return entrada->marco;
+        }
+        //free(entrada);
     }
-    return;
+    log_info(logger_CPU, "PID: %d - TLB MISS - Pagina: %d", pid, pagina);
+    return -2;
+}
+
+void agregar_frame_en_TLB(int pid, int pagina, int frame) {
+    t_entrada_tlb* entrada = malloc(sizeof(t_entrada_tlb));
+    entrada->pid = pid;
+    entrada->pagina = pagina;
+    entrada->marco = frame;
+    entrada->timestamps = tiempoEnMilisecs();
+
+    int cantidad_entradas = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
+
+    printf("Cantidad de entradas de la TLB: %d\n", cantidad_entradas);
+    printf("Cantidad de entradas ocupadas: %d\n", list_size(tlb));
+    if(cantidad_entradas > 0) { // Esta habilitada la TLB?
+        if(list_size(tlb) == cantidad_entradas) { // Esta completa la TLB ??
+            eliminar_victima_TLB();
+        }
+        list_add(tlb, entrada);
+    }
+    // Si la cantidad de entradas es 0, no hace nada
+}
+
+void eliminar_victima_TLB() {
+    char* algoritmo_tlb = config_get_string_value(config_CPU, "ALGORITMO_TLB");
+    t_entrada_tlb* entrada_victima = malloc(sizeof(t_entrada_tlb));
+    if(strcmp(algoritmo_tlb, "FIFO") == 0) {
+        entrada_victima = list_get(tlb, 0);
+        log_info(logger_CPU, "TLB elimina victima - PID: %d - Pagina: %d", entrada_victima->pid, entrada_victima->pagina);
+    } else { // ES LRU
+        entrada_victima = (t_entrada_tlb*) list_get_minimum(tlb, (void*) _timestamp_menor_de_entrada);
+    }
+
+    list_remove_element(tlb, entrada_victima);
+}
+
+void* _timestamp_menor_de_entrada(t_entrada_tlb* entrada1, t_entrada_tlb* entrada2) {
+    return entrada1->timestamps <= entrada2->timestamps ? entrada1 : entrada2;
 }
 
 long tiempoEnMilisecs() {
-  struct timeval time;
-  gettimeofday(&time, NULL);
+    struct timeval time;
+    gettimeofday(&time, NULL);
 
-  return time.tv_sec * 1000 + time.tv_usec / 1000;
+    return time.tv_sec * 1000 + time.tv_usec / 1000;
 }
-
-void guardar_en_TLB(int pid, int nro_pagina, int nro_marco) {
-	t_tlb* nueva_entrada = malloc(sizeof(t_tlb));
-	
-    nueva_entrada->pid       = pid;
-	nueva_entrada->pagina    = nro_pagina;
-	nueva_entrada->marco     = nro_marco;
-    nueva_entrada->timestamp = tiempoEnMilisecs();
-
-	int cant_entradas   = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
-    char* algoritmo_tlb = config_get_string_value(config_CPU, "ALGORITMO_TLB");
-
-    switch(algoritmo_TLB) {
-        case FIFO:
-            queue_push(TLB, nueva_entrada);
-            break;
-        case LRU:
-            algoritmo_LRU(nueva_entrada);
-            break;
-    }
-}
-
-void algoritmo_LRU(t_tlb* nueva_entrada) {
-	t_tlb* auxiliar1 = malloc(sizeof(t_tlb));
-	t_tlb* auxiliar2 = malloc(sizeof(t_tlb));
-
-	int tamanio = queue_size(TLB);
-	auxiliar1 = queue_pop(TLB);
-
-	for(int i = 1; i < tamanio; i++) {
-		auxiliar2 = queue_pop(TLB);
-
-		if(auxiliar1->timestamp > auxiliar2->timestamp) {
-			queue_push(TLB, auxiliar1);
-			auxiliar1 = auxiliar2;
-		}
-        // Si el aux1 es más nuevo en la TLB que el aux2, pushea el auxiliar 1 y le asigna el más viejo, o sea auxiliar 2. 
-        // De esta forma, en auxiliar 1 nos queda la entrada que esta hace mas tiempo en TLB para volver a comparar
-		else
-			queue_push(TLB, auxiliar2);
-	}
-	
-	queue_push(TLB, nueva_entrada);
-}
-
+/*
 int esta_en_TLB(int nro_pagina) {
 	int se_encontro = 0;	
 	for(int i = 0; i < queue_size(TLB); i++) {
@@ -103,21 +86,27 @@ int esta_en_TLB(int nro_pagina) {
     
     return se_encontro;
 }
+*/
 
-*/ 
-// direccion_fisica = traducir_direccion_logica_a_fisica(tamanio_pagina, *registro_direccion11, pcb->pid);
 int traducir_direccion_logica_a_fisica(uint32_t direccion_logica, int pid) { 
     t_direccion_logica* direccion_logica_a_crear = malloc(sizeof(t_direccion_logica)); 
-    int frame;
 
     direccion_logica_a_crear->numero_pagina = floor(direccion_logica / tamanio_pagina);
     direccion_logica_a_crear->desplazamiento = direccion_logica - direccion_logica_a_crear->numero_pagina * tamanio_pagina;
 
     printf("Numero de pagina %d + Desplazamiento %d\n", direccion_logica_a_crear->numero_pagina, direccion_logica_a_crear->desplazamiento);
 
-    pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina, pid); 
+    int frame = buscar_frame_en_TLB(pid, direccion_logica_a_crear->numero_pagina);
     
-    recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
+    if(frame == -2) { // Caso de que no encuentre el marco
+        pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina, pid); 
+        recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
+        log_info(logger_CPU, "PID: %d - OBTENER MARCO - Página: %d - Marco: %d", pid, direccion_logica_a_crear->numero_pagina, frame);
+        agregar_frame_en_TLB(pid, direccion_logica_a_crear->numero_pagina, frame);
+    }
+    // pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina, pid); 
+    imprimir_tlb();
+    // recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
     printf("Frame %d recibido de memoria con PID %d\n", frame, pid);
     
     int direccion_fisica = frame * tamanio_pagina + direccion_logica_a_crear->desplazamiento;
@@ -153,11 +142,27 @@ void pedir_frame_a_memoria(int nro_pagina, int pid) {
     free(solicitud_frame);
 }
 
-/* 
 void vaciar_tlb() {
-	while(queue_size(TLB) > 0){
-		t_tlb* una_entrada = queue_pop(TLB);
-		free(una_entrada);
-	}
+	
 }
+
+/*
+typedef struct {
+    int pid;
+    int pagina;
+    int marco;
+    long timestamps;
+} t_entrada_tlb;
 */
+
+void imprimir_tlb() {
+    printf("\nVoy a imprimir el TLB \n");
+    for(int i=0;i < list_size(tlb);i++){
+        t_entrada_tlb* entrada = list_get(tlb,i);
+        printf("Pid: %d\n", entrada->pid);
+        printf("La pagina es: %d\n", entrada->pagina);
+        printf("El marco: %d\n", entrada->marco);
+        printf("El timestamp: %ld\n\n", entrada->timestamps);
+    }
+    printf("TLB mostrada :D \n\n");
+}

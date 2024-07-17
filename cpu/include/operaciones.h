@@ -13,7 +13,6 @@
 
 extern int hay_interrupcion_fin;
 extern int hay_interrupcion_quantum;
-extern t_log* logger;
 
 extern pthread_mutex_t mutex_interrupcion_quantum;
 extern pthread_mutex_t mutex_interrupcion_fin;
