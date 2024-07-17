@@ -295,8 +295,6 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
 
         pthread_mutex_lock(&no_hay_nadie_en_cpu);
         pcb = proximo_a_ejecutar();
-
-
         pasar_a_exec(pcb);
         pthread_mutex_unlock(&no_hay_nadie_en_cpu);
 
@@ -307,9 +305,9 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
             pthread_create(&hilo_quantum, NULL, (void *)esperar_VRR, (void *)pcb);
             sem_post(&sem_contador_quantum);
         }
-
+        //while(timer <= pcb->quantum){
         esperar_cpu();
-
+        //}
         if (es_VRR_RR()){
             pthread_cancel(hilo_quantum);
         }
@@ -328,9 +326,10 @@ bool es_VRR() {
     return strcmp(algoritmo_planificacion, "VRR") == 0;
 }
 
-void *esperar_VRR(void* pcb) {
+void *esperar_VRR(t_pcb* pcb) {
     timer = temporal_create(); // Crearlo ya empieza a contar
     esperar_RR(pcb);
+    
     /*int socket_Int = (intptr_t)socket_Int;
     sem_wait(&sem_contador_quantum);*/
 
@@ -344,7 +343,7 @@ void *esperar_VRR(void* pcb) {
     void temporal_resume(t_temporal* temporal);
 */
 
-void *esperar_RR(void* pcb_anterior) {
+void *esperar_RR(t_pcb* pcb_anterior) {
     /* Esperar_cpu_RR */
     t_pcb* pcb = pcb_anterior;
     int quantum = pcb->quantum;
@@ -476,12 +475,22 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     printf("pid del pcb: %d\n", pcb->pid);
 
     if (es_VRR()) {
-        temporal_stop(timer);
-        ms_transcurridos = temporal_gettime(timer);
-        printf("\n\n MILISEGUNDOS QUE LE QUEDAN DE REMANENTE: %d \n\n", ms_transcurridos);
+        temporal_stop(timer); // Detenemos el temporizador
+
+        /*if(!hay_interrupcion){
+
+        }*/
+
+        int64_t tiempo_transcurrido = temporal_gettime(timer);  // Obtenemos el tiempo transcurrido en milisegundos
         temporal_destroy(timer);
-        pcb->quantum = max(0, pcb->quantum - ms_transcurridos); // Si el quantum es menor a 0, lo seteo en 0, posibles problemas de latencia
-        log_info(logger_kernel, "el quantum del proceso restante es: %d", pcb->quantum);
+        printf("Tiempo transcurrido: %ld ms\n", tiempo_transcurrido);
+      
+        int64_t tiempo_restante = max(0,min(quantum_config,quantum_config - tiempo_transcurrido));  // Fede scarpa orgulloso
+        printf("Tiempo restante: %ld ms\n", tiempo_restante);
+
+        // Ajustamos el quantum, asegurándonos de que no sea menor a 0
+        pcb->quantum = tiempo_restante;
+        log_info(logger_kernel, "El quantum restante del proceso es: %d", pcb->quantum);
     }
 
     switch (devolucion_cpu) {
@@ -493,15 +502,16 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             printf("Volvio a ready por interrupción de quantum\n");
             log_info(logger_kernel, "PID: %d - Desalojado por fin de Quantum", pcb->pid);
             pasar_a_ready(pcb);
-            /*if (es_VRR() && leQuedaTiempoDeQuantum(pcb)) {
+            /*
+            if (es_VRR() && leQuedaTiempoDeQuantum(pcb)) {
                 pasar_a_ready_plus(pcb);
-            }
-            else {
+            } else {
                 if(es_VRR()) {
                     volver_a_settear_quantum(pcb);
                 }
                 pasar_a_ready(pcb);
-            }*/
+            }
+            */
             break;
         case DORMIR_INTERFAZ:
             t_operacion_io* operacion_io = deserializar_io(package->buffer);

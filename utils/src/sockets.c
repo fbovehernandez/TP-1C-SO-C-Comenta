@@ -600,4 +600,10 @@ char* string_operacion(codigo_operacion operacion) {
         default: return "UNKNOWN_OPERATION";
     }
 }
+
+int min(int a, int b) {
+    return (a < b) ? a : b;
+}
+
+
     

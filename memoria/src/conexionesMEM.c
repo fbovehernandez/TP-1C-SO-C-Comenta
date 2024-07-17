@@ -283,9 +283,6 @@ t_pedido_memoria* deserializar_direccion_fisica(t_buffer* buffer, t_list* direcc
     return datos_operacion;
 }
 
-int min(int a, int b) {
-    return (a < b) ? a : b;
-}
 
 /* 
 int bytes_usables_por_pagina(int direccion_logica) {
