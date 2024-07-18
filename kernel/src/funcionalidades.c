@@ -68,7 +68,7 @@ void *interaccion_consola() {
 
         switch (respuesta) {
             case 1:
-                input = readline("Ingrese el path del script a ejecutar: ");
+                input = readline(">Ingrese el path del script a ejecutar: ");
                 if (input) {
                     add_history(input);
                     strncpy(path_ejecutable, input, sizeof(path_ejecutable) - 1);
@@ -78,7 +78,7 @@ void *interaccion_consola() {
                 }
                 break;
             case 2:
-                input = readline("Ingrese el path del script a ejecutar: ");
+                input = readline(">Ingrese el path del script a ejecutar: ");
                 if (input) {
                     add_history(input);
                     strncpy(path_ejecutable, input, sizeof(path_ejecutable) - 1);
@@ -88,7 +88,7 @@ void *interaccion_consola() {
                 }
                 break;
             case 3:
-                input = readline("Ingrese el pid del proceso que quiere finalizar: ");
+                input = readline(">Ingrese el pid del proceso que quiere finalizar: ");
                 if (input) {
                     add_history(input);
                     pid_deseado_a_numero = atoi(input);
@@ -106,7 +106,7 @@ void *interaccion_consola() {
                 PROCESO_ESTADO();
                 break;
             case 7:
-                input = readline("Ingrese grado de multiprogramacion a cambiar: ");
+                input = readline(">Ingrese grado de multiprogramacion a cambiar: ");
                 if (input) {
                     add_history(input);
                     valor = atoi(input);
@@ -128,7 +128,6 @@ void *interaccion_consola() {
     return NULL;
 }
 
-
 void EJECUTAR_SCRIPT(char* path) {
     // Abrir el archivo en modo de lectura (r)
     size_t length = 0;
@@ -147,57 +146,6 @@ void EJECUTAR_SCRIPT(char* path) {
     // Cerrar el archivo
     fclose(file);
 }
-/*
-void EJECUTAR_SCRIPT(char* path) {
-    // Abrir el archivo en modo de lectura (r)
-    size_t length = 0;
-    char* path_local_kernel = strdup(path_kernel);
-    char* path_completo = malloc(strlen(path_local_kernel) + strlen(path));
-    path_completo = strcat(path_local_kernel, path);
-    FILE* file = fopen(path_completo, "r");
-    char* linea_leida = NULL;
-    // Verificar si el archivo se abrió correctamente
-    if (file == NULL) {
-        printf("Error al abrir el archivo.\n");
-    }
-    while (getline(&linea_leida, &length, file) != -1) {
-    	if(strcmp(linea_leida,"\n")){
-        	ejecutarComando(linea_leida);
-    	}
-    }
-    // Cerrar el archivo
-    fclose(file);
-}
-*/
-
-void ejecutarComando(char* linea_leida) {
-    char comando[20]; 
-    char parametro[20]; 
-    int parametroAux;
-
-    if (sscanf(linea_leida, "%s %s", comando, parametro) == 2) {
-        printf("Palabra 1: %s, Palabra 2: %s\n", comando, parametro);
-        if(strcmp(comando, "INICIAR_PROCESO") == 0) {
-            INICIAR_PROCESO(parametro);
-        } else if(strcmp(comando, "FINALIZAR_PROCESO") == 0) {
-            parametroAux = atoi(parametro);
-            FINALIZAR_PROCESO(parametroAux);
-        } else if(strcmp(comando, "MULTIPROGRAMACION") == 0) {
-            parametroAux = atoi(parametro);
-            MULTIPROGRAMACION(parametroAux);
-        }
-    } else {
-        sscanf(linea_leida, "%s", comando);
-        printf("Palabra única: %s\n", comando);
-        if(strcmp(comando, "INICIAR_PLANIFICACION") == 0) {
-            INICIAR_PLANIFICACION();
-        } else if(strcmp(comando, "DETENER_PLANIFICACION") == 0) {
-            DETENER_PLANIFICACION();
-        } else if(strcmp(comando, "PROCESO_ESTADO") == 0) {
-            PROCESO_ESTADO();
-        }
-    }
-}
 
 void INICIAR_PROCESO(char* path_instrucciones) {
     int pid_actual = obtener_siguiente_pid();
@@ -210,16 +158,15 @@ void INICIAR_PROCESO(char* path_instrucciones) {
     
     enviar_path_a_memoria(path_instrucciones, sockets, pid_actual); 
 
-    sleep(5);
-
     t_pcb *pcb = crear_nuevo_pcb(pid_actual); 
     
     encolar_a_new(pcb);
     sem_post(&sem_planificadores);
 }
 
-void* enviar_path_a_memoria(char* path_instrucciones, t_sockets* sockets, int pid) {
-    // Mando PID para saber donde asociar las instrucciones
+void enviar_path_a_memoria(char* path_instrucciones, t_sockets* sockets, int pid) {
+// Mando PID para saber donde asociar las instrucciones
+    int se_crearon_estructuras = 0;
     t_path* pathNuevo = malloc(sizeof(t_path));
 
     pathNuevo->path = strdup(path_instrucciones); 
@@ -229,12 +176,10 @@ void* enviar_path_a_memoria(char* path_instrucciones, t_sockets* sockets, int pi
     t_buffer* buffer = llenar_buffer_path(pathNuevo);
 
     enviar_paquete(buffer, PATH, sockets->socket_memoria);
-    // log_info(logger_kernel, "Se armo un paquete con este PATH: %s\n", pathNuevo->path);
-    
+    recv(sockets->socket_memoria, &se_crearon_estructuras, sizeof(int), MSG_WAITALL);
+
     free(pathNuevo->path);
     free(pathNuevo);
-
-    return NULL;
 } 
 
 // Falta implementar esta
@@ -419,8 +364,8 @@ t_pcb *proximo_a_ejecutar() {
         pcb = queue_pop(cola_ready);
         pthread_mutex_unlock(&mutex_estado_ready);
     } else {
-        log_info(logger_kernel,"No hay procesos para ejecutar.");
-        interaccion_consola();
+        log_error(logger_kernel,"No hay procesos para ejecutar.");
+        exit(1);
     }
     sem_post(&sem_planificadores);
     return pcb;
@@ -1219,6 +1164,10 @@ void FINALIZAR_PROCESO(int pid) {
     }else{
         printf("El proceso no esta en ejecucion, se va a sacar de alguna cola\n");
         t_queue* cola = encontrar_en_que_cola_esta(pid);
+        if(cola == NULL){ // Esto quiere decir que esta en la cola exit
+            printf("No se puede finalizar un proceso que esta en exit \n");
+            return NULL;
+        }
         pcb = sacarDe(cola, pid);
     }
     
@@ -1242,7 +1191,10 @@ t_queue* encontrar_en_que_cola_esta(int pid) {
         return cola_blocked; // analizar si hay que sacarlo tmb de la cola de procesos bloqueados de una io
     } else if(esta_en_cola_pid(cola_ready_plus,pid,&mutex_estado_ready_plus)){
         return cola_ready_plus;
-    } 
+    } else{
+        printf("Esta en cola exit\n");
+        return NULL;
+    }
 }
 
 int esta_en_cola_pid(t_queue* cola, int pid, pthread_mutex_t* mutex) {

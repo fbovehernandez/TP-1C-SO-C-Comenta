@@ -553,14 +553,16 @@ void* handle_kernel(void* socket) {
 
         // Ahora en función del código recibido procedemos a deserializar el resto
         switch(paquete->codigo_operacion) {
-            case PATH:                                       // Ver si no es mejor recibir primero el cod-op y adentro recibimos el resto (Cambiaria la forma de serializar, ya no habira)
+            case PATH:
+                // Ver si no es mejor recibir primero el cod-op y adentro recibimos el resto (Cambiaria la forma de serializar, ya no habira)
                 t_path* path = deserializar_path(paquete->buffer);
                 imprimir_path(path);
                 path_completo = agrupar_path(path); // Ojo con el SEG_FAULT
                 printf("CUIDADO QUE IMPRIMO EL PATH: %s\n", path_completo);
 
                 crear_estructuras(path_completo, path->PID);
-                
+                int se_crearon_estructuras = 1;
+                send(socket_kernel, &se_crearon_estructuras, sizeof(int), 0);
                 /*
                 printf("Antes del sem_post\n");
                 sem_post(&sem_cargo_instrucciones); // CREO que va aca

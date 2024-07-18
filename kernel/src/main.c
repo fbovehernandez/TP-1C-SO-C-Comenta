@@ -35,6 +35,7 @@ int main(int argc, char* argv[]) {
     sem_init(&sem_memoria_instruccion, 0, 0);
     sem_init(&sem_cargo_instrucciones, 0 ,0);
     sem_init(&sem_planificadores,0,1);
+    // sem_init(&sem_mostrar_menu, 0, 1);
     pthread_mutex_init(&mutex_lista_io, NULL);
     pthread_mutex_init(&mutex_cola_io_generica, NULL);
     pthread_mutex_init(&no_hay_nadie_en_cpu, NULL);
@@ -76,7 +77,7 @@ int main(int argc, char* argv[]) {
     // Levanto hilo para escuchar peticiones I/O
     pthread_t hilo_io;
     pthread_create(&hilo_io, NULL, (void*) escuchar_IO, (void*) kernel_io); 
-
+    
     pthread_t socket_escucha_consola;
     pthread_create(&socket_escucha_consola, NULL, (void*) interaccion_consola, NULL); 
 
@@ -90,6 +91,9 @@ int main(int argc, char* argv[]) {
     free(config_kernel);
     free(kernel_io);
     liberar_conexion(escucha_fd);   
-
+    
     return 0;
 }
+
+
+
