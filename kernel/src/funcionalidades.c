@@ -60,7 +60,7 @@ void *interaccion_consola() {
             "6- Listar procesos por estado\n"
             "7- Cambiar el grado de multiprogramacion\n"
             "8- Finalizar modulo\n"
-            "Seleccione una opción: ");
+            "Seleccione una opción: \n");
         
         if (input) {
             add_history(input);
@@ -117,6 +117,7 @@ void *interaccion_consola() {
                 break;
             case 8:
                 printf("Finalizacion del modulo\n");
+                // Hacer todo lo necesario para finalizar el modulo de manera feliz.
                 exit(1);
                 break;
             default:
@@ -140,13 +141,20 @@ void EJECUTAR_SCRIPT(char* path) {
     // Verificar si el archivo se abrió correctamente
     if (file == NULL) {
         printf("Error al abrir el archivo.\n");
+    } else {
+        aplicar_sobre_cada_linea_del_archivo(file, NULL, (void*) _ejecutarComando);
+        fclose(file);
     }
 
-    aplicar_sobre_cada_linea_del_archivo(file, NULL, (void*) _ejecutarComando);
-    
-    // Cerrar el archivo
-    fclose(file);
+    // free(path_local_kernel);
+    free(path_completo);
 }
+
+/* 
+Sin embargo, hay un problema en tu código. Estás asignando memoria para path_completo, pero luego estás asignando el resultado de 
+strcat(path_local_kernel, path) a path_completo. Esto causa una fuga de memoria porque pierdes la referencia a 
+la memoria que acabas de asignar a path_completo.
+*/
 
 void INICIAR_PROCESO(char* path_instrucciones) {
     int pid_actual = obtener_siguiente_pid();
@@ -231,6 +239,9 @@ void encolar_a_new(t_pcb *pcb) {
 void* a_ready() {
     while (1) {
         // Esperar a que haya un proceso en la cola -> Esto espera a que literalment haya uno
+
+        // FALTA SEMAFORO DE PLANIFICACION
+
         sem_wait(&sem_hay_pcb_esperando_ready); 
         log_info(logger_kernel, "Hay proceso esperando en la cola de NEW!\n");
 
@@ -265,11 +276,32 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
 
     while (1) {
         printf("Esperando a que haya un proceso para planificar\n");
-        if(sem_getvalue(&sem_hay_para_planificar, &valor_del_sem)) {
+        
+        /*
+        // no muestra la consola
+        sem_getvalue(&sem_hay_para_planificar, &valor_del_sem);
+
+        // Aca no entra nunca si es 0 el valor del semaforo
+        if(!valor_del_sem) { 
+            printf("entra aca sem_hay_para_planificar\n");
             // pthread_cancel(escucha_consola);
             // pthread_create(&escucha_consola, NULL, (void*) interaccion_consola, NULL); 
             interaccion_consola(); // mostrar la consola
-        }
+        }*/
+        
+        /************************************  facu  *****************************************/
+        // sem_wait(&puedo_planificar); -> Lo clavo aca para que no siga por mas de que haya proceso *DEBAJO* de el sem_hay_para_planificar
+        // Trabo tambien con un sem cuando vuelva de la CPU
+        // sem_wait(&puedo_planificar); -> Este mismo iria en el manejo de desalojo, si no puede planificar se queda trabado
+
+        // Para iniciar, le hago un post a ese semaforo
+        // Entiendo que con esto yo podria seguir usando todas las opciones, inclusive la opcion de ejecutar script e iniciar proceso, 
+        // pero no *PLANIFICARIA*? -> La idea es que no planifique? NO que no pueda crear un proceso
+        
+        // Tambien pausa el planificador a largo, por lo que si yo mato un proceso y va a EXIT, o creo uno y esta en NEW, deberia quedarse ahi
+        // Sem_wait(&puedo_planificar) -> EXIT, antes de pasar a exit, y en NEW, antes de pasar a ready, desbloquear en INICIAR_PLANI
+        /************************************    *****************************************/
+
         sem_wait(&sem_hay_para_planificar);
         printf("Hay un proceso para planificar\n");
     
@@ -538,7 +570,6 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             //free(pedido_lectura);
             break;
         case PEDIDO_ESCRITURA:
-            printf("LLEGO A PEDIDO ESCRITURAAAAAAAAAAAAAAAAAA");
             t_pedido* pedido_escritura = deserializar_pedido(package->buffer); // llega bien el nombre de la interfaz
             printf("NOMBRE PEDIDO ESCRITURA: %s", pedido_escritura->interfaz);
             encolar_datos_std(pcb, pedido_escritura);
@@ -1051,16 +1082,17 @@ void FINALIZAR_PROCESO(int pid) {
     
     if(pid == pcb_exec->pid) {
         printf("El proceso se encuentra en ejecucion\n");
-        send(sockets->socket_int, INTERRUPCION_FIN_USUARIO, sizeof(int), 0);
+        int temp = INTERRUPCION_FIN_USUARIO;
+        send(sockets->socket_int, &temp, sizeof(int), 0);
         recv(sockets->socket_int, &pcb, sizeof(t_pcb), MSG_WAITALL);
-    }else{
+    } else {
         printf("El proceso no esta en ejecucion, se va a sacar de alguna cola\n");
         t_queue* cola = encontrar_en_que_cola_esta(pid);
         if(cola == NULL){ // Esto quiere decir que esta en la cola exit
             printf("No se puede finalizar un proceso que esta en exit \n");
-            return NULL;
+        } else {
+            pcb = sacarDe(cola, pid);
         }
-        pcb = sacarDe(cola, pid);
     }
     
     pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
@@ -1071,14 +1103,14 @@ void FINALIZAR_PROCESO(int pid) {
 // Estaba todo borrado cuando llegue
 
 t_queue* encontrar_en_que_cola_esta(int pid) {
-    if(esta_en_cola_pid(cola_new,pid,&mutex_estado_new)) {
+    if(esta_en_cola_pid(cola_new, pid, &mutex_estado_new)) {
         return cola_new;
-    } else if(esta_en_cola_pid(cola_ready,pid,&mutex_estado_ready)) {
+    } else if(esta_en_cola_pid(cola_ready, pid, &mutex_estado_ready)) {
         sem_wait(&sem_hay_para_planificar);
         return cola_ready;
-    } else if(esta_en_cola_pid(cola_blocked,pid,&mutex_estado_blocked)) {
+    } else if(esta_en_cola_pid(cola_blocked, pid, &mutex_estado_blocked)) {
         return cola_blocked; // analizar si hay que sacarlo tmb de la cola de procesos bloqueados de una io
-    } else if(esta_en_cola_pid(cola_ready_plus,pid,&mutex_estado_ready_plus)){
+    } else if(esta_en_cola_pid(cola_ready_plus, pid, &mutex_estado_ready_plus)){
         return cola_ready_plus;
     } else{
         printf("Esta en cola exit\n");
@@ -1163,25 +1195,50 @@ pthread_mutex_t* obtener_mutex_de(t_queue* cola){
 }
 
 void INICIAR_PLANIFICACION() {
-    if(!planificacion_pausada){
+    if(!planificacion_pausada) {
         printf("La planificacion no esta pausada\n");
         return;
     } 
+    
+    planificacion_pausada = false;
     sem_post(&sem_planificadores);
+    /*
+    // destrabamos toda la ejecucion 
+    pthread_mutex_unlock(&mutex_estado_new);
+    pthread_mutex_unlock(&mutex_estado_ready);
+    pthread_mutex_unlock(&mutex_estado_ready_plus);
+    pthread_mutex_unlock(&mutex_estado_blocked);
+    pthread_mutex_unlock(&mutex_estado_exit);*/
 }
 
+/*
+Detener planificación: Este mensaje se encargará de pausar la planificación de corto y largo plazo. El proceso que se encuentra en ejecución NO es desalojado, 
+pero una vez que salga de EXEC se va a pausar el manejo de su motivo de desalojo. De la misma forma, los procesos bloqueados van a pausar su transición a la 
+cola de Ready.
+*/
+
 void DETENER_PLANIFICACION() {
-    if(planificacion_pausada){
+    if(planificacion_pausada) {
         printf("La planificacion ya esta detenida\n");
         return;
     }
-    printf("Deteniendo planificaciones\n");    
+    
+    planificacion_pausada = true;
+    printf("Deteniendo planificaciones\n");   
+    /*
+    // trabamos toda la ejecucion 
+    pthread_mutex_lock(&mutex_estado_new);
+    pthread_mutex_lock(&mutex_estado_ready);
+    pthread_mutex_lock(&mutex_estado_ready_plus);
+    pthread_mutex_lock(&mutex_estado_blocked);
+    pthread_mutex_lock(&mutex_estado_exit);
+    */
     // SE QUEDA TRABADO  EN SCRIPT
     /*
     SOLUCION que vi  enn un issue
     - hacer un hilo con el semaforo de abajo
     */
-    sem_wait(&sem_planificadores); // corto y largo plazo
+    sem_wait(&sem_planificadores); // traba planificador de corto y largo plazo
 }
 
 void MULTIPROGRAMACION(int valor) {

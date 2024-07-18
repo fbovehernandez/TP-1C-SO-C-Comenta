@@ -1,77 +1,3 @@
-
-[INFO] 14:15:11:470 LOGGER/(22121:22127): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 14:15:11:472 LOGGER/(22121:22127): Cola Ready: 
-
-[INFO] 14:15:11:470 LOGGER/(22121:22130): Se crea el proceso: 2 en NEW
-[INFO] 14:15:11:476 LOGGER/(22121:22127): Hay proceso esperando en la cola de NEW!
-
-[INFO] 14:15:11:476 LOGGER/(22121:22127): Grado de multiprogramación permite agregar proceso a ready
-
-[INFO] 14:15:11:476 LOGGER/(22121:22127): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 14:15:11:477 LOGGER/(22121:22127): Cola Ready: 
-
-[INFO] 14:15:11:478 LOGGER/(22121:22128): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 14:15:13:521 LOGGER/(22121:22128): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 14:15:15:539 LOGGER/(22121:22128): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 14:15:15:540 LOGGER/(22121:22128): PID: 1 - Bloqueado por: RA
-[INFO] 14:15:15:541 LOGGER/(22121:22128): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 14:15:17:550 LOGGER/(22121:22128): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 14:18:40:922 LOGGER/(23727:23727): Conexion establecida con Memoria
-[INFO] 14:18:40:948 LOGGER/(23727:23727): Conexion establecida con Dispatcher
-[INFO] 14:18:40:950 LOGGER/(23727:23727): Conexion establecida con Interrupt
-[INFO] 14:18:40:988 LOGGER/(23727:23727): Servidor iniciado, esperando conexiones!
-[INFO] 14:18:51:316 LOGGER/(23727:23743): Se crea el proceso: 1 en NEW
-[INFO] 14:18:51:317 LOGGER/(23727:23740): Hay proceso esperando en la cola de NEW!
-
-[INFO] 14:18:51:318 LOGGER/(23727:23740): Grado de multiprogramación permite agregar proceso a ready
-
-[INFO] 14:18:51:319 LOGGER/(23727:23740): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 14:18:51:321 LOGGER/(23727:23740): Cola Ready: 
-
-[INFO] 14:18:51:332 LOGGER/(23727:23741): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 14:19:10:441 LOGGER/(23727:23741): Finaliza el proceso 1 - Motivo: SUCCESS
-[INFO] 14:19:10:442 LOGGER/(23727:23741): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 14:19:58:005 LOGGER/(23727:23743): Se crea el proceso: 2 en NEW
-[INFO] 14:19:58:016 LOGGER/(23727:23740): Hay proceso esperando en la cola de NEW!
-
-[INFO] 14:19:58:017 LOGGER/(23727:23740): Grado de multiprogramación permite agregar proceso a ready
-
-[INFO] 14:19:58:017 LOGGER/(23727:23740): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 14:19:58:017 LOGGER/(23727:23740): Cola Ready: 
-
-[INFO] 14:19:58:017 LOGGER/(23727:23741): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 14:20:07:034 LOGGER/(23727:23741): Finaliza el proceso 2 - Motivo: SUCCESS
-[INFO] 14:20:07:034 LOGGER/(23727:23741): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 14:29:01:146 LOGGER/(25165:25165): Conexion establecida con Memoria
-[INFO] 14:29:01:175 LOGGER/(25165:25165): Conexion establecida con Dispatcher
-[INFO] 14:29:01:177 LOGGER/(25165:25165): Conexion establecida con Interrupt
-[INFO] 14:29:01:222 LOGGER/(25165:25165): Servidor iniciado, esperando conexiones!
-[INFO] 14:29:16:884 LOGGER/(25165:25177): Se crea el proceso: 1 en NEW
-[INFO] 14:29:16:889 LOGGER/(25165:25168): Hay proceso esperando en la cola de NEW!
-
-[INFO] 14:29:16:890 LOGGER/(25165:25168): Grado de multiprogramación permite agregar proceso a ready
-
-[INFO] 14:29:16:891 LOGGER/(25165:25168): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 14:29:16:892 LOGGER/(25165:25168): Cola Ready: 
-
-[INFO] 14:29:16:893 LOGGER/(25165:25177): Se crea el proceso: 2 en NEW
-[INFO] 14:29:16:898 LOGGER/(25165:25177): Se crea el proceso: 3 en NEW
-[INFO] 14:29:16:903 LOGGER/(25165:25170): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 14:29:16:905 LOGGER/(25165:25168): Hay proceso esperando en la cola de NEW!
-
-[INFO] 14:29:16:906 LOGGER/(25165:25168): Grado de multiprogramación permite agregar proceso a ready
-
-[INFO] 14:29:16:907 LOGGER/(25165:25168): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 14:29:16:907 LOGGER/(25165:25168): Cola Ready: 
-
-[INFO] 14:29:16:907 LOGGER/(25165:25168): Hay proceso esperando en la cola de NEW!
-
-[INFO] 14:29:16:908 LOGGER/(25165:25168): Grado de multiprogramación permite agregar proceso a ready
-
-[INFO] 14:29:16:908 LOGGER/(25165:25168): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 14:29:16:908 LOGGER/(25165:25168): Cola Ready: 
-
-[INFO] 14:29:36:205 LOGGER/(25165:25170): Finaliza el proceso 1 - Motivo: SUCCESS
 [INFO] 14:29:36:205 LOGGER/(25165:25170): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
 [INFO] 14:29:36:206 LOGGER/(25165:25170): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
 [INFO] 14:29:45:235 LOGGER/(25165:25170): Finaliza el proceso 2 - Motivo: SUCCESS
@@ -192,3 +118,166 @@
 [INFO] 14:59:27:239 LOGGER/(30840:30843): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
 [INFO] 14:59:36:312 LOGGER/(30840:30843): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
 [INFO] 14:59:36:313 LOGGER/(30840:30843): Finaliza el proceso 3 - Motivo: SUCCESS
+[INFO] 15:16:54:736 LOGGER/(32284:32284): Conexion establecida con Memoria
+[INFO] 15:16:54:773 LOGGER/(32284:32284): Conexion establecida con Dispatcher
+[INFO] 15:16:54:774 LOGGER/(32284:32284): Conexion establecida con Interrupt
+[INFO] 15:16:54:810 LOGGER/(32284:32284): Servidor iniciado, esperando conexiones!
+[INFO] 15:16:59:172 LOGGER/(32284:32289): Se crea el proceso: 1 en NEW
+[INFO] 15:16:59:174 LOGGER/(32284:32286): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:16:59:174 LOGGER/(32284:32286): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 15:16:59:177 LOGGER/(32284:32286): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:16:59:179 LOGGER/(32284:32286): Cola Ready: 1 
+
+[INFO] 15:16:59:185 LOGGER/(32284:32289): Se crea el proceso: 2 en NEW
+[INFO] 15:16:59:187 LOGGER/(32284:32287): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:16:59:187 LOGGER/(32284:32286): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:16:59:193 LOGGER/(32284:32286): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 15:16:59:193 LOGGER/(32284:32286): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:16:59:193 LOGGER/(32284:32286): Cola Ready: 2 
+
+[INFO] 15:16:59:196 LOGGER/(32284:32289): Se crea el proceso: 3 en NEW
+[INFO] 15:16:59:200 LOGGER/(32284:32286): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:16:59:201 LOGGER/(32284:32286): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 15:16:59:201 LOGGER/(32284:32286): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:16:59:201 LOGGER/(32284:32286): Cola Ready: 2 3 
+
+[INFO] 15:17:18:339 LOGGER/(32284:32287): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:17:18:340 LOGGER/(32284:32287): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 15:17:18:340 LOGGER/(32284:32287): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:17:27:374 LOGGER/(32284:32287): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:17:27:374 LOGGER/(32284:32287): Finaliza el proceso 2 - Motivo: SUCCESS
+[INFO] 15:17:27:374 LOGGER/(32284:32287): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:17:36:407 LOGGER/(32284:32287): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:17:36:407 LOGGER/(32284:32287): Finaliza el proceso 3 - Motivo: SUCCESS
+[INFO] 15:19:47:790 LOGGER/(33369:33369): Conexion establecida con Memoria
+[INFO] 15:19:47:816 LOGGER/(33369:33369): Conexion establecida con Dispatcher
+[INFO] 15:19:47:827 LOGGER/(33369:33369): Conexion establecida con Interrupt
+[INFO] 15:19:47:933 LOGGER/(33369:33369): Servidor iniciado, esperando conexiones!
+[INFO] 15:22:06:571 LOGGER/(33848:33848): Conexion establecida con Memoria
+[INFO] 15:22:06:627 LOGGER/(33848:33848): Conexion establecida con Dispatcher
+[INFO] 15:22:06:628 LOGGER/(33848:33848): Conexion establecida con Interrupt
+[INFO] 15:22:06:666 LOGGER/(33848:33848): Servidor iniciado, esperando conexiones!
+[INFO] 15:22:11:369 LOGGER/(33848:33853): Se crea el proceso: 1 en NEW
+[INFO] 15:22:11:371 LOGGER/(33848:33850): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:22:11:373 LOGGER/(33848:33850): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 15:22:11:375 LOGGER/(33848:33850): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:22:11:377 LOGGER/(33848:33850): Cola Ready: 1 
+
+[INFO] 15:22:11:378 LOGGER/(33848:33853): Se crea el proceso: 2 en NEW
+[INFO] 15:22:11:379 LOGGER/(33848:33851): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:22:11:379 LOGGER/(33848:33850): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:22:11:382 LOGGER/(33848:33850): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 15:22:11:382 LOGGER/(33848:33850): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:22:11:383 LOGGER/(33848:33850): Cola Ready: 2 
+
+[INFO] 15:22:11:388 LOGGER/(33848:33853): Se crea el proceso: 3 en NEW
+[INFO] 15:22:11:391 LOGGER/(33848:33850): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:22:11:392 LOGGER/(33848:33850): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 15:22:11:392 LOGGER/(33848:33850): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:22:11:393 LOGGER/(33848:33850): Cola Ready: 2 3 
+
+[INFO] 15:22:30:471 LOGGER/(33848:33851): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:22:30:471 LOGGER/(33848:33851): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 15:25:59:643 LOGGER/(34688:34688): Conexion establecida con Memoria
+[INFO] 15:25:59:674 LOGGER/(34688:34688): Conexion establecida con Dispatcher
+[INFO] 15:25:59:678 LOGGER/(34688:34688): Conexion establecida con Interrupt
+[INFO] 15:25:59:857 LOGGER/(34688:34688): Servidor iniciado, esperando conexiones!
+[INFO] 15:33:39:732 LOGGER/(35802:35802): Conexion establecida con Memoria
+[INFO] 15:33:39:775 LOGGER/(35802:35802): Conexion establecida con Dispatcher
+[INFO] 15:33:39:777 LOGGER/(35802:35802): Conexion establecida con Interrupt
+[INFO] 15:33:39:815 LOGGER/(35802:35802): Servidor iniciado, esperando conexiones!
+[INFO] 15:36:08:663 LOGGER/(36602:36602): Conexion establecida con Memoria
+[INFO] 15:36:08:689 LOGGER/(36602:36602): Conexion establecida con Dispatcher
+[INFO] 15:36:08:690 LOGGER/(36602:36602): Conexion establecida con Interrupt
+[INFO] 15:36:08:726 LOGGER/(36602:36602): Servidor iniciado, esperando conexiones!
+[INFO] 15:36:12:971 LOGGER/(36602:36607): Se crea el proceso: 1 en NEW
+[INFO] 15:36:12:973 LOGGER/(36602:36604): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:36:12:975 LOGGER/(36602:36604): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 15:36:12:976 LOGGER/(36602:36604): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:36:12:978 LOGGER/(36602:36604): Cola Ready: 1 
+
+[INFO] 15:36:12:981 LOGGER/(36602:36607): Se crea el proceso: 2 en NEW
+[INFO] 15:36:12:982 LOGGER/(36602:36604): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:36:12:983 LOGGER/(36602:36605): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:36:12:992 LOGGER/(36602:36607): Se crea el proceso: 3 en NEW
+[INFO] 15:38:14:779 LOGGER/(37063:37063): Conexion establecida con Memoria
+[INFO] 15:38:14:805 LOGGER/(37063:37063): Conexion establecida con Dispatcher
+[INFO] 15:38:14:806 LOGGER/(37063:37063): Conexion establecida con Interrupt
+[INFO] 15:38:14:846 LOGGER/(37063:37063): Servidor iniciado, esperando conexiones!
+[INFO] 15:38:19:416 LOGGER/(37063:37068): Se crea el proceso: 1 en NEW
+[INFO] 15:38:19:417 LOGGER/(37063:37065): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:38:19:417 LOGGER/(37063:37065): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 15:38:19:418 LOGGER/(37063:37065): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:38:19:422 LOGGER/(37063:37065): Cola Ready: 1 
+
+[INFO] 15:38:19:434 LOGGER/(37063:37066): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:38:19:445 LOGGER/(37063:37068): Se crea el proceso: 2 en NEW
+[INFO] 15:38:19:447 LOGGER/(37063:37065): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:38:19:453 LOGGER/(37063:37065): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 15:38:19:453 LOGGER/(37063:37065): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:38:19:453 LOGGER/(37063:37065): Cola Ready: 2 
+
+[INFO] 15:38:19:456 LOGGER/(37063:37068): Se crea el proceso: 3 en NEW
+[INFO] 15:38:19:461 LOGGER/(37063:37065): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:38:19:461 LOGGER/(37063:37065): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 15:38:19:462 LOGGER/(37063:37065): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:38:19:462 LOGGER/(37063:37065): Cola Ready: 2 3 
+
+[INFO] 15:38:38:509 LOGGER/(37063:37066): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:38:38:509 LOGGER/(37063:37066): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 15:38:38:511 LOGGER/(37063:37066): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:38:47:540 LOGGER/(37063:37066): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:38:47:540 LOGGER/(37063:37066): Finaliza el proceso 2 - Motivo: SUCCESS
+[INFO] 15:38:47:541 LOGGER/(37063:37066): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:38:56:565 LOGGER/(37063:37066): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:38:56:565 LOGGER/(37063:37066): Finaliza el proceso 3 - Motivo: SUCCESS
+[INFO] 15:43:34:507 LOGGER/(38018:38018): Conexion establecida con Memoria
+[INFO] 15:43:34:532 LOGGER/(38018:38018): Conexion establecida con Dispatcher
+[INFO] 15:43:34:536 LOGGER/(38018:38018): Conexion establecida con Interrupt
+[INFO] 15:43:34:573 LOGGER/(38018:38018): Servidor iniciado, esperando conexiones!
+[INFO] 15:43:51:715 LOGGER/(38018:38024): Se crea el proceso: 1 en NEW
+[INFO] 15:43:51:717 LOGGER/(38018:38021): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:43:51:717 LOGGER/(38018:38021): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 15:43:51:719 LOGGER/(38018:38021): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:43:51:723 LOGGER/(38018:38021): Cola Ready: 1 
+
+[INFO] 15:43:51:723 LOGGER/(38018:38024): Se crea el proceso: 2 en NEW
+[INFO] 15:43:51:726 LOGGER/(38018:38021): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:43:51:726 LOGGER/(38018:38021): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 15:43:51:726 LOGGER/(38018:38021): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:43:51:726 LOGGER/(38018:38021): Cola Ready: 1 2 
+
+[INFO] 15:43:51:726 LOGGER/(38018:38024): Se crea el proceso: 3 en NEW
+[INFO] 15:43:51:729 LOGGER/(38018:38021): Hay proceso esperando en la cola de NEW!
+
+[INFO] 15:43:51:730 LOGGER/(38018:38022): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:51:733 LOGGER/(38018:38021): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 15:43:51:736 LOGGER/(38018:38021): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:43:51:736 LOGGER/(38018:38021): Cola Ready: 2 3 
+
