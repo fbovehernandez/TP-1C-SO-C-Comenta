@@ -40,73 +40,91 @@ t_temporal* timer;
 int ms_transcurridos;
 bool planificacion_pausada;
 
-void *interaccion_consola() { //no se si deberian pasarse los sockets
-    char *path_ejecutable = malloc(sizeof(char) * 100); // Cantidad?
+void *interaccion_consola() {
+    char *input;
+    char path_ejecutable[256];
     int respuesta = 0;
     int valor;
+    int pid_deseado_a_numero;
+
     while (respuesta != 8) {
-        printf("--------------- Consola interactiva Kernel ---------------\n");
-        printf("Elija una opcion (numero)\n");
-        printf("1- Ejecutar Script \n");
-        printf("2- Iniciar proceso\n");
-        printf("3- Finalizar proceso\n");
-        printf("4- Iniciar planificacion\n");
-        printf("5- Detener planificacion\n");
-        printf("6- Listar procesos por estado\n");
-        printf("7- Cambiar el grado de multiprogramacion\n");
-        printf("8- Finalizar modulo\n");
-        scanf("%d", &respuesta);
-        // /script_solo_cpu_1
-        // /script_io_basico_1
-        // /script_solo_cpu_3
-        // /script_1
+        input = readline(
+            "--------------- Consola interactiva Kernel ---------------\n"
+            "Elija una opcion (numero):\n"
+            "1- Ejecutar Script\n"
+            "2- Iniciar proceso\n"
+            "3- Finalizar proceso\n"
+            "4- Iniciar planificacion\n"
+            "5- Detener planificacion\n"
+            "6- Listar procesos por estado\n"
+            "7- Cambiar el grado de multiprogramacion\n"
+            "8- Finalizar modulo\n"
+            "Seleccione una opción: ");
+        
+        if (input) {
+            add_history(input);
+            respuesta = atoi(input);
+            free(input);
+
         switch (respuesta) {
-        case 1:
-            printf("Ingrese el path del script a ejecutar %s\n", path_ejecutable);
-            scanf("%s", path_ejecutable);
-            EJECUTAR_SCRIPT(path_ejecutable);
-            break;
-        case 2:
-            printf("Ingrese el path del script a ejecutar %s\n", path_ejecutable);
-            scanf("%s", path_ejecutable);
-            INICIAR_PROCESO(path_ejecutable); // Ver problemas con caracteres como _ o /
-
-            // INICIAR_PROCESO("/script_io_basico_1", sockets);
-
-            // home/utnso/c-comenta/pruebas -> Esto tendria en memoria y lo uno con este que le mando -> Ver sockets como variable global
-            break;
-        case 3:
-            // char* pid_deseado;
-            int pid_deseado_a_numero;
-            printf("Ingrese el pid del proceso que quiere finalizar\n");
-            scanf("%d", &pid_deseado_a_numero);
-            //pid_deseado_a_numero = atoi(pid_deseado);
-            FINALIZAR_PROCESO(pid_deseado_a_numero);
-            break;
-        case 4:
-            INICIAR_PLANIFICACION(); // Esto depende del algoritmo vigente (FIFO, RR,VRR), se deben poder cambiar
-            break;
-        case 5:
-            DETENER_PLANIFICACION();
-            break;
-        case 6:
-            PROCESO_ESTADO();
-            break;
-        case 7:
-            printf("Ingrese grado de multiprogramacion a cambiar %d\n", valor);
-            scanf("%d",&valor);
-            MULTIPROGRAMACION(valor);
-            break;
-        case 8:
-            printf("Finalizacion del modulo\n");
-            exit(1);
-            break;
-        default:
-            break;
+            case 1:
+                input = readline("Ingrese el path del script a ejecutar: ");
+                if (input) {
+                    add_history(input);
+                    strncpy(path_ejecutable, input, sizeof(path_ejecutable) - 1);
+                    path_ejecutable[sizeof(path_ejecutable) - 1] = '\0';
+                    free(input);
+                    EJECUTAR_SCRIPT(path_ejecutable);
+                }
+                break;
+            case 2:
+                input = readline("Ingrese el path del script a ejecutar: ");
+                if (input) {
+                    add_history(input);
+                    strncpy(path_ejecutable, input, sizeof(path_ejecutable) - 1);
+                    path_ejecutable[sizeof(path_ejecutable) - 1] = '\0';
+                    free(input);
+                    INICIAR_PROCESO(path_ejecutable);
+                }
+                break;
+            case 3:
+                input = readline("Ingrese el pid del proceso que quiere finalizar: ");
+                if (input) {
+                    add_history(input);
+                    pid_deseado_a_numero = atoi(input);
+                    free(input);
+                    FINALIZAR_PROCESO(pid_deseado_a_numero);
+                }
+                break;
+            case 4:
+                INICIAR_PLANIFICACION();
+                break;
+            case 5:
+                DETENER_PLANIFICACION();
+                break;
+            case 6:
+                PROCESO_ESTADO();
+                break;
+            case 7:
+                input = readline("Ingrese grado de multiprogramacion a cambiar: ");
+                if (input) {
+                    add_history(input);
+                    valor = atoi(input);
+                    free(input);
+                    MULTIPROGRAMACION(valor);
+                }
+                break;
+            case 8:
+                printf("Finalizacion del modulo\n");
+                exit(1);
+                break;
+            default:
+                printf("Opción no válida. Intente nuevamente.\n");
+                break;
+            }
         }
-    }
+    }                                   
 
-    free(path_ejecutable);
     return NULL;
 }
 
@@ -1191,7 +1209,7 @@ void imprimir_diccionario_recursos() {
 void FINALIZAR_PROCESO(int pid) {
     printf("Se ejecuta finalizar proceso\n");
     printf("el pid recibido es: %d\n", pid);
-    t_pcb* pcb;
+    t_pcb* pcb = malloc(sizeof(t_pcb));
     
     if(pid == pcb_exec->pid) {
         printf("El proceso se encuentra en ejecucion\n");
@@ -1204,7 +1222,8 @@ void FINALIZAR_PROCESO(int pid) {
         pcb = sacarDe(cola, pid);
     }
     
-    pasar_a_exit(pcb);    
+    pasar_a_exit(pcb);
+    free(pcb);
 }
 
 

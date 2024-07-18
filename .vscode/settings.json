@@ -8,7 +8,10 @@
         "log.h": "c",
         "string.h": "c",
         "stdio.h": "c",
-        "queue.h": "c"
+        "queue.h": "c",
+        "conexiones.h": "c",
+        "stdlib.h": "c",
+        "readline.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

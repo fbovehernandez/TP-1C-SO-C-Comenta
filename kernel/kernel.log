@@ -73,3 +73,31 @@
 [INFO] 19:54:50:664 LOGGER/(20584:20584): Conexion establecida con Dispatcher
 [INFO] 19:54:50:667 LOGGER/(20584:20584): Conexion establecida con Interrupt
 [INFO] 19:54:50:708 LOGGER/(20584:20584): Servidor iniciado, esperando conexiones!
+[INFO] 12:24:57:420 LOGGER/(3675:3675): Conexion establecida con Memoria
+[INFO] 12:24:57:448 LOGGER/(3675:3675): Conexion establecida con Dispatcher
+[INFO] 12:24:57:456 LOGGER/(3675:3675): Conexion establecida con Interrupt
+[INFO] 12:24:57:491 LOGGER/(3675:3675): Servidor iniciado, esperando conexiones!
+[INFO] 12:25:16:295 LOGGER/(3675:3691): Se crea el proceso: 1 en NEW
+[INFO] 12:25:16:300 LOGGER/(3675:3688): Hay proceso esperando en la cola de NEW!
+
+[INFO] 12:25:21:305 LOGGER/(3675:3691): Se crea el proceso: 2 en NEW
+[INFO] 12:25:26:315 LOGGER/(3675:3691): Se crea el proceso: 3 en NEW
+[INFO] 12:29:46:953 LOGGER/(4599:4599): Conexion establecida con Memoria
+[INFO] 12:29:46:978 LOGGER/(4599:4599): Conexion establecida con Dispatcher
+[INFO] 12:29:46:980 LOGGER/(4599:4599): Conexion establecida con Interrupt
+[INFO] 12:29:47:014 LOGGER/(4599:4599): Servidor iniciado, esperando conexiones!
+[INFO] 12:30:04:786 LOGGER/(4599:4605): Se crea el proceso: 1 en NEW
+[INFO] 12:30:04:788 LOGGER/(4599:4602): Hay proceso esperando en la cola de NEW!
+
+[INFO] 12:30:09:792 LOGGER/(4599:4605): Se crea el proceso: 2 en NEW
+[INFO] 12:30:14:795 LOGGER/(4599:4605): Se crea el proceso: 3 en NEW
+[INFO] 12:34:28:192 LOGGER/(5917:5917): Conexion establecida con Memoria
+[INFO] 12:34:28:232 LOGGER/(5917:5917): Conexion establecida con Dispatcher
+[INFO] 12:34:28:234 LOGGER/(5917:5917): Conexion establecida con Interrupt
+[INFO] 12:34:28:284 LOGGER/(5917:5917): Servidor iniciado, esperando conexiones!
+[INFO] 12:34:46:686 LOGGER/(5917:5922): Se crea el proceso: 1 en NEW
+[INFO] 12:34:46:691 LOGGER/(5917:5919): Hay proceso esperando en la cola de NEW!
+
+[INFO] 12:34:51:695 LOGGER/(5917:5922): Se crea el proceso: 2 en NEW
+[INFO] 12:34:56:706 LOGGER/(5917:5922): Se crea el proceso: 3 en NEW
+[INFO] 12:35:02:579 LOGGER/(5917:5922): PID: 2 - Estado Anterior: NEW - Estado Actual: EXIT
