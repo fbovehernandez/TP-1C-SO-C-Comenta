@@ -111,6 +111,7 @@ typedef enum {
     ERROR_STDIN,
     FS_CREATE,
     FS_DELETE,
+    OUT_OF_MEMORY
     //LECTURA_FS,
     //ESCRITURA_FS
 } DesalojoCpu;
@@ -150,7 +151,6 @@ typedef enum {
     ESCRIBIR_DATO_EN_MEM,
     RESIZE_MEMORIA,
     COPY_STRING_MEMORIA,
-    OUT_OF_MEMORY,
     LEETE,
     RECIBI_VALOR_OK,
     GUARDAR_VALOR,

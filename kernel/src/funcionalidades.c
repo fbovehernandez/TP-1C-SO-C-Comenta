@@ -7,6 +7,7 @@ int grado_multiprogramacion;
 int quantum_config;
 int contador_pid = 0;
 int client_dispatch;
+pthread_t escucha_consola;
 
 pthread_mutex_t mutex_estado_new;
 pthread_mutex_t mutex_estado_ready;
@@ -254,6 +255,7 @@ void* a_ready() {
 
 void *planificar_corto_plazo(void *sockets_necesarios) {
     pthread_t hilo_quantum;
+    int valor_del_sem = 0;
 
     t_sockets *sockets = (t_sockets *)sockets_necesarios;
     t_pcb *pcb;
@@ -263,6 +265,11 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
 
     while (1) {
         printf("Esperando a que haya un proceso para planificar\n");
+        if(sem_getvalue(&sem_hay_para_planificar, &valor_del_sem)) {
+            // pthread_cancel(escucha_consola);
+            // pthread_create(&escucha_consola, NULL, (void*) interaccion_consola, NULL); 
+            interaccion_consola(); // mostrar la consola
+        }
         sem_wait(&sem_hay_para_planificar);
         printf("Hay un proceso para planificar\n");
     
@@ -480,13 +487,17 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     sem_wait(&sem_planificadores);
     emitir_mensaje_estado_planificacion();
 
+    pcb_exec = NULL;
+
     switch (devolucion_cpu) {
         case ERROR_STDOUT || ERROR_STDIN:
-            pasar_a_exit(pcb);
+            pasar_a_exit(pcb, "INVALID_INTERFACE");
             // free(pcb);
             break;
+        case OUT_OF_MEMORY:
+            pasar_a_exit(pcb, "OUT OF MEMORY");
+            break;
         case INTERRUPCION_QUANTUM:
-            printf("Volvio a ready por interrupción de quantum\n");
             log_info(logger_kernel, "PID: %d - Desalojado por fin de Quantum", pcb->pid);
             pasar_a_ready(pcb);
             break;
@@ -508,8 +519,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             break;
         case FIN_PROCESO:
             // pcb = deserializar_pcb(package->buffer); 
-            log_info(logger_kernel, "Finaliza el proceso %d - Motivo: SUCCESS", pcb->pid);
-            pasar_a_exit(pcb);
+            pasar_a_exit(pcb, "SUCCESS");
             //liberar_memoria(pcb->pid); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
             //change_status(pcb, EXIT); 
             //sem_post(&sem_grado_multiprogramacion); // Esto deberia liberar un grado de memoria para que acceda un proceso
@@ -595,8 +605,7 @@ t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre) {
         }
         return interfaz;
     } else {
-        log_info(logger_kernel, "Finaliza el proceso %d - Motivo: INVALID_INTERFACE", pcb->pid);
-        pasar_a_exit(pcb);
+        pasar_a_exit(pcb, "INVALID_INTERFACE");
         return NULL;
     }
 }
@@ -853,7 +862,6 @@ t_list_io* validar_io(t_operacion_io* io, t_pcb* pcb) {
     t_list_io* elemento_encontrado = dictionary_get(diccionario_io, io->nombre_interfaz);
 
     if(elemento_encontrado == NULL || elemento_encontrado->TipoInterfaz != GENERICA) { // Deberia ser global
-        // pasar_a_exit(pcb);
         pthread_mutex_unlock(&mutex_lista_io);
         printf("No existe la io o no admite operacion\n");
     } else { 
@@ -867,7 +875,7 @@ t_list_io* validar_io(t_operacion_io* io, t_pcb* pcb) {
 
 // Esta podria ser la funcion generica y pasarle el codOP por parametro
 
-// Aca se desarma el path y se obtienen las instrucciones y se le pasan a memoria para que esta lo guarde en su tabla de paginas de este proceso
+// Funcion para crear un nuevo PCB.
 t_pcb *crear_nuevo_pcb(int pid){
     t_pcb *pcb = malloc(sizeof(t_pcb));
     t_registros* registros_pcb = malloc(sizeof(t_registros));
@@ -881,69 +889,6 @@ t_pcb *crear_nuevo_pcb(int pid){
 
     return pcb;
 }
-
-/* 
-void* recibir_peticion_de_cpu() {
-    // recibiremos la instruccion
-}
-
-typedef struct {    
-    char* instruccion; 
-    int instruccion_length;  
-} t_peticion_io;
-
-
-void* enviar_peticion_a_io(instruccion) {
-    t_peticion_io peticion = {
-        instruccion = ;
-        instruccion_length = instruccion.length();
-    }
-    
-    serializar_peticion(peticion);
-}
-
-void serializar_peticion(t_peticion_io* peticion){
-    t_buffer* buffer = malloc(sizeof(t_buffer));
-
-    buffer->size = sizeof(uint32_t) * 3 // DNI, Pasaporte y longitud del nombre
-                + sizeof(uint8_t) // Edad
-                + peticion.instruccion_length; // La longitud del string nombre.
-                                        // Le habíamos sumado 1 para enviar tambien el caracter centinela '\0'.
-                                        // Esto se podría obviar, pero entonces deberíamos agregar el centinela en el receptor.
-
-    buffer->offset = 0;
-    buffer->stream = malloc(buffer->size);
-
-    // Para la instruccion primero mandamos el tamaño y luego el texto en sí:
-    memcpy(stream + offset, &peticion.instruccion_length, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
-    memcpy(stream + offset, peticion.instruccion, peticion.instruccion_length);
-    // No tiene sentido seguir calculando el desplazamiento, ya ocupamos el buffer completo
-
-    buffer->stream = stream;
-
-    // Si usamos memoria dinámica para el nombre, y no la precisamos más, ya podemos liberarla:
-    free(peticion->instruccion);
-}
-*/
-/*
-void* escuchar_consola(int socket_kernel_escucha, t_config* config){
-    while(1) {
-
-        pthread_t thread_type;
-        int cliente_fd = esperar_cliente(socket_kernel_escucha);
-
-        void* funcion_recibir_cliente(void* cliente_fd){
-            log_info(_kernellogger_kernel, "Conectado con una consola");
-            recibir_cliente(cliente_fd, config);// post recibiendo perdemos las cosas
-            return NULL;
-        }
-        pthread_create(&thread_type, NULL, funcion_recibir_cliente, (void*) &cliente_fd);
-    }
-
-    return NULL;
-}
-*/
 
 void _ejecutarComando(void* _, char* linea_leida) {
     char comando[20]; 
@@ -974,58 +919,7 @@ void _ejecutarComando(void* _, char* linea_leida) {
     }
 }
 
-/* 
-t_operacion_io* deserializar_io(t_buffer* buffer) {
-    t_operacion_io* operacion_io = malloc(sizeof(t_operacion_io));
-
-    // Lo siguiente es el tamaño del pcb
-    void* stream = buffer->stream + sizeof(int) * 3 + sizeof(Estado) * 2 + sizeof(uint8_t) * 4 + sizeof(uint32_t) * 6;
-
-    // Deserializamos los campos que tenemos en el buffer
-    // stream += sizeof(t_pcb);
-    
-    memcpy(&(operacion_io->unidadesDeTrabajo), stream, sizeof(int));
-    stream += sizeof(int);
-
-    memcpy(&(operacion_io->nombre_interfaz_largo), stream, sizeof(int));
-    stream += sizeof(int);
-
-    operacion_io->nombre_interfaz = malloc(operacion_io->nombre_interfaz_largo); 
-
-    memcpy(operacion_io->nombre_interfaz, stream, operacion_io->nombre_interfaz_largo);
-    
-    printf("Interfaz (funcionalidades): %s\n", operacion_io->nombre_interfaz);
-    printf("Unidades de trabajo (unidades): %d\n", operacion_io->unidadesDeTrabajo);
-
-    return operacion_io;
-}
-*/
-
 t_parametro* deserializar_parametro(t_buffer* buffer) {
-    /*int largo_parametro;
-    
-    t_parametro* parametro = malloc(sizeof(t_parametro)); // sizeof(t_parametro)
-
-    void* stream = buffer->stream + sizeof(int) * 3 + sizeof(Estado) * 2 + sizeof(uint8_t) * 4 + sizeof(uint32_t) * 6;
-
-    if (stream >= buffer->stream + buffer->size) {
-        printf("No hay nada en el buffer\n");
-        return NULL;
-    }
-
-    memcpy(&largo_parametro, stream, sizeof(int));
-    stream += sizeof(int);
-
-    parametro->length = largo_parametro;
-    parametro->nombre = malloc(parametro->length);
-
-    memcpy(parametro->nombre, stream, parametro->length);
-
-    parametro->nombre[parametro->length] = '\0';
-    
-    printf("el nombre del parametro es %s\n", parametro->nombre);
-
-    return parametro; // free(parametro) y free(parametro->nombre)*/
     int largo_parametro;
     
     t_parametro* parametro = malloc(sizeof(t_parametro)); // sizeof(t_parametro)
@@ -1065,8 +959,7 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
             ejecutar_signal_recurso(recurso_obtenido,pcb);
         }
     } else {
-        log_info(logger_kernel,"Finaliza el proceso %d - Motivo: INVALID_RESOURCE", pcb->pid);
-        pasar_a_exit(pcb);
+        pasar_a_exit(pcb, "INVALID_RESOURCE");
     }
     
     imprimir_diccionario_recursos();
@@ -1159,7 +1052,6 @@ void FINALIZAR_PROCESO(int pid) {
     if(pid == pcb_exec->pid) {
         printf("El proceso se encuentra en ejecucion\n");
         send(sockets->socket_int, INTERRUPCION_FIN_USUARIO, sizeof(int), 0);
-        log_info(logger_kernel,"Finaliza el proceso %d - Motivo: INTERRUPTED_BY_USER", pid);
         recv(sockets->socket_int, &pcb, sizeof(t_pcb), MSG_WAITALL);
     }else{
         printf("El proceso no esta en ejecucion, se va a sacar de alguna cola\n");
@@ -1171,12 +1063,9 @@ void FINALIZAR_PROCESO(int pid) {
         pcb = sacarDe(cola, pid);
     }
     
-    pasar_a_exit(pcb);
+    pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
     free(pcb);
 }
-
-
-
 
 // TODO: Buscar en las colas_blocked de io
 // Estaba todo borrado cuando llegue
@@ -1311,20 +1200,20 @@ void MULTIPROGRAMACION(int valor) {
 void PROCESO_ESTADO() {
     printf("--------Listado de procesos--------\n");
     
-    printf("Procesos en new\n");
-    mostrar_cola_con_mutex(cola_new,&mutex_estado_new);
+    printf("Procesos en NEW\n");
+    mostrar_cola_con_mutex(cola_new, &mutex_estado_new);
     
     printf("Procesos en READY\n");
-    mostrar_cola_con_mutex(cola_ready,&mutex_estado_ready);
+    mostrar_cola_con_mutex(cola_ready, &mutex_estado_ready);
 
     printf("Procesos en READY+\n");
-    mostrar_cola_con_mutex(cola_ready_plus,&mutex_estado_ready_plus);
+    mostrar_cola_con_mutex(cola_ready_plus, &mutex_estado_ready_plus);
     
     printf("Procesos en BLOCKED\n");
-    mostrar_cola_con_mutex(cola_blocked,&mutex_estado_blocked);
+    mostrar_cola_con_mutex(cola_blocked, &mutex_estado_blocked);
 
     printf("Procesos en EXIT\n");
-    mostrar_cola_con_mutex(cola_exit,&mutex_estado_exit);
+    mostrar_cola_con_mutex(cola_exit, &mutex_estado_exit);
 
     printf("Proceso en EXEC\n");
     if(pcb_exec != NULL){
@@ -1430,143 +1319,6 @@ void* serializar_instrucciones(t_list* instrucciones, int size) {
 
     return stream;
 }*/
-/*
-
-void manejar_interrupcion(void *pcbElegida)
-{
-	log_info(logger, "Entrando a manejar interrupcion\n");
-	t_tipo_algoritmo algoritmo = obtenerAlgoritmo();
-	log_info(logger, "%d\n", algoritmo);
-	t_pcb *pcb = (t_pcb *)pcbElegida;
-	if (algoritmo == FEEDBACK)
-	{
-		log_info(logger, "pasar a ready aux");
-		pasar_a_ready_auxiliar(pcb);
-		sem_post(&sem_hay_pcb_lista_ready);
-	}
-	else if (algoritmo == RR)
-	{
-		log_info(logger, "El algoritmo obtenido es: %d\n", obtenerAlgoritmo());
-		log_info(logger, "cantidad de elementos en lista exec: %d\n", list_size(LISTA_EXEC));
-
-		pasar_a_ready(pcb);
-		log_info(logger, "cantidad de elementos en ready: %d\n", list_size(LISTA_READY));
-		sem_post(&sem_hay_pcb_lista_ready);
-		log_info(logger, "cantidad de elementos en ready: %d\n", list_size(LISTA_READY));
-	}
-	log_info(logger, "termine de manejar la interrupcion");
-}
-
-
-void planifCortoPlazo()
-{
-	while (1)
-	{
-		sem_wait(&sem_hay_pcb_lista_ready);
-		log_info(logger, "Llego pcb a plani corto plazo");
-		t_tipo_algoritmo algoritmo = obtenerAlgoritmo();
-
-		sem_wait(&contador_pcb_running);
-
-		switch (algoritmo)
-		{
-		case FIFO:
-			log_debug(logger, "Implementando algoritmo FIFO");
-			log_debug(logger, " Cola Ready FIFO:");
-			cargarListaReadyIdPCB(LISTA_READY);
-			implementar_fifo();
-
-			break;
-		case RR:
-			log_debug(logger, "Implementando algoritmo RR");
-			log_debug(logger, " Cola Ready RR:");
-			cargarListaReadyIdPCB(LISTA_READY);
-			implementar_rr();
-
-			break;
-		case FEEDBACK:
-			log_debug(logger, "Implementando algoritmo FEEDBACK");
-			implementar_feedback();
-
-			break;
-
-		default:
-			break;
-		}
-	}
-}
-
-void implementar_rr()
-{
-	t_pcb *pcb = algoritmo_fifo(LISTA_READY);
-
-	pthread_t thrTimer;
-
-	int hiloTimerCreado = pthread_create(&thrTimer, NULL, (void *)hilo_timer, NULL);
-
-	int detach = pthread_detach(thr/ /script_solo_cpu_1
-        // /script_io_basico_1
-        // /script_solo_cpu_3
-        // /script_1Timer);
-	log_info(logger, "se creo el hilo timer correctamente?: %d, %d\n ", hiloTimerCreado, detach);
-	hayTimer = true;
-	log_info(logger, "Agregando UN pcb a lista exec rr");
-	pasar_a_exec(pcb);
-	log_info(logger, "Cant de eleme/ /script_solo_cpu_1
-        // /script_io_basico_1
-        // /script_solo_cpu_3
-        // /script_1ntos de exec: %d\n", list_size(LISTA_EXEC));
-
-	log_debug(logger, "Estado Anterior: READY , proceso id: %d", pcb->id);
-	log_debug(logger, "Estado Actual: EXEC , proceso id: %d", pcb->id);
-
-	// Cambio de estado
-	log_info(loggerMinimo, "Cambio de Estado: PID %d - Estado Anterior: READY , Estado Actual: EXEC", pcb->id);
-
-	sem_post(&sem_timer);
-	sem_post(&sem_pasar_pcb_running);
-
-	log_info(logger, "Esperando matar el timer\n");
-	sem_wait(&sem_kill_trhread);
-
-	// pthread_cancel(thrTimer);
-
-	if (pthread_cancel(thrTimer) == 0)
-	{
-		log_info(logger, "Hilo cancelado con exito");
-	}
-	else
-	{
-		log_info(logger, "No mate el hilo");
-	}
-	log_warning(logger, "saliendo de RR\n");
-}
-
-void hilo_timer()
-{
-	sem_wait(&sem_timer);
-	log_info(logger, "voy a dormir, soy el timer\n");
-	usleep(configKernel.quantum * 1000);
-	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
-
-	log_info(logger, "me desperte!\/ /script_solo_cpu_1
-        // /script_io_basico_1
-        // /script_solo_cpu_3
-        // /script_1n");
-	sem_post(&sem_desalojar_pcb);
-
-	log_info(logger, "envie post desalojar pcb\n");
-}/ /script_solo_cpu_1
-        // /script_io_basico_1
-        // /script_solo_cpu_3
-        // /script_1
-
-t_pcb *algoritmo_fifo(t_list *lista)
-{
-	t_pcb *pcb = (t_pcb *)list_remove(lista, 0);
-	return pcb;
-}
-*/
 
 void mandar_a_escribir_a_memoria(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio){
     t_buffer* buffer = llenar_buffer_stdout(direccion_fisica, nombre_interfaz, tamanio);

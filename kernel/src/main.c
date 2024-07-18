@@ -78,10 +78,9 @@ int main(int argc, char* argv[]) {
     pthread_t hilo_io;
     pthread_create(&hilo_io, NULL, (void*) escuchar_IO, (void*) kernel_io); 
     
-    pthread_t socket_escucha_consola;
-    pthread_create(&socket_escucha_consola, NULL, (void*) interaccion_consola, NULL); 
+    pthread_create(&escucha_consola, NULL, (void*) interaccion_consola, NULL); 
 
-    pthread_join(socket_escucha_consola, NULL);
+    pthread_join(escucha_consola, NULL);
     pthread_join(pasar_a_ready, NULL);
     pthread_join(planificador_corto_plazo, NULL);
     pthread_join(hilo_io, NULL);

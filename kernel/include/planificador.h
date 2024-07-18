@@ -13,7 +13,7 @@
 void pasar_a_ready(t_pcb *pcb);
 void pasar_a_exec(t_pcb* pcb);
 void pasar_a_blocked(t_pcb* pcb);
-void pasar_a_exit(t_pcb* pcb);
+void pasar_a_exit(t_pcb* pcb, char* motivo_exit);
 void change_status(t_pcb* pcb, Estado new_status);
 void pasar_a_ready_plus(t_pcb* pcb);
 void pasar_a_ready_normal(t_pcb* pcb);

@@ -12,6 +12,8 @@
 #include <commons/collections/queue.h>
 #include <pthread.h>
 
+extern pthread_t escucha_consola;
+
 extern int client_dispatch;
 extern t_temporal* timer;
 extern int ms_transcurridos;

@@ -508,7 +508,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         if(devolucion_resize == 1) {
             printf("Che pibe, te quedaste sin memoria\n");
-            // desalojar(pcb, OUT_OF_MEMORY, NULL);
+            desalojar(pcb, OUT_OF_MEMORY, NULL);
             return 1;
         }
 

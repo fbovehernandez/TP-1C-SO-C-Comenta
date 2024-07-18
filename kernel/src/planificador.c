@@ -1,7 +1,6 @@
 #include "../include/funcionalidades.h"
 
 void change_status(t_pcb* pcb, Estado new_status) {
-    printf("El PID es %d, el Estado es %d\n", pcb->pid, new_status);
     pcb->estadoAnterior = pcb -> estadoActual;
     pcb->estadoActual   = new_status;
 
@@ -30,14 +29,10 @@ void pasar_a_ready_normal(t_pcb* pcb) {
     
     pthread_mutex_lock(&mutex_estado_ready);
     queue_push(cola_ready, (void *)pcb);
+    
+    char* pids = obtener_pid_de(cola_ready);
+    log_info(logger_kernel,"Cola Ready: %s\n", pids);
     pthread_mutex_unlock(&mutex_estado_ready);
-
-    /*
-    pthread_mutex_lock(&mutex_estado_ready);
-    pids = obtenerPidsDe(&cola_ready);
-    loggear_pids_de(pids);
-    pthread_mutex_unlock(&mutex_estado_ready);
-    */
 }
 
 void pasar_a_exec(t_pcb* pcb) {
@@ -59,8 +54,9 @@ void pasar_a_blocked(t_pcb* pcb) {
     pthread_mutex_unlock(&mutex_estado_blocked);
 }
 
-void pasar_a_exit(t_pcb* pcb) {
+void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
     change_status(pcb, EXIT);
+    log_info(logger_kernel, "Finaliza el proceso %d - Motivo: %s", pcb->pid, motivo_exit);
     // liberar_memoria(pcb->pid);
     
     if(pcb->estadoAnterior != NEW) {
@@ -73,31 +69,29 @@ void pasar_a_ready_plus(t_pcb* pcb){
     
     pthread_mutex_lock(&mutex_estado_ready_plus);
     queue_push(cola_ready_plus, (void *)pcb);
-    pthread_mutex_unlock(&mutex_estado_ready_plus);
 
-    pthread_mutex_lock(&mutex_estado_ready_plus);
     char* pids = obtener_pid_de(cola_ready_plus);
     log_info(logger_kernel,"Cola Ready Prioridad: %s\n", pids);
     pthread_mutex_unlock(&mutex_estado_ready_plus);
 }
 
-char* obtener_pid_de(t_queue* cola){
+char* obtener_pid_de(t_queue* cola){ //  OBLIGATORIO: Usar el mutex de la cola correspondiente antes de mandarlo
     t_queue* colaAux = queue_create(); 
-    t_pcb* pcbAux;
     char* pids = string_new();
 
-    while(!queue_is_empty(cola)){
-        pcbAux = queue_pop(cola);
-        string_append_with_format(&pids, "%d ", pcbAux->pid); 
-        queue_push(colaAux, pcbAux);
+    while(!queue_is_empty(cola)) {
+        t_pcb* pcbAux1 = queue_pop(cola);
+        string_append_with_format(&pids, "%d ", pcbAux1->pid); 
+        printf("Este es un pid READY: %d\n", pcbAux1->pid);
+        queue_push(colaAux, pcbAux1);
     }
 
     // Restaurar los elementos en la cola original
-    while(!queue_is_empty(colaAux)){
-        pcbAux = queue_pop(colaAux);
-        queue_push(cola, pcbAux);
+    while(!queue_is_empty(colaAux)) {
+        t_pcb* pcbAux2 = queue_pop(colaAux);
+        queue_push(cola, pcbAux2);
     }
-
+         
     queue_destroy(colaAux); 
     return pids;
 }
