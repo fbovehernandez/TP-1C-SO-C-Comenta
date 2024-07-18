@@ -20,6 +20,8 @@ void pasar_a_ready(t_pcb *pcb) {
         }
         pasar_a_ready_normal(pcb);
     }
+    
+    printf("llega hasta aca el PID: %d\n", pcb->pid);
     sem_post(&sem_hay_para_planificar);
 }
 
@@ -60,7 +62,10 @@ void pasar_a_blocked(t_pcb* pcb) {
 void pasar_a_exit(t_pcb* pcb) {
     change_status(pcb, EXIT);
     // liberar_memoria(pcb->pid);
-    sem_post(&sem_grado_multiprogramacion);
+    
+    if(pcb->estadoAnterior != NEW) {
+        sem_post(&sem_grado_multiprogramacion);
+    }
 }
 
 void pasar_a_ready_plus(t_pcb* pcb){

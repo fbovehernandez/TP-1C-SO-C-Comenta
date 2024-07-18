@@ -63,7 +63,6 @@ void *interaccion_consola() { //no se si deberian pasarse los sockets
         switch (respuesta) {
         case 1:
             printf("Ingrese el path del script a ejecutar %s\n", path_ejecutable);
-            
             scanf("%s", path_ejecutable);
             EJECUTAR_SCRIPT(path_ejecutable);
             break;
@@ -77,10 +76,12 @@ void *interaccion_consola() { //no se si deberian pasarse los sockets
             // home/utnso/c-comenta/pruebas -> Esto tendria en memoria y lo uno con este que le mando -> Ver sockets como variable global
             break;
         case 3:
-           // int pid_deseado;
+            // char* pid_deseado;
+            int pid_deseado_a_numero;
             printf("Ingrese el pid del proceso que quiere finalizar\n");
-            // scanf(&pid_deseado);
-            // FINALIZAR_PROCESO(pid_deseado);
+            scanf("%d", &pid_deseado_a_numero);
+            //pid_deseado_a_numero = atoi(pid_deseado);
+            FINALIZAR_PROCESO(pid_deseado_a_numero);
             break;
         case 4:
             INICIAR_PLANIFICACION(); // Esto depende del algoritmo vigente (FIFO, RR,VRR), se deben poder cambiar
@@ -184,7 +185,6 @@ void INICIAR_PROCESO(char* path_instrucciones) {
     int pid_actual = obtener_siguiente_pid();
     printf("El pid del proceso es: %d\n", pid_actual);
     // Primero envio el path de instruccion a memoria y luego el PCB...
-    
 
     emitir_mensaje_estado_planificacion();
     sem_wait(&sem_planificadores);
@@ -195,7 +195,7 @@ void INICIAR_PROCESO(char* path_instrucciones) {
     sleep(5);
 
     t_pcb *pcb = crear_nuevo_pcb(pid_actual); 
-    //   list_add(lista_procesos,pcb);
+    
     encolar_a_new(pcb);
     sem_post(&sem_planificadores);
 }
@@ -302,7 +302,7 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
         printf("Esperando a que haya un proceso para planificar\n");
         sem_wait(&sem_hay_para_planificar);
         printf("Hay un proceso para planificar\n");
-
+    
         pthread_mutex_lock(&no_hay_nadie_en_cpu);
         pcb = proximo_a_ejecutar();
         pasar_a_exec(pcb);
@@ -402,6 +402,7 @@ t_pcb *proximo_a_ejecutar() {
         pthread_mutex_unlock(&mutex_estado_ready);
     } else {
         log_info(logger_kernel,"No hay procesos para ejecutar.");
+        interaccion_consola();
     }
     sem_post(&sem_planificadores);
     return pcb;
@@ -1188,63 +1189,48 @@ void imprimir_diccionario_recursos() {
 }
 
 void FINALIZAR_PROCESO(int pid) {
-    
-    sem_wait(&sem_planificadores);
-    emitir_mensaje_estado_planificacion(); // esto es parte de detener planificacion
-
-   
-    t_queue* cola = encontrar_en_que_cola_esta(pid);
-    t_pcb* pcb = list_find(lista_procesos, (proceso\->proceso->pid == pid));
-    
-    sacarDe(cola, pcb);
-    pasar_a_exit(pcb);
-    
-    t_pcb* pcb = sacarPCBDeDondeEste(pid);
-    pasar_a_exit(pcb);
-
-    sem_post(&sem_planificadores);
-    
-    
-
-}
-
-
-t_pcb* sacarPCBDeDondeEste(int pid) {
+    printf("Se ejecuta finalizar proceso\n");
+    printf("el pid recibido es: %d\n", pid);
     t_pcb* pcb;
-
+    
     if(pid == pcb_exec->pid) {
-        send(socket_Int, &INTERRUPCION_FIN_PROCESO, sizeof(int), 0);
-        // TO DO: Diferenciar las distintas interrupciones, por ahora solo recibe una.
-        // Recibir pcb junto con motivo de desalojo
+        printf("El proceso se encuentra en ejecucion\n");
+        send(sockets->socket_int, INTERRUPCION_FIN_USUARIO, sizeof(int), 0);
         log_info(logger_kernel,"Finaliza el proceso %d - Motivo: INTERRUPTED_BY_USER", pid);
-        recv(socket_int, &pcb, sizeof(t_pcb), MSG_WAITALL);
-    } else {
+        recv(sockets->socket_int, &pcb, sizeof(t_pcb), MSG_WAITALL);
+    }else{
+        printf("El proceso no esta en ejecucion, se va a sacar de alguna cola\n");
         t_queue* cola = encontrar_en_que_cola_esta(pid);
         pcb = sacarDe(cola, pid);
     }
-
-    return pcb;
+    
+    pasar_a_exit(pcb);    
 }
+
+
+
+
+// TODO: Buscar en las colas_blocked de io
+// Estaba todo borrado cuando llegue
 
 t_queue* encontrar_en_que_cola_esta(int pid) {
     if(esta_en_cola_pid(cola_new,pid,&mutex_estado_new)) {
         return cola_new;
     } else if(esta_en_cola_pid(cola_ready,pid,&mutex_estado_ready)) {
+        sem_wait(&sem_hay_para_planificar);
         return cola_ready;
     } else if(esta_en_cola_pid(cola_blocked,pid,&mutex_estado_blocked)) {
-        //TO DO: Buscar en las colas_blocked de io
-        //Estaba todo borrado cuando llegue
-        return cola_blocked;
+        return cola_blocked; // analizar si hay que sacarlo tmb de la cola de procesos bloqueados de una io
     } else if(esta_en_cola_pid(cola_ready_plus,pid,&mutex_estado_ready_plus)){
         return cola_ready_plus;
-    }
+    } 
 }
+
 int esta_en_cola_pid(t_queue* cola, int pid, pthread_mutex_t* mutex) {
     t_queue* colaAux = queue_create();
     int esta_el_pid = 0;
     
-    pthread_mutex_lock(mutex); // Se que es una zona critica grande pero podria afectar nnegativamente si lo  pongo cada vez que hago push - pop
-
+    pthread_mutex_lock(mutex); // Se que es una zona critica grande pero podria afectar negativamente si lo  pongo cada vez que hago push - pop
     while (!queue_is_empty(cola)) {
         t_pcb* pcbAux = queue_pop(cola);
         
@@ -1260,7 +1246,6 @@ int esta_en_cola_pid(t_queue* cola, int pid, pthread_mutex_t* mutex) {
     while (!queue_is_empty(colaAux)) {
         queue_push(cola, queue_pop(colaAux));
     }
-
     pthread_mutex_unlock(mutex);
     
     queue_destroy(colaAux);
@@ -1271,18 +1256,51 @@ int esta_en_cola_pid(t_queue* cola, int pid, pthread_mutex_t* mutex) {
 t_pcb* sacarDe(t_queue* cola, int pid){
     t_pcb* pcb;
     t_queue* colaAux = queue_create();
+    
+    pthread_mutex_t* mutex = obtener_mutex_de(cola);
+
+    pthread_mutex_lock(mutex);
     while(!queue_is_empty(cola)){
         t_pcb* pcbAux = queue_pop(cola);
         if(pcbAux->pid != pid){
-            queue_push(colaAux,pcbAux); // POSIBLE MUTEX
+            queue_push(colaAux,pcbAux);
         } else {
             pcb = pcbAux;
         }
     }
-    cola = colaAux;   
+
+    while(!queue_is_empty(colaAux)){
+        queue_push(cola,queue_pop(colaAux));
+    }
+    pthread_mutex_unlock(mutex);
+
+    queue_destroy(colaAux);
+
     return pcb;
 }
 
+pthread_mutex_t* obtener_mutex_de(t_queue* cola){
+    
+    if(cola == cola_new) {
+        return &mutex_estado_new;
+    }
+    else if(cola == cola_blocked)  {
+        return &mutex_estado_blocked;
+    }
+    else if(cola == cola_ready) {
+        return &mutex_estado_ready;
+    }
+    else if(cola == cola_prioritarios_por_signal){
+        return &mutex_prioritario_por_signal;
+    }
+    else if(cola == cola_ready_plus){
+        return &mutex_estado_ready_plus;
+    } 
+    else{
+        printf("Error cola invalida");
+        exit(1);
+    }
+}
 
 void INICIAR_PLANIFICACION() {
     if(!planificacion_pausada){

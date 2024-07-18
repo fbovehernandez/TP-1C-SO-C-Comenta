@@ -106,10 +106,7 @@ bool match_nombre(char* interfaz);
 t_list_io* validar_io(t_operacion_io* operacion_io, t_pcb* pcb);
 void _ejecutarComando(void* _, char* linea_leida);
 void *esperar_RR(t_pcb* sockets_Int) ;
-// t_pcb* sacarDe(t_queue* cola, int pid);
-// t_queue* encontrar_en_que_cola_esta(int pid);
-// int queue_find(t_queue* cola, int pid);
-// t_pcb* sacarPCBDeDondeEste(int pid);
+
 
 t_parametro* deserializar_parametro(t_buffer* buffer);
 t_pedido* deserializar_pedido(t_buffer* buffer);
@@ -149,6 +146,16 @@ void mostrar_cola(t_queue* cola);
 void ejecutarComando(char* linea_leida);
 void mostrar_cola_con_mutex(t_queue* cola,pthread_mutex_t* mutex);
 void emitir_mensaje_estado_planificacion();
+pthread_mutex_t* obtener_mutex_de(t_queue* cola);
+
+
+t_queue* encontrar_en_que_cola_esta(int pid);
+int esta_en_cola_pid(t_queue* cola, int pid, pthread_mutex_t* mutex);
+t_pcb* sacarDe(t_queue* cola, int pid);
+int queue_find(t_queue* cola, int pid);
+t_pcb* sacarPCBDeDondeEste(int pid);
+pthread_mutex_t* obtener_mutex_de(t_queue* cola);
+
 
 void EJECUTAR_SCRIPT(char* path);
 void INICIAR_PROCESO(char* path);

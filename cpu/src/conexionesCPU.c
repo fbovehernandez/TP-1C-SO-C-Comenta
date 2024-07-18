@@ -127,12 +127,22 @@ void recibir_cliente_interrupt(int client_interrupt) {
         switch (cod_op) {
             case INTERRUPCION_CPU:
                 printf("Entre por interrupcion\n");
-                hay_interrupcion_quantum = 1;
+                pthread_mutex_lock(&mutex_interrupcion_quantum);
+                hay_interrupcion_quantum = 1; 
+                pthread_mutex_unlock(&mutex_interrupcion_quantum);
                 break;      
             case INTERRUPCION_FIN_PROCESO:
                 printf("Entre por interrupcion de fin de proceso\n");
-                hay_interrupcion_fin = 1;
-                break;   
+                pthread_mutex_lock(&mutex_interrupcion_fin);
+                hay_interrupcion_fin = 1; 
+                pthread_mutex_unlock(&mutex_interrupcion_fin);
+                break; 
+            case INTERRUPCION_FIN_USUARIO:
+                printf("Peticion de desalojo por usuario\n");
+                pthread_mutex_lock(&mutex_interrupcion_fin_usuario);
+                hay_interrupcion_fin_usuario = 1; 
+                pthread_mutex_unlock(&mutex_interrupcion_fin_usuario);
+                break;
             default:
                 exit(-1);
                 break;

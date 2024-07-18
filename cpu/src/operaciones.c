@@ -1,11 +1,15 @@
 #include "../include/operaciones.h"
 #include "../include/mmu.h"
 
+// t_cantidad_instrucciones* cantidad_instrucciones;
+
 int hay_interrupcion_quantum;
 int hay_interrupcion_fin;
+int hay_interrupcion_fin_usuario;
+
 pthread_mutex_t mutex_interrupcion_quantum;
 pthread_mutex_t mutex_interrupcion_fin;
-// t_cantidad_instrucciones* cantidad_instrucciones;
+pthread_mutex_t mutex_interrupcion_fin_usuario;
 
 void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
     //int esperar_confirm;
@@ -41,6 +45,10 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
             pthread_mutex_lock(&mutex_interrupcion_fin);
             hay_interrupcion_fin = 0;
             pthread_mutex_unlock(&mutex_interrupcion_fin);
+
+            pthread_mutex_lock(&mutex_interrupcion_fin_usuario);
+            hay_interrupcion_fin_usuario = 0;
+            pthread_mutex_unlock(&mutex_interrupcion_fin_usuario);
             
             return;
         }
@@ -57,7 +65,7 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
 }
 
 int hay_interrupcion() {
-    return hay_interrupcion_quantum || hay_interrupcion_fin;
+    return hay_interrupcion_quantum || hay_interrupcion_fin || hay_interrupcion_fin_usuario;
 }
 
 void hacer_interrupcion(t_pcb* pcb) {
@@ -74,6 +82,12 @@ void hacer_interrupcion(t_pcb* pcb) {
         pthread_mutex_lock(&mutex_interrupcion_fin);
         hay_interrupcion_fin = 0;
         pthread_mutex_unlock(&mutex_interrupcion_fin);
+    }else{
+        printf("Desalojado por gusto de usuario\n");
+        desalojar(pcb, INTERRUPCION_FIN_USUARIO, NULL);
+        pthread_mutex_lock(&mutex_interrupcion_fin_usuario);
+        hay_interrupcion_fin_usuario = 0;
+        pthread_mutex_unlock(&mutex_interrupcion_fin_usuario);
     }
 }
 

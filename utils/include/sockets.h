@@ -21,6 +21,14 @@ extern sem_t sem_memoria_instruccion;
 extern sem_t pedir_instruccion;
 extern sem_t sem_cargo_instrucciones;
 
+extern int hay_interrupcion_quantum;
+extern int hay_interrupcion_fin;
+extern int hay_interrupcion_fin_usuario;
+
+extern pthread_mutex_t mutex_interrupcion_quantum;
+extern pthread_mutex_t mutex_interrupcion_fin;
+extern pthread_mutex_t mutex_interrupcion_fin_usuario;
+
 typedef enum {
     GENERICA, 
     STDIN,
@@ -161,7 +169,8 @@ typedef enum {
     ESCRIBIR_EN_FS,
     LEER_EN_FS,
     FS_TRUNCATE_KERNEL,
-    TRUNCAR_ARCHIVO
+    TRUNCAR_ARCHIVO,
+    INTERRUPCION_FIN_USUARIO
 } codigo_operacion;
 
 typedef enum {
