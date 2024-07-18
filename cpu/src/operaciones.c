@@ -712,8 +712,6 @@ int bytes_usables_por_pagina(int direccion_logica) {
 /* NOTA FACU -> ESTO HABRIA QUE VER DE OPTIMIZARLO MAS, LO HICE ASI PARA QUE FUNCIONE, PERO CAMBIANDO UN PAR DE COSAS EN LA TRADUCCION CREO QUE
            SE PUEDE HACER MEJOR Y AHORRAR UNA BANDA DE CODIGO (PARA DESPUES)                    */
 void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectura, uint32_t direccion_logica, int pid, t_list* direcciones_fisicas, int pagina) {
-    int frame;
-
     // Aca cargo la primera
     t_dir_fisica_tamanio *dir_fisica_tamanio = malloc(sizeof(t_dir_fisica_tamanio));
     printf("Direccion logica: %d\n", direccion_logica);
@@ -724,14 +722,21 @@ void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectur
             
     list_add(direcciones_fisicas, dir_fisica_tamanio);
 
+    int frame = -2;
     // Aca cargo el resto
-    for(int i = 0; i < cantidad_paginas-1; i++) {
+    for(int i = 0; i < cantidad_paginas - 1; i++) {
         printf("Iteracion %d\n", i);
-        printf("Pido el marco de la pagina %d del proceso %d\n", pagina+1, pid); // El uno es para que siempre pida la sig
-        pedir_frame_a_memoria(pagina+1, pid); 
- 
-        recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
-        printf("el frame es:%d\n", frame);
+        printf("Pido el marco de la pagina %d del proceso %d\n", pagina + 1 + i, pid); // El uno es para que siempre pida la sig
+        
+        frame = buscar_frame_en_TLB(pid, pagina + 1 + i);
+    
+        if(frame == -2) {
+            pedir_frame_a_memoria(pagina + 1 + i, pid); 
+            recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
+            printf("el frame es:%d\n", frame);
+            log_info(logger_CPU, "PID: %d - OBTENER MARCO - Página: %d - Marco: %d", pid, pagina + 1 + i, frame);
+            agregar_frame_en_TLB(pid, pagina + 1 + i, frame);
+        }
 
         int direccion_fisica = frame * tamanio_pagina + 0; // 0 es el offset
 

@@ -121,7 +121,6 @@ void *interaccion_consola() {
                 exit(1);
                 break;
             default:
-                printf("Opción no válida. Intente nuevamente.\n");
                 break;
             }
         }
