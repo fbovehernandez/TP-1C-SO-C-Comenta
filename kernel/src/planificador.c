@@ -11,6 +11,8 @@ void change_status(t_pcb* pcb, Estado new_status) {
 }
 
 void pasar_a_ready(t_pcb *pcb) {
+    cantidad_bloqueados++;
+    sem_wait(&sem_planificadores);
     if (es_VRR() && leQuedaTiempoDeQuantum(pcb) && quantum_config != pcb->quantum) {
         pasar_a_ready_plus(pcb);
     } else {
@@ -22,6 +24,8 @@ void pasar_a_ready(t_pcb *pcb) {
     
     printf("llega hasta aca el PID: %d\n", pcb->pid);
     sem_post(&sem_hay_para_planificar);
+    sem_post(&sem_planificadores); // Mati: Puede que este semaforo este mejor arriba que el otro semaforo
+    cantidad_bloqueados--;
 }
 
 void pasar_a_ready_normal(t_pcb* pcb) {
@@ -55,6 +59,11 @@ void pasar_a_blocked(t_pcb* pcb) {
 }
 
 void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
+    printf("La planificacion permite pasar a exit \n");
+    cantidad_bloqueados++;
+    sem_wait(&sem_planificadores);
+    printf("Si.\n");
+    
     change_status(pcb, EXIT);
     log_info(logger_kernel, "Finaliza el proceso %d - Motivo: %s", pcb->pid, motivo_exit);
     // liberar_memoria(pcb->pid);
@@ -62,6 +71,9 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
     if(pcb->estadoAnterior != NEW) {
         sem_post(&sem_grado_multiprogramacion);
     }
+    
+    sem_post(&sem_planificadores);
+    cantidad_bloqueados--;
 }
 
 void pasar_a_ready_plus(t_pcb* pcb){

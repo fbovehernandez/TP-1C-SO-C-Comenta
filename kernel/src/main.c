@@ -31,11 +31,10 @@ int main(int argc, char* argv[]) {
     sem_init(&sem_contador_quantum, 0, 0);
     sem_init(&sem_hay_para_planificar, 0, 0);
     sem_init(&sem_hay_pcb_esperando_ready, 0, 0);
-    sem_init(&sem_grado_multiprogramacion, 0, grado_multiprogramacion); // No testeado
+    sem_init(&sem_grado_multiprogramacion, 0, grado_multiprogramacion);
     sem_init(&sem_memoria_instruccion, 0, 0);
     sem_init(&sem_cargo_instrucciones, 0 ,0);
-    sem_init(&sem_planificadores,0,1);
-    // sem_init(&sem_mostrar_menu, 0, 1);
+    sem_init(&sem_planificadores, 0, 1);  //  Ver si inicializa en 0
     pthread_mutex_init(&mutex_lista_io, NULL);
     pthread_mutex_init(&mutex_cola_io_generica, NULL);
     pthread_mutex_init(&no_hay_nadie_en_cpu, NULL);

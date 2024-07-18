@@ -36,3 +36,82 @@
 [INFO] 18:42:41:103 LOGGER/(7188:7232): TLB elimina victima - PID: 1 - Pagina: 1
 [INFO] 18:42:42:105 LOGGER/(7188:7232): PID: 3 - TLB HIT - Pagina: 1
 [INFO] 18:42:42:106 LOGGER/(7188:7232): PID: 3 - TLB HIT - Pagina: 2
+[INFO] 19:31:03:750 LOGGER/(10824:10824): Conexion establecida con Memoria
+[INFO] 19:31:06:825 LOGGER/(10824:10868): Servidor iniciado, esperando conexiones!
+[INFO] 19:31:11:885 LOGGER/(10824:10868): Se conecto un cliente de dispatch!
+
+[INFO] 19:31:11:886 LOGGER/(10824:10868): Esperando cliente...
+[INFO] 19:31:11:889 LOGGER/(10824:10869): Se conecto un cliente de interrupt!
+
+[INFO] 19:42:59:824 LOGGER/(12488:12488): Conexion establecida con Memoria
+[INFO] 19:43:02:900 LOGGER/(12488:12532): Servidor iniciado, esperando conexiones!
+[INFO] 19:43:04:004 LOGGER/(12488:12532): Se conecto un cliente de dispatch!
+
+[INFO] 19:43:04:005 LOGGER/(12488:12532): Esperando cliente...
+[INFO] 19:43:04:010 LOGGER/(12488:12533): Se conecto un cliente de interrupt!
+
+[INFO] 19:54:01:527 LOGGER/(14167:14167): Conexion establecida con Memoria
+[INFO] 19:54:04:601 LOGGER/(14167:14211): Servidor iniciado, esperando conexiones!
+[INFO] 19:54:08:960 LOGGER/(14167:14211): Se conecto un cliente de dispatch!
+
+[INFO] 19:54:08:960 LOGGER/(14167:14211): Esperando cliente...
+[INFO] 19:54:08:962 LOGGER/(14167:14212): Se conecto un cliente de interrupt!
+
+[INFO] 20:13:48:409 LOGGER/(16399:16399): Conexion establecida con Memoria
+[INFO] 20:13:51:486 LOGGER/(16399:16443): Servidor iniciado, esperando conexiones!
+[INFO] 20:14:10:418 LOGGER/(16399:16443): Se conecto un cliente de dispatch!
+
+[INFO] 20:14:10:418 LOGGER/(16399:16443): Esperando cliente...
+[INFO] 20:14:10:419 LOGGER/(16399:16444): Se conecto un cliente de interrupt!
+
+[INFO] 20:20:41:860 LOGGER/(18116:18116): Conexion establecida con Memoria
+[INFO] 20:20:44:965 LOGGER/(18116:18222): Servidor iniciado, esperando conexiones!
+[INFO] 20:21:03:043 LOGGER/(18116:18222): Se conecto un cliente de dispatch!
+
+[INFO] 20:21:03:044 LOGGER/(18116:18222): Esperando cliente...
+[INFO] 20:21:03:045 LOGGER/(18116:18223): Se conecto un cliente de interrupt!
+
+[INFO] 20:22:13:229 LOGGER/(18813:18813): Conexion establecida con Memoria
+[INFO] 20:22:16:296 LOGGER/(18813:18857): Servidor iniciado, esperando conexiones!
+[INFO] 20:22:23:934 LOGGER/(18813:18857): Se conecto un cliente de dispatch!
+
+[INFO] 20:22:23:934 LOGGER/(18813:18857): Esperando cliente...
+[INFO] 20:22:23:937 LOGGER/(18813:18858): Se conecto un cliente de interrupt!
+
+[INFO] 20:32:16:990 LOGGER/(20279:20279): Conexion establecida con Memoria
+[INFO] 20:32:20:056 LOGGER/(20279:20334): Servidor iniciado, esperando conexiones!
+[INFO] 20:32:23:045 LOGGER/(20279:20334): Se conecto un cliente de dispatch!
+
+[INFO] 20:32:23:045 LOGGER/(20279:20334): Esperando cliente...
+[INFO] 20:32:23:046 LOGGER/(20279:20335): Se conecto un cliente de interrupt!
+
+[INFO] 20:34:50:066 LOGGER/(20279:20334): PID: 2 - TLB MISS - Pagina: 0
+[INFO] 20:34:50:068 LOGGER/(20279:20334): PID: 2 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 20:34:50:071 LOGGER/(20279:20334): PID: 2 - TLB MISS - Pagina: 1
+[INFO] 20:34:50:073 LOGGER/(20279:20334): PID: 2 - OBTENER MARCO - Página: 1 - Marco: 1
+[INFO] 20:34:52:082 LOGGER/(20279:20334): PID: 2 - TLB HIT - Pagina: 0
+[INFO] 20:34:52:086 LOGGER/(20279:20334): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 20:34:57:109 LOGGER/(20279:20334): PID: 3 - TLB MISS - Pagina: 2
+[INFO] 20:34:57:109 LOGGER/(20279:20334): PID: 3 - OBTENER MARCO - Página: 2 - Marco: 2
+[INFO] 20:34:57:110 LOGGER/(20279:20334): TLB elimina victima - PID: 2 - Pagina: 0
+[INFO] 20:34:57:112 LOGGER/(20279:20334): PID: 3 - TLB MISS - Pagina: 3
+[INFO] 20:34:57:113 LOGGER/(20279:20334): PID: 3 - OBTENER MARCO - Página: 3 - Marco: 3
+[INFO] 20:34:57:113 LOGGER/(20279:20334): TLB elimina victima - PID: 2 - Pagina: 1
+[INFO] 20:34:58:116 LOGGER/(20279:20334): PID: 3 - TLB HIT - Pagina: 2
+[INFO] 20:34:58:116 LOGGER/(20279:20334): PID: 3 - TLB HIT - Pagina: 3
+[INFO] 20:36:28:924 LOGGER/(20279:20334): PID: 2 - TLB MISS - Pagina: 0
+[INFO] 20:36:28:924 LOGGER/(20279:20334): PID: 2 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 20:36:28:924 LOGGER/(20279:20334): TLB elimina victima - PID: 3 - Pagina: 2
+[INFO] 20:36:28:925 LOGGER/(20279:20334): PID: 2 - TLB MISS - Pagina: 1
+[INFO] 20:36:28:925 LOGGER/(20279:20334): PID: 2 - OBTENER MARCO - Página: 1 - Marco: 1
+[INFO] 20:36:28:925 LOGGER/(20279:20334): TLB elimina victima - PID: 3 - Pagina: 3
+[INFO] 20:36:29:927 LOGGER/(20279:20334): PID: 2 - TLB HIT - Pagina: 0
+[INFO] 20:36:29:927 LOGGER/(20279:20334): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 20:36:43:945 LOGGER/(20279:20334): PID: 4 - TLB MISS - Pagina: 1
+[INFO] 20:36:43:945 LOGGER/(20279:20334): PID: 4 - OBTENER MARCO - Página: 1 - Marco: 1
+[INFO] 20:36:43:945 LOGGER/(20279:20334): TLB elimina victima - PID: 2 - Pagina: 0
+[INFO] 20:36:43:945 LOGGER/(20279:20334): PID: 4 - TLB MISS - Pagina: 2
+[INFO] 20:36:43:946 LOGGER/(20279:20334): PID: 4 - OBTENER MARCO - Página: 2 - Marco: 2
+[INFO] 20:36:43:946 LOGGER/(20279:20334): TLB elimina victima - PID: 2 - Pagina: 1
+[INFO] 20:36:44:950 LOGGER/(20279:20334): PID: 4 - TLB HIT - Pagina: 1
+[INFO] 20:36:44:950 LOGGER/(20279:20334): PID: 4 - TLB HIT - Pagina: 2

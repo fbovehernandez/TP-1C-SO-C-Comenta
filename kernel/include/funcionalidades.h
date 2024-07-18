@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include <readline/readline.h>
 #include <semaphore.h>
 #include "conexiones.h"
@@ -17,6 +18,9 @@ extern pthread_t escucha_consola;
 extern int client_dispatch;
 extern t_temporal* timer;
 extern int ms_transcurridos;
+
+extern pthread_t hilo_detener_planificacion;
+extern int cantidad_bloqueados;
 
 typedef struct {
     
@@ -109,7 +113,7 @@ bool match_nombre(char* interfaz);
 t_list_io* validar_io(t_operacion_io* operacion_io, t_pcb* pcb);
 void _ejecutarComando(void* _, char* linea_leida);
 void *esperar_RR(t_pcb* sockets_Int) ;
-
+void* detener_planificaciones();
 
 t_parametro* deserializar_parametro(t_buffer* buffer);
 t_pedido* deserializar_pedido(t_buffer* buffer);

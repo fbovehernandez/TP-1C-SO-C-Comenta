@@ -8,6 +8,7 @@ int quantum_config;
 int contador_pid = 0;
 int client_dispatch;
 pthread_t escucha_consola;
+int cantidad_bloqueados;
 
 pthread_mutex_t mutex_estado_new;
 pthread_mutex_t mutex_estado_ready;
@@ -40,6 +41,8 @@ ptr_kernel* datos_kernel;
 t_temporal* timer;
 int ms_transcurridos;
 bool planificacion_pausada;
+
+pthread_t hilo_detener_planificacion;
 
 void *interaccion_consola() {
     char *input;
@@ -159,17 +162,22 @@ void INICIAR_PROCESO(char* path_instrucciones) {
     int pid_actual = obtener_siguiente_pid();
     printf("El pid del proceso es: %d\n", pid_actual);
     // Primero envio el path de instruccion a memoria y luego el PCB...
-
-    emitir_mensaje_estado_planificacion();
+    if(planificacion_pausada){
+        printf("No podes crear proceso si esta pausada la plani\n");
+        return;
+    }
+    printf("La  planificaciion permite iniciar proceso? \n");
+    cantidad_bloqueados++;
     sem_wait(&sem_planificadores);
-    emitir_mensaje_estado_planificacion();
+    printf("Si.\n");    
     
     enviar_path_a_memoria(path_instrucciones, sockets, pid_actual); 
 
     t_pcb *pcb = crear_nuevo_pcb(pid_actual); 
     
-    encolar_a_new(pcb);
     sem_post(&sem_planificadores);
+    cantidad_bloqueados--;
+    encolar_a_new(pcb);
 }
 
 void enviar_path_a_memoria(char* path_instrucciones, t_sockets* sockets, int pid) {
@@ -223,28 +231,32 @@ int obtener_siguiente_pid() {
 }
 
 void encolar_a_new(t_pcb *pcb) {
-    // Bloquear el acceso a la cola de procesos
+    printf("Esperando a que la planificacion se des-pause \n");
+    cantidad_bloqueados++;
+    sem_wait(&sem_planificadores); // Semaforo detener planificacion
+    printf("Planificacion continua\n");
+    
     pthread_mutex_lock(&mutex_estado_new);
-    // Sacar el proceso de la cola
     queue_push(cola_new, (void *)pcb);
-    // Desbloquear el acceso a la cola de procesos
     pthread_mutex_unlock(&mutex_estado_new);
 
     log_info(logger_kernel, "Se crea el proceso: %d en NEW", pcb->pid);
-    // Incrementar el semáforo para indicar que hay un nuevo proceso
-    sem_post(&sem_hay_pcb_esperando_ready);
+    sem_post(&sem_hay_pcb_esperando_ready); // Incrementar el semáforo para indicar que hay un nuevo proceso
+    sem_post(&sem_planificadores);
+    cantidad_bloqueados--;
 }
 
 void* a_ready() {
     while (1) {
         // Esperar a que haya un proceso en la cola -> Esto espera a que literalment haya uno
 
-        // FALTA SEMAFORO DE PLANIFICACION
-
         sem_wait(&sem_hay_pcb_esperando_ready); 
         log_info(logger_kernel, "Hay proceso esperando en la cola de NEW!\n");
 
-        // Esperar a que el grado de multiprogramación lo permita
+        // printf("Esperando iniciar planificacion para pasar a ready\n");
+        // sem_wait(&sem_planificadores);
+        // printf("Planificacion continua\n");
+        
         sem_wait(&sem_grado_multiprogramacion); 
         log_info(logger_kernel, "Grado de multiprogramación permite agregar proceso a ready\n");
 
@@ -252,9 +264,9 @@ void* a_ready() {
         t_pcb *pcb = queue_pop(cola_new);
         pthread_mutex_unlock(&mutex_estado_new);
 
-        // Pasar el proceso a ready
-        pasar_a_ready(pcb);
         
+        pasar_a_ready(pcb);
+        // sem_post(&sem_planificadores);
         // sem_post(&sem_hay_pcb_esperando_ready); 
     }
     
@@ -287,19 +299,6 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
             // pthread_create(&escucha_consola, NULL, (void*) interaccion_consola, NULL); 
             interaccion_consola(); // mostrar la consola
         }*/
-        
-        /************************************  facu  *****************************************/
-        // sem_wait(&puedo_planificar); -> Lo clavo aca para que no siga por mas de que haya proceso *DEBAJO* de el sem_hay_para_planificar
-        // Trabo tambien con un sem cuando vuelva de la CPU
-        // sem_wait(&puedo_planificar); -> Este mismo iria en el manejo de desalojo, si no puede planificar se queda trabado
-
-        // Para iniciar, le hago un post a ese semaforo
-        // Entiendo que con esto yo podria seguir usando todas las opciones, inclusive la opcion de ejecutar script e iniciar proceso, 
-        // pero no *PLANIFICARIA*? -> La idea es que no planifique? NO que no pueda crear un proceso
-        
-        // Tambien pausa el planificador a largo, por lo que si yo mato un proceso y va a EXIT, o creo uno y esta en NEW, deberia quedarse ahi
-        // Sem_wait(&puedo_planificar) -> EXIT, antes de pasar a exit, y en NEW, antes de pasar a ready, desbloquear en INICIAR_PLANI
-        /************************************    *****************************************/
 
         sem_wait(&sem_hay_para_planificar);
         printf("Hay un proceso para planificar\n");
@@ -384,6 +383,7 @@ t_pcb *proximo_a_ejecutar() {
     t_pcb *pcb = NULL;
 
     emitir_mensaje_estado_planificacion();
+    cantidad_bloqueados++;
     sem_wait(&sem_planificadores);
     emitir_mensaje_estado_planificacion();
 
@@ -406,6 +406,7 @@ t_pcb *proximo_a_ejecutar() {
         exit(1);
     }
     sem_post(&sem_planificadores);
+    cantidad_bloqueados--;
     return pcb;
 }
 
@@ -419,7 +420,7 @@ t_paquete *recibir_cpu() {
 
         printf("Esperando recibir paquete\n");
         recv(client_dispatch, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
-        printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
+        printf("Recibi el codigo de operacion : %s\n", string_operacion(paquete->codigo_operacion));
 
         recv(client_dispatch, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
         paquete->buffer->stream = malloc(paquete->buffer->size);
@@ -513,13 +514,14 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
         pcb->quantum = tiempo_restante;
         log_info(logger_kernel, "El quantum restante del proceso con PID %d es: %d", pcb->pid, pcb->quantum);
     }
-
-    emitir_mensaje_estado_planificacion();
-    sem_wait(&sem_planificadores);
-    emitir_mensaje_estado_planificacion();
-
     pcb_exec = NULL;
-
+    
+    printf("Planificacion recibe el desalojo pero... ¿esta pausada?\n");
+    cantidad_bloqueados++;
+    sem_wait(&sem_planificadores);
+    
+    printf("No esta pausada.\n");
+ 
     switch (devolucion_cpu) {
         case ERROR_STDOUT || ERROR_STDIN:
             pasar_a_exit(pcb, "INVALID_INTERFACE");
@@ -620,6 +622,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             break;
     }
     sem_post(&sem_planificadores);
+    cantidad_bloqueados--;
     liberar_paquete(package);
 }
 
@@ -1020,21 +1023,24 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
     
     // change_status(pcb, READY);
     
+    cantidad_bloqueados++;
     sem_wait(&sem_planificadores);
+
     pthread_mutex_lock(&mutex_prioritario_por_signal);
     queue_push(cola_prioritarios_por_signal, pcb);
     pthread_mutex_unlock(&mutex_prioritario_por_signal);
     sem_post(&sem_hay_para_planificar);
     sem_post(&sem_planificadores);
-
+    cantidad_bloqueados--;
     if(!queue_is_empty(recurso_obtenido->procesos_bloqueados)) {
         t_pcb* proceso_liberado = queue_pop(recurso_obtenido->procesos_bloqueados);
         /*change_status(proceso_liberado, READY);
         queue_push(cola_prioritarios_por_signal, proceso_liberado); 
         sem_post(&sem_hay_para_planificar);*/
-        sem_wait(&sem_planificadores);
+       
+        // sem_wait(&sem_planificadores);
         pasar_a_ready(proceso_liberado);
-        sem_post(&sem_planificadores);
+        // sem_post(&sem_planificadores);
     }
     
     /*
@@ -1077,6 +1083,12 @@ void imprimir_diccionario_recursos() {
 void FINALIZAR_PROCESO(int pid) {
     printf("Se ejecuta finalizar proceso\n");
     printf("el pid recibido es: %d\n", pid);
+    
+    if(planificacion_pausada){
+        printf("No podes finalizar proceso si esta pausada la plani\n");
+        return;
+    }
+
     t_pcb* pcb = malloc(sizeof(t_pcb));
     
     if(pid == pcb_exec->pid) {
@@ -1200,14 +1212,17 @@ void INICIAR_PLANIFICACION() {
     } 
     
     planificacion_pausada = false;
-    sem_post(&sem_planificadores);
-    /*
-    // destrabamos toda la ejecucion 
-    pthread_mutex_unlock(&mutex_estado_new);
-    pthread_mutex_unlock(&mutex_estado_ready);
-    pthread_mutex_unlock(&mutex_estado_ready_plus);
-    pthread_mutex_unlock(&mutex_estado_blocked);
-    pthread_mutex_unlock(&mutex_estado_exit);*/
+    
+    // sem_getvalue(&sem_planificadores, &cantidad_bloqueados);
+    printf("Cantidad bloqueados: %d\n", cantidad_bloqueados);
+
+    for(int i=0; i < cantidad_bloqueados; i++) {
+        sem_post(&sem_planificadores);
+    }
+
+    cantidad_bloqueados = 0;
+
+    pthread_cancel(hilo_detener_planificacion);
 }
 
 /*
@@ -1217,27 +1232,28 @@ cola de Ready.
 */
 
 void DETENER_PLANIFICACION() {
+    cantidad_bloqueados = 0;
     if(planificacion_pausada) {
         printf("La planificacion ya esta detenida\n");
         return;
     }
-    
+
     planificacion_pausada = true;
     printf("Deteniendo planificaciones\n");   
-    /*
-    // trabamos toda la ejecucion 
-    pthread_mutex_lock(&mutex_estado_new);
-    pthread_mutex_lock(&mutex_estado_ready);
-    pthread_mutex_lock(&mutex_estado_ready_plus);
-    pthread_mutex_lock(&mutex_estado_blocked);
-    pthread_mutex_lock(&mutex_estado_exit);
-    */
+    
     // SE QUEDA TRABADO  EN SCRIPT
     /*
     SOLUCION que vi  enn un issue
     - hacer un hilo con el semaforo de abajo
     */
-    sem_wait(&sem_planificadores); // traba planificador de corto y largo plazo
+    pthread_create(&hilo_detener_planificacion, NULL, (void*) detener_planificaciones, NULL); 
+    pthread_join(hilo_detener_planificacion, NULL);
+}
+
+void* detener_planificaciones() {
+    cantidad_bloqueados++;
+    sem_wait(&sem_planificadores);
+    return NULL;
 }
 
 void MULTIPROGRAMACION(int valor) {
@@ -1498,8 +1514,8 @@ t_buffer* llenar_buffer_fs_truncate(int pid,int largo_archivo,char* nombre_archi
 
 void emitir_mensaje_estado_planificacion(){
     if (planificacion_pausada) {
-        printf("Planificación pausada\n");
+        printf("Planificacion pausada\n");
     } else {
-        printf("La planificación no está detenida\n");
+        printf("La planificacion no está detenida\n");
     }
 }
