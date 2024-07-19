@@ -101,7 +101,7 @@ void recibir_cliente() { // Se supone que desde aca se conecta el kernel
                 exit(-1);
                 break;
         }
-
+        
         liberar_paquete(paquete);
     }
 }

@@ -88,3 +88,7 @@
 [INFO] 20:36:41:934 LOGGER/(20403:20416): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
 [INFO] 20:36:45:955 LOGGER/(20403:20416): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
 [INFO] 20:36:45:955 LOGGER/(20403:20416): Finaliza el proceso 4 - Motivo: SUCCESS
+[INFO] 13:36:58:156 LOGGER/(3829:3829): Conexion establecida con Memoria
+[INFO] 13:36:58:253 LOGGER/(3829:3829): Conexion establecida con Dispatcher
+[INFO] 13:36:58:258 LOGGER/(3829:3829): Conexion establecida con Interrupt
+[INFO] 13:36:58:543 LOGGER/(3829:3829): Servidor iniciado, esperando conexiones!

@@ -162,6 +162,8 @@ t_pcb* sacarDe(t_queue* cola, int pid);
 int queue_find(t_queue* cola, int pid);
 t_pcb* sacarPCBDeDondeEste(int pid);
 pthread_mutex_t* obtener_mutex_de(t_queue* cola);
+void liberar_recursos(t_dictionary* recursos);
+void finalizar_kernel();
 
 
 void EJECUTAR_SCRIPT(char* path);

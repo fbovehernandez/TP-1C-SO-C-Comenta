@@ -120,7 +120,7 @@ void *interaccion_consola() {
                 break;
             case 8:
                 printf("Finalizacion del modulo\n");
-                // Hacer todo lo necesario para finalizar el modulo de manera feliz.
+                finalizar_kernel(); // Hacer todo lo necesario para finalizar el modulo de manera feliz. 
                 exit(1);
                 break;
             default:
@@ -1518,4 +1518,71 @@ void emitir_mensaje_estado_planificacion(){
     } else {
         printf("La planificacion no está detenida\n");
     }
+}
+
+void finalizar_kernel(){
+    liberar_recursos(datos_kernel->diccionario_recursos);
+    liberar_pcb(pcb_exec);
+    liberar_datos_kernel();
+    free(sockets);
+    
+}
+
+void liberar_recursos(t_dictionary* recursos){
+    t_list* keys_recursos =  dictionary_keys(recursos);
+    while(!dictionary_is_empty(recursos)){
+        char* primera_key = list_remove(keys_recursos,0);
+        t_recurso* recurso = dictionary_remove(recursos,primera_key);
+        free(recurso->instancias);
+        liberar_cola_recursos(recurso->procesos_bloqueados);       
+        free(recurso);
+    }
+    list_destroy(keys_recursos);
+    dictionary_destroy(recursos);
+}
+
+void liberar_cola_recursos(t_queue* procesos_bloqueados){
+    while(!queue_is_empty(procesos_bloqueados)){
+        t_pcb* pcb = queue_pop(procesos_bloqueados);
+        liberar_pcb(pcb);
+    }
+}
+
+void liberar_datos_kernel(){
+    free(datos_kernel->ip_cpu);
+    free(datos_kernel->ip_mem);
+    free(datos_kernel->puerto_memoria);
+    free(datos_kernel->puerto_cpu_dispatch);
+    free(datos_kernel->puerto_cpu_interrupt);
+    free(datos_kernel->puerto_io);
+    free(datos_kernel->algoritmo_planificacion);
+    free(datos_kernel);
+}
+
+/*
+Cosas para liberar un proceso:
+Kernel:
+planificador.c:
+void pasar_a_exit(t_pcb* pcb) {
+    change_status(pcb, EXIT);
+    liberar_memoria(pcb->pid);
+    sem_post(&sem_grado_multiprogramacion);
+}
+*/
+
+void liberar_pcb(t_pcb* pcb){
+    free(pcb->registros);
+    enviar_eliminacion_pcb_a_memoria(pcb->pid);
+    free(pcb);
+}
+
+void enviar_eliminacion_pcb_a_memoria(int pid) {
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+    buffer->size = sizeof(int);
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    memcpy(buffer->stream + buffer->offset, &pid, sizeof(int));
+    enviar_paquete(buffer, LIBERAR_PROCESO, sockets->socket_memoria);
+    // Problema con memoria, hay que ir a buscar sus frames y marcarlos como libres y debe ser una comunicacion directa de Kernel con Memoria
 }

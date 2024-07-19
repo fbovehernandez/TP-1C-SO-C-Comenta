@@ -85,7 +85,8 @@ int main(int argc, char* argv[]) {
     pthread_join(hilo_io, NULL);
 
     // Libero conexiones
-    // free(pcb_exec);
+    
+     
     free(config_kernel);
     free(kernel_io);
     liberar_conexion(escucha_fd);   

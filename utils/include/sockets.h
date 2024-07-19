@@ -170,7 +170,8 @@ typedef enum {
     LEER_EN_FS,
     FS_TRUNCATE_KERNEL,
     TRUNCAR_ARCHIVO,
-    INTERRUPCION_FIN_USUARIO
+    INTERRUPCION_FIN_USUARIO,
+    LIBERAR_PROCESO
 } codigo_operacion;
 
 typedef enum {

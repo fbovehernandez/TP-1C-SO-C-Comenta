@@ -115,3 +115,10 @@
 [INFO] 20:36:43:946 LOGGER/(20279:20334): TLB elimina victima - PID: 2 - Pagina: 1
 [INFO] 20:36:44:950 LOGGER/(20279:20334): PID: 4 - TLB HIT - Pagina: 1
 [INFO] 20:36:44:950 LOGGER/(20279:20334): PID: 4 - TLB HIT - Pagina: 2
+[INFO] 13:36:45:553 LOGGER/(3688:3688): Conexion establecida con Memoria
+[INFO] 13:36:48:968 LOGGER/(3688:3743): Servidor iniciado, esperando conexiones!
+[INFO] 13:36:58:253 LOGGER/(3688:3743): Se conecto un cliente de dispatch!
+
+[INFO] 13:36:58:254 LOGGER/(3688:3743): Esperando cliente...
+[INFO] 13:36:58:255 LOGGER/(3688:3744): Se conecto un cliente de interrupt!
+
