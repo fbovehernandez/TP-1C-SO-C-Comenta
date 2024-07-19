@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
     cant_frames = tamanio_memoria / tamanio_pagina;
 
     size_t bitarray_size_in_bytes = (cant_frames + 7 / 8);
-    char *bitarray_memory = malloc(bitarray_size_in_bytes);
+    char *bitarray_memory = malloc(bitarray_size_in_bytes); //FREE?
 
     // Aca hay que tener cuidado con los bits adicionales cuando se recorre el bityarray
     bitmap = bitarray_create_with_mode(bitarray_memory , bitarray_size_in_bytes, LSB_FIRST);
@@ -57,6 +57,7 @@ int main(int argc, char* argv[]) {
 
     // Libero conexiones 
     free(config_memoria);
+    free(logger_memoria);
     free(memory_struct_cpu);
     liberar_conexion(escucha_fd);
     // liberar_conexion(cliente_kernel);

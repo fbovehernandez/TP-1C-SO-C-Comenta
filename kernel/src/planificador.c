@@ -36,16 +36,13 @@ void pasar_a_ready_normal(t_pcb* pcb) {
     
     char* pids = obtener_pid_de(cola_ready);
     log_info(logger_kernel,"Cola Ready: %s\n", pids);
+    string_array_destroy(pids);
     pthread_mutex_unlock(&mutex_estado_ready);
 }
 
 void pasar_a_exec(t_pcb* pcb) {
     change_status(pcb, EXEC);
     pcb_exec = pcb;
-    //pthread_mutex_lock(&mutex_estado_exec);
-    //queue_push(cola_exec, (void *)pcb);
-    //pthread_mutex_unlock(&mutex_estado_exec);
-    // pcb_exec = pcb;
     enviar_pcb(pcb, client_dispatch, ENVIO_PCB, NULL);
     //esperar_cpu();
 }
@@ -66,8 +63,11 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
     
     change_status(pcb, EXIT);
     log_info(logger_kernel, "Finaliza el proceso %d - Motivo: %s", pcb->pid, motivo_exit);
-    // liberar_memoria(pcb->pid);
     
+    liberar_pcb_de_recursos(pcb->pid);
+    liberar_pcb_de_io(pcb->pid);
+    liberar_pcb(pcb);
+
     if(pcb->estadoAnterior != NEW) {
         sem_post(&sem_grado_multiprogramacion);
     }

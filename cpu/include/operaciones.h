@@ -76,4 +76,6 @@ t_buffer* llenar_buffer_fs_truncate(char* nombre_interfaz_a_truncar,char* nombre
 int hay_interrupcion();
 void hacer_interrupcion(t_pcb* pcb);
 
+void liberar_parametro(t_parametro* parametro);
+
 #endif 

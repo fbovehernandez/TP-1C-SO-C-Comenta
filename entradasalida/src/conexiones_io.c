@@ -75,7 +75,7 @@ int conectar_io_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_io
 
     int str_interfaz = strlen(nombre_interfaz) + 1;
     
-    t_info_io* io = malloc(sizeof(int) + sizeof(TipoInterfaz) + str_interfaz);
+    t_info_io* io = malloc(sizeof(int) + sizeof(TipoInterfaz) + str_interfaz); //FREE?
     io->nombre_interfaz_largo = str_interfaz;
     io->tipo = tipo_interfaz;
     io->nombre_interfaz = nombre_interfaz;
@@ -160,7 +160,6 @@ void recibir_kernel(void* config_socket_io) {
 
         switch(paquete->codigo_operacion) {
             case DORMITE:
-
                 t_pid_unidades_trabajo* pid_unidades_trabajo = serializar_unidades_trabajo(paquete->buffer);
                 int pid = pid_unidades_trabajo->pid;
                 int unidades_trabajo = pid_unidades_trabajo->unidades_trabajo;
@@ -172,6 +171,8 @@ void recibir_kernel(void* config_socket_io) {
                 log_info(logger_io, "PID %d - Operacion: DORMIR_IO", pid);
                 int termino_io = 1;
                 send(socket_kernel_io, &termino_io, sizeof(int), 0);
+                
+                free(pid_unidades_trabajo);
                 break;
             case LEETE: 
                 int resultOk = 0;
@@ -183,7 +184,7 @@ void recibir_kernel(void* config_socket_io) {
                 imprimir_datos_stdin(pid_stdin);
                 printf("llego hasta LEETE\n");
                 // Leer valor
-                char *valor = malloc(pid_stdin->registro_tamanio);
+                char *valor = malloc(pid_stdin->registro_tamanio); //FREE?
                 printf("Ingrese lo que quiera guardar (hasta %d caracteres): \n", pid_stdin->registro_tamanio);
                 scanf("%s", valor); 
                 // Mandarlo a memoria
@@ -267,7 +268,7 @@ void recibir_memoria(void* config_socket_io) {
                 stream += sizeof(int);
                 memcpy(&tamanio, stream, sizeof(int));
                 stream += sizeof(int);
-                char* valor = malloc(tamanio);
+                char* valor = malloc(tamanio); //FREE?
                 memcpy(valor, stream, tamanio);
                 printf("\n\nEl valor leido de memoria es: %s \n\n", valor);
                 log_info(logger_io, "PID: %d - Operacion: ESCRIBIR", pid);
@@ -285,7 +286,7 @@ void recibir_memoria(void* config_socket_io) {
 }
 
 t_pid_unidades_trabajo* serializar_unidades_trabajo(t_buffer* buffer) {
-    t_pid_unidades_trabajo* pid_unidades_trabajo  = malloc(sizeof(t_pid_unidades_trabajo));
+    t_pid_unidades_trabajo* pid_unidades_trabajo  = malloc(sizeof(t_pid_unidades_trabajo)); //FREE?
     void* stream = buffer->stream;
     memcpy(&(pid_unidades_trabajo->pid), stream, sizeof(int));
     stream += sizeof(int);
@@ -295,7 +296,7 @@ t_pid_unidades_trabajo* serializar_unidades_trabajo(t_buffer* buffer) {
 }
 
 t_pid_stdin* deserializar_pid_stdin(t_buffer* buffer) {
-    t_pid_stdin* pid_stdin = malloc(sizeof(t_pid_stdin)); 
+    t_pid_stdin* pid_stdin = malloc(sizeof(t_pid_stdin)); //FREE?
     
     void* stream = buffer->stream;
 
@@ -323,7 +324,7 @@ t_pid_stdin* deserializar_pid_stdin(t_buffer* buffer) {
 }
 
 t_fs_create_delete* deserializar_pedido_creacion_destruccion(t_buffer* buffer){
-    t_fs_create_delete* fs_create_delete = malloc(sizeof(t_fs_create_delete));
+    t_fs_create_delete* fs_create_delete = malloc(sizeof(t_fs_create_delete)); //FREE?
     
     void* stream = buffer->stream;
 
@@ -417,7 +418,7 @@ void *handle_io_stdin(void *socket_io) {
 */
 
 t_fs_truncate* deserializar_fs_truncate(t_buffer* buffer){
-    t_fs_truncate* fs_truncate  = malloc(sizeof(t_fs_truncate));
+    t_fs_truncate* fs_truncate  = malloc(sizeof(t_fs_truncate)); //FREE? se hace algo raro
 
     fs_truncate->pid            = buffer_read_int(buffer);
     fs_truncate->largo_archivo  = buffer_read_int(buffer);

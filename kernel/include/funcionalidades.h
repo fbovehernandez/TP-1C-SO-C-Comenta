@@ -163,15 +163,17 @@ t_pcb* sacarPCBDeDondeEste(int pid);
 pthread_mutex_t* obtener_mutex_de(t_queue* cola);
 
 /* FUNCIONES PARA LOS MEMCHECK Y LIBERAR MALLOCS :D */
+void liberar_pedido_escritura_lectura(t_pedido* pedido_escritura_lectura);
 void liberar_recursos(t_dictionary* recursos);
 void finalizar_kernel();
 void enviar_eliminacion_pcb_a_memoria(int pid);
-void liberar_pcb(t_pcb* pcb);
+void* liberar_pcb(t_pcb* pcb);
 void liberar_estructura_sockets();
 void liberar_cola_recursos(t_queue* procesos_bloqueados);
 void liberar_datos_kernel();
-
-
+void liberar_ios();
+void liberar_pcb_de_io(int pid);
+void liberar_pcb_de_recursos(int pid);
 
 void EJECUTAR_SCRIPT(char* path);
 void INICIAR_PROCESO(char* path);

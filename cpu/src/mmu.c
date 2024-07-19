@@ -25,7 +25,7 @@ int buscar_frame_en_TLB(int pid, int pagina) {
 }
 
 void agregar_frame_en_TLB(int pid, int pagina, int frame) {
-    t_entrada_tlb* entrada = malloc(sizeof(t_entrada_tlb));
+    t_entrada_tlb* entrada = malloc(sizeof(t_entrada_tlb)); //FREE?
     entrada->pid = pid;
     entrada->pagina = pagina;
     entrada->marco = frame;
@@ -46,7 +46,7 @@ void agregar_frame_en_TLB(int pid, int pagina, int frame) {
 
 void eliminar_victima_TLB() {
     char* algoritmo_tlb = config_get_string_value(config_CPU, "ALGORITMO_TLB");
-    t_entrada_tlb* entrada_victima = malloc(sizeof(t_entrada_tlb));
+    t_entrada_tlb* entrada_victima = malloc(sizeof(t_entrada_tlb)); //FREE>
     if(strcmp(algoritmo_tlb, "FIFO") == 0) {
         entrada_victima = list_get(tlb, 0);
     } else { // ES LRU

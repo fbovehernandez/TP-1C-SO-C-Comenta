@@ -184,7 +184,7 @@ void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* dato
 
     size_t total_size = buffer->size + (datos_add ? datos_add->size : 0);
 
-    void* stream = malloc(total_size);
+    void* stream = malloc(total_size); //FREE?    int offset_add = 0;
     int offset_add = 0;
 
     memcpy(stream + offset_add, buffer->stream, buffer->size); // antes decia buffer->size en el parametro 3
@@ -227,8 +227,8 @@ void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* dato
 }
 
 t_pcb* deserializar_pcb(t_buffer* buffer) {
-    t_pcb* pcb = malloc(sizeof(t_pcb));
-    pcb->registros = malloc(sizeof(t_registros)); // Acordarse de liberar memoria
+    t_pcb* pcb = malloc(sizeof(t_pcb)); //FREE?
+    pcb->registros = malloc(sizeof(t_registros)); // Acordarse de liberar memoria //VER_SI_HAY_FREE
 
     void* stream = buffer->stream;
     // Deserializamos los campos que tenemos en el buffer
@@ -273,7 +273,7 @@ t_pcb* deserializar_pcb(t_buffer* buffer) {
 }
 
 t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
-    t_buffer* buffer = malloc(sizeof(t_buffer));
+    t_buffer* buffer = malloc(sizeof(t_buffer)); //FREE?
 
     printf("Llenando buffer...\n");
 
@@ -388,7 +388,7 @@ void enviar_paquete(t_buffer* buffer, codigo_operacion codigo, int socket) {
 }
 
 t_info_io *deserializar_interfaz(t_buffer *buffer) {
-    t_info_io *interfaz = malloc(sizeof(t_info_io));
+    t_info_io *interfaz = malloc(sizeof(t_info_io)); //FREE?
     void *stream = buffer->stream;
     
     memcpy(&(interfaz->nombre_interfaz_largo), stream, sizeof(int));
@@ -577,7 +577,7 @@ char* string_operacion(codigo_operacion operacion) {
         case ESCRIBIR_DATO_EN_MEM: return "ESCRIBIR_DATO_EN_MEM";
         case RESIZE_MEMORIA: return "RESIZE_MEMORIA";
         case COPY_STRING_MEMORIA: return "COPY_STRING_MEMORIA";
-        case OUT_OF_MEMORY: return "OUT_OF_MEMORY";
+        // case OUT_OF_MEMORY: return "OUT_OF_MEMORY";
         case LEETE: return "LEETE";
         case RECIBI_VALOR_OK: return "RECIBI_VALOR_OK";
         case GUARDAR_VALOR: return "GUARDAR_VALOR";

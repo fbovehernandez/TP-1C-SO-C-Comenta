@@ -102,5 +102,12 @@ t_pid_stdout* desearializar_pid_stdout(t_buffer* buffer);
 void enviar_valor_leido_a_io(int pid, int socket_io, char* valor, int tamanio);
 void* handle_io_dialfs(void* socket);
 t_memoria_fs_escritura_lectura* deserializar_escritura_lectura(t_buffer* buffer);
+void limpiar_bitmap(int pid_a_liberar);
+void liberar_modulo_memoria();
+void liberar_tablas_paginas();
+void liberar_cola_recursos(t_list* procesos_bloqueados);
+
+//FREE
+void liberar_modulo_memoria();
 
 #endif // CONEXIONES_H

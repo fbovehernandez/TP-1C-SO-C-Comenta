@@ -51,7 +51,7 @@ int main(int argc, char* argv[]) {
     // Hilo 3 -> Hacer un hilo para interrupt
     int socket_interrupt = conectar_kernel_cpu_interrupt(logger_kernel, datos_kernel->ip_cpu, datos_kernel->puerto_cpu_interrupt);
 
-    sockets = malloc(sizeof(t_sockets));
+    sockets = malloc(sizeof(t_sockets)); //FREE? al final de todo supongo
     sockets->socket_cpu = socket_cpu;
     sockets->socket_memoria = socket_memoria_kernel;
     sockets->socket_int = socket_interrupt;

@@ -58,7 +58,7 @@ void iniciar_interfaz_generica(char* nombreInterfaz, t_config* config_io, char* 
     printf("Tiempo de unidad de trabajo: %d\n", tiempo_unidad_trabajo);
     kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, GENERICA, 5); 
     
-    t_config_socket_io* config_generica_io = malloc(sizeof(t_config_socket_io));
+    t_config_socket_io* config_generica_io = malloc(sizeof(t_config_socket_io)); //FREE?
     config_generica_io->config_io = config_io;
     config_generica_io->socket_io = kernelfd;
     
@@ -72,7 +72,7 @@ void iniciar_stdin(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, c
     kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, STDIN, 13); 
     memoriafd = conectar_io_memoria(IP_MEMORIA, puerto_memoria, logger_io, nombreInterfaz, STDIN, 91);
 
-    t_config_socket_io* config_stdin_io = malloc(sizeof(t_config_socket_io));
+    t_config_socket_io* config_stdin_io = malloc(sizeof(t_config_socket_io)); //FREE?
     config_stdin_io->config_io = config_io;
     config_stdin_io->socket_io = kernelfd;
     
@@ -83,7 +83,7 @@ void iniciar_stdout(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, 
     kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, STDOUT, 15); 
     memoriafd = conectar_io_memoria(IP_MEMORIA, puerto_memoria, logger_io, nombreInterfaz, STDOUT, 79);
 
-    t_config_socket_io* config_stdout_io = malloc(sizeof(t_config_socket_io));
+    t_config_socket_io* config_stdout_io = malloc(sizeof(t_config_socket_io)); //FREE?
     config_stdout_io->config_io = config_io;
     config_stdout_io->socket_io = memoriafd;
 
@@ -98,11 +98,11 @@ void iniciar_dialfs(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, 
     kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, DIALFS, 17); 
     memoriafd = conectar_io_memoria(IP_MEMORIA, puerto_memoria, logger_io, nombreInterfaz, DIALFS, 81);
 
-    t_config_socket_io* config_kernel_io = malloc(sizeof(t_config_socket_io));
+    t_config_socket_io* config_kernel_io = malloc(sizeof(t_config_socket_io)); //FREE?
     config_kernel_io->config_io = config_io;
     config_kernel_io->socket_io = kernelfd;
 
-    t_config_socket_io* config_memoria_io = malloc(sizeof(t_config_socket_io));
+    t_config_socket_io* config_memoria_io = malloc(sizeof(t_config_socket_io)); //FREE?
     config_memoria_io->config_io = config_io;
     config_memoria_io->socket_io = memoriafd;
 

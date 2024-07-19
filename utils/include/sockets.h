@@ -88,7 +88,7 @@ typedef struct {
     int socket;
     char* nombreInterfaz; // Aca tenia un dato_io que le sque
     TipoInterfaz TipoInterfaz;
-    t_queue* cola_blocked;
+    t_list* cola_blocked;
     sem_t* semaforo_cola_procesos_blocked;
 } t_list_io; // para el diccionario
 
@@ -99,7 +99,7 @@ typedef struct {
 
 typedef enum {
     INTERRUPCION_QUANTUM,
-    IO_BLOCKED,
+    IO_BLOCKED, 
     DORMIR_INTERFAZ,
     LEER_INTERFAZ,
     PEDIDO_LECTURA,
@@ -442,19 +442,7 @@ t_paquete *inicializarIO_recibirPaquete(int socket);
 void imprimir_datos_stdin(t_pid_stdin* datos_stdin);
 void aplicar_sobre_cada_linea_del_archivo(FILE* file, void* datos_extra, void(*closure)(void*, void*));
 
-
 t_buffer* buffer_create(int size);  // Hecho
-void buffer_add(t_buffer *buffer, void *data, int size);
-void buffer_read(t_buffer *buffer, void *data, int size);
-void buffer_add_uint32(t_buffer *buffer, uint32_t data);
-
-void buffer_add_int(t_buffer *buffer, int data);
-uint32_t buffer_read_uint32(t_buffer *buffer);
-void buffer_add_uint8(t_buffer *buffer, uint8_t data);
-uint8_t buffer_read_uint8(t_buffer *buffer);
-void buffer_add_string(t_buffer *buffer, uint32_t length, char *string);
-char *buffer_read_string(t_buffer *buffer, uint32_t *length);
-int buffer_read_int(t_buffer *buffer);
 int min(int num1,int num2);
 
 #endif // SOCKET_H
