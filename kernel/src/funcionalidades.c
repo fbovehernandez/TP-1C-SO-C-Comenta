@@ -249,14 +249,9 @@ void encolar_a_new(t_pcb *pcb) {
 void* a_ready() {
     while (1) {
         // Esperar a que haya un proceso en la cola -> Esto espera a que literalment haya uno
-
         sem_wait(&sem_hay_pcb_esperando_ready); 
         log_info(logger_kernel, "Hay proceso esperando en la cola de NEW!\n");
 
-        // printf("Esperando iniciar planificacion para pasar a ready\n");
-        // sem_wait(&sem_planificadores);
-        // printf("Planificacion continua\n");
-        
         sem_wait(&sem_grado_multiprogramacion); 
         log_info(logger_kernel, "Grado de multiprogramación permite agregar proceso a ready\n");
 
@@ -264,10 +259,7 @@ void* a_ready() {
         t_pcb *pcb = queue_pop(cola_new);
         pthread_mutex_unlock(&mutex_estado_new);
 
-        
         pasar_a_ready(pcb);
-        // sem_post(&sem_planificadores);
-        // sem_post(&sem_hay_pcb_esperando_ready); 
     }
     
 }
@@ -382,10 +374,9 @@ int leQuedaTiempoDeQuantum(t_pcb *pcb) {
 t_pcb *proximo_a_ejecutar() {
     t_pcb *pcb = NULL;
 
-    emitir_mensaje_estado_planificacion();
+    
     cantidad_bloqueados++;
     sem_wait(&sem_planificadores);
-    emitir_mensaje_estado_planificacion();
 
     if (!queue_is_empty(cola_prioritarios_por_signal)) {
         pthread_mutex_lock(&mutex_prioritario_por_signal);
@@ -1512,14 +1503,6 @@ t_buffer* llenar_buffer_fs_truncate(int pid,int largo_archivo,char* nombre_archi
     return buffer;
 }*/
 
-void emitir_mensaje_estado_planificacion(){
-    if (planificacion_pausada) {
-        printf("Planificacion pausada\n");
-    } else {
-        printf("La planificacion no está detenida\n");
-    }
-}
-
 void finalizar_kernel(){
     liberar_recursos(datos_kernel->diccionario_recursos);
     
@@ -1533,16 +1516,16 @@ void finalizar_kernel(){
     liberar_datos_kernel();   
 }
 
-void liberar_recursos(t_dictionary* recursos){
-    t_list* keys_recursos =  dictionary_keys(recursos);
-    while(!dictionary_is_empty(recursos)){
-        char* primera_key = list_remove(keys_recursos,0);
-        t_recurso* recurso = dictionary_remove(recursos,primera_key);
-        liberar_cola_recursos(recurso->procesos_bloqueados);       
-        free(recurso);
+void liberar_recursos(t_dictionary* recursos) {
+    // Iterar sobre los elementos del diccionario y liberar cada recurso
+    void liberar_recurso(char* clave, void* recurso) {
+        t_recurso* recurso_sacado = (t_recurso*)recurso;
+        queue_destroy(recurso_sacado->procesos_bloqueados); // Liberar la cola de procesos bloqueados
+        free(recurso_sacado); // Liberar el recurso
     }
-    list_destroy(keys_recursos);
-    dictionary_destroy(recursos);
+
+    dictionary_iterator(recursos, (void*)liberar_recurso);
+    dictionary_destroy(recursos); // Liberar el diccionario en sí
 }
 
 void liberar_cola_recursos(t_queue* procesos_bloqueados){

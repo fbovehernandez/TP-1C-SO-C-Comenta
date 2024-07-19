@@ -152,7 +152,6 @@ int leQuedaTiempoDeQuantum(t_pcb *pcb);
 void mostrar_cola(t_queue* cola);
 void ejecutarComando(char* linea_leida);
 void mostrar_cola_con_mutex(t_queue* cola,pthread_mutex_t* mutex);
-void emitir_mensaje_estado_planificacion();
 pthread_mutex_t* obtener_mutex_de(t_queue* cola);
 
 
