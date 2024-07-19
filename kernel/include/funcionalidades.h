@@ -162,8 +162,16 @@ t_pcb* sacarDe(t_queue* cola, int pid);
 int queue_find(t_queue* cola, int pid);
 t_pcb* sacarPCBDeDondeEste(int pid);
 pthread_mutex_t* obtener_mutex_de(t_queue* cola);
+
+/* FUNCIONES PARA LOS MEMCHECK Y LIBERAR MALLOCS :D */
 void liberar_recursos(t_dictionary* recursos);
 void finalizar_kernel();
+void enviar_eliminacion_pcb_a_memoria(int pid);
+void liberar_pcb(t_pcb* pcb);
+void liberar_estructura_sockets();
+void liberar_cola_recursos(t_queue* procesos_bloqueados);
+void liberar_datos_kernel();
+
 
 
 void EJECUTAR_SCRIPT(char* path);

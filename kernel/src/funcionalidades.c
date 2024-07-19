@@ -1522,10 +1522,15 @@ void emitir_mensaje_estado_planificacion(){
 
 void finalizar_kernel(){
     liberar_recursos(datos_kernel->diccionario_recursos);
-    liberar_pcb(pcb_exec);
-    liberar_datos_kernel();
+    
+    // No hagan "liberar_pcb(pcb_exec)" que no es un pcb como tal
+    free(pcb_exec->registros);
+    free(pcb_exec);
+
+    // No hace falta liberar cada uno porque no tiene punteros
     free(sockets);
     
+    liberar_datos_kernel();   
 }
 
 void liberar_recursos(t_dictionary* recursos){
@@ -1533,7 +1538,6 @@ void liberar_recursos(t_dictionary* recursos){
     while(!dictionary_is_empty(recursos)){
         char* primera_key = list_remove(keys_recursos,0);
         t_recurso* recurso = dictionary_remove(recursos,primera_key);
-        free(recurso->instancias);
         liberar_cola_recursos(recurso->procesos_bloqueados);       
         free(recurso);
     }
@@ -1586,3 +1590,4 @@ void enviar_eliminacion_pcb_a_memoria(int pid) {
     enviar_paquete(buffer, LIBERAR_PROCESO, sockets->socket_memoria);
     // Problema con memoria, hay que ir a buscar sus frames y marcarlos como libres y debe ser una comunicacion directa de Kernel con Memoria
 }
+

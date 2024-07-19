@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
     cola_ready_plus              = queue_create();
 
     
-    t_config* config_kernel   = iniciar_config("./kernel.config");
+    t_config* config_kernel  = iniciar_config("./kernel.config");
     logger_kernel = iniciar_logger("kernel.log");
     datos_kernel = solicitar_datos(config_kernel);
     path_kernel = "/home/utnso/tp-2024-1c-Sofa-Cama/kernel/scripts-comandos"; // hardcodeado nashe
@@ -86,8 +86,8 @@ int main(int argc, char* argv[]) {
 
     // Libero conexiones
     
-     
-    free(config_kernel);
+    config_destroy(config_kernel);
+    log_destroy(kernel_io->logger);
     free(kernel_io);
     liberar_conexion(escucha_fd);   
     
