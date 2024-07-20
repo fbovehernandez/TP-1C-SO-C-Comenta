@@ -55,7 +55,5 @@ int main(int argc, char* argv[]) {
     config_destroy(config_CPU);
     log_destroy(logger_CPU);
 
-    
-
 	return 0;
 }

@@ -32,11 +32,11 @@ void pasar_a_ready_normal(t_pcb* pcb) {
     change_status(pcb, READY);
     
     pthread_mutex_lock(&mutex_estado_ready);
-    queue_push(cola_ready, (void *)pcb);
-    
+    queue_push(cola_ready, pcb);
     char* pids = obtener_pid_de(cola_ready);
     log_info(logger_kernel,"Cola Ready: %s\n", pids);
     pthread_mutex_unlock(&mutex_estado_ready);
+    
     free(pids);
 }
 
@@ -56,24 +56,24 @@ void pasar_a_blocked(t_pcb* pcb) {
 }
 
 void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
-    printf("La planificacion permite pasar a exit \n");
-    cantidad_bloqueados++;
-    sem_wait(&sem_planificadores);
-    printf("Si.\n");
+    // printf("La planificacion permite pasar a exit \n");
+    // cantidad_bloqueados++;
+    // sem_wait(&sem_planificadores);
+    //printf("Si.\n");
     
     change_status(pcb, EXIT);
     log_info(logger_kernel, "Finaliza el proceso %d - Motivo: %s", pcb->pid, motivo_exit);
-    
-    liberar_pcb_de_recursos(pcb->pid);
-    liberar_pcb_de_io(pcb->pid);
-    liberar_pcb(pcb);
-
+  
     if(pcb->estadoAnterior != NEW) {
         sem_post(&sem_grado_multiprogramacion);
     }
-    
-    sem_post(&sem_planificadores);
-    cantidad_bloqueados--;
+      
+    // liberar_pcb_de_recursos(pcb->pid); ----> PARA CUANDO MUERA RETENIENDO RECURSOS 
+    // liberar_pcb_de_io(pcb->pid); -------------> PARA CUANDO ESTA EN LA IO
+    liberar_pcb(pcb);
+
+    // sem_post(&sem_planificadores);
+    // cantidad_bloqueados--;
 }
 
 void pasar_a_ready_plus(t_pcb* pcb){
@@ -81,7 +81,6 @@ void pasar_a_ready_plus(t_pcb* pcb){
     
     pthread_mutex_lock(&mutex_estado_ready_plus);
     queue_push(cola_ready_plus, (void *)pcb);
-
     char* pids = obtener_pid_de(cola_ready_plus);
     log_info(logger_kernel,"Cola Ready Prioridad: %s\n", pids);
     pthread_mutex_unlock(&mutex_estado_ready_plus);

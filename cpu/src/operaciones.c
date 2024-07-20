@@ -1228,7 +1228,7 @@ typedef struct {
 
 void liberar_parametros_de(t_list* parametros) {
     if(parametros != NULL){
-        list_clean_and_destroy_elements(parametros, (void (*)(void *)) liberar_parametro);
+        list_destroy_and_destroy_elements(parametros, (void (*)(void *)) liberar_parametro);
     }
 }
 

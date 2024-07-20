@@ -241,3 +241,75 @@
 [INFO] 03:29:09:451 LOGGER/(18679:18763): Esperando cliente...
 [INFO] 03:29:09:456 LOGGER/(18679:18764): Se conecto un cliente de interrupt!
 
+[INFO] 17:59:29:802 LOGGER/(5939:5939): Conexion establecida con Memoria
+[INFO] 17:59:33:173 LOGGER/(5939:6004): Servidor iniciado, esperando conexiones!
+[INFO] 17:59:37:363 LOGGER/(5939:6004): Se conecto un cliente de dispatch!
+
+[INFO] 17:59:37:364 LOGGER/(5939:6004): Esperando cliente...
+[INFO] 17:59:37:366 LOGGER/(5939:6005): Se conecto un cliente de interrupt!
+
+[INFO] 18:01:44:245 LOGGER/(6649:6649): Conexion establecida con Memoria
+[INFO] 18:01:47:639 LOGGER/(6649:6693): Servidor iniciado, esperando conexiones!
+[INFO] 18:01:50:380 LOGGER/(6649:6693): Se conecto un cliente de dispatch!
+
+[INFO] 18:01:50:381 LOGGER/(6649:6693): Esperando cliente...
+[INFO] 18:01:50:383 LOGGER/(6649:6694): Se conecto un cliente de interrupt!
+
+[INFO] 18:13:19:033 LOGGER/(8226:8226): Conexion establecida con Memoria
+[INFO] 18:13:22:463 LOGGER/(8226:8288): Servidor iniciado, esperando conexiones!
+[INFO] 18:13:25:902 LOGGER/(8226:8288): Se conecto un cliente de dispatch!
+
+[INFO] 18:13:25:903 LOGGER/(8226:8288): Esperando cliente...
+[INFO] 18:13:25:904 LOGGER/(8226:8289): Se conecto un cliente de interrupt!
+
+[INFO] 18:20:22:276 LOGGER/(9851:9851): Conexion establecida con Memoria
+[INFO] 18:20:25:639 LOGGER/(9851:9913): Servidor iniciado, esperando conexiones!
+[INFO] 18:20:30:070 LOGGER/(9851:9913): Se conecto un cliente de dispatch!
+
+[INFO] 18:20:30:074 LOGGER/(9851:9913): Esperando cliente...
+[INFO] 18:20:30:077 LOGGER/(9851:9914): Se conecto un cliente de interrupt!
+
+[INFO] 18:30:00:573 LOGGER/(10920:10920): Conexion establecida con Memoria
+[INFO] 18:30:03:965 LOGGER/(10920:10982): Servidor iniciado, esperando conexiones!
+[INFO] 18:30:08:562 LOGGER/(10920:10982): Se conecto un cliente de dispatch!
+
+[INFO] 18:30:08:563 LOGGER/(10920:10982): Esperando cliente...
+[INFO] 18:30:08:565 LOGGER/(10920:10983): Se conecto un cliente de interrupt!
+
+[INFO] 18:41:14:227 LOGGER/(12804:12804): Conexion establecida con Memoria
+[INFO] 18:41:17:565 LOGGER/(12804:12861): Servidor iniciado, esperando conexiones!
+[INFO] 18:48:00:484 LOGGER/(13779:13779): Conexion establecida con Memoria
+[INFO] 18:48:03:818 LOGGER/(13779:13834): Servidor iniciado, esperando conexiones!
+[INFO] 18:48:07:976 LOGGER/(13779:13834): Se conecto un cliente de dispatch!
+
+[INFO] 18:48:07:977 LOGGER/(13779:13834): Esperando cliente...
+[INFO] 18:48:07:979 LOGGER/(13779:13835): Se conecto un cliente de interrupt!
+
+[INFO] 19:00:48:046 LOGGER/(14993:14993): Conexion establecida con Memoria
+[INFO] 19:00:51:393 LOGGER/(14993:15049): Servidor iniciado, esperando conexiones!
+[INFO] 19:02:54:818 LOGGER/(14993:15049): Se conecto un cliente de dispatch!
+
+[INFO] 19:02:54:819 LOGGER/(14993:15049): Esperando cliente...
+[INFO] 19:02:54:823 LOGGER/(14993:15050): Se conecto un cliente de interrupt!
+
+[INFO] 19:12:33:145 LOGGER/(16446:16446): Conexion establecida con Memoria
+[INFO] 19:12:36:536 LOGGER/(16446:16508): Servidor iniciado, esperando conexiones!
+[INFO] 19:12:41:171 LOGGER/(16446:16508): Se conecto un cliente de dispatch!
+
+[INFO] 19:12:41:172 LOGGER/(16446:16508): Esperando cliente...
+[INFO] 19:12:41:173 LOGGER/(16446:16509): Se conecto un cliente de interrupt!
+
+[INFO] 19:18:45:661 LOGGER/(17535:17535): Conexion establecida con Memoria
+[INFO] 19:18:49:003 LOGGER/(17535:17597): Servidor iniciado, esperando conexiones!
+[INFO] 19:19:17:281 LOGGER/(17535:17597): Se conecto un cliente de dispatch!
+
+[INFO] 19:19:17:282 LOGGER/(17535:17597): Esperando cliente...
+[INFO] 19:19:17:284 LOGGER/(17535:17598): Se conecto un cliente de interrupt!
+
+[INFO] 19:26:48:133 LOGGER/(20584:20584): Conexion establecida con Memoria
+[INFO] 19:26:51:503 LOGGER/(20584:20643): Servidor iniciado, esperando conexiones!
+[INFO] 19:27:54:131 LOGGER/(20584:20643): Se conecto un cliente de dispatch!
+
+[INFO] 19:27:54:136 LOGGER/(20584:20643): Esperando cliente...
+[INFO] 19:27:54:137 LOGGER/(20584:20644): Se conecto un cliente de interrupt!
+

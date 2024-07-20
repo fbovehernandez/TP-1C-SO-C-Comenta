@@ -135,13 +135,29 @@ void *interaccion_consola() {
 }
 
 void EJECUTAR_SCRIPT(char* path) {
-    // Abrir el archivo en modo de lectura (r)
-    size_t length = 0;
     char* path_local_kernel = strdup(path_kernel);
-    char* path_completo = malloc(strlen(path_local_kernel) + strlen(path));
-    path_completo = strcat(path_local_kernel, path);
+    if (path_local_kernel == NULL) {
+        printf("Error al duplicar path_kernel.\n");
+        return;
+    }
+
+    // Calcular el tamaño necesario para path_completo
+    size_t path_completo_len = strlen(path_local_kernel) + strlen(path) + 1; // +1 para el null terminator
+    char* path_completo = malloc(path_completo_len);
+    
+    if (path_completo == NULL) {
+        printf("Error al asignar memoria para path_completo.\n");
+        free(path_local_kernel);
+        return;
+    }
+
+    // Construir el path completo
+    strcpy(path_completo, path_local_kernel);
+    strcat(path_completo, path);
+
+    // Abrir el archivo en modo de lectura (r)
     FILE* file = fopen(path_completo, "r");
-    // char* linea_leida = NULL;
+
     // Verificar si el archivo se abrió correctamente
     if (file == NULL) {
         printf("Error al abrir el archivo.\n");
@@ -150,6 +166,7 @@ void EJECUTAR_SCRIPT(char* path) {
         fclose(file);
     }
 
+    // Liberar la memoria
     free(path_local_kernel);
     free(path_completo);
 }
@@ -168,6 +185,7 @@ void INICIAR_PROCESO(char* path_instrucciones) {
         printf("No podes crear proceso si esta pausada la plani\n");
         return;
     }
+    
     printf("La  planificaciion permite iniciar proceso? \n");
     cantidad_bloqueados++;
     sem_wait(&sem_planificadores);
@@ -243,8 +261,8 @@ void encolar_a_new(t_pcb *pcb) {
     pthread_mutex_unlock(&mutex_estado_new);
 
     log_info(logger_kernel, "Se crea el proceso: %d en NEW", pcb->pid);
-    sem_post(&sem_hay_pcb_esperando_ready); // Incrementar el semáforo para indicar que hay un nuevo proceso
     sem_post(&sem_planificadores);
+    sem_post(&sem_hay_pcb_esperando_ready); // Incrementar el semáforo para indicar que hay un nuevo proceso
     cantidad_bloqueados--;
 }
 
@@ -263,11 +281,7 @@ void* a_ready() {
 
         pasar_a_ready(pcb);
     }
-    
 }
-// void liberar_memoria(int pid) {
-    //Le mandaria a memoria que debe eliminar el pcb y toda la cosa
-// }
 
 void *planificar_corto_plazo(void *sockets_necesarios) {
     pthread_t hilo_quantum;
@@ -283,12 +297,14 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
         printf("Esperando a que haya un proceso para planificar\n");
         sem_wait(&sem_hay_para_planificar);
         printf("Hay un proceso para planificar\n");
-    
+
+        cantidad_bloqueados++;
+        sem_wait(&sem_planificadores);
+
         pthread_mutex_lock(&no_hay_nadie_en_cpu);
         pcb = proximo_a_ejecutar();
         pasar_a_exec(pcb);
-        pthread_mutex_unlock(&no_hay_nadie_en_cpu);
-
+        
         if (es_RR()) {
             pthread_create(&hilo_quantum, NULL, (void *)esperar_RR, (void *)pcb);
             sem_post(&sem_contador_quantum);
@@ -296,8 +312,14 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
             pthread_create(&hilo_quantum, NULL, (void *)esperar_VRR, (void *)pcb);
             sem_post(&sem_contador_quantum);
         }
-    
+
+        pthread_mutex_unlock(&no_hay_nadie_en_cpu);
+        
+        sem_post(&sem_planificadores);
+        cantidad_bloqueados--;
+        
         esperar_cpu();
+        // sem_wait(&termino_desalojo)
         
         if (es_VRR_RR()){
             pthread_cancel(hilo_quantum);
@@ -362,11 +384,7 @@ int leQuedaTiempoDeQuantum(t_pcb *pcb) {
 
 t_pcb *proximo_a_ejecutar() {
     t_pcb *pcb = NULL;
-
     
-    cantidad_bloqueados++;
-    sem_wait(&sem_planificadores);
-
     if (!queue_is_empty(cola_prioritarios_por_signal)) {
         pthread_mutex_lock(&mutex_prioritario_por_signal);
         pcb = queue_pop(cola_prioritarios_por_signal);
@@ -385,8 +403,7 @@ t_pcb *proximo_a_ejecutar() {
         log_error(logger_kernel,"No hay procesos para ejecutar.");
         exit(1);
     }
-    sem_post(&sem_planificadores);
-    cantidad_bloqueados--;
+    
     return pcb;
 }
 
@@ -478,11 +495,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
 
     if (es_VRR()) {
         temporal_stop(timer); // Detenemos el temporizador
-
-        /*if(!hay_interrupcion){
-
-        }*/
-
+        
         int64_t tiempo_transcurrido = temporal_gettime(timer);  // Obtenemos el tiempo transcurrido en milisegundos
         temporal_destroy(timer);
         printf("Tiempo transcurrido: %ld ms\n", tiempo_transcurrido);
@@ -499,7 +512,6 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     printf("Planificacion recibe el desalojo pero... ¿esta pausada?\n");
     cantidad_bloqueados++;
     sem_wait(&sem_planificadores);
-    
     printf("No esta pausada.\n");
  
     switch (devolucion_cpu) {
@@ -604,6 +616,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             exit(-1);
             break;
     }
+
     sem_post(&sem_planificadores);
     cantidad_bloqueados--;
     liberar_paquete(package);

@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
     t_config* config_kernel  = iniciar_config("./kernel.config");
     logger_kernel = iniciar_logger("kernel.log");
     datos_kernel = solicitar_datos(config_kernel);
-    path_kernel = "/home/utnso/operativos/MEMLEAKS/tp-2024-1c-Sofa-Cama/kernel/scripts-comandos"; // hardcodeado nashe
+    path_kernel = "/home/utnso/tp-2024-1c-Sofa-Cama/kernel/scripts-comandos"; // hardcodeado nashe
 
     quantum_config = datos_kernel->quantum;
     grado_multiprogramacion = datos_kernel->grado_multiprogramacion;
@@ -100,14 +100,14 @@ int main(int argc, char* argv[]) {
     sem_destroy(&sem_memoria_instruccion);
     sem_destroy(&sem_cargo_instrucciones);
     sem_destroy(&sem_planificadores);
-
+    /*
     queue_destroy_and_destroy_elements(cola_new,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_ready,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_blocked,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_exit,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_prioritarios_por_signal,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_ready_plus,liberar_pcb);
-
+    */
     close(socket_memoria_kernel);
     close(socket_cpu);
     close(socket_interrupt);
