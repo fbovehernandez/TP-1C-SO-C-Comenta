@@ -109,5 +109,7 @@ void liberar_cola_recursos(t_list* procesos_bloqueados);
 
 //FREE
 void liberar_modulo_memoria();
+void liberar_ios();
+void limpiar_bitmap(int pid);
 
 #endif // CONEXIONES_H

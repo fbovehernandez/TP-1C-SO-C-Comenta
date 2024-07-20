@@ -121,3 +121,32 @@
 [INFO] 16:20:13:097 LOGGER/(3792:3807): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
 [INFO] 16:20:13:098 LOGGER/(3792:3807): Cola Ready: 2 3 
 
+[INFO] 00:40:16:078 LOGGER/(7277:7277): Conexion establecida con Memoria
+[INFO] 00:40:16:142 LOGGER/(7277:7277): Conexion establecida con Dispatcher
+[INFO] 00:40:16:145 LOGGER/(7277:7277): Conexion establecida con Interrupt
+[INFO] 00:40:16:411 LOGGER/(7277:7277): Servidor iniciado, esperando conexiones!
+[INFO] 00:40:26:578 LOGGER/(7277:7317): Se crea el proceso: 1 en NEW
+[INFO] 00:40:26:581 LOGGER/(7277:7314): Hay proceso esperando en la cola de NEW!
+
+[INFO] 00:40:26:583 LOGGER/(7277:7314): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 00:40:26:592 LOGGER/(7277:7317): Se crea el proceso: 2 en NEW
+[INFO] 00:40:26:601 LOGGER/(7277:7317): Se crea el proceso: 3 en NEW
+[INFO] 00:40:26:634 LOGGER/(7277:7314): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 00:40:26:639 LOGGER/(7277:7314): Cola Ready: 1 
+
+[INFO] 00:40:26:640 LOGGER/(7277:7314): Hay proceso esperando en la cola de NEW!
+
+[INFO] 00:40:26:642 LOGGER/(7277:7315): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 00:40:26:644 LOGGER/(7277:7314): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 00:40:26:654 LOGGER/(7277:7314): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 00:40:26:656 LOGGER/(7277:7314): Cola Ready: 2 
+
+[INFO] 00:40:26:660 LOGGER/(7277:7314): Hay proceso esperando en la cola de NEW!
+
+[INFO] 00:40:26:661 LOGGER/(7277:7314): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 00:40:26:662 LOGGER/(7277:7314): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 00:40:26:663 LOGGER/(7277:7314): Cola Ready: 2 3 
+

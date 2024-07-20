@@ -564,9 +564,8 @@ void* handle_kernel(void* socket) {
                 // enviar_paquete(buffer,codigo_escritura_lectura,socket_io_escritura_lectura);
             case LIBERAR_PROCESO:
                 int pid_a_liberar;
+                memcpy(&pid_a_liberar, paquete->buffer->stream, sizeof(int));
                 limpiar_bitmap(pid_a_liberar);
-                memcpy(&pid, paquete->buffer->stream, sizeof(int));
-                
                 break;
             default:
                 printf("Rompio kernel.\n");
