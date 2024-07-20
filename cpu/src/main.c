@@ -38,5 +38,24 @@ int main(int argc, char* argv[]) {
 
     pthread_join(interrupt, NULL);
     pthread_join(dispatch, NULL);
+
+    free(cpu_interrupt->puerto_escucha);
+    log_destroy(cpu_interrupt->logger);
+    free(cpu_interrupt);
+
+    free(cpu_dispatch->puerto_escucha);
+    log_destroy(cpu_dispatch->logger);
+    free(cpu_dispatch);
+
+    free(escucha_dispatch);
+    free(escucha_interrupt);
+    free(IP_MEMORIA);
+    free(puerto_memoria);
+
+    config_destroy(config_CPU);
+    log_destroy(logger_CPU);
+
+    
+
 	return 0;
 }

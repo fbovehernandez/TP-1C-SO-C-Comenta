@@ -123,6 +123,8 @@ void pedir_instruccion_a_memoria(int socket_memoria, t_pcb *pcb) {
 
     t_buffer *buffer = llenar_buffer_solicitud_instruccion(pid_pc);
     enviar_paquete(buffer, QUIERO_INSTRUCCION, socket_memoria);
+    free(buffer->stream);
+    free(buffer);
     free(pid_pc);
 }
 
@@ -1252,7 +1254,9 @@ typedef struct {
 */ 
 
 void liberar_parametros_de(t_list* parametros) {
-    list_clean_and_destroy_elements(parametros, (void (*)(void *)) liberar_parametro);
+    if(parametros != NULL){
+        list_clean_and_destroy_elements(parametros, (void (*)(void *)) liberar_parametro);
+    }
 }
 
 void liberar_parametro(t_parametro* parametro){
