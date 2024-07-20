@@ -77,5 +77,6 @@ int hay_interrupcion();
 void hacer_interrupcion(t_pcb* pcb);
 
 void liberar_parametro(t_parametro* parametro);
+void liberar_parametros_de(t_list* parametros);
 
 #endif 

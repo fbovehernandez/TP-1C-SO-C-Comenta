@@ -1249,9 +1249,9 @@ typedef struct {
     char* nombre;
     int length;
 } t_parametro;
-*/
+*/ 
 
-void liberar_parametros_de(t_list* parametros){
+void liberar_parametros_de(t_list* parametros) {
     list_clean_and_destroy_elements(parametros, (void (*)(void *)) liberar_parametro);
 }
 

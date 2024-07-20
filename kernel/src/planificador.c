@@ -37,6 +37,7 @@ void pasar_a_ready_normal(t_pcb* pcb) {
     char* pids = obtener_pid_de(cola_ready);
     log_info(logger_kernel,"Cola Ready: %s\n", pids);
     pthread_mutex_unlock(&mutex_estado_ready);
+    free(pids);
 }
 
 void pasar_a_exec(t_pcb* pcb) {
@@ -84,6 +85,9 @@ void pasar_a_ready_plus(t_pcb* pcb){
     char* pids = obtener_pid_de(cola_ready_plus);
     log_info(logger_kernel,"Cola Ready Prioridad: %s\n", pids);
     pthread_mutex_unlock(&mutex_estado_ready_plus);
+    
+    free(pids);
+    
 }
 
 char* obtener_pid_de(t_queue* cola){ //  OBLIGATORIO: Usar el mutex de la cola correspondiente antes de mandarlo

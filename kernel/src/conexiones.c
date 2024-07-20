@@ -31,6 +31,7 @@ ptr_kernel* solicitar_datos(t_config* config_kernel){
         recurso->instancias = atoi(instancias_recursos[i]);
         recurso->procesos_bloqueados = list_create();
         dictionary_put(datos->diccionario_recursos, recursos[i], recurso); //Mas tarde para sumar o restar deberemos castear a int instancias_recursos[i]
+        
         //FREE?
         /*printf("Recurso: %s\n", recursos[i]);
         printf("Diccionario en instancias recursos: %d\n", ((t_recurso*)(dictionary_get(datos->diccionario_recursos, recursos[i])))->instancias);    */
@@ -40,6 +41,9 @@ ptr_kernel* solicitar_datos(t_config* config_kernel){
         printf("Recurso: %s\n", recursos[i]);
         printf("Diccionario en instancias recursos: %d\n", ((t_recurso*)(dictionary_get(datos->diccionario_recursos, recursos[i])))->instancias);  
     }
+
+    liberar_arrays_recurso(recursos, instancias_recursos);
+
     return datos;
 }
 
@@ -569,3 +573,17 @@ case IO_STDIN_READ:
         break;
 
 */
+
+void liberar_arrays_recurso(char** recursos,char** instancias_recursos){
+    for (int i = 0; recursos[i] != NULL; i++) {
+        free(recursos[i]);
+    }
+
+    free(recursos);
+    
+    for (int i = 0; instancias_recursos[i] != NULL; i++) {
+        free(instancias_recursos[i]);
+    }
+    
+    free(instancias_recursos);
+}

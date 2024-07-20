@@ -121,6 +121,8 @@ void *interaccion_consola() {
             case 8:
                 printf("Finalizacion del modulo\n");
                 finalizar_kernel(); // Hacer todo lo necesario para finalizar el modulo de manera feliz. 
+                //enviar_paquete(buffer,CERRAR_MODULO,sockets->socket_memoria);
+                //enviar_paquete(buffer,CERRAR_MODULO,sockets->socket_cpu);
                 exit(1);
                 break;
             default:
@@ -148,7 +150,7 @@ void EJECUTAR_SCRIPT(char* path) {
         fclose(file);
     }
 
-    // free(path_local_kernel);
+    free(path_local_kernel);
     free(path_completo);
 }
 
@@ -279,19 +281,6 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
 
     while (1) {
         printf("Esperando a que haya un proceso para planificar\n");
-        
-        /*
-        // no muestra la consola
-        sem_getvalue(&sem_hay_para_planificar, &valor_del_sem);
-
-        // Aca no entra nunca si es 0 el valor del semaforo
-        if(!valor_del_sem) { 
-            printf("entra aca sem_hay_para_planificar\n");
-            // pthread_cancel(escucha_consola);
-            // pthread_create(&escucha_consola, NULL, (void*) interaccion_consola, NULL); 
-            interaccion_consola(); // mostrar la consola
-        }*/
-
         sem_wait(&sem_hay_para_planificar);
         printf("Hay un proceso para planificar\n");
     
@@ -307,9 +296,9 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
             pthread_create(&hilo_quantum, NULL, (void *)esperar_VRR, (void *)pcb);
             sem_post(&sem_contador_quantum);
         }
-        //while(timer <= pcb->quantum){
+    
         esperar_cpu();
-        //}
+        
         if (es_VRR_RR()){
             pthread_cancel(hilo_quantum);
         }
@@ -568,7 +557,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             encolar_datos_std(pcb, pedido_escritura);
             log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->interfaz);
 
-            liberar_pedido_escritura_lectura(pedido_lectura);
+            liberar_pedido_escritura_lectura(pedido_escritura);
             break;
         /*
         case FS_CREATE:
@@ -905,8 +894,8 @@ t_list_io* validar_io(t_operacion_io* io, t_pcb* pcb) {
 // Esta podria ser la funcion generica y pasarle el codOP por parametro
 
 // Funcion para crear un nuevo PCB.
-t_pcb *crear_nuevo_pcb(int pid){
-    t_pcb *pcb = malloc(sizeof(t_pcb)); //FREE? cuando liberemos el proceso
+t_pcb* crear_nuevo_pcb(int pid){
+    t_pcb *pcb = malloc(sizeof(t_pcb)); // FREE? cuando liberemos el proceso
     t_registros* registros_pcb = malloc(sizeof(t_registros)); //FREE? cuando liberemos el proceso
 
     pcb->pid = pid;
@@ -1508,19 +1497,21 @@ t_buffer* llenar_buffer_fs_truncate(int pid,int largo_archivo,char* nombre_archi
     return buffer;
 }*/
 
-void finalizar_kernel(){
-    liberar_recursos(datos_kernel->diccionario_recursos);
+
+void finalizar_kernel() {
     liberar_ios();
 
     // No hagan "liberar_pcb(pcb_exec)" que no es un pcb como tal
-    if((pcb_exec !=  NULL)){
+    
+    if(pcb_exec != NULL) {
         free(pcb_exec->registros);
         free(pcb_exec);
     }
-
+ 
     // No hace falta liberar cada uno porque no tiene punteros
     free(sockets);
     
+    liberar_recursos(datos_kernel->diccionario_recursos);
     liberar_datos_kernel();   
 }
 
@@ -1563,7 +1554,6 @@ void liberar_ios() {
     if(diccionario_io != NULL){
         dictionary_destroy_and_destroy_elements(diccionario_io, (void*)_liberar_io);
     }
-    
 }
 
 void liberar_datos_kernel(){
@@ -1592,7 +1582,6 @@ void* liberar_pcb(t_pcb* pcb){
     free(pcb->registros);
     enviar_eliminacion_pcb_a_memoria(pcb->pid);
     free(pcb);
-    
     return NULL;
 }
 

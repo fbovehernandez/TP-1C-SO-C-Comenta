@@ -184,7 +184,7 @@ void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* dato
 
     size_t total_size = buffer->size + (datos_add ? datos_add->size : 0);
 
-    void* stream = malloc(total_size); //FREE?    int offset_add = 0;
+    void* stream = malloc(total_size); // FREE?    int offset_add = 0;
     int offset_add = 0;
 
     memcpy(stream + offset_add, buffer->stream, buffer->size); // antes decia buffer->size en el parametro 3
@@ -195,34 +195,12 @@ void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* dato
         offset_add += datos_add->size;
     }
 
+    free(buffer->stream);
     buffer->size = total_size;
     buffer->stream = stream;
 
-    t_paquete* paquete = malloc(sizeof(t_paquete));
+    enviar_paquete(buffer, cod_op, socket);
 
-    paquete->codigo_operacion = cod_op; // Podemos usar una constante por operación
-    paquete->buffer = buffer; // Nuestro buffer de antes.
-
-    // Armamos el stream a enviar
-    void* a_enviar = malloc(buffer->size + sizeof(int) + sizeof(int));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    // Por último enviamos
-    send(socket, a_enviar, buffer->size + sizeof(int) + sizeof(int), 0);
-    printf("Paquete enviado!\n");
-
-    // Falta liberar todo
-    free(a_enviar);
-    // free(datos_add->stream); // Libero esto aca -> Ver de liberal en algo lado
-    // free(datos_add);
-    liberar_paquete(paquete);
-    // Creo que no hace falta el free stream que apunta a lo mismo que paquete->buffer->stream
     return 0;
 }
 
@@ -284,73 +262,47 @@ t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
+    
+    void* stream = buffer->stream;
 
-    memcpy(buffer->stream + buffer->offset, &pcb->pid, sizeof(int));
+    memcpy(stream + buffer->offset, &pcb->pid, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, &pcb->program_counter, sizeof(int));
+    memcpy(stream + buffer->offset, &pcb->program_counter, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, &pcb->quantum, sizeof(int));
+    memcpy(stream + buffer->offset, &pcb->quantum, sizeof(int));
     buffer->offset += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, &pcb->estadoActual, sizeof(Estado));
+    memcpy(stream + buffer->offset, &pcb->estadoActual, sizeof(Estado));
     buffer->offset += sizeof(Estado);
-    memcpy(buffer->stream + buffer->offset, &pcb->estadoAnterior, sizeof(Estado));
+    memcpy(stream + buffer->offset, &pcb->estadoAnterior, sizeof(Estado));
     buffer->offset += sizeof(Estado);
     // Serializo los registros...
 
-    memcpy(buffer->stream + buffer->offset, &pcb->registros->AX, sizeof(uint8_t));
+    memcpy(stream  + buffer->offset, &pcb->registros->AX, sizeof(uint8_t));
     buffer->offset += sizeof(uint8_t);
-    memcpy(buffer->stream + buffer->offset, &pcb->registros->BX, sizeof(uint8_t));
+    memcpy(stream + buffer->offset, &pcb->registros->BX, sizeof(uint8_t));
     buffer->offset += sizeof(uint8_t);
-    memcpy(buffer->stream + buffer->offset, &pcb->registros->CX, sizeof(uint8_t));
+    memcpy(stream + buffer->offset, &pcb->registros->CX, sizeof(uint8_t));
     buffer->offset += sizeof(uint8_t);
-    memcpy(buffer->stream + buffer->offset, &pcb->registros->DX, sizeof(uint8_t));
+    memcpy(stream + buffer->offset, &pcb->registros->DX, sizeof(uint8_t));
     buffer->offset += sizeof(uint8_t);
 
-    memcpy(buffer->stream + buffer->offset, &pcb->registros->EAX, sizeof(uint32_t));
+    memcpy(stream + buffer->offset, &pcb->registros->EAX, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
-    memcpy(buffer->stream + buffer->offset, &pcb->registros->EBX, sizeof(uint32_t));
+    memcpy(stream + buffer->offset, &pcb->registros->EBX, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
-    memcpy(buffer->stream + buffer->offset, &pcb->registros->ECX, sizeof(uint32_t));
+    memcpy(stream + buffer->offset, &pcb->registros->ECX, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
-    memcpy(buffer->stream + buffer->offset, &pcb->registros->EDX, sizeof(uint32_t));
+    memcpy(stream + buffer->offset, &pcb->registros->EDX, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
 
-    memcpy(buffer->stream + buffer->offset, &pcb->registros->SI, sizeof(uint32_t));
+    memcpy(stream + buffer->offset, &pcb->registros->SI, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
-    memcpy(buffer->stream + buffer->offset, &pcb->registros->DI, sizeof(uint32_t));
+    memcpy(stream + buffer->offset, &pcb->registros->DI, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
 
     printf("Buffer llenado...\n");
     return buffer;
 }
-
-/* 
-void paquete(int conexion) {
-	// Ahora toca lo divertido!
-	char* leido;
-	t_paquete* paquete;
-
-	// Leemos y esta vez agregamos las lineas al paquete
-	paquete = crear_paquete();
-
-	while(1) {
-		leido = readline("> ");
-
-		if(strcmp(leido, "") == 0) 
-		{
-			break;
-		}
-
-		agregar_a_paquete(paquete, leido, strlen(leido) + 1);
-
-		free(leido);
-	}
-
-	enviar_paquete(paquete, conexion);
-	
-	eliminar_paquete(paquete);
-}
-*/
 
 void liberar_paquete(t_paquete* paquete) {
     free(paquete->buffer->stream);
@@ -483,16 +435,6 @@ t_buffer* buffer_create(int size){
     return buffer;
 }
 
-// Crea un buffer vacío de tamaño size y offset 0
-/*t_buffer* buffer_create(int size) {
-    t_buffer* buffer = malloc(sizeof(t_buffer));
-    buffer->size = size;
-    buffer->offset = 0;
-    buffer->stream = malloc(size);
-    return buffer;
-}*/
-
-// Libera la memoria asociada al buffer
 void buffer_destroy(t_buffer *buffer) {
     free(buffer->stream);
     free(buffer);

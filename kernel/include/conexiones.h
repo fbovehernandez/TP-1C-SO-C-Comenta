@@ -74,5 +74,5 @@ t_list_io* establecer_conexion(t_buffer *buffer, int socket_io);
 void mostrar_elem_diccionario(char* nombre_interfaz);
 void liberarIOyPaquete(t_paquete *paquete, t_list_io *io);
 void liberar_io(t_list_io* io);
-
+void liberar_arrays_recurso(char** recursos, char** instancias_recursos);
 #endif // CONEXIONES_H

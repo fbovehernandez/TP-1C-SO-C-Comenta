@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
     t_config* config_kernel  = iniciar_config("./kernel.config");
     logger_kernel = iniciar_logger("kernel.log");
     datos_kernel = solicitar_datos(config_kernel);
-    path_kernel = "/home/utnso/tp-2024-1c-Sofa-Cama/kernel/scripts-comandos"; // hardcodeado nashe
+    path_kernel = "/home/utnso/operativos/MEMLEAKS/tp-2024-1c-Sofa-Cama/kernel/scripts-comandos"; // hardcodeado nashe
 
     quantum_config = datos_kernel->quantum;
     grado_multiprogramacion = datos_kernel->grado_multiprogramacion;
@@ -78,14 +78,41 @@ int main(int argc, char* argv[]) {
     pthread_create(&hilo_io, NULL, (void*) escuchar_IO, (void*) kernel_io); 
     
     pthread_create(&escucha_consola, NULL, (void*) interaccion_consola, NULL); 
-
-    pthread_join(escucha_consola, NULL);
-    pthread_join(pasar_a_ready, NULL);
-    pthread_join(planificador_corto_plazo, NULL);
-    pthread_join(hilo_io, NULL);
+    
+    pthread_join(pasar_a_ready,NULL);
+    pthread_join(planificador_corto_plazo,NULL);
+    pthread_join(escucha_consola,NULL);
+    pthread_join(hilo_io,NULL);
 
     // Libero conexiones
-    
+
+    pthread_mutex_destroy(&mutex_estado_new);
+    pthread_mutex_destroy(&mutex_estado_blocked);
+    pthread_mutex_destroy(&mutex_estado_ready);
+    pthread_mutex_destroy(&mutex_lista_io);
+    pthread_mutex_destroy(&mutex_cola_io_generica);
+    pthread_mutex_destroy(&no_hay_nadie_en_cpu);
+
+    sem_destroy(&sem_contador_quantum);
+    sem_destroy(&sem_hay_para_planificar);
+    sem_destroy(&sem_hay_pcb_esperando_ready);
+    sem_destroy(&sem_grado_multiprogramacion);
+    sem_destroy(&sem_memoria_instruccion);
+    sem_destroy(&sem_cargo_instrucciones);
+    sem_destroy(&sem_planificadores);
+
+
+    queue_destroy(cola_new);
+    queue_destroy(cola_ready);
+    queue_destroy(cola_blocked);
+    queue_destroy(cola_exit);
+    queue_destroy(cola_prioritarios_por_signal);
+    queue_destroy(cola_ready_plus);
+
+    close(socket_memoria_kernel);
+    close(socket_cpu);
+    close(socket_interrupt);
+
     config_destroy(config_kernel);
     log_destroy(kernel_io->logger);
     free(kernel_io);

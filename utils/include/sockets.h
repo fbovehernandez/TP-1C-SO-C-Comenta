@@ -171,7 +171,8 @@ typedef enum {
     FS_TRUNCATE_KERNEL,
     TRUNCAR_ARCHIVO,
     INTERRUPCION_FIN_USUARIO,
-    LIBERAR_PROCESO
+    LIBERAR_PROCESO,
+    CERRAR_MODULO
 } codigo_operacion;
 
 typedef enum {
