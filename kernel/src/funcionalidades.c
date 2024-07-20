@@ -1578,7 +1578,8 @@ void pasar_a_exit(t_pcb* pcb) {
 }
 */
 
-void* liberar_pcb(t_pcb* pcb){
+void* liberar_pcb(void* pcb_void){
+    t_pcb* pcb = (t_pcb*)pcb_void; // Convertimos de void* a t_pcb*
     free(pcb->registros);
     enviar_eliminacion_pcb_a_memoria(pcb->pid);
     free(pcb);

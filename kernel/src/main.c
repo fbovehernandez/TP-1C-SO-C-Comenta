@@ -101,13 +101,12 @@ int main(int argc, char* argv[]) {
     sem_destroy(&sem_cargo_instrucciones);
     sem_destroy(&sem_planificadores);
 
-
-    queue_destroy(cola_new);
-    queue_destroy(cola_ready);
-    queue_destroy(cola_blocked);
-    queue_destroy(cola_exit);
-    queue_destroy(cola_prioritarios_por_signal);
-    queue_destroy(cola_ready_plus);
+    queue_destroy_and_destroy_elements(cola_new,liberar_pcb);
+    queue_destroy_and_destroy_elements(cola_ready,liberar_pcb);
+    queue_destroy_and_destroy_elements(cola_blocked,liberar_pcb);
+    queue_destroy_and_destroy_elements(cola_exit,liberar_pcb);
+    queue_destroy_and_destroy_elements(cola_prioritarios_por_signal,liberar_pcb);
+    queue_destroy_and_destroy_elements(cola_ready_plus,liberar_pcb);
 
     close(socket_memoria_kernel);
     close(socket_cpu);
