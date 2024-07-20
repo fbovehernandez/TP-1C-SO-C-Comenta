@@ -36,7 +36,6 @@ void pasar_a_ready_normal(t_pcb* pcb) {
     
     char* pids = obtener_pid_de(cola_ready);
     log_info(logger_kernel,"Cola Ready: %s\n", pids);
-    string_array_destroy(pids);
     pthread_mutex_unlock(&mutex_estado_ready);
 }
 

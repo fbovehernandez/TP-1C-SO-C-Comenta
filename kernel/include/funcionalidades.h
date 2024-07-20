@@ -169,11 +169,13 @@ void finalizar_kernel();
 void enviar_eliminacion_pcb_a_memoria(int pid);
 void* liberar_pcb(t_pcb* pcb);
 void liberar_estructura_sockets();
-void liberar_cola_recursos(t_queue* procesos_bloqueados);
+void liberar_cola_recursos(t_list* procesos_bloqueados);
 void liberar_datos_kernel();
 void liberar_ios();
 void liberar_pcb_de_io(int pid);
 void liberar_pcb_de_recursos(int pid);
+
+
 
 void EJECUTAR_SCRIPT(char* path);
 void INICIAR_PROCESO(char* path);

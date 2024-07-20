@@ -328,7 +328,7 @@ bool es_VRR() {
     return strcmp(algoritmo_planificacion, "VRR") == 0;
 }
 
-void *esperar_VRR(t_pcb* pcb) {
+void* esperar_VRR(t_pcb* pcb) {
     timer = temporal_create(); // Crearlo ya empieza a contar
     esperar_RR(pcb);
     
@@ -345,7 +345,7 @@ void *esperar_VRR(t_pcb* pcb) {
     void temporal_resume(t_temporal* temporal);
 */
 
-void *esperar_RR(t_pcb* pcb_anterior) {
+void* esperar_RR(t_pcb* pcb_anterior) {
     /* Esperar_cpu_RR */
     t_pcb* pcb = pcb_anterior;
     int quantum = pcb->quantum;
@@ -879,10 +879,11 @@ En caso de que la interfaz exista y esté conectada, se deberá validar que la i
 operación solicitada, en caso de que no sea así, se deberá enviar el proceso a EXIT. */
 
 t_list_io* validar_io(t_operacion_io* io, t_pcb* pcb) {
-    /*bool match_nombre(void* nodo_lista) {
+    /*
+    bool match_nombre(void nodo_lista) {
         return strcmp(((t_list_io*)nodo_lista)->nombreInterfaz, io->nombre_interfaz) == 0;
-    };*/
-
+    };
+    */
     printf("Valida la io\n");
     
     pthread_mutex_lock(&mutex_lista_io);
@@ -1512,8 +1513,10 @@ void finalizar_kernel(){
     liberar_ios();
 
     // No hagan "liberar_pcb(pcb_exec)" que no es un pcb como tal
-    free(pcb_exec->registros);
-    free(pcb_exec);
+    if((pcb_exec !=  NULL)){
+        free(pcb_exec->registros);
+        free(pcb_exec);
+    }
 
     // No hace falta liberar cada uno porque no tiene punteros
     free(sockets);
@@ -1557,7 +1560,10 @@ void liberar_ios() {
         free(io);
     }
     
-    dictionary_destroy_and_destroy_elements(diccionario_io, (void*)_liberar_io);
+    if(diccionario_io != NULL){
+        dictionary_destroy_and_destroy_elements(diccionario_io, (void*)_liberar_io);
+    }
+    
 }
 
 void liberar_datos_kernel(){
@@ -1641,4 +1647,3 @@ void enviar_eliminacion_pcb_a_memoria(int pid) {
     enviar_paquete(buffer, LIBERAR_PROCESO, sockets->socket_memoria);
     // Problema con memoria, hay que ir a buscar sus frames y marcarlos como libres y debe ser una comunicacion directa de Kernel con Memoria
 }
-
