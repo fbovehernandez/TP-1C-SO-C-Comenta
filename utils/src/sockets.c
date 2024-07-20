@@ -199,6 +199,11 @@ void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* dato
     buffer->size = total_size;
     buffer->stream = stream;
 
+    if (datos_add) {
+        free(datos_add->stream);
+        free(datos_add);
+    }
+
     enviar_paquete(buffer, cod_op, socket);
 
     return 0;

@@ -42,9 +42,6 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     // Enviar el paquete al Kernel
     enviar_paquete(buffer, CONEXION_INTERFAZ, kernelfd);
     printf("ENVIO MI NOMBRE!!!\n");
-    // Liberar memoria y retornar el descriptor de socket
-    // free(buffer->stream);
-    // free(buffer);
 
     return kernelfd;
 }
@@ -194,6 +191,9 @@ void recibir_kernel(void* config_socket_io) {
                 recv(memoriafd, &terminoOk, sizeof(int), MSG_WAITALL);
                 printf("el terminoOk es: %d \n", terminoOk);
                 send(socket_kernel_io, &terminoOk, sizeof(int), 0);
+                
+                free(valor);
+                liberar_lista_direcciones(pid_stdin->lista_direcciones);
                 free(pid_stdin);
                 break;
             case CREAR_ARCHIVO:
@@ -274,6 +274,7 @@ void recibir_memoria(void* config_socket_io) {
                 log_info(logger_io, "PID: %d - Operacion: ESCRIBIR", pid);
 
                 send(kernelfd, &terminoOk, sizeof(int), 0);
+                free(valor);
                 break;
             default:
                 printf("Se rompio memoria!!!!\n");
@@ -426,4 +427,10 @@ t_fs_truncate* deserializar_fs_truncate(t_buffer* buffer){
     fs_truncate->truncador      = buffer_read_uint32(buffer);
 
     return fs_truncate; 
+}
+
+void liberar_lista_direcciones(t_list* lista_direcciones){
+    if(lista_direcciones != NULL){
+        list_destroy_and_destroy_elements(lista_direcciones,free);
+    }
 }

@@ -93,7 +93,6 @@ void hacer_interrupcion(t_pcb* pcb) {
 
 void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria) {
     t_buffer *buffer = malloc(sizeof(t_buffer));
-    // t_cantidad_instrucciones* cantidad = malloc(sizeof(t_cantidad_instrucciones));
     buffer->size = sizeof(int);
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
@@ -101,7 +100,6 @@ void pedir_cantidad_instrucciones_a_memoria(int pid, int socket_memoria) {
     memcpy(stream + buffer->offset, &pid, sizeof(int));
     buffer->stream = stream;
     enviar_paquete(buffer, QUIERO_CANTIDAD_INSTRUCCIONES, socket_memoria);
-    free(buffer);
 }
 
 int cantidad_instrucciones_deserializar(t_buffer *buffer) {
@@ -123,8 +121,6 @@ void pedir_instruccion_a_memoria(int socket_memoria, t_pcb *pcb) {
 
     t_buffer *buffer = llenar_buffer_solicitud_instruccion(pid_pc);
     enviar_paquete(buffer, QUIERO_INSTRUCCION, socket_memoria);
-    free(buffer->stream);
-    free(buffer);
     free(pid_pc);
 }
 
@@ -521,8 +517,6 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     case WAIT: case SIGNAL:
         DesalojoCpu codigo = (nombreInstruccion == WAIT) ? WAIT_RECURSO : SIGNAL_RECURSO;
         t_parametro* parametro_recurso = list_get(list_parametros, 0);
-        
-        // pcb->program_counter++;
         manejar_recursos(pcb, parametro_recurso, codigo);
         return 1;
         break; 
@@ -725,7 +719,7 @@ void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectur
     dir_fisica_tamanio->bytes_lectura = *(int*)list_get(lista_bytes_lectura, 0); 
     printf("tamanio guardado: %d\n", dir_fisica_tamanio->bytes_lectura);
             
-    list_add(direcciones_fisicas, dir_fisica_tamanio);
+    list_add(direcciones_fisicas, dir_fisica_tamanio); 
 
     int frame = -2;
     // Aca cargo el resto
@@ -757,7 +751,6 @@ void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectur
 void enviar_direcciones_fisicas(int cantidad_paginas, t_list* direcciones_fisicas, void* registro_dato_mov_out, int tamanio_valor, int pid, codigo_operacion cod_op) {
     t_buffer* buffer = serializar_direcciones_fisicas(cantidad_paginas, direcciones_fisicas, registro_dato_mov_out, tamanio_valor, pid);
     enviar_paquete(buffer, cod_op, socket_memoria);
-    free(buffer);
 }
 
 t_buffer* serializar_direcciones_fisicas(int cantidad_paginas, t_list* direcciones_fisicas, void* registro_dato_mov_out, int tamanio_valor, int pid) {
@@ -1078,31 +1071,10 @@ void manejar_recursos(t_pcb* pcb, t_parametro* recurso, DesalojoCpu codigo) {
 
     buffer->stream = stream;    
     desalojar(pcb, codigo, buffer);
-    /*t_buffer *buffer = malloc(sizeof(t_buffer));
-
-    int longitud_recurso_nombre = recurso->length + 1;
-
-    buffer->size = sizeof(int) + longitud_recurso_nombre;
-    buffer->offset = 0;
-    buffer->stream = malloc(buffer->size);
-
-    //void *stream = buffer->stream;
-
-    memcpy(buffer->stream + buffer->offset, &longitud_recurso_nombre, sizeof(int));
-    buffer->stream += sizeof(int);
-    memcpy(buffer->stream + buffer->offset, recurso->nombre, longitud_recurso_nombre);
-    // buffer->stream += longitud_recurso_nombre;
-    
-    printf("el nombre del rec es %s\n", recurso->nombre);
-    printf("el length del rec es %d\n", longitud_recurso_nombre);
-
-    // buffer->stream = stream;    
-    desalojar(pcb, codigo, buffer);*/
 }
 
 void enviar_buffer_copy_string(int direccion_fisica_SI, int direccion_fisica_DI, int tamanio) {
-    t_buffer* buffer;
-    buffer = llenar_buffer_copy_string(direccion_fisica_SI,direccion_fisica_DI,tamanio);
+    t_buffer* buffer = llenar_buffer_copy_string(direccion_fisica_SI,direccion_fisica_DI,tamanio);
     enviar_paquete(buffer, COPY_STRING_MEMORIA ,socket_memoria);
 }
 
@@ -1128,9 +1100,10 @@ t_buffer* llenar_buffer_copy_string(int direccion_fisica_SI, int direccion_fisic
 }
 
 void enviar_kernel_stdout(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio){
-    t_buffer* buffer;
-    buffer = llenar_buffer_stdout(direccion_fisica, nombre_interfaz, tamanio);
+    t_buffer* buffer = llenar_buffer_stdout(direccion_fisica, nombre_interfaz, tamanio);
     enviar_paquete(buffer, PEDIDO_ESCRITURA, client_dispatch);
+    free(buffer->stream);
+    free(buffer);
 }
 
 t_buffer* llenar_buffer_stdout(int direccion_fisica, char* nombre_interfaz, uint32_t tamanio){
