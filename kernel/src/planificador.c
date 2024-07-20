@@ -70,6 +70,7 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
       
     // liberar_pcb_de_recursos(pcb->pid); ----> PARA CUANDO MUERA RETENIENDO RECURSOS 
     // liberar_pcb_de_io(pcb->pid); -------------> PARA CUANDO ESTA EN LA IO
+    // liberar_pcb((void*)pcb);
     liberar_pcb(pcb);
 
     // sem_post(&sem_planificadores);
@@ -86,7 +87,6 @@ void pasar_a_ready_plus(t_pcb* pcb){
     pthread_mutex_unlock(&mutex_estado_ready_plus);
     
     free(pids);
-    
 }
 
 char* obtener_pid_de(t_queue* cola){ //  OBLIGATORIO: Usar el mutex de la cola correspondiente antes de mandarlo

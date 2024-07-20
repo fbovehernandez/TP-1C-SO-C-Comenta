@@ -100,6 +100,7 @@ int main(int argc, char* argv[]) {
     sem_destroy(&sem_memoria_instruccion);
     sem_destroy(&sem_cargo_instrucciones);
     sem_destroy(&sem_planificadores);
+
     /*
     queue_destroy_and_destroy_elements(cola_new,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_ready,liberar_pcb);
@@ -108,6 +109,7 @@ int main(int argc, char* argv[]) {
     queue_destroy_and_destroy_elements(cola_prioritarios_por_signal,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_ready_plus,liberar_pcb);
     */
+    
     close(socket_memoria_kernel);
     close(socket_cpu);
     close(socket_interrupt);

@@ -62,7 +62,7 @@ void *interaccion_consola() {
             "5- Detener planificacion\n"
             "6- Listar procesos por estado\n"
             "7- Cambiar el grado de multiprogramacion\n"
-            "8- Finalizar modulo\n"
+            "8- Finalizar TP\n"
             "Seleccione una opción: \n");
         
         if (input) {
@@ -120,10 +120,23 @@ void *interaccion_consola() {
                 break;
             case 8:
                 printf("Finalizacion del modulo\n");
-                finalizar_kernel(); // Hacer todo lo necesario para finalizar el modulo de manera feliz. 
-                //enviar_paquete(buffer,CERRAR_MODULO,sockets->socket_memoria);
-                //enviar_paquete(buffer,CERRAR_MODULO,sockets->socket_cpu);
-                exit(1);
+
+                // close sockets
+                close(socket_memoria_kernel);
+                close(socket_cpu);
+                close(socket_interrupt);
+
+                pthread_join(pasar_a_ready, NULL);
+                pthread_join(planificador_corto_plazo, NULL);
+                pthread_join(hilo_io, NULL);
+
+                finalizar_kernel(); 
+                finalzar_cpu();
+                finalizar_memoria();
+
+                // Hacer todo lo necesario para finalizar el modulo de manera feliz. 
+                
+                // exit(1);
                 break;
             default:
                 break;
@@ -131,6 +144,7 @@ void *interaccion_consola() {
         }
     }                                   
 
+    
     return NULL;
 }
 
@@ -262,6 +276,7 @@ void encolar_a_new(t_pcb *pcb) {
 
     log_info(logger_kernel, "Se crea el proceso: %d en NEW", pcb->pid);
     sem_post(&sem_planificadores);
+    log_info(logger_kernel, "Hay proceso esperando en la cola de NEW!\n");
     sem_post(&sem_hay_pcb_esperando_ready); // Incrementar el semáforo para indicar que hay un nuevo proceso
     cantidad_bloqueados--;
 }
@@ -270,8 +285,6 @@ void* a_ready() {
     while (1) {
         // Esperar a que haya un proceso en la cola -> Esto espera a que literalment haya uno
         sem_wait(&sem_hay_pcb_esperando_ready); 
-        log_info(logger_kernel, "Hay proceso esperando en la cola de NEW!\n");
-
         sem_wait(&sem_grado_multiprogramacion); 
         log_info(logger_kernel, "Grado de multiprogramación permite agregar proceso a ready\n");
 
@@ -495,7 +508,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
 
     if (es_VRR()) {
         temporal_stop(timer); // Detenemos el temporizador
-        
+
         int64_t tiempo_transcurrido = temporal_gettime(timer);  // Obtenemos el tiempo transcurrido en milisegundos
         temporal_destroy(timer);
         printf("Tiempo transcurrido: %ld ms\n", tiempo_transcurrido);
@@ -1512,6 +1525,31 @@ t_buffer* llenar_buffer_fs_truncate(int pid,int largo_archivo,char* nombre_archi
 
 
 void finalizar_kernel() {
+    pthread_mutex_destroy(&mutex_estado_new);
+    pthread_mutex_destroy(&mutex_estado_blocked);
+    pthread_mutex_destroy(&mutex_estado_ready);
+    pthread_mutex_destroy(&mutex_lista_io);
+    pthread_mutex_destroy(&mutex_cola_io_generica);
+    pthread_mutex_destroy(&no_hay_nadie_en_cpu);
+
+    sem_destroy(&sem_contador_quantum);
+    sem_destroy(&sem_hay_para_planificar);
+    sem_destroy(&sem_hay_pcb_esperando_ready);
+    sem_destroy(&sem_grado_multiprogramacion);
+    sem_destroy(&sem_memoria_instruccion);
+    sem_destroy(&sem_cargo_instrucciones);
+    sem_destroy(&sem_planificadores);
+
+    
+    queue_destroy_and_destroy_elements(cola_new,liberar_pcb);
+    queue_destroy_and_destroy_elements(cola_ready,liberar_pcb);
+    queue_destroy_and_destroy_elements(cola_blocked,liberar_pcb);
+    queue_destroy_and_destroy_elements(cola_exit,liberar_pcb);
+    queue_destroy_and_destroy_elements(cola_prioritarios_por_signal,liberar_pcb);
+    queue_destroy_and_destroy_elements(cola_ready_plus,liberar_pcb);
+
+    
+    
     liberar_ios();
 
     // No hagan "liberar_pcb(pcb_exec)" que no es un pcb como tal
@@ -1649,4 +1687,12 @@ void enviar_eliminacion_pcb_a_memoria(int pid) {
     memcpy(buffer->stream + buffer->offset, &pid, sizeof(int));
     enviar_paquete(buffer, LIBERAR_PROCESO, sockets->socket_memoria);
     // Problema con memoria, hay que ir a buscar sus frames y marcarlos como libres y debe ser una comunicacion directa de Kernel con Memoria
+}
+
+void finalzar_cpu(){
+    //enviar_paquete(buffer,CERRAR_MODULO,sockets->socket_cpu);
+}
+
+void finalizar_memoria(){
+     //enviar_paquete(buffer,CERRAR_MODULO,sockets->socket_memoria);
 }

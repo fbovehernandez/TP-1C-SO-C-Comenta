@@ -174,7 +174,9 @@ void liberar_datos_kernel();
 void liberar_ios();
 void liberar_pcb_de_io(int pid);
 void liberar_pcb_de_recursos(int pid);
-
+void liberar_pcb_normal(t_pcb* pcb);
+void finalzar_cpu();
+void finalizar_memoria();
 
 
 void EJECUTAR_SCRIPT(char* path);

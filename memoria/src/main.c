@@ -56,11 +56,20 @@ int main(int argc, char* argv[]) {
     pthread_join(kernel_thread, NULL);
 
     // Libero conexiones 
-    free(config_memoria);
-    free(logger_memoria);
+    config_destroy(config_memoria);
+    log_destroy(logger_memoria);
+    log_destroy(memory_struct_cpu->logger);
     free(memory_struct_cpu);
     liberar_conexion(escucha_fd);
-    // liberar_conexion(cliente_kernel);
 
+    free(espacio_usuario);
+    free(puerto_escucha);
+    free(path_config);
+
+    free(bitarray_memory);
+
+    pthread_mutex_destroy(&mutex_diccionario_instrucciones);
+    pthread_mutex_destroy(&mutex_diccionario_io);
+    
     return 0;
 }

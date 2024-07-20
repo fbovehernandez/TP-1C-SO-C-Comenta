@@ -210,7 +210,7 @@ void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* dato
 }
 
 t_pcb* deserializar_pcb(t_buffer* buffer) {
-    t_pcb* pcb = malloc(sizeof(t_pcb)); //FREE?
+    t_pcb* pcb = malloc(sizeof(t_pcb)); // FREE?
     pcb->registros = malloc(sizeof(t_registros)); // Acordarse de liberar memoria //VER_SI_HAY_FREE
 
     void* stream = buffer->stream;
