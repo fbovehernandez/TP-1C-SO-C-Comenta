@@ -11,6 +11,8 @@ pthread_mutex_t mutex_interrupcion_quantum;
 pthread_mutex_t mutex_interrupcion_fin;
 pthread_mutex_t mutex_interrupcion_fin_usuario;
 
+bool se_seteo_pc = false;
+
 void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
     //int esperar_confirm;
 
@@ -314,6 +316,7 @@ int desplazamiento_memoria(int direccion_logica, int nro_pagina){
 
 int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     // log_info(logger, "PID: %d - Ejecutando: %d ", pcb->pid, instruccion->nombre);
+    se_seteo_pc = false;
     TipoInstruccion nombreInstruccion = instruccion->nombre;
     t_list *list_parametros = instruccion->parametros;
     // printf("La instruccion es de numero %d y tiene %d parametros\n", instruccion->nombre, instruccion->cantidad_parametros);
@@ -341,7 +344,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         int valor = atoi(valor_char);
 
         // Aca obtengo la direccion de memoria del registro
-        void *registro_pcb1 = seleccionar_registro_cpu(registro1);
+        void *registro_pcb1 = seleccionar_registro_cpu(registro1,pcb);
 
         // Aca obtengo si es de 8 bits o no y uso eso para setear, sino funciona el bool uso un int
         bool es_registro_uint8 = es_de_8_bits(registro1);
@@ -356,10 +359,10 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         nombre_registro_dato = registro_datos->nombre;
         nombre_registro_dir = registro_direccion->nombre; 
 
-        void *registro_dato_mov_in = seleccionar_registro_cpu(nombre_registro_dato);
+        void *registro_dato_mov_in = seleccionar_registro_cpu(nombre_registro_dato,pcb);
 
         es_registro_uint8_dato = es_de_8_bits(nombre_registro_dato);
-        uint32_t* registro_direccion_mov_in = (uint32_t*) seleccionar_registro_cpu(nombre_registro_dir);
+        uint32_t* registro_direccion_mov_in = (uint32_t*) seleccionar_registro_cpu(nombre_registro_dir,pcb);
         // bool es_registro_uint8_direccion = es_de_8_bits(nombre_registro_dir); // not used
 
         t_list* lista_bytes_lectura_mov_in = list_create();
@@ -373,19 +376,31 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         
         enviar_direcciones_fisicas(cantidad_paginas, lista_direcciones_fisicas_mov_in, &default_value, tamanio_en_byte, pcb->pid, LEER_DATO_MEMORIA);
 
-        void* valor_en_mem = malloc(tamanio_en_byte);
+        printf("Tamanio en byte: %ld\n", tamanio_en_byte);
 
-        recv(socket_memoria, valor_en_mem, tamanio_en_byte, MSG_WAITALL); // Deberia leer el tamanio 
+        if(tamanio_en_byte == 1) {
+            uint8_t* valor_en_mem_uint8 = malloc(tamanio_en_byte);
+            recv(socket_memoria, valor_en_mem_uint8, tamanio_en_byte, MSG_WAITALL);
+            uint8_t valor_recibido_8 = *(uint8_t*) valor_en_mem_uint8;
+            printf("El valor recibido es: %d\n", valor_recibido_8);
+
+            set_uint8(registro_dato_mov_in, valor_recibido_8);
+            free(valor_en_mem_uint8);
+        } else {
+            uint32_t* valor_en_mem_uint32 = malloc(tamanio_en_byte);
+            recv(socket_memoria, valor_en_mem_uint32, tamanio_en_byte, MSG_WAITALL);
+
+            uint32_t valor_recibido_32 = *(uint32_t*) valor_en_mem_uint32;
+            printf("El valor recibido es: %d\n", valor_recibido_32);
+
+            set(registro_dato_mov_in, valor_recibido_32, es_registro_uint8_dato);
+            free(valor_en_mem_uint32);
+        }
+
+        // printeo como qwueda AX Y EAX
+        printf("Cuando hace MOV_IN AX SI queda asi el registro AX del CPU: %u\n", registros_cpu->AX);
+        printf("Cuando hace MOV_IN EAX SI queda asi el registro EAX del CPU: %u\n", registros_cpu->EAX);
         
-        printf("Recibi el valor de memoria \n");
-
-        uint32_t valor_recibido = *(uint32_t*) valor_en_mem;
-
-        printf("El valor recibido es: %d\n", valor_recibido);
-
-        set(registro_dato_mov_in, valor_recibido, es_registro_uint8_dato);
-
-        free(valor_en_mem);
         break;
     case MOV_OUT: // MOV_OUT (Registro Dirección, Registro Datos)
         recibir_parametros_mov_out(list_parametros, &registro_direccion, &registro_datos, &nombre_registro_dato, &nombre_registro_dir);
@@ -393,10 +408,10 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         t_list* lista_bytes_lectura = list_create();
         t_list* lista_direcciones_fisicas_mov_out = list_create(); 
 
-        uint32_t* registro_dato_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dato);
+        uint32_t* registro_dato_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dato,pcb);
         es_registro_uint8_dato = es_de_8_bits(nombre_registro_dato);
         
-        uint32_t* registro_direccion_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dir); // este es la direccion logica
+        uint32_t* registro_direccion_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dir,pcb); // este es la direccion logica
 
         pagina = floor(*registro_direccion_mov_out / tamanio_pagina);
         tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato);
@@ -423,8 +438,8 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         t_parametro* tamanio_a_copiar_de_lista = list_get(list_parametros, 0);
         int tamanio_a_copiar = atoi(tamanio_a_copiar_de_lista->nombre);
 
-        uint32_t* registro_SI = (uint32_t*)seleccionar_registro_cpu("SI");
-        uint32_t* registro_DI = (uint32_t*)seleccionar_registro_cpu("DI");
+        uint32_t* registro_SI = (uint32_t*)seleccionar_registro_cpu("SI",pcb);
+        uint32_t* registro_DI = (uint32_t*)seleccionar_registro_cpu("DI",pcb);
 
         void* valor_leido_cs = malloc(tamanio_a_copiar); // A mi no me importa si me traigo 50 bytes, quiero leer el tamanio que me pasaste
 
@@ -461,27 +476,28 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     case SUM: // SUM DESTINO ORIGEN
         t_parametro* registro_param1 = list_get(list_parametros, 0);
         char* registro_nombre = registro_param1->nombre;
-        void* registro_destino = seleccionar_registro_cpu(registro_nombre);
+        void* registro_destino = seleccionar_registro_cpu(registro_nombre,pcb);
         bool es_registro_uint8_destino = es_de_8_bits(registro_nombre);
         
         
         t_parametro* registro_param2 = list_get(list_parametros, 1); // valor_void = 2do registro
         char *registro2 = registro_param2->nombre;
-        void* registro_origen = seleccionar_registro_cpu(registro2);
+        void* registro_origen = seleccionar_registro_cpu(registro2,pcb);
         bool es_registro_uint8_origen = es_de_8_bits(registro2);
 
-
         sum(registro_origen, registro_destino, es_registro_uint8_origen, es_registro_uint8_destino);
+        printf("El registro %s tiene el valor %d\n", registro_nombre, *(uint32_t*)registro_destino);
+
         break;
     case SUB:
         t_parametro *registro_destino_param_resta = list_get(list_parametros, 0);
         char *registro_destino_resta = registro_destino_param_resta->nombre;
-        void *registro_destino_pcb_resta = seleccionar_registro_cpu(registro_destino_resta);
+        void *registro_destino_pcb_resta = seleccionar_registro_cpu(registro_destino_resta,pcb);
         bool es_8_bits_destino_resta = es_de_8_bits(registro_destino_resta);
         
         t_parametro *registro_origen_param_resta = list_get(list_parametros, 1);
         char *registro_origen_resta = registro_origen_param_resta->nombre;
-        void *registro_origen_pcb_resta = seleccionar_registro_cpu(registro_origen_resta);
+        void *registro_origen_pcb_resta = seleccionar_registro_cpu(registro_origen_resta,pcb);
         bool es_8_bits_origen_resta = es_de_8_bits(registro_origen_resta);
         
 
@@ -494,7 +510,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         t_parametro *pc = list_get(list_parametros, 1);
         int nuevo_pc = atoi(pc->nombre);
 
-        void *registro = seleccionar_registro_cpu(registro1);
+        void *registro = seleccionar_registro_cpu(registro1, pcb);
         jnz(registro, nuevo_pc, pcb);
         break;
     case RESIZE:
@@ -550,10 +566,10 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         char* nombre_registro_direccion = registro_direccion->nombre;
         char* nombre_registro_tamanio = registro_tamanio->nombre;
 
-        uint32_t* registro_direccion_stdin = (uint32_t*) seleccionar_registro_cpu(nombre_registro_direccion);
+        uint32_t* registro_direccion_stdin = (uint32_t*) seleccionar_registro_cpu(nombre_registro_direccion,pcb);
         es_registro_uint8_dato = es_de_8_bits(nombre_registro_tamanio);
 
-        uint32_t* registro_tamanio_stdin = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio);
+        uint32_t* registro_tamanio_stdin = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio,pcb);
         
         int pagina = floor(*registro_direccion_stdin / tamanio_pagina);
         tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); //Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
@@ -596,8 +612,8 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         t_parametro* parametro_registro_tamanio = list_get(list_parametros,2);
         char* nombre_registro_tamanio_stdout = parametro_registro_tamanio->nombre;
 
-        uint32_t* registro_direccion11 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_direccion_stdout);
-        uint32_t* registro_tamanio_stdout = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio_stdout);
+        uint32_t* registro_direccion11 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_direccion_stdout,pcb);
+        uint32_t* registro_tamanio_stdout = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio_stdout,pcb);
         
         es_registro_uint8_dato = es_de_8_bits(nombre_registro_tamanio_stdout);
         
@@ -695,7 +711,10 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         // Hasta que encontremos como hacer con el EXIT que recibe como E X I T
         break;
     }
-    pcb->program_counter++;
+    
+    if(!se_seteo_pc){
+        pcb->program_counter++;
+    }
     return 0;
 }
 
@@ -716,6 +735,7 @@ void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectur
 
     dir_fisica_tamanio->direccion_fisica = traducir_direccion_logica_a_fisica(direccion_logica, pid);
     dir_fisica_tamanio->bytes_lectura = *(int*)list_get(lista_bytes_lectura, 0); 
+    printf("direccion fisica: %d\n", dir_fisica_tamanio->direccion_fisica);
     printf("tamanio guardado: %d\n", dir_fisica_tamanio->bytes_lectura);
             
     list_add(direcciones_fisicas, dir_fisica_tamanio); 
@@ -738,10 +758,14 @@ void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectur
 
         int direccion_fisica = frame * tamanio_pagina + 0; // 0 es el offset
 
-        dir_fisica_tamanio->direccion_fisica = direccion_fisica;
-        dir_fisica_tamanio->bytes_lectura = *(int*)list_get(lista_bytes_lectura, i+1); 
+        t_dir_fisica_tamanio *dir_fisica_tamanio_2 = malloc(sizeof(t_dir_fisica_tamanio));
+        dir_fisica_tamanio_2->direccion_fisica = direccion_fisica;
+        dir_fisica_tamanio_2->bytes_lectura = *(int*)list_get(lista_bytes_lectura, i+1); 
 
-        list_add(direcciones_fisicas, dir_fisica_tamanio); 
+        printf("direccion fisica: %d\n", dir_fisica_tamanio_2->direccion_fisica);
+        printf("tamanio guardado: %d\n", dir_fisica_tamanio_2->bytes_lectura);
+
+        list_add(direcciones_fisicas, dir_fisica_tamanio_2); 
 
         pagina++;
     }
@@ -770,8 +794,12 @@ t_buffer* serializar_direcciones_fisicas(int cantidad_paginas, t_list* direccion
     memcpy(stream + buffer->offset, &cantidad_paginas, sizeof(int));
     buffer->offset += sizeof(int);
 
+    printf("VOY A IMPRIMIR LAS DIRECCIONES FISICAS\n");
     for(int i=0; i < cantidad_paginas; i++) {
         t_dir_fisica_tamanio* dir_fisica_tam = list_get(direcciones_fisicas, i);
+        printf("Direccion fisica: %d\n", dir_fisica_tam->direccion_fisica);
+        printf("Bytes a leer: %d\n", dir_fisica_tam->bytes_lectura);
+
         memcpy(stream + buffer->offset, &dir_fisica_tam->direccion_fisica, sizeof(int));
         buffer->offset += sizeof(int);
         memcpy(stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
@@ -806,7 +834,7 @@ int cantidad_de_paginas_a_utilizar(uint32_t direccion_logica, int tamanio_en_byt
     int offset_movido = direccion_logica - pagina * tamanio_pagina; // 5 dir logica -> 16 tam pagina EAX = 4 BYTES
     
     while(1) { 
-        int posible_lectura = tamanio_pagina - offset_movido;  // 16 -5  = 11;
+        int posible_lectura = tamanio_pagina - offset_movido;  // 3
 
         int sobrante_de_pagina = tamanio_en_bytes - posible_lectura; // 4 -11 = -7
         
@@ -933,8 +961,7 @@ void setear_registros_cpu() {
     registros_cpu->DI = 0;
 }
 
-void *seleccionar_registro_cpu(char *nombreRegistro) {
-
+void *seleccionar_registro_cpu(char *nombreRegistro, t_pcb* pcb) {
     if (strcmp(nombreRegistro, "AX") == 0)
     {
         return &registros_cpu->AX;
@@ -975,6 +1002,10 @@ void *seleccionar_registro_cpu(char *nombreRegistro) {
     {
         return &registros_cpu->EDX;
     }
+    else if (strcmp(nombreRegistro,"PC") == 0){
+        se_seteo_pc = true;
+        return &pcb->program_counter;
+    }
 
     return NULL;
 }
@@ -995,23 +1026,32 @@ void set(void *registro, uint32_t valor, bool es_8_bits) {
     }
 }
 
+// NO SACAR ESTA FUNCION POR MAS QUE SSEA UNA LINEA
+void set_uint8(void *registro, uint8_t valor) {
+    *(uint8_t *)registro = (uint8_t)valor; 
+}
+
 void sub(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, bool es_8_bits_destino) {
     uint32_t resultado_resta;
 
-    if(es_8_bits_destino && es_8_bits_origen) {
+    if (es_8_bits_origen && es_8_bits_destino) {
         resultado_resta = *(uint8_t *)registroDestino - *(uint8_t *)registroOrigen;
-        set(registroDestino, resultado_resta, es_8_bits_destino);
+    } else if (es_8_bits_origen) {
+        resultado_resta = *(uint32_t *)registroDestino - *(uint8_t *)registroOrigen;
+    } else if (es_8_bits_destino) {
+        resultado_resta = *(uint8_t *)registroDestino - *(uint32_t *)registroOrigen;
     } else {
         resultado_resta = *(uint32_t *)registroDestino - *(uint32_t *)registroOrigen;
-        set(registroDestino, resultado_resta, es_8_bits_destino);
     }
+
+    set(registroDestino, resultado_resta, es_8_bits_destino);
 }
 
 void sum(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, bool es_8_bits_destino) {
     //uint32_t valor_origen;
     //uint32_t valor_destino;
     uint32_t resultado_suma;
-
+    /* 
     if(es_8_bits_destino && es_8_bits_origen) {
         resultado_suma = *(uint8_t *)registroOrigen + *(uint8_t *)registroDestino;
         set(registroDestino, resultado_suma, es_8_bits_destino);
@@ -1019,7 +1059,21 @@ void sum(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, boo
         resultado_suma = *(uint32_t *)registroOrigen + *(uint32_t *)registroDestino;
         set(registroDestino, resultado_suma, es_8_bits_destino);
     }
-    /*
+    
+    */
+    if (es_8_bits_origen && es_8_bits_destino) {
+        resultado_suma = *(uint8_t *)registroOrigen + *(uint8_t *)registroDestino;
+    } else if (es_8_bits_origen) {
+        resultado_suma = *(uint8_t *)registroOrigen + *(uint32_t *)registroDestino;
+    } else if (es_8_bits_destino) {
+        resultado_suma = *(uint32_t *)registroOrigen + *(uint8_t *)registroDestino;
+    } else {
+        resultado_suma = *(uint32_t *)registroOrigen + *(uint32_t *)registroDestino;
+    }
+
+    set(registroDestino, resultado_suma, es_8_bits_destino);
+    
+        /*
     // Obtener el valor del registro origen
     if (es_8_bits_origen) {
         valor_origen = *(uint8_t *)registroOrigen;
@@ -1227,7 +1281,7 @@ typedef struct {
 */ 
 
 void liberar_parametros_de(t_list* parametros) {
-    if(parametros != NULL){
+    if(!list_is_empty(parametros)){
         list_destroy_and_destroy_elements(parametros, (void (*)(void *)) liberar_parametro);
     }
 }

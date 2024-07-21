@@ -98,7 +98,7 @@ typedef struct {
 } t_solicitud_instruccion;
 
 typedef enum {
-    INTERRUPCION_QUANTUM,
+    INTERRUPCION_QUANTUM = 0,
     IO_BLOCKED, 
     DORMIR_INTERFAZ,
     LEER_INTERFAZ,
@@ -111,7 +111,7 @@ typedef enum {
     ERROR_STDIN,
     FS_CREATE,
     FS_DELETE,
-    OUT_OF_MEMORY
+    OUT_OF_MEMORY = 13
     //LECTURA_FS,
     //ESCRITURA_FS
 } DesalojoCpu;
@@ -135,7 +135,7 @@ typedef struct {
 } t_pedido_memoria;
 
 typedef enum {
-    PATH,
+    PATH = 14,
 	ENVIO_PCB,
     QUIERO_INSTRUCCION,
     ENVIO_INSTRUCCION,
@@ -172,7 +172,7 @@ typedef enum {
     TRUNCAR_ARCHIVO,
     INTERRUPCION_FIN_USUARIO,
     LIBERAR_PROCESO,
-    CERRAR_MODULO
+    CERRAR_MODULO = 51
 } codigo_operacion;
 
 typedef enum {

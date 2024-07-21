@@ -169,7 +169,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
             
                 realizar_operacion(LECTURA, direcciones_restantes_mov_in, user_space_aux, NULL, registro_lectura);
 
-                printf("El valor leido para char* es: %s\n", (char*)registro_lectura);
+                printf("El valor leido para int es: %d\n", *(uint8_t*)registro_lectura);
                 send(socket_cpu, registro_lectura, pedido_op->length_valor, 0);
                 
                 free(pedido_op->valor_a_escribir);
@@ -189,10 +189,9 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 void* registro_escritura = pedido_operacion->valor_a_escribir;
 
                 realizar_operacion(ESCRITURA, direcciones_restantes_escritura, user_space_aux, registro_escritura, NULL); 
-                printf("Registro escrito como char* %s\n", ((char*)registro_escritura));
+                // printf("Registro escrito como int %d\n", *((uint32_t*)registro_escritura));
 
                 send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
-
                 free(pedido_operacion->valor_a_escribir);
 
                 // Ver esto, creo que lo estoy liberando bien, despues no lo uso
@@ -203,8 +202,6 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 free(pedido_operacion);
                 free(direcciones_restantes_escritura); // Añadido para liberar memoria
                 break;
-            // case FS_CREATE:
-
             default:
                 printf("No reconozco ese cod-op...\n"); 
                 // liberar_paquete(paquete);  // -> Comento y libero despues de cada iteracion
@@ -246,11 +243,11 @@ void interaccion_user_space(tipo_operacion operacion, int df_actual, void* user_
     if(operacion == ESCRITURA) {
         memcpy(user_space_aux + df_actual, registro_escritura + tam_escrito_anterior, tamanio);
         printf("Escritura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
-        printf("Contenido escrito: %.*s\n", tamanio, (char*)(user_space_aux + df_actual));
+        printf("Contenido escrito: %.*d\n", tamanio, *(uint32_t*)(user_space_aux + df_actual));
     } else { // == LECTURA
         memcpy(registro_lectura + tam_escrito_anterior, (user_space_aux + df_actual), tamanio);
         printf("Lectura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
-        printf("Contenido leído: %.*s\n", tamanio, (char*)(registro_lectura + tam_escrito_anterior));
+        printf("Contenido leido: %.*d\n", tamanio, *(uint32_t*)(registro_lectura + tam_escrito_anterior));
     }
 }                                                                                                                                 
 
@@ -280,8 +277,10 @@ t_pedido_memoria* deserializar_direccion_fisica(t_buffer* buffer, t_list* direcc
         t_dir_fisica_tamanio* dir_fisica_tam = malloc(sizeof(t_dir_fisica_tamanio)); //HECHO EN TEORIA
         memcpy(&dir_fisica_tam->direccion_fisica, stream, sizeof(int));
         stream += sizeof(int);
+        printf("Direccion fisica que llega desde CPU: %d\n", dir_fisica_tam->direccion_fisica);
         memcpy(&dir_fisica_tam->bytes_lectura, stream, sizeof(int));
         stream += sizeof(int);
+        printf("Bytes de lectura: %d\n", dir_fisica_tam->bytes_lectura);
 
         list_add(direcciones_restantes, dir_fisica_tam);
     }

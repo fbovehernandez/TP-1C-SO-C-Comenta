@@ -45,7 +45,7 @@ t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades);
 void enviar_fin_programa(t_pcb *pcb);
 void guardar_estado(t_pcb *pcb);
 void setear_registros_cpu();
-void* seleccionar_registro_cpu(char* nombreRegistro);
+void* seleccionar_registro_cpu(char* nombreRegistro,t_pcb* pcb);
 bool es_de_8_bits(char* registro);
 void set(void *registro, uint32_t valor, bool es_8_bits);
 void sub(void* registroOrigen, void* registroDestino, bool es_8_bits_origen, bool es_8_bits_destino);
@@ -75,6 +75,9 @@ t_buffer* llenar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_
 t_buffer* llenar_buffer_fs_truncate(char* nombre_interfaz_a_truncar,char* nombre_file_truncate,uint32_t registro_truncador);
 int hay_interrupcion();
 void hacer_interrupcion(t_pcb* pcb);
+
+void set_uint8(void* registro_dato_mov_in, uint8_t valor_recibido_8);
+
 
 void liberar_parametro(t_parametro* parametro);
 void liberar_parametros_de(t_list* parametros);

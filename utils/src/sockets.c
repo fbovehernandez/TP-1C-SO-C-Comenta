@@ -337,8 +337,8 @@ void enviar_paquete(t_buffer* buffer, codigo_operacion codigo, int socket) {
     offset += sizeof(int);
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
-    if (codigo >= INTERRUPCION_QUANTUM && codigo <= OUT_OF_MEMORY) {
-        printf("Codigo de desalojo: %s\n", string_desalojo((DesalojoCpu)codigo));
+    if (codigo >= 0 && codigo <= 13) {
+        printf("Codigo de desalojo: %s\n", string_desalojo((DesalojoCpu) codigo));
     } else {
         printf("Codigo de operacion: %s\n", string_operacion(codigo));
     }

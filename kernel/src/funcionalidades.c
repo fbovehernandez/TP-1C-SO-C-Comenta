@@ -464,9 +464,8 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     printf("No esta pausada.\n");
  
     switch (devolucion_cpu) {
-        case ERROR_STDOUT || ERROR_STDIN:
+        case ERROR_STDOUT: case ERROR_STDIN:
             pasar_a_exit(pcb, "INVALID_INTERFACE");
-            
             break;
         case OUT_OF_MEMORY:
             pasar_a_exit(pcb, "OUT OF MEMORY");

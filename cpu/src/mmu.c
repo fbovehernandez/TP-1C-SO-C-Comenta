@@ -41,7 +41,6 @@ void agregar_frame_en_TLB(int pid, int pagina, int frame) {
         }
         list_add(tlb, entrada);
     }
-    free(entrada);
     // Si la cantidad de entradas es 0, no hace nada
 }
 
@@ -55,8 +54,6 @@ void eliminar_victima_TLB() {
     }
     log_info(logger_CPU, "TLB elimina victima - PID: %d - Pagina: %d", entrada_victima->pid, entrada_victima->pagina);
     list_remove_element(tlb, entrada_victima);
-    free(entrada_victima);
-    free(algoritmo_tlb);
 }
 
 void* _timestamp_menor_de_entrada(t_entrada_tlb* entrada1, t_entrada_tlb* entrada2) {

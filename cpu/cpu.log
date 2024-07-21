@@ -1,515 +1,119 @@
-[INFO] 18:28:19:096 LOGGER/(3803:3873): PID: 3 - TLB HIT - Pagina: 1
-[INFO] 18:41:42:988 LOGGER/(7188:7188): Conexion establecida con Memoria
-[INFO] 18:41:46:070 LOGGER/(7188:7232): Servidor iniciado, esperando conexiones!
-[INFO] 18:41:48:289 LOGGER/(7188:7232): Se conecto un cliente de dispatch!
-
-[INFO] 18:41:48:290 LOGGER/(7188:7232): Esperando cliente...
-[INFO] 18:41:48:291 LOGGER/(7188:7233): Se conecto un cliente de interrupt!
-
-[INFO] 18:42:10:944 LOGGER/(7188:7232): PID: 1 - TLB MISS - Pagina: 0
-[INFO] 18:42:10:948 LOGGER/(7188:7232): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
-[INFO] 18:42:10:953 LOGGER/(7188:7232): PID: 1 - TLB MISS - Pagina: 1
-[INFO] 18:42:10:958 LOGGER/(7188:7232): PID: 1 - OBTENER MARCO - Página: 1 - Marco: 1
-[INFO] 18:42:12:974 LOGGER/(7188:7232): PID: 1 - TLB HIT - Pagina: 0
-[INFO] 18:42:12:974 LOGGER/(7188:7232): PID: 1 - TLB HIT - Pagina: 1
-[INFO] 18:42:18:014 LOGGER/(7188:7232): PID: 2 - TLB MISS - Pagina: 2
-[INFO] 18:42:18:014 LOGGER/(7188:7232): PID: 2 - OBTENER MARCO - Página: 2 - Marco: 2
-[INFO] 18:42:18:015 LOGGER/(7188:7232): TLB elimina victima - PID: 1 - Pagina: 0
-[INFO] 18:42:18:019 LOGGER/(7188:7232): PID: 2 - TLB MISS - Pagina: 3
-[INFO] 18:42:18:022 LOGGER/(7188:7232): PID: 2 - OBTENER MARCO - Página: 3 - Marco: 3
-[INFO] 18:42:18:022 LOGGER/(7188:7232): TLB elimina victima - PID: 1 - Pagina: 1
-[INFO] 18:42:19:070 LOGGER/(7188:7232): PID: 2 - TLB HIT - Pagina: 2
-[INFO] 18:42:19:070 LOGGER/(7188:7232): PID: 2 - TLB HIT - Pagina: 3
-[INFO] 18:42:26:100 LOGGER/(7188:7232): PID: 1 - TLB MISS - Pagina: 0
-[INFO] 18:42:26:102 LOGGER/(7188:7232): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
-[INFO] 18:42:26:103 LOGGER/(7188:7232): TLB elimina victima - PID: 2 - Pagina: 2
-[INFO] 18:42:26:105 LOGGER/(7188:7232): PID: 1 - TLB MISS - Pagina: 1
-[INFO] 18:42:26:107 LOGGER/(7188:7232): PID: 1 - OBTENER MARCO - Página: 1 - Marco: 1
-[INFO] 18:42:26:107 LOGGER/(7188:7232): TLB elimina victima - PID: 2 - Pagina: 3
-[INFO] 18:42:27:116 LOGGER/(7188:7232): PID: 1 - TLB HIT - Pagina: 0
-[INFO] 18:42:27:116 LOGGER/(7188:7232): PID: 1 - TLB HIT - Pagina: 1
-[INFO] 18:42:41:102 LOGGER/(7188:7232): PID: 3 - TLB MISS - Pagina: 1
-[INFO] 18:42:41:102 LOGGER/(7188:7232): PID: 3 - OBTENER MARCO - Página: 1 - Marco: 1
-[INFO] 18:42:41:102 LOGGER/(7188:7232): TLB elimina victima - PID: 1 - Pagina: 0
-[INFO] 18:42:41:102 LOGGER/(7188:7232): PID: 3 - TLB MISS - Pagina: 2
-[INFO] 18:42:41:103 LOGGER/(7188:7232): PID: 3 - OBTENER MARCO - Página: 2 - Marco: 2
-[INFO] 18:42:41:103 LOGGER/(7188:7232): TLB elimina victima - PID: 1 - Pagina: 1
-[INFO] 18:42:42:105 LOGGER/(7188:7232): PID: 3 - TLB HIT - Pagina: 1
-[INFO] 18:42:42:106 LOGGER/(7188:7232): PID: 3 - TLB HIT - Pagina: 2
-[INFO] 19:31:03:750 LOGGER/(10824:10824): Conexion establecida con Memoria
-[INFO] 19:31:06:825 LOGGER/(10824:10868): Servidor iniciado, esperando conexiones!
-[INFO] 19:31:11:885 LOGGER/(10824:10868): Se conecto un cliente de dispatch!
-
-[INFO] 19:31:11:886 LOGGER/(10824:10868): Esperando cliente...
-[INFO] 19:31:11:889 LOGGER/(10824:10869): Se conecto un cliente de interrupt!
-
-[INFO] 19:42:59:824 LOGGER/(12488:12488): Conexion establecida con Memoria
-[INFO] 19:43:02:900 LOGGER/(12488:12532): Servidor iniciado, esperando conexiones!
-[INFO] 19:43:04:004 LOGGER/(12488:12532): Se conecto un cliente de dispatch!
-
-[INFO] 19:43:04:005 LOGGER/(12488:12532): Esperando cliente...
-[INFO] 19:43:04:010 LOGGER/(12488:12533): Se conecto un cliente de interrupt!
-
-[INFO] 19:54:01:527 LOGGER/(14167:14167): Conexion establecida con Memoria
-[INFO] 19:54:04:601 LOGGER/(14167:14211): Servidor iniciado, esperando conexiones!
-[INFO] 19:54:08:960 LOGGER/(14167:14211): Se conecto un cliente de dispatch!
-
-[INFO] 19:54:08:960 LOGGER/(14167:14211): Esperando cliente...
-[INFO] 19:54:08:962 LOGGER/(14167:14212): Se conecto un cliente de interrupt!
-
-[INFO] 20:13:48:409 LOGGER/(16399:16399): Conexion establecida con Memoria
-[INFO] 20:13:51:486 LOGGER/(16399:16443): Servidor iniciado, esperando conexiones!
-[INFO] 20:14:10:418 LOGGER/(16399:16443): Se conecto un cliente de dispatch!
-
-[INFO] 20:14:10:418 LOGGER/(16399:16443): Esperando cliente...
-[INFO] 20:14:10:419 LOGGER/(16399:16444): Se conecto un cliente de interrupt!
-
-[INFO] 20:20:41:860 LOGGER/(18116:18116): Conexion establecida con Memoria
-[INFO] 20:20:44:965 LOGGER/(18116:18222): Servidor iniciado, esperando conexiones!
-[INFO] 20:21:03:043 LOGGER/(18116:18222): Se conecto un cliente de dispatch!
-
-[INFO] 20:21:03:044 LOGGER/(18116:18222): Esperando cliente...
-[INFO] 20:21:03:045 LOGGER/(18116:18223): Se conecto un cliente de interrupt!
-
-[INFO] 20:22:13:229 LOGGER/(18813:18813): Conexion establecida con Memoria
-[INFO] 20:22:16:296 LOGGER/(18813:18857): Servidor iniciado, esperando conexiones!
-[INFO] 20:22:23:934 LOGGER/(18813:18857): Se conecto un cliente de dispatch!
-
-[INFO] 20:22:23:934 LOGGER/(18813:18857): Esperando cliente...
-[INFO] 20:22:23:937 LOGGER/(18813:18858): Se conecto un cliente de interrupt!
-
-[INFO] 20:32:16:990 LOGGER/(20279:20279): Conexion establecida con Memoria
-[INFO] 20:32:20:056 LOGGER/(20279:20334): Servidor iniciado, esperando conexiones!
-[INFO] 20:32:23:045 LOGGER/(20279:20334): Se conecto un cliente de dispatch!
-
-[INFO] 20:32:23:045 LOGGER/(20279:20334): Esperando cliente...
-[INFO] 20:32:23:046 LOGGER/(20279:20335): Se conecto un cliente de interrupt!
-
-[INFO] 20:34:50:066 LOGGER/(20279:20334): PID: 2 - TLB MISS - Pagina: 0
-[INFO] 20:34:50:068 LOGGER/(20279:20334): PID: 2 - OBTENER MARCO - Página: 0 - Marco: 0
-[INFO] 20:34:50:071 LOGGER/(20279:20334): PID: 2 - TLB MISS - Pagina: 1
-[INFO] 20:34:50:073 LOGGER/(20279:20334): PID: 2 - OBTENER MARCO - Página: 1 - Marco: 1
-[INFO] 20:34:52:082 LOGGER/(20279:20334): PID: 2 - TLB HIT - Pagina: 0
-[INFO] 20:34:52:086 LOGGER/(20279:20334): PID: 2 - TLB HIT - Pagina: 1
-[INFO] 20:34:57:109 LOGGER/(20279:20334): PID: 3 - TLB MISS - Pagina: 2
-[INFO] 20:34:57:109 LOGGER/(20279:20334): PID: 3 - OBTENER MARCO - Página: 2 - Marco: 2
-[INFO] 20:34:57:110 LOGGER/(20279:20334): TLB elimina victima - PID: 2 - Pagina: 0
-[INFO] 20:34:57:112 LOGGER/(20279:20334): PID: 3 - TLB MISS - Pagina: 3
-[INFO] 20:34:57:113 LOGGER/(20279:20334): PID: 3 - OBTENER MARCO - Página: 3 - Marco: 3
-[INFO] 20:34:57:113 LOGGER/(20279:20334): TLB elimina victima - PID: 2 - Pagina: 1
-[INFO] 20:34:58:116 LOGGER/(20279:20334): PID: 3 - TLB HIT - Pagina: 2
-[INFO] 20:34:58:116 LOGGER/(20279:20334): PID: 3 - TLB HIT - Pagina: 3
-[INFO] 20:36:28:924 LOGGER/(20279:20334): PID: 2 - TLB MISS - Pagina: 0
-[INFO] 20:36:28:924 LOGGER/(20279:20334): PID: 2 - OBTENER MARCO - Página: 0 - Marco: 0
-[INFO] 20:36:28:924 LOGGER/(20279:20334): TLB elimina victima - PID: 3 - Pagina: 2
-[INFO] 20:36:28:925 LOGGER/(20279:20334): PID: 2 - TLB MISS - Pagina: 1
-[INFO] 20:36:28:925 LOGGER/(20279:20334): PID: 2 - OBTENER MARCO - Página: 1 - Marco: 1
-[INFO] 20:36:28:925 LOGGER/(20279:20334): TLB elimina victima - PID: 3 - Pagina: 3
-[INFO] 20:36:29:927 LOGGER/(20279:20334): PID: 2 - TLB HIT - Pagina: 0
-[INFO] 20:36:29:927 LOGGER/(20279:20334): PID: 2 - TLB HIT - Pagina: 1
-[INFO] 20:36:43:945 LOGGER/(20279:20334): PID: 4 - TLB MISS - Pagina: 1
-[INFO] 20:36:43:945 LOGGER/(20279:20334): PID: 4 - OBTENER MARCO - Página: 1 - Marco: 1
-[INFO] 20:36:43:945 LOGGER/(20279:20334): TLB elimina victima - PID: 2 - Pagina: 0
-[INFO] 20:36:43:945 LOGGER/(20279:20334): PID: 4 - TLB MISS - Pagina: 2
-[INFO] 20:36:43:946 LOGGER/(20279:20334): PID: 4 - OBTENER MARCO - Página: 2 - Marco: 2
-[INFO] 20:36:43:946 LOGGER/(20279:20334): TLB elimina victima - PID: 2 - Pagina: 1
-[INFO] 20:36:44:950 LOGGER/(20279:20334): PID: 4 - TLB HIT - Pagina: 1
-[INFO] 20:36:44:950 LOGGER/(20279:20334): PID: 4 - TLB HIT - Pagina: 2
-[INFO] 13:36:45:553 LOGGER/(3688:3688): Conexion establecida con Memoria
-[INFO] 13:36:48:968 LOGGER/(3688:3743): Servidor iniciado, esperando conexiones!
-[INFO] 13:36:58:253 LOGGER/(3688:3743): Se conecto un cliente de dispatch!
-
-[INFO] 13:36:58:254 LOGGER/(3688:3743): Esperando cliente...
-[INFO] 13:36:58:255 LOGGER/(3688:3744): Se conecto un cliente de interrupt!
-
-[INFO] 16:19:56:955 LOGGER/(3693:3693): Conexion establecida con Memoria
-[INFO] 16:20:00:348 LOGGER/(3693:3726): Servidor iniciado, esperando conexiones!
-[INFO] 16:20:04:364 LOGGER/(3693:3726): Se conecto un cliente de dispatch!
-
-[INFO] 16:20:04:368 LOGGER/(3693:3726): Esperando cliente...
-[INFO] 16:20:04:370 LOGGER/(3693:3727): Se conecto un cliente de interrupt!
-
-[INFO] 00:40:09:093 LOGGER/(7178:7178): Conexion establecida con Memoria
-[INFO] 00:40:12:463 LOGGER/(7178:7233): Servidor iniciado, esperando conexiones!
-[INFO] 00:40:16:141 LOGGER/(7178:7233): Se conecto un cliente de dispatch!
-
-[INFO] 00:40:16:142 LOGGER/(7178:7233): Esperando cliente...
-[INFO] 00:40:16:144 LOGGER/(7178:7241): Se conecto un cliente de interrupt!
-
-[INFO] 01:13:24:449 LOGGER/(4665:4665): Conexion establecida con Memoria
-[INFO] 01:13:27:859 LOGGER/(4665:4778): Servidor iniciado, esperando conexiones!
-[INFO] 01:13:28:750 LOGGER/(4665:4778): Se conecto un cliente de dispatch!
-
-[INFO] 01:13:28:751 LOGGER/(4665:4778): Esperando cliente...
-[INFO] 01:13:28:761 LOGGER/(4665:4779): Se conecto un cliente de interrupt!
-
-[INFO] 01:16:20:286 LOGGER/(5505:5505): Conexion establecida con Memoria
-[INFO] 01:16:23:465 LOGGER/(5505:5543): Servidor iniciado, esperando conexiones!
-[INFO] 01:16:30:646 LOGGER/(5505:5543): Se conecto un cliente de dispatch!
-
-[INFO] 01:16:30:647 LOGGER/(5505:5543): Esperando cliente...
-[INFO] 01:16:30:657 LOGGER/(5505:5544): Se conecto un cliente de interrupt!
-
-[INFO] 01:20:00:325 LOGGER/(6249:6249): Conexion establecida con Memoria
-[INFO] 01:20:03:510 LOGGER/(6249:6287): Servidor iniciado, esperando conexiones!
-[INFO] 01:20:14:190 LOGGER/(6249:6287): Se conecto un cliente de dispatch!
-
-[INFO] 01:20:14:191 LOGGER/(6249:6287): Esperando cliente...
-[INFO] 01:20:14:195 LOGGER/(6249:6288): Se conecto un cliente de interrupt!
-
-[INFO] 01:52:21:707 LOGGER/(8256:8256): Conexion establecida con Memoria
-[INFO] 01:52:25:652 LOGGER/(8256:8298): Servidor iniciado, esperando conexiones!
-[INFO] 01:53:33:360 LOGGER/(8256:8298): Se conecto un cliente de dispatch!
-
-[INFO] 01:53:33:364 LOGGER/(8256:8301): Se conecto un cliente de interrupt!
-
-[INFO] 01:53:33:372 LOGGER/(8256:8298): Esperando cliente...
-[INFO] 01:59:22:362 LOGGER/(9262:9262): Conexion establecida con Memoria
-[INFO] 01:59:25:524 LOGGER/(9262:9311): Servidor iniciado, esperando conexiones!
-[INFO] 01:59:33:635 LOGGER/(9262:9311): Se conecto un cliente de dispatch!
-
-[INFO] 01:59:33:636 LOGGER/(9262:9311): Esperando cliente...
-[INFO] 01:59:33:639 LOGGER/(9262:9312): Se conecto un cliente de interrupt!
-
-[INFO] 02:08:10:148 LOGGER/(10402:10402): Conexion establecida con Memoria
-[INFO] 02:08:13:340 LOGGER/(10402:10458): Servidor iniciado, esperando conexiones!
-[INFO] 02:08:19:212 LOGGER/(10402:10458): Se conecto un cliente de dispatch!
-
-[INFO] 02:08:19:213 LOGGER/(10402:10458): Esperando cliente...
-[INFO] 02:08:19:216 LOGGER/(10402:10459): Se conecto un cliente de interrupt!
-
-[INFO] 02:16:10:624 LOGGER/(11330:11330): Conexion establecida con Memoria
-[INFO] 02:16:13:810 LOGGER/(11330:11373): Servidor iniciado, esperando conexiones!
-[INFO] 02:16:22:024 LOGGER/(11330:11373): Se conecto un cliente de dispatch!
-
-[INFO] 02:16:22:025 LOGGER/(11330:11373): Esperando cliente...
-[INFO] 02:16:22:041 LOGGER/(11330:11381): Se conecto un cliente de interrupt!
-
-[INFO] 02:19:22:149 LOGGER/(12227:12227): Conexion establecida con Memoria
-[INFO] 02:19:25:327 LOGGER/(12227:12268): Servidor iniciado, esperando conexiones!
-[INFO] 02:19:27:304 LOGGER/(12227:12268): Se conecto un cliente de dispatch!
-
-[INFO] 02:19:27:305 LOGGER/(12227:12268): Esperando cliente...
-[INFO] 02:19:27:308 LOGGER/(12227:12269): Se conecto un cliente de interrupt!
-
-[INFO] 02:23:57:397 LOGGER/(12994:12994): Conexion establecida con Memoria
-[INFO] 02:24:00:570 LOGGER/(12994:13032): Servidor iniciado, esperando conexiones!
-[INFO] 02:24:05:123 LOGGER/(12994:13032): Se conecto un cliente de dispatch!
-
-[INFO] 02:24:05:124 LOGGER/(12994:13032): Esperando cliente...
-[INFO] 02:24:05:134 LOGGER/(12994:13033): Se conecto un cliente de interrupt!
-
-[INFO] 02:41:23:253 LOGGER/(14237:14237): Conexion establecida con Memoria
-[INFO] 02:41:26:474 LOGGER/(14237:14295): Servidor iniciado, esperando conexiones!
-[INFO] 02:41:28:066 LOGGER/(14237:14295): Se conecto un cliente de dispatch!
-
-[INFO] 02:41:28:067 LOGGER/(14237:14295): Esperando cliente...
-[INFO] 02:41:28:085 LOGGER/(14237:14296): Se conecto un cliente de interrupt!
-
-[INFO] 02:55:45:045 LOGGER/(15528:15528): Conexion establecida con Memoria
-[INFO] 02:55:48:268 LOGGER/(15528:15578): Servidor iniciado, esperando conexiones!
-[INFO] 02:55:49:088 LOGGER/(15528:15578): Se conecto un cliente de dispatch!
-
-[INFO] 02:55:49:089 LOGGER/(15528:15578): Esperando cliente...
-[INFO] 02:55:49:097 LOGGER/(15528:15600): Se conecto un cliente de interrupt!
-
-[INFO] 02:57:52:179 LOGGER/(16242:16242): Conexion establecida con Memoria
-[INFO] 02:57:55:364 LOGGER/(16242:16316): Servidor iniciado, esperando conexiones!
-[INFO] 02:58:23:957 LOGGER/(16242:16316): Se conecto un cliente de dispatch!
-
-[INFO] 02:58:23:958 LOGGER/(16242:16316): Esperando cliente...
-[INFO] 02:58:23:967 LOGGER/(16242:16317): Se conecto un cliente de interrupt!
-
-[INFO] 03:01:20:129 LOGGER/(16826:16826): Conexion establecida con Memoria
-[INFO] 03:01:23:322 LOGGER/(16826:16864): Servidor iniciado, esperando conexiones!
-[INFO] 03:01:24:000 LOGGER/(16826:16864): Se conecto un cliente de dispatch!
-
-[INFO] 03:01:24:002 LOGGER/(16826:16864): Esperando cliente...
-[INFO] 03:01:24:009 LOGGER/(16826:16867): Se conecto un cliente de interrupt!
-
-[INFO] 03:06:06:579 LOGGER/(17266:17266): Conexion establecida con Memoria
-[INFO] 03:06:09:933 LOGGER/(17266:17345): Servidor iniciado, esperando conexiones!
-[INFO] 03:06:21:242 LOGGER/(17266:17345): Se conecto un cliente de dispatch!
-
-[INFO] 03:06:21:243 LOGGER/(17266:17345): Esperando cliente...
-[INFO] 03:06:21:247 LOGGER/(17266:17350): Se conecto un cliente de interrupt!
-
-[INFO] 03:29:05:427 LOGGER/(18679:18679): Conexion establecida con Memoria
-[INFO] 03:29:08:756 LOGGER/(18679:18763): Servidor iniciado, esperando conexiones!
-[INFO] 03:29:09:451 LOGGER/(18679:18763): Se conecto un cliente de dispatch!
-
-[INFO] 03:29:09:451 LOGGER/(18679:18763): Esperando cliente...
-[INFO] 03:29:09:456 LOGGER/(18679:18764): Se conecto un cliente de interrupt!
-
-[INFO] 17:59:29:802 LOGGER/(5939:5939): Conexion establecida con Memoria
-[INFO] 17:59:33:173 LOGGER/(5939:6004): Servidor iniciado, esperando conexiones!
-[INFO] 17:59:37:363 LOGGER/(5939:6004): Se conecto un cliente de dispatch!
-
-[INFO] 17:59:37:364 LOGGER/(5939:6004): Esperando cliente...
-[INFO] 17:59:37:366 LOGGER/(5939:6005): Se conecto un cliente de interrupt!
-
-[INFO] 18:01:44:245 LOGGER/(6649:6649): Conexion establecida con Memoria
-[INFO] 18:01:47:639 LOGGER/(6649:6693): Servidor iniciado, esperando conexiones!
-[INFO] 18:01:50:380 LOGGER/(6649:6693): Se conecto un cliente de dispatch!
-
-[INFO] 18:01:50:381 LOGGER/(6649:6693): Esperando cliente...
-[INFO] 18:01:50:383 LOGGER/(6649:6694): Se conecto un cliente de interrupt!
-
-[INFO] 18:13:19:033 LOGGER/(8226:8226): Conexion establecida con Memoria
-[INFO] 18:13:22:463 LOGGER/(8226:8288): Servidor iniciado, esperando conexiones!
-[INFO] 18:13:25:902 LOGGER/(8226:8288): Se conecto un cliente de dispatch!
-
-[INFO] 18:13:25:903 LOGGER/(8226:8288): Esperando cliente...
-[INFO] 18:13:25:904 LOGGER/(8226:8289): Se conecto un cliente de interrupt!
-
-[INFO] 18:20:22:276 LOGGER/(9851:9851): Conexion establecida con Memoria
-[INFO] 18:20:25:639 LOGGER/(9851:9913): Servidor iniciado, esperando conexiones!
-[INFO] 18:20:30:070 LOGGER/(9851:9913): Se conecto un cliente de dispatch!
-
-[INFO] 18:20:30:074 LOGGER/(9851:9913): Esperando cliente...
-[INFO] 18:20:30:077 LOGGER/(9851:9914): Se conecto un cliente de interrupt!
-
-[INFO] 18:30:00:573 LOGGER/(10920:10920): Conexion establecida con Memoria
-[INFO] 18:30:03:965 LOGGER/(10920:10982): Servidor iniciado, esperando conexiones!
-[INFO] 18:30:08:562 LOGGER/(10920:10982): Se conecto un cliente de dispatch!
-
-[INFO] 18:30:08:563 LOGGER/(10920:10982): Esperando cliente...
-[INFO] 18:30:08:565 LOGGER/(10920:10983): Se conecto un cliente de interrupt!
-
-[INFO] 18:41:14:227 LOGGER/(12804:12804): Conexion establecida con Memoria
-[INFO] 18:41:17:565 LOGGER/(12804:12861): Servidor iniciado, esperando conexiones!
-[INFO] 18:48:00:484 LOGGER/(13779:13779): Conexion establecida con Memoria
-[INFO] 18:48:03:818 LOGGER/(13779:13834): Servidor iniciado, esperando conexiones!
-[INFO] 18:48:07:976 LOGGER/(13779:13834): Se conecto un cliente de dispatch!
-
-[INFO] 18:48:07:977 LOGGER/(13779:13834): Esperando cliente...
-[INFO] 18:48:07:979 LOGGER/(13779:13835): Se conecto un cliente de interrupt!
-
-[INFO] 19:00:48:046 LOGGER/(14993:14993): Conexion establecida con Memoria
-[INFO] 19:00:51:393 LOGGER/(14993:15049): Servidor iniciado, esperando conexiones!
-[INFO] 19:02:54:818 LOGGER/(14993:15049): Se conecto un cliente de dispatch!
-
-[INFO] 19:02:54:819 LOGGER/(14993:15049): Esperando cliente...
-[INFO] 19:02:54:823 LOGGER/(14993:15050): Se conecto un cliente de interrupt!
-
-[INFO] 19:12:33:145 LOGGER/(16446:16446): Conexion establecida con Memoria
-[INFO] 19:12:36:536 LOGGER/(16446:16508): Servidor iniciado, esperando conexiones!
-[INFO] 19:12:41:171 LOGGER/(16446:16508): Se conecto un cliente de dispatch!
-
-[INFO] 19:12:41:172 LOGGER/(16446:16508): Esperando cliente...
-[INFO] 19:12:41:173 LOGGER/(16446:16509): Se conecto un cliente de interrupt!
-
-[INFO] 19:18:45:661 LOGGER/(17535:17535): Conexion establecida con Memoria
-[INFO] 19:18:49:003 LOGGER/(17535:17597): Servidor iniciado, esperando conexiones!
-[INFO] 19:19:17:281 LOGGER/(17535:17597): Se conecto un cliente de dispatch!
-
-[INFO] 19:19:17:282 LOGGER/(17535:17597): Esperando cliente...
-[INFO] 19:19:17:284 LOGGER/(17535:17598): Se conecto un cliente de interrupt!
-
-[INFO] 19:26:48:133 LOGGER/(20584:20584): Conexion establecida con Memoria
-[INFO] 19:26:51:503 LOGGER/(20584:20643): Servidor iniciado, esperando conexiones!
-[INFO] 19:27:54:131 LOGGER/(20584:20643): Se conecto un cliente de dispatch!
-
-[INFO] 19:27:54:136 LOGGER/(20584:20643): Esperando cliente...
-[INFO] 19:27:54:137 LOGGER/(20584:20644): Se conecto un cliente de interrupt!
-
-[INFO] 19:38:19:690 LOGGER/(23432:23432): Conexion establecida con Memoria
-[INFO] 19:38:23:049 LOGGER/(23432:23473): Servidor iniciado, esperando conexiones!
-[INFO] 19:38:26:803 LOGGER/(23432:23473): Se conecto un cliente de dispatch!
-
-[INFO] 19:38:26:804 LOGGER/(23432:23473): Esperando cliente...
-[INFO] 19:38:26:806 LOGGER/(23432:23474): Se conecto un cliente de interrupt!
-
-[INFO] 20:04:35:357 LOGGER/(26656:26656): Conexion establecida con Memoria
-[INFO] 20:04:38:768 LOGGER/(26656:26718): Servidor iniciado, esperando conexiones!
-[INFO] 20:06:04:127 LOGGER/(26656:26718): Se conecto un cliente de dispatch!
-
-[INFO] 20:06:04:129 LOGGER/(26656:26718): Esperando cliente...
-[INFO] 20:06:04:130 LOGGER/(26656:26719): Se conecto un cliente de interrupt!
-
-[INFO] 20:51:39:584 LOGGER/(30669:30669): Conexion establecida con Memoria
-[INFO] 20:51:42:937 LOGGER/(30669:30724): Servidor iniciado, esperando conexiones!
-[INFO] 20:51:56:433 LOGGER/(30669:30724): Se conecto un cliente de dispatch!
-
-[INFO] 20:51:56:434 LOGGER/(30669:30724): Esperando cliente...
-[INFO] 20:51:56:435 LOGGER/(30669:30725): Se conecto un cliente de interrupt!
-
-[INFO] 00:53:40:366 LOGGER/(3445:3445): Conexion establecida con Memoria
-[INFO] 00:53:43:425 LOGGER/(3445:3492): Servidor iniciado, esperando conexiones!
-[INFO] 00:53:56:236 LOGGER/(3445:3492): Se conecto un cliente de dispatch!
-
-[INFO] 00:53:56:236 LOGGER/(3445:3492): Esperando cliente...
-[INFO] 00:53:56:243 LOGGER/(3445:3493): Se conecto un cliente de interrupt!
-
-[INFO] 00:58:24:793 LOGGER/(5254:5254): Conexion establecida con Memoria
-[INFO] 00:58:28:016 LOGGER/(5254:5311): Servidor iniciado, esperando conexiones!
-[INFO] 00:58:30:731 LOGGER/(5254:5311): Se conecto un cliente de dispatch!
-
-[INFO] 00:58:30:732 LOGGER/(5254:5311): Esperando cliente...
-[INFO] 00:58:30:739 LOGGER/(5254:5312): Se conecto un cliente de interrupt!
-
-[INFO] 01:47:05:095 LOGGER/(16623:16623): Conexion establecida con Memoria
-[INFO] 01:47:08:780 LOGGER/(16623:16680): Servidor iniciado, esperando conexiones!
-[INFO] 01:47:11:078 LOGGER/(16623:16680): Se conecto un cliente de dispatch!
-
-[INFO] 01:47:11:079 LOGGER/(16623:16680): Esperando cliente...
-[INFO] 01:47:11:089 LOGGER/(16623:16681): Se conecto un cliente de interrupt!
-
-[INFO] 02:22:43:386 LOGGER/(25656:25656): Conexion establecida con Memoria
-[INFO] 02:22:46:679 LOGGER/(25656:25741): Servidor iniciado, esperando conexiones!
-[INFO] 02:22:55:243 LOGGER/(25656:25741): Se conecto un cliente de dispatch!
-
-[INFO] 02:22:55:245 LOGGER/(25656:25741): Esperando cliente...
-[INFO] 02:22:55:248 LOGGER/(25656:25742): Se conecto un cliente de interrupt!
-
-[INFO] 02:28:33:312 LOGGER/(2528:2528): Conexion establecida con Memoria
-[INFO] 02:28:36:529 LOGGER/(2528:2585): Servidor iniciado, esperando conexiones!
-[INFO] 02:28:39:082 LOGGER/(2528:2585): Se conecto un cliente de dispatch!
-
-[INFO] 02:28:39:083 LOGGER/(2528:2585): Esperando cliente...
-[INFO] 02:28:39:098 LOGGER/(2528:2586): Se conecto un cliente de interrupt!
-
-[INFO] 03:02:19:245 LOGGER/(11092:11092): Conexion establecida con Memoria
-[INFO] 03:02:22:512 LOGGER/(11092:11160): Servidor iniciado, esperando conexiones!
-[INFO] 03:02:27:779 LOGGER/(11092:11160): Se conecto un cliente de dispatch!
-
-[INFO] 03:02:27:780 LOGGER/(11092:11160): Esperando cliente...
-[INFO] 03:02:27:786 LOGGER/(11092:11161): Se conecto un cliente de interrupt!
-
-[INFO] 03:05:26:366 LOGGER/(13209:13209): Conexion establecida con Memoria
-[INFO] 03:05:29:591 LOGGER/(13209:13276): Servidor iniciado, esperando conexiones!
-[INFO] 03:05:47:104 LOGGER/(13209:13276): Se conecto un cliente de dispatch!
-
-[INFO] 03:05:47:105 LOGGER/(13209:13276): Esperando cliente...
-[INFO] 03:05:47:113 LOGGER/(13209:13277): Se conecto un cliente de interrupt!
-
-[INFO] 12:55:59:813 LOGGER/(3146:3146): Conexion establecida con Memoria
-[INFO] 12:56:02:889 LOGGER/(3146:3198): Servidor iniciado, esperando conexiones!
-[INFO] 12:56:50:196 LOGGER/(3146:3198): Se conecto un cliente de dispatch!
-
-[INFO] 12:56:50:196 LOGGER/(3146:3198): Esperando cliente...
-[INFO] 12:56:50:198 LOGGER/(3146:3199): Se conecto un cliente de interrupt!
-
-[INFO] 13:00:07:404 LOGGER/(4306:4306): Conexion establecida con Memoria
-[INFO] 13:00:10:801 LOGGER/(4306:4396): Servidor iniciado, esperando conexiones!
-[INFO] 13:00:19:912 LOGGER/(4306:4396): Se conecto un cliente de dispatch!
-
-[INFO] 13:00:19:925 LOGGER/(4306:4396): Esperando cliente...
-[INFO] 13:00:19:966 LOGGER/(4306:4397): Se conecto un cliente de interrupt!
-
-[INFO] 13:03:01:467 LOGGER/(5467:5467): Conexion establecida con Memoria
-[INFO] 13:03:04:574 LOGGER/(5467:5521): Servidor iniciado, esperando conexiones!
-[INFO] 13:03:06:984 LOGGER/(5467:5521): Se conecto un cliente de dispatch!
-
-[INFO] 13:03:06:985 LOGGER/(5467:5521): Esperando cliente...
-[INFO] 13:03:06:987 LOGGER/(5467:5522): Se conecto un cliente de interrupt!
-
-[INFO] 13:07:48:034 LOGGER/(6948:6948): Conexion establecida con Memoria
-[INFO] 13:07:51:106 LOGGER/(6948:6989): Servidor iniciado, esperando conexiones!
-[INFO] 13:07:52:228 LOGGER/(6948:6989): Se conecto un cliente de dispatch!
-
-[INFO] 13:07:52:229 LOGGER/(6948:6989): Esperando cliente...
-[INFO] 13:07:52:234 LOGGER/(6948:6990): Se conecto un cliente de interrupt!
-
-[INFO] 13:19:05:926 LOGGER/(8106:8106): Conexion establecida con Memoria
-[INFO] 13:19:09:715 LOGGER/(8106:8167): Servidor iniciado, esperando conexiones!
-[INFO] 13:23:03:003 LOGGER/(8806:8806): Conexion establecida con Memoria
-[INFO] 13:23:06:299 LOGGER/(8806:8849): Servidor iniciado, esperando conexiones!
-[INFO] 13:23:08:376 LOGGER/(8806:8849): Se conecto un cliente de dispatch!
-
-[INFO] 13:23:08:379 LOGGER/(8806:8849): Esperando cliente...
-[INFO] 13:23:08:390 LOGGER/(8806:8850): Se conecto un cliente de interrupt!
-
-[INFO] 13:33:08:373 LOGGER/(10236:10236): Conexion establecida con Memoria
-[INFO] 13:33:12:272 LOGGER/(10236:10331): Servidor iniciado, esperando conexiones!
-[INFO] 13:33:13:016 LOGGER/(10236:10331): Se conecto un cliente de dispatch!
-
-[INFO] 13:33:13:022 LOGGER/(10236:10331): Esperando cliente...
-[INFO] 13:33:13:048 LOGGER/(10236:10334): Se conecto un cliente de interrupt!
-
-[INFO] 13:43:16:121 LOGGER/(11675:11675): Conexion establecida con Memoria
-[INFO] 13:43:19:608 LOGGER/(11675:11718): Servidor iniciado, esperando conexiones!
-[INFO] 13:43:28:469 LOGGER/(11675:11718): Se conecto un cliente de dispatch!
-
-[INFO] 13:43:28:495 LOGGER/(11675:11718): Esperando cliente...
-[INFO] 13:43:28:486 LOGGER/(11675:11719): Se conecto un cliente de interrupt!
-
-[INFO] 13:50:11:219 LOGGER/(12866:12866): Conexion establecida con Memoria
-[INFO] 13:50:14:500 LOGGER/(12866:12908): Servidor iniciado, esperando conexiones!
-[INFO] 13:50:19:231 LOGGER/(12866:12908): Se conecto un cliente de dispatch!
-
-[INFO] 13:50:19:234 LOGGER/(12866:12908): Esperando cliente...
-[INFO] 13:50:19:254 LOGGER/(12866:12909): Se conecto un cliente de interrupt!
-
-[INFO] 14:02:23:440 LOGGER/(15295:15295): Conexion establecida con Memoria
-[INFO] 14:02:27:108 LOGGER/(15295:15336): Servidor iniciado, esperando conexiones!
-[INFO] 14:02:32:426 LOGGER/(15295:15336): Se conecto un cliente de dispatch!
-
-[INFO] 14:02:32:429 LOGGER/(15295:15336): Esperando cliente...
-[INFO] 14:02:32:430 LOGGER/(15295:15337): Se conecto un cliente de interrupt!
-
-[INFO] 14:20:20:058 LOGGER/(17835:17835): Conexion establecida con Memoria
-[INFO] 14:20:23:280 LOGGER/(17835:17876): Servidor iniciado, esperando conexiones!
-[INFO] 14:20:41:679 LOGGER/(17835:17876): Se conecto un cliente de dispatch!
-
-[INFO] 14:20:41:682 LOGGER/(17835:17877): Se conecto un cliente de interrupt!
-
-[INFO] 14:20:41:686 LOGGER/(17835:17876): Esperando cliente...
-[INFO] 14:23:58:730 LOGGER/(19068:19068): Conexion establecida con Memoria
-[INFO] 14:24:01:961 LOGGER/(19068:19098): Servidor iniciado, esperando conexiones!
-[INFO] 14:24:13:456 LOGGER/(19068:19098): Se conecto un cliente de dispatch!
-
-[INFO] 14:24:13:460 LOGGER/(19068:19098): Esperando cliente...
-[INFO] 14:24:13:465 LOGGER/(19068:19099): Se conecto un cliente de interrupt!
-
-[INFO] 14:48:10:363 LOGGER/(21414:21414): Conexion establecida con Memoria
-[INFO] 14:48:13:643 LOGGER/(21414:21455): Servidor iniciado, esperando conexiones!
-[INFO] 14:48:16:685 LOGGER/(21414:21455): Se conecto un cliente de dispatch!
-
-[INFO] 14:48:16:700 LOGGER/(21414:21455): Esperando cliente...
-[INFO] 14:48:16:689 LOGGER/(21414:21456): Se conecto un cliente de interrupt!
-
-[INFO] 14:52:13:170 LOGGER/(22627:22627): Conexion establecida con Memoria
-[INFO] 14:52:17:351 LOGGER/(22627:22761): Servidor iniciado, esperando conexiones!
-[INFO] 14:54:22:382 LOGGER/(23164:23164): Conexion establecida con Memoria
-[INFO] 14:54:26:073 LOGGER/(23164:23324): Servidor iniciado, esperando conexiones!
-[INFO] 14:54:27:655 LOGGER/(23164:23324): Se conecto un cliente de dispatch!
-
-[INFO] 14:54:27:658 LOGGER/(23164:23324): Esperando cliente...
-[INFO] 14:54:27:668 LOGGER/(23164:23328): Se conecto un cliente de interrupt!
-
-[INFO] 15:17:44:254 LOGGER/(27098:27098): Conexion establecida con Memoria
-[INFO] 15:17:47:524 LOGGER/(27098:27168): Servidor iniciado, esperando conexiones!
-[INFO] 15:17:54:612 LOGGER/(27098:27168): Se conecto un cliente de dispatch!
-
-[INFO] 15:17:54:633 LOGGER/(27098:27168): Esperando cliente...
-[INFO] 15:17:54:621 LOGGER/(27098:27174): Se conecto un cliente de interrupt!
-
-[INFO] 15:22:30:524 LOGGER/(28075:28075): Conexion establecida con Memoria
-[INFO] 15:22:34:028 LOGGER/(28075:28118): Servidor iniciado, esperando conexiones!
-[INFO] 15:23:19:834 LOGGER/(28075:28118): Se conecto un cliente de dispatch!
-
-[INFO] 15:23:19:864 LOGGER/(28075:28118): Esperando cliente...
-[INFO] 15:23:19:860 LOGGER/(28075:28119): Se conecto un cliente de interrupt!
-
-[INFO] 15:29:14:487 LOGGER/(29649:29649): Conexion establecida con Memoria
-[INFO] 15:29:18:075 LOGGER/(29649:29709): Servidor iniciado, esperando conexiones!
-[INFO] 15:29:35:188 LOGGER/(29649:29709): Se conecto un cliente de dispatch!
-
-[INFO] 15:29:35:210 LOGGER/(29649:29710): Se conecto un cliente de interrupt!
-
-[INFO] 15:29:35:216 LOGGER/(29649:29709): Esperando cliente...
-[INFO] 15:39:51:367 LOGGER/(31885:31885): Conexion establecida con Memoria
-[INFO] 15:39:54:538 LOGGER/(31885:31926): Servidor iniciado, esperando conexiones!
-[INFO] 15:42:13:164 LOGGER/(31885:31926): Se conecto un cliente de dispatch!
-
-[INFO] 15:42:13:183 LOGGER/(31885:31927): Se conecto un cliente de interrupt!
-
-[INFO] 15:42:13:209 LOGGER/(31885:31926): Esperando cliente...
-[INFO] 16:01:19:946 LOGGER/(34629:34629): Conexion establecida con Memoria
-[INFO] 16:01:23:449 LOGGER/(34629:34801): Servidor iniciado, esperando conexiones!
-[INFO] 16:01:28:580 LOGGER/(34629:34801): Se conecto un cliente de dispatch!
-
-[INFO] 16:01:28:586 LOGGER/(34629:34801): Esperando cliente...
-[INFO] 16:01:28:597 LOGGER/(34629:34802): Se conecto un cliente de interrupt!
-
+[INFO] 21:33:05:499 LOGGER/(36157:36157): Conexion establecida con Memoria
+[INFO] 21:33:08:586 LOGGER/(36157:36183): Servidor iniciado, esperando conexiones!
+[INFO] 21:33:09:250 LOGGER/(36157:36183): Se conecto un cliente de dispatch!
+
+[INFO] 21:33:09:250 LOGGER/(36157:36183): Esperando cliente...
+[INFO] 21:33:09:251 LOGGER/(36157:36184): Se conecto un cliente de interrupt!
+
+[INFO] 21:33:19:708 LOGGER/(36157:36183): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 21:33:19:716 LOGGER/(36157:36183): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 21:33:20:746 LOGGER/(36157:36183): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 21:33:22:758 LOGGER/(36157:36183): PID: 1 - TLB MISS - Pagina: 64
+[INFO] 21:33:22:759 LOGGER/(36157:36183): PID: 1 - OBTENER MARCO - Página: 64 - Marco: -1
+[INFO] 21:33:23:763 LOGGER/(36157:36183): PID: 1 - TLB HIT - Pagina: 64
+[INFO] 21:33:25:769 LOGGER/(36157:36183): PID: 1 - TLB MISS - Pagina: 16512
+[INFO] 21:33:25:772 LOGGER/(36157:36183): PID: 1 - OBTENER MARCO - Página: 16512 - Marco: -1
+[INFO] 21:33:25:778 LOGGER/(36157:36183): TLB elimina victima - PID: 1 - Pagina: 0
+[INFO] 21:33:26:785 LOGGER/(36157:36183): PID: 1 - TLB HIT - Pagina: 16512
+[INFO] 21:33:28:789 LOGGER/(36157:36183): PID: 1 - TLB MISS - Pagina: 4227264
+[INFO] 21:33:28:790 LOGGER/(36157:36183): PID: 1 - OBTENER MARCO - Página: 4227264 - Marco: -1
+[INFO] 21:33:28:790 LOGGER/(36157:36183): TLB elimina victima - PID: 1 - Pagina: 64
+[INFO] 21:33:29:795 LOGGER/(36157:36183): PID: 1 - TLB HIT - Pagina: 4227264
+[INFO] 21:42:50:201 LOGGER/(37487:37487): Conexion establecida con Memoria
+[INFO] 21:42:53:276 LOGGER/(37487:37532): Servidor iniciado, esperando conexiones!
+[INFO] 21:43:05:827 LOGGER/(37487:37532): Se conecto un cliente de dispatch!
+
+[INFO] 21:43:05:828 LOGGER/(37487:37532): Esperando cliente...
+[INFO] 21:43:05:830 LOGGER/(37487:37533): Se conecto un cliente de interrupt!
+
+[INFO] 21:43:19:591 LOGGER/(37487:37532): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 21:43:19:597 LOGGER/(37487:37532): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 21:43:20:616 LOGGER/(37487:37532): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 21:43:22:639 LOGGER/(37487:37532): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 21:43:23:647 LOGGER/(37487:37532): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 21:43:25:658 LOGGER/(37487:37532): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 21:43:26:666 LOGGER/(37487:37532): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 21:43:28:671 LOGGER/(37487:37532): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 21:43:29:676 LOGGER/(37487:37532): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 21:51:35:113 LOGGER/(39331:39331): Conexion establecida con Memoria
+[INFO] 21:51:38:190 LOGGER/(39331:39375): Servidor iniciado, esperando conexiones!
+[INFO] 21:51:51:368 LOGGER/(39331:39375): Se conecto un cliente de dispatch!
+
+[INFO] 21:51:51:368 LOGGER/(39331:39375): Esperando cliente...
+[INFO] 21:51:51:370 LOGGER/(39331:39376): Se conecto un cliente de interrupt!
+
+[INFO] 21:52:06:727 LOGGER/(39331:39375): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 21:52:06:731 LOGGER/(39331:39375): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 21:52:06:734 LOGGER/(39331:39375): PID: 1 - TLB MISS - Pagina: 1
+[INFO] 21:52:06:735 LOGGER/(39331:39375): PID: 1 - OBTENER MARCO - Página: 1 - Marco: 1
+[INFO] 21:52:09:745 LOGGER/(39331:39375): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 21:52:09:745 LOGGER/(39331:39375): PID: 1 - TLB HIT - Pagina: 1
+[INFO] 22:19:29:218 LOGGER/(41827:41827): Conexion establecida con Memoria
+[INFO] 22:19:32:308 LOGGER/(41827:41865): Servidor iniciado, esperando conexiones!
+[INFO] 22:19:33:432 LOGGER/(41827:41865): Se conecto un cliente de dispatch!
+
+[INFO] 22:19:33:433 LOGGER/(41827:41865): Esperando cliente...
+[INFO] 22:19:33:434 LOGGER/(41827:41866): Se conecto un cliente de interrupt!
+
+[INFO] 22:19:54:464 LOGGER/(41827:41865): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 22:19:54:475 LOGGER/(41827:41865): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 22:19:54:481 LOGGER/(41827:41865): PID: 1 - TLB MISS - Pagina: 1
+[INFO] 22:19:54:482 LOGGER/(41827:41865): PID: 1 - OBTENER MARCO - Página: 1 - Marco: 1
+[INFO] 22:19:57:508 LOGGER/(41827:41865): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:19:57:509 LOGGER/(41827:41865): PID: 1 - TLB HIT - Pagina: 1
+[INFO] 22:28:09:742 LOGGER/(42893:42893): Conexion establecida con Memoria
+[INFO] 22:28:12:808 LOGGER/(42893:42931): Servidor iniciado, esperando conexiones!
+[INFO] 22:28:13:561 LOGGER/(42893:42931): Se conecto un cliente de dispatch!
+
+[INFO] 22:28:13:561 LOGGER/(42893:42931): Esperando cliente...
+[INFO] 22:28:13:563 LOGGER/(42893:42932): Se conecto un cliente de interrupt!
+
+[INFO] 22:28:36:282 LOGGER/(42893:42931): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 22:28:36:285 LOGGER/(42893:42931): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 22:28:36:290 LOGGER/(42893:42931): PID: 1 - TLB MISS - Pagina: 1
+[INFO] 22:28:36:291 LOGGER/(42893:42931): PID: 1 - OBTENER MARCO - Página: 1 - Marco: 1
+[INFO] 22:28:39:310 LOGGER/(42893:42931): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:28:39:310 LOGGER/(42893:42931): PID: 1 - TLB HIT - Pagina: 1
+[INFO] 22:39:05:603 LOGGER/(43763:43763): Conexion establecida con Memoria
+[INFO] 22:39:08:678 LOGGER/(43763:43807): Servidor iniciado, esperando conexiones!
+[INFO] 22:39:11:187 LOGGER/(43763:43807): Se conecto un cliente de dispatch!
+
+[INFO] 22:39:11:188 LOGGER/(43763:43807): Esperando cliente...
+[INFO] 22:39:11:191 LOGGER/(43763:43808): Se conecto un cliente de interrupt!
+
+[INFO] 22:39:45:415 LOGGER/(43763:43807): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 22:39:45:424 LOGGER/(43763:43807): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 22:39:45:429 LOGGER/(43763:43807): PID: 1 - TLB MISS - Pagina: 1
+[INFO] 22:39:45:431 LOGGER/(43763:43807): PID: 1 - OBTENER MARCO - Página: 1 - Marco: 1
+[INFO] 22:39:48:446 LOGGER/(43763:43807): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:39:48:447 LOGGER/(43763:43807): PID: 1 - TLB HIT - Pagina: 1
+[INFO] 22:41:44:759 LOGGER/(44419:44419): Conexion establecida con Memoria
+[INFO] 22:41:47:834 LOGGER/(44419:44474): Servidor iniciado, esperando conexiones!
+[INFO] 22:41:48:385 LOGGER/(44419:44474): Se conecto un cliente de dispatch!
+
+[INFO] 22:41:48:388 LOGGER/(44419:44474): Esperando cliente...
+[INFO] 22:41:48:398 LOGGER/(44419:44475): Se conecto un cliente de interrupt!
+
+[INFO] 22:42:07:968 LOGGER/(44419:44474): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 22:42:07:980 LOGGER/(44419:44474): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 22:42:07:989 LOGGER/(44419:44474): PID: 1 - TLB MISS - Pagina: 1
+[INFO] 22:42:07:990 LOGGER/(44419:44474): PID: 1 - OBTENER MARCO - Página: 1 - Marco: 1
+[INFO] 22:47:29:887 LOGGER/(45423:45423): Conexion establecida con Memoria
+[INFO] 22:47:33:009 LOGGER/(45423:45504): Servidor iniciado, esperando conexiones!
+[INFO] 22:48:56:788 LOGGER/(45914:45914): Conexion establecida con Memoria
+[INFO] 22:48:59:883 LOGGER/(45914:45995): Servidor iniciado, esperando conexiones!
+[INFO] 22:50:43:782 LOGGER/(46318:46318): Conexion establecida con Memoria
+[INFO] 22:50:46:858 LOGGER/(46318:46386): Servidor iniciado, esperando conexiones!
+[INFO] 22:52:06:998 LOGGER/(47061:47061): Conexion establecida con Memoria
+[INFO] 22:52:10:088 LOGGER/(47061:47099): Servidor iniciado, esperando conexiones!
+[INFO] 22:52:15:073 LOGGER/(47061:47099): Se conecto un cliente de dispatch!
+
+[INFO] 22:52:15:074 LOGGER/(47061:47099): Esperando cliente...
+[INFO] 22:52:15:075 LOGGER/(47061:47100): Se conecto un cliente de interrupt!
+
+[INFO] 22:52:37:093 LOGGER/(47061:47099): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 22:52:37:096 LOGGER/(47061:47099): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 22:52:37:100 LOGGER/(47061:47099): PID: 1 - TLB MISS - Pagina: 1
+[INFO] 22:52:37:101 LOGGER/(47061:47099): PID: 1 - OBTENER MARCO - Página: 1 - Marco: 1
+[INFO] 22:52:40:117 LOGGER/(47061:47099): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:52:40:118 LOGGER/(47061:47099): PID: 1 - TLB HIT - Pagina: 1
