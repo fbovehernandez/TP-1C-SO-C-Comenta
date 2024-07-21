@@ -145,8 +145,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
             case QUIERO_CANTIDAD_INSTRUCCIONES:
                 //t_cantidad_instrucciones* cantidad_instrucciones = deserializar_cantidad(paquete->buffer);
                 int pid_int = deserializar_pid(paquete->buffer);
-                char* pid_string = malloc(sizeof(int));
-                pid_string = string_itoa(pid_int);
+                char* pid_string = string_itoa(pid_int);
                 printf("La CPU me pide la cantidad de instrucciones del proceso con pid %s.\n", pid_string);
                 // enviar_cantidad_parametros(socket_cpu);
                 enviar_cantidad_instrucciones_pedidas(pid_string, socket_cpu);
@@ -174,6 +173,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 free(pedido_op->valor_a_escribir);
                 free(pedido_op);
                 free(registro_lectura);
+                list_destroy(direcciones_restantes_mov_in);
                 break;
             case ESCRIBIR_DATO_EN_MEM: 
                 user_space_aux = espacio_usuario;
@@ -193,11 +193,13 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
                 free(pedido_operacion->valor_a_escribir);
                 free(pedido_operacion);
+                free(direcciones_restantes_escritura); // Añadido para liberar memoria
                 break;
             // case FS_CREATE:
 
             default:
                 printf("No reconozco ese cod-op...\n"); 
+                liberar_paquete(paquete);  // Asegúrate de liberar paquete
                 return NULL;
         }
     }
@@ -433,7 +435,12 @@ int buscar_frame(t_solicitud_frame* pedido_frame) {
     }
 
     printf("Busco el frame con la pagina %d\n", pedido_frame->nro_pagina);
-    t_proceso_paginas* proceso_paginas = dictionary_get(diccionario_tablas_paginas, string_itoa(pedido_frame->pid)); // el diccionario tiene como key el pid y la lista de pags asociado a ese pid
+
+    char* pid_string = string_itoa(pedido_frame->pid);
+
+    t_proceso_paginas* proceso_paginas = dictionary_get(diccionario_tablas_paginas, pid_string); // el diccionario tiene como key el pid y la lista de pags asociado a ese pid
+
+    free(pid_string);
 
     if(proceso_paginas == NULL) {
         printf("No existe el proceso con pid %d o rompio otra cosa\n", pedido_frame->pid);
@@ -502,6 +509,7 @@ void* handle_kernel(void* socket) {
                 printf("CUIDADO QUE IMPRIMO EL PATH: %s\n", path_completo);
 
                 crear_estructuras(path_completo, path->PID);
+                free(path_completo);
                 int se_crearon_estructuras = 1;
                 send(socket_kernel, &se_crearon_estructuras, sizeof(int), 0);
 
@@ -512,7 +520,6 @@ void* handle_kernel(void* socket) {
             
                 free(path->path);
                 free(path);
-                free(path_completo);
                 break;
             case ESCRIBIR_STDOUT:
                 t_pid_stdout* pid_stdout = desearializar_pid_stdout(paquete->buffer);
@@ -618,6 +625,7 @@ void liberar_estructuras_proceso(int pid) {
 }
 
 void eliminar_instrucciones(int pid) {
+    /*
     void _destruir_parametro(t_parametro* parametro) {
         free(parametro->nombre);
         free(parametro);
@@ -632,10 +640,13 @@ void eliminar_instrucciones(int pid) {
     }
 
     dictionary_remove_and_destroy(diccionario_instrucciones, string_itoa(pid), (void*)_destruir_instrucciones);
+    */
 }
 
 void limpiar_bitmap(int pid_a_liberar) {
-    t_proceso_paginas* proceso_pagina = dictionary_remove(diccionario_tablas_paginas, string_itoa(pid_a_liberar));
+    char* pid_string = string_itoa(pid_a_liberar);
+    
+    t_proceso_paginas* proceso_pagina = dictionary_remove(diccionario_tablas_paginas, pid_string);
     t_list* tabla_paginas = proceso_pagina->tabla_paginas;
 
     for(int i = 0; i < list_size(tabla_paginas); i++) {
@@ -644,6 +655,7 @@ void limpiar_bitmap(int pid_a_liberar) {
     }
 
     destruir_paginas(proceso_pagina);
+    free(pid_string);
     free(proceso_pagina);
 }
 
@@ -914,9 +926,11 @@ void crear_estructuras(char* path_completo, int pid) {
     t_list* tabla_pagina = list_create();
     proceso_paginas->tabla_paginas = tabla_pagina;
     proceso_paginas->cantidad_frames = 0;
-
+    /*
     char* pid_char = malloc(sizeof(char) * 4); // Un char es de 1B, un int es de 4B
     sprintf(pid_char, "%d", pid);
+    */
+    char* pid_char = string_itoa(pid);
     
     dictionary_put(diccionario_tablas_paginas, pid_char, proceso_paginas); // VER_SI_HAY_FREE
     
@@ -1025,10 +1039,19 @@ t_instruccion* build_instruccion(char* line) {
 
 // Posible mem leak, fix para el futuro
 char* agrupar_path(t_path* path) { 
-    // char* pathConfig = config_get_string_value(config_memoria, "PATH_INSTRUCCIONES");
     char* pathConfig_local = strdup(path_config);
-    char* path_completo = malloc(strlen(pathConfig_local) + path->path_length); // 69  + 20  + 1 //VER_SI_HAY_FREE
-    path_completo = strcat(pathConfig_local, path->path);
+    // char* path_completo = malloc(strlen(pathConfig_local) + path->path_length + 1); // 69  + 20  + 1 //VER_SI_HAY_FREE
+    size_t path_completo_size = strlen(pathConfig_local) + path->path_length + 1;
+    char* path_completo = malloc(path_completo_size);
+    if (path_completo == NULL) {
+        // Manejo de errores en la asignación de memoria
+        fprintf(stderr, "Error al asignar memoria para path_completo\n");
+        free(pathConfig_local);  // Libera memoria de pathConfig_local si path_completo no pudo ser asignado
+        return NULL;
+    }
+    // Concatena pathConfig_local con path->path en path_completo.
+    strcpy(path_completo, pathConfig_local);
+    strcat(path_completo, path->path);
     printf("Path completo: %s\n", path_completo);
 
     free(pathConfig_local);
@@ -1089,14 +1112,16 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu, int socket_cpu) 
     printf("PC: %d\n", pc);
 
     //char* pid_char = malloc(20);
-    char* pid_char = malloc(sizeof(char) * 4); // El pid es un int, los ints ocupan 4 bytes y cada char ocupa un 1 byte //VER_SI_HAY_FREE
-    sprintf(pid_char, "%d", pid);
+    //char* pid_char = malloc(sizeof(char) * 4); // El pid es un int, los ints ocupan 4 bytes y cada char ocupa un 1 byte //VER_SI_HAY_FREE
+    //sprintf(pid_char, "%d", pid);
+
+    char* pid_char = string_itoa(pid);
 
     printf("PID en char*: %s\n", pid_char);
 
     t_list* instrucciones = dictionary_get(diccionario_instrucciones, pid_char);
 
-    //free(pid_char); // vamos a necesitar esta variable?
+    free(pid_char);
 
     t_instruccion* instruccion = list_get(instrucciones, pc);
     printf("Instruccion a enviar: %s\n", instruccion_a_string(instruccion->nombre));
@@ -1107,10 +1132,8 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu, int socket_cpu) 
 
     char* nombre_instruccion_string = instruccion_a_string(instruccion->nombre);
     if(strcmp(nombre_instruccion_string, "EXIT_INSTRUCCION") != 0) {
-        for(int i=0; i<instruccion->cantidad_parametros; i++) {
-            // t_parametro* parametro1 = malloc(sizeof(t_parametro));
+        for(int i=0; i<instruccion->cantidad_parametros; i++) {      
             t_parametro* parametro1 = list_get(instruccion->parametros, i);
-            //buffer->size += sizeof(uint32_t) + parametro1->length;
             buffer->size += sizeof(int) + parametro1->length;
         }
     }
@@ -1239,21 +1262,6 @@ int deserializar_pid(t_buffer* buffer) {
 }
 
 
-t_copy_string* deserializarCopyString(t_buffer* buffer) { //CREO QUE NI SE USA ESTA FUNCION
-    t_copy_string* copy_string = malloc(sizeof(t_copy_string)); //FREE?
-
-    void* stream = buffer->stream;
-    // Deserializamos los campos que tenemos en el buffer
-    memcpy(&(copy_string->direccionFisicaSI), stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&(copy_string->direccionFisicaDI), stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&(copy_string->tamanio), stream, sizeof(int));
-    stream += sizeof(int);
-    
-    return copy_string;
-}
-
 char* leer(int tamanio, int direccion_fisica) {
     char* valor_leido;
     void* user_space_aux = espacio_usuario;
@@ -1267,7 +1275,7 @@ void mostrar_en_io(int socket_io, char* valor_leido) {
 }
 
 t_buffer* llenar_buffer_stdout(char* valor) {
-    t_buffer* buffer = malloc(sizeof(t_buffer)); //FREE?
+    t_buffer* buffer = malloc(sizeof(t_buffer)); 
 
     buffer->size = string_length(valor);
     buffer->offset = 0;

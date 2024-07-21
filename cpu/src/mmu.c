@@ -25,7 +25,7 @@ int buscar_frame_en_TLB(int pid, int pagina) {
 }
 
 void agregar_frame_en_TLB(int pid, int pagina, int frame) {
-    t_entrada_tlb* entrada = malloc(sizeof(t_entrada_tlb)); //FREE?
+    t_entrada_tlb* entrada = malloc(sizeof(t_entrada_tlb));
     entrada->pid = pid;
     entrada->pagina = pagina;
     entrada->marco = frame;

@@ -80,7 +80,6 @@ bool check_same_page(int tamanio, int cant_bytes_uso);
 void asignar_tamanio(int tamanio, int cant_bytes_uso, char* pid_string);
 void printear_paginas(char* pid_char);
 void printear_bitmap();
-t_copy_string* deserializarCopyString(t_buffer* buffer);
 void* handle_io_stdin(void* socket);
 void* handle_io_stdout(void* socket);
 t_pedido* desearializar_pedido_escritura(t_buffer* buffer);

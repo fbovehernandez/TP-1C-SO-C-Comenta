@@ -6,15 +6,13 @@ int main(int argc, char* argv[]) {
     cola_new                     = queue_create(); 
     cola_ready                   = queue_create();
     cola_blocked                 = queue_create();
-    cola_exit                    = queue_create();
     cola_prioritarios_por_signal = queue_create();
     cola_ready_plus              = queue_create();
-
     
     t_config* config_kernel  = iniciar_config("./kernel.config");
     logger_kernel = iniciar_logger("kernel.log");
     datos_kernel = solicitar_datos(config_kernel);
-    path_kernel = "/home/utnso/operativos/fixingmemleaks/tp-2024-1c-Sofa-Cama/kernel/scripts-comandos"; // hardcodeado nashe
+    path_kernel = "/home/utnso/tp-2024-1c-Sofa-Cama/kernel/scripts-comandos"; // hardcodeado nashe
 
     quantum_config = datos_kernel->quantum;
     grado_multiprogramacion = datos_kernel->grado_multiprogramacion;
@@ -39,7 +37,8 @@ int main(int argc, char* argv[]) {
     pthread_mutex_init(&mutex_cola_io_generica, NULL);
     pthread_mutex_init(&no_hay_nadie_en_cpu, NULL);
 
-    pcb_exec = crear_nuevo_pcb(0);
+    // pcb_exec = crear_nuevo_pcb(0);
+    pcb_exec = NULL;
     
     // Hilo 1 -> Hacer un hilo para gestionar la comunicacion con memoria?
     int socket_memoria_kernel = conectar_kernel_memoria(datos_kernel->ip_mem, datos_kernel->puerto_memoria, logger_kernel);
@@ -51,7 +50,7 @@ int main(int argc, char* argv[]) {
     // Hilo 3 -> Hacer un hilo para interrupt
     int socket_interrupt = conectar_kernel_cpu_interrupt(logger_kernel, datos_kernel->ip_cpu, datos_kernel->puerto_cpu_interrupt);
 
-    sockets = malloc(sizeof(t_sockets)); //FREE? al final de todo supongo
+    sockets = malloc(sizeof(t_sockets)); 
     sockets->socket_cpu = socket_cpu;
     sockets->socket_memoria = socket_memoria_kernel;
     sockets->socket_int = socket_interrupt;
@@ -105,7 +104,6 @@ int main(int argc, char* argv[]) {
     queue_destroy_and_destroy_elements(cola_new,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_ready,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_blocked,liberar_pcb);
-    queue_destroy_and_destroy_elements(cola_exit,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_prioritarios_por_signal,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_ready_plus,liberar_pcb);
     */
@@ -116,7 +114,9 @@ int main(int argc, char* argv[]) {
 
     config_destroy(config_kernel);
     log_destroy(kernel_io->logger);
+    free(datos_kernel);
     free(kernel_io);
+    free(sockets);
     liberar_conexion(escucha_fd);   
     
     return 0;

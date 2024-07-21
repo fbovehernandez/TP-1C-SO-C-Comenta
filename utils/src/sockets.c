@@ -256,7 +256,7 @@ t_pcb* deserializar_pcb(t_buffer* buffer) {
 }
 
 t_buffer* llenar_buffer_pcb(t_pcb* pcb) {
-    t_buffer* buffer = malloc(sizeof(t_buffer)); //FREE?
+    t_buffer* buffer = malloc(sizeof(t_buffer)); 
 
     printf("Llenando buffer...\n");
 
@@ -337,15 +337,21 @@ void enviar_paquete(t_buffer* buffer, codigo_operacion codigo, int socket) {
     offset += sizeof(int);
     memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
 
-    printf("\nCodigo de operacion: %s\n", string_operacion(codigo));
+    if (codigo >= INTERRUPCION_QUANTUM && codigo <= OUT_OF_MEMORY) {
+        printf("Codigo de desalojo: %s\n", string_desalojo((DesalojoCpu)codigo));
+    } else {
+        printf("Codigo de operacion: %s\n", string_operacion(codigo));
+    }
+
     send(socket, a_enviar, buffer->size + sizeof(int) * 2, 0);
     printf("Paquete enviado!\n");
 
     liberar_paquete_y_a_enviar(paquete, a_enviar);
+    free(buffer);
 }
 
 t_info_io *deserializar_interfaz(t_buffer *buffer) {
-    t_info_io *interfaz = malloc(sizeof(t_info_io)); //FREE?
+    t_info_io *interfaz = malloc(sizeof(t_info_io)); //FREE? se pone en un diccionario en 
     void *stream = buffer->stream;
     
     memcpy(&(interfaz->nombre_interfaz_largo), stream, sizeof(int));
@@ -548,9 +554,32 @@ char* string_operacion(codigo_operacion operacion) {
     }
 }
 
+char* string_desalojo(DesalojoCpu desalojo) {
+    switch (desalojo) {
+    case INTERRUPCION_QUANTUM: return "INTERRUPCION_QUANTUM";
+    case IO_BLOCKED:return "IO_BLOCKED";
+    case DORMIR_INTERFAZ: return "DORMIR_INTERFAZ";
+    case LEER_INTERFAZ:  return "LEER_INTERFAZ";
+    case PEDIDO_LECTURA: return "PEDIDO_LECTURA";
+    case PEDIDO_ESCRITURA: return "PEDIDO_ESCRITURA";
+    case WAIT_RECURSO: return "WAIT_RECURSO";
+    case SIGNAL_RECURSO: return "SIGNAL_RECURSO";
+    case FIN_PROCESO: return "FIN_PROCESO";
+    case ERROR_STDOUT: return "ERROR_STDOUT";
+    case ERROR_STDIN: return "ERROR_STDIN";
+    case FS_CREATE: return "FS_CREATE";
+    case FS_DELETE: return "FS_DELETE";
+    case OUT_OF_MEMORY: return "OUT_OF_MEMORY";
+    default: return "UNKNOWN";
+    }
+}
+
 int min(int a, int b) {
     return (a < b) ? a : b;
 }
 
-
+void liberar_pcb_estructura(t_pcb* pcb) {
+    free(pcb->registros);
+    free(pcb);
+}
     

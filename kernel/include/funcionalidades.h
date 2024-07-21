@@ -177,8 +177,6 @@ void liberar_pcb_de_recursos(int pid);
 void liberar_pcb_normal(t_pcb* pcb);
 void finalzar_cpu();
 void finalizar_memoria();
-void liberar_pcb_estructura(t_pcb* pcb);
-
 
 void EJECUTAR_SCRIPT(char* path);
 void INICIAR_PROCESO(char* path);

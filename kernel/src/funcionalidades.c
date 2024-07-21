@@ -13,7 +13,6 @@ int cantidad_bloqueados;
 pthread_mutex_t mutex_estado_new;
 pthread_mutex_t mutex_estado_ready;
 pthread_mutex_t mutex_estado_exec;
-pthread_mutex_t mutex_estado_exit;
 pthread_mutex_t no_hay_nadie_en_cpu;
 pthread_mutex_t mutex_estado_blocked;
 pthread_mutex_t mutex_estado_ready_plus;
@@ -29,7 +28,6 @@ t_queue* cola_new;
 t_queue* cola_ready;
 t_queue* cola_blocked;
 t_pcb* pcb_exec;
-t_queue* cola_exit;
 t_queue* cola_prioritarios_por_signal;
 t_queue* cola_ready_plus;
 
@@ -62,7 +60,6 @@ void *interaccion_consola() {
             "5- Detener planificacion\n"
             "6- Listar procesos por estado\n"
             "7- Cambiar el grado de multiprogramacion\n"
-            "8- Finalizar TP\n"
             "Seleccione una opción: \n");
         
         if (input) {
@@ -119,16 +116,7 @@ void *interaccion_consola() {
                 }
                 break;
             case 8:
-                printf("Finalizacion del modulo\n");
-
-                // close sockets
-                finalizar_kernel(); 
-                finalzar_cpu();
-                finalizar_memoria();
-
-                // Hacer todo lo necesario para finalizar el modulo de manera feliz. 
-                
-                // exit(1);
+                exit(1);
                 break;
             default:
                 break;
@@ -498,7 +486,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             printf("el nombre del recurso es %s\n", recurso->nombre);  
             wait_signal_recurso(pcb, recurso->nombre, devolucion_cpu);
             
-            // free(recurso->nombre);
+            // free(recurso->nombre); //FREE? A LO ULTIMO
             // free(recurso);
             break;
         case FIN_PROCESO:
@@ -759,7 +747,7 @@ t_pedido_lectura* deserializar_pedido_lectura(t_buffer* buffer) {
 */
 
 t_operacion_io* deserializar_io(t_buffer* buffer) {
-    t_operacion_io* operacion_io = malloc(sizeof(t_operacion_io));
+    t_operacion_io* operacion_io = malloc(sizeof(t_operacion_io)); 
 
     // Lo siguiente es el tamaño del pcb
     void* stream = buffer->stream + sizeof(int) * 3 + sizeof(Estado) * 2 + sizeof(uint8_t) * 4 + sizeof(uint32_t) * 6;
@@ -773,7 +761,7 @@ t_operacion_io* deserializar_io(t_buffer* buffer) {
     memcpy(&(operacion_io->nombre_interfaz_largo), stream, sizeof(int));
     stream += sizeof(int);
 
-    operacion_io->nombre_interfaz = malloc(operacion_io->nombre_interfaz_largo); //FREE?
+    operacion_io->nombre_interfaz = malloc(operacion_io->nombre_interfaz_largo); 
 
     memcpy(operacion_io->nombre_interfaz, stream, operacion_io->nombre_interfaz_largo);
 
@@ -859,8 +847,8 @@ t_list_io* validar_io(t_operacion_io* io, t_pcb* pcb) {
 
 // Funcion para crear un nuevo PCB.
 t_pcb* crear_nuevo_pcb(int pid){
-    t_pcb *pcb = malloc(sizeof(t_pcb)); // FREE? cuando liberemos el proceso
-    t_registros* registros_pcb = malloc(sizeof(t_registros)); //FREE? cuando liberemos el proceso
+    t_pcb *pcb = malloc(sizeof(t_pcb));
+    t_registros* registros_pcb = malloc(sizeof(t_registros)); 
 
     pcb->pid = pid;
     pcb->program_counter = 0; // Deberia ser un num de instruccion de memoria?
@@ -953,22 +941,28 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
 void ejecutar_wait_recurso(t_recurso* recurso_obtenido,t_pcb* pcb,char* recurso){
     if(recurso_obtenido->instancias > 0) {
         recurso_obtenido->instancias --;
-        list_add(recurso_obtenido->procesos_que_lo_retienen, string_itoa(pcb->pid));
+        
+        char* pid_string = string_itoa(pcb->pid);
+        list_add(recurso_obtenido->procesos_que_lo_retienen, pid_string);
+
         pthread_mutex_lock(&mutex_prioritario_por_signal);
         queue_push(cola_prioritarios_por_signal, pcb);
         pthread_mutex_unlock(&mutex_prioritario_por_signal);
+
         sem_post(&sem_hay_para_planificar);
     } else {
         pasar_a_blocked(pcb);
         list_add(recurso_obtenido->procesos_bloqueados, pcb);
-        log_info(logger_kernel,"PID: %d - Bloqueado por: %s", pcb->pid,recurso);
+        log_info(logger_kernel,"PID: %d - Bloqueado por: %s", pcb->pid, recurso);
     }
 }
 
 void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
     recurso_obtenido->instancias ++;
-    list_remove_element(recurso_obtenido->procesos_que_lo_retienen, string_itoa(pcb->pid));
-    
+    char* pid_string = string_itoa(pcb->pid);
+    list_remove_element(recurso_obtenido->procesos_que_lo_retienen, pid_string);
+    free(pid_string);
+
     //mutex
     /*pthread_mutex_lock(&no_hay_nadie_en_cpu);
     pasar_a_exec(pcb);
@@ -988,7 +982,9 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
     
     if(!list_is_empty(recurso_obtenido->procesos_bloqueados)) {
         t_pcb* proceso_liberado = list_remove(recurso_obtenido->procesos_bloqueados, 0);
-        list_add(recurso_obtenido->procesos_que_lo_retienen, string_itoa(proceso_liberado->pid));
+        char* pid_liberado = string_itoa(proceso_liberado->pid);
+        list_add(recurso_obtenido->procesos_que_lo_retienen, pid_liberado);
+
         /*change_status(proceso_liberado, READY);
         queue_push(cola_prioritarios_por_signal, proceso_liberado); 
         sem_post(&sem_hay_para_planificar);*/
@@ -1046,7 +1042,7 @@ void FINALIZAR_PROCESO(int pid) {
 
     t_pcb* pcb = malloc(sizeof(t_pcb)); 
     
-    if(pid == pcb_exec->pid) {
+    if(pcb_exec != NULL && pid == pcb_exec->pid) {
         printf("El proceso se encuentra en ejecucion\n");
         int temp = INTERRUPCION_FIN_USUARIO;
         send(sockets->socket_int, &temp, sizeof(int), 0);
@@ -1238,9 +1234,6 @@ void PROCESO_ESTADO() {
     
     printf("Procesos en BLOCKED\n");
     mostrar_cola_con_mutex(cola_blocked, &mutex_estado_blocked);
-
-    printf("Procesos en EXIT\n");
-    mostrar_cola_con_mutex(cola_exit, &mutex_estado_exit);
 
     printf("Proceso en EXEC\n");
     if(pcb_exec != NULL){
@@ -1465,47 +1458,6 @@ t_buffer* llenar_buffer_fs_truncate(int pid,int largo_archivo,char* nombre_archi
     return buffer;
 }*/
 
-
-void finalizar_kernel() {
-    pthread_mutex_destroy(&mutex_estado_new);
-    pthread_mutex_destroy(&mutex_estado_blocked);
-    pthread_mutex_destroy(&mutex_estado_ready);
-    pthread_mutex_destroy(&mutex_lista_io);
-    pthread_mutex_destroy(&mutex_cola_io_generica);
-    pthread_mutex_destroy(&no_hay_nadie_en_cpu);
-
-    sem_destroy(&sem_contador_quantum);
-    sem_destroy(&sem_hay_para_planificar);
-    sem_destroy(&sem_hay_pcb_esperando_ready);
-    sem_destroy(&sem_grado_multiprogramacion);
-    sem_destroy(&sem_memoria_instruccion);
-    sem_destroy(&sem_cargo_instrucciones);
-    sem_destroy(&sem_planificadores);
-
-    /* 
-    queue_destroy_and_destroy_elements(cola_new,liberar_pcb);
-    queue_destroy_and_destroy_elements(cola_ready,liberar_pcb);
-    queue_destroy_and_destroy_elements(cola_blocked,liberar_pcb);
-    queue_destroy_and_destroy_elements(cola_exit,liberar_pcb);
-    queue_destroy_and_destroy_elements(cola_prioritarios_por_signal,liberar_pcb);
-    queue_destroy_and_destroy_elements(cola_ready_plus,liberar_pcb);
-    */
-   
-    liberar_ios();
-
-    // No hagan "liberar_pcb(pcb_exec)" que no es un pcb como tal
-       
-    if(pcb_exec != NULL) {
-        liberar_pcb_estructura(pcb_exec);
-    }
- 
-    // No hace falta liberar cada uno porque no tiene punteros
-    free(sockets);
-    
-    liberar_recursos(datos_kernel->diccionario_recursos);
-    liberar_datos_kernel();   
-}
-
 void liberar_recursos(t_dictionary* recursos) {
     // Iterar sobre los elementos del diccionario y liberar cada recurso
     void liberar_recurso(char* clave, void* recurso) {
@@ -1540,18 +1492,6 @@ void liberar_ios() {
     if(diccionario_io != NULL){
         dictionary_destroy_and_destroy_elements(diccionario_io, (void*)_liberar_io);
     }
-}
-
-
-void liberar_datos_kernel() {
-    free(datos_kernel->ip_cpu);
-    free(datos_kernel->ip_mem);
-    free(datos_kernel->puerto_memoria);
-    free(datos_kernel->puerto_cpu_dispatch);
-    free(datos_kernel->puerto_cpu_interrupt);
-    free(datos_kernel->puerto_io);
-    free(datos_kernel->algoritmo_planificacion);
-    free(datos_kernel);
 }
 
 /*
@@ -1592,6 +1532,8 @@ void liberar_pcb_de_recursos(int pid) {
 }
 
 void liberar_recurso_de_pcb(int pid) {
+    char* pid_string = string_itoa(pid);
+
     bool _es_el_pid_buscado(int pid_recibido) {
         return pid == pid_recibido;
     }
@@ -1599,18 +1541,14 @@ void liberar_recurso_de_pcb(int pid) {
     void _buscar_pid_entre_procesos_que_retienen(t_recurso* recurso) {
         if(!list_is_empty(recurso->procesos_que_lo_retienen)) {
             if(list_any_satisfy(recurso->procesos_que_lo_retienen, (void*)_es_el_pid_buscado)) {
-                list_remove_element(recurso->procesos_que_lo_retienen, string_itoa(pid));
+                list_remove_element(recurso->procesos_que_lo_retienen, pid_string);
                 recurso->instancias++;
             }
         }
     }
 
     dictionary_iterator(datos_kernel->diccionario_recursos, (void*)_buscar_pid_entre_procesos_que_retienen);
-}
-
-void liberar_pcb_estructura(t_pcb* pcb) {
-    free(pcb->registros);
-    free(pcb);
+    free(pid_string);
 }
 
 void liberar_pcb_de_io(int pid) {
@@ -1625,11 +1563,6 @@ void liberar_pcb_de_io(int pid) {
     dictionary_iterator(diccionario_io, (void*)_buscar_pid_entre_io);
 }
 
-/*
-char* interfaz;
-    t_list* lista_dir_tamanio;
-} t_pedido;
-*/
 
 void liberar_pedido_escritura_lectura(t_pedido* pedido_escritura_lectura) {
     free(pedido_escritura_lectura->interfaz);
@@ -1649,10 +1582,3 @@ void enviar_eliminacion_pcb_a_memoria(int pid) {
     // Problema con memoria, hay que ir a buscar sus frames y marcarlos como libres y debe ser una comunicacion directa de Kernel con Memoria
 }
 
-void finalzar_cpu(){
-    //enviar_paquete(buffer,CERRAR_MODULO,sockets->socket_cpu);
-}
-
-void finalizar_memoria(){
-     //enviar_paquete(buffer,CERRAR_MODULO,sockets->socket_memoria);
-}

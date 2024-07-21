@@ -9,7 +9,7 @@ pthread_mutex_t mutex_cola_io_generica;
 t_sockets* sockets;
 
 ptr_kernel* solicitar_datos(t_config* config_kernel){
-    ptr_kernel* datos = malloc(sizeof(ptr_kernel)); //FREE?
+    ptr_kernel* datos = malloc(sizeof(ptr_kernel)); 
 
     datos->ip_cpu                   = config_get_string_value(config_kernel, "IP_CPU");
     datos->ip_mem                   = config_get_string_value(config_kernel, "IP_MEMORIA");
@@ -245,7 +245,7 @@ void* handle_io_stdout(void* socket_io) {
     }
 
     // ESTO NO ES LO MISMO QUE STDIN
-    t_pid_stdout* pid_stdout = malloc(sizeof(t_pid_stdout)); //FREE?
+    t_pid_stdout* pid_stdout = malloc(sizeof(t_pid_stdout));
 
     while (true) {
         sem_wait(io->semaforo_cola_procesos_blocked);
@@ -272,7 +272,7 @@ void* handle_io_stdout(void* socket_io) {
         pid_stdout->cantidad_paginas = datos_stdout->cantidad_paginas;
         pid_stdout->lista_direcciones = datos_stdout->lista_direcciones;
         pid_stdout->registro_tamanio = datos_stdout->registro_tamanio;
-        pid_stdout->nombre_interfaz = malloc(string_length(io->nombreInterfaz)); //FREE?
+        pid_stdout->nombre_interfaz = malloc(string_length(io->nombreInterfaz));
         pid_stdout->nombre_interfaz = io->nombreInterfaz;
         printf("\nLa io conectada tiene nombre %s\n\n", io->nombreInterfaz);
         pid_stdout->largo_interfaz = string_length(io->nombreInterfaz) + 1;
@@ -303,6 +303,8 @@ void* handle_io_stdout(void* socket_io) {
     free(io->semaforo_cola_procesos_blocked);
     free(io->nombreInterfaz);
     free(io);
+    free(pid_stdout->nombre_interfaz);
+    free(pid_stdout); //QUE_NO_ROMPA
     liberar_paquete(paquete);
     return NULL;
 }
@@ -512,7 +514,7 @@ void liberar_io(t_list_io* io) {
 }
 
 t_list_io* establecer_conexion(t_buffer *buffer, int socket_io) {
-    t_list_io *io = malloc(sizeof(t_list_io)); //FREE?
+    t_list_io *io = malloc(sizeof(t_list_io)); //FREE? PARA LO ULTIMO
     t_info_io *interfaz = deserializar_interfaz(buffer); 
     io->nombreInterfaz = malloc(string_length(interfaz->nombre_interfaz));
     printf("\n\nllego hasta establecer conexion\n\n");
@@ -523,7 +525,7 @@ t_list_io* establecer_conexion(t_buffer *buffer, int socket_io) {
     io->cola_blocked   = list_create();
     
     // Esta memoria la liberamos cuando la io se desconecte
-    io->semaforo_cola_procesos_blocked = malloc(sizeof(sem_t)); //FREE?
+    io->semaforo_cola_procesos_blocked = malloc(sizeof(sem_t)); //FREE? PARA LO ULTIMO
     sem_init(io->semaforo_cola_procesos_blocked, 0, 0);
     
     io->nombreInterfaz = strdup(interfaz->nombre_interfaz); // Asignación del nombre

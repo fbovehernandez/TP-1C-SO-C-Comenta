@@ -58,7 +58,7 @@ void iniciar_interfaz_generica(char* nombreInterfaz, t_config* config_io, char* 
     printf("Tiempo de unidad de trabajo: %d\n", tiempo_unidad_trabajo);
     kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, GENERICA, 5); 
     
-    t_config_socket_io* config_generica_io = malloc(sizeof(t_config_socket_io)); //FREE?
+    t_config_socket_io* config_generica_io = malloc(sizeof(t_config_socket_io));
     config_generica_io->config_io = config_io;
     config_generica_io->socket_io = kernelfd;
     

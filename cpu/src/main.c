@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
     char* IP_MEMORIA     = config_get_string_value(config_CPU, "IP_MEMORIA");
     char* puerto_memoria = config_get_string_value(config_CPU, "PUERTO_MEMORIA");
 
-    registros_cpu = malloc(sizeof(t_registros)); //FREE?
+    registros_cpu = malloc(sizeof(t_registros)); 
     registros_cpu = inicializar_registros_cpu(registros_cpu);
 
     tlb = list_create();
@@ -51,6 +51,7 @@ int main(int argc, char* argv[]) {
     free(escucha_interrupt);
     free(IP_MEMORIA);
     free(puerto_memoria);
+    free(registros_cpu);
 
     config_destroy(config_CPU);
     log_destroy(logger_CPU);

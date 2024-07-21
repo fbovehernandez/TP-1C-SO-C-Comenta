@@ -442,8 +442,9 @@ t_info_io *deserializar_interfaz(t_buffer *buffer);
 t_paquete *inicializarIO_recibirPaquete(int socket);
 void imprimir_datos_stdin(t_pid_stdin* datos_stdin);
 void aplicar_sobre_cada_linea_del_archivo(FILE* file, void* datos_extra, void(*closure)(void*, void*));
-
+char* string_desalojo(DesalojoCpu desalojo);
 t_buffer* buffer_create(int size);  // Hecho
 int min(int num1,int num2);
+void liberar_pcb_estructura(t_pcb* pcb);
 
 #endif // SOCKET_H

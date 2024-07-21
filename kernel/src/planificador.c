@@ -72,7 +72,7 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
     // liberar_pcb_de_io(pcb->pid); -------------> PARA CUANDO ESTA EN LA IO
     // liberar_pcb((void*)pcb);
     // liberar_recurso_de_pcb(pcb->pid);
-    liberar_pcb(pcb);
+    liberar_pcb((void*) pcb);
 
     // sem_post(&sem_planificadores);
     // cantidad_bloqueados--;

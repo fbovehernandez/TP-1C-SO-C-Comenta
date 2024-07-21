@@ -95,6 +95,7 @@ void recibir_cliente() { // Se supone que desde aca se conecta el kernel
                 cargar_registros_en_cpu(pcb->registros);
                 imprimir_pcb(pcb);
                 ejecutar_pcb(pcb, socket_memoria); // este ejecutar_pcb(pcb) seria el ejectuar_instrucciones(pcb)
+                liberar_pcb_estructura(pcb);
                 break;                
             default:
                 printf("Rompio kernel\n");

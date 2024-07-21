@@ -231,7 +231,7 @@ t_instruccion *instruccion_deserializar(t_buffer *buffer) {
         stream += parametro->length;
         // printf("Parametro: %s\n", parametro->nombre);
 
-        list_add(instruccion->parametros, parametro); //VER_SI_HAY_FREE
+        list_add(instruccion->parametros, parametro); 
         // free(parametro->nombre);
     }
 
