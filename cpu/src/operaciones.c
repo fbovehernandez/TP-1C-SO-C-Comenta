@@ -33,8 +33,6 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         liberar_parametros_de(instruccion->parametros);
         free(instruccion);
 
-        
-        // pcb->program_counter++;
         printf("\nEl program counter es %d despues de aumentarlo.\n", pcb->program_counter);
         
         if(resultado_io == 1) {
@@ -195,6 +193,7 @@ t_instruccion* recibir_instruccion(int socket_memoria, t_pcb *pcb) {
             printf("Error: Fallo!\n");
             break;
         }
+        
     // Liberamos memoria
     liberar_paquete(paquete);
 

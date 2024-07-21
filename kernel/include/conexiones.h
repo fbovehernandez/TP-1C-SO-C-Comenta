@@ -50,6 +50,7 @@ typedef struct {
 typedef struct {
     int instancias;
     t_list* procesos_bloqueados;
+    t_list* procesos_que_lo_retienen;
 } t_recurso;
 
 int conectar_kernel_memoria(char* ip, char* puerto, t_log* logger_kernel);

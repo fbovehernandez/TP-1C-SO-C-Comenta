@@ -30,6 +30,7 @@ ptr_kernel* solicitar_datos(t_config* config_kernel){
         t_recurso* recurso = malloc(sizeof(t_recurso));
         recurso->instancias = atoi(instancias_recursos[i]);
         recurso->procesos_bloqueados = list_create();
+        recurso->procesos_que_lo_retienen = list_create();
         dictionary_put(datos->diccionario_recursos, recursos[i], recurso); //Mas tarde para sumar o restar deberemos castear a int instancias_recursos[i]
         
         //FREE?

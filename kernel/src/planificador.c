@@ -68,9 +68,10 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
         sem_post(&sem_grado_multiprogramacion);
     }
       
-    // liberar_pcb_de_recursos(pcb->pid); ----> PARA CUANDO MUERA RETENIENDO RECURSOS 
+    // liberar_pcb_de_recursos(pcb->pid); 
     // liberar_pcb_de_io(pcb->pid); -------------> PARA CUANDO ESTA EN LA IO
     // liberar_pcb((void*)pcb);
+    // liberar_recurso_de_pcb(pcb->pid);
     liberar_pcb(pcb);
 
     // sem_post(&sem_planificadores);
@@ -136,3 +137,47 @@ char* pasar_a_string_estado(Estado estado){
             break;
     }
 } 
+
+/* 
+
+t_instruccion* build_instruccion(char* line) {
+    t_instruccion* instruccion = malloc(sizeof(t_instruccion)); // SET AX 1 //VER_SI_HAY_FREE cae en una lista la instruccion
+
+    char* nombre_instruccion = strtok(line, " \n"); // char* nombre_instruccion = strtok(linea_leida, " \n");
+    
+    nombre_instruccion = strdup(nombre_instruccion); 
+
+    // printf("Nombre instruccion: %s\n", nombre_instruccion);
+
+    instruccion->nombre = pasar_a_enum(nombre_instruccion);
+    // printf("Nombre instruccion: %s\n", instruccion_a_string(instruccion->nombre));
+
+    free(nombre_instruccion); // Cualquier cosa ver free
+    instruccion->parametros = list_create();
+
+    char* arg = strtok(NULL, " \n");
+    
+    if(instruccion->nombre == EXIT_INSTRUCCION) { // Esta ultima impresion podria ser por el EXIT final que no tiene argumentos
+        printf("Estoy en EXIT\n");
+        instruccion->cantidad_parametros = 0;
+        return instruccion;
+    }
+
+    while(arg != NULL) {
+        t_parametro* parametro = malloc(sizeof(int) + string_length(strdup(arg)) * sizeof(char)); // Aaca falta un free //VER_SI_HAY_FREE
+
+        parametro->nombre = strdup(arg);
+        parametro->length = string_length(arg);
+
+        // printf("Parametro: %s\n", parametro->nombre);
+        list_add(instruccion->parametros, parametro);
+        arg = strtok(NULL, " \n");
+        // free(parametro);
+    }
+    
+    instruccion->cantidad_parametros = list_size(instruccion->parametros);
+
+    return instruccion;
+}
+
+*/

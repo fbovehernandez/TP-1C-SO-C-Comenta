@@ -475,6 +475,7 @@ void* handle_kernel(void* socket) {
 
     while(1) {
         void* user_space_aux;
+
         t_paquete* paquete = malloc(sizeof(t_paquete));
         paquete->buffer = malloc(sizeof(t_buffer));
 
@@ -508,9 +509,10 @@ void* handle_kernel(void* socket) {
                 pthread_mutex_lock(&mutex_diccionario_instrucciones);
                 imprimir_diccionario(); // Imprime todo, sin PID especifico...
                 pthread_mutex_unlock(&mutex_diccionario_instrucciones);
-                
+            
                 free(path->path);
                 free(path);
+                free(path_completo);
                 break;
             case ESCRIBIR_STDOUT:
                 t_pid_stdout* pid_stdout = desearializar_pid_stdout(paquete->buffer);
@@ -539,7 +541,7 @@ void* handle_kernel(void* socket) {
                 printf("El socket es %d\n", socket_io->socket);
                 enviar_valor_leido_a_io(pid_stdout->pid, socket_io->socket, registro_lectura, pid_stdout->registro_tamanio);
                 
-                // free(pid_stdout->nombre_interfaz);
+                free(pid_stdout->nombre_interfaz);
                 free(pid_stdout);
                 free(registro_lectura);
                 break;
@@ -565,6 +567,9 @@ void* handle_kernel(void* socket) {
             case LIBERAR_PROCESO:
                 int pid_a_liberar;
                 memcpy(&pid_a_liberar, paquete->buffer->stream, sizeof(int));
+
+                liberar_estructuras_proceso(pid_a_liberar);
+                // eliminar_instrucciones(pid_a_liberar);
                 limpiar_bitmap(pid_a_liberar);
                 break;
             default:
@@ -581,35 +586,89 @@ void* handle_kernel(void* socket) {
     return NULL;
 }
 
+
+void liberar_estructuras_proceso(int pid) {
+    char pid_char[4];
+    sprintf(pid_char, "%d", pid);
+
+    pthread_mutex_lock(&mutex_diccionario_instrucciones);
+
+    t_list* instrucciones = dictionary_get(diccionario_instrucciones, pid_char);
+
+    if (instrucciones != NULL) {
+        for (int i = 0; i < list_size(instrucciones); i++) {
+            t_instruccion* instruccion = list_get(instrucciones, i);
+
+            for (int j = 0; j < list_size(instruccion->parametros); j++) {
+                t_parametro* parametro = list_get(instruccion->parametros, j);
+                free(parametro->nombre);
+                free(parametro);
+            }
+
+            list_destroy(instruccion->parametros);
+            free(instruccion);
+        }
+
+        list_destroy(instrucciones);
+    }
+
+    dictionary_remove(diccionario_instrucciones, pid_char);
+
+    pthread_mutex_unlock(&mutex_diccionario_instrucciones);
+}
+
+void eliminar_instrucciones(int pid) {
+    void _destruir_parametro(t_parametro* parametro) {
+        free(parametro->nombre);
+        free(parametro);
+    }
+
+    void _destruir_instruccion(t_instruccion* instruccion) {
+        list_destroy_and_destroy_elements(instruccion->parametros, (void*)_destruir_parametro);
+    }
+
+    void _destruir_instrucciones(t_list* lista_instrucciones) {
+        list_destroy_and_destroy_elements(lista_instrucciones, (void*)_destruir_instruccion);
+    }
+
+    dictionary_remove_and_destroy(diccionario_instrucciones, string_itoa(pid), (void*)_destruir_instrucciones);
+}
+
 void limpiar_bitmap(int pid_a_liberar) {
-    t_proceso_paginas* proceso_pagina = dictionary_get(diccionario_tablas_paginas, string_itoa(pid_a_liberar));
+    t_proceso_paginas* proceso_pagina = dictionary_remove(diccionario_tablas_paginas, string_itoa(pid_a_liberar));
     t_list* tabla_paginas = proceso_pagina->tabla_paginas;
 
     for(int i = 0; i < list_size(tabla_paginas); i++) {
         t_pagina* pagina = list_get(tabla_paginas, i);
         bitarray_clean_bit(bitmap, pagina->frame);
     }
+
+    destruir_paginas(proceso_pagina);
+    free(proceso_pagina);
 }
 
 void liberar_modulo_memoria() {
-    bitarray_destroy(bitmap);
+    /*bitarray_destroy(bitmap);
     liberar_tablas_paginas();
-    liberar_ios();
+    liberar_ios();*/
+}
+
+void _liberar_pagina(t_pagina* pagina) {
+    free(pagina);
+}
+    
+void destruir_paginas(t_proceso_paginas* proceso) {
+    list_destroy_and_destroy_elements(proceso->tabla_paginas, (void*)_liberar_pagina);
 }
 
 void liberar_tablas_paginas() {
-    void _destruir_paginas(t_proceso_paginas* proceso) {
-        // TO DO
-    }
-    //dictionary_clean_and_destroy_elements(diccionario_tablas_paginas, (void*) liberar_tabla_paginas);
-    //free(diccionario_tablas_paginas);
+    
 
-    dictionary_destroy_and_destroy_elements(diccionario_tablas_paginas, (void*)_destruir_paginas);
-    //t_proceso_paginas
+    dictionary_destroy_and_destroy_elements(diccionario_tablas_paginas, (void*)destruir_paginas);
 }
 
 void liberar_ios() {
-    
+
 }
 
 void enviar_valor_leido_a_io(int pid, int socket_io, char* valor, int tamanio) {
@@ -631,6 +690,8 @@ void enviar_valor_leido_a_io(int pid, int socket_io, char* valor, int tamanio) {
     buffer->stream = stream;
 
     enviar_paquete(buffer, ESCRIBITE, socket_io);
+
+    free(valor);
 }
 
 void* handle_io_stdout(void* socket) {
@@ -857,7 +918,7 @@ void crear_estructuras(char* path_completo, int pid) {
     char* pid_char = malloc(sizeof(char) * 4); // Un char es de 1B, un int es de 4B
     sprintf(pid_char, "%d", pid);
     
-    dictionary_put(diccionario_tablas_paginas, pid_char, proceso_paginas); //VER_SI_HAY_FREE
+    dictionary_put(diccionario_tablas_paginas, pid_char, proceso_paginas); // VER_SI_HAY_FREE
     
     pthread_mutex_lock(&mutex_diccionario_instrucciones);
     dictionary_put(diccionario_instrucciones, pid_char, instrucciones);
@@ -872,6 +933,7 @@ void crear_estructuras(char* path_completo, int pid) {
 void _agregar_instruccion_a_diccionario(char* pid_char, char* linea) {
     t_list* instrucciones = dictionary_get(diccionario_instrucciones, pid_char);
     t_instruccion* instruccion = build_instruccion(linea);
+    
     list_add(instrucciones, instruccion);
 }
 
@@ -933,6 +995,7 @@ t_instruccion* build_instruccion(char* line) {
     instruccion->nombre = pasar_a_enum(nombre_instruccion);
     // printf("Nombre instruccion: %s\n", instruccion_a_string(instruccion->nombre));
 
+    free(nombre_instruccion); // Cualquier cosa ver free
     instruccion->parametros = list_create();
 
     char* arg = strtok(NULL, " \n");
@@ -944,7 +1007,7 @@ t_instruccion* build_instruccion(char* line) {
     }
 
     while(arg != NULL) {
-        t_parametro* parametro = malloc(sizeof(int) + string_length(strdup(arg)) * sizeof(char)); // Aaca falta un free //VER_SI_HAY_FREE
+        t_parametro* parametro = malloc(sizeof(t_parametro)); // Aaca falta un free //VER_SI_HAY_FREE
 
         parametro->nombre = strdup(arg);
         parametro->length = string_length(arg);
@@ -967,6 +1030,8 @@ char* agrupar_path(t_path* path) {
     char* path_completo = malloc(strlen(pathConfig_local) + path->path_length); // 69  + 20  + 1 //VER_SI_HAY_FREE
     path_completo = strcat(pathConfig_local, path->path);
     printf("Path completo: %s\n", path_completo);
+
+    free(pathConfig_local);
     return path_completo;
 }
 
@@ -1197,26 +1262,8 @@ char* leer(int tamanio, int direccion_fisica) {
 }
 
 void mostrar_en_io(int socket_io, char* valor_leido) {
-    t_buffer* buffer;
-    buffer = llenar_buffer_stdout(valor_leido);
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-
-    paquete->codigo_operacion = MOSTRAR; 
-    paquete->buffer = buffer;
-
-    void* a_enviar = malloc(buffer->size + string_length(valor_leido));
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    send(socket_io, a_enviar, buffer->size + string_length(valor_leido), 0);
-
-    free(a_enviar);
-    liberar_paquete(paquete);
+    t_buffer* buffer = llenar_buffer_stdout(valor_leido);
+    enviar_paquete(buffer,MOSTRAR,socket_io);
 }
 
 t_buffer* llenar_buffer_stdout(char* valor) {

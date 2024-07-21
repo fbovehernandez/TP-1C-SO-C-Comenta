@@ -122,14 +122,6 @@ void *interaccion_consola() {
                 printf("Finalizacion del modulo\n");
 
                 // close sockets
-                close(socket_memoria_kernel);
-                close(socket_cpu);
-                close(socket_interrupt);
-
-                pthread_join(pasar_a_ready, NULL);
-                pthread_join(planificador_corto_plazo, NULL);
-                pthread_join(hilo_io, NULL);
-
                 finalizar_kernel(); 
                 finalzar_cpu();
                 finalizar_memoria();
@@ -195,14 +187,16 @@ void INICIAR_PROCESO(char* path_instrucciones) {
     int pid_actual = obtener_siguiente_pid();
     printf("El pid del proceso es: %d\n", pid_actual);
     // Primero envio el path de instruccion a memoria y luego el PCB...
-    if(planificacion_pausada){
+
+    if(planificacion_pausada) {
         printf("No podes crear proceso si esta pausada la plani\n");
         return;
     }
     
-    printf("La  planificaciion permite iniciar proceso? \n");
+    printf("La  planificacion permite iniciar proceso? \n");
     cantidad_bloqueados++;
     sem_wait(&sem_planificadores);
+    
     printf("Si.\n");    
     
     enviar_path_a_memoria(path_instrucciones, sockets, pid_actual); 
@@ -443,59 +437,6 @@ t_paquete *recibir_cpu() {
 // TO DO: Esto bloquearia la planificacion hasta que la cpu termine de ejecutar y me devuelva el contexto. 
 // Tiene que recibir causa de desalojo y contexto
 
-void mandar_datos_io_stdin(char* interfaz_nombre, uint32_t registro_direccion, uint32_t registro_tamanio) {
-    t_buffer* buffer = malloc(sizeof(t_buffer));
-
-    buffer->size = sizeof(uint32_t) + sizeof(int);
-
-    buffer->offset = 0;
-    buffer->stream = malloc(buffer->size);
-
-    void* stream = buffer->stream;
-
-    memcpy(stream + buffer->offset, &registro_direccion, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &registro_tamanio, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
-
-    buffer->stream = stream;
-
-    /* 
-    int socket_io = 0;
-    if(dictionary_has_key(diccionario_io, interfaz_nombre)) {
-        t_list_io* interfaz = malloc(sizeof(t_list_io));
-        interfaz = dictionary_get(diccionario_io, interfaz_nombre);
-        socket_io = interfaz->socket;
-        free(interfaz);
-    } else {
-        printf("Error de diccionario io\n");
-        exit(-1);
-    }
-
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-
-    paquete->codigo_operacion = LEETE; // Podemos usar una constante por operación
-    paquete->buffer = buffer; // Nuestro buffer de antes.
-
-    // Armamos el stream a enviar
-    void* a_enviar = malloc(buffer->size + sizeof(int) * 2);
-    int offset = 0;
-
-    memcpy(a_enviar + offset, &(paquete->codigo_operacion), sizeof(codigo_operacion));
-
-    offset += sizeof(codigo_operacion);
-    memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(int));
-    offset += sizeof(int);
-    memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-    // Por último enviamos
-    send(socket_io, a_enviar, buffer->size + sizeof(int) * 2, 0);
-    */
-    // No nos olvidamos de liberar la memoria que ya no usaremos
-    /*free(a_enviar);
-    liberar_paquete(paquete);*/
-} 
-
 void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     DesalojoCpu devolucion_cpu;
     
@@ -520,7 +461,13 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
         pcb->quantum = tiempo_restante;
         log_info(logger_kernel, "El quantum restante del proceso con PID %d es: %d", pcb->pid, pcb->quantum);
     }
+    
     pcb_exec = NULL;
+    // free(pcb_exec->registros);
+    // free(pcb_exec);
+    
+    /*pcb_exec = malloc(sizeof(t_pcb));
+    pcb_exec->registros = malloc(sizeof(t_registros));*/
     
     printf("Planificacion recibe el desalojo pero... ¿esta pausada?\n");
     cantidad_bloqueados++;
@@ -530,7 +477,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     switch (devolucion_cpu) {
         case ERROR_STDOUT || ERROR_STDIN:
             pasar_a_exit(pcb, "INVALID_INTERFACE");
-            // free(pcb);
+            
             break;
         case OUT_OF_MEMORY:
             pasar_a_exit(pcb, "OUT OF MEMORY");
@@ -542,10 +489,9 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
         case DORMIR_INTERFAZ:
             t_operacion_io* operacion_io = deserializar_io(package->buffer);
             dormir_io(operacion_io, pcb);
-            // dormir_io(operacion_io);
             log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, operacion_io->nombre_interfaz);  
+            free(operacion_io->nombre_interfaz);
             free(operacion_io);
-            // free(pcb);
             break;
         case WAIT_RECURSO: case SIGNAL_RECURSO:
             t_parametro* recurso = deserializar_parametro(package->buffer);
@@ -564,13 +510,8 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             // free(pcb);
             break;
         case PEDIDO_LECTURA:
-
-            /// HAY QUE ACTUALIZAR NO EXISTE ESO ES IO_STD!!!!!!!!
             t_pedido* pedido_lectura = deserializar_pedido(package->buffer);
-
-            // mandar_io_blocked(pcb, pedido_lectura->interfaz);
-            // mandar_datos_io_stdin(pcb, pedido_lectura->interfaz, pedido_lectura->direccion_fisica, pedido_lectura->registro_tamanio);
-            
+    
             encolar_datos_std(pcb, pedido_lectura);
             log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, pedido_lectura->interfaz);   
             
@@ -684,7 +625,7 @@ t_buffer* llenar_buffer_nombre_archivo_pid(int pid,int largo_archivo,char* nombr
     buffer->offset += sizeof(int);
     memcpy(stream + buffer->offset, &(largo_archivo), sizeof(int)); 
     buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &nombre_archivo, largo_archivo);
+    memcpy(stream + buffer->offset, nombre_archivo, largo_archivo);
     
     buffer->stream = stream;
 
@@ -835,19 +776,14 @@ t_operacion_io* deserializar_io(t_buffer* buffer) {
     operacion_io->nombre_interfaz = malloc(operacion_io->nombre_interfaz_largo); //FREE?
 
     memcpy(operacion_io->nombre_interfaz, stream, operacion_io->nombre_interfaz_largo);
-    
+
     printf("Interfaz (funcionalidades): %s\n", operacion_io->nombre_interfaz);
     printf("Unidades de trabajo (unidades): %d\n", operacion_io->unidadesDeTrabajo);
 
+
+
     return operacion_io;
 }
-
-/* 
-void dormir_io(t_operacion_io* operacion_io) {
-    pthread_t dormir_interfaz;
-    pthread_create(&dormir_interfaz, NULL, (void*) hilo_dormir_io, operacion_io); 
-}
-*/
 
 void dormir_io(t_operacion_io* io, t_pcb* pcb) {
 
@@ -864,6 +800,8 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
     if(elemento_encontrado == NULL) {
         // Aca estaria tamb la logica de matar al hilo
         printf("Es NULL LA INTERFAZ...\n");
+        free(datos_sleep->pcb);
+        free(datos_sleep);
         return;
     }
 
@@ -972,6 +910,8 @@ t_parametro* deserializar_parametro(t_buffer* buffer) {
 
     if (stream >= buffer->stream + buffer->size) {
         printf("No hay nada en el buffer\n");
+        free(parametro->nombre);
+        free(parametro);
         return NULL;
     }
 
@@ -1006,13 +946,14 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
         pasar_a_exit(pcb, "INVALID_RESOURCE");
     }
     
+    free(key_nombre_recurso);
     imprimir_diccionario_recursos();
 }
 
 void ejecutar_wait_recurso(t_recurso* recurso_obtenido,t_pcb* pcb,char* recurso){
     if(recurso_obtenido->instancias > 0) {
         recurso_obtenido->instancias --;
-        // pasar_a_ready(pcb);
+        list_add(recurso_obtenido->procesos_que_lo_retienen, string_itoa(pcb->pid));
         pthread_mutex_lock(&mutex_prioritario_por_signal);
         queue_push(cola_prioritarios_por_signal, pcb);
         pthread_mutex_unlock(&mutex_prioritario_por_signal);
@@ -1026,6 +967,7 @@ void ejecutar_wait_recurso(t_recurso* recurso_obtenido,t_pcb* pcb,char* recurso)
 
 void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
     recurso_obtenido->instancias ++;
+    list_remove_element(recurso_obtenido->procesos_que_lo_retienen, string_itoa(pcb->pid));
     
     //mutex
     /*pthread_mutex_lock(&no_hay_nadie_en_cpu);
@@ -1043,8 +985,10 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
     sem_post(&sem_hay_para_planificar);
     sem_post(&sem_planificadores);
     cantidad_bloqueados--;
+    
     if(!list_is_empty(recurso_obtenido->procesos_bloqueados)) {
         t_pcb* proceso_liberado = list_remove(recurso_obtenido->procesos_bloqueados, 0);
+        list_add(recurso_obtenido->procesos_que_lo_retienen, string_itoa(proceso_liberado->pid));
         /*change_status(proceso_liberado, READY);
         queue_push(cola_prioritarios_por_signal, proceso_liberado); 
         sem_post(&sem_hay_para_planificar);*/
@@ -1118,7 +1062,7 @@ void FINALIZAR_PROCESO(int pid) {
     }
     
     pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
-    free(pcb);
+    // Ya se hace free en pasar a exit
 }
 
 // TODO: Buscar en las colas_blocked de io
@@ -1317,7 +1261,6 @@ void mostrar_cola_con_mutex(t_queue* cola,pthread_mutex_t* mutex){
       
 }
 
-
 void mostrar_cola(t_queue* cola) {
     t_pcb* aux;
     t_queue* cola_aux = queue_create(); 
@@ -1405,7 +1348,6 @@ void* serializar_instrucciones(t_list* instrucciones, int size) {
 
 void mandar_a_escribir_a_memoria(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio){
     t_buffer* buffer = llenar_buffer_stdout(direccion_fisica, nombre_interfaz, tamanio);
-    int socket_memoria = sockets->socket_memoria;
     enviar_paquete(buffer, ESCRIBIR_STDOUT, sockets->socket_memoria);
 }
 
@@ -1540,23 +1482,21 @@ void finalizar_kernel() {
     sem_destroy(&sem_cargo_instrucciones);
     sem_destroy(&sem_planificadores);
 
-    
+    /* 
     queue_destroy_and_destroy_elements(cola_new,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_ready,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_blocked,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_exit,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_prioritarios_por_signal,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_ready_plus,liberar_pcb);
-
-    
-    
+    */
+   
     liberar_ios();
 
     // No hagan "liberar_pcb(pcb_exec)" que no es un pcb como tal
-    
+       
     if(pcb_exec != NULL) {
-        free(pcb_exec->registros);
-        free(pcb_exec);
+        liberar_pcb_estructura(pcb_exec);
     }
  
     // No hace falta liberar cada uno porque no tiene punteros
@@ -1571,6 +1511,7 @@ void liberar_recursos(t_dictionary* recursos) {
     void liberar_recurso(char* clave, void* recurso) {
         t_recurso* recurso_sacado = (t_recurso*)recurso;
         list_destroy(recurso_sacado->procesos_bloqueados); // Liberar la lista de procesos bloqueados
+        list_destroy(recurso_sacado->procesos_que_lo_retienen);
         free(recurso_sacado); // Liberar el recurso
     }
 
@@ -1578,12 +1519,6 @@ void liberar_recursos(t_dictionary* recursos) {
     dictionary_destroy(recursos); // Liberar el diccionario en sí
 }
 
-void liberar_cola_recursos(t_list* procesos_bloqueados){
-    while(!list_is_empty(procesos_bloqueados)){
-        t_pcb* pcb = list_remove(procesos_bloqueados, 0);
-        liberar_pcb(pcb);
-    }
-}
 
 /*
 typedef struct {
@@ -1607,7 +1542,8 @@ void liberar_ios() {
     }
 }
 
-void liberar_datos_kernel(){
+
+void liberar_datos_kernel() {
     free(datos_kernel->ip_cpu);
     free(datos_kernel->ip_mem);
     free(datos_kernel->puerto_memoria);
@@ -1631,9 +1567,8 @@ void pasar_a_exit(t_pcb* pcb) {
 
 void* liberar_pcb(void* pcb_void){
     t_pcb* pcb = (t_pcb*)pcb_void; // Convertimos de void* a t_pcb*
-    free(pcb->registros);
     enviar_eliminacion_pcb_a_memoria(pcb->pid);
-    free(pcb);
+    liberar_pcb_estructura(pcb);
     return NULL;
 }
 
@@ -1644,13 +1579,38 @@ void liberar_pcb_de_recursos(int pid) {
     }
 
     void _buscar_pid_entre_recursos(t_recurso* recurso) {
-        if(list_filter(recurso->procesos_bloqueados, (void*)tiene_pid_en_recurso)) {
-            recurso->instancias++;
+        if(!list_is_empty(recurso->procesos_bloqueados)) {
+            if(list_filter(recurso->procesos_bloqueados, (void*)tiene_pid_en_recurso)) {
+                recurso->instancias++;
+            }
+        
+            list_remove_by_condition(recurso->procesos_bloqueados, (void*)tiene_pid_en_recurso);
         }
-        list_remove_and_destroy_by_condition(recurso->procesos_bloqueados, (void*)tiene_pid_en_recurso, (void*)liberar_pcb);
     }
 
     dictionary_iterator(datos_kernel->diccionario_recursos, (void*)_buscar_pid_entre_recursos);
+}
+
+void liberar_recurso_de_pcb(int pid) {
+    bool _es_el_pid_buscado(int pid_recibido) {
+        return pid == pid_recibido;
+    }
+
+    void _buscar_pid_entre_procesos_que_retienen(t_recurso* recurso) {
+        if(!list_is_empty(recurso->procesos_que_lo_retienen)) {
+            if(list_any_satisfy(recurso->procesos_que_lo_retienen, (void*)_es_el_pid_buscado)) {
+                list_remove_element(recurso->procesos_que_lo_retienen, string_itoa(pid));
+                recurso->instancias++;
+            }
+        }
+    }
+
+    dictionary_iterator(datos_kernel->diccionario_recursos, (void*)_buscar_pid_entre_procesos_que_retienen);
+}
+
+void liberar_pcb_estructura(t_pcb* pcb) {
+    free(pcb->registros);
+    free(pcb);
 }
 
 void liberar_pcb_de_io(int pid) {
@@ -1659,7 +1619,7 @@ void liberar_pcb_de_io(int pid) {
     }
 
     void _buscar_pid_entre_io(t_list_io* io) {
-        list_remove_and_destroy_by_condition(io->cola_blocked, (void*)_tiene_pid_en_io, (void*)liberar_pcb);
+        list_remove_and_destroy_by_condition(io->cola_blocked, (void*)_tiene_pid_en_io, (void*)liberar_pcb_estructura);
     }
 
     dictionary_iterator(diccionario_io, (void*)_buscar_pid_entre_io);
