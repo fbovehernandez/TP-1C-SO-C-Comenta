@@ -404,11 +404,33 @@ void *handle_io_generica(void *socket_io) {
         io_gen_sleep *datos_sleep = list_remove(io->cola_blocked, 0);
         pthread_mutex_unlock(&mutex_cola_io_generica);
         
-        // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
         pid_unidades_trabajo->pid = datos_sleep->pcb->pid;
         pid_unidades_trabajo->unidades_trabajo = datos_sleep->unidad_trabajo;
-        printf("La cola nos saca esto: PID %d, UT %d\n", datos_sleep->pcb->pid, datos_sleep->unidad_trabajo);
 
+        printf("La cola nos saca esto: PID %d, UT %d\n", datos_sleep->pcb->pid, datos_sleep->unidad_trabajo);
+        
+        // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
+        // hay que agregar un send recv de validacion en cada io. Esto es lo que use en fs
+
+        /* 
+        send(socket, &validacion_conexion, sizeof(int), 0);
+        int result = recv(socket, &respuesta_conexion, sizeof(int), 0);
+        printf("resultado recv: %d\n", result);
+
+        if(result == 0) {
+            printf("Se desconecto la IO\n");
+            pasar_a_exit(datos_op->pcb);
+            dictionary_remove(diccionario_io, io->nombreInterfaz);
+
+            // Ojo! Aca tambien hay que liberar todo lo que no se usa cuando la io se termina
+            free(datos_op->puntero_operacion);
+            free(datos_op);
+            liberar_paquete(paquete);
+            
+            return NULL;
+        }
+        */
+        
         int respuesta_ok = ejecutar_io_generica(io->socket, pid_unidades_trabajo);
         
         if (!respuesta_ok) {
@@ -423,11 +445,18 @@ void *handle_io_generica(void *socket_io) {
             printf("Termino io: %d\n", termino_io);
             if (termino_io == 1) { // El send de termino io envia 1.
                 printf("Termino la IO\n");
-                pasar_a_ready(datos_sleep->pcb);
+
+                t_pcb *pcb_copy = malloc(sizeof(t_pcb));               
+                memcpy(pcb_copy, datos_sleep->pcb, sizeof(t_pcb));
+
+                pasar_a_ready(pcb_copy); 
             }
         } else {
             printf("No se pudo ejecutar");
         }    
+        
+        liberar_pcb_estructura(datos_sleep->pcb);
+        free(datos_sleep);
     }
     
     free(pid_unidades_trabajo);

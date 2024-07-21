@@ -253,14 +253,15 @@ void encolar_a_new(t_pcb *pcb) {
     printf("Planificacion continua\n");
     
     pthread_mutex_lock(&mutex_estado_new);
-    queue_push(cola_new, (void *)pcb);
+    queue_push(cola_new, pcb);
     pthread_mutex_unlock(&mutex_estado_new);
 
     log_info(logger_kernel, "Se crea el proceso: %d en NEW", pcb->pid);
     sem_post(&sem_planificadores);
+    cantidad_bloqueados--;
     log_info(logger_kernel, "Hay proceso esperando en la cola de NEW!\n");
     sem_post(&sem_hay_pcb_esperando_ready); // Incrementar el semáforo para indicar que hay un nuevo proceso
-    cantidad_bloqueados--;
+    
 }
 
 void* a_ready() {
@@ -774,9 +775,6 @@ t_operacion_io* deserializar_io(t_buffer* buffer) {
 }
 
 void dormir_io(t_operacion_io* io, t_pcb* pcb) {
-
-    io_gen_sleep* datos_sleep = malloc(sizeof(io_gen_sleep)); //VER_SI_HAY_FREE
-    datos_sleep->pcb = malloc(sizeof(t_pcb)); // free cuando se desconecte 
     //VER_SI_HAY_FREE
 
     // bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
@@ -784,18 +782,13 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
 
     // t_list_io* elemento_encontrado = validar_io(io, pcb); 
     // Aca tambien deberia cambiar su estado a blocked o Exit respectivamnete
+    // capaz estaba mal el nombre y al ser null no lo agarraba y el print rompia
+    if(elemento_encontrado != NULL) { // resultado_okey
+        printf("El nombre de la interfaz es: %s\n", elemento_encontrado->nombreInterfaz); 
 
-    if(elemento_encontrado == NULL) {
-        // Aca estaria tamb la logica de matar al hilo
-        printf("Es NULL LA INTERFAZ...\n");
-        free(datos_sleep->pcb);
-        free(datos_sleep);
-        return;
-    }
+        io_gen_sleep* datos_sleep = malloc(sizeof(io_gen_sleep)); //VER_SI_HAY_FREE
+        datos_sleep->pcb = malloc(sizeof(t_pcb)); // free cuando se desconecte 
 
-    printf("El nombre de la interfaz es: %s\n", elemento_encontrado->nombreInterfaz);
-    
-    if(1) { // resultado_okey
         datos_sleep->unidad_trabajo = io->unidadesDeTrabajo;
         datos_sleep->pcb = pcb;
         printf("El pid de datos_sleep de dormir_io: %d\n", pcb->pid);
@@ -811,6 +804,9 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
         sem_post(elemento_encontrado->semaforo_cola_procesos_blocked);
         printf("La operacion deberia realizarse...\n");
         pthread_mutex_unlock(&mutex_lista_io);
+    } else {
+        printf("ES NULL LA IO\n");
+        return;
     }
 }
 
@@ -1505,11 +1501,22 @@ void pasar_a_exit(t_pcb* pcb) {
 }
 */
 
-void* liberar_pcb(void* pcb_void){
-    t_pcb* pcb = (t_pcb*)pcb_void; // Convertimos de void* a t_pcb*
+void liberar_pcb(t_pcb* pcb) {
     enviar_eliminacion_pcb_a_memoria(pcb->pid);
-    liberar_pcb_estructura(pcb);
-    return NULL;
+    if (pcb != NULL) {
+        // Primero, liberamos cualquier memoria que haya sido asignada a la subestructura t_registros
+        if (pcb->registros != NULL) {
+            free(pcb->registros);
+            pcb->registros = NULL;  // Asegúrate de que el puntero no apunte a memoria liberada
+        }
+
+        // Luego, liberamos la memoria de la propia estructura t_pcb
+        free(pcb);
+    }
+
+    // t_pcb* pcb = (t_pcb*)pcb_void; // Convertimos de void* a t_pcb*
+    // enviar_eliminacion_pcb_a_memoria(pcb->pid);
+    // liberar_pcb_estructura(pcb);
 }
 
 void liberar_pcb_de_recursos(int pid) {

@@ -813,6 +813,7 @@ int cantidad_de_paginas_a_utilizar(uint32_t direccion_logica, int tamanio_en_byt
         if(sobrante_de_pagina <= 0) {
             int* tam_bytes = malloc(sizeof(int));
             *tam_bytes = tamanio_en_bytes; 
+            // int* tam_bytes = tamanio_en_bytes; ???
             printf("Tamanio LECTURA: %d\n", *tam_bytes); // 17 -> 14 -> 10 -> 6 -> 2
             list_add(lista_bytes_lectura, tam_bytes); //VER_SI_HAY_FREE
             break;

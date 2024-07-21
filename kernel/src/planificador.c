@@ -43,7 +43,10 @@ void pasar_a_ready_normal(t_pcb* pcb) {
 void pasar_a_exec(t_pcb* pcb) {
     change_status(pcb, EXEC);
     pcb_exec = pcb;
+    
     enviar_pcb(pcb, client_dispatch, ENVIO_PCB, NULL);
+
+    liberar_pcb_estructura(pcb);
     //esperar_cpu();
 }
 
@@ -72,7 +75,7 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
     // liberar_pcb_de_io(pcb->pid); -------------> PARA CUANDO ESTA EN LA IO
     // liberar_pcb((void*)pcb);
     // liberar_recurso_de_pcb(pcb->pid);
-    liberar_pcb((void*) pcb);
+    liberar_pcb(pcb);
 
     // sem_post(&sem_planificadores);
     // cantidad_bloqueados--;
@@ -82,7 +85,7 @@ void pasar_a_ready_plus(t_pcb* pcb){
     change_status(pcb, READY_PLUS);
     
     pthread_mutex_lock(&mutex_estado_ready_plus);
-    queue_push(cola_ready_plus, (void *)pcb);
+    queue_push(cola_ready_plus, pcb);
     char* pids = obtener_pid_de(cola_ready_plus);
     log_info(logger_kernel,"Cola Ready Prioridad: %s\n", pids);
     pthread_mutex_unlock(&mutex_estado_ready_plus);

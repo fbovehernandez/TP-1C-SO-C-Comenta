@@ -78,6 +78,10 @@ start_dialfs: debug
 memcheck: debug
 	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(ARGS)
 
+.PHONY: memcheck2
+memcheck2: debug
+	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(ARGS2) $(NOMBRE_INTERFAZ1)
+
 .PHONY: helgrind
 helgrind: debug
 	valgrind --tool=helgrind $(HELGRIND_FLAGS) ./$(BIN) $(ARGS)

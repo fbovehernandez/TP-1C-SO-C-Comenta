@@ -167,7 +167,7 @@ void liberar_pedido_escritura_lectura(t_pedido* pedido_escritura_lectura);
 void liberar_recursos(t_dictionary* recursos);
 void finalizar_kernel();
 void enviar_eliminacion_pcb_a_memoria(int pid);
-void* liberar_pcb(void* pcb);
+void liberar_pcb(t_pcb* pcb);
 void liberar_estructura_sockets();
 void liberar_cola_recursos(t_list* procesos_bloqueados);
 void liberar_datos_kernel();

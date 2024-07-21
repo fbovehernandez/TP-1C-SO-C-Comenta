@@ -98,10 +98,12 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
     printf("Se conecto un el cpu!\n");
 
     send(socket_cpu, &tamanio_pagina, sizeof(int), MSG_WAITALL);
-    t_paquete* paquete = malloc(sizeof(t_paquete));
-    paquete->buffer = malloc(sizeof(t_buffer));
     
     while(1) {
+        
+        t_paquete* paquete = malloc(sizeof(t_paquete));
+        paquete->buffer = malloc(sizeof(t_buffer));
+        
         // Primero recibimos el codigo de operacion
         printf("Esperando recibir paquete de CPU\n");
         //recv(socket_cpu, &(paquete->codigo_operacion), sizeof(int), 0);
@@ -192,6 +194,12 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
 
                 free(pedido_operacion->valor_a_escribir);
+
+                // Ver esto, creo que lo estoy liberando bien, despues no lo uso
+                for(int i = 0; i < list_size(direcciones_restantes_escritura); i++) {
+                    free(list_get(direcciones_restantes_escritura, i));
+                }
+
                 free(pedido_operacion);
                 free(direcciones_restantes_escritura); // Añadido para liberar memoria
                 break;
@@ -199,12 +207,13 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
             default:
                 printf("No reconozco ese cod-op...\n"); 
-                liberar_paquete(paquete);  // Asegúrate de liberar paquete
+                // liberar_paquete(paquete);  // -> Comento y libero despues de cada iteracion
                 return NULL;
         }
+
+        liberar_paquete(paquete);
     }
 
-    liberar_paquete(paquete);
     return NULL;
 }
 
@@ -268,7 +277,7 @@ t_pedido_memoria* deserializar_direccion_fisica(t_buffer* buffer, t_list* direcc
 
     printf("cant paginas: %d\n", datos_operacion->cantidad_paginas);
     for(int i = 0; i < datos_operacion->cantidad_paginas; i++) {
-        t_dir_fisica_tamanio* dir_fisica_tam = malloc(sizeof(t_dir_fisica_tamanio)); //VER_SI_HAY_FREE
+        t_dir_fisica_tamanio* dir_fisica_tam = malloc(sizeof(t_dir_fisica_tamanio)); //HECHO EN TEORIA
         memcpy(&dir_fisica_tam->direccion_fisica, stream, sizeof(int));
         stream += sizeof(int);
         memcpy(&dir_fisica_tam->bytes_lectura, stream, sizeof(int));
@@ -387,7 +396,7 @@ void marcar_frame_en_tabla_paginas(t_list* tabla_paginas, int frame) {
     t_pagina* pagina = malloc(sizeof(t_pagina));
     pagina->numero_pagina = list_size(tabla_paginas); 
     pagina->frame = frame;
-    list_add(tabla_paginas, pagina); //VER_SI_HAY_FREE
+    list_add(tabla_paginas, pagina); //VER_SI_FUNCIONA
 }
 
 int buscar_frame_libre() {
@@ -548,6 +557,7 @@ void* handle_kernel(void* socket) {
                 printf("El socket es %d\n", socket_io->socket);
                 enviar_valor_leido_a_io(pid_stdout->pid, socket_io->socket, registro_lectura, pid_stdout->registro_tamanio);
                 
+                list_destroy(pid_stdout->lista_direcciones);
                 free(pid_stdout->nombre_interfaz);
                 free(pid_stdout);
                 free(registro_lectura);
@@ -572,6 +582,7 @@ void* handle_kernel(void* socket) {
                 // t_buffer* buffer = llenar_buffer_fs_read_write_memoria(pid, /*datos restantes*/);
                 // enviar_paquete(buffer,codigo_escritura_lectura,socket_io_escritura_lectura);
             case LIBERAR_PROCESO:
+                printf("\nLlega a liberar_proceso\n\n");
                 int pid_a_liberar;
                 memcpy(&pid_a_liberar, paquete->buffer->stream, sizeof(int));
 
@@ -593,10 +604,15 @@ void* handle_kernel(void* socket) {
     return NULL;
 }
 
+/* 
+t_list* instrucciones = list_create();
 
+    t_proceso_paginas* proceso_paginas = malloc(sizeof(t_proceso_paginas));
+*/
 void liberar_estructuras_proceso(int pid) {
-    char pid_char[4];
-    sprintf(pid_char, "%d", pid);
+    /*char pid_char[4];
+    sprintf(pid_char, "%d", pid);*/
+    char* pid_char = string_itoa(pid);
 
     pthread_mutex_lock(&mutex_diccionario_instrucciones);
 
@@ -615,13 +631,13 @@ void liberar_estructuras_proceso(int pid) {
             list_destroy(instruccion->parametros);
             free(instruccion);
         }
+    }   
 
-        list_destroy(instrucciones);
-    }
-
+    list_destroy(instrucciones);
     dictionary_remove(diccionario_instrucciones, pid_char);
 
     pthread_mutex_unlock(&mutex_diccionario_instrucciones);
+    free(pid_char);
 }
 
 void eliminar_instrucciones(int pid) {
@@ -670,12 +686,18 @@ void _liberar_pagina(t_pagina* pagina) {
 }
     
 void destruir_paginas(t_proceso_paginas* proceso) {
-    list_destroy_and_destroy_elements(proceso->tabla_paginas, (void*)_liberar_pagina);
+    
+    for(int i = 0; i < list_size(proceso->tabla_paginas); i++) {
+        t_pagina* pagina = list_get(proceso->tabla_paginas, i);
+        free(pagina);
+    }
+    
+    // Luego, liberamos la lista tabla_paginas
+    list_destroy(proceso->tabla_paginas);
+    free(proceso);
 }
 
 void liberar_tablas_paginas() {
-    
-
     dictionary_destroy_and_destroy_elements(diccionario_tablas_paginas, (void*)destruir_paginas);
 }
 
@@ -786,6 +808,7 @@ void* handle_io_stdin(void* socket) {
                 send(socket_io, &terminoOk, sizeof(int), 0);
                 // void* primera_direccion = list_get(escritura_stdin->pid_stdin->lista_direcciones, 0);
                 // log_info(logger_memoria,"PID %d - Accion: ESCRIBIR - Direccion fisica: %d - Tamanio %d", escritura_stdin->pid_stdin->pid, *(int*)primera_direccion, escritura_stdin->valor_length);
+                list_destroy(escritura_stdin->pid_stdin->lista_direcciones);
                 free(escritura_stdin->pid_stdin);
                 free(escritura_stdin->valor); 
                 free(escritura_stdin);
@@ -853,13 +876,13 @@ t_escritura_stdin* deserializar_escritura_stdin(void* stream) {
     escritura_stdin->pid_stdin->lista_direcciones = list_create();
     
     for(int i=0; i < escritura_stdin->pid_stdin->cantidad_paginas; i++) {
-        t_dir_fisica_tamanio* dir_fisica_tam = malloc(sizeof(t_dir_fisica_tamanio)); //VER_SI_HAY_FREE
+        t_dir_fisica_tamanio* dir_fisica_tam = malloc(sizeof(t_dir_fisica_tamanio)); 
         memcpy(&dir_fisica_tam->direccion_fisica, stream, sizeof(int));
         stream += sizeof(int);
         memcpy(&dir_fisica_tam->bytes_lectura, stream, sizeof(int));
         stream += sizeof(int);
 
-        list_add(escritura_stdin->pid_stdin->lista_direcciones, dir_fisica_tam);
+        list_add(escritura_stdin->pid_stdin->lista_direcciones, dir_fisica_tam); //VER_S
         // list_add(direcciones_restantes, dir_fisica_tam);
     }
     
@@ -924,6 +947,7 @@ void crear_estructuras(char* path_completo, int pid) {
 
     t_proceso_paginas* proceso_paginas = malloc(sizeof(t_proceso_paginas));
     t_list* tabla_pagina = list_create();
+
     proceso_paginas->tabla_paginas = tabla_pagina;
     proceso_paginas->cantidad_frames = 0;
     /*
@@ -998,7 +1022,7 @@ TipoInstruccion pasar_a_enum(char* nombre) {
 
 //Hay que construir bien la instruccion
 t_instruccion* build_instruccion(char* line) {
-    t_instruccion* instruccion = malloc(sizeof(t_instruccion)); // SET AX 1 //VER_SI_HAY_FREE cae en una lista la instruccion
+    t_instruccion* instruccion = malloc(sizeof(t_instruccion)); // SET AX 1
 
     char* nombre_instruccion = strtok(line, " \n"); // char* nombre_instruccion = strtok(linea_leida, " \n");
     
@@ -1021,7 +1045,7 @@ t_instruccion* build_instruccion(char* line) {
     }
 
     while(arg != NULL) {
-        t_parametro* parametro = malloc(sizeof(t_parametro)); // Aaca falta un free //VER_SI_HAY_FREE
+        t_parametro* parametro = malloc(sizeof(t_parametro)); // Aaca falta un free
 
         parametro->nombre = strdup(arg);
         parametro->length = string_length(arg);
@@ -1040,7 +1064,7 @@ t_instruccion* build_instruccion(char* line) {
 // Posible mem leak, fix para el futuro
 char* agrupar_path(t_path* path) { 
     char* pathConfig_local = strdup(path_config);
-    // char* path_completo = malloc(strlen(pathConfig_local) + path->path_length + 1); // 69  + 20  + 1 //VER_SI_HAY_FREE
+    // char* path_completo = malloc(strlen(pathConfig_local) + path->path_length + 1); // 69  + 20  + 1 
     size_t path_completo_size = strlen(pathConfig_local) + path->path_length + 1;
     char* path_completo = malloc(path_completo_size);
     if (path_completo == NULL) {
@@ -1112,7 +1136,7 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu, int socket_cpu) 
     printf("PC: %d\n", pc);
 
     //char* pid_char = malloc(20);
-    //char* pid_char = malloc(sizeof(char) * 4); // El pid es un int, los ints ocupan 4 bytes y cada char ocupa un 1 byte //VER_SI_HAY_FREE
+    //char* pid_char = malloc(sizeof(char) * 4); // El pid es un int, los ints ocupan 4 bytes y cada char ocupa un 1 byte 
     //sprintf(pid_char, "%d", pid);
 
     char* pid_char = string_itoa(pid);
@@ -1121,7 +1145,7 @@ void enviar_instruccion(t_solicitud_instruccion* solicitud_cpu, int socket_cpu) 
 
     t_list* instrucciones = dictionary_get(diccionario_instrucciones, pid_char);
 
-    free(pid_char);
+    free(pid_char); //String_itoa hace malloc?
 
     t_instruccion* instruccion = list_get(instrucciones, pc);
     printf("Instruccion a enviar: %s\n", instruccion_a_string(instruccion->nombre));
@@ -1292,7 +1316,7 @@ t_buffer* llenar_buffer_stdout(char* valor) {
 }
 
 t_pid_stdout* desearializar_pid_stdout(t_buffer* buffer){
-    t_pid_stdout* pedido_escritura = malloc(sizeof(t_pid_stdout)); //VER_SI_HAY_FREE no me funciona el ctrl clikkkkkkkk
+    t_pid_stdout* pedido_escritura = malloc(sizeof(t_pid_stdout)); 
     // sizeof(int) * 3 + sizeof(uint32_t) + pid_stdout->cantidad_paginas * 2 * sizeof(int) + pid_stdout->largo_interfaz
 
     void* stream = buffer->stream;
@@ -1306,7 +1330,7 @@ t_pid_stdout* desearializar_pid_stdout(t_buffer* buffer){
     memcpy(&(pedido_escritura->largo_interfaz), stream, sizeof(int));
     stream += sizeof(int);
     printf("el largo de la interfaz es: %d\n", pedido_escritura->largo_interfaz);
-    pedido_escritura->nombre_interfaz = malloc(pedido_escritura->largo_interfaz); //VER_SI_HAY_FREE
+    pedido_escritura->nombre_interfaz = malloc(pedido_escritura->largo_interfaz); 
     memcpy(pedido_escritura->nombre_interfaz, stream, pedido_escritura->largo_interfaz);
     stream += pedido_escritura->largo_interfaz;
     printf("El nombre de la interfaz en deserializar stdout es: %s\n", pedido_escritura->nombre_interfaz);
@@ -1314,7 +1338,7 @@ t_pid_stdout* desearializar_pid_stdout(t_buffer* buffer){
     pedido_escritura->lista_direcciones = list_create();
 
     for(int i=0; i < pedido_escritura->cantidad_paginas; i++) {
-        t_dir_fisica_tamanio* dir_fisica_tam = malloc(sizeof(t_dir_fisica_tamanio)); //VER_SI_HAY_FREE
+        t_dir_fisica_tamanio* dir_fisica_tam = malloc(sizeof(t_dir_fisica_tamanio)); 
         memcpy(&(dir_fisica_tam->direccion_fisica), stream, sizeof(int));
         stream += sizeof(int);
         printf("\n\nLa direccion fisica recibida de memoria: %d\n\n", dir_fisica_tam->direccion_fisica);
@@ -1335,10 +1359,10 @@ void agregar_interfaz_en_el_diccionario(t_paquete* paquete, int socket) {
     socket_estructurado* socket_io = malloc(sizeof(int));
     socket_io->socket = socket;
     pthread_mutex_lock(&mutex_diccionario_io);
-    dictionary_put(diccionario_io, interfaz->nombre_interfaz, socket_io); //VER_SI_HAY_FREE
+    dictionary_put(diccionario_io, interfaz->nombre_interfaz, socket_io); //VER_SI_HAY_FREE se hace al final del proceso
     pthread_mutex_unlock(&mutex_diccionario_io);
     
-    pthread_mutex_lock(&mutex_diccionario_io);
+    pthread_mutex_lock(&mutex_diccionario_io); // decile a osfi que me siga
     socket_estructurado* socket_sacado = dictionary_get(diccionario_io, interfaz->nombre_interfaz);
     pthread_mutex_unlock(&mutex_diccionario_io);
     printf("El socket del diccionario: %d\n", socket_sacado->socket);

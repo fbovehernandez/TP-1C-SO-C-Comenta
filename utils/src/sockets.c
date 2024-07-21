@@ -347,7 +347,7 @@ void enviar_paquete(t_buffer* buffer, codigo_operacion codigo, int socket) {
     printf("Paquete enviado!\n");
 
     liberar_paquete_y_a_enviar(paquete, a_enviar);
-    free(buffer);
+    // free(buffer);
 }
 
 t_info_io *deserializar_interfaz(t_buffer *buffer) {
