@@ -470,6 +470,9 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
         case OUT_OF_MEMORY:
             pasar_a_exit(pcb, "OUT OF MEMORY");
             break;
+        case INTERRUPCION_FIN_USUARIO:
+            pasar_a_exit(pcb, "INTERRUPTED BY USER");
+            break;
         case INTERRUPCION_QUANTUM:
             log_info(logger_kernel, "PID: %d - Desalojado por fin de Quantum", pcb->pid);
             pasar_a_ready(pcb);
@@ -768,13 +771,11 @@ t_operacion_io* deserializar_io(t_buffer* buffer) {
     printf("Interfaz (funcionalidades): %s\n", operacion_io->nombre_interfaz);
     printf("Unidades de trabajo (unidades): %d\n", operacion_io->unidadesDeTrabajo);
 
-
-
     return operacion_io;
 }
 
 void dormir_io(t_operacion_io* io, t_pcb* pcb) {
-    //VER_SI_HAY_FREE
+    // VER_SI_HAY_FREE
 
     // bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
     t_list_io* elemento_encontrado = io_esta_en_diccionario(pcb, io->nombre_interfaz);
@@ -796,7 +797,7 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
         list_add(elemento_encontrado->cola_blocked, datos_sleep);
         pthread_mutex_unlock(&mutex_cola_io_generica);
 
-        pasar_a_blocked(pcb);
+        pasar_a_blocked(pcb); // facu y mati cree que la cola de blocked no va asi que mañana habria que sacarla
 
         // use lo que estaba, antes decia sem_post al mutex, por eso, era un binario o eso entendi
         pthread_mutex_lock(&mutex_lista_io);
@@ -1030,18 +1031,19 @@ void FINALIZAR_PROCESO(int pid) {
     printf("Se ejecuta finalizar proceso\n");
     printf("el pid recibido es: %d\n", pid);
     
-    if(planificacion_pausada){
+    if (planificacion_pausada){
         printf("No podes finalizar proceso si esta pausada la plani\n");
         return;
     }
 
-    t_pcb* pcb = malloc(sizeof(t_pcb)); 
+    t_pcb* pcb;
     
     if(pcb_exec != NULL && pid == pcb_exec->pid) {
         printf("El proceso se encuentra en ejecucion\n");
         int temp = INTERRUPCION_FIN_USUARIO;
         send(sockets->socket_int, &temp, sizeof(int), 0);
-        recv(sockets->socket_int, &pcb, sizeof(t_pcb), MSG_WAITALL);
+        // pcb = pcb_exec;        
+        // recv(sockets->socket_int, &pcb, sizeof(t_pcb), MSG_WAITALL);
     } else {
         printf("El proceso no esta en ejecucion, se va a sacar de alguna cola\n");
         t_queue* cola = encontrar_en_que_cola_esta(pid);
@@ -1049,10 +1051,10 @@ void FINALIZAR_PROCESO(int pid) {
             printf("No se puede finalizar un proceso que esta en exit \n");
         } else {
             pcb = sacarDe(cola, pid);
+            pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
         }
     }
     
-    pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
     // Ya se hace free en pasar a exit
 }
 

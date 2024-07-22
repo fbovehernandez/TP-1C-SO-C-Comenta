@@ -74,6 +74,10 @@ PHONY: start_dialfs
 start_dialfs: debug
 	valgrind --tool=none ./$(BIN) $(ARGS_DIALFS) $(NOMBRE_INTERFAZ_DIALFS) 
 
+.PHONY: start_SLP1
+start_SLP1: debug
+	valgrind --tool=none ./$(BIN) $(ARGS_SLP1) $(NOMBRE_INTERFAZ_SLP1) 
+
 .PHONY: memcheck
 memcheck: debug
 	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(ARGS)
@@ -81,6 +85,10 @@ memcheck: debug
 .PHONY: memcheck2
 memcheck2: debug
 	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(ARGS2) $(NOMBRE_INTERFAZ1)
+
+.PHONY: memcheck_SLP1
+memcheck_SLP1: debug
+	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(ARGS_SLP1) $(NOMBRE_INTERFAZ_SLP1)
 
 .PHONY: helgrind
 helgrind: debug

@@ -77,7 +77,7 @@ void hacer_interrupcion(t_pcb* pcb) {
         hay_interrupcion_quantum = 0;
         pthread_mutex_unlock(&mutex_interrupcion_quantum);
     } else if(hay_interrupcion_fin) {
-        printf("Desalojado por fin de proceso %d\n",pcb->pid);
+        printf("Desalojado por fin de proceso %d\n",pcb->pid); // Creo que este esta al pedo mal
         desalojar(pcb, INTERRUPCION_FIN_PROCESO, NULL);
         pthread_mutex_lock(&mutex_interrupcion_fin);
         hay_interrupcion_fin = 0;

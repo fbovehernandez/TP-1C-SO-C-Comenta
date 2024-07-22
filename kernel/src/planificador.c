@@ -4,11 +4,13 @@ void change_status(t_pcb* pcb, Estado new_status) {
     pcb->estadoAnterior = pcb -> estadoActual;
     pcb->estadoActual   = new_status;
 
+
     char* estado_actual   = pasar_a_string_estado(pcb->estadoActual); 
     char* estado_anterior = pasar_a_string_estado(pcb->estadoAnterior);
 
     log_info(logger_kernel, "PID: %d - Estado Anterior: %s - Estado Actual: %s", pcb->pid, estado_anterior, estado_actual);
 }
+
 
 void pasar_a_ready(t_pcb *pcb) {
     cantidad_bloqueados++;
@@ -75,7 +77,7 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
     // liberar_pcb_de_io(pcb->pid); -------------> PARA CUANDO ESTA EN LA IO
     // liberar_pcb((void*)pcb);
     // liberar_recurso_de_pcb(pcb->pid);
-    liberar_pcb(pcb);
+    liberar_pcb_estructura(pcb);
 
     // sem_post(&sem_planificadores);
     // cantidad_bloqueados--;
