@@ -8,6 +8,7 @@ int main(int argc, char* argv[]) {
     cola_blocked                 = queue_create();
     cola_prioritarios_por_signal = queue_create();
     cola_ready_plus              = queue_create();
+    cola_exec                    = queue_create();
     
     t_config* config_kernel  = iniciar_config("./kernel.config");
     logger_kernel = iniciar_logger("kernel.log");
@@ -19,9 +20,9 @@ int main(int argc, char* argv[]) {
     algoritmo_planificacion = datos_kernel->algoritmo_planificacion;
     diccionario_io = dictionary_create();
 
-    hay_proceso_en_exec = false;
+    // hay_proceso_en_exec = false;
 
-    pcb_exec = crear_nuevo_pcb(0);
+    // pcb_exec = crear_nuevo_pcb(0); // Es un leak.
 
     // Lista global para manejo de I/O
     // lista_io = list_create();
@@ -40,7 +41,6 @@ int main(int argc, char* argv[]) {
     pthread_mutex_init(&mutex_lista_io, NULL);
     pthread_mutex_init(&mutex_cola_io_generica, NULL);
     pthread_mutex_init(&no_hay_nadie_en_cpu, NULL);
-
     
     // Hilo 1 -> Hacer un hilo para gestionar la comunicacion con memoria?
     int socket_memoria_kernel = conectar_kernel_memoria(datos_kernel->ip_mem, datos_kernel->puerto_memoria, logger_kernel);
@@ -94,6 +94,7 @@ int main(int argc, char* argv[]) {
     pthread_mutex_destroy(&mutex_cola_io_generica);
     pthread_mutex_destroy(&no_hay_nadie_en_cpu);
 
+    /*
     sem_destroy(&sem_contador_quantum);
     sem_destroy(&sem_hay_para_planificar);
     sem_destroy(&sem_hay_pcb_esperando_ready);
@@ -101,7 +102,7 @@ int main(int argc, char* argv[]) {
     sem_destroy(&sem_memoria_instruccion);
     sem_destroy(&sem_cargo_instrucciones);
     sem_destroy(&sem_planificadores);
-
+    */
     /*
     queue_destroy_and_destroy_elements(cola_new,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_ready,liberar_pcb);
@@ -110,10 +111,12 @@ int main(int argc, char* argv[]) {
     queue_destroy_and_destroy_elements(cola_ready_plus,liberar_pcb);
     */
     
+    
     close(socket_memoria_kernel);
     close(socket_cpu);
     close(socket_interrupt);
-
+    
+    
     config_destroy(config_kernel);
     log_destroy(kernel_io->logger);
     free(datos_kernel);

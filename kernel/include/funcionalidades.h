@@ -62,7 +62,7 @@ extern sem_t sem_hay_pcb_esperando_ready;
 extern sem_t sem_hay_para_planificar;
 extern sem_t sem_contador_quantum;
 extern sem_t sem_planificadores;
-extern bool hay_proceso_en_exec;
+// extern bool hay_proceso_en_exec;
 
 extern char* algoritmo_planificacion; // Tomamos en convencion que los algoritmos son "FIFO", "VRR" , "RR" (siempre en mayuscula)
 extern t_log* logger_kernel;

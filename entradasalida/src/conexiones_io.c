@@ -149,7 +149,7 @@ void recibir_kernel(void* config_socket_io) { //FREE
 
         printf("Esperando paquete...\n");
         recv(socket_kernel_io, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
-        printf("Recibi el codigo de operacion de kernel: %d\n", string_operacion(paquete->codigo_operacion));
+        printf("Recibi el codigo de operacion de kernel: %d\n", paquete->codigo_operacion);
 
         recv(socket_kernel_io, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
         paquete->buffer->stream = malloc(paquete->buffer->size);

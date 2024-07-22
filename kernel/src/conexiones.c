@@ -21,7 +21,8 @@ pthread_mutex_t mutex_prioritario_por_signal;
 t_queue* cola_new;
 t_queue* cola_ready;
 t_queue* cola_blocked;
-t_pcb* pcb_exec;
+t_queue* cola_exec;
+// t_pcb* pcb_exec;
 t_queue* cola_prioritarios_por_signal;
 t_queue* cola_ready_plus;
 
@@ -35,6 +36,7 @@ ptr_kernel* solicitar_datos(t_config* config_kernel){
     datos->puerto_cpu_interrupt     = config_get_string_value(config_kernel, "PUERTO_CPU_INTERRUPT");
     datos->puerto_io                = config_get_string_value(config_kernel, "PUERTO_IO");
     datos->quantum                  = config_get_int_value(config_kernel, "QUANTUM");
+    printf("Quantum es: %d\n", datos->quantum);
     datos->grado_multiprogramacion  = config_get_int_value(config_kernel, "GRADO_MULTIPROGRAMACION");
     datos->algoritmo_planificacion  = config_get_string_value(config_kernel, "ALGORITMO_PLANIFICACION");
 
@@ -139,7 +141,9 @@ t_pcb* sacarDe(t_queue* cola, int pid){
 }
 
 pthread_mutex_t* obtener_mutex_de(t_queue* cola){
-    
+    if(cola == cola_exec){
+        return &mutex_estado_exec;
+    }
     if(cola == cola_new) {
         return &mutex_estado_new;
     }
@@ -240,7 +244,11 @@ void *handle_io_stdin(void *socket_io) {
                 // Esto creo que no esta bien, pero no se como liberarlo...
                 // t_pcb* pcb = datos_stdin->pcb;
                 t_pcb* pcb = sacarDe(cola_blocked, datos_stdin->pcb->pid);
+                cantidad_bloqueados++;
+                sem_wait(&sem_planificadores);
                 pasar_a_ready(pcb); //ACA
+                sem_post(&sem_planificadores);
+                cantidad_bloqueados--;
                 
                 // free(datos_stdin->pcb->registros);
                 // free(datos_stdin->pcb);
@@ -359,7 +367,12 @@ void* handle_io_stdout(void* socket_io) {
             printf("Termino io: %d\n", termino_io);
             if (termino_io == 1) { // El send de termino io envia 1.                printf("Termino la IO\n");
                 t_pcb* pcb = sacarDe(cola_blocked, datos_stdout->pcb->pid);
-                pasar_a_ready(pcb); //ACA
+                
+                cantidad_bloqueados++;
+                sem_wait(&sem_planificadores);
+                pasar_a_ready(pcb); // ACA
+                sem_post(&sem_planificadores);
+                cantidad_bloqueados--;
             }
         } else {
             printf("No se pudo ejecutar la IO\n");
@@ -522,7 +535,8 @@ void *handle_io_generica(void *socket_io) {
                 pcb_copy->pid = pcb->pid;
                 pcb_copy->program_counter = pcb->program_counter;
                 pcb_copy->quantum = pcb->quantum;
-    
+                pcb_copy->estadoAnterior = pcb->estadoAnterior;
+                pcb_copy->estadoActual = BLOCKED;
                 // Asignar los registros
                 memcpy(pcb_copy->registros, pcb->registros, sizeof(t_registros));
 
@@ -530,7 +544,11 @@ void *handle_io_generica(void *socket_io) {
                 imprimir_pcb(pcb_copy);
 
                 // t_pcb* pcb = sacarDe(cola_blocked, datos_sleep->pcb->pid);
-                pasar_a_ready(pcb_copy); //ACA
+                cantidad_bloqueados++;
+                sem_wait(&sem_planificadores);
+                pasar_a_ready(pcb_copy); // ACA
+                sem_post(&sem_planificadores);
+                cantidad_bloqueados--;
             }
         } else {
             printf("No se pudo ejecutar");

@@ -37,6 +37,12 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
 
         printf("\nEl program counter es %d despues de aumentarlo.\n", pcb->program_counter);
         
+        if(hay_interrupcion()) {
+            hacer_interrupcion(pcb);
+            return;
+        } 
+        
+        // Esto no se si va, si ya esta activada la interrupcion no deberia scarme con el return antes???
         if(resultado_io == 1) {
             pthread_mutex_lock(&mutex_interrupcion_quantum);
             hay_interrupcion_quantum = 0;
@@ -52,14 +58,16 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
             
             return;
         }
-
+        
+        
         // pcb->program_counter++; // Ojo con esto! porque esta despues del return, osea q en el IO_GEN_SLEEP antes de desalojar hay que aumentar el pc
         // Podria ser una funcion directa -> Por ahora no es esencial
-        
+        /*
         if(hay_interrupcion()) {
             hacer_interrupcion(pcb);
             return;
         }
+        */
     }
 
 }
@@ -732,9 +740,10 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         break;
     }
     
-    if(!se_seteo_pc){
+    if(!se_seteo_pc) {
         pcb->program_counter++;
     }
+
     return 0;
 }
 
@@ -899,9 +908,10 @@ void enviar_tamanio_memoria(int nuevo_tamanio, int pid) {
 }
 
 void desalojar(t_pcb* pcb, DesalojoCpu motivo, t_buffer* datos_adicionales) {
-    if(motivo  != INTERRUPCION_QUANTUM){
+    if(motivo  != INTERRUPCION_QUANTUM) {
         pcb->program_counter++;   
     }
+
     guardar_estado(pcb);
     setear_registros_cpu(); 
     enviar_pcb(pcb, client_dispatch, motivo, datos_adicionales);

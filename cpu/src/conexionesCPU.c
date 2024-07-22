@@ -121,7 +121,7 @@ void recibir_cliente_interrupt(int client_interrupt) {
     codigo_operacion cod_op;
     while(1) {
         printf("Esperando recibir paquete (interrupt)\n");
-        recv(client_interrupt, &cod_op, sizeof(int), MSG_WAITALL);
+        recv(client_interrupt, &cod_op, sizeof(codigo_operacion), MSG_WAITALL);
         printf("Recibi el codigo de operacion por interrupt: %d\n", cod_op);
 
         // Posible if si no hay mas codigos de operacion para interrumpir

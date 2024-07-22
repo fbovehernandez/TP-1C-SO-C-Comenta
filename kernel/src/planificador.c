@@ -4,7 +4,6 @@ void change_status(t_pcb* pcb, Estado new_status) {
     pcb->estadoAnterior = pcb -> estadoActual;
     pcb->estadoActual   = new_status;
 
-
     char* estado_actual   = pasar_a_string_estado(pcb->estadoActual); 
     char* estado_anterior = pasar_a_string_estado(pcb->estadoAnterior);
 
@@ -13,8 +12,6 @@ void change_status(t_pcb* pcb, Estado new_status) {
 
 
 void pasar_a_ready(t_pcb *pcb) {
-    cantidad_bloqueados++;
-    sem_wait(&sem_planificadores);
     if (es_VRR() && leQuedaTiempoDeQuantum(pcb) && quantum_config != pcb->quantum) {
         pasar_a_ready_plus(pcb);
     } else {
@@ -26,7 +23,7 @@ void pasar_a_ready(t_pcb *pcb) {
     
     printf("llega hasta aca el PID: %d\n", pcb->pid);
     sem_post(&sem_hay_para_planificar);
-    sem_post(&sem_planificadores); // Mati: Puede que este semaforo este mejor arriba que el otro semaforo
+    // sem_post(&sem_planificadores); // Mati: Puede que este semaforo este mejor arriba que el otro semaforo
     cantidad_bloqueados--;
 }
 
@@ -57,27 +54,17 @@ void pasar_a_exec(t_pcb* pcb) {
 
 void pasar_a_exec(t_pcb* pcb) {
     change_status(pcb, EXEC);
-    hay_proceso_en_exec = true;
+    // hay_proceso_en_exec = true;
 
-    // Asegúrate de que pcb_exec esté correctamente inicializado
-    if (pcb_exec == NULL) {
-        pcb_exec = malloc(sizeof(t_pcb));
-        pcb_exec->registros = malloc(sizeof(t_registros));
-    }
-
-    // Copiar los valores del PCB original al PCB exec
-    pcb_exec->pid = pcb->pid;
-    pcb_exec->program_counter = pcb->program_counter;
-    pcb_exec->quantum = pcb->quantum;
-    // Asignar los registros
-    memcpy(pcb_exec->registros, pcb->registros, sizeof(t_registros));
-
-    // Enviar el PCB al cliente de despacho
+    pthread_mutex_lock(&mutex_estado_exec);
+    queue_push(cola_exec, pcb);
+    pthread_mutex_unlock(&mutex_estado_exec);
+    
+    printf("PID que se va a ejecutar: %d\n", pcb->pid);
     enviar_pcb(pcb, client_dispatch, ENVIO_PCB, NULL);
     
     // Liberar la estructura del PCB original
-    liberar_pcb_estructura(pcb);
-
+    // liberar_pcb_estructura(pcb); -> VOY A VER ESTO
 }
 
 void pasar_a_blocked(t_pcb* pcb) {

@@ -13,7 +13,7 @@ sem_t sem_hay_pcb_esperando_ready;
 sem_t sem_hay_para_planificar;
 sem_t sem_contador_quantum;
 sem_t sem_planificadores;
-bool hay_proceso_en_exec;
+// bool hay_proceso_en_exec;
 
 char* algoritmo_planificacion; // Tomamos en convencion que los algoritmos son "FIFO", "VRR" , "RR" (siempre en mayuscula)
 t_log* logger_kernel;
@@ -258,7 +258,8 @@ void* a_ready() {
         pthread_mutex_lock(&mutex_estado_new);
         t_pcb *pcb = queue_pop(cola_new);
         pthread_mutex_unlock(&mutex_estado_new);
-
+        
+        // Este ya lo traba new
         pasar_a_ready(pcb);
     }
 }
@@ -284,8 +285,10 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
         pthread_mutex_lock(&no_hay_nadie_en_cpu);
         pcb = proximo_a_ejecutar();
         pasar_a_exec(pcb);
+        pthread_mutex_unlock(&no_hay_nadie_en_cpu);
         
         if (es_RR()) {
+            printf("\nES RR... A dormir el hilo!\n\n");
             pthread_create(&hilo_quantum, NULL, (void *)esperar_RR, (void *)pcb);
             sem_post(&sem_contador_quantum);
         } else if (es_VRR()) {
@@ -293,14 +296,12 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
             sem_post(&sem_contador_quantum);
         }
 
-        pthread_mutex_unlock(&no_hay_nadie_en_cpu);
-        
         sem_post(&sem_planificadores);
         cantidad_bloqueados--;
         
         esperar_cpu();
         
-        // sem_wait(&termino_desalojo)
+        // sem_wait(&termino_desalojo);
         
         if (es_VRR_RR()){
             pthread_cancel(hilo_quantum);
@@ -337,17 +338,23 @@ void* esperar_VRR(t_pcb* pcb) {
     void temporal_resume(t_temporal* temporal);
 */
 
-void* esperar_RR(t_pcb* pcb_anterior) {
+void* esperar_RR(t_pcb* pcb) {
     /* Esperar_cpu_RR */
-    t_pcb* pcb = pcb_anterior;
     int quantum = pcb->quantum;
     int socket_Int = sockets->socket_int;
     sem_wait(&sem_contador_quantum);
+  
+    codigo_operacion interrupcion_cpu = INTERRUPCION_CPU;
     usleep(quantum * 1000);
-    int interrupcion_cpu = INTERRUPCION_CPU;
-    send(socket_Int, &interrupcion_cpu, sizeof(int), 0);
-    log_info(logger_kernel, "envie interrupcion para PID %d despues de %d", pcb_anterior->pid, pcb->quantum);
+    
+    printf("ESTOY ENVIANDO LA INTERRUPCION DESPUES DEL SLEEP\n");
 
+    if (send(socket_Int, &interrupcion_cpu, sizeof(codigo_operacion), 0) == -1) {
+        perror("Error al enviar la interrupción");
+    } else {
+        log_info(logger_kernel, "envie interrupcion para PID %d despues de %d", pcb->pid, pcb->quantum);
+    }   
+    
     return NULL;
 }
 
@@ -366,17 +373,21 @@ int leQuedaTiempoDeQuantum(t_pcb *pcb) {
 t_pcb *proximo_a_ejecutar() {
     t_pcb *pcb = NULL;
     
+    printf("Llega a proximo a ejecutar\n");
+
     if (!queue_is_empty(cola_prioritarios_por_signal)) {
+        printf("Llega a prioritario por signal\n");
         pthread_mutex_lock(&mutex_prioritario_por_signal);
         pcb = queue_pop(cola_prioritarios_por_signal);
         pthread_mutex_unlock(&mutex_prioritario_por_signal);
     } else if (!queue_is_empty(cola_ready_plus)){
+        printf("Llega a ready plus\n");
         pthread_mutex_lock(&mutex_estado_ready_plus);
         pcb = queue_pop(cola_ready_plus);
         pthread_mutex_unlock(&mutex_estado_ready_plus);
         log_info(logger_kernel, "Proximo PID de la cola Ready Plus: %d", pcb->pid);
-    }
-    else if (!queue_is_empty(cola_ready)) {
+    } else if (!queue_is_empty(cola_ready)) {
+        printf("Llega a ready\n");
         pthread_mutex_lock(&mutex_estado_ready);
         pcb = queue_pop(cola_ready);
         pthread_mutex_unlock(&mutex_estado_ready);
@@ -416,12 +427,21 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     
     t_paquete* package = recibir_cpu(); // pcb y codigo de operacion (devolucion_cpu)
     devolucion_cpu = package->codigo_operacion;
+
+    if(!queue_is_empty(cola_exec)) {
+        pthread_mutex_lock(&mutex_estado_exec);
+        t_pcb* pcb_anterior = queue_pop(cola_exec);
+        pthread_mutex_unlock(&mutex_estado_exec);
+
+        liberar_pcb_estructura(pcb_anterior);
+    }
+    
     // Deserializo antes el pcb, me ahorro cierta logica y puedo hacer send si es IO_BLOCKED
     t_pcb* pcb = deserializar_pcb(package->buffer);
     imprimir_pcb(pcb);
     printf("pid del pcb: %d\n", pcb->pid);
 
-    hay_proceso_en_exec = false;
+    // hay_proceso_en_exec = false;
 
     if (es_VRR()) {
         temporal_stop(timer); // Detenemos el temporizador
@@ -438,12 +458,6 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
         log_info(logger_kernel, "El quantum restante del proceso con PID %d es: %d", pcb->pid, pcb->quantum);
     }
     
-    // free(pcb_exec->registros);
-    // free(pcb_exec);
-    
-    /*pcb_exec = malloc(sizeof(t_pcb));
-    pcb_exec->registros = malloc(sizeof(t_registros));*/
-    
     printf("Planificacion recibe el desalojo pero... ¿esta pausada?\n");
     cantidad_bloqueados++;
     sem_wait(&sem_planificadores);
@@ -457,7 +471,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             pasar_a_exit(pcb, "OUT OF MEMORY");
             break;
         case INTERRUPCION_FIN_USUARIO:
-            pasar_a_exit(pcb, "INTERRUPTED BY USER");
+            pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
             break;
         case INTERRUPCION_QUANTUM:
             log_info(logger_kernel, "PID: %d - Desalojado por fin de Quantum", pcb->pid);
@@ -505,8 +519,6 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             exit(-1);
             break;
     }
-    
-    // pcb_exec = NULL;
 
     sem_post(&sem_planificadores);
     cantidad_bloqueados--;
@@ -944,10 +956,12 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
         queue_push(cola_prioritarios_por_signal, proceso_liberado); 
         sem_post(&sem_hay_para_planificar);*/
        
-        // sem_wait(&sem_planificadores);
+        cantidad_bloqueados++;
+        sem_wait(&sem_planificadores);
         t_pcb* proceso_liberado_desbloqueado = sacarDe(cola_blocked, proceso_liberado->pid); //ACA
         pasar_a_ready(proceso_liberado);
-        // sem_post(&sem_planificadores);
+        sem_post(&sem_planificadores);
+        cantidad_bloqueados--;
     }
     
     /*
@@ -995,25 +1009,24 @@ void FINALIZAR_PROCESO(int pid) {
         printf("No podes finalizar proceso si esta pausada la plani\n");
         return;
     }
-
-    t_pcb* pcb;
     
-    if(pcb_exec != NULL && pid == pcb_exec->pid) {
+    t_queue* cola = encontrar_en_que_cola_esta(pid);
+
+    if(cola == NULL) { // Esto quiere decir que esta en la cola exit
+        printf("No se puede finalizar un proceso que esta en exit \n");
+        return;
+    }
+    
+    if(cola == cola_exec && !queue_is_empty(cola_exec)) {
         printf("El proceso se encuentra en ejecucion\n");
         int temp = INTERRUPCION_FIN_USUARIO;
         send(sockets->socket_int, &temp, sizeof(int), 0);
-        // pcb = pcb_exec;        
-        // recv(sockets->socket_int, &pcb, sizeof(t_pcb), MSG_WAITALL);
     } else {
-        printf("El proceso no esta en ejecucion, se va a sacar de alguna cola\n");
-        t_queue* cola = encontrar_en_que_cola_esta(pid);
-        if(cola == NULL){ // Esto quiere decir que esta en la cola exit
-            printf("No se puede finalizar un proceso que esta en exit \n");
-        } else {
-            pcb = sacarDe(cola, pid);
-            pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
-        }
+        t_pcb* pcb = sacarDe(cola, pid);
+        printf("El proceso no se encuentra en ejecucion\n");
+        pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
     }
+    
     // Ya se hace free en pasar a exit
 }
 
@@ -1030,7 +1043,9 @@ t_queue* encontrar_en_que_cola_esta(int pid) {
         return cola_blocked; // analizar si hay que sacarlo tmb de la cola de procesos bloqueados de una io
     } else if(esta_en_cola_pid(cola_ready_plus, pid, &mutex_estado_ready_plus)){
         return cola_ready_plus;
-    } else{
+    } else if(esta_en_cola_pid(cola_exec, pid, &mutex_estado_exec)) {
+        return cola_exec;
+    } else {
         printf("Esta en cola exit\n");
         return NULL;
     }
@@ -1143,11 +1158,13 @@ void PROCESO_ESTADO() {
     mostrar_cola_con_mutex(cola_blocked, &mutex_estado_blocked);
 
     printf("Proceso en EXEC\n");
-    if(pcb_exec != NULL && hay_proceso_en_exec){
+    mostrar_cola_con_mutex(cola_exec, &mutex_estado_exec);
+
+    /*if(pcb_exec != NULL && hay_proceso_en_exec) {
         imprimir_pcb(pcb_exec);
     }else{
         printf("No hay proceso ejecutandose actualmente\n");
-    }
+    }*/
 }
 
 void mostrar_cola_con_mutex(t_queue* cola,pthread_mutex_t* mutex){
@@ -1377,17 +1394,6 @@ void liberar_recursos(t_dictionary* recursos) {
     dictionary_iterator(recursos, (void*)liberar_recurso);
     dictionary_destroy(recursos); // Liberar el diccionario en sí
 }
-
-
-/*
-typedef struct {
-    int socket;
-    char* nombreInterfaz; // Aca tenia un dato_io que le sque
-    TipoInterfaz TipoInterfaz;
-    t_queue* cola_blocked;
-    sem_t* semaforo_cola_procesos_blocked;
-} t_list_io;
-*/
 
 void liberar_ios() {
     void _liberar_io(t_list_io* io) {
