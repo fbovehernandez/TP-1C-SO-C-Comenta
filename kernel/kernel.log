@@ -1,181 +1,661 @@
-[INFO] 20:49:14:290 LOGGER/(119230:119230): Conexion establecida con Memoria
-[INFO] 20:49:14:315 LOGGER/(119230:119230): Conexion establecida con Dispatcher
-[INFO] 20:49:14:317 LOGGER/(119230:119230): Conexion establecida con Interrupt
-[INFO] 20:49:14:363 LOGGER/(119230:119230): Servidor iniciado, esperando conexiones!
-[INFO] 20:49:26:994 LOGGER/(119230:119235): Se crea el proceso: 1 en NEW
-[INFO] 20:49:26:994 LOGGER/(119230:119235): Hay proceso esperando en la cola de NEW!
+[INFO] 21:05:54:455 LOGGER/(125967:125967): Conexion establecida con Memoria
+[INFO] 21:05:54:538 LOGGER/(125967:125967): Conexion establecida con Dispatcher
+[INFO] 21:05:54:543 LOGGER/(125967:125967): Conexion establecida con Interrupt
+[INFO] 21:05:54:844 LOGGER/(125967:125967): Servidor iniciado, esperando conexiones!
+[INFO] 21:06:20:775 LOGGER/(125967:125992): Se crea el proceso: 1 en NEW
+[INFO] 21:06:20:776 LOGGER/(125967:125992): Hay proceso esperando en la cola de NEW!
 
-[INFO] 20:49:26:995 LOGGER/(119230:119232): Grado de multiprogramación permite agregar proceso a ready
+[INFO] 21:06:20:779 LOGGER/(125967:125987): Grado de multiprogramación permite agregar proceso a ready
 
-[INFO] 20:49:27:000 LOGGER/(119230:119232): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 20:49:27:003 LOGGER/(119230:119232): Cola Ready: 1 
+[INFO] 21:06:20:788 LOGGER/(125967:125987): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:06:20:794 LOGGER/(125967:125987): Cola Ready: 1 
 
-[INFO] 20:49:27:001 LOGGER/(119230:119235): Se crea el proceso: 2 en NEW
-[INFO] 20:49:27:004 LOGGER/(119230:119235): Hay proceso esperando en la cola de NEW!
+[INFO] 21:06:20:788 LOGGER/(125967:125992): Se crea el proceso: 2 en NEW
+[INFO] 21:06:20:797 LOGGER/(125967:125992): Hay proceso esperando en la cola de NEW!
 
-[INFO] 20:49:27:004 LOGGER/(119230:119232): Grado de multiprogramación permite agregar proceso a ready
+[INFO] 21:06:20:797 LOGGER/(125967:125987): Grado de multiprogramación permite agregar proceso a ready
 
-[INFO] 20:49:27:005 LOGGER/(119230:119233): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:49:27:005 LOGGER/(119230:119232): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 20:49:27:009 LOGGER/(119230:119232): Cola Ready: 2 
+[INFO] 21:06:20:798 LOGGER/(125967:125987): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:06:20:800 LOGGER/(125967:125987): Cola Ready: 1 2 
 
-[INFO] 20:49:27:019 LOGGER/(119230:119235): Se crea el proceso: 3 en NEW
-[INFO] 20:49:27:019 LOGGER/(119230:119235): Hay proceso esperando en la cola de NEW!
+[INFO] 21:06:20:802 LOGGER/(125967:125989): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:06:20:921 LOGGER/(125967:125992): Se crea el proceso: 3 en NEW
+[INFO] 21:06:20:922 LOGGER/(125967:125992): Hay proceso esperando en la cola de NEW!
 
-[INFO] 20:49:27:023 LOGGER/(119230:119232): Grado de multiprogramación permite agregar proceso a ready
+[INFO] 21:06:20:925 LOGGER/(125967:125987): Grado de multiprogramación permite agregar proceso a ready
 
-[INFO] 20:49:27:023 LOGGER/(119230:119232): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 20:49:27:025 LOGGER/(119230:119232): Cola Ready: 2 3 
+[INFO] 21:06:20:926 LOGGER/(125967:125987): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:06:20:927 LOGGER/(125967:125987): Cola Ready: 2 3 
 
-[INFO] 20:49:27:025 LOGGER/(119230:119235): Se crea el proceso: 4 en NEW
-[INFO] 20:49:27:025 LOGGER/(119230:119235): Hay proceso esperando en la cola de NEW!
+[INFO] 21:06:20:928 LOGGER/(125967:125992): Se crea el proceso: 4 en NEW
+[INFO] 21:06:20:928 LOGGER/(125967:125992): Hay proceso esperando en la cola de NEW!
 
-[INFO] 20:49:27:029 LOGGER/(119230:119232): Grado de multiprogramación permite agregar proceso a ready
+[INFO] 21:06:20:944 LOGGER/(125967:125987): Grado de multiprogramación permite agregar proceso a ready
 
-[INFO] 20:49:27:029 LOGGER/(119230:119232): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 20:49:27:029 LOGGER/(119230:119232): Cola Ready: 2 3 4 
+[INFO] 21:06:20:944 LOGGER/(125967:125987): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:06:20:945 LOGGER/(125967:125987): Cola Ready: 2 3 4 
 
-[INFO] 20:49:29:769 LOGGER/(119230:119436): envie interrupcion para PID 1 despues de 2750
-[INFO] 20:49:30:043 LOGGER/(119230:119233): El quantum restante del proceso con PID 1 es: 0
-[INFO] 20:49:30:043 LOGGER/(119230:119233): PID: 1 - Desalojado por fin de Quantum
-[INFO] 20:49:30:043 LOGGER/(119230:119233): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
-[INFO] 20:49:30:044 LOGGER/(119230:119233): Cola Ready: 2 3 4 1 
+[INFO] 21:06:23:694 LOGGER/(125967:126204): envie interrupcion para PID 1 despues de 2750
+[INFO] 21:06:23:889 LOGGER/(125967:125989): El quantum restante del proceso con PID 1 es: 0
+[INFO] 21:06:23:890 LOGGER/(125967:125989): PID: 1 - Desalojado por fin de Quantum
+[INFO] 21:06:23:891 LOGGER/(125967:125989): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:06:23:892 LOGGER/(125967:125989): Cola Ready: 2 3 4 1 
 
-[INFO] 20:49:30:045 LOGGER/(119230:119233): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:49:32:054 LOGGER/(119230:119233): El quantum restante del proceso con PID 2 es: 742
-[INFO] 20:49:32:056 LOGGER/(119230:119233): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 20:49:32:056 LOGGER/(119230:119233): PID: 2 - Bloqueado por: SLP1
-[INFO] 20:49:32:082 LOGGER/(119230:119233): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:49:34:851 LOGGER/(119230:119516): envie interrupcion para PID 3 despues de 2750
-[INFO] 20:49:35:158 LOGGER/(119230:119233): El quantum restante del proceso con PID 3 es: 0
-[INFO] 20:49:35:159 LOGGER/(119230:119233): PID: 3 - Desalojado por fin de Quantum
-[INFO] 20:49:35:160 LOGGER/(119230:119233): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
-[INFO] 20:49:35:161 LOGGER/(119230:119233): Cola Ready: 4 1 3 
+[INFO] 21:06:23:894 LOGGER/(125967:125989): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:06:25:950 LOGGER/(125967:125989): El quantum restante del proceso con PID 2 es: 819
+[INFO] 21:06:25:958 LOGGER/(125967:125989): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:06:25:959 LOGGER/(125967:125989): PID: 2 - Bloqueado por: SLP1
+[INFO] 21:06:26:037 LOGGER/(125967:125989): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:06:28:947 LOGGER/(125967:126286): envie interrupcion para PID 3 despues de 2750
+[INFO] 21:06:29:078 LOGGER/(125967:125989): El quantum restante del proceso con PID 3 es: 0
+[INFO] 21:06:29:078 LOGGER/(125967:125989): PID: 3 - Desalojado por fin de Quantum
+[INFO] 21:06:29:079 LOGGER/(125967:125989): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:06:29:080 LOGGER/(125967:125989): Cola Ready: 4 1 3 
 
-[INFO] 20:49:35:162 LOGGER/(119230:119233): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:49:36:115 LOGGER/(119230:119344): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY_PLUS
-[INFO] 20:49:36:116 LOGGER/(119230:119344): Cola Ready Prioridad: 2 
+[INFO] 21:06:29:080 LOGGER/(125967:125989): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:06:29:973 LOGGER/(125967:126106): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY_PLUS
+[INFO] 21:06:29:975 LOGGER/(125967:126106): Cola Ready Prioridad: 2 
 
-[INFO] 20:49:37:169 LOGGER/(119230:119233): El quantum restante del proceso con PID 4 es: 745
-[INFO] 20:49:37:169 LOGGER/(119230:119233): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 20:49:37:170 LOGGER/(119230:119233): Finaliza el proceso 4 - Motivo: INTERRUPTED_BY_USER
-[INFO] 20:49:37:170 LOGGER/(119230:119233): Proximo PID de la cola Ready Plus: 2
-[INFO] 20:49:37:171 LOGGER/(119230:119233): PID: 2 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
-[INFO] 20:49:37:915 LOGGER/(119230:119599): envie interrupcion para PID 2 despues de 742
-[INFO] 20:49:38:173 LOGGER/(119230:119233): El quantum restante del proceso con PID 2 es: 0
-[INFO] 20:49:38:174 LOGGER/(119230:119233): PID: 2 - Desalojado por fin de Quantum
-[INFO] 20:49:38:174 LOGGER/(119230:119233): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
-[INFO] 20:49:38:174 LOGGER/(119230:119233): Cola Ready: 1 3 2 
+[INFO] 21:06:31:030 LOGGER/(125967:125992): Esta en cola exec
 
-[INFO] 20:49:38:174 LOGGER/(119230:119233): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:49:40:180 LOGGER/(119230:119233): El quantum restante del proceso con PID 1 es: 744
-[INFO] 20:49:40:181 LOGGER/(119230:119233): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 20:49:40:181 LOGGER/(119230:119233): Finaliza el proceso 1 - Motivo: SUCCESS
-[INFO] 20:49:40:181 LOGGER/(119230:119233): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:49:42:197 LOGGER/(119230:119233): El quantum restante del proceso con PID 3 es: 736
-[INFO] 20:49:42:197 LOGGER/(119230:119233): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 20:49:42:198 LOGGER/(119230:119233): PID: 3 - Bloqueado por: SLP1
-[INFO] 20:49:42:198 LOGGER/(119230:119233): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:49:43:213 LOGGER/(119230:119233): El quantum restante del proceso con PID 2 es: 1738
-[INFO] 20:49:43:214 LOGGER/(119230:119233): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 20:49:43:214 LOGGER/(119230:119233): PID: 2 - Bloqueado por: SLP1
-[INFO] 20:49:58:207 LOGGER/(119230:119344): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY_PLUS
-[INFO] 20:49:58:207 LOGGER/(119230:119344): Cola Ready Prioridad: 3 
+[INFO] 21:06:31:088 LOGGER/(125967:125989): El quantum restante del proceso con PID 4 es: 850
+[INFO] 21:06:31:089 LOGGER/(125967:125989): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 21:06:31:090 LOGGER/(125967:125989): Finaliza el proceso 4 - Motivo: INTERRUPTED_BY_USER
+[INFO] 21:06:31:092 LOGGER/(125967:125989): Proximo PID de la cola Ready Plus: 2
+[INFO] 21:06:31:093 LOGGER/(125967:125989): PID: 2 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:06:32:044 LOGGER/(125967:126372): envie interrupcion para PID 2 despues de 819
+[INFO] 21:06:32:102 LOGGER/(125967:125989): El quantum restante del proceso con PID 2 es: 0
+[INFO] 21:06:32:103 LOGGER/(125967:125989): PID: 2 - Desalojado por fin de Quantum
+[INFO] 21:06:32:104 LOGGER/(125967:125989): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:06:32:105 LOGGER/(125967:125989): Cola Ready: 1 3 2 
 
-[INFO] 20:49:58:212 LOGGER/(119230:119233): Proximo PID de la cola Ready Plus: 3
-[INFO] 20:49:58:213 LOGGER/(119230:119233): PID: 3 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
-[INFO] 20:49:58:951 LOGGER/(119230:119828): envie interrupcion para PID 3 despues de 736
-[INFO] 20:49:59:220 LOGGER/(119230:119233): El quantum restante del proceso con PID 3 es: 0
-[INFO] 20:49:59:220 LOGGER/(119230:119233): PID: 3 - Desalojado por fin de Quantum
-[INFO] 20:49:59:220 LOGGER/(119230:119233): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
-[INFO] 20:49:59:220 LOGGER/(119230:119233): Cola Ready: 3 
+[INFO] 21:06:32:106 LOGGER/(125967:125989): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:06:34:130 LOGGER/(125967:125989): El quantum restante del proceso con PID 1 es: 869
+[INFO] 21:06:34:131 LOGGER/(125967:125989): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 21:06:34:132 LOGGER/(125967:125989): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 21:06:34:132 LOGGER/(125967:125989): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:06:36:143 LOGGER/(125967:125989): El quantum restante del proceso con PID 3 es: 869
+[INFO] 21:06:36:144 LOGGER/(125967:125989): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:06:36:145 LOGGER/(125967:125989): PID: 3 - Bloqueado por: SLP1
+[INFO] 21:06:36:146 LOGGER/(125967:125989): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:06:37:156 LOGGER/(125967:125989): El quantum restante del proceso con PID 2 es: 1864
+[INFO] 21:06:37:158 LOGGER/(125967:125989): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:06:37:159 LOGGER/(125967:125989): PID: 2 - Bloqueado por: SLP1
+[INFO] 21:06:51:318 LOGGER/(125967:125992): Esta en cola blocked
 
-[INFO] 20:49:59:220 LOGGER/(119230:119233): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:50:01:971 LOGGER/(119230:119834): envie interrupcion para PID 3 despues de 2750
-[INFO] 20:50:02:217 LOGGER/(119230:119344): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY_PLUS
-[INFO] 20:50:02:217 LOGGER/(119230:119344): Cola Ready Prioridad: 2 
+[INFO] 21:06:51:321 LOGGER/(125967:125992): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: EXIT
+[INFO] 21:06:51:321 LOGGER/(125967:125992): Finaliza el proceso 2 - Motivo: INTERRUPTED_BY_USER
+[INFO] 21:06:52:273 LOGGER/(125967:126106): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY_PLUS
+[INFO] 21:06:52:273 LOGGER/(125967:126106): Cola Ready Prioridad: 3 
 
-[INFO] 20:50:02:232 LOGGER/(119230:119233): El quantum restante del proceso con PID 3 es: 0
-[INFO] 20:50:02:232 LOGGER/(119230:119233): PID: 3 - Desalojado por fin de Quantum
-[INFO] 20:50:02:232 LOGGER/(119230:119233): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
-[INFO] 20:50:02:232 LOGGER/(119230:119233): Cola Ready: 3 
+[INFO] 21:06:52:274 LOGGER/(125967:125989): Proximo PID de la cola Ready Plus: 3
+[INFO] 21:06:52:275 LOGGER/(125967:125989): PID: 3 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:06:53:277 LOGGER/(125967:126616): envie interrupcion para PID 3 despues de 869
+[INFO] 21:06:53:282 LOGGER/(125967:125989): El quantum restante del proceso con PID 3 es: 0
+[INFO] 21:06:53:283 LOGGER/(125967:125989): PID: 3 - Desalojado por fin de Quantum
+[INFO] 21:06:53:283 LOGGER/(125967:125989): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:06:53:284 LOGGER/(125967:125989): Cola Ready: 3 
 
-[INFO] 20:50:02:232 LOGGER/(119230:119233): Proximo PID de la cola Ready Plus: 2
-[INFO] 20:50:02:232 LOGGER/(119230:119233): PID: 2 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
-[INFO] 20:50:03:972 LOGGER/(119230:119914): envie interrupcion para PID 2 despues de 1738
-[INFO] 20:50:04:239 LOGGER/(119230:119233): El quantum restante del proceso con PID 2 es: 0
-[INFO] 20:50:04:239 LOGGER/(119230:119233): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 20:50:04:239 LOGGER/(119230:119233): PID: 2 - Bloqueado por: SLP1
-[INFO] 20:50:04:239 LOGGER/(119230:119233): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:50:04:241 LOGGER/(119230:119233): El quantum restante del proceso con PID 2 es: 0
-[INFO] 20:50:04:242 LOGGER/(119230:119233): PID: 2 - Desalojado por fin de Quantum
-[INFO] 20:50:04:242 LOGGER/(119230:119233): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
-[INFO] 20:50:04:242 LOGGER/(119230:119233): Cola Ready: 2 
+[INFO] 21:06:53:285 LOGGER/(125967:125989): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:06:56:169 LOGGER/(125967:126664): envie interrupcion para PID 3 despues de 2750
+[INFO] 21:10:44:337 LOGGER/(127621:127621): Conexion establecida con Memoria
+[INFO] 21:10:44:445 LOGGER/(127621:127621): Conexion establecida con Dispatcher
+[INFO] 21:10:44:454 LOGGER/(127621:127621): Conexion establecida con Interrupt
+[INFO] 21:10:44:761 LOGGER/(127621:127621): Servidor iniciado, esperando conexiones!
+[INFO] 21:11:07:987 LOGGER/(127621:127645): Se crea el proceso: 1 en NEW
+[INFO] 21:11:07:989 LOGGER/(127621:127645): Hay proceso esperando en la cola de NEW!
 
-[INFO] 20:50:04:242 LOGGER/(119230:119233): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:50:05:243 LOGGER/(119230:119233): El quantum restante del proceso con PID 3 es: 1751
-[INFO] 20:50:05:243 LOGGER/(119230:119233): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 20:50:05:243 LOGGER/(119230:119233): Finaliza el proceso 3 - Motivo: SUCCESS
-[INFO] 20:50:08:249 LOGGER/(119230:119344): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 20:50:08:250 LOGGER/(119230:119344): Cola Ready: 2 
+[INFO] 21:11:07:992 LOGGER/(127621:127636): Grado de multiprogramación permite agregar proceso a ready
 
-[INFO] 20:50:08:251 LOGGER/(119230:119233): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:50:08:253 LOGGER/(119230:119233): El quantum restante del proceso con PID 2 es: 2750
-[INFO] 20:50:08:254 LOGGER/(119230:119233): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 20:50:08:254 LOGGER/(119230:119233): PID: 2 - Bloqueado por: SLP1
-[INFO] 20:50:12:255 LOGGER/(119230:119344): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 20:50:12:255 LOGGER/(119230:119344): Cola Ready: 2 
+[INFO] 21:11:08:000 LOGGER/(127621:127636): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:11:08:010 LOGGER/(127621:127636): Cola Ready: 1 
 
-[INFO] 20:50:12:256 LOGGER/(119230:119233): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:50:12:256 LOGGER/(119230:119233): El quantum restante del proceso con PID 2 es: 2750
-[INFO] 20:50:12:257 LOGGER/(119230:119233): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 20:50:12:257 LOGGER/(119230:119233): PID: 2 - Bloqueado por: SLP1
-[INFO] 20:50:16:259 LOGGER/(119230:119344): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 20:50:16:259 LOGGER/(119230:119344): Cola Ready: 2 
+[INFO] 21:11:08:011 LOGGER/(127621:127645): Se crea el proceso: 2 en NEW
+[INFO] 21:11:08:012 LOGGER/(127621:127645): Hay proceso esperando en la cola de NEW!
 
-[INFO] 20:50:16:259 LOGGER/(119230:119233): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:50:16:260 LOGGER/(119230:119233): El quantum restante del proceso con PID 2 es: 2750
-[INFO] 20:50:16:260 LOGGER/(119230:119233): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 20:50:16:260 LOGGER/(119230:119233): PID: 2 - Bloqueado por: SLP1
-[INFO] 20:50:20:265 LOGGER/(119230:119344): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 20:50:20:265 LOGGER/(119230:119344): Cola Ready: 2 
+[INFO] 21:11:08:015 LOGGER/(127621:127637): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:11:08:148 LOGGER/(127621:127636): Grado de multiprogramación permite agregar proceso a ready
 
-[INFO] 20:50:20:265 LOGGER/(119230:119233): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:50:20:266 LOGGER/(119230:119233): El quantum restante del proceso con PID 2 es: 2750
-[INFO] 20:50:20:266 LOGGER/(119230:119233): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 20:50:20:266 LOGGER/(119230:119233): PID: 2 - Bloqueado por: SLP1
-[INFO] 20:50:24:267 LOGGER/(119230:119344): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 20:50:24:268 LOGGER/(119230:119344): Cola Ready: 2 
+[INFO] 21:11:08:149 LOGGER/(127621:127636): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:11:08:150 LOGGER/(127621:127636): Cola Ready: 2 
 
-[INFO] 20:50:24:268 LOGGER/(119230:119233): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:50:24:268 LOGGER/(119230:119233): El quantum restante del proceso con PID 2 es: 2750
-[INFO] 20:50:24:268 LOGGER/(119230:119233): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 20:50:24:269 LOGGER/(119230:119233): PID: 2 - Bloqueado por: SLP1
-[INFO] 20:50:28:270 LOGGER/(119230:119344): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 20:50:28:271 LOGGER/(119230:119344): Cola Ready: 2 
+[INFO] 21:11:08:151 LOGGER/(127621:127645): Se crea el proceso: 3 en NEW
+[INFO] 21:11:08:151 LOGGER/(127621:127645): Hay proceso esperando en la cola de NEW!
 
-[INFO] 20:50:28:271 LOGGER/(119230:119233): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:50:28:272 LOGGER/(119230:119233): El quantum restante del proceso con PID 2 es: 0
-[INFO] 20:50:28:272 LOGGER/(119230:119233): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 20:50:28:273 LOGGER/(119230:119233): PID: 2 - Bloqueado por: SLP1
-[INFO] 20:50:32:276 LOGGER/(119230:119344): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 20:50:32:277 LOGGER/(119230:119344): Cola Ready: 2 
+[INFO] 21:11:08:155 LOGGER/(127621:127636): Grado de multiprogramación permite agregar proceso a ready
 
-[INFO] 20:50:32:278 LOGGER/(119230:119233): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:50:32:279 LOGGER/(119230:119233): El quantum restante del proceso con PID 2 es: 2750
-[INFO] 20:50:32:279 LOGGER/(119230:119233): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 20:50:32:279 LOGGER/(119230:119233): PID: 2 - Bloqueado por: SLP1
-[INFO] 20:50:36:284 LOGGER/(119230:119344): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 20:50:36:285 LOGGER/(119230:119344): Cola Ready: 2 
+[INFO] 21:11:08:156 LOGGER/(127621:127636): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:11:08:157 LOGGER/(127621:127636): Cola Ready: 2 3 
 
-[INFO] 20:50:36:288 LOGGER/(119230:119233): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:50:36:292 LOGGER/(119230:119233): El quantum restante del proceso con PID 2 es: 2750
-[INFO] 20:50:36:294 LOGGER/(119230:119233): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 20:50:36:294 LOGGER/(119230:119233): PID: 2 - Bloqueado por: SLP1
-[INFO] 20:50:40:298 LOGGER/(119230:119344): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 20:50:40:298 LOGGER/(119230:119344): Cola Ready: 2 
+[INFO] 21:11:08:157 LOGGER/(127621:127645): Se crea el proceso: 4 en NEW
+[INFO] 21:11:08:159 LOGGER/(127621:127645): Hay proceso esperando en la cola de NEW!
 
-[INFO] 20:50:40:298 LOGGER/(119230:119233): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 20:50:40:299 LOGGER/(119230:119233): El quantum restante del proceso con PID 2 es: 2750
-[INFO] 20:50:40:299 LOGGER/(119230:119233): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 20:50:40:299 LOGGER/(119230:119233): Finaliza el proceso 2 - Motivo: SUCCESS
+[INFO] 21:11:08:193 LOGGER/(127621:127636): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:11:08:195 LOGGER/(127621:127636): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:11:08:196 LOGGER/(127621:127636): Cola Ready: 2 3 4 
+
+[INFO] 21:11:10:955 LOGGER/(127621:127940): envie interrupcion para PID 1 despues de 2750
+[INFO] 21:11:11:160 LOGGER/(127621:127637): El quantum restante del proceso con PID 1 es: 0
+[INFO] 21:11:11:162 LOGGER/(127621:127637): PID: 1 - Desalojado por fin de Quantum
+[INFO] 21:11:11:163 LOGGER/(127621:127637): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:11:11:166 LOGGER/(127621:127637): Cola Ready: 2 3 4 1 
+
+[INFO] 21:11:11:168 LOGGER/(127621:127637): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:11:13:197 LOGGER/(127621:127637): El quantum restante del proceso con PID 2 es: 833
+[INFO] 21:11:13:203 LOGGER/(127621:127637): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:11:13:204 LOGGER/(127621:127637): PID: 2 - Bloqueado por: SLP1
+[INFO] 21:11:13:266 LOGGER/(127621:127637): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:11:13:314 LOGGER/(127621:127645): Esta en cola ready
+
+[INFO] 21:11:13:433 LOGGER/(127621:127645): PID: 4 - Estado Anterior: READY - Estado Actual: EXIT
+[INFO] 21:11:13:434 LOGGER/(127621:127645): Finaliza el proceso 4 - Motivo: INTERRUPTED_BY_USER
+[INFO] 21:11:16:184 LOGGER/(127621:128047): envie interrupcion para PID 3 despues de 2750
+[INFO] 21:11:16:326 LOGGER/(127621:127637): El quantum restante del proceso con PID 3 es: 0
+[INFO] 21:11:16:326 LOGGER/(127621:127637): PID: 3 - Desalojado por fin de Quantum
+[INFO] 21:11:16:327 LOGGER/(127621:127637): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:11:16:328 LOGGER/(127621:127637): Cola Ready: 1 3 
+
+[INFO] 21:11:16:328 LOGGER/(127621:127637): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:11:17:226 LOGGER/(127621:127838): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY_PLUS
+[INFO] 21:11:17:227 LOGGER/(127621:127838): Cola Ready Prioridad: 2 
+
+[INFO] 21:11:18:336 LOGGER/(127621:127637): El quantum restante del proceso con PID 1 es: 855
+[INFO] 21:11:18:336 LOGGER/(127621:127637): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 21:11:18:337 LOGGER/(127621:127637): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 21:11:18:338 LOGGER/(127621:127637): Proximo PID de la cola Ready Plus: 2
+[INFO] 21:11:18:339 LOGGER/(127621:127637): PID: 2 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:11:19:300 LOGGER/(127621:128133): envie interrupcion para PID 2 despues de 833
+[INFO] 21:11:19:345 LOGGER/(127621:127637): El quantum restante del proceso con PID 2 es: 0
+[INFO] 21:11:19:345 LOGGER/(127621:127637): PID: 2 - Desalojado por fin de Quantum
+[INFO] 21:11:19:346 LOGGER/(127621:127637): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:11:19:351 LOGGER/(127621:127637): Cola Ready: 3 2 
+
+[INFO] 21:11:19:352 LOGGER/(127621:127637): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:11:21:363 LOGGER/(127621:127637): El quantum restante del proceso con PID 3 es: 867
+[INFO] 21:11:21:364 LOGGER/(127621:127637): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:11:21:365 LOGGER/(127621:127637): PID: 3 - Bloqueado por: SLP1
+[INFO] 21:11:21:367 LOGGER/(127621:127637): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:11:22:376 LOGGER/(127621:127637): El quantum restante del proceso con PID 2 es: 1875
+[INFO] 21:11:22:377 LOGGER/(127621:127637): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:11:22:377 LOGGER/(127621:127637): PID: 2 - Bloqueado por: SLP1
+[INFO] 21:15:33:217 LOGGER/(128852:128852): Conexion establecida con Memoria
+[INFO] 21:15:33:279 LOGGER/(128852:128852): Conexion establecida con Dispatcher
+[INFO] 21:15:33:283 LOGGER/(128852:128852): Conexion establecida con Interrupt
+[INFO] 21:15:33:552 LOGGER/(128852:128852): Servidor iniciado, esperando conexiones!
+[INFO] 21:16:04:529 LOGGER/(128852:128886): Se crea el proceso: 1 en NEW
+[INFO] 21:16:04:531 LOGGER/(128852:128886): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:16:04:540 LOGGER/(128852:128876): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:16:04:546 LOGGER/(128852:128876): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:16:04:569 LOGGER/(128852:128876): Cola Ready: 1 
+
+[INFO] 21:16:04:569 LOGGER/(128852:128886): Se crea el proceso: 2 en NEW
+[INFO] 21:16:04:581 LOGGER/(128852:128886): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:16:04:584 LOGGER/(128852:128876): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:16:04:586 LOGGER/(128852:128876): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:16:04:585 LOGGER/(128852:128879): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:16:04:587 LOGGER/(128852:128876): Cola Ready: 2 
+
+[INFO] 21:16:04:730 LOGGER/(128852:128886): Se crea el proceso: 3 en NEW
+[INFO] 21:16:04:731 LOGGER/(128852:128886): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:16:04:733 LOGGER/(128852:128876): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:16:04:734 LOGGER/(128852:128876): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:16:04:738 LOGGER/(128852:128876): Cola Ready: 2 3 
+
+[INFO] 21:16:04:754 LOGGER/(128852:128886): Se crea el proceso: 4 en NEW
+[INFO] 21:16:04:754 LOGGER/(128852:128886): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:16:04:788 LOGGER/(128852:128876): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:16:04:789 LOGGER/(128852:128876): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:16:04:790 LOGGER/(128852:128876): Cola Ready: 2 3 4 
+
+[INFO] 21:16:07:493 LOGGER/(128852:129154): envie interrupcion para PID 1 despues de 2750
+[INFO] 21:16:07:701 LOGGER/(128852:128879): El quantum restante del proceso con PID 1 es: 0
+[INFO] 21:16:07:702 LOGGER/(128852:128879): PID: 1 - Desalojado por fin de Quantum
+[INFO] 21:16:07:703 LOGGER/(128852:128879): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:16:07:704 LOGGER/(128852:128879): Cola Ready: 2 3 4 1 
+
+[INFO] 21:16:07:711 LOGGER/(128852:128879): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:16:09:737 LOGGER/(128852:128879): El quantum restante del proceso con PID 2 es: 836
+[INFO] 21:16:09:742 LOGGER/(128852:128879): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:16:09:743 LOGGER/(128852:128879): PID: 2 - Bloqueado por: SLP1
+[INFO] 21:16:09:801 LOGGER/(128852:128879): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:16:12:739 LOGGER/(128852:129234): envie interrupcion para PID 3 despues de 2750
+[INFO] 21:16:12:862 LOGGER/(128852:128879): El quantum restante del proceso con PID 3 es: 0
+[INFO] 21:16:12:863 LOGGER/(128852:128879): PID: 3 - Desalojado por fin de Quantum
+[INFO] 21:16:12:863 LOGGER/(128852:128879): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:16:12:864 LOGGER/(128852:128879): Cola Ready: 4 1 3 
+
+[INFO] 21:16:12:865 LOGGER/(128852:128879): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:16:13:838 LOGGER/(128852:129016): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY_PLUS
+[INFO] 21:16:13:839 LOGGER/(128852:129016): Cola Ready Prioridad: 2 
+
+[INFO] 21:16:15:729 LOGGER/(128852:129305): envie interrupcion para PID 4 despues de 2750
+[INFO] 21:16:15:885 LOGGER/(128852:128879): El quantum restante del proceso con PID 4 es: 0
+[INFO] 21:16:15:886 LOGGER/(128852:128879): PID: 4 - Desalojado por fin de Quantum
+[INFO] 21:16:15:887 LOGGER/(128852:128879): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:16:15:888 LOGGER/(128852:128879): Cola Ready: 1 3 4 
+
+[INFO] 21:16:15:890 LOGGER/(128852:128879): Proximo PID de la cola Ready Plus: 2
+[INFO] 21:16:15:891 LOGGER/(128852:128879): PID: 2 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:16:16:862 LOGGER/(128852:129358): envie interrupcion para PID 2 despues de 836
+[INFO] 21:16:16:898 LOGGER/(128852:128879): El quantum restante del proceso con PID 2 es: 0
+[INFO] 21:16:16:899 LOGGER/(128852:128879): PID: 2 - Desalojado por fin de Quantum
+[INFO] 21:16:16:899 LOGGER/(128852:128879): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:16:16:901 LOGGER/(128852:128879): Cola Ready: 1 3 4 2 
+
+[INFO] 21:16:16:903 LOGGER/(128852:128879): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:16:18:916 LOGGER/(128852:128879): El quantum restante del proceso con PID 1 es: 847
+[INFO] 21:16:18:917 LOGGER/(128852:128879): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 21:16:18:918 LOGGER/(128852:128879): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 21:16:18:920 LOGGER/(128852:128879): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:16:20:937 LOGGER/(128852:128879): El quantum restante del proceso con PID 3 es: 862
+[INFO] 21:16:20:940 LOGGER/(128852:128879): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:16:20:943 LOGGER/(128852:128879): PID: 3 - Bloqueado por: SLP1
+[INFO] 21:16:20:945 LOGGER/(128852:128879): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:16:23:825 LOGGER/(128852:129430): envie interrupcion para PID 4 despues de 2750
+[INFO] 21:16:23:965 LOGGER/(128852:128879): El quantum restante del proceso con PID 4 es: 0
+[INFO] 21:16:23:968 LOGGER/(128852:128879): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 21:16:23:970 LOGGER/(128852:128879): Finaliza el proceso 4 - Motivo: SUCCESS
+[INFO] 21:16:23:972 LOGGER/(128852:128879): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:16:24:100 LOGGER/(128852:128879): El quantum restante del proceso con PID 4 es: 2750
+[INFO] 21:16:24:101 LOGGER/(128852:128879): PID: 4 - Desalojado por fin de Quantum
+[INFO] 21:16:24:101 LOGGER/(128852:128879): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:16:24:102 LOGGER/(128852:128879): Cola Ready: 4 
+
+[INFO] 21:16:24:102 LOGGER/(128852:128879): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:16:24:984 LOGGER/(128852:128879): El quantum restante del proceso con PID 2 es: 2007
+[INFO] 21:16:24:985 LOGGER/(128852:128879): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:16:24:986 LOGGER/(128852:128879): PID: 2 - Bloqueado por: SLP1
+[INFO] 21:16:36:953 LOGGER/(128852:129016): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY_PLUS
+[INFO] 21:16:36:956 LOGGER/(128852:129016): Cola Ready Prioridad: 3 
+
+[INFO] 21:16:36:958 LOGGER/(128852:128879): Proximo PID de la cola Ready Plus: 3
+[INFO] 21:16:36:960 LOGGER/(128852:128879): PID: 3 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:16:37:955 LOGGER/(128852:129609): envie interrupcion para PID 3 despues de 862
+[INFO] 21:16:37:977 LOGGER/(128852:128879): El quantum restante del proceso con PID 3 es: 0
+[INFO] 21:16:37:979 LOGGER/(128852:128879): PID: 3 - Desalojado por fin de Quantum
+[INFO] 21:16:37:980 LOGGER/(128852:128879): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:16:37:982 LOGGER/(128852:128879): Cola Ready: 3 
+
+[INFO] 21:16:37:983 LOGGER/(128852:128879): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:16:40:871 LOGGER/(128852:129659): envie interrupcion para PID 3 despues de 2750
+[INFO] 21:18:37:168 LOGGER/(130174:130174): Conexion establecida con Memoria
+[INFO] 21:18:37:247 LOGGER/(130174:130174): Conexion establecida con Dispatcher
+[INFO] 21:18:37:251 LOGGER/(130174:130174): Conexion establecida con Interrupt
+[INFO] 21:18:37:566 LOGGER/(130174:130174): Servidor iniciado, esperando conexiones!
+[INFO] 21:19:18:587 LOGGER/(130174:130201): Se crea el proceso: 1 en NEW
+[INFO] 21:19:18:588 LOGGER/(130174:130201): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:19:18:593 LOGGER/(130174:130198): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:19:18:601 LOGGER/(130174:130198): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:19:18:620 LOGGER/(130174:130198): Cola Ready: 1 
+
+[INFO] 21:19:18:628 LOGGER/(130174:130199): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:19:18:789 LOGGER/(130174:130201): Se crea el proceso: 2 en NEW
+[INFO] 21:19:18:789 LOGGER/(130174:130201): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:19:18:793 LOGGER/(130174:130198): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:19:18:794 LOGGER/(130174:130198): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:19:18:794 LOGGER/(130174:130198): Cola Ready: 2 
+
+[INFO] 21:19:18:800 LOGGER/(130174:130201): Se crea el proceso: 3 en NEW
+[INFO] 21:19:18:800 LOGGER/(130174:130201): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:19:18:801 LOGGER/(130174:130198): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:19:18:802 LOGGER/(130174:130198): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:19:18:804 LOGGER/(130174:130198): Cola Ready: 2 3 
+
+[INFO] 21:19:18:804 LOGGER/(130174:130201): Se crea el proceso: 4 en NEW
+[INFO] 21:19:18:806 LOGGER/(130174:130201): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:19:18:807 LOGGER/(130174:130198): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:19:18:807 LOGGER/(130174:130198): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:19:18:808 LOGGER/(130174:130198): Cola Ready: 2 3 4 
+
+[INFO] 21:19:18:816 LOGGER/(130174:130201): Se crea el proceso: 5 en NEW
+[INFO] 21:19:18:816 LOGGER/(130174:130201): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:19:18:817 LOGGER/(130174:130198): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:19:18:818 LOGGER/(130174:130198): PID: 5 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:19:18:819 LOGGER/(130174:130198): Cola Ready: 2 3 4 5 
+
+[INFO] 21:19:18:854 LOGGER/(130174:130201): Se crea el proceso: 6 en NEW
+[INFO] 21:19:18:854 LOGGER/(130174:130201): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:19:18:855 LOGGER/(130174:130198): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:19:18:855 LOGGER/(130174:130198): PID: 6 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:19:18:857 LOGGER/(130174:130198): Cola Ready: 2 3 4 5 6 
+
+[INFO] 21:19:18:866 LOGGER/(130174:130201): Se crea el proceso: 7 en NEW
+[INFO] 21:19:18:867 LOGGER/(130174:130201): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:19:18:868 LOGGER/(130174:130198): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:19:18:868 LOGGER/(130174:130198): PID: 7 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:19:18:870 LOGGER/(130174:130198): Cola Ready: 2 3 4 5 6 7 
+
+[INFO] 21:19:18:899 LOGGER/(130174:130201): Se crea el proceso: 8 en NEW
+[INFO] 21:19:18:900 LOGGER/(130174:130201): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:19:18:901 LOGGER/(130174:130198): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:19:18:903 LOGGER/(130174:130198): PID: 8 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:19:18:904 LOGGER/(130174:130198): Cola Ready: 2 3 4 5 6 7 8 
+
+[INFO] 21:19:18:914 LOGGER/(130174:130201): Se crea el proceso: 9 en NEW
+[INFO] 21:19:18:915 LOGGER/(130174:130201): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:19:18:916 LOGGER/(130174:130198): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:19:18:916 LOGGER/(130174:130198): PID: 9 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:19:18:918 LOGGER/(130174:130198): Cola Ready: 2 3 4 5 6 7 8 9 
+
+[INFO] 21:19:18:953 LOGGER/(130174:130201): Se crea el proceso: 10 en NEW
+[INFO] 21:19:18:954 LOGGER/(130174:130201): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:19:18:954 LOGGER/(130174:130198): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:19:18:955 LOGGER/(130174:130198): PID: 10 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:19:18:957 LOGGER/(130174:130198): Cola Ready: 2 3 4 5 6 7 8 9 10 
+
+[INFO] 21:19:18:973 LOGGER/(130174:130201): Se crea el proceso: 11 en NEW
+[INFO] 21:19:18:974 LOGGER/(130174:130201): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:19:19:009 LOGGER/(130174:130201): Se crea el proceso: 12 en NEW
+[INFO] 21:19:19:011 LOGGER/(130174:130201): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:19:21:545 LOGGER/(130174:130476): envie interrupcion para PID 1 despues de 2750
+[INFO] 21:19:21:743 LOGGER/(130174:130199): El quantum restante del proceso con PID 1 es: 0
+[INFO] 21:19:21:744 LOGGER/(130174:130199): PID: 1 - Desalojado por fin de Quantum
+[INFO] 21:19:21:745 LOGGER/(130174:130199): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:19:21:747 LOGGER/(130174:130199): Cola Ready: 2 3 4 5 6 7 8 9 10 1 
+
+[INFO] 21:19:21:750 LOGGER/(130174:130199): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:19:23:771 LOGGER/(130174:130199): El quantum restante del proceso con PID 2 es: 860
+[INFO] 21:19:23:776 LOGGER/(130174:130199): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:19:23:777 LOGGER/(130174:130199): PID: 2 - Bloqueado por: SLP1
+[INFO] 21:19:23:831 LOGGER/(130174:130199): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:19:26:764 LOGGER/(130174:130546): envie interrupcion para PID 3 despues de 2750
+[INFO] 21:19:26:918 LOGGER/(130174:130199): El quantum restante del proceso con PID 3 es: 0
+[INFO] 21:19:26:919 LOGGER/(130174:130199): PID: 3 - Desalojado por fin de Quantum
+[INFO] 21:19:26:919 LOGGER/(130174:130199): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:19:26:921 LOGGER/(130174:130199): Cola Ready: 4 5 6 7 8 9 10 1 3 
+
+[INFO] 21:19:26:922 LOGGER/(130174:130199): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:19:27:897 LOGGER/(130174:130395): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY_PLUS
+[INFO] 21:19:27:898 LOGGER/(130174:130395): Cola Ready Prioridad: 2 
+
+[INFO] 21:19:29:835 LOGGER/(130174:130628): envie interrupcion para PID 4 despues de 2750
+[INFO] 21:19:29:938 LOGGER/(130174:130199): El quantum restante del proceso con PID 4 es: 0
+[INFO] 21:19:29:939 LOGGER/(130174:130199): PID: 4 - Desalojado por fin de Quantum
+[INFO] 21:19:29:939 LOGGER/(130174:130199): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:19:29:941 LOGGER/(130174:130199): Cola Ready: 5 6 7 8 9 10 1 3 4 
+
+[INFO] 21:19:29:942 LOGGER/(130174:130199): Proximo PID de la cola Ready Plus: 2
+[INFO] 21:19:29:942 LOGGER/(130174:130199): PID: 2 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:19:30:939 LOGGER/(130174:130674): envie interrupcion para PID 2 despues de 860
+[INFO] 21:19:30:948 LOGGER/(130174:130199): El quantum restante del proceso con PID 2 es: 0
+[INFO] 21:19:30:949 LOGGER/(130174:130199): PID: 2 - Desalojado por fin de Quantum
+[INFO] 21:19:30:949 LOGGER/(130174:130199): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:19:30:951 LOGGER/(130174:130199): Cola Ready: 5 6 7 8 9 10 1 3 4 2 
+
+[INFO] 21:19:30:952 LOGGER/(130174:130199): PID: 5 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:19:33:827 LOGGER/(130174:130711): envie interrupcion para PID 5 despues de 2750
+[INFO] 21:19:33:989 LOGGER/(130174:130199): El quantum restante del proceso con PID 5 es: 0
+[INFO] 21:19:33:991 LOGGER/(130174:130199): PID: 5 - Desalojado por fin de Quantum
+[INFO] 21:19:33:992 LOGGER/(130174:130199): PID: 5 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:19:33:996 LOGGER/(130174:130199): Cola Ready: 6 7 8 9 10 1 3 4 2 5 
+
+[INFO] 21:19:33:997 LOGGER/(130174:130199): PID: 6 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:19:36:005 LOGGER/(130174:130199): El quantum restante del proceso con PID 6 es: 892
+[INFO] 21:19:36:006 LOGGER/(130174:130199): PID: 6 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:19:36:007 LOGGER/(130174:130199): PID: 6 - Bloqueado por: SLP1
+[INFO] 21:19:36:008 LOGGER/(130174:130199): PID: 7 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:19:38:894 LOGGER/(130174:130774): envie interrupcion para PID 7 despues de 2750
+[INFO] 21:19:39:022 LOGGER/(130174:130199): El quantum restante del proceso con PID 7 es: 0
+[INFO] 21:19:39:022 LOGGER/(130174:130199): PID: 7 - Desalojado por fin de Quantum
+[INFO] 21:19:39:023 LOGGER/(130174:130199): PID: 7 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:19:39:024 LOGGER/(130174:130199): Cola Ready: 8 9 10 1 3 4 2 5 7 
+
+[INFO] 21:19:39:025 LOGGER/(130174:130199): PID: 8 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:19:40:012 LOGGER/(130174:130395): PID: 6 - Estado Anterior: BLOCKED - Estado Actual: READY_PLUS
+[INFO] 21:19:40:012 LOGGER/(130174:130395): Cola Ready Prioridad: 6 
+
+[INFO] 21:19:41:881 LOGGER/(130174:130796): envie interrupcion para PID 8 despues de 2750
+[INFO] 21:19:42:040 LOGGER/(130174:130199): El quantum restante del proceso con PID 8 es: 0
+[INFO] 21:19:42:041 LOGGER/(130174:130199): PID: 8 - Desalojado por fin de Quantum
+[INFO] 21:19:42:042 LOGGER/(130174:130199): PID: 8 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:19:42:045 LOGGER/(130174:130199): Cola Ready: 9 10 1 3 4 2 5 7 8 
+
+[INFO] 21:19:42:046 LOGGER/(130174:130199): Proximo PID de la cola Ready Plus: 6
+[INFO] 21:19:42:047 LOGGER/(130174:130199): PID: 6 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:19:43:076 LOGGER/(130174:130869): envie interrupcion para PID 6 despues de 892
+[INFO] 21:19:44:068 LOGGER/(130174:130199): El quantum restante del proceso con PID 6 es: 0
+[INFO] 21:19:44:069 LOGGER/(130174:130199): PID: 6 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:19:44:069 LOGGER/(130174:130199): PID: 6 - Bloqueado por: SLP1
+[INFO] 21:19:44:070 LOGGER/(130174:130199): PID: 9 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:19:44:211 LOGGER/(130174:130199): El quantum restante del proceso con PID 6 es: 891
+[INFO] 21:19:44:221 LOGGER/(130174:130199): PID: 6 - Desalojado por fin de Quantum
+[INFO] 21:19:44:223 LOGGER/(130174:130199): PID: 6 - Estado Anterior: EXEC - Estado Actual: READY_PLUS
+[INFO] 21:19:44:224 LOGGER/(130174:130199): Cola Ready Prioridad: 6 
+
+[INFO] 21:19:44:226 LOGGER/(130174:130199): Proximo PID de la cola Ready Plus: 6
+[INFO] 21:19:44:229 LOGGER/(130174:130199): PID: 6 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:19:45:243 LOGGER/(130174:130880): envie interrupcion para PID 6 despues de 891
+[INFO] 21:19:46:119 LOGGER/(130174:130199): El quantum restante del proceso con PID 9 es: 981
+[INFO] 21:19:46:120 LOGGER/(130174:130199): PID: 9 - Desalojado por fin de Quantum
+[INFO] 21:19:46:120 LOGGER/(130174:130199): PID: 9 - Estado Anterior: EXEC - Estado Actual: READY_PLUS
+[INFO] 21:19:46:121 LOGGER/(130174:130199): Cola Ready Prioridad: 9 
+
+[INFO] 21:19:46:122 LOGGER/(130174:130199): Proximo PID de la cola Ready Plus: 9
+[INFO] 21:19:46:122 LOGGER/(130174:130199): PID: 9 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:19:47:219 LOGGER/(130174:130941): envie interrupcion para PID 9 despues de 981
+[INFO] 21:19:48:073 LOGGER/(130174:130395): PID: 6 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:19:48:074 LOGGER/(130174:130395): Cola Ready: 10 1 3 4 2 5 7 8 6 
+
+[INFO] 21:19:48:134 LOGGER/(130174:130199): El quantum restante del proceso con PID 6 es: 0
+[INFO] 21:19:48:134 LOGGER/(130174:130199): PID: 6 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:19:48:135 LOGGER/(130174:130199): PID: 6 - Bloqueado por: SLP1
+[INFO] 21:19:48:136 LOGGER/(130174:130199): PID: 10 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:19:48:253 LOGGER/(130174:130199): El quantum restante del proceso con PID 6 es: 891
+[INFO] 21:19:48:254 LOGGER/(130174:130199): PID: 6 - Desalojado por fin de Quantum
+[INFO] 21:19:48:255 LOGGER/(130174:130199): PID: 6 - Estado Anterior: EXEC - Estado Actual: READY_PLUS
+[INFO] 21:19:48:255 LOGGER/(130174:130199): Cola Ready Prioridad: 6 
+
+[INFO] 21:19:48:256 LOGGER/(130174:130199): Proximo PID de la cola Ready Plus: 6
+[INFO] 21:19:48:257 LOGGER/(130174:130199): PID: 6 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:19:49:252 LOGGER/(130174:130964): envie interrupcion para PID 6 despues de 891
+[INFO] 21:19:50:159 LOGGER/(130174:130199): El quantum restante del proceso con PID 9 es: 0
+[INFO] 21:19:50:160 LOGGER/(130174:130199): PID: 9 - Desalojado por fin de Quantum
+[INFO] 21:19:50:160 LOGGER/(130174:130199): PID: 9 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:19:50:162 LOGGER/(130174:130199): Cola Ready: 1 3 4 2 5 7 8 6 9 
+
+[INFO] 21:19:50:163 LOGGER/(130174:130199): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:19:52:147 LOGGER/(130174:130395): PID: 6 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:19:52:155 LOGGER/(130174:130395): Cola Ready: 3 4 2 5 7 8 6 9 6 
+
+[INFO] 21:19:52:173 LOGGER/(130174:130199): El quantum restante del proceso con PID 10 es: 855
+[INFO] 21:19:52:175 LOGGER/(130174:130199): PID: 10 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:19:52:176 LOGGER/(130174:130199): PID: 10 - Bloqueado por: SLP1
+[INFO] 21:19:52:178 LOGGER/(130174:130199): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:19:54:182 LOGGER/(130174:130199): El quantum restante del proceso con PID 6 es: 0
+[INFO] 21:19:54:183 LOGGER/(130174:130199): PID: 6 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:19:54:184 LOGGER/(130174:130199): PID: 6 - Bloqueado por: SLP1
+[INFO] 21:19:54:184 LOGGER/(130174:130199): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:19:56:198 LOGGER/(130174:130199): El quantum restante del proceso con PID 1 es: 853
+[INFO] 21:19:56:199 LOGGER/(130174:130199): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 21:19:56:200 LOGGER/(130174:130199): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 21:19:56:201 LOGGER/(130174:130199): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:19:56:202 LOGGER/(130174:130198): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:19:56:203 LOGGER/(130174:130198): PID: 11 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:19:56:204 LOGGER/(130174:130198): Cola Ready: 5 7 8 6 9 6 11 
+
+[INFO] 21:19:56:331 LOGGER/(130174:130395): PID: 10 - Estado Anterior: BLOCKED - Estado Actual: READY_PLUS
+[INFO] 21:19:56:332 LOGGER/(130174:130395): Cola Ready Prioridad: 10 
+
+[INFO] 21:19:58:205 LOGGER/(130174:130199): El quantum restante del proceso con PID 3 es: 874
+[INFO] 21:19:58:207 LOGGER/(130174:130199): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:19:58:207 LOGGER/(130174:130199): PID: 3 - Bloqueado por: SLP1
+[INFO] 21:19:58:209 LOGGER/(130174:130199): Proximo PID de la cola Ready Plus: 10
+[INFO] 21:19:58:210 LOGGER/(130174:130199): PID: 10 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:19:59:250 LOGGER/(130174:131131): envie interrupcion para PID 10 despues de 855
+[INFO] 21:20:00:231 LOGGER/(130174:130199): El quantum restante del proceso con PID 4 es: 913
+[INFO] 21:20:00:237 LOGGER/(130174:130199): PID: 4 - Desalojado por fin de Quantum
+[INFO] 21:20:00:238 LOGGER/(130174:130199): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY_PLUS
+[INFO] 21:20:00:239 LOGGER/(130174:130199): Cola Ready Prioridad: 4 
+
+[INFO] 21:20:00:240 LOGGER/(130174:130199): Proximo PID de la cola Ready Plus: 4
+[INFO] 21:20:00:241 LOGGER/(130174:130199): PID: 4 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:20:00:383 LOGGER/(130174:130395): PID: 6 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:20:00:384 LOGGER/(130174:130395): Cola Ready: 5 7 8 6 9 6 11 6 
+
+[INFO] 21:20:01:238 LOGGER/(130174:130199): El quantum restante del proceso con PID 2 es: 1902
+[INFO] 21:20:01:239 LOGGER/(130174:130199): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:20:01:239 LOGGER/(130174:130199): PID: 2 - Bloqueado por: SLP1
+[INFO] 21:20:01:240 LOGGER/(130174:130199): PID: 5 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:20:03:256 LOGGER/(130174:130199): El quantum restante del proceso con PID 10 es: 0
+[INFO] 21:20:03:258 LOGGER/(130174:130199): PID: 10 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:20:03:258 LOGGER/(130174:130199): PID: 10 - Bloqueado por: SLP1
+[INFO] 21:20:03:259 LOGGER/(130174:130199): PID: 7 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:20:04:261 LOGGER/(130174:130199): El quantum restante del proceso con PID 4 es: 46
+[INFO] 21:20:04:262 LOGGER/(130174:130199): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 21:20:04:263 LOGGER/(130174:130199): Finaliza el proceso 4 - Motivo: SUCCESS
+[INFO] 21:20:04:264 LOGGER/(130174:130198): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:20:04:266 LOGGER/(130174:130199): PID: 8 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:20:04:267 LOGGER/(130174:130198): PID: 12 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:20:04:270 LOGGER/(130174:130198): Cola Ready: 6 9 6 11 6 12 
+
+[INFO] 21:20:06:267 LOGGER/(130174:130199): El quantum restante del proceso con PID 5 es: 904
+[INFO] 21:20:06:268 LOGGER/(130174:130199): PID: 5 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 21:20:06:269 LOGGER/(130174:130199): Finaliza el proceso 5 - Motivo: SUCCESS
+[INFO] 21:20:06:270 LOGGER/(130174:130199): PID: 6 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:20:08:274 LOGGER/(130174:130199): El quantum restante del proceso con PID 7 es: 889
+[INFO] 21:20:08:275 LOGGER/(130174:130199): PID: 7 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:20:08:275 LOGGER/(130174:130199): PID: 7 - Bloqueado por: SLP1
+[INFO] 21:20:08:276 LOGGER/(130174:130199): PID: 9 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:20:11:157 LOGGER/(130174:131278): envie interrupcion para PID 9 despues de 2750
+[INFO] 21:20:11:298 LOGGER/(130174:130199): El quantum restante del proceso con PID 8 es: 0
+[INFO] 21:20:11:298 LOGGER/(130174:130199): PID: 8 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 21:20:11:299 LOGGER/(130174:130199): Finaliza el proceso 8 - Motivo: SUCCESS
+[INFO] 21:20:11:299 LOGGER/(130174:130199): PID: 6 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:20:11:410 LOGGER/(130174:130199): El quantum restante del proceso con PID 8 es: 2750
+[INFO] 21:20:11:411 LOGGER/(130174:130199): PID: 8 - Desalojado por fin de Quantum
+[INFO] 21:20:11:411 LOGGER/(130174:130199): PID: 8 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:20:11:412 LOGGER/(130174:130199): Cola Ready: 11 6 12 8 
+
+[INFO] 21:20:11:413 LOGGER/(130174:130199): PID: 11 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:20:13:311 LOGGER/(130174:130199): El quantum restante del proceso con PID 6 es: 963
+[INFO] 21:20:13:312 LOGGER/(130174:130199): PID: 6 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:20:13:313 LOGGER/(130174:130199): PID: 6 - Bloqueado por: SLP1
+[INFO] 21:20:13:313 LOGGER/(130174:130199): PID: 6 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:20:14:318 LOGGER/(130174:130199): El quantum restante del proceso con PID 9 es: 1877
+[INFO] 21:20:14:318 LOGGER/(130174:130199): PID: 9 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 21:20:14:319 LOGGER/(130174:130199): Finaliza el proceso 9 - Motivo: SUCCESS
+[INFO] 21:20:14:320 LOGGER/(130174:130199): PID: 12 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:20:16:327 LOGGER/(130174:130199): El quantum restante del proceso con PID 6 es: 852
+[INFO] 21:20:16:328 LOGGER/(130174:130199): PID: 6 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:20:16:329 LOGGER/(130174:130199): PID: 6 - Bloqueado por: SLP1
+[INFO] 21:20:16:329 LOGGER/(130174:130199): PID: 8 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:20:16:451 LOGGER/(130174:130395): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY_PLUS
+[INFO] 21:20:16:452 LOGGER/(130174:130395): Cola Ready Prioridad: 3 
+
+[INFO] 21:20:19:211 LOGGER/(130174:131397): envie interrupcion para PID 8 despues de 2750
+[INFO] 21:20:19:340 LOGGER/(130174:130199): El quantum restante del proceso con PID 11 es: 0
+[INFO] 21:20:19:341 LOGGER/(130174:130199): PID: 11 - Desalojado por fin de Quantum
+[INFO] 21:20:19:341 LOGGER/(130174:130199): PID: 11 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:20:19:342 LOGGER/(130174:130199): Cola Ready: 11 
+
+[INFO] 21:20:19:342 LOGGER/(130174:130199): Proximo PID de la cola Ready Plus: 3
+[INFO] 21:20:19:343 LOGGER/(130174:130199): PID: 3 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:20:20:335 LOGGER/(130174:131425): envie interrupcion para PID 3 despues de 874
+[INFO] 21:20:20:346 LOGGER/(130174:130199): El quantum restante del proceso con PID 6 es: 1863
+[INFO] 21:20:20:347 LOGGER/(130174:130199): PID: 6 - Desalojado por fin de Quantum
+[INFO] 21:20:20:347 LOGGER/(130174:130199): PID: 6 - Estado Anterior: EXEC - Estado Actual: READY_PLUS
+[INFO] 21:20:20:348 LOGGER/(130174:130199): Cola Ready Prioridad: 6 
+
+[INFO] 21:20:20:348 LOGGER/(130174:130199): Proximo PID de la cola Ready Plus: 6
+[INFO] 21:20:20:349 LOGGER/(130174:130199): PID: 6 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:20:20:479 LOGGER/(130174:130395): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY_PLUS
+[INFO] 21:20:20:480 LOGGER/(130174:130395): Cola Ready Prioridad: 2 
+
+[INFO] 21:20:22:341 LOGGER/(130174:131459): envie interrupcion para PID 6 despues de 1863
+[INFO] 21:20:22:352 LOGGER/(130174:130199): El quantum restante del proceso con PID 12 es: 875
+[INFO] 21:20:22:353 LOGGER/(130174:130199): PID: 12 - Desalojado por fin de Quantum
+[INFO] 21:20:22:354 LOGGER/(130174:130199): PID: 12 - Estado Anterior: EXEC - Estado Actual: READY_PLUS
+[INFO] 21:20:22:356 LOGGER/(130174:130199): Cola Ready Prioridad: 2 12 
+
+[INFO] 21:20:22:356 LOGGER/(130174:130199): Proximo PID de la cola Ready Plus: 2
+[INFO] 21:20:22:357 LOGGER/(130174:130199): PID: 2 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:20:24:369 LOGGER/(130174:131499): envie interrupcion para PID 2 despues de 1902
+[INFO] 21:20:24:490 LOGGER/(130174:130395): PID: 10 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:20:24:495 LOGGER/(130174:130395): Cola Ready: 11 10 
+
+[INFO] 21:20:25:377 LOGGER/(130174:130199): El quantum restante del proceso con PID 3 es: 0
+[INFO] 21:20:25:379 LOGGER/(130174:130199): PID: 3 - Desalojado por fin de Quantum
+[INFO] 21:20:25:380 LOGGER/(130174:130199): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:20:25:382 LOGGER/(130174:130199): Cola Ready: 11 10 3 
+
+[INFO] 21:20:25:384 LOGGER/(130174:130199): Proximo PID de la cola Ready Plus: 12
+[INFO] 21:20:25:385 LOGGER/(130174:130199): PID: 12 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:20:26:380 LOGGER/(130174:130199): El quantum restante del proceso con PID 6 es: 989
+[INFO] 21:20:26:381 LOGGER/(130174:130199): PID: 6 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:20:26:382 LOGGER/(130174:130199): PID: 6 - Bloqueado por: SLP1
+[INFO] 21:20:26:383 LOGGER/(130174:131542): envie interrupcion para PID 12 despues de 875
+[INFO] 21:20:26:384 LOGGER/(130174:130199): PID: 11 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:20:27:387 LOGGER/(130174:130199): El quantum restante del proceso con PID 2 es: 1016
+[INFO] 21:20:27:388 LOGGER/(130174:130199): PID: 2 - Desalojado por fin de Quantum
+[INFO] 21:20:27:388 LOGGER/(130174:130199): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY_PLUS
+[INFO] 21:20:27:389 LOGGER/(130174:130199): Cola Ready Prioridad: 2 
+
+[INFO] 21:20:27:390 LOGGER/(130174:130199): Proximo PID de la cola Ready Plus: 2
+[INFO] 21:20:27:391 LOGGER/(130174:130199): PID: 2 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:20:28:566 LOGGER/(130174:131583): envie interrupcion para PID 2 despues de 1016
+[INFO] 21:20:29:407 LOGGER/(130174:130199): El quantum restante del proceso con PID 12 es: 0
+[INFO] 21:20:29:411 LOGGER/(130174:130199): PID: 12 - Desalojado por fin de Quantum
+[INFO] 21:20:29:412 LOGGER/(130174:130199): PID: 12 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:20:29:414 LOGGER/(130174:130199): Cola Ready: 10 3 12 
+
+[INFO] 21:20:29:416 LOGGER/(130174:130199): PID: 10 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:20:31:428 LOGGER/(130174:130199): El quantum restante del proceso con PID 11 es: 868
+[INFO] 21:20:31:429 LOGGER/(130174:130199): PID: 11 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:20:31:430 LOGGER/(130174:130199): PID: 11 - Bloqueado por: SLP1
+[INFO] 21:20:31:431 LOGGER/(130174:130199): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:20:32:452 LOGGER/(130174:130199): El quantum restante del proceso con PID 2 es: 112
+[INFO] 21:20:32:453 LOGGER/(130174:130199): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:20:32:454 LOGGER/(130174:130199): PID: 2 - Bloqueado por: SLP1
+[INFO] 21:20:32:455 LOGGER/(130174:130199): PID: 12 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:20:34:468 LOGGER/(130174:130199): El quantum restante del proceso con PID 10 es: 858
+[INFO] 21:20:34:470 LOGGER/(130174:130199): PID: 10 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:20:34:471 LOGGER/(130174:130199): PID: 10 - Bloqueado por: SLP1
+[INFO] 21:20:40:504 LOGGER/(130174:130395): PID: 7 - Estado Anterior: BLOCKED - Estado Actual: READY_PLUS
+[INFO] 21:20:40:507 LOGGER/(130174:130395): Cola Ready Prioridad: 7 
+
+[INFO] 21:20:40:509 LOGGER/(130174:130199): Proximo PID de la cola Ready Plus: 7
+[INFO] 21:20:40:509 LOGGER/(130174:130199): PID: 7 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:20:40:639 LOGGER/(130174:130199): El quantum restante del proceso con PID 3 es: 2748
+[INFO] 21:20:40:640 LOGGER/(130174:130199): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 21:20:40:641 LOGGER/(130174:130199): Finaliza el proceso 3 - Motivo: SUCCESS
+[INFO] 21:20:44:510 LOGGER/(130174:130395): PID: 6 - Estado Anterior: BLOCKED - Estado Actual: READY_PLUS
+[INFO] 21:20:44:511 LOGGER/(130174:130395): Cola Ready Prioridad: 6 
+
+[INFO] 21:20:44:512 LOGGER/(130174:130199): Proximo PID de la cola Ready Plus: 6
+[INFO] 21:20:44:513 LOGGER/(130174:130199): PID: 6 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 21:20:44:634 LOGGER/(130174:130199): El quantum restante del proceso con PID 12 es: 2750
+[INFO] 21:20:44:635 LOGGER/(130174:130199): PID: 12 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 21:20:44:635 LOGGER/(130174:130199): Finaliza el proceso 12 - Motivo: SUCCESS

@@ -471,6 +471,8 @@ void *handle_io_generica(void *socket_io) {
             return NULL;
     }
 
+    liberar_paquete(paquete);
+
     t_pid_unidades_trabajo* pid_unidades_trabajo = malloc(sizeof(t_pid_unidades_trabajo));
 
     while (true) {
@@ -531,8 +533,10 @@ void *handle_io_generica(void *socket_io) {
 
                 t_pcb* pcb = sacarDe(cola_blocked, datos_sleep->pcb->pid); // Supongo que siempre se saca de aca, si lo cargaron bien cuando el proceso pasa a blocked
 
-                // Asignar uno por uno porque sino no se copia bien (repetir en todas las io)
-                pcb_copy->pid = pcb->pid;
+                /*             */
+                pcb_copy->pid = pcb->pid; // CUANDO TERMINA ROMPE ACA VER SEG FAULT
+                /*             */
+
                 pcb_copy->program_counter = pcb->program_counter;
                 pcb_copy->quantum = pcb->quantum;
                 pcb_copy->estadoAnterior = pcb->estadoAnterior;

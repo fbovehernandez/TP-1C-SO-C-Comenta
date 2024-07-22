@@ -1011,7 +1011,8 @@ void FINALIZAR_PROCESO(int pid) {
     }
     
     t_queue* cola = encontrar_en_que_cola_esta(pid);
-
+    
+    
     if(cola == NULL) { // Esto quiere decir que esta en la cola exit
         printf("No se puede finalizar un proceso que esta en exit \n");
         return;
@@ -1035,18 +1036,23 @@ void FINALIZAR_PROCESO(int pid) {
 
 t_queue* encontrar_en_que_cola_esta(int pid) {
     if(esta_en_cola_pid(cola_new, pid, &mutex_estado_new)) {
+        log_info(logger_kernel, "Esta en cola new\n");
         return cola_new;
     } else if(esta_en_cola_pid(cola_ready, pid, &mutex_estado_ready)) {
+        log_info(logger_kernel, "Esta en cola ready\n");
         sem_wait(&sem_hay_para_planificar);
         return cola_ready;
     } else if(esta_en_cola_pid(cola_blocked, pid, &mutex_estado_blocked)) {
+        log_info(logger_kernel, "Esta en cola blocked\n");
         return cola_blocked; // analizar si hay que sacarlo tmb de la cola de procesos bloqueados de una io
     } else if(esta_en_cola_pid(cola_ready_plus, pid, &mutex_estado_ready_plus)){
+        log_info(logger_kernel, "Esta en cola ready PLUS\n");
         return cola_ready_plus;
     } else if(esta_en_cola_pid(cola_exec, pid, &mutex_estado_exec)) {
+        log_info(logger_kernel, "Esta en cola exec\n");
         return cola_exec;
     } else {
-        printf("Esta en cola exit\n");
+        log_info(logger_kernel, "Esta en cola exit\n");
         return NULL;
     }
 }
