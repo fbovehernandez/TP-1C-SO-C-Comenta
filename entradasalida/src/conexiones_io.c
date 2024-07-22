@@ -130,8 +130,8 @@ void mandar_valor_a_memoria(char* valor, t_pid_stdin* pid_stdin) {
     }
     
     // Si usamos memoria dinámica para el nombre, y no la precisamos más, ya podemos liberarla:
-    free(valor);
     printf("Le pide a mem GUARDAR_VALOR... o eso creo.\n");
+    free(valor);
     enviar_paquete(buffer, GUARDAR_VALOR, memoriafd);
 }
 
@@ -193,7 +193,7 @@ void recibir_kernel(void* config_socket_io) { //FREE
                 printf("el terminoOk es: %d \n", terminoOk);
                 send(socket_kernel_io, &terminoOk, sizeof(int), 0);
                 
-                free(valor);
+                // free(valor); Ya esta en mandar_valor_a_memoria
                 liberar_lista_direcciones(pid_stdin->lista_direcciones);
                 free(pid_stdin);
                 break;
@@ -269,8 +269,9 @@ void recibir_memoria(void* config_socket_io) {
                 stream += sizeof(int);
                 memcpy(&tamanio, stream, sizeof(int));
                 stream += sizeof(int);
-                char* valor = malloc(tamanio); 
+                char* valor = malloc(tamanio + 1); 
                 memcpy(valor, stream, tamanio);
+                valor[tamanio] = '\0';
                 printf("\n\nEl valor leido de memoria es: %s \n\n", valor);
                 log_info(logger_io, "PID: %d - Operacion: ESCRIBIR", pid);
 

@@ -566,17 +566,28 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         char* nombre_registro_direccion = registro_direccion->nombre;
         char* nombre_registro_tamanio = registro_tamanio->nombre;
 
-        uint32_t* registro_direccion_stdin = (uint32_t*) seleccionar_registro_cpu(nombre_registro_direccion,pcb);
+        void* registro_direccion_stdin = seleccionar_registro_cpu(nombre_registro_direccion,pcb);
         es_registro_uint8_dato = es_de_8_bits(nombre_registro_tamanio);
-
+        bool es_registro_uint8_dato_register = es_de_8_bits(nombre_registro_direccion);
+        
         uint32_t* registro_tamanio_stdin = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio,pcb);
-        
-        int pagina = floor(*registro_direccion_stdin / tamanio_pagina);
-        tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); //Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
 
-        int cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_direccion_stdin, tamanio_en_byte, pagina, lista_bytes_stdin); // Cantidad de paginas + la primera
+        uint32_t var_register;
+
+        if(es_registro_uint8_dato_register) {
+            var_register = *(uint8_t*) registro_direccion_stdin;
+        } else {
+            var_register = *(uint32_t*) registro_direccion_stdin;
+        }
+    
+        printf("El valor de la direccion es: %d\n", var_register);
         
-        cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdin, *registro_direccion_stdin, pcb->pid, lista_direcciones_fisicas_stdin, pagina);
+        int pagina = floor(var_register / tamanio_pagina);
+        tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); // Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
+
+        int cantidad_paginas = cantidad_de_paginas_a_utilizar(var_register, tamanio_en_byte, pagina, lista_bytes_stdin); // Cantidad de paginas + la primera
+        
+        cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdin, var_register, pcb->pid, lista_direcciones_fisicas_stdin, pagina);
 
         printf("\nAca va la lista de bytes del STDIN READ:\n");
         for(int i=0; i < list_size(lista_direcciones_fisicas_stdin); i++) {
@@ -590,7 +601,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         // pcb->program_counter++;
         desalojar(pcb, PEDIDO_LECTURA, buffer_lectura);
 
-        free(buffer_lectura);
+        // free(buffer_lectura);
         return 1; // El return esta para que cuando se desaloje el pcb no siga ejecutando, si hace el break sigue pidiendo instrucciones, porfa no lo saquen o les va a romper
         break;
     case EXIT_INSTRUCCION:
@@ -612,21 +623,30 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         t_parametro* parametro_registro_tamanio = list_get(list_parametros,2);
         char* nombre_registro_tamanio_stdout = parametro_registro_tamanio->nombre;
 
-        uint32_t* registro_direccion11 = (uint32_t*) seleccionar_registro_cpu(nombre_registro_direccion_stdout,pcb);
+        void* registro_direccion11 = seleccionar_registro_cpu(nombre_registro_direccion_stdout,pcb);
+        bool es_registro_uint8_dato_register_2 = es_de_8_bits(nombre_registro_direccion_stdout);
+
         uint32_t* registro_tamanio_stdout = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio_stdout,pcb);
         
         es_registro_uint8_dato = es_de_8_bits(nombre_registro_tamanio_stdout);
         
-        direccion_fisica = traducir_direccion_logica_a_fisica(*registro_direccion11, pcb->pid);
+        // direccion_fisica = traducir_direccion_logica_a_fisica(*registro_direccion11, pcb->pid);
 
         // CPU -> KERNEL -> MEMORIA -> ENTRADA SALIDA
-    
-        pagina = floor(*registro_direccion11 / tamanio_pagina);
+        uint32_t valor_a_enviar;
+
+        if(es_registro_uint8_dato_register_2){
+            valor_a_enviar = *(uint8_t*) registro_direccion11;
+        } else {
+            valor_a_enviar = *(uint32_t*) registro_direccion11;
+        }
+        
+        pagina = floor(valor_a_enviar / tamanio_pagina);
         tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); // Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
 
-        cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_direccion11, tamanio_en_byte, pagina, lista_bytes_stdout); // Cantidad de paginas + la primera
+        cantidad_paginas = cantidad_de_paginas_a_utilizar(valor_a_enviar, tamanio_en_byte, pagina, lista_bytes_stdout); // Cantidad de paginas + la primera
         
-        cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdout, *registro_direccion11, pcb->pid, lista_direcciones_fisicas_stdout, pagina);
+        cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdout, valor_a_enviar, pcb->pid, lista_direcciones_fisicas_stdout, pagina);
         
         printf("\nAca va la lista de bytes DEL STDOUT:\n");
         for(int i=0; i < list_size(lista_direcciones_fisicas_stdout); i++) {
@@ -641,7 +661,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         desalojar(pcb, PEDIDO_ESCRITURA, buffer_escritura);
 
-        free(buffer_escritura);
+        // free(buffer_escritura); se hace en desalojar
         return 1;
         break;
     /*

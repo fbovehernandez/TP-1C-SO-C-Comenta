@@ -243,11 +243,11 @@ void interaccion_user_space(tipo_operacion operacion, int df_actual, void* user_
     if(operacion == ESCRITURA) {
         memcpy(user_space_aux + df_actual, registro_escritura + tam_escrito_anterior, tamanio);
         printf("Escritura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
-        printf("Contenido escrito: %.*d\n", tamanio, *(uint32_t*)(user_space_aux + df_actual));
+        printf("Contenido escrito: %.*d\n", tamanio, *(uint8_t*)(user_space_aux + df_actual));
     } else { // == LECTURA
         memcpy(registro_lectura + tam_escrito_anterior, (user_space_aux + df_actual), tamanio);
         printf("Lectura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
-        printf("Contenido leido: %.*d\n", tamanio, *(uint32_t*)(registro_lectura + tam_escrito_anterior));
+        printf("Contenido leido: %.*d\n", tamanio, *(uint8_t*)(registro_lectura + tam_escrito_anterior));
     }
 }                                                                                                                                 
 
@@ -545,7 +545,14 @@ void* handle_kernel(void* socket) {
             
                 realizar_operacion(LECTURA, pid_stdout->lista_direcciones, user_space_aux, NULL, registro_lectura);
 
-                printf("El valor leido para char* es: %s\n", (char*)registro_lectura);
+                char* registro_string = malloc(pid_stdout->registro_tamanio + 1);
+                
+                // ponele el \0 para que lo pueda leer bien
+                registro_string = (char*) registro_lectura;
+                registro_string[pid_stdout->registro_tamanio] = '\0';
+                
+                printf("El valor leido para char* es: %s\n", registro_string);
+                // printf("El valor leido para char* es: %s\n", (char*)registro_lectura);
                 // int socket_io = (intptr_t) dictionary_get(diccionario_io, pid_stdout->nombre_interfaz);
 
                 pthread_mutex_lock(&mutex_diccionario_io);
@@ -556,10 +563,11 @@ void* handle_kernel(void* socket) {
                 printf("El socket es %d\n", socket_io->socket);
                 enviar_valor_leido_a_io(pid_stdout->pid, socket_io->socket, registro_lectura, pid_stdout->registro_tamanio);
                 
+                // free(registro_string);
                 list_destroy(pid_stdout->lista_direcciones);
                 free(pid_stdout->nombre_interfaz);
                 free(pid_stdout);
-                free(registro_lectura);
+                // free(registro_lectura); Ya esta en enviar_valor_leido_a_io
                 break;
             
             case ESCRIBIR_FS_MEMORIA:

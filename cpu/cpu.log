@@ -117,3 +117,243 @@
 [INFO] 22:52:37:101 LOGGER/(47061:47099): PID: 1 - OBTENER MARCO - Página: 1 - Marco: 1
 [INFO] 22:52:40:117 LOGGER/(47061:47099): PID: 1 - TLB HIT - Pagina: 0
 [INFO] 22:52:40:118 LOGGER/(47061:47099): PID: 1 - TLB HIT - Pagina: 1
+[INFO] 22:55:46:729 LOGGER/(47996:47996): Conexion establecida con Memoria
+[INFO] 22:55:49:817 LOGGER/(47996:48043): Servidor iniciado, esperando conexiones!
+[INFO] 22:55:51:208 LOGGER/(47996:48043): Se conecto un cliente de dispatch!
+
+[INFO] 22:55:51:208 LOGGER/(47996:48043): Esperando cliente...
+[INFO] 22:55:51:210 LOGGER/(47996:48044): Se conecto un cliente de interrupt!
+
+[INFO] 22:56:07:555 LOGGER/(47996:48043): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 22:56:07:559 LOGGER/(47996:48043): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 22:56:08:574 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:10:580 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:11:582 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:13:601 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:14:604 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:16:609 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:17:611 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:23:639 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:24:648 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:26:654 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:27:661 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:29:670 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:30:677 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:32:692 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:33:700 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:39:761 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:40:764 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:42:773 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:43:776 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:45:788 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:46:791 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:48:805 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:56:49:811 LOGGER/(47996:48043): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:59:05:074 LOGGER/(49018:49018): Conexion establecida con Memoria
+[INFO] 22:59:08:176 LOGGER/(49018:49077): Servidor iniciado, esperando conexiones!
+[INFO] 22:59:23:492 LOGGER/(49018:49077): Se conecto un cliente de dispatch!
+
+[INFO] 22:59:23:493 LOGGER/(49018:49077): Esperando cliente...
+[INFO] 22:59:23:493 LOGGER/(49018:49078): Se conecto un cliente de interrupt!
+
+[INFO] 22:59:49:579 LOGGER/(49018:49077): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 22:59:49:586 LOGGER/(49018:49077): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 22:59:50:633 LOGGER/(49018:49077): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:59:52:642 LOGGER/(49018:49077): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:59:53:646 LOGGER/(49018:49077): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:59:55:648 LOGGER/(49018:49077): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:59:56:650 LOGGER/(49018:49077): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:59:58:657 LOGGER/(49018:49077): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 22:59:59:669 LOGGER/(49018:49077): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:07:27:352 LOGGER/(50190:50190): Conexion establecida con Memoria
+[INFO] 23:07:30:416 LOGGER/(50190:50226): Servidor iniciado, esperando conexiones!
+[INFO] 23:07:33:517 LOGGER/(50190:50226): Se conecto un cliente de dispatch!
+
+[INFO] 23:07:33:517 LOGGER/(50190:50226): Esperando cliente...
+[INFO] 23:07:33:518 LOGGER/(50190:50227): Se conecto un cliente de interrupt!
+
+[INFO] 23:07:49:276 LOGGER/(50190:50226): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 23:07:49:278 LOGGER/(50190:50226): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 23:07:49:282 LOGGER/(50190:50226): PID: 1 - TLB MISS - Pagina: 1
+[INFO] 23:07:49:282 LOGGER/(50190:50226): PID: 1 - OBTENER MARCO - Página: 1 - Marco: 1
+[INFO] 23:07:52:295 LOGGER/(50190:50226): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:07:52:295 LOGGER/(50190:50226): PID: 1 - TLB HIT - Pagina: 1
+[INFO] 23:10:27:116 LOGGER/(50879:50879): Conexion establecida con Memoria
+[INFO] 23:10:30:191 LOGGER/(50879:50947): Servidor iniciado, esperando conexiones!
+[INFO] 23:10:30:459 LOGGER/(50879:50947): Se conecto un cliente de dispatch!
+
+[INFO] 23:10:30:460 LOGGER/(50879:50947): Esperando cliente...
+[INFO] 23:10:30:464 LOGGER/(50879:50948): Se conecto un cliente de interrupt!
+
+[INFO] 23:10:58:957 LOGGER/(50879:50947): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 23:10:58:968 LOGGER/(50879:50947): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 23:10:59:990 LOGGER/(50879:50947): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:11:02:006 LOGGER/(50879:50947): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:11:03:024 LOGGER/(50879:50947): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:11:05:031 LOGGER/(50879:50947): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:11:06:046 LOGGER/(50879:50947): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:11:08:069 LOGGER/(50879:50947): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:11:09:086 LOGGER/(50879:50947): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:11:14:160 LOGGER/(50879:50947): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:11:15:171 LOGGER/(50879:50947): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:11:17:193 LOGGER/(50879:50947): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:11:18:200 LOGGER/(50879:50947): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:11:20:210 LOGGER/(50879:50947): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:11:21:223 LOGGER/(50879:50947): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:24:57:106 LOGGER/(52453:52453): Conexion establecida con Memoria
+[INFO] 23:25:00:199 LOGGER/(52453:52485): Servidor iniciado, esperando conexiones!
+[INFO] 23:25:06:094 LOGGER/(52453:52485): Se conecto un cliente de dispatch!
+
+[INFO] 23:25:06:095 LOGGER/(52453:52485): Esperando cliente...
+[INFO] 23:25:06:097 LOGGER/(52453:52486): Se conecto un cliente de interrupt!
+
+[INFO] 23:25:45:972 LOGGER/(52453:52485): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 23:25:45:974 LOGGER/(52453:52485): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 23:25:46:995 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:25:49:015 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:25:50:018 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:25:52:036 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:25:53:046 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:25:55:056 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:25:56:064 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:26:01:094 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:26:02:104 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:26:04:133 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:26:05:136 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:26:07:146 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:26:08:151 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:26:10:176 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:26:11:197 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:26:16:223 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:26:17:228 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:26:19:234 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:26:20:261 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:26:22:266 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:26:23:267 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:26:25:273 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:26:26:279 LOGGER/(52453:52485): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:35:47:548 LOGGER/(53769:53769): Conexion establecida con Memoria
+[INFO] 23:35:50:639 LOGGER/(53769:53813): Servidor iniciado, esperando conexiones!
+[INFO] 23:35:51:739 LOGGER/(53769:53813): Se conecto un cliente de dispatch!
+
+[INFO] 23:35:51:740 LOGGER/(53769:53813): Esperando cliente...
+[INFO] 23:35:51:741 LOGGER/(53769:53814): Se conecto un cliente de interrupt!
+
+[INFO] 23:37:50:983 LOGGER/(54122:54122): Conexion establecida con Memoria
+[INFO] 23:37:54:071 LOGGER/(54122:54158): Servidor iniciado, esperando conexiones!
+[INFO] 23:37:56:018 LOGGER/(54122:54158): Se conecto un cliente de dispatch!
+
+[INFO] 23:37:56:018 LOGGER/(54122:54158): Esperando cliente...
+[INFO] 23:37:56:020 LOGGER/(54122:54159): Se conecto un cliente de interrupt!
+
+[INFO] 23:40:44:713 LOGGER/(54720:54720): Conexion establecida con Memoria
+[INFO] 23:40:47:781 LOGGER/(54720:54764): Servidor iniciado, esperando conexiones!
+[INFO] 23:40:51:630 LOGGER/(54720:54764): Se conecto un cliente de dispatch!
+
+[INFO] 23:40:51:630 LOGGER/(54720:54764): Esperando cliente...
+[INFO] 23:40:51:632 LOGGER/(54720:54765): Se conecto un cliente de interrupt!
+
+[INFO] 23:41:26:472 LOGGER/(54720:54764): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 23:41:26:475 LOGGER/(54720:54764): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 23:41:27:485 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:41:29:491 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:41:30:500 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:41:32:517 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:41:33:519 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:41:35:530 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:41:36:536 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:41:42:580 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:41:43:602 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:41:45:628 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:41:46:643 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:41:48:658 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:41:49:669 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:41:51:678 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:41:52:684 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:41:58:792 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:41:59:801 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:42:01:813 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:42:02:824 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:42:04:839 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:42:05:862 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:42:07:894 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:42:08:900 LOGGER/(54720:54764): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:48:23:508 LOGGER/(56384:56384): Conexion establecida con Memoria
+[INFO] 23:48:26:613 LOGGER/(56384:56436): Servidor iniciado, esperando conexiones!
+[INFO] 23:48:27:140 LOGGER/(56384:56436): Se conecto un cliente de dispatch!
+
+[INFO] 23:48:27:141 LOGGER/(56384:56436): Esperando cliente...
+[INFO] 23:48:27:142 LOGGER/(56384:56437): Se conecto un cliente de interrupt!
+
+[INFO] 23:49:16:941 LOGGER/(56384:56436): PID: 1 - TLB MISS - Pagina: 8
+[INFO] 23:49:16:944 LOGGER/(56384:56436): PID: 1 - OBTENER MARCO - Página: 8 - Marco: -1
+[INFO] 23:53:32:458 LOGGER/(57797:57797): Conexion establecida con Memoria
+[INFO] 23:53:35:523 LOGGER/(57797:57839): Servidor iniciado, esperando conexiones!
+[INFO] 23:53:58:207 LOGGER/(57797:57839): Se conecto un cliente de dispatch!
+
+[INFO] 23:53:58:207 LOGGER/(57797:57839): Esperando cliente...
+[INFO] 23:53:58:208 LOGGER/(57797:57840): Se conecto un cliente de interrupt!
+
+[INFO] 23:54:16:138 LOGGER/(57797:57839): PID: 1 - TLB MISS - Pagina: 8
+[INFO] 23:54:16:168 LOGGER/(57797:57839): PID: 1 - OBTENER MARCO - Página: 8 - Marco: -1
+[INFO] 00:01:45:726 LOGGER/(58860:58860): Conexion establecida con Memoria
+[INFO] 00:01:48:812 LOGGER/(58860:58944): Servidor iniciado, esperando conexiones!
+[INFO] 00:01:48:937 LOGGER/(58860:58944): Se conecto un cliente de dispatch!
+
+[INFO] 00:01:48:938 LOGGER/(58860:58944): Esperando cliente...
+[INFO] 00:01:48:939 LOGGER/(58860:58945): Se conecto un cliente de interrupt!
+
+[INFO] 00:03:57:991 LOGGER/(59708:59708): Conexion establecida con Memoria
+[INFO] 00:04:01:104 LOGGER/(59708:59763): Servidor iniciado, esperando conexiones!
+[INFO] 00:04:18:123 LOGGER/(59708:59763): Se conecto un cliente de dispatch!
+
+[INFO] 00:04:18:123 LOGGER/(59708:59763): Esperando cliente...
+[INFO] 00:04:18:124 LOGGER/(59708:59764): Se conecto un cliente de interrupt!
+
+[INFO] 00:05:05:301 LOGGER/(59708:59763): PID: 1 - TLB MISS - Pagina: 8
+[INFO] 00:05:05:304 LOGGER/(59708:59763): PID: 1 - OBTENER MARCO - Página: 8 - Marco: -1
+[INFO] 00:20:46:059 LOGGER/(62272:62272): Conexion establecida con Memoria
+[INFO] 00:20:49:142 LOGGER/(62272:62311): Servidor iniciado, esperando conexiones!
+[INFO] 00:21:10:596 LOGGER/(62272:62311): Se conecto un cliente de dispatch!
+
+[INFO] 00:21:10:596 LOGGER/(62272:62311): Esperando cliente...
+[INFO] 00:21:10:600 LOGGER/(62272:62312): Se conecto un cliente de interrupt!
+
+[INFO] 00:21:50:801 LOGGER/(62272:62311): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 00:21:50:810 LOGGER/(62272:62311): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 00:22:36:995 LOGGER/(62272:62311): PID: 1 - TLB MISS - Pagina: 8
+[INFO] 00:22:36:999 LOGGER/(62272:62311): PID: 1 - OBTENER MARCO - Página: 8 - Marco: -1
+[INFO] 00:22:37:004 LOGGER/(62272:62311): PID: 1 - TLB HIT - Pagina: 8
+[INFO] 00:38:52:565 LOGGER/(64767:64767): Conexion establecida con Memoria
+[INFO] 00:38:55:660 LOGGER/(64767:64814): Servidor iniciado, esperando conexiones!
+[INFO] 00:40:18:015 LOGGER/(64767:64814): Se conecto un cliente de dispatch!
+
+[INFO] 00:40:18:016 LOGGER/(64767:64814): Esperando cliente...
+[INFO] 00:40:18:019 LOGGER/(64767:64815): Se conecto un cliente de interrupt!
+
+[INFO] 00:40:53:874 LOGGER/(64767:64814): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 00:40:53:878 LOGGER/(64767:64814): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 00:41:00:052 LOGGER/(64767:64814): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 00:50:15:071 LOGGER/(66599:66599): Conexion establecida con Memoria
+[INFO] 00:50:18:137 LOGGER/(66599:66639): Servidor iniciado, esperando conexiones!
+[INFO] 00:50:37:925 LOGGER/(66599:66639): Se conecto un cliente de dispatch!
+
+[INFO] 00:50:37:926 LOGGER/(66599:66639): Esperando cliente...
+[INFO] 00:50:37:927 LOGGER/(66599:66640): Se conecto un cliente de interrupt!
+
+[INFO] 00:51:42:381 LOGGER/(66599:66639): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 00:51:42:383 LOGGER/(66599:66639): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 00:51:48:954 LOGGER/(66599:66639): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 00:53:42:184 LOGGER/(67919:67919): Conexion establecida con Memoria
+[INFO] 00:53:45:252 LOGGER/(67919:67966): Servidor iniciado, esperando conexiones!
+[INFO] 00:54:03:085 LOGGER/(67919:67966): Se conecto un cliente de dispatch!
+
+[INFO] 00:54:03:086 LOGGER/(67919:67966): Esperando cliente...
+[INFO] 00:54:03:090 LOGGER/(67919:67967): Se conecto un cliente de interrupt!
+
+[INFO] 00:54:50:263 LOGGER/(67919:67966): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 00:54:50:266 LOGGER/(67919:67966): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 00:54:56:169 LOGGER/(67919:67966): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 00:55:02:213 LOGGER/(67919:67966): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 00:56:01:042 LOGGER/(67919:67966): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 00:56:07:069 LOGGER/(67919:67966): PID: 1 - TLB HIT - Pagina: 0

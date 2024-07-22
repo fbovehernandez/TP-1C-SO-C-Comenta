@@ -503,7 +503,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             encolar_datos_std(pcb, pedido_lectura);
             log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, pedido_lectura->interfaz);   
             
-            liberar_pedido_escritura_lectura(pedido_lectura);
+            // liberar_pedido_escritura_lectura(pedido_lectura);
             break;
         case PEDIDO_ESCRITURA:
             t_pedido* pedido_escritura = deserializar_pedido(package->buffer); // llega bien el nombre de la interfaz
@@ -511,7 +511,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             encolar_datos_std(pcb, pedido_escritura);
             log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->interfaz);
 
-            liberar_pedido_escritura_lectura(pedido_escritura);
+            // liberar_pedido_escritura_lectura(pedido_escritura);
             break;
         /*
         case FS_CREATE:
