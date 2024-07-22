@@ -17,6 +17,24 @@ extern t_list* lista_procesos;
 extern sem_t sem_cola_io;
 extern pthread_mutex_t mutex_lista_io;
 extern pthread_mutex_t mutex_cola_io_generica;
+extern pthread_mutex_t mutex_cola_io_stdout;
+extern pthread_mutex_t mutex_cola_io_stdin;
+
+extern t_queue* cola_new;
+extern t_queue* cola_ready;
+extern t_queue* cola_blocked;
+extern t_pcb* pcb_exec;
+extern t_queue* cola_exit;
+extern t_queue* cola_prioritarios_por_signal;
+extern t_queue* cola_ready_plus;
+
+extern pthread_mutex_t mutex_estado_new;
+extern pthread_mutex_t mutex_estado_ready;
+extern pthread_mutex_t mutex_estado_exec;
+extern pthread_mutex_t mutex_estado_blocked;
+extern pthread_mutex_t mutex_estado_ready_plus;
+extern pthread_mutex_t mutex_prioritario_por_signal;
+extern pthread_mutex_t no_hay_nadie_en_cpu;
 
 
 // Aca va el struct del PCB 
@@ -25,33 +43,6 @@ typedef struct {
     int socket;
     t_log* logger;
 } t_config_kernel;
-
-typedef struct {
-    int socket_memoria;
-    int socket_cpu;
-    int socket_int;
-} t_sockets;
-
-extern t_sockets* sockets;
-
-typedef struct {
-    char* ip_cpu;
-    char* ip_mem;
-    char* puerto_memoria;
-    char* puerto_cpu_dispatch;
-    char* puerto_cpu_interrupt;
-    char* puerto_io;
-    int quantum;
-    int grado_multiprogramacion;   
-    char* algoritmo_planificacion;
-    t_dictionary* diccionario_recursos;
-} ptr_kernel;
-
-typedef struct {
-    int instancias;
-    t_list* procesos_bloqueados;
-    t_list* procesos_que_lo_retienen;
-} t_recurso;
 
 int conectar_kernel_memoria(char* ip, char* puerto, t_log* logger_kernel);
 int conectar_kernel_cpu_dispatch(t_log* logger_kernel, char* ip, char* puerto);
@@ -73,7 +64,11 @@ void solicitar_nombre_io(int socket);
 t_info_io* deserializar_interfaz(t_buffer* buffer);
 t_list_io* establecer_conexion(t_buffer *buffer, int socket_io);
 void mostrar_elem_diccionario(char* nombre_interfaz);
+t_pcb* sacarDe(t_queue* cola, int pid);
+pthread_mutex_t* obtener_mutex_de(t_queue* cola);
 void liberarIOyPaquete(t_paquete *paquete, t_list_io *io);
 void liberar_io(t_list_io* io);
 void liberar_arrays_recurso(char** recursos, char** instancias_recursos);
+t_pcb* sacarDe(t_queue* cola, int pid);
+pthread_mutex_t* obtener_mutex_de(t_queue* cola);
 #endif // CONEXIONES_H

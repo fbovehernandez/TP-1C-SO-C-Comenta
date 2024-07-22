@@ -41,15 +41,43 @@ void pasar_a_ready_normal(t_pcb* pcb) {
     
     free(pids);
 }
-
+/*
 void pasar_a_exec(t_pcb* pcb) {
     change_status(pcb, EXEC);
-    pcb_exec = pcb;
+    
+    memcpy(pcb_exec, pcb, sizeof(t_pcb));
+    memcpy(pcb_exec->registros, pcb->registros, sizeof(t_registros));
+    // pcb_exec = pcb;
     
     enviar_pcb(pcb, client_dispatch, ENVIO_PCB, NULL);
 
     liberar_pcb_estructura(pcb);
-    //esperar_cpu();
+    // esperar_cpu();
+}*/
+
+void pasar_a_exec(t_pcb* pcb) {
+    change_status(pcb, EXEC);
+    hay_proceso_en_exec = true;
+
+    // Asegúrate de que pcb_exec esté correctamente inicializado
+    if (pcb_exec == NULL) {
+        pcb_exec = malloc(sizeof(t_pcb));
+        pcb_exec->registros = malloc(sizeof(t_registros));
+    }
+
+    // Copiar los valores del PCB original al PCB exec
+    pcb_exec->pid = pcb->pid;
+    pcb_exec->program_counter = pcb->program_counter;
+    pcb_exec->quantum = pcb->quantum;
+    // Asignar los registros
+    memcpy(pcb_exec->registros, pcb->registros, sizeof(t_registros));
+
+    // Enviar el PCB al cliente de despacho
+    enviar_pcb(pcb, client_dispatch, ENVIO_PCB, NULL);
+    
+    // Liberar la estructura del PCB original
+    liberar_pcb_estructura(pcb);
+
 }
 
 void pasar_a_blocked(t_pcb* pcb) {
@@ -72,6 +100,8 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
     if(pcb->estadoAnterior != NEW) {
         sem_post(&sem_grado_multiprogramacion);
     }
+
+    
       
     // liberar_pcb_de_recursos(pcb->pid); 
     // liberar_pcb_de_io(pcb->pid); -------------> PARA CUANDO ESTA EN LA IO

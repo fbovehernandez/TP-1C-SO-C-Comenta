@@ -1,6 +1,4 @@
 #include "../include/funcionalidades.h"
-#include "../include/conexiones.h"
-#include "../include/sockets.h"
 
 // Definicion de variables globales
 int grado_multiprogramacion;
@@ -10,26 +8,12 @@ int client_dispatch;
 pthread_t escucha_consola;
 int cantidad_bloqueados;
 
-pthread_mutex_t mutex_estado_new;
-pthread_mutex_t mutex_estado_ready;
-pthread_mutex_t mutex_estado_exec;
-pthread_mutex_t no_hay_nadie_en_cpu;
-pthread_mutex_t mutex_estado_blocked;
-pthread_mutex_t mutex_estado_ready_plus;
-pthread_mutex_t mutex_prioritario_por_signal;
-
 sem_t sem_grado_multiprogramacion;
 sem_t sem_hay_pcb_esperando_ready;
 sem_t sem_hay_para_planificar;
 sem_t sem_contador_quantum;
 sem_t sem_planificadores;
-
-t_queue* cola_new;
-t_queue* cola_ready;
-t_queue* cola_blocked;
-t_pcb* pcb_exec;
-t_queue* cola_prioritarios_por_signal;
-t_queue* cola_ready_plus;
+bool hay_proceso_en_exec;
 
 char* algoritmo_planificacion; // Tomamos en convencion que los algoritmos son "FIFO", "VRR" , "RR" (siempre en mayuscula)
 t_log* logger_kernel;
@@ -315,6 +299,7 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
         cantidad_bloqueados--;
         
         esperar_cpu();
+        
         // sem_wait(&termino_desalojo)
         
         if (es_VRR_RR()){
@@ -436,6 +421,8 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     imprimir_pcb(pcb);
     printf("pid del pcb: %d\n", pcb->pid);
 
+    hay_proceso_en_exec = false;
+
     if (es_VRR()) {
         temporal_stop(timer); // Detenemos el temporizador
 
@@ -451,7 +438,6 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
         log_info(logger_kernel, "El quantum restante del proceso con PID %d es: %d", pcb->pid, pcb->quantum);
     }
     
-    pcb_exec = NULL;
     // free(pcb_exec->registros);
     // free(pcb_exec);
     
@@ -480,7 +466,6 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
         case DORMIR_INTERFAZ:
             t_operacion_io* operacion_io = deserializar_io(package->buffer);
             dormir_io(operacion_io, pcb);
-            log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, operacion_io->nombre_interfaz);  
             free(operacion_io->nombre_interfaz);
             free(operacion_io);
             break;
@@ -504,7 +489,6 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             t_pedido* pedido_lectura = deserializar_pedido(package->buffer);
     
             encolar_datos_std(pcb, pedido_lectura);
-            log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, pedido_lectura->interfaz);   
             
             // liberar_pedido_escritura_lectura(pedido_lectura);
             break;
@@ -516,51 +500,13 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
 
             // liberar_pedido_escritura_lectura(pedido_escritura);
             break;
-        /*
-        case FS_CREATE:
-        case FS_DELETE:
-            t_pedido_fs_create_delete* pedido_fs = deserializar_pedido_fs_create_delete(package->buffer);
-            t_list_io* interfaz_crear_destruir = io_esta_en_diccionario(pcb, pedido_fs->nombre_interfaz);
-            
-            if (interfaz_crear_destruir != NULL) {
-                // codigo_operacion operacion = (package->codigo_operacion == FS_CREATE) ? CREAR_ARCHIVO : ELIMINAR_ARCHIVO;
-                codigo_operacion operacion = (devolucion_cpu == FS_CREATE) ? CREAR_ARCHIVO : ELIMINAR_ARCHIVO;
-
-                // Esto se hace en la conexion, aca tiene que encolar el pedido
-                enviar_buffer_fs(interfaz_crear_destruir->socket, pcb->pid, pedido_fs->longitud_nombre_archivo, pedido_fs->nombre_archivo, operacion);
-                
-                log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, pedido_fs->nombre_interfaz);
-            }
-            
-            free(pedido_fs);
-            break;
-        case ESCRITURA_FS: case LECTURA_FS:
-            t_pedido_fs_escritura_lectura* fs_read_write = deserializar_pedido_fs_escritura_lectura(package->buffer);
-            t_list_io* interfaz = io_esta_en_diccionario(pcb,fs_read_write->nombre_interfaz);
-
-            if (interfaz != NULL) {
-                // codigo_operacion operacion = (package->codigo_operacion == ESCRITURA_FS) ? ESCRIBIR_FS_MEMORIA : LEER_FS_MEMORIA;
-                codigo_operacion operacion = (devolucion_cpu == ESCRITURA_FS) ? ESCRIBIR_FS_MEMORIA : LEER_FS_MEMORIA;
-                // Esto se hace en la conexion, aca tiene que encolar el pedido
-                enviar_buffer_fs_escritura_lectura(interfaz->socket,pcb->pid,fs_read_write->largo_archivo,
-                                                    fs_read_write->nombre_archivo,fs_read_write->registro_direccion,fs_read_write->registro_tamanio,fs_read_write->registro_archivo,operacion);
-                log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, fs_read_write->nombre_interfaz);
-            }
-        case FS_TRUNCATE_KERNEL:
-            t_pedido_fs_truncate* fs_truncate = deserializar_fs_truncate(package->buffer);
-            t_list_io* interfaz_truncate = io_esta_en_diccionario(pcb,fs_truncate->nombre_interfaz);
-
-            if (interfaz != NULL) {
-                t_buffer* buffer_truncate = llenar_buffer_fs_truncate(pcb->pid,fs_truncate->largo_archivo,fs_truncate->nombre_archivo,fs_truncate->truncador);
-                enviar_paquete(buffer_truncate,TRUNCAR_ARCHIVO,interfaz->socket);
-                log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, fs_read_write->nombre_interfaz);
-            }
-        */
         default:
             printf("Llego un codigo de operacion inexistente o rompio algo\n");
             exit(-1);
             break;
     }
+    
+    // pcb_exec = NULL;
 
     sem_post(&sem_planificadores);
     cantidad_bloqueados--;
@@ -653,21 +599,31 @@ void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
         printf("datos_std->pcb->pid = %d\n", datos_std->pcb->pid);
         
         // imprimir_datos_stdin();
+        if(interfaz->TipoInterfaz == STDOUT) {
+            pthread_mutex_lock(&mutex_cola_io_stdout); // cambiar nombre_mutex
+            printf("entra aca\n");
+            list_add(interfaz->cola_blocked, datos_std); // VER_SI_HAY_FREE
+            pthread_mutex_unlock(&mutex_cola_io_stdout);
+        } else {
+            pthread_mutex_lock(&mutex_cola_io_stdin); // cambiar nombre_mutex
+            printf("entra aca\n");
+            list_add(interfaz->cola_blocked, datos_std); // VER_SI_HAY_FREE
+            pthread_mutex_unlock(&mutex_cola_io_stdin);
+        }
 
-        pthread_mutex_lock(&mutex_cola_io_generica); // cambiar nombre_mutex
-        printf("entra aca\n");
-        list_add(interfaz->cola_blocked, datos_std); // VER_SI_HAY_FREE
-        pthread_mutex_unlock(&mutex_cola_io_generica);
+        pasar_a_blocked(pcb);
+
+        log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, interfaz->nombreInterfaz);   
 
         // use lo que estaba, antes decia sem_post al mutex, por eso, era un binario o eso entendi
         pthread_mutex_lock(&mutex_lista_io);
         sem_post(interfaz->semaforo_cola_procesos_blocked);
         printf("La operacion deberia realizarse...\n");
         pthread_mutex_unlock(&mutex_lista_io);
-    }
+    } 
+
     // Habria que liberar toda la lista que se cargo adentro de pedido
     free(pedido);
-    // free(interfaz); NECESITAMOS LA INTERFAZ A POSTERIORI
 } 
 
 /* 
@@ -780,6 +736,8 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
     // bool existe_io = dictionary_has_key(diccionario_io, operacion_io->interfaz);
     t_list_io* elemento_encontrado = io_esta_en_diccionario(pcb, io->nombre_interfaz);
 
+    // INVALID_INTERFACE aparece en io_esta_en_diccionario
+
     // t_list_io* elemento_encontrado = validar_io(io, pcb); 
     // Aca tambien deberia cambiar su estado a blocked o Exit respectivamnete
     // capaz estaba mal el nombre y al ser null no lo agarraba y el print rompia
@@ -797,7 +755,8 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
         list_add(elemento_encontrado->cola_blocked, datos_sleep);
         pthread_mutex_unlock(&mutex_cola_io_generica);
 
-        pasar_a_blocked(pcb); // facu y mati cree que la cola de blocked no va asi que mañana habria que sacarla
+        pasar_a_blocked(pcb);
+        log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, io->nombre_interfaz);  
 
         // use lo que estaba, antes decia sem_post al mutex, por eso, era un binario o eso entendi
         pthread_mutex_lock(&mutex_lista_io);
@@ -986,6 +945,7 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
         sem_post(&sem_hay_para_planificar);*/
        
         // sem_wait(&sem_planificadores);
+        t_pcb* proceso_liberado_desbloqueado = sacarDe(cola_blocked, proceso_liberado->pid); //ACA
         pasar_a_ready(proceso_liberado);
         // sem_post(&sem_planificadores);
     }
@@ -1054,7 +1014,6 @@ void FINALIZAR_PROCESO(int pid) {
             pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
         }
     }
-    
     // Ya se hace free en pasar a exit
 }
 
@@ -1102,55 +1061,6 @@ int esta_en_cola_pid(t_queue* cola, int pid, pthread_mutex_t* mutex) {
     queue_destroy(colaAux);
     
     return esta_el_pid;
-}
- 
-t_pcb* sacarDe(t_queue* cola, int pid){
-    t_pcb* pcb;
-    t_queue* colaAux = queue_create();
-    
-    pthread_mutex_t* mutex = obtener_mutex_de(cola);
-
-    pthread_mutex_lock(mutex);
-    while(!queue_is_empty(cola)){
-        t_pcb* pcbAux = queue_pop(cola);
-        if(pcbAux->pid != pid){
-            queue_push(colaAux,pcbAux);
-        } else {
-            pcb = pcbAux;
-        }
-    }
-
-    while(!queue_is_empty(colaAux)){
-        queue_push(cola, queue_pop(colaAux));
-    }
-    pthread_mutex_unlock(mutex);
-
-    queue_destroy(colaAux);
-
-    return pcb;
-}
-
-pthread_mutex_t* obtener_mutex_de(t_queue* cola){
-    
-    if(cola == cola_new) {
-        return &mutex_estado_new;
-    }
-    else if(cola == cola_blocked)  {
-        return &mutex_estado_blocked;
-    }
-    else if(cola == cola_ready) {
-        return &mutex_estado_ready;
-    }
-    else if(cola == cola_prioritarios_por_signal){
-        return &mutex_prioritario_por_signal;
-    }
-    else if(cola == cola_ready_plus){
-        return &mutex_estado_ready_plus;
-    } 
-    else{
-        printf("Error cola invalida");
-        exit(1);
-    }
 }
 
 void INICIAR_PLANIFICACION() {
@@ -1233,7 +1143,7 @@ void PROCESO_ESTADO() {
     mostrar_cola_con_mutex(cola_blocked, &mutex_estado_blocked);
 
     printf("Proceso en EXEC\n");
-    if(pcb_exec != NULL){
+    if(pcb_exec != NULL && hay_proceso_en_exec){
         imprimir_pcb(pcb_exec);
     }else{
         printf("No hay proceso ejecutandose actualmente\n");

@@ -37,7 +37,26 @@ typedef enum {
     NON
 } TipoInterfaz;
 
+typedef struct {
+    int socket_memoria;
+    int socket_cpu;
+    int socket_int;
+} t_sockets;
 
+extern t_sockets* sockets;
+
+typedef struct {
+    char* ip_cpu;
+    char* ip_mem;
+    char* puerto_memoria;
+    char* puerto_cpu_dispatch;
+    char* puerto_cpu_interrupt;
+    char* puerto_io;
+    int quantum;
+    int grado_multiprogramacion;   
+    char* algoritmo_planificacion;
+    t_dictionary* diccionario_recursos;
+} ptr_kernel;
 
 typedef struct {
     int PID;
@@ -422,6 +441,12 @@ typedef struct{
     int socket_io;
     t_config* config_io;
 } t_config_socket_io;
+
+typedef struct {
+    int instancias;
+    t_list* procesos_bloqueados;
+    t_list* procesos_que_lo_retienen;
+} t_recurso;
 
 char* string_operacion(codigo_operacion operacion); 
 void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* buffer);

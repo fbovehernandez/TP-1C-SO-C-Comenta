@@ -6,7 +6,24 @@ t_list* lista_io;
 sem_t sem_cola_io;
 pthread_mutex_t mutex_lista_io;
 pthread_mutex_t mutex_cola_io_generica;
+pthread_mutex_t mutex_cola_io_stdout;
+pthread_mutex_t mutex_cola_io_stdin;
 t_sockets* sockets;
+
+pthread_mutex_t mutex_estado_new;
+pthread_mutex_t mutex_estado_ready;
+pthread_mutex_t mutex_estado_exec;
+pthread_mutex_t no_hay_nadie_en_cpu;
+pthread_mutex_t mutex_estado_blocked;
+pthread_mutex_t mutex_estado_ready_plus;
+pthread_mutex_t mutex_prioritario_por_signal;
+
+t_queue* cola_new;
+t_queue* cola_ready;
+t_queue* cola_blocked;
+t_pcb* pcb_exec;
+t_queue* cola_prioritarios_por_signal;
+t_queue* cola_ready_plus;
 
 ptr_kernel* solicitar_datos(t_config* config_kernel){
     ptr_kernel* datos = malloc(sizeof(ptr_kernel)); 
@@ -95,6 +112,55 @@ int esperar_cliente(int socket_escucha, t_log* logger) {
     return socket_cliente;
 }
 
+t_pcb* sacarDe(t_queue* cola, int pid){
+    t_pcb* pcb;
+    t_queue* colaAux = queue_create();
+    
+    pthread_mutex_t* mutex = obtener_mutex_de(cola);
+
+    pthread_mutex_lock(mutex);
+    while(!queue_is_empty(cola)){
+        t_pcb* pcbAux = queue_pop(cola);
+        if(pcbAux->pid != pid){
+            queue_push(colaAux,pcbAux);
+        } else {
+            pcb = pcbAux;
+        }
+    }
+
+    while(!queue_is_empty(colaAux)){
+        queue_push(cola, queue_pop(colaAux));
+    }
+    pthread_mutex_unlock(mutex);
+
+    queue_destroy(colaAux);
+
+    return pcb;
+}
+
+pthread_mutex_t* obtener_mutex_de(t_queue* cola){
+    
+    if(cola == cola_new) {
+        return &mutex_estado_new;
+    }
+    else if(cola == cola_blocked)  {
+        return &mutex_estado_blocked;
+    }
+    else if(cola == cola_ready) {
+        return &mutex_estado_ready;
+    }
+    else if(cola == cola_prioritarios_por_signal){
+        return &mutex_prioritario_por_signal;
+    }
+    else if(cola == cola_ready_plus){
+        return &mutex_estado_ready_plus;
+    } 
+    else {
+        printf("Error cola invalida");
+        exit(1);
+    }
+}
+
 // Habria que ver de scar logica
 
 void *handle_io_stdin(void *socket_io) {
@@ -173,7 +239,8 @@ void *handle_io_stdin(void *socket_io) {
 
                 // Esto creo que no esta bien, pero no se como liberarlo...
                 // t_pcb* pcb = datos_stdin->pcb;
-                pasar_a_ready(datos_stdin->pcb);
+                t_pcb* pcb = sacarDe(cola_blocked, datos_stdin->pcb->pid);
+                pasar_a_ready(pcb); //ACA
                 
                 // free(datos_stdin->pcb->registros);
                 // free(datos_stdin->pcb);
@@ -290,9 +357,9 @@ void* handle_io_stdout(void* socket_io) {
             recv(socket, &termino_io, sizeof(int), MSG_WAITALL);
 
             printf("Termino io: %d\n", termino_io);
-            if (termino_io == 1) { // El send de termino io envia 1.
-                printf("Termino la IO\n");
-                pasar_a_ready(datos_stdout->pcb);
+            if (termino_io == 1) { // El send de termino io envia 1.                printf("Termino la IO\n");
+                t_pcb* pcb = sacarDe(cola_blocked, datos_stdout->pcb->pid);
+                pasar_a_ready(pcb); //ACA
             }
         } else {
             printf("No se pudo ejecutar la IO\n");
@@ -446,10 +513,24 @@ void *handle_io_generica(void *socket_io) {
             if (termino_io == 1) { // El send de termino io envia 1.
                 printf("Termino la IO\n");
 
-                t_pcb *pcb_copy = malloc(sizeof(t_pcb));               
-                memcpy(pcb_copy, datos_sleep->pcb, sizeof(t_pcb));
+                t_pcb *pcb_copy = malloc(sizeof(t_pcb));       
+                pcb_copy->registros = malloc(sizeof(t_registros));
 
-                pasar_a_ready(pcb_copy); 
+                t_pcb* pcb = sacarDe(cola_blocked, datos_sleep->pcb->pid); // Supongo que siempre se saca de aca, si lo cargaron bien cuando el proceso pasa a blocked
+
+                // Asignar uno por uno porque sino no se copia bien (repetir en todas las io)
+                pcb_copy->pid = pcb->pid;
+                pcb_copy->program_counter = pcb->program_counter;
+                pcb_copy->quantum = pcb->quantum;
+    
+                // Asignar los registros
+                memcpy(pcb_copy->registros, pcb->registros, sizeof(t_registros));
+
+                printf("\nEste es el pcb copy: \n");
+                imprimir_pcb(pcb_copy);
+
+                // t_pcb* pcb = sacarDe(cola_blocked, datos_sleep->pcb->pid);
+                pasar_a_ready(pcb_copy); //ACA
             }
         } else {
             printf("No se pudo ejecutar");
@@ -458,11 +539,7 @@ void *handle_io_generica(void *socket_io) {
         liberar_pcb_estructura(datos_sleep->pcb);
         free(datos_sleep);
     }
-    
-    free(pid_unidades_trabajo);
-    // liberarIOyPaquete(paquete, io);
-    liberar_paquete(paquete);
-    
+
     return NULL;
 }
 

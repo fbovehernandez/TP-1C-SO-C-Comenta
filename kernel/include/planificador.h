@@ -6,6 +6,7 @@
 #include <string.h>
 #include <semaphore.h>
 #include <commons/collections/queue.h>
+#include "funcionalidades.h"
 #include <commons/collections/list.h>
 #include "../../utils/include/sockets.h" 
 #include "../../utils/include/logconfig.h"

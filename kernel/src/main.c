@@ -19,6 +19,10 @@ int main(int argc, char* argv[]) {
     algoritmo_planificacion = datos_kernel->algoritmo_planificacion;
     diccionario_io = dictionary_create();
 
+    hay_proceso_en_exec = false;
+
+    pcb_exec = crear_nuevo_pcb(0);
+
     // Lista global para manejo de I/O
     // lista_io = list_create();
     lista_procesos = list_create();
@@ -37,8 +41,6 @@ int main(int argc, char* argv[]) {
     pthread_mutex_init(&mutex_cola_io_generica, NULL);
     pthread_mutex_init(&no_hay_nadie_en_cpu, NULL);
 
-    // pcb_exec = crear_nuevo_pcb(0);
-    pcb_exec = NULL;
     
     // Hilo 1 -> Hacer un hilo para gestionar la comunicacion con memoria?
     int socket_memoria_kernel = conectar_kernel_memoria(datos_kernel->ip_mem, datos_kernel->puerto_memoria, logger_kernel);

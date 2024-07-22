@@ -57,27 +57,12 @@ extern int grado_multiprogramacion;
 extern int quantum_config;
 extern int contador_pid;  
 
-extern pthread_mutex_t mutex_estado_new;
-extern pthread_mutex_t mutex_estado_ready;
-extern pthread_mutex_t mutex_estado_exec;
-extern pthread_mutex_t mutex_estado_blocked;
-extern pthread_mutex_t mutex_estado_ready_plus;
-extern pthread_mutex_t mutex_prioritario_por_signal;
-extern pthread_mutex_t no_hay_nadie_en_cpu;
-
 extern sem_t sem_grado_multiprogramacion;
 extern sem_t sem_hay_pcb_esperando_ready;
 extern sem_t sem_hay_para_planificar;
 extern sem_t sem_contador_quantum;
 extern sem_t sem_planificadores;
-
-extern t_queue* cola_new;
-extern t_queue* cola_ready;
-extern t_queue* cola_blocked;
-extern t_pcb* pcb_exec;
-extern t_queue* cola_exit;
-extern t_queue* cola_prioritarios_por_signal;
-extern t_queue* cola_ready_plus;
+extern bool hay_proceso_en_exec;
 
 extern char* algoritmo_planificacion; // Tomamos en convencion que los algoritmos son "FIFO", "VRR" , "RR" (siempre en mayuscula)
 extern t_log* logger_kernel;
@@ -152,12 +137,10 @@ int leQuedaTiempoDeQuantum(t_pcb *pcb);
 void mostrar_cola(t_queue* cola);
 void ejecutarComando(char* linea_leida);
 void mostrar_cola_con_mutex(t_queue* cola,pthread_mutex_t* mutex);
-pthread_mutex_t* obtener_mutex_de(t_queue* cola);
 
 
 t_queue* encontrar_en_que_cola_esta(int pid);
 int esta_en_cola_pid(t_queue* cola, int pid, pthread_mutex_t* mutex);
-t_pcb* sacarDe(t_queue* cola, int pid);
 int queue_find(t_queue* cola, int pid);
 t_pcb* sacarPCBDeDondeEste(int pid);
 pthread_mutex_t* obtener_mutex_de(t_queue* cola);
