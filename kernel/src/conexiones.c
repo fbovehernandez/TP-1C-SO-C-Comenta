@@ -473,6 +473,9 @@ void *handle_io_generica(void *socket_io) {
 
     liberar_paquete(paquete);
 
+    t_pcb *pcb_copy = malloc(sizeof(t_pcb));       
+    pcb_copy->registros = malloc(sizeof(t_registros));
+    
     t_pid_unidades_trabajo* pid_unidades_trabajo = malloc(sizeof(t_pid_unidades_trabajo));
 
     while (true) {
@@ -528,13 +531,11 @@ void *handle_io_generica(void *socket_io) {
             if (termino_io == 1) { // El send de termino io envia 1.
                 printf("Termino la IO\n");
 
-                t_pcb *pcb_copy = malloc(sizeof(t_pcb));       
-                pcb_copy->registros = malloc(sizeof(t_registros));
 
                 t_pcb* pcb = sacarDe(cola_blocked, datos_sleep->pcb->pid); // Supongo que siempre se saca de aca, si lo cargaron bien cuando el proceso pasa a blocked
 
                 /*             */
-                pcb_copy->pid = pcb->pid; // CUANDO TERMINA ROMPE ACA VER SEG FAULT
+                pcb_copy->pid = datos_sleep->pcb->pid; // CUANDO TERMINA ROMPE ACA VER SEG FAULT
                 /*             */
 
                 pcb_copy->program_counter = pcb->program_counter;
@@ -557,11 +558,10 @@ void *handle_io_generica(void *socket_io) {
         } else {
             printf("No se pudo ejecutar");
         }    
-        
         liberar_pcb_estructura(datos_sleep->pcb);
         free(datos_sleep);
     }
-
+    
     return NULL;
 }
 

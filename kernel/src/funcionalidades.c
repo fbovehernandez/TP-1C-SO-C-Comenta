@@ -324,7 +324,7 @@ bool es_VRR() {
 void* esperar_VRR(t_pcb* pcb) {
     timer = temporal_create(); // Crearlo ya empieza a contar
     esperar_RR(pcb);
-    
+    temporal_destroy(timer); // Si sacan este hay memleak
     /*int socket_Int = (intptr_t)socket_Int;
     sem_wait(&sem_contador_quantum);*/
 

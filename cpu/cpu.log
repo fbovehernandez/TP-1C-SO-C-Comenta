@@ -832,3 +832,38 @@
 [INFO] 21:18:37:248 LOGGER/(130015:130054): Esperando cliente...
 [INFO] 21:18:37:250 LOGGER/(130015:130055): Se conecto un cliente de interrupt!
 
+[INFO] 22:44:43:471 LOGGER/(2644:2644): Conexion establecida con Memoria
+[INFO] 22:44:46:838 LOGGER/(2644:2689): Servidor iniciado, esperando conexiones!
+[INFO] 22:44:55:575 LOGGER/(2644:2689): Se conecto un cliente de dispatch!
+
+[INFO] 22:44:55:577 LOGGER/(2644:2689): Esperando cliente...
+[INFO] 22:44:55:580 LOGGER/(2644:2690): Se conecto un cliente de interrupt!
+
+[INFO] 22:58:16:917 LOGGER/(6119:6119): Conexion establecida con Memoria
+[INFO] 22:58:20:255 LOGGER/(6119:6166): Servidor iniciado, esperando conexiones!
+[INFO] 22:58:26:378 LOGGER/(6119:6166): Se conecto un cliente de dispatch!
+
+[INFO] 22:58:26:379 LOGGER/(6119:6166): Esperando cliente...
+[INFO] 22:58:26:382 LOGGER/(6119:6167): Se conecto un cliente de interrupt!
+
+[INFO] 23:01:06:654 LOGGER/(7135:7135): Conexion establecida con Memoria
+[INFO] 23:01:10:052 LOGGER/(7135:7179): Servidor iniciado, esperando conexiones!
+[INFO] 23:01:16:305 LOGGER/(7135:7179): Se conecto un cliente de dispatch!
+
+[INFO] 23:01:16:306 LOGGER/(7135:7179): Esperando cliente...
+[INFO] 23:01:16:309 LOGGER/(7135:7180): Se conecto un cliente de interrupt!
+
+[INFO] 23:06:28:779 LOGGER/(9829:9829): Conexion establecida con Memoria
+[INFO] 23:06:32:184 LOGGER/(9829:9882): Servidor iniciado, esperando conexiones!
+[INFO] 23:06:47:256 LOGGER/(9829:9882): Se conecto un cliente de dispatch!
+
+[INFO] 23:06:47:257 LOGGER/(9829:9882): Esperando cliente...
+[INFO] 23:06:47:258 LOGGER/(9829:9883): Se conecto un cliente de interrupt!
+
+[INFO] 23:14:30:153 LOGGER/(12194:12194): Conexion establecida con Memoria
+[INFO] 23:14:33:484 LOGGER/(12194:12240): Servidor iniciado, esperando conexiones!
+[INFO] 23:16:20:055 LOGGER/(12194:12240): Se conecto un cliente de dispatch!
+
+[INFO] 23:16:20:062 LOGGER/(12194:12240): Esperando cliente...
+[INFO] 23:16:20:060 LOGGER/(12194:12241): Se conecto un cliente de interrupt!
+
