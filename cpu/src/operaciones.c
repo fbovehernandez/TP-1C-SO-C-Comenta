@@ -367,7 +367,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     
     char* parametros_a_mostrar = obtener_lista_parametros(list_parametros);
 
-    log_info(logger_CPU,"PID %d - Ejecutando %s - %s",nombreInstruccion,parametros_a_mostrar);
+    log_info(logger_CPU,"PID %d - Ejecutando %s %s",pcb->pid, pasar_instruccion_a_string(nombreInstruccion), parametros_a_mostrar);
 
     free(parametros_a_mostrar);
 
@@ -636,9 +636,8 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
             t_dir_fisica_tamanio* dir_stdin = list_get(lista_direcciones_fisicas_stdin, i);
             printf("Direccion fisica: %d\n", dir_stdin->direccion_fisica);
             printf("Bytes a leer: %d\n", dir_stdin->bytes_lectura);
+            log_info(logger_CPU,"PID: %d - Acción: ESCRIBIR - Dirección Física: %d - Valor: %d",pcb->pid, dir_stdin->direccion_fisica,var_register);
         }
-        
-        log_info(logger_CPU,"PID: %d - Acción: ESCRIBIR - Dirección Física: %d - Valor: %d",pcb-pid,dir_stdin->direccion_fisica,var_register);
 
         t_buffer* buffer_lectura = llenar_buffer_stdio(interfaz->nombre, lista_direcciones_fisicas_stdin, *registro_tamanio_stdin, cantidad_paginas);
         
@@ -697,9 +696,8 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
             t_dir_fisica_tamanio* dir = list_get(lista_direcciones_fisicas_stdout, i);
             printf("Direccion fisica: %d\n", dir->direccion_fisica);
             printf("Bytes a leer: %d\n", dir->bytes_lectura);
+            log_info(logger_CPU,"PID: %d - Acción: ESCRIBIR - Dirección Física: %d - Valor: %d", pcb->pid, dir->direccion_fisica,valor_a_enviar);
         }
-        
-        log_info(logger_CPU,"PID: %d - Acción: ESCRIBIR - Dirección Física: %d - Valor: %d",pcb->pid,dir->direccion_fisica,valor_a_enviar);
 
         printf("\n");
         t_buffer* buffer_escritura = llenar_buffer_stdio(nombre_interfaz, lista_direcciones_fisicas_stdout, *registro_tamanio_stdout, cantidad_paginas);
@@ -786,16 +784,31 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     return 0;
 }
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-// Suponiendo que la estructura t_parametro es algo como esto:
-typedef struct {
-    char* nombre;
-    // otros campos...
-} t_parametro;
-
+char* pasar_instruccion_a_string(TipoInstruccion nombreInstruccion) {
+    switch(nombreInstruccion) {
+        case SET: return "SET";
+        case MOV_IN: return "MOV_IN";
+        case MOV_OUT: return "MOV_OUT";
+        case SUM: return "SUM";
+        case SUB: return "SUB";
+        case JNZ: return "JNZ";
+        case RESIZE: return "RESIZE";
+        case COPY_STRING: return "COPY_STRING";
+        case WAIT: return "WAIT";
+        case SIGNAL: return "SIGNAL";
+        case IO_GEN_SLEEP: return "IO_GEN_SLEEP";
+        case IO_STDIN_READ: return "IO_STDIN_READ";
+        case IO_STDOUT_WRITE: return "IO_STDOUT_WRITE";
+        case IO_FS_CREATE: return "IO_FS_CREATE";
+        case IO_FS_DELETE: return "IO_FS_DELETE";
+        case IO_FS_TRUNCATE: return "IO_FS_TRUNCATE";
+        case IO_FS_WRITE: return "IO_FS_WRITE";
+        case IO_FS_READ: return "IO_FS_READ";
+        case EXIT_INSTRUCCION: return "EXIT_INSTRUCCION";
+        case ERROR_INSTRUCCION: return "ERROR_INSTRUCCION";
+        default: return "UNKNOWN_INSTRUCTION";
+    }
+}
 // Suponiendo que t_list es una lista de punteros a t_parametro
 // y que hay funciones list_size y list_get definidas para manejar esta lista.
 

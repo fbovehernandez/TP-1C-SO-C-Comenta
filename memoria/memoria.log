@@ -1,0 +1,12 @@
+[INFO] 23:01:55:530 LOGGER/(9489:9489): Servidor iniciado, esperando conexiones!
+[INFO] 23:02:12:742 LOGGER/(9489:9560): El nuevo tamaño es:960
+[INFO] 23:02:12:743 LOGGER/(9489:9560): Cantidad de frames disponibles: 32
+[INFO] 23:02:12:744 LOGGER/(9489:9560): PID: 1 - Tamaño Actual: 0- Tamaño a Ampliar: 960
+[INFO] 23:02:14:767 LOGGER/(9489:9560): El nuevo tamaño es:256
+[INFO] 23:02:14:768 LOGGER/(9489:9560): Cantidad de frames disponibles: 2
+[INFO] 23:02:14:768 LOGGER/(9489:9560): PID: 1 - Tamaño Actual: 960- Tamaño a Reducir: 256
+[INFO] 23:02:15:821 LOGGER/(9489:9560): PID: 1 - Accion: ESCRITURA - Direccion fisica: 0 - Tamaño 4
+[INFO] 23:02:16:830 LOGGER/(9489:9560): PID: 1 - Accion: LECTURA - Direccion fisica: 0 - Tamaño 4
+[INFO] 23:02:17:840 LOGGER/(9489:9560): El nuevo tamaño es:1056
+[INFO] 23:02:17:841 LOGGER/(9489:9560): Cantidad de frames disponibles: 24
+[INFO] 23:02:17:841 LOGGER/(9489:9560): PID: 1 - Tamaño Actual: 256- Tamaño a Ampliar: 1056

@@ -38,6 +38,8 @@ int recibir_cantidad_instrucciones(int socket_memoria, int pid);
 t_instruccion* recibir_instruccion(int socket_memoria, t_pcb *pcb);
 void instruccion_destruir(t_instruccion *instruccion);
 t_instruccion* instruccion_deserializar(t_buffer* buffer);
+char* obtener_lista_parametros(t_list* list_parametros);
+char* pasar_instruccion_a_string(TipoInstruccion nombreInstruccion);
 int ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb);
 void enviar_primer_pagina(uint32_t direccion_logica, int pid, int tamanio_en_bytes, int cant_paginas, void* valor_a_escribir, uint32_t length_valor, codigo_operacion cod_op);
 void desalojar(t_pcb* pcb, DesalojoCpu motivo, t_buffer* add);
@@ -45,6 +47,7 @@ void solicitud_dormirIO_kernel(char* interfaz, int unidades);
 t_buffer* llenar_buffer_dormir_IO(char* interfaz, int unidades);
 void enviar_fin_programa(t_pcb *pcb);
 void guardar_estado(t_pcb *pcb);
+void liberar_parametro(t_parametro* parametro);
 void setear_registros_cpu();
 void* seleccionar_registro_cpu(char* nombreRegistro,t_pcb* pcb);
 bool es_de_8_bits(char* registro);
@@ -64,7 +67,7 @@ t_buffer* llenar_buffer_stdio(char* interfaz, t_list* direcciones_fisicas, uint3
 // void enviar_kernel_stdout(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio);
 t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, uint32_t tamanio);
 void mandar_una_dir_fisica(int direccion_fisica);
-void realizar_operacion(int pid,uint32_t* registro_direccion_1, int tamanio_en_byte, void* valor_a_escribir, uint32_t length_valor, int pid, codigo_operacion codigo_operacion);
+void realizar_operacion(int pid,uint32_t* registro_direccion_1, int tamanio_en_byte, void* valor_a_escribir, uint32_t length_valor, codigo_operacion codigo_operacion);
 t_buffer* serializar_lectura(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, int direccion_logica);
 t_buffer* serializar_escritura(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, int direccion_logica, void* valor, uint32_t length_valor);
 t_buffer* serializar_direcciones_fisicas(int cantidad_paginas, t_list* direcciones_fisicas, void* registro_dato_mov_out, int tamanio_valor, int pid);
@@ -78,7 +81,6 @@ int hay_interrupcion();
 void hacer_interrupcion(t_pcb* pcb);
 
 void set_uint8(void* registro_dato_mov_in, uint8_t valor_recibido_8);
-void liberar_parametro(t_parametro* parametro);
 void destruir_parametro(void* parametro_void);
 
 #endif 

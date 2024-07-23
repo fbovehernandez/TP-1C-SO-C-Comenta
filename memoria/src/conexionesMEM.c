@@ -85,7 +85,8 @@ void* handle_io_dialfs(void* socket) {
 }
 
 bool check_same_page(int tamanio, int cant_bytes_uso) { 
-    return tamanio > cant_bytes_uso - tamanio_pagina && tamanio < cant_bytes_uso;
+    // en RESIZE 960 devuelve false 
+    return tamanio > (cant_bytes_uso - tamanio_pagina) && tamanio < cant_bytes_uso;
 }
 
 void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa en handle_kernel, se va a recibir peticiones de cpu y se va a hacer algo con ellas (iternado switch)
@@ -237,7 +238,7 @@ void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_r
 }
 
 void interaccion_user_space(int pid,tipo_operacion operacion, int df_actual, void* user_space_aux, int tam_escrito_anterior, int tamanio, void* registro_escritura, void* registro_lectura) {
-    log_info(logger_memoria,"PID: %d - Accion: %s - Direccion fisica: %d” - Tamaño %d", pid , string_tipo_operacion(operacion), df_actual,tamanio);
+    log_info(logger_memoria,"PID: %d - Accion: %s - Direccion fisica: %d - Tamaño %d", pid , string_tipo_operacion(operacion), df_actual,tamanio);
     
     if(operacion == ESCRITURA) {
         memcpy(user_space_aux + df_actual, registro_escritura + tam_escrito_anterior, tamanio);
@@ -311,17 +312,10 @@ int resize_memory(void* stream) {
     stream += sizeof(int);
     memcpy(&pid, stream, sizeof(int));
 
-    printf("El tamanio que me pide el CPU es : %d\n", tamanio);
-    printf("El pid es :  %d\n", pid);
-
+    printf("El pid es:  %d\n", pid);
+    log_info(logger_memoria, "El nuevo tamaño es:%d", tamanio);
     // Luego verifico si tengo espacio suficiente en memoria
     int out_of_memory = validar_out_of_memory(tamanio);
-    
-    if(out_of_memory == 1) {
-        printf("No hay espacio suficiente en memoria\n");
-        return 1; // 1 es out of memory
-        // send(socket_cpu, &out_of_memory, sizeof(int), 0);
-    } 
                 
     char* pid_char = string_itoa(pid);
     int cant_bytes_uso = cantidad_frames_proceso(pid_char);
@@ -330,12 +324,12 @@ int resize_memory(void* stream) {
     bool same_page = check_same_page(tamanio, cant_bytes_uso);
 
     if(same_page) {
-        printf("El proceso ya tiene una pagina con el tamanio solicitado\n");
+        log_info(logger_memoria, "El proceso ya tiene una pagina con el tamanio solicitado\n");
     } else if(tamanio > cant_bytes_uso) {
-        printf("Voy a asignar tamanio\n");
+        log_info(logger_memoria,"PID: %d - Tamaño Actual: %d - Tamaño a Ampliar: %d",pid,cant_bytes_uso,tamanio);
         asignar_tamanio(tamanio, cant_bytes_uso, pid_char);
     } else {
-        log_info(logger_memoria, "Voy a recortar tamanio");
+        log_info(logger_memoria,"PID: %d - Tamaño Actual: %d - Tamaño a Reducir: %d",pid,cant_bytes_uso,tamanio);
         recortar_tamanio(tamanio, pid_char, cant_bytes_uso);
     }
     
@@ -425,10 +419,13 @@ int cantidad_frames_proceso(char* pid_string) {
 }
 
 int validar_out_of_memory(int tamanio) { // Me esta pidiendo mas de lo que tengo /= Te pasaste del ultimo byte disponible
-    int frames_necesarios = tamanio / tamanio_pagina;
-    int frames_disponibles = contar_frames_libres();
+    int frames_necesarios = tamanio / tamanio_pagina; // 8
+    int frames_disponibles = contar_frames_libres(); 
+    log_info(logger_memoria, "Cantidad de frames disponibles: %d", frames_disponibles);
     if(frames_disponibles < frames_necesarios) {
-        return 1;
+        printf("No hay espacio suficiente en memoria\n");
+        return 1; // 1 es out of memory
+        // send(socket_cpu, &out_of_memory, sizeof(int), 0);
     }
 
     return 0;
@@ -949,7 +946,7 @@ char* instruccion_a_string(TipoInstruccion tipo) {
         case IO_FS_TRUNCATE: return "IO_FS_TRUNCATE";
         case IO_FS_WRITE: return "IO_FS_WRITE";
         case IO_FS_READ: return "IO_FS_READ";
-        case EXIT_INSTRUCCION: return "EXIT_INSTRUCCION";
+        case EXIT_INSTRUCCION: return "EXIT";
         default: return "UNKNOWN";
     }
 }
