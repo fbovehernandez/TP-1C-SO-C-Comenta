@@ -42,7 +42,7 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         
         
         // Esto no se si va, si ya esta activada la interrupcion no deberia scarme con el return antes???
-        if(resultado_io == 1) {
+        if (resultado_io == 1) {
             pthread_mutex_lock(&mutex_interrupcion_quantum);
             hay_interrupcion_quantum = 0;
             pthread_mutex_unlock(&mutex_interrupcion_quantum);
@@ -434,7 +434,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         // printeo como qwueda AX Y EAX
         printf("Cuando hace MOV_IN AX SI queda asi el registro AX del CPU: %u\n", registros_cpu->AX);
         printf("Cuando hace MOV_IN EAX SI queda asi el registro EAX del CPU: %u\n", registros_cpu->EAX);
-        
+        log_info(logger_CPU, "Hice MOV IN");
         break;
     case MOV_OUT: // MOV_OUT (Registro Dirección, Registro Datos)
         recibir_parametros_mov_out(list_parametros, &registro_direccion, &registro_datos, &nombre_registro_dato, &nombre_registro_dir);
@@ -461,7 +461,9 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         recv(socket_memoria, &esperar_confirm, sizeof(int), MSG_WAITALL);
         
-        printf("Esperar confirmacion MOV OUT: %d\n", esperar_confirm);
+        log_info(logger_CPU, "Hice MOV OUT");
+        //Acceso a espacio de usuario: “PID: <PID> - Accion: <LEER / ESCRIBIR> - Direccion fisica: <DIRECCION_FISICA>” - Tamaño <TAMAÑO A LEER / ESCRIBIR>
+        
         break;
     case COPY_STRING:
         // int esperar_confirm_2;
@@ -556,7 +558,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         recv(socket_memoria, &devolucion_resize, sizeof(int), MSG_WAITALL);
 
         if(devolucion_resize == 1) {
-            printf("Che pibe, te quedaste sin memoria\n");
+            log_info(logger_CPU, "OUT OF MEMORY");
             desalojar(pcb, OUT_OF_MEMORY, NULL);
             return 1;
         }

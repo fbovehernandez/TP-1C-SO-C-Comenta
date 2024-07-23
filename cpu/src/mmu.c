@@ -33,8 +33,9 @@ void agregar_frame_en_TLB(int pid, int pagina, int frame) {
 
     int cantidad_entradas = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
 
-    printf("Cantidad de entradas de la TLB: %d\n", cantidad_entradas);
-    printf("Cantidad de entradas ocupadas: %d\n", list_size(tlb));
+    log_info(logger_CPU, "Cantidad de entradas de la TLB: %d", cantidad_entradas);
+    log_info(logger_CPU, "Cantidad de entradas ocupadas: %d", list_size(tlb));
+    
     if(cantidad_entradas > 0) { // Esta habilitada la TLB?
         if(list_size(tlb) == cantidad_entradas) { // Esta completa la TLB ??
             eliminar_victima_TLB();

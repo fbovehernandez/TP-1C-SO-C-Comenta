@@ -934,7 +934,9 @@ void ejecutar_wait_recurso(t_recurso* recurso_obtenido,t_pcb* pcb,char* recurso)
         list_add(recurso_obtenido->procesos_que_lo_retienen, pid_string);
 
         pthread_mutex_lock(&mutex_prioritario_por_signal);
-        queue_push(cola_prioritarios_por_signal, pcb);
+        queue_push(cola_prioritarios_por_signal, pcb); // Cuando dice devolver ejecucion, dice esperar a que salga el que esta ejecutando, o mandale una interrupcion
+                                                      // y que se ejecute el proximo que tenemos en esta cola prioritaria?
+                                                      // Tambien ver que hace wait y no hace signal y se libere el recurso -> ver sofi porfa
         pthread_mutex_unlock(&mutex_prioritario_por_signal);
 
         sem_post(&sem_hay_para_planificar);
