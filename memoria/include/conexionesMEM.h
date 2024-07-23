@@ -88,8 +88,8 @@ t_buffer* llenar_buffer_stdout(char* valor);
 void recibir_resto_direcciones(t_list* lista_direcciones);
 int bytes_usables_por_pagina(int direccion_logica);
 void quiero_frame(t_buffer* buffer);
-void realizar_operacion(tipo_operacion operacion, t_list* direcciones_restantes, void* user_space_aux, void* registro_escritura, void* registro_lectura);
-void interaccion_user_space(tipo_operacion operacion, int df_actual, void* user_space_aux, int tam_escrito_anterior, int tamanio, void* registro_escritura, void* registro_lectura);
+void realizar_operacion(int pid,tipo_operacion operacion, t_list* direcciones_restantes, void* user_space_aux, void* registro_escritura, void* registro_lectura);
+void interaccion_user_space(int pid,tipo_operacion operacion, int df_actual, void* user_space_aux, int tam_escrito_anterior, int tamanio, void* registro_escritura, void* registro_lectura);
 t_direccion_fisica_escritura* deserializar_direccion_fisica_escritura(t_buffer* buffer);
 t_direccion_fisica* deserializar_direccion_fisica_lectura(t_buffer* buffer);
 t_direccion_fisica* armar_dir_lectura(t_direccion_fisica_escritura* df);
@@ -101,6 +101,8 @@ t_pid_stdout* desearializar_pid_stdout(t_buffer* buffer);
 void enviar_valor_leido_a_io(int pid, int socket_io, char* valor, int tamanio);
 void* handle_io_dialfs(void* socket);
 t_memoria_fs_escritura_lectura* deserializar_escritura_lectura(t_buffer* buffer);
+char* string_tipo_operacion(tipo_operacion operacion);
+
 
 // FREE
 void destruir_paginas(t_proceso_paginas* proceso);

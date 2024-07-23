@@ -21,7 +21,7 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
 
     while(pcb->program_counter < cantidad_instrucciones) {
         // sem_wait(pedir_instruccion);
-        // log_info(logger, "PID: %d - FETCH - Program Counter: %d", pcb->pid, pcb->program_counter);?
+        log_info(logger_CPU, "PID: %d - FETCH - Program Counter: %d", pcb->pid, pcb->program_counter);
 
         pedir_instruccion_a_memoria(socket_memoria, pcb);
         t_instruccion* instruccion = recibir_instruccion(socket_memoria, pcb); // Se ejecuta la instruccion tambien
@@ -352,7 +352,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     // log_info(logger, "PID: %d - Ejecutando: %d ", pcb->pid, instruccion->nombre);
     se_seteo_pc = false;
     TipoInstruccion nombreInstruccion = instruccion->nombre;
-    t_list *list_parametros = instruccion->parametros;
+    t_list* list_parametros = instruccion->parametros;
     // printf("La instruccion es de numero %d y tiene %d parametros\n", instruccion->nombre, instruccion->cantidad_parametros);
     bool es_registro_uint8_dato;
     void* registro1;
@@ -364,6 +364,12 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     int pagina;
     uint32_t default_value = 0;
     int cantidad_paginas;
+    
+    char* parametros_a_mostrar = obtener_lista_parametros(list_parametros);
+
+    log_info(logger_CPU,"PID %d - Ejecutando %s - %s",nombreInstruccion,parametros_a_mostrar);
+
+    free(parametros_a_mostrar);
 
     switch (nombreInstruccion) // Ver la repeticion de logica... -> Abstraer
     {
@@ -460,9 +466,9 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         // realizar_operacion(registro_direccion_mov_out, tamanio_en_byte, (void*)registro_dato_mov_out , 0, pcb->pid, ESCRIBIR_DATO_EN_MEM);
 
         recv(socket_memoria, &esperar_confirm, sizeof(int), MSG_WAITALL);
-        
-        log_info(logger_CPU, "Hice MOV OUT");
-        //Acceso a espacio de usuario: “PID: <PID> - Accion: <LEER / ESCRIBIR> - Direccion fisica: <DIRECCION_FISICA>” - Tamaño <TAMAÑO A LEER / ESCRIBIR>
+
+
+        //Acceso a espacio de usuario: PID: <PID> - Accion: <LEER / ESCRIBIR> - Direccion fisica: <DIRECCION_FISICA> - Tamaño <TAMAÑO A LEER / ESCRIBIR>
         
         break;
     case COPY_STRING:
@@ -631,6 +637,8 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
             printf("Direccion fisica: %d\n", dir_stdin->direccion_fisica);
             printf("Bytes a leer: %d\n", dir_stdin->bytes_lectura);
         }
+        
+        log_info(logger_CPU,"PID: %d - Acción: ESCRIBIR - Dirección Física: %d - Valor: %d",pcb-pid,dir_stdin->direccion_fisica,var_register);
 
         t_buffer* buffer_lectura = llenar_buffer_stdio(interfaz->nombre, lista_direcciones_fisicas_stdin, *registro_tamanio_stdin, cantidad_paginas);
         
@@ -691,6 +699,8 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
             printf("Bytes a leer: %d\n", dir->bytes_lectura);
         }
         
+        log_info(logger_CPU,"PID: %d - Acción: ESCRIBIR - Dirección Física: %d - Valor: %d",pcb->pid,dir->direccion_fisica,valor_a_enviar);
+
         printf("\n");
         t_buffer* buffer_escritura = llenar_buffer_stdio(nombre_interfaz, lista_direcciones_fisicas_stdout, *registro_tamanio_stdout, cantidad_paginas);
         // pcb->program_counter++;
@@ -774,6 +784,44 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     }
 
     return 0;
+}
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Suponiendo que la estructura t_parametro es algo como esto:
+typedef struct {
+    char* nombre;
+    // otros campos...
+} t_parametro;
+
+// Suponiendo que t_list es una lista de punteros a t_parametro
+// y que hay funciones list_size y list_get definidas para manejar esta lista.
+
+char* obtener_lista_parametros(t_list* list_parametros) {
+    int total_length = 1;  // Empezamos en 1 para incluir el terminador nulo.
+    int list_length = list_size(list_parametros);
+
+    // Calcular la longitud total necesaria.
+    for (int i = 0; i < list_length; i++) {
+        t_parametro* parametro = list_get(list_parametros, i);
+        total_length += strlen(parametro->nombre) + 1;  // Incluyendo el espacio y el terminador nulo.
+    }
+
+    char* argumentos_a_mostrar = malloc(total_length);
+
+    argumentos_a_mostrar[0] = '\0';  // Inicializar la cadena vacía.
+
+    for (int i = 0; i < list_length; i++) {
+        t_parametro* parametro = list_get(list_parametros, i);
+        strcat(argumentos_a_mostrar, parametro->nombre);
+        if (i < list_length - 1) {
+            strcat(argumentos_a_mostrar, " ");
+        }
+    }
+
+    return argumentos_a_mostrar;
 }
 
 /* 
@@ -1343,3 +1391,5 @@ void liberar_parametro(t_parametro* parametro){
     free(parametro->nombre);
     free(parametro);
 }
+
+

@@ -122,9 +122,6 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
         uint32_t registro;
         void* user_space_aux;
 
-        bool es_uint8;
-        int direccion_fisica;
-        
         // Evaluamos el codigo de operacion
         switch(paquete->codigo_operacion) { 
              case RESIZE_MEMORIA: 
@@ -167,7 +164,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
                 void* registro_lectura = malloc(pedido_op->length_valor);
             
-                realizar_operacion(LECTURA, direcciones_restantes_mov_in, user_space_aux, NULL, registro_lectura);
+                realizar_operacion(pedido_op->pid, LECTURA, direcciones_restantes_mov_in, user_space_aux, NULL, registro_lectura);
 
                 printf("El valor leido para int es: %d\n", *(uint8_t*)registro_lectura);
                 send(socket_cpu, registro_lectura, pedido_op->length_valor, 0);
@@ -188,7 +185,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
                 void* registro_escritura = pedido_operacion->valor_a_escribir;
 
-                realizar_operacion(ESCRITURA, direcciones_restantes_escritura, user_space_aux, registro_escritura, NULL); 
+                realizar_operacion(pedido_operacion->pid,ESCRITURA, direcciones_restantes_escritura, user_space_aux, registro_escritura, NULL); 
                 // printf("Registro escrito como int %d\n", *((uint32_t*)registro_escritura));
 
                 send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
@@ -224,7 +221,7 @@ hacer un send y recv + para el valor, y me parecio que era mas paja.
  
 ******/
 
-void realizar_operacion(tipo_operacion operacion, t_list* direcciones_restantes, void* user_space_aux, void* registro_escritura, void* registro_lectura) {
+void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_restantes, void* user_space_aux, void* registro_escritura, void* registro_lectura) {
 
     // printf("Antes de entrar al for, necesito %d paginas\n", df->cantidad_paginas);
     int tamanio_anterior = 0;
@@ -234,12 +231,14 @@ void realizar_operacion(tipo_operacion operacion, t_list* direcciones_restantes,
         printf("La direccion fisica es: %d\n", dir_fisica_tam->direccion_fisica);
         printf("El tamanio es: %d\n", dir_fisica_tam->bytes_lectura);
 
-        interaccion_user_space(operacion, dir_fisica_tam->direccion_fisica, user_space_aux, tamanio_anterior, dir_fisica_tam->bytes_lectura, registro_escritura, registro_lectura);
+        interaccion_user_space(pid,operacion, dir_fisica_tam->direccion_fisica, user_space_aux, tamanio_anterior, dir_fisica_tam->bytes_lectura, registro_escritura, registro_lectura);
         tamanio_anterior += dir_fisica_tam->bytes_lectura;
     }
 }
 
-void interaccion_user_space(tipo_operacion operacion, int df_actual, void* user_space_aux, int tam_escrito_anterior, int tamanio, void* registro_escritura, void* registro_lectura) {
+void interaccion_user_space(int pid,tipo_operacion operacion, int df_actual, void* user_space_aux, int tam_escrito_anterior, int tamanio, void* registro_escritura, void* registro_lectura) {
+    log_info(logger_memoria,"PID: %d - Accion: %s - Direccion fisica: %d” - Tamaño %d", pid , string_tipo_operacion(operacion), df_actual,tamanio);
+    
     if(operacion == ESCRITURA) {
         memcpy(user_space_aux + df_actual, registro_escritura + tam_escrito_anterior, tamanio);
         printf("Escritura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
@@ -250,6 +249,17 @@ void interaccion_user_space(tipo_operacion operacion, int df_actual, void* user_
         printf("Contenido leido: %.*d\n", tamanio, *(uint8_t*)(registro_lectura + tam_escrito_anterior));
     }
 }                                                                                                                                 
+
+char* string_tipo_operacion(tipo_operacion operacion){
+    switch(operacion){
+        case ESCRITURA: return "ESCRITURA";
+        case LECTURA: return "LECTURA";
+        default:
+            log_error(logger_memoria,"Rompio algo, llego un tipo operacion null");
+            exit(1);
+            return "";
+    }
+}
 
 void quiero_frame(t_buffer* buffer) {
     t_solicitud_frame* pedido_frame = deserializar_solicitud_frame(buffer);
@@ -325,7 +335,7 @@ int resize_memory(void* stream) {
         printf("Voy a asignar tamanio\n");
         asignar_tamanio(tamanio, cant_bytes_uso, pid_char);
     } else {
-        printf("Voy a recortar tamanio");
+        log_info(logger_memoria, "Voy a recortar tamanio");
         recortar_tamanio(tamanio, pid_char, cant_bytes_uso);
     }
     
@@ -543,7 +553,7 @@ void* handle_kernel(void* socket) {
 
                 void* registro_lectura = malloc(pid_stdout->registro_tamanio);
             
-                realizar_operacion(LECTURA, pid_stdout->lista_direcciones, user_space_aux, NULL, registro_lectura);
+                realizar_operacion(pid_stdout->pid, LECTURA, pid_stdout->lista_direcciones, user_space_aux, NULL, registro_lectura);
 
                 char* registro_string = malloc(pid_stdout->registro_tamanio + 1);
                 
@@ -806,7 +816,8 @@ void* handle_io_stdin(void* socket) {
 
                 char* registro_escritura = escritura_stdin->valor;
 
-                realizar_operacion(ESCRITURA, escritura_stdin->pid_stdin->lista_direcciones, user_space_aux, registro_escritura, NULL); 
+                realizar_operacion(escritura_stdin->pid_stdin->pid, ESCRITURA, escritura_stdin->pid_stdin->lista_direcciones, user_space_aux, registro_escritura, NULL); 
+                
                 printf("\n\nRegistro escrito como char* %s\n\n", ((char*)registro_escritura));
                 
                 int terminoOk = 1;
