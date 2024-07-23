@@ -97,7 +97,6 @@ void change_status(t_pcb* pcb, Estado new_status);
 bool match_nombre(char* interfaz);
 t_list_io* validar_io(t_operacion_io* operacion_io, t_pcb* pcb);
 void _ejecutarComando(void* _, char* linea_leida);
-void *esperar_RR(t_pcb* sockets_Int) ;
 void* detener_planificaciones();
 
 t_parametro* deserializar_parametro(t_buffer* buffer);
@@ -129,8 +128,8 @@ t_buffer* llenar_buffer_fs_truncate(int pid,int largo_archivo,char* nombre_archi
 bool es_VRR_RR();
 bool es_RR();
 bool es_VRR();
-void *esperar_VRR(t_pcb* pcb);
-void *esperar_RR(t_pcb* pcb);
+void* esperar_VRR(void* pcb);
+void* esperar_RR(void* pcb) ;
 void volver_a_settear_quantum(t_pcb* pcb);
 int max(int num1, int num2);
 int leQuedaTiempoDeQuantum(t_pcb *pcb);

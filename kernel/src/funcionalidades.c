@@ -285,14 +285,15 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
         pthread_mutex_lock(&no_hay_nadie_en_cpu);
         pcb = proximo_a_ejecutar();
         pasar_a_exec(pcb);
+        
         pthread_mutex_unlock(&no_hay_nadie_en_cpu);
         
         if (es_RR()) {
             printf("\nES RR... A dormir el hilo!\n\n");
-            pthread_create(&hilo_quantum, NULL, (void *)esperar_RR, (void *)pcb);
+            pthread_create(&hilo_quantum, NULL, (void*) esperar_RR, (void *)pcb);
             sem_post(&sem_contador_quantum);
         } else if (es_VRR()) {
-            pthread_create(&hilo_quantum, NULL, (void *)esperar_VRR, (void *)pcb);
+            pthread_create(&hilo_quantum, NULL, esperar_VRR, (void *)pcb);
             sem_post(&sem_contador_quantum);
         }
 
@@ -303,7 +304,7 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
         
         // sem_wait(&termino_desalojo);
         
-        if (es_VRR_RR()){
+        if (es_VRR_RR()) {
             pthread_cancel(hilo_quantum);
         }
     }
@@ -321,9 +322,12 @@ bool es_VRR() {
     return strcmp(algoritmo_planificacion, "VRR") == 0;
 }
 
-void* esperar_VRR(t_pcb* pcb) {
+void* esperar_VRR(void* pcb) {
+    t_pcb* pcb_nuevo = (t_pcb*) pcb;
     timer = temporal_create(); // Crearlo ya empieza a contar
+    log_info(logger_kernel, "Cuando entro en esperar VRR, el pid del pcb es: %d\n", pcb_nuevo->pid);
     esperar_RR(pcb);
+    // temporal_destroy(timer);
 
     /*int socket_Int = (intptr_t)socket_Int;
     sem_wait(&sem_contador_quantum);*/
@@ -338,12 +342,13 @@ void* esperar_VRR(t_pcb* pcb) {
     void temporal_resume(t_temporal* temporal);
 */
 
-void* esperar_RR(t_pcb* pcb) {
+void* esperar_RR(void* pcb) {
     /* Esperar_cpu_RR */
-    int quantum = pcb->quantum;
+    t_pcb* pcb_nuevo = (t_pcb*) pcb;
+    int quantum = pcb_nuevo->quantum;
     int socket_Int = sockets->socket_int;
+    
     sem_wait(&sem_contador_quantum);
-  
     codigo_operacion interrupcion_cpu = INTERRUPCION_CPU;
     usleep(quantum * 1000);
     
@@ -352,7 +357,7 @@ void* esperar_RR(t_pcb* pcb) {
     if (send(socket_Int, &interrupcion_cpu, sizeof(codigo_operacion), 0) == -1) {
         perror("Error al enviar la interrupción");
     } else {
-        log_info(logger_kernel, "envie interrupcion para PID %d despues de %d", pcb->pid, pcb->quantum);
+        log_info(logger_kernel, "Envie interrupcion para PID %d despues de %d", pcb_nuevo->pid, pcb_nuevo->quantum);
     }   
     
     return NULL;
@@ -431,6 +436,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     if(!queue_is_empty(cola_exec)) {
         pthread_mutex_lock(&mutex_estado_exec);
         t_pcb* pcb_anterior = queue_pop(cola_exec);
+        printf("el pid del pcb anterior es:%d", pcb_anterior->pid);
         pthread_mutex_unlock(&mutex_estado_exec);
 
         liberar_pcb_estructura(pcb_anterior);
@@ -449,10 +455,14 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
 
         int64_t tiempo_transcurrido = temporal_gettime(timer);  // Obtenemos el tiempo transcurrido en milisegundos
         temporal_destroy(timer);
-        printf("Tiempo transcurrido: %ld ms\n", tiempo_transcurrido);
-      
+       //  printf("Tiempo transcurrido: %ld ms\n", tiempo_transcurrido);
+
+
+        printf("VOY A IMPRIMIR EL PCB DESPUES DE BORRAR EL TIMER\n");
+        imprimir_pcb(pcb);
+
         int64_t tiempo_restante = max(0, min(quantum_config, pcb->quantum - tiempo_transcurrido));  // Fede scarpa orgulloso
-        printf("Tiempo restante: %ld ms\n", tiempo_restante);
+        printf("Tiempo restante: %ld ms\n", tiempo_restante); // jejejej
 
         // Ajustamos el quantum, asegurándonos de que no sea menor a 0
         pcb->quantum = tiempo_restante;
@@ -475,14 +485,18 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
             break;
         case INTERRUPCION_QUANTUM:
+            printf("VOY A IMPRIMIR PCB DESPUES DE INTERRUPCION QUANTUM\n");
+            imprimir_pcb(pcb);
             log_info(logger_kernel, "PID: %d - Desalojado por fin de Quantum", pcb->pid);
             pasar_a_ready(pcb);
             break;
         case DORMIR_INTERFAZ:
+            printf("VOY A IMPRIMIR PCB DESPUES DE DORMIR INTERFAZ\n");
+            imprimir_pcb(pcb);
+         
             t_operacion_io* operacion_io = deserializar_io(package->buffer);
             dormir_io(operacion_io, pcb);
-            free(operacion_io->nombre_interfaz);
-            free(operacion_io);
+            
             break;
         case WAIT_RECURSO: case SIGNAL_RECURSO:
             t_parametro* recurso = deserializar_parametro(package->buffer);
@@ -762,6 +776,7 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
 
         datos_sleep->unidad_trabajo = io->unidadesDeTrabajo;
         datos_sleep->pcb = pcb;
+        
         printf("El pid de datos_sleep de dormir_io: %d\n", pcb->pid);
         
         pasar_a_blocked(pcb);
@@ -777,8 +792,12 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
         sem_post(elemento_encontrado->semaforo_cola_procesos_blocked);
         printf("La operacion deberia realizarse...\n");
         pthread_mutex_unlock(&mutex_lista_io);
+        free(io->nombre_interfaz);
+        free(io);
     } else {
         printf("ES NULL LA IO\n");
+        free(io->nombre_interfaz);
+        free(io);
         return;
     }
 }

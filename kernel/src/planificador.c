@@ -24,7 +24,7 @@ void pasar_a_ready(t_pcb *pcb) {
     printf("llega hasta aca el PID: %d\n", pcb->pid);
     sem_post(&sem_hay_para_planificar);
     // sem_post(&sem_planificadores); // Mati: Puede que este semaforo este mejor arriba que el otro semaforo
-    cantidad_bloqueados--;
+    // cantidad_bloqueados--;
 }
 
 void pasar_a_ready_normal(t_pcb* pcb) {
@@ -93,7 +93,7 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
     if(pcb->estadoAnterior != NEW) {
         sem_post(&sem_grado_multiprogramacion);
     }
-    
+
     // liberar_pcb_de_recursos(pcb->pid); 
     // liberar_pcb_de_io(pcb->pid); -------------> PARA CUANDO ESTA EN LA IO
     // liberar_pcb((void*)pcb);

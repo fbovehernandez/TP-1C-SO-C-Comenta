@@ -470,27 +470,9 @@ void *handle_io_generica(void *socket_io) {
             printf("Llega al default.");
             return NULL;
     }
-
-    // liberar_paquete(paquete);
-
-    t_pcb *pcb_copy = malloc(sizeof(t_pcb));       
-    pcb_copy->registros = malloc(sizeof(t_registros));
-    
-    if (pcb_copy->registros == NULL) {
-        perror("Error al asignar memoria para pcb_copy->registros");
-        free(pcb_copy);
-        return NULL;
-    }
     
     t_pid_unidades_trabajo* pid_unidades_trabajo = malloc(sizeof(t_pid_unidades_trabajo));
     
-    if (pid_unidades_trabajo == NULL) {
-        perror("Error al asignar memoria para pid_unidades_trabajo");
-        free(pcb_copy->registros);
-        free(pcb_copy);
-        return NULL;
-    }
-
     while (true) {
         printf("Esperando semaforo\n");
         
@@ -541,33 +523,22 @@ void *handle_io_generica(void *socket_io) {
             int termino_io;
         
             recv(socket, &termino_io, sizeof(int), MSG_WAITALL);
+            if (termino_io == 1) { // El send de termino io envia 1.
+                printf("Termino io: %d\n", termino_io);
 
-            printf("Termino io: %d\n", termino_io);
-            t_pcb* pcb = sacarDe(cola_blocked, datos_sleep->pcb->pid);
+                // pthread_mutex_lock(&mutex_estado_blocked); 
+                t_pcb* pcb = sacarDe(cola_blocked, datos_sleep->pcb->pid);
+                // pthread_mutex_unlock(&mutex_estado_blocked);
 
-            if (pcb != NULL) {
-                printf("imprimo pcb despues de termino io\n");
-                printf("HELP, el pid del pcb es:%d\n", pcb->pid);
-                printf("el registro EBX del pcb:%d\n", pcb->registros->EBX);
-                printf("el registro EBX del pcb:%d\n", pcb->registros->EBX);
-                printf("el registro EBX del pcb:%d\n", pcb->registros->EBX);
-
-                printf("Ahora imprimo pero con datos_sleep->pcb\n");
-                printf("HELP, el pid del pcb es:%d\n", datos_sleep->pcb->pid);
-                printf("el registro EBX del pcb datos sleep es:%d\n", datos_sleep->pcb->registros->EBX);
-                printf("el registro EBX del pcb:%d\n", pcb->registros->EBX);
-                printf("el registro EBX del pcb:%d\n", pcb->registros->EBX);
-
-                if (termino_io == 1) { // El send de termino io envia 1.
-                    cantidad_bloqueados++;
-                    sem_wait(&sem_planificadores);
-                    pasar_a_ready(pcb); 
-                    sem_post(&sem_planificadores);
-                    cantidad_bloqueados--;                
-                }
-            } else {
-                printf("No se encontró el PCB con PID %d en la cola de bloqueados.\n", datos_sleep->pcb->pid);
+                cantidad_bloqueados++;
+                sem_wait(&sem_planificadores);
+                pasar_a_ready(pcb); 
+                sem_post(&sem_planificadores);
+                cantidad_bloqueados--;                
             }
+        }else{
+            printf("No se encontró el PCB con PID %d en la cola de bloqueados.\n", datos_sleep->pcb->pid);
+        }
             
 /*
             if(pcb != NULL) {
@@ -607,10 +578,7 @@ void *handle_io_generica(void *socket_io) {
                 free(datos_sleep);
             }
 
-        } else {
-            printf("No se pudo ejecutar");
-        }    
-    }
+        }   
 
     liberar_paquete(paquete);
     return NULL;

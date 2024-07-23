@@ -26,21 +26,20 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         pedir_instruccion_a_memoria(socket_memoria, pcb);
         t_instruccion* instruccion = recibir_instruccion(socket_memoria, pcb); // Se ejecuta la instruccion tambien
         // sem_post(pedir_instruccion);
+        if (instruccion == NULL) {
+            printf("Error al recibir instrucción.\n");
+            return;
+        }
 
         // if(instruccion->nombre == ERROR_INSTRUCCION) return;
 
         printf("Esta ejecutando %d\n", pcb->pid);   
         int resultado_io = ejecutar_instruccion(instruccion, pcb);
         
-        liberar_parametros_de(instruccion->parametros);
-        free(instruccion);
+        instruccion_destruir(instruccion);
 
         printf("\nEl program counter es %d despues de aumentarlo.\n", pcb->program_counter);
         
-        if(hay_interrupcion()) {
-            hacer_interrupcion(pcb);
-            return;
-        } 
         
         // Esto no se si va, si ya esta activada la interrupcion no deberia scarme con el return antes???
         if(resultado_io == 1) {
@@ -59,6 +58,10 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
             return;
         }
         
+        if(hay_interrupcion()) {
+            hacer_interrupcion(pcb);
+            return;
+        } 
         
         // pcb->program_counter++; // Ojo con esto! porque esta despues del return, osea q en el IO_GEN_SLEEP antes de desalojar hay que aumentar el pc
         // Podria ser una funcion directa -> Por ahora no es esencial
@@ -70,6 +73,31 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         */
     }
 
+}
+
+void destruir_parametro(void* parametro_void) {
+    t_parametro* parametro = (t_parametro*)parametro_void;
+    if (parametro != NULL) {
+        if (parametro->nombre != NULL) {
+            free(parametro->nombre); // Liberar el nombre del parámetro
+        }
+        free(parametro);  // Liberar el parámetro en sí
+    }
+}
+
+void instruccion_destruir(t_instruccion* instruccion) {
+    if (instruccion != NULL) {
+        if (instruccion->parametros != NULL && !list_is_empty(instruccion->parametros)) {
+            for (int i = 0; i < instruccion->cantidad_parametros; i++) {
+                t_parametro* parametro = list_get(instruccion->parametros, i);
+                destruir_parametro(parametro);
+            }    
+
+            // list_clean_and_destroy_elements(instruccion->parametros, free);  // Destruir la lista de parámetros -> Sino hacer free
+        }
+
+        free(instruccion);  // Liberar la instrucción en sí
+    }
 }
 
 int hay_interrupcion() {
@@ -233,13 +261,11 @@ t_instruccion *instruccion_deserializar(t_buffer *buffer) {
         memcpy(&(parametro->length), stream, sizeof(int));
         // printf("Este es el largo del parametro %d que llego: %d\n", i, parametro->length);
         stream += sizeof(int);
-
-        parametro->nombre = malloc(sizeof(char) * parametro->length + 1);
-        memcpy(parametro->nombre, stream, sizeof(char) * parametro->length);
-
+        
+        parametro->nombre = malloc(parametro->length + 1);
+        memcpy(parametro->nombre, stream, parametro->length);
         parametro->nombre[parametro->length] = '\0';
         stream += parametro->length;
-        // printf("Parametro: %s\n", parametro->nombre);
 
         list_add(instruccion->parametros, parametro); 
         // free(parametro->nombre);
@@ -733,6 +759,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     */
     default:
         printf("Error: No existe ese tipo de instruccion\n");
+        // instruccion_destruir(instruccion);
         printf("La instruccion recibida es: %d\n", nombreInstruccion);
         desalojar(pcb, FIN_PROCESO, NULL);
         
@@ -1309,12 +1336,6 @@ typedef struct {
     int length;
 } t_parametro;
 */ 
-
-void liberar_parametros_de(t_list* parametros) {
-    if(!list_is_empty(parametros)){
-        list_destroy_and_destroy_elements(parametros, (void (*)(void *)) liberar_parametro);
-    }
-}
 
 void liberar_parametro(t_parametro* parametro){
     free(parametro->nombre);
