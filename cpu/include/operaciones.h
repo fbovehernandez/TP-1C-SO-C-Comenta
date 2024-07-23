@@ -36,6 +36,7 @@ t_buffer* llenar_buffer_solicitud_instruccion(t_solicitud_instruccion* solicitud
 t_paquete* recibir_memoria(int socket_memoria);
 int recibir_cantidad_instrucciones(int socket_memoria, int pid);
 t_instruccion* recibir_instruccion(int socket_memoria, t_pcb *pcb);
+void instruccion_destruir(t_instruccion *instruccion);
 t_instruccion* instruccion_deserializar(t_buffer* buffer);
 int ejecutar_instruccion(t_instruccion* instruccion,t_pcb* pcb);
 void enviar_primer_pagina(uint32_t direccion_logica, int pid, int tamanio_en_bytes, int cant_paginas, void* valor_a_escribir, uint32_t length_valor, codigo_operacion cod_op);

@@ -471,12 +471,25 @@ void *handle_io_generica(void *socket_io) {
             return NULL;
     }
 
-    liberar_paquete(paquete);
+    // liberar_paquete(paquete);
 
     t_pcb *pcb_copy = malloc(sizeof(t_pcb));       
     pcb_copy->registros = malloc(sizeof(t_registros));
     
+    if (pcb_copy->registros == NULL) {
+        perror("Error al asignar memoria para pcb_copy->registros");
+        free(pcb_copy);
+        return NULL;
+    }
+    
     t_pid_unidades_trabajo* pid_unidades_trabajo = malloc(sizeof(t_pid_unidades_trabajo));
+    
+    if (pid_unidades_trabajo == NULL) {
+        perror("Error al asignar memoria para pid_unidades_trabajo");
+        free(pcb_copy->registros);
+        free(pcb_copy);
+        return NULL;
+    }
 
     while (true) {
         printf("Esperando semaforo\n");
@@ -493,6 +506,8 @@ void *handle_io_generica(void *socket_io) {
         pid_unidades_trabajo->unidades_trabajo = datos_sleep->unidad_trabajo;
 
         printf("La cola nos saca esto: PID %d, UT %d\n", datos_sleep->pcb->pid, datos_sleep->unidad_trabajo);
+        // printf("LO IMPRIMO DESPUES DE SACARLO DE LA COLA\n");
+        // imprimir_pcb(datos_sleep->pcb);
         
         // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
         // hay que agregar un send recv de validacion en cada io. Esto es lo que use en fs
@@ -528,40 +543,76 @@ void *handle_io_generica(void *socket_io) {
             recv(socket, &termino_io, sizeof(int), MSG_WAITALL);
 
             printf("Termino io: %d\n", termino_io);
-            if (termino_io == 1) { // El send de termino io envia 1.
-                printf("Termino la IO\n");
+            t_pcb* pcb = sacarDe(cola_blocked, datos_sleep->pcb->pid);
 
+            if (pcb != NULL) {
+                printf("imprimo pcb despues de termino io\n");
+                printf("HELP, el pid del pcb es:%d\n", pcb->pid);
+                printf("el registro EBX del pcb:%d\n", pcb->registros->EBX);
+                printf("el registro EBX del pcb:%d\n", pcb->registros->EBX);
+                printf("el registro EBX del pcb:%d\n", pcb->registros->EBX);
 
-                t_pcb* pcb = sacarDe(cola_blocked, datos_sleep->pcb->pid); // Supongo que siempre se saca de aca, si lo cargaron bien cuando el proceso pasa a blocked
+                printf("Ahora imprimo pero con datos_sleep->pcb\n");
+                printf("HELP, el pid del pcb es:%d\n", datos_sleep->pcb->pid);
+                printf("el registro EBX del pcb datos sleep es:%d\n", datos_sleep->pcb->registros->EBX);
+                printf("el registro EBX del pcb:%d\n", pcb->registros->EBX);
+                printf("el registro EBX del pcb:%d\n", pcb->registros->EBX);
 
-                /*             */
-                pcb_copy->pid = datos_sleep->pcb->pid; // CUANDO TERMINA ROMPE ACA VER SEG FAULT
-                /*             */
+                if (termino_io == 1) { // El send de termino io envia 1.
+                    cantidad_bloqueados++;
+                    sem_wait(&sem_planificadores);
+                    pasar_a_ready(pcb); 
+                    sem_post(&sem_planificadores);
+                    cantidad_bloqueados--;                
+                }
+            } else {
+                printf("No se encontró el PCB con PID %d en la cola de bloqueados.\n", datos_sleep->pcb->pid);
+            }
+            
+/*
+            if(pcb != NULL) {
+                printf("imprimo pc despues de termino io\n");
+                imprimir_pcb(pcb);
+            } else {
+                printf("No se encontro el pcb con pid %d en la cola de bloqueados.\n", datos_sleep->pcb->pid);
+            }	
+            
+            if (termino_io == 1 && pcb != NULL) { // El send de termino io envia 1.
 
-                pcb_copy->program_counter = pcb->program_counter;
-                pcb_copy->quantum = pcb->quantum;
-                pcb_copy->estadoAnterior = pcb->estadoAnterior;
-                pcb_copy->estadoActual = BLOCKED;
-                // Asignar los registros
-                memcpy(pcb_copy->registros, pcb->registros, sizeof(t_registros));
-
-                printf("\nEste es el pcb copy: \n");
-                imprimir_pcb(pcb_copy);
-
-                // t_pcb* pcb = sacarDe(cola_blocked, datos_sleep->pcb->pid);
+                    /*
+                    pcb_copy->pid = datos_sleep->pcb->pid; // CUANDO TERMINA ROMPE ACA VER SEG FAULT
+                    pcb_copy->program_counter = pcb->program_counter;
+                    pcb_copy->quantum = pcb->quantum;
+                    pcb_copy->estadoAnterior = pcb->estadoAnterior;
+                    pcb_copy->estadoActual = BLOCKED;
+                    // Asignar los registros
+                    // memcpy(pcb_copy->registros, pcb->registros, sizeof(t_registros));
+                    pcb_copy->registros = pcb->registros;
+                    */
+           /*          
                 cantidad_bloqueados++;
                 sem_wait(&sem_planificadores);
-                pasar_a_ready(pcb_copy); // ACA
+                pasar_a_ready(pcb); 
                 sem_post(&sem_planificadores);
-                cantidad_bloqueados--;
+                cantidad_bloqueados--;                
+            }*/
+
+            // free(datos_sleep->pcb->registros);
+            // free(datos_sleep->pcb);
+            // Si el pcb es distinto de NULL, entonces libera datos_sleep que contiene al pcb 
+
+            if(datos_sleep->pcb != NULL) {
+                // free(datos_sleep->pcb->registros);
+                // free(datos_sleep->pcb);
+                free(datos_sleep);
             }
+
         } else {
             printf("No se pudo ejecutar");
         }    
-        liberar_pcb_estructura(datos_sleep->pcb);
-        free(datos_sleep);
     }
-    
+
+    liberar_paquete(paquete);
     return NULL;
 }
 

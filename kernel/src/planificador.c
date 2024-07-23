@@ -53,12 +53,18 @@ void pasar_a_exec(t_pcb* pcb) {
 }*/
 
 void pasar_a_exec(t_pcb* pcb) {
+    if(pcb == NULL){
+        printf("Es el ultimo o estas metiendo cualquier cosa");
+        return;
+    }    
+        
     change_status(pcb, EXEC);
     // hay_proceso_en_exec = true;
 
     pthread_mutex_lock(&mutex_estado_exec);
     queue_push(cola_exec, pcb);
     pthread_mutex_unlock(&mutex_estado_exec);
+    
     
     printf("PID que se va a ejecutar: %d\n", pcb->pid);
     enviar_pcb(pcb, client_dispatch, ENVIO_PCB, NULL);
@@ -87,14 +93,12 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
     if(pcb->estadoAnterior != NEW) {
         sem_post(&sem_grado_multiprogramacion);
     }
-
     
-      
     // liberar_pcb_de_recursos(pcb->pid); 
     // liberar_pcb_de_io(pcb->pid); -------------> PARA CUANDO ESTA EN LA IO
     // liberar_pcb((void*)pcb);
     // liberar_recurso_de_pcb(pcb->pid);
-    liberar_pcb_estructura(pcb);
+    liberar_pcb_estructura(pcb); 
 
     // sem_post(&sem_planificadores);
     // cantidad_bloqueados--;

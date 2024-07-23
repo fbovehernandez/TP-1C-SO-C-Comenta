@@ -324,7 +324,7 @@ bool es_VRR() {
 void* esperar_VRR(t_pcb* pcb) {
     timer = temporal_create(); // Crearlo ya empieza a contar
     esperar_RR(pcb);
-    temporal_destroy(timer); // Si sacan este hay memleak
+
     /*int socket_Int = (intptr_t)socket_Int;
     sem_wait(&sem_contador_quantum);*/
 
@@ -409,7 +409,7 @@ t_paquete *recibir_cpu() {
 
         printf("Esperando recibir paquete\n");
         recv(client_dispatch, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
-        printf("Recibi el codigo de operacion : %s\n", string_operacion(paquete->codigo_operacion));
+        printf("Recibi el codigo de operacion : %d\n", paquete->codigo_operacion);
 
         recv(client_dispatch, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
         paquete->buffer->stream = malloc(paquete->buffer->size);
@@ -438,8 +438,9 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     
     // Deserializo antes el pcb, me ahorro cierta logica y puedo hacer send si es IO_BLOCKED
     t_pcb* pcb = deserializar_pcb(package->buffer);
+    printf("VOY A IMPRIMIR EL PCB DESPUEIS DE DESALOJAR\n");
     imprimir_pcb(pcb);
-    printf("pid del pcb: %d\n", pcb->pid);
+    printf("pid del pcb despues de desalojar: %d\n", pcb->pid);
 
     // hay_proceso_en_exec = false;
 
@@ -522,6 +523,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
 
     sem_post(&sem_planificadores);
     cantidad_bloqueados--;
+    //liberar_pcb_estructura(pcb);
     liberar_paquete(package);
 }
 
@@ -757,17 +759,17 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
         printf("El nombre de la interfaz es: %s\n", elemento_encontrado->nombreInterfaz); 
 
         io_gen_sleep* datos_sleep = malloc(sizeof(io_gen_sleep)); //VER_SI_HAY_FREE
-        datos_sleep->pcb = malloc(sizeof(t_pcb)); // free cuando se desconecte 
 
         datos_sleep->unidad_trabajo = io->unidadesDeTrabajo;
         datos_sleep->pcb = pcb;
         printf("El pid de datos_sleep de dormir_io: %d\n", pcb->pid);
+        
+        pasar_a_blocked(pcb);
 
         pthread_mutex_lock(&mutex_cola_io_generica);
         list_add(elemento_encontrado->cola_blocked, datos_sleep);
         pthread_mutex_unlock(&mutex_cola_io_generica);
 
-        pasar_a_blocked(pcb);
         log_info(logger_kernel, "PID: %d - Bloqueado por: %s", pcb->pid, io->nombre_interfaz);  
 
         // use lo que estaba, antes decia sem_post al mutex, por eso, era un binario o eso entendi
@@ -1428,6 +1430,7 @@ void liberar_pcb(t_pcb* pcb) {
     enviar_eliminacion_pcb_a_memoria(pcb->pid);
     if (pcb != NULL) {
         // Primero, liberamos cualquier memoria que haya sido asignada a la subestructura t_registros
+        printf("entro a liberar_pcb");
         if (pcb->registros != NULL) {
             free(pcb->registros);
             pcb->registros = NULL;  // Asegúrate de que el puntero no apunte a memoria liberada
