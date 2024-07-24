@@ -913,10 +913,16 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
         t_recurso* recurso_obtenido = dictionary_get(datos_kernel->diccionario_recursos, key_nombre_recurso);
         if(desalojoCpu == WAIT_RECURSO) {
             printf("llego hasta WAIT\n");
-            ejecutar_wait_recurso(recurso_obtenido,pcb,key_nombre_recurso);
+            ejecutar_wait_recurso(recurso_obtenido, pcb, key_nombre_recurso);
+            log_info(logger_kernel, "PID %d - Retengo el recurso: %s", pcb->pid, key_nombre_recurso);
         }else{
             printf("Llega hasta signal\n");
-            ejecutar_signal_recurso(recurso_obtenido,pcb);
+            //if(es_el_ultimo_recurso_a_liberar_por(pcb)) {
+            //    ejecutar_signal_recurso(recurso_obtenido, pcb, true);
+            //} else {
+                ejecutar_signal_recurso(recurso_obtenido, pcb, false);
+            //}
+            log_info(logger_kernel, "PID %d - Libero el recurso: %s", pcb->pid, key_nombre_recurso);
         }
     } else {
         pasar_a_exit(pcb, "INVALID_RESOURCE");
@@ -926,10 +932,9 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
     imprimir_diccionario_recursos();
 }
 
-void ejecutar_wait_recurso(t_recurso* recurso_obtenido,t_pcb* pcb,char* recurso){
-    if(recurso_obtenido->instancias > 0) {
+void ejecutar_wait_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, char* recurso){
+    if(recurso_obtenido->instancias > 0) {        
         recurso_obtenido->instancias --;
-        
         char* pid_string = string_itoa(pcb->pid);
         list_add(recurso_obtenido->procesos_que_lo_retienen, pid_string);
 
@@ -947,7 +952,7 @@ void ejecutar_wait_recurso(t_recurso* recurso_obtenido,t_pcb* pcb,char* recurso)
     }
 }
 
-void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
+void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, bool esta_para_finalizar) {
     recurso_obtenido->instancias ++;
     char* pid_string = string_itoa(pcb->pid);
     list_remove_element(recurso_obtenido->procesos_que_lo_retienen, pid_string);
@@ -959,16 +964,17 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
     pthread_mutex_unlock(&no_hay_nadie_en_cpu);*/
     
     // change_status(pcb, READY);
-    
-    cantidad_bloqueados++;
-    sem_wait(&sem_planificadores);
+    if(!esta_para_finalizar) {
+        cantidad_bloqueados++;
+        sem_wait(&sem_planificadores);
 
-    pthread_mutex_lock(&mutex_prioritario_por_signal);
-    queue_push(cola_prioritarios_por_signal, pcb);
-    pthread_mutex_unlock(&mutex_prioritario_por_signal);
-    sem_post(&sem_hay_para_planificar);
-    sem_post(&sem_planificadores);
-    cantidad_bloqueados--;
+        pthread_mutex_lock(&mutex_prioritario_por_signal);
+        queue_push(cola_prioritarios_por_signal, pcb);
+        pthread_mutex_unlock(&mutex_prioritario_por_signal);
+        sem_post(&sem_hay_para_planificar);
+        sem_post(&sem_planificadores);
+        cantidad_bloqueados--;
+    }
     
     if(!list_is_empty(recurso_obtenido->procesos_bloqueados)) {
         t_pcb* proceso_liberado = list_remove(recurso_obtenido->procesos_bloqueados, 0);
@@ -1051,6 +1057,31 @@ void FINALIZAR_PROCESO(int pid) {
     }
     
     // Ya se hace free en pasar a exit
+}
+
+void ejecutar_signal_de_recursos_bloqueados_por(t_pcb* pcb) {
+    t_list* elementos = dictionary_elements(datos_kernel->diccionario_recursos);
+
+    for(int i=0; i<list_size(elementos); i++) {
+        t_recurso* recurso = list_get(elementos, i);
+        for(int j=0;j<list_size(recurso->procesos_que_lo_retienen); j++) {
+            char* pid = list_get(recurso->procesos_que_lo_retienen, j);
+            char* pid_string = string_itoa(pcb->pid);
+            if(strcmp(pid, pid_string) == 0 ) { // 0 es verdadero en strcmp
+                ejecutar_signal_recurso(recurso, pcb, true);
+                break;
+            }
+            free(pid_string);
+        }
+
+        for(int k=0; k<list_size(recurso->procesos_bloqueados); k++) {
+           t_pcb* pcb_bloqueado = list_get(recurso->procesos_bloqueados, k);
+           if(pcb_bloqueado->pid == pcb->pid) {
+                list_remove(recurso->procesos_bloqueados, k);
+                break;
+           }
+        }
+    }
 }
 
 // TODO: Buscar en las colas_blocked de io
@@ -1466,7 +1497,27 @@ void liberar_pcb(t_pcb* pcb) {
 }
 
 void liberar_pcb_de_recursos(int pid) {
-    // TO DO pid
+    if(dictionary_is_empty(datos_kernel->diccionario_recursos)) return;
+        
+    t_list* elementos = dictionary_elements(datos_kernel->diccionario_recursos);
+
+    for(int i=0; i<list_size(elementos); i++) {
+        t_recurso* recurso = list_get(elementos, i);
+
+        for(int j=0; j<list_size(recurso->procesos_bloqueados); j++){
+            t_pcb* pcb = list_get(recurso->procesos_bloqueados, j);
+            if(pcb->pid == pid) {
+                t_pcb* pcb_removido = list_remove(recurso->procesos_bloqueados, j); // MEMORY_LEAK?
+                recurso->instancias++;
+                // liberar_pcb_estructura(pcb_removido);
+            }
+        }
+    }
+}
+
+
+/*
+void liberar_pcb_de_recursos(int pid) {
     bool tiene_pid_en_recurso(t_pcb* pcb) {
         return pcb->pid == pid; // este pid no lo toma
     }
@@ -1483,24 +1534,22 @@ void liberar_pcb_de_recursos(int pid) {
 
     dictionary_iterator(datos_kernel->diccionario_recursos, (void*)_buscar_pid_entre_recursos);
 }
+*/
 
 void liberar_recurso_de_pcb(int pid) {
     char* pid_string = string_itoa(pid);
+    t_list* elementos = dictionary_elements(datos_kernel->diccionario_recursos);
+    
+    for(int i=0; i<list_size(elementos); i++) {
+        t_recurso* recurso = list_get(elementos, i);
 
-    bool _es_el_pid_buscado(int pid_recibido) {
-        return pid == pid_recibido;
-    }
-
-    void _buscar_pid_entre_procesos_que_retienen(t_recurso* recurso) {
-        if(!list_is_empty(recurso->procesos_que_lo_retienen)) {
-            if(list_any_satisfy(recurso->procesos_que_lo_retienen, (void*)_es_el_pid_buscado)) {
-                list_remove_element(recurso->procesos_que_lo_retienen, pid_string);
-                recurso->instancias++;
+        for(int j=0; j<list_size(recurso->procesos_que_lo_retienen); j++){
+            char* pid_obtenido = list_get(recurso->procesos_que_lo_retienen, j);
+            if(pid_obtenido == pid_string) {
+                char* pid_removido = list_remove(recurso->procesos_que_lo_retienen, j); 
             }
         }
     }
-
-    dictionary_iterator(datos_kernel->diccionario_recursos, (void*)_buscar_pid_entre_procesos_que_retienen);
     free(pid_string);
 }
 

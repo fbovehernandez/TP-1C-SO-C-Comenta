@@ -94,12 +94,15 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
         sem_post(&sem_grado_multiprogramacion);
     }
 
+    ejecutar_signal_de_recursos_bloqueados_por(pcb);
+
     // liberar_pcb_de_recursos(pcb->pid); 
     // liberar_pcb_de_io(pcb->pid); -------------> PARA CUANDO ESTA EN LA IO
     // liberar_pcb((void*)pcb);
     // liberar_recurso_de_pcb(pcb->pid);
     enviar_eliminacion_pcb_a_memoria(pcb->pid);
-    liberar_pcb_estructura(pcb); 
+    liberar_pcb_estructura(pcb);
+    printf("\nLlego a liberar la estructura del pcb\n\n");
 
     // sem_post(&sem_planificadores);
     // cantidad_bloqueados--;
@@ -165,8 +168,13 @@ char* pasar_a_string_estado(Estado estado){
     }
 } 
 
-/* 
 
+
+
+
+
+
+/* 
 t_instruccion* build_instruccion(char* line) {
     t_instruccion* instruccion = malloc(sizeof(t_instruccion)); // SET AX 1 //VER_SI_HAY_FREE cae en una lista la instruccion
 
