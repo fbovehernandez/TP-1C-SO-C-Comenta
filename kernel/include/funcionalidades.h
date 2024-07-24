@@ -102,6 +102,7 @@ void* detener_planificaciones();
 t_parametro* deserializar_parametro(t_buffer* buffer);
 t_pedido* deserializar_pedido(t_buffer* buffer);
 void wait_signal_recurso(t_pcb* pcb, char* recurso,DesalojoCpu desalojo);
+bool esta_el_pid_en_cola_de_procesos_que_retienen(int pid, t_recurso* recurso_obtenido);
 void ejecutar_signal_recurso(t_recurso* recurso, t_pcb* pcb, bool esta_para_finalizar);
 void ejecutar_signal_de_recursos_bloqueados_por(t_pcb* pcb);
 void ejecutar_wait_recurso(t_recurso* recurso,t_pcb* pcb,char* key_nombre_recurso);

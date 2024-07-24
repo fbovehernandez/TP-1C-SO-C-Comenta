@@ -94,8 +94,6 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
         sem_post(&sem_grado_multiprogramacion);
     }
 
-    ejecutar_signal_de_recursos_bloqueados_por(pcb);
-
     // liberar_pcb_de_recursos(pcb->pid); 
     // liberar_pcb_de_io(pcb->pid); -------------> PARA CUANDO ESTA EN LA IO
     // liberar_pcb((void*)pcb);

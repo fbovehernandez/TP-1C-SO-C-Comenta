@@ -430,13 +430,16 @@ t_paquete *recibir_cpu() {
 void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     DesalojoCpu devolucion_cpu;
     
+    log_info(logger_kernel, "Entro a esperar_cpu");
     t_paquete* package = recibir_cpu(); // pcb y codigo de operacion (devolucion_cpu)
+    log_info(logger_kernel, "Recibo cpu");
     devolucion_cpu = package->codigo_operacion;
 
     if(!queue_is_empty(cola_exec)) {
         pthread_mutex_lock(&mutex_estado_exec);
         t_pcb* pcb_anterior = queue_pop(cola_exec);
         printf("el pid del pcb anterior es:%d", pcb_anterior->pid);
+        log_info(logger_kernel, "PID %d - Me sacaron de EXEC", pcb_anterior->pid);
         pthread_mutex_unlock(&mutex_estado_exec);
 
         liberar_pcb_estructura(pcb_anterior);
@@ -501,10 +504,12 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
         case WAIT_RECURSO: case SIGNAL_RECURSO:
             t_parametro* recurso = deserializar_parametro(package->buffer);
             printf("el nombre del recurso es %s\n", recurso->nombre);  
+            sem_post(&sem_planificadores);
             wait_signal_recurso(pcb, recurso->nombre, devolucion_cpu);
             
             // free(recurso->nombre); //FREE? A LO ULTIMO
             // free(recurso);
+            printf("\nLlega al final de WAIT_RECURSO SIGNAL_RECURSO\n\n");
             break;
         case FIN_PROCESO:
             // pcb = deserializar_pcb(package->buffer); 
@@ -535,6 +540,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             break;
     }
 
+    log_info(logger_kernel, "LLEGO HASTA SEM POST DE ESPERAR CPU");
     sem_post(&sem_planificadores);
     cantidad_bloqueados--;
     //liberar_pcb_estructura(pcb);
@@ -654,18 +660,6 @@ void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
     free(pedido);
 } 
 
-/* 
-t_operacion_io* operacion_io = malloc(sizeof(t_operacion_io));
-
-    // Lo siguiente es el tamaño del pcb
-    void* stream = buffer->stream + sizeof(int) * 3 + sizeof(Estado) * 2 + sizeof(uint8_t) * 4 + sizeof(uint32_t) * 6;
-
-    // Deserializamos los campos que tenemos en el buffer
-    // stream += sizeof(t_pcb);
-    
-    memcpy(&(operacion_io->unidadesDeTrabajo), stream, sizeof(int));
-    stream += sizeof(int);
-*/
 t_pedido* deserializar_pedido(t_buffer* buffer) {
     t_pedido* pedido = malloc(sizeof(t_pedido));
 
@@ -708,30 +702,6 @@ t_pedido* deserializar_pedido(t_buffer* buffer) {
 
     return pedido;
 }
-
-/*
-t_pedido_lectura* deserializar_pedido_lectura(t_buffer* buffer) {
-    t_pedido_lectura* pedido_lectura = malloc(sizeof(t_pedido_lectura));
-
-    void* stream = buffer->stream;
-    // Deserializamos los campos que tenemos en el buffer
-    memcpy(&pedido_lectura->registro_direccion, stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&(pedido_lectura->registro_tamanio), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-    memcpy(&(pedido_lectura->cantidad_paginas), stream, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(&(pedido_lectura->pagina),stream, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(&(pedido_lectura->length_interfaz), stream, sizeof(int));
-    stream += sizeof(int);
-
-    pedido_lectura->interfaz = malloc(pedido_lectura->length_interfaz);
-    memcpy(pedido_lectura->interfaz, stream, pedido_lectura->length_interfaz);
-
-    return pedido_lectura;
-}
-*/
 
 t_operacion_io* deserializar_io(t_buffer* buffer) {
     t_operacion_io* operacion_io = malloc(sizeof(t_operacion_io)); 
@@ -920,15 +890,15 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
             //if(es_el_ultimo_recurso_a_liberar_por(pcb)) {
             //    ejecutar_signal_recurso(recurso_obtenido, pcb, true);
             //} else {
-                ejecutar_signal_recurso(recurso_obtenido, pcb, false);
+            free(key_nombre_recurso);
+            ejecutar_signal_recurso(recurso_obtenido, pcb, false);
             //}
-            log_info(logger_kernel, "PID %d - Libero el recurso: %s", pcb->pid, key_nombre_recurso);
+            
         }
     } else {
         pasar_a_exit(pcb, "INVALID_RESOURCE");
     }
     
-    free(key_nombre_recurso);
     imprimir_diccionario_recursos();
 }
 
@@ -952,22 +922,35 @@ void ejecutar_wait_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, char* recurs
     }
 }
 
-void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, bool esta_para_finalizar) {
-    recurso_obtenido->instancias ++;
-    char* pid_string = string_itoa(pcb->pid);
-    list_remove_element(recurso_obtenido->procesos_que_lo_retienen, pid_string);
-    free(pid_string);
+bool esta_el_pid_en_cola_de_procesos_que_retienen(int pid, t_recurso* recurso_obtenido) {
+    bool seEncuentra = false;
+    for(int i=0;i<list_size(recurso_obtenido->procesos_que_lo_retienen);i++) {
+        char* pid_recibido = list_get(recurso_obtenido->procesos_que_lo_retienen, i);
+        char* pid_string = string_itoa(pid_recibido);
+        if(pid == pid_string) {
+            seEncuentra = true;
+        } 
+        free(pid_string);
+    }
+    return seEncuentra;
+}
 
-    //mutex
-    /*pthread_mutex_lock(&no_hay_nadie_en_cpu);
-    pasar_a_exec(pcb);
-    pthread_mutex_unlock(&no_hay_nadie_en_cpu);*/
+void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, bool esta_para_finalizar) {
+    // if(esta_el_pid_en_cola_de_procesos_que_retienen(pcb->pid, recurso_obtenido)) {
+        recurso_obtenido->instancias ++;
+        char* pid_string = string_itoa(pcb->pid);
+        list_remove_element(recurso_obtenido->procesos_que_lo_retienen, pid_string);
+        free(pid_string);
+   // }
+    
+    printf("\nLLEGA HASTA EJECUTAR_SIGNAL_RECURSO\n\n");
     
     // change_status(pcb, READY);
     if(!esta_para_finalizar) {
         cantidad_bloqueados++;
+        
+        printf("\nLlega hasta aca\n\n");
         sem_wait(&sem_planificadores);
-
         pthread_mutex_lock(&mutex_prioritario_por_signal);
         queue_push(cola_prioritarios_por_signal, pcb);
         pthread_mutex_unlock(&mutex_prioritario_por_signal);
@@ -980,6 +963,7 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, bool esta_
         t_pcb* proceso_liberado = list_remove(recurso_obtenido->procesos_bloqueados, 0);
         char* pid_liberado = string_itoa(proceso_liberado->pid);
         list_add(recurso_obtenido->procesos_que_lo_retienen, pid_liberado);
+        log_info(logger_kernel, "Proceso liberado %s por %d", pid_liberado, pcb->pid);
 
         /*change_status(proceso_liberado, READY);
         queue_push(cola_prioritarios_por_signal, proceso_liberado); 
@@ -992,18 +976,6 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, bool esta_
         sem_post(&sem_planificadores);
         cantidad_bloqueados--;
     }
-    
-    /*
-    change_status(pcb, READY);
-    queue_push(cola_prioritarios_por_signal, pcb); 
-    sem_post(&sem_hay_para_planificar);
-    
-    if(!queue_is_empty(recurso_obtenido->procesos_bloqueados)) {
-        t_pcb* proceso_liberado = queue_pop(recurso_obtenido->procesos_bloqueados);
-        pasar_a_ready(proceso_liberado);
-        // queue_push(cola_prioritarios_por_signal, proceso_liberado); // corroborar
-    }
-    */
 }
 
 char* pasar_string_desalojo_recurso(DesalojoCpu desalojoCpu){
@@ -1053,6 +1025,7 @@ void FINALIZAR_PROCESO(int pid) {
     } else {
         t_pcb* pcb = sacarDe(cola, pid);
         printf("El proceso no se encuentra en ejecucion\n");
+        ejecutar_signal_de_recursos_bloqueados_por(pcb);
         pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
     }
     
@@ -1068,6 +1041,7 @@ void ejecutar_signal_de_recursos_bloqueados_por(t_pcb* pcb) {
             char* pid = list_get(recurso->procesos_que_lo_retienen, j);
             char* pid_string = string_itoa(pcb->pid);
             if(strcmp(pid, pid_string) == 0 ) { // 0 es verdadero en strcmp
+                log_info(logger_kernel, "Entra a ejecutar signal recurso del EXIT el proceso: %d\n", pcb->pid);
                 ejecutar_signal_recurso(recurso, pcb, true);
                 break;
             }
