@@ -1,41 +1,81 @@
-[INFO] 15:40:44:436 LOGGER/(28602:28774): PID: 1 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 15:40:54:486 LOGGER/(28602:28774): PID: 4 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 15:41:04:540 LOGGER/(28602:28774): PID: 3 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 15:53:04:191 LOGGER/(30456:30456): Servidor iniciado, esperando conexiones!
-[INFO] 15:53:58:718 LOGGER/(30456:30845): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 15:53:58:736 LOGGER/(30456:30845): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 15:53:58:744 LOGGER/(30456:30845): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 15:53:58:752 LOGGER/(30456:30845): PID: 4 - Accion: CREAR - Tamaño: 0
-[INFO] 15:54:40:542 LOGGER/(30456:30845): PID: 2 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 15:54:50:637 LOGGER/(30456:30845): PID: 1 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 15:55:00:724 LOGGER/(30456:30845): PID: 4 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 15:55:10:755 LOGGER/(30456:30845): PID: 3 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 15:56:26:348 LOGGER/(32646:32646): Servidor iniciado, esperando conexiones!
-[INFO] 15:57:36:403 LOGGER/(33359:33359): Servidor iniciado, esperando conexiones!
-[INFO] 15:59:04:070 LOGGER/(33359:33762): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 15:59:04:087 LOGGER/(33359:33762): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 15:59:04:095 LOGGER/(33359:33762): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 15:59:04:104 LOGGER/(33359:33762): PID: 4 - Accion: CREAR - Tamaño: 0
-[INFO] 16:00:08:581 LOGGER/(33359:33762): PID: 2 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 16:00:18:652 LOGGER/(33359:33762): PID: 1 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 16:00:28:781 LOGGER/(33359:33762): PID: 4 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 16:00:38:816 LOGGER/(33359:33762): PID: 3 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 16:10:59:454 LOGGER/(35833:35833): Servidor iniciado, esperando conexiones!
-[INFO] 16:13:12:434 LOGGER/(35833:36367): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 16:13:12:459 LOGGER/(35833:36367): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 16:13:12:466 LOGGER/(35833:36367): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 16:13:12:470 LOGGER/(35833:36367): PID: 4 - Accion: CREAR - Tamaño: 0
-[INFO] 16:13:54:006 LOGGER/(35833:36367): PID: 2 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 16:14:04:059 LOGGER/(35833:36367): PID: 1 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 16:14:14:087 LOGGER/(35833:36367): PID: 4 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 16:14:24:127 LOGGER/(35833:36367): PID: 3 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 16:15:40:094 LOGGER/(38040:38040): Servidor iniciado, esperando conexiones!
-[INFO] 16:17:35:517 LOGGER/(38769:38769): Servidor iniciado, esperando conexiones!
-[INFO] 16:18:09:466 LOGGER/(38769:39157): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 16:18:09:482 LOGGER/(38769:39157): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 16:18:09:492 LOGGER/(38769:39157): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 16:18:09:498 LOGGER/(38769:39157): PID: 4 - Accion: CREAR - Tamaño: 0
-[INFO] 16:18:54:083 LOGGER/(38769:39157): PID: 2 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 16:19:04:167 LOGGER/(38769:39157): PID: 1 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 16:19:14:224 LOGGER/(38769:39157): PID: 4 - Accion: DESTRUIR - Tamaño: 0
-[INFO] 16:19:24:272 LOGGER/(38769:39157): PID: 3 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 18:58:13:003 LOGGER/(22067:22067): Servidor iniciado, esperando conexiones!
+[INFO] 19:02:00:144 LOGGER/(22509:22509): Servidor iniciado, esperando conexiones!
+[INFO] 19:02:39:899 LOGGER/(22509:22872): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 19:02:39:919 LOGGER/(22509:22872): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 19:02:39:928 LOGGER/(22509:22872): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 19:02:39:942 LOGGER/(22509:22872): PID: 4 - Accion: CREAR - Tamaño: 0
+[INFO] 19:03:00:820 LOGGER/(22509:22872): PID: 2 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 19:04:40:523 LOGGER/(23815:23815): Servidor iniciado, esperando conexiones!
+[INFO] 19:05:17:105 LOGGER/(23815:24184): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:17:122 LOGGER/(23815:24184): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:17:140 LOGGER/(23815:24184): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:17:146 LOGGER/(23815:24184): PID: 4 - Accion: CREAR - Tamaño: 0
+[INFO] 19:06:01:124 LOGGER/(23815:24184): PID: 2 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 19:06:11:165 LOGGER/(23815:24184): PID: 1 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 19:06:21:204 LOGGER/(23815:24184): PID: 4 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 19:06:31:232 LOGGER/(23815:24184): PID: 3 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 19:10:19:171 LOGGER/(25884:25884): Servidor iniciado, esperando conexiones!
+[INFO] 19:10:51:944 LOGGER/(25884:26244): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 19:10:51:963 LOGGER/(25884:26244): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 19:10:51:971 LOGGER/(25884:26244): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 19:10:51:979 LOGGER/(25884:26244): PID: 4 - Accion: CREAR - Tamaño: 0
+[INFO] 19:11:33:073 LOGGER/(25884:26244): PID: 2 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 19:11:43:103 LOGGER/(25884:26244): PID: 1 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 19:11:53:136 LOGGER/(25884:26244): PID: 4 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 19:12:03:157 LOGGER/(25884:26244): PID: 3 - Accion: DESTRUIR - Tamaño: [INFO] 19:17:06:858 LOGGER/(28239:28239): Servidor iniciado, esperando conexiones!
+[INFO] 19:17:51:112 LOGGER/(28239:28583): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 19:17:51:132 LOGGER/(28239:28583): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 19:17:51:147 LOGGER/(28239:28583): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 19:17:51:150 LOGGER/(28239:28583): PID: 4 - Accion: CREAR - Tamaño: 0
+[INFO] 19:18:46:417 LOGGER/(28239:28583): PID: 2 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 19:18:56:446 LOGGER/(28239:28583): PID: 1 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 19:19:06:472 LOGGER/(28239:28583): PID: 4 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 19:19:16:499 LOGGER/(28239:28583): PID: 3 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 19:26:31:516 LOGGER/(31051:31051): Servidor iniciado, esperando conexiones!
+[INFO] 19:34:01:283 LOGGER/(32952:32952): Servidor iniciado, esperando conexiones!
+[INFO] 19:36:43:011 LOGGER/(34185:34185): Servidor iniciado, esperando conexiones!
+[INFO] 19:37:20:935 LOGGER/(34185:34580): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 19:37:20:955 LOGGER/(34185:34580): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 19:37:20:973 LOGGER/(34185:34580): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 19:37:20:988 LOGGER/(34185:34580): PID: 4 - Accion: CREAR - Tamaño: 0
+[INFO] 19:42:39:330 LOGGER/(35654:35654): Servidor iniciado, esperando conexiones!
+[INFO] 19:43:36:343 LOGGER/(35654:36063): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 19:43:36:369 LOGGER/(35654:36063): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 19:43:36:385 LOGGER/(35654:36063): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 19:43:36:399 LOGGER/(35654:36063): PID: 4 - Accion: CREAR - Tamaño: 0
+[INFO] 19:48:30:896 LOGGER/(37110:37110): Servidor iniciado, esperando conexiones!
+[INFO] 19:49:51:406 LOGGER/(37110:37505): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 19:49:51:425 LOGGER/(37110:37505): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 19:49:51:443 LOGGER/(37110:37505): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 19:49:51:449 LOGGER/(37110:37505): PID: 4 - Accion: CREAR - Tamaño: 0
+[INFO] 19:53:15:101 LOGGER/(38963:38963): Servidor iniciado, esperando conexiones!
+[INFO] 19:54:03:282 LOGGER/(38963:39402): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 19:54:03:308 LOGGER/(38963:39402): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 19:54:03:315 LOGGER/(38963:39402): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 19:54:03:321 LOGGER/(38963:39402): PID: 4 - Accion: CREAR - Tamaño: 0
+[INFO] 19:54:32:807 LOGGER/(38963:39402): PID: 2 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 19:56:45:595 LOGGER/(40516:40516): Servidor iniciado, esperando conexiones!
+[INFO] 19:57:09:738 LOGGER/(40516:40679): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 19:57:09:763 LOGGER/(40516:40679): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 19:57:09:774 LOGGER/(40516:40679): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 19:57:09:783 LOGGER/(40516:40679): PID: 4 - Accion: CREAR - Tamaño: 0
+[INFO] 19:57:53:918 LOGGER/(40516:40679): PID: 2 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 20:02:20:436 LOGGER/(41540:41540): Servidor iniciado, esperando conexiones!
+[INFO] 20:04:32:874 LOGGER/(42028:42028): Servidor iniciado, esperando conexiones!
+[INFO] 20:05:05:837 LOGGER/(42028:42226): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 20:05:05:853 LOGGER/(42028:42226): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 20:05:05:866 LOGGER/(42028:42226): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 20:05:05:872 LOGGER/(42028:42226): PID: 4 - Accion: CREAR - Tamaño: 0
+[INFO] 20:05:34:657 LOGGER/(42028:42226): PID: 2 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 20:05:44:719 LOGGER/(42028:42226): PID: 1 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 20:07:38:055 LOGGER/(43489:43489): Servidor iniciado, esperando conexiones!
+[INFO] 20:08:53:830 LOGGER/(44264:44264): Servidor iniciado, esperando conexiones!
+[INFO] 20:10:01:021 LOGGER/(44935:44935): Servidor iniciado, esperando conexiones!
+[INFO] 20:10:50:949 LOGGER/(44935:45295): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 20:10:50:966 LOGGER/(44935:45295): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 20:10:50:984 LOGGER/(44935:45295): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 20:10:50:989 LOGGER/(44935:45295): PID: 4 - Accion: CREAR - Tamaño: 0
+[INFO] 20:11:22:614 LOGGER/(44935:45295): PID: 2 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 20:11:33:634 LOGGER/(44935:45295): PID: 1 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 20:11:44:696 LOGGER/(44935:45295): PID: 4 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 20:11:54:726 LOGGER/(44935:45295): PID: 3 - Accion: DESTRUIR - Tamaño: 0

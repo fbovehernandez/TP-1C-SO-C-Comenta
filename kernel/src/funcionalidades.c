@@ -7,6 +7,8 @@ int contador_pid = 0;
 int client_dispatch;
 pthread_t escucha_consola;
 int cantidad_bloqueados;
+int contador_aumento_instancias = 0;
+int cantidad_de_waits_que_se_hicieron = 0;
 
 sem_t sem_grado_multiprogramacion;
 sem_t sem_hay_pcb_esperando_ready;
@@ -504,7 +506,6 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
         case WAIT_RECURSO: case SIGNAL_RECURSO:
             t_parametro* recurso = deserializar_parametro(package->buffer);
             printf("el nombre del recurso es %s\n", recurso->nombre);  
-            sem_post(&sem_planificadores);
             wait_signal_recurso(pcb, recurso->nombre, devolucion_cpu);
             
             // free(recurso->nombre); //FREE? A LO ULTIMO
@@ -905,6 +906,9 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
 void ejecutar_wait_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, char* recurso){
     if(recurso_obtenido->instancias > 0) {        
         recurso_obtenido->instancias --;
+        cantidad_de_waits_que_se_hicieron++;
+        log_info(logger_kernel, "WAITS REALIZADOS: %d", cantidad_de_waits_que_se_hicieron);
+        printf("\n\nWAITS REALIZADOS: %d\n\n", cantidad_de_waits_que_se_hicieron);
         char* pid_string = string_itoa(pcb->pid);
         list_add(recurso_obtenido->procesos_que_lo_retienen, pid_string);
 
@@ -936,27 +940,25 @@ bool esta_el_pid_en_cola_de_procesos_que_retienen(int pid, t_recurso* recurso_ob
 }
 
 void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, bool esta_para_finalizar) {
-    // if(esta_el_pid_en_cola_de_procesos_que_retienen(pcb->pid, recurso_obtenido)) {
-        recurso_obtenido->instancias ++;
-        char* pid_string = string_itoa(pcb->pid);
-        list_remove_element(recurso_obtenido->procesos_que_lo_retienen, pid_string);
-        free(pid_string);
-   // }
+    //if(esta_el_pid_en_cola_de_procesos_que_retienen(pcb->pid, recurso_obtenido)) {
+    //}
+    printf("\n\nHAGO EL EJECUTAR SIGNAL RECURSO CON EL PID: %d\n\n", pcb->pid);
+    log_info(logger_kernel, "CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: %d", recurso_obtenido->instancias);
+    recurso_obtenido->instancias++;
+    contador_aumento_instancias++;
+    printf("\n\nLA CANTIDAD DE VECES QUE SE EJECUTO SIGNAL ES: %d\n\n", contador_aumento_instancias);
+    char* pid_string = string_itoa(pcb->pid);
+    list_remove_element(recurso_obtenido->procesos_que_lo_retienen, pid_string);
+    free(pid_string);
     
     printf("\nLLEGA HASTA EJECUTAR_SIGNAL_RECURSO\n\n");
     
-    // change_status(pcb, READY);
-    if(!esta_para_finalizar) {
-        cantidad_bloqueados++;
-        
+    if(!esta_para_finalizar) {        
         printf("\nLlega hasta aca\n\n");
-        sem_wait(&sem_planificadores);
         pthread_mutex_lock(&mutex_prioritario_por_signal);
         queue_push(cola_prioritarios_por_signal, pcb);
         pthread_mutex_unlock(&mutex_prioritario_por_signal);
         sem_post(&sem_hay_para_planificar);
-        sem_post(&sem_planificadores);
-        cantidad_bloqueados--;
     }
     
     if(!list_is_empty(recurso_obtenido->procesos_bloqueados)) {
@@ -969,12 +971,9 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, bool esta_
         queue_push(cola_prioritarios_por_signal, proceso_liberado); 
         sem_post(&sem_hay_para_planificar);*/
        
-        cantidad_bloqueados++;
-        sem_wait(&sem_planificadores);
         t_pcb* proceso_liberado_desbloqueado = sacarDe(cola_blocked, proceso_liberado->pid); //ACA
+        proceso_liberado_desbloqueado->program_counter--;
         pasar_a_ready(proceso_liberado);
-        sem_post(&sem_planificadores);
-        cantidad_bloqueados--;
     }
 }
 

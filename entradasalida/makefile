@@ -79,7 +79,7 @@ start_SLP1: debug
 	valgrind --tool=none ./$(BIN) $(ARGS_SLP1) $(NOMBRE_INTERFAZ_SLP1) 
 
 .PHONY: memcheck
-memcheck: debug
+memcheck: 
 	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(ARGS)
 
 .PHONY: memcheck2

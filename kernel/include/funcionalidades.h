@@ -21,6 +21,8 @@ extern int ms_transcurridos;
 
 extern pthread_t hilo_detener_planificacion;
 extern int cantidad_bloqueados;
+extern int contador_aumento_instancias;
+extern int cantidad_de_waits_que_se_hicieron;
 
 typedef struct {
     
