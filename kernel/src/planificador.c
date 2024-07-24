@@ -85,7 +85,7 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
     // printf("La planificacion permite pasar a exit \n");
     // cantidad_bloqueados++;
     // sem_wait(&sem_planificadores);
-    //printf("Si.\n");
+    // printf("Si.\n");
     
     change_status(pcb, EXIT);
     log_info(logger_kernel, "Finaliza el proceso %d - Motivo: %s", pcb->pid, motivo_exit);
@@ -98,6 +98,7 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
     // liberar_pcb_de_io(pcb->pid); -------------> PARA CUANDO ESTA EN LA IO
     // liberar_pcb((void*)pcb);
     // liberar_recurso_de_pcb(pcb->pid);
+    enviar_eliminacion_pcb_a_memoria(pcb->pid);
     liberar_pcb_estructura(pcb); 
 
     // sem_post(&sem_planificadores);

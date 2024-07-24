@@ -1035,7 +1035,6 @@ void FINALIZAR_PROCESO(int pid) {
     
     t_queue* cola = encontrar_en_que_cola_esta(pid);
     
-    
     if(cola == NULL) { // Esto quiere decir que esta en la cola exit
         printf("No se puede finalizar un proceso que esta en exit \n");
         return;

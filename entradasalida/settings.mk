@@ -10,17 +10,18 @@ CRELEASE=-O3 -Wall -DNDEBUG -fcommon
 
 # Arguments when executing with start, memcheck or helgrind
 ARGS="../entradasalida/stdin.config"
-ARGS2 = "generica.config"
+GENERICA = "generica.config"
 ARGS3 = "generica2.config"
 ARGS_SLP1 = "SLP1.config" # "ESPERA.config"
-NOMBRE_INTERFAZ_SLP1 = SLP1 # "ESPERA"
-ARGS_STDIN = "stdin.config"
+NOMBRE_INTERFAZ_SLP1 = SLP1  	 # "ESPERA"
+TECLADO = "stdin.config"
+MONITOR = "stdout.config"
 ARGS_STDOUT = "stdout.config"
 ARGS_DIALFS = "dialfs.config"
-NOMBRE_INTERFAZ1 = caro
-NOMBRE_INTERFAZ2 = mati
-NOMBRE_INTERFAZ_STDIN = sofi
-NOMBRE_INTERFAZ_STDOUT = facu
+NOMBRE_INTERFAZ1 = generica
+NOMBRE_INTERFAZ2 = caro
+NOMBRE_INTERFAZ_STDIN = teclado
+NOMBRE_INTERFAZ_STDOUT = monitor
 NOMBRE_INTERFAZ_DIALFS = ara_dialfs 
 
 # Valgrind flags

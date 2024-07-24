@@ -31,6 +31,7 @@ extern void* espacio_usuario;
 extern int cant_frames;
 extern t_bitarray* bitmap;
 
+extern int tiempo_retardo;
 extern int socket_cpu;
 
 typedef struct {

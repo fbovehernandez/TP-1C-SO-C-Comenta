@@ -37,9 +37,6 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
         int resultado_io = ejecutar_instruccion(instruccion, pcb);
         
         instruccion_destruir(instruccion);
-
-        printf("\nEl program counter es %d despues de aumentarlo.\n", pcb->program_counter);
-        
         
         // Esto no se si va, si ya esta activada la interrupcion no deberia scarme con el return antes???
         if (resultado_io == 1) {
@@ -440,7 +437,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         // printeo como qwueda AX Y EAX
         printf("Cuando hace MOV_IN AX SI queda asi el registro AX del CPU: %u\n", registros_cpu->AX);
         printf("Cuando hace MOV_IN EAX SI queda asi el registro EAX del CPU: %u\n", registros_cpu->EAX);
-        log_info(logger_CPU, "Hice MOV IN");
+
         break;
     case MOV_OUT: // MOV_OUT (Registro Dirección, Registro Datos)
         recibir_parametros_mov_out(list_parametros, &registro_direccion, &registro_datos, &nombre_registro_dato, &nombre_registro_dir);
@@ -597,7 +594,6 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         return 1; // Retorna 1 si desalojo PCB...
         break;
     case IO_STDIN_READ: 
-
         t_list* lista_bytes_stdin = list_create();
         t_list* lista_direcciones_fisicas_stdin = list_create();
 
@@ -804,7 +800,7 @@ char* pasar_instruccion_a_string(TipoInstruccion nombreInstruccion) {
         case IO_FS_TRUNCATE: return "IO_FS_TRUNCATE";
         case IO_FS_WRITE: return "IO_FS_WRITE";
         case IO_FS_READ: return "IO_FS_READ";
-        case EXIT_INSTRUCCION: return "EXIT_INSTRUCCION";
+        case EXIT_INSTRUCCION: return "EXIT";
         case ERROR_INSTRUCCION: return "ERROR_INSTRUCCION";
         default: return "UNKNOWN_INSTRUCTION";
     }

@@ -15,6 +15,7 @@ int tamanio_pagina;
 int tamanio_memoria;
 void* espacio_usuario;
 int cant_frames;
+int tiempo_retardo;
 //sem_t* hay_valores_para_leer;
 t_bitarray* bitmap;
 int socket_cpu;
@@ -138,7 +139,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 break;
             case QUIERO_INSTRUCCION:
                 t_solicitud_instruccion* solicitud_cpu = deserializar_solicitud_instruccion(paquete->buffer);
-                usleep(1000 * 1000); // Harcodeado nashe para probar (Con retardo)
+                usleep(tiempo_retardo * 1000); // Harcodeado nashe para probar (Con retardo)
                 enviar_instruccion(solicitud_cpu, socket_cpu);
                 free(solicitud_cpu);
                 break;
@@ -232,18 +233,23 @@ void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_r
         printf("La direccion fisica es: %d\n", dir_fisica_tam->direccion_fisica);
         printf("El tamanio es: %d\n", dir_fisica_tam->bytes_lectura);
 
+        // int pagina_dir_fisica = obtener_pagina(pid, dir_fisica_tam->direccion_fisica);
+        // log acceso usuario
+        // log_info(logger_memoria, "PID: %d - Pagina: %d - Marco: %d", pid, pagina_dir_fisica, obtener_marco_pagina(pid, pagina)); 
+        
         interaccion_user_space(pid,operacion, dir_fisica_tam->direccion_fisica, user_space_aux, tamanio_anterior, dir_fisica_tam->bytes_lectura, registro_escritura, registro_lectura);
         tamanio_anterior += dir_fisica_tam->bytes_lectura;
     }
 }
 
 void interaccion_user_space(int pid,tipo_operacion operacion, int df_actual, void* user_space_aux, int tam_escrito_anterior, int tamanio, void* registro_escritura, void* registro_lectura) {
-    log_info(logger_memoria,"PID: %d - Accion: %s - Direccion fisica: %d - Tamaño %d", pid , string_tipo_operacion(operacion), df_actual,tamanio);
+    log_info(logger_memoria,"PID: %d - Accion: %s - Direccion fisica: %d - Tamaño %d", pid , string_tipo_operacion(operacion), df_actual, tamanio);
     
     if(operacion == ESCRITURA) {
         memcpy(user_space_aux + df_actual, registro_escritura + tam_escrito_anterior, tamanio);
         printf("Escritura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
         printf("Contenido escrito: %.*d\n", tamanio, *(uint8_t*)(user_space_aux + df_actual));
+        
     } else { // == LECTURA
         memcpy(registro_lectura + tam_escrito_anterior, (user_space_aux + df_actual), tamanio);
         printf("Lectura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
@@ -311,9 +317,6 @@ int resize_memory(void* stream) {
     memcpy(&tamanio, stream, sizeof(int));
     stream += sizeof(int);
     memcpy(&pid, stream, sizeof(int));
-
-    printf("El pid es:  %d\n", pid);
-    log_info(logger_memoria, "El nuevo tamaño es:%d", tamanio);
     // Luego verifico si tengo espacio suficiente en memoria
     int out_of_memory = validar_out_of_memory(tamanio);
                 
@@ -324,7 +327,7 @@ int resize_memory(void* stream) {
     bool same_page = check_same_page(tamanio, cant_bytes_uso);
 
     if(same_page) {
-        log_info(logger_memoria, "El proceso ya tiene una pagina con el tamanio solicitado\n");
+       printf("El proceso ya tiene una pagina con el tamanio solicitado\n");
     } else if(tamanio > cant_bytes_uso) {
         log_info(logger_memoria,"PID: %d - Tamaño Actual: %d - Tamaño a Ampliar: %d",pid,cant_bytes_uso,tamanio);
         asignar_tamanio(tamanio, cant_bytes_uso, pid_char);
@@ -421,7 +424,6 @@ int cantidad_frames_proceso(char* pid_string) {
 int validar_out_of_memory(int tamanio) { // Me esta pidiendo mas de lo que tengo /= Te pasaste del ultimo byte disponible
     int frames_necesarios = tamanio / tamanio_pagina; // 8
     int frames_disponibles = contar_frames_libres(); 
-    log_info(logger_memoria, "Cantidad de frames disponibles: %d", frames_disponibles);
     if(frames_disponibles < frames_necesarios) {
         printf("No hay espacio suficiente en memoria\n");
         return 1; // 1 es out of memory
@@ -599,10 +601,10 @@ void* handle_kernel(void* socket) {
                 printf("\nLlega a liberar_proceso\n\n");
                 int pid_a_liberar;
                 memcpy(&pid_a_liberar, paquete->buffer->stream, sizeof(int));
-
                 liberar_estructuras_proceso(pid_a_liberar);
                 // eliminar_instrucciones(pid_a_liberar);
                 limpiar_bitmap(pid_a_liberar);
+
                 break;
             default:
                 printf("Rompio kernel.\n");
@@ -678,6 +680,8 @@ void limpiar_bitmap(int pid_a_liberar) {
     
     t_proceso_paginas* proceso_pagina = dictionary_remove(diccionario_tablas_paginas, pid_string);
     t_list* tabla_paginas = proceso_pagina->tabla_paginas;
+
+    log_info(logger_memoria, "PID: %d - Accion: DESTRUIR - Tamaño: %d", pid_a_liberar, list_size(proceso_pagina ->tabla_paginas));    
 
     for(int i = 0; i < list_size(tabla_paginas); i++) {
         t_pagina* pagina = list_get(tabla_paginas, i);
@@ -965,6 +969,10 @@ void crear_estructuras(char* path_completo, int pid) {
 
     proceso_paginas->tabla_paginas = tabla_pagina;
     proceso_paginas->cantidad_frames = 0;
+
+    log_info(logger_memoria,"PID: %d - Accion: CREAR - Tamaño: %d", pid, list_size(proceso_paginas->tabla_paginas));
+    // aca podria ir el log con el list_size(instrucciones)
+
     /*
     char* pid_char = malloc(sizeof(char) * 4); // Un char es de 1B, un int es de 4B
     sprintf(pid_char, "%d", pid);

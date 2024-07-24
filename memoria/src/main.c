@@ -14,6 +14,7 @@ int main(int argc, char* argv[]) {
     // Aca creo el espacio de usuario con el tam de la memoria
     tamanio_memoria = config_get_int_value(config_memoria, "TAM_MEMORIA");
     tamanio_pagina = config_get_int_value(config_memoria, "TAM_PAGINA");
+    tiempo_retardo = config_get_int_value(config_memoria, "RETARDO_RESPUESTA");
 
     espacio_usuario = malloc(tamanio_memoria);
 	memset(espacio_usuario, 0, tamanio_memoria); // seteo memoria en 0
