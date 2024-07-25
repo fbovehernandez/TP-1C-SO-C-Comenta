@@ -356,11 +356,11 @@ void* esperar_RR(void* pcb) {
     
     printf("ESTOY ENVIANDO LA INTERRUPCION DESPUES DEL SLEEP\n");
 
-    if (send(socket_Int, &interrupcion_cpu, sizeof(codigo_operacion), 0) == -1) {
-        perror("Error al enviar la interrupción");
-    } else {
-        log_info(logger_kernel, "Envie interrupcion para PID %d despues de %d", pcb_nuevo->pid, pcb_nuevo->quantum);
-    }   
+    send(socket_Int, &interrupcion_cpu, sizeof(codigo_operacion), 0);
+    
+    char* log_message = string_from_format("Envie interrupcion para PID %d despues de %d", pcb_nuevo->pid, pcb_nuevo->quantum);
+    log_info(logger_kernel, "%s", log_message);
+    free(log_message);
     
     return NULL;
 }
@@ -609,7 +609,7 @@ void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
         
         printf("Voy a imprimir los datos std antes de agregarlos a la cola de bloqueados de la interfaz\n");
         
-        printf("\nAca va la lista de bytes DEL STDOUT ANTES DE ENCOLAR -> ARA GIL ME DEBES UN ALFAJOR:\n");
+        printf("\nAca va la lista de bytes DEL STDOUT/STDIN ANTES DE ENCOLAR\n");
         for(int i=0; i < list_size(datos_std->lista_direcciones); i++) {
             t_dir_fisica_tamanio* dir = list_get(datos_std->lista_direcciones, i);
             printf("Direccion fisica: %d\n", dir->direccion_fisica);

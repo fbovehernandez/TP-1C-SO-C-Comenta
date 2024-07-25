@@ -164,18 +164,16 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 printf("dir_fisica->tamanio total calculado : %d\n", pedido_op->length_valor);
 
                 void* registro_lectura = malloc(pedido_op->length_valor);
-                void* registro_completo = malloc(pedido_op->length_valor); 
             
-                realizar_operacion(pedido_op->pid, LECTURA, direcciones_restantes_mov_in, user_space_aux, NULL, registro_lectura, registro_completo);
+                realizar_operacion(pedido_op->pid, LECTURA, direcciones_restantes_mov_in, user_space_aux, NULL, registro_lectura);
 
                 // log_info("Contenido completo de registro_completo: %s", (char*)registro_completo);
-                send(socket_cpu, registro_completo, pedido_op->length_valor, 0);
+                send(socket_cpu, registro_lectura, pedido_op->length_valor, 0);
                 
                 free(pedido_op->valor_a_escribir);
                 free(pedido_op);
-                free(registro_lectura);
                 list_destroy(direcciones_restantes_mov_in);
-                free(registro_completo);
+                free(registro_lectura);
                 break;
             case ESCRIBIR_DATO_EN_MEM: 
                 user_space_aux = espacio_usuario;
@@ -188,7 +186,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
                 void* registro_escritura = pedido_operacion->valor_a_escribir;
 
-                realizar_operacion(pedido_operacion->pid,ESCRITURA, direcciones_restantes_escritura, user_space_aux, registro_escritura, NULL, NULL); 
+                realizar_operacion(pedido_operacion->pid,ESCRITURA, direcciones_restantes_escritura, user_space_aux, registro_escritura, NULL); 
                 // printf("Registro escrito como int %d\n", *((uint32_t*)registro_escritura));
 
                 send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
@@ -223,31 +221,38 @@ Ahora dir fisica es una misma estructura, solo que en el MOV-IN no se usa el apa
 hacer un send y recv + para el valor, y me parecio que era mas paja.
  
 ******/
-
-void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_restantes, void* user_space_aux, void* registro_escritura, void* registro_lectura, void* registro_completo) {
+/*
+void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_restantes, void* user_space_aux, void* registro_escritura, void* registro_lectura) {
 
     // printf("Antes de entrar al for, necesito %d paginas\n", df->cantidad_paginas);
     int tamanio_anterior = 0;
-    
+
+    printf("\nLas Direcciones fisicas son: \n");
+    for(int i=0; i<list_size(direcciones_restantes); i++) {
+        t_dir_fisica_tamanio* direccion_fisica = list_get(direcciones_restantes, i); 
+        printf("%d- Direccion fisica: %d\n", direccion_fisica->direccion_fisica);
+    }
+
     while(list_size(direcciones_restantes) > 0) {
-        printf("el size de direcciones restantes es %d", list_size(direcciones_restantes));
+        printf("el size de direcciones restantes es %d \n", list_size(direcciones_restantes));
         t_dir_fisica_tamanio* dir_fisica_tam = list_remove(direcciones_restantes, 0);
         log_info(logger_memoria, "La direccion fisica es: %d", dir_fisica_tam->direccion_fisica);
-        log_info(logger_memoria, "Los bytes de lectura restante son: %d", dir_fisica_tam->bytes_lectura);
+        log_info(logger_memoria, "Los bytes de lectura/escritura restante son: %d", dir_fisica_tam->bytes_lectura);
 
         if(operacion == ESCRITURA) {
             memcpy(user_space_aux + dir_fisica_tam->direccion_fisica, registro_escritura + tamanio_anterior, dir_fisica_tam->bytes_lectura);
+            printf("Contenido en user_space_aux después de escribir:\n");
+            printf("|%.*s\n|", dir_fisica_tam->bytes_lectura, (char*)(user_space_aux + dir_fisica_tam->direccion_fisica));
             log_info(logger_memoria, "Escritura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", dir_fisica_tam->direccion_fisica, tamanio_anterior, dir_fisica_tam->bytes_lectura);
-            log_info(logger_memoria, "Contenido escrito: %.*s\n", dir_fisica_tam->bytes_lectura, (char*)(registro_escritura + tamanio_anterior));
-            // Copiar lo leído en registro_completo
-            memcpy(registro_completo, registro_escritura, tamanio_anterior);
+            // log_info(logger_memoria, "Contenido escrito: %.*s\n", dir_fisica_tam->bytes_lectura, (char*)(registro_escritura + tamanio_anterior));
+            
         } else { // == LECTURA
             memcpy(registro_lectura + tamanio_anterior, (user_space_aux + dir_fisica_tam->direccion_fisica), dir_fisica_tam->bytes_lectura);
             log_info(logger_memoria, "Lectura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", dir_fisica_tam->direccion_fisica, tamanio_anterior, dir_fisica_tam->bytes_lectura); // aca dice 4 cuando deberia decir 25
             // Loguear el contenido leído
             log_info(logger_memoria, "Contenido leido: %.*s\n", dir_fisica_tam->bytes_lectura, (char*)(registro_lectura + tamanio_anterior - dir_fisica_tam->bytes_lectura));
             // Copiar lo leído en registro_completo
-            memcpy(registro_completo, registro_lectura, tamanio_anterior);
+           // memcpy(registro_completo, registro_lectura, tamanio_anterior);
         }
 
         char* operacion_nombre = string_tipo_operacion(operacion);
@@ -258,11 +263,11 @@ void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_r
         // interaccion_user_space(pid,operacion, dir_fisica_tam->direccion_fisica, user_space_aux, tamanio_anterior, dir_fisica_tam->bytes_lectura, registro_escritura, registro_lectura);
         tamanio_anterior += dir_fisica_tam->bytes_lectura;
     }
-}
+}*/
 /*
 void interaccion_user_space(int pid,tipo_operacion operacion, int df_actual, void* user_space_aux, int tam_escrito_anterior, int tamanio, void* registro_escritura, void* registro_lectura) {
     if(operacion == ESCRITURA) {
-        memcpy(user_space_aux + df_actual, registro_escritura + tam_escrito_anterior, tamanio);
+        memcpy(user_space_aux + df_actual, registro_escitura + tarm_escrito_anterior, tamanio);
         log_info(logger_memoria, "Escritura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
         log_info(logger_memoria, "Contenido escrito: %s\n", tamanio, *(char*)(user_space_aux + df_actual));
         
@@ -274,7 +279,37 @@ void interaccion_user_space(int pid,tipo_operacion operacion, int df_actual, voi
     char* operacion_nombre = string_tipo_operacion(operacion);
     log_info(logger_memoria,"PID: %d - Accion: %s - Direccion fisica: %d - Tamaño %d \n", pid ,operacion_nombre, df_actual, tamanio);
     
-}             */                                                                                                                    
+}             */      
+
+void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_restantes, void* user_space_aux, void* registro_escritura, void* registro_lectura) {
+
+    // printf("Antes de entrar al for, necesito %d paginas\n", df->cantidad_paginas);
+    int tamanio_anterior = 0;
+
+    while(list_size(direcciones_restantes) > 0) {
+        t_dir_fisica_tamanio* dir_fisica_tam = list_remove(direcciones_restantes, 0);
+        printf("La direccion fisica es: %d\n", dir_fisica_tam->direccion_fisica);
+        printf("El tamanio es: %d\n", dir_fisica_tam->bytes_lectura);
+
+        interaccion_user_space(pid, operacion, dir_fisica_tam->direccion_fisica, user_space_aux, tamanio_anterior, dir_fisica_tam->bytes_lectura, registro_escritura, registro_lectura);
+        tamanio_anterior += dir_fisica_tam->bytes_lectura;
+    }
+}
+
+void interaccion_user_space(int pid, tipo_operacion operacion, int df_actual, void* user_space_aux, int tam_escrito_anterior, int tamanio, void* registro_escritura, void* registro_lectura) {
+    if(operacion == ESCRITURA) {
+        memcpy(user_space_aux + df_actual, registro_escritura + tam_escrito_anterior, tamanio);
+        printf("Escritura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
+        printf("Contenido escrito: %.*d\n", tamanio, *(uint8_t*)(user_space_aux + df_actual));
+        log_info(logger_memoria, "Contenido escrito:  %.*d", tamanio, *(uint8_t*)(user_space_aux + df_actual));
+        log_info(logger_memoria, "El PID del contenido escrito es: %d", pid);
+    } else { // == LECTURA
+        memcpy(registro_lectura + tam_escrito_anterior, (user_space_aux + df_actual), tamanio);
+        printf("Lectura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
+        printf("Contenido leido: %.*d\n", tamanio, *(uint8_t*)(registro_lectura + tam_escrito_anterior));
+    }
+}                                                                                                                                 
+     
 
 char* string_tipo_operacion(tipo_operacion operacion){
     switch(operacion){
@@ -291,6 +326,8 @@ void quiero_frame(t_buffer* buffer) {
     log_info(logger_memoria, "El pid que me pide frame es: %d\n", pedido_frame->pid);
 
     int frame = buscar_frame(pedido_frame);
+
+    /* 
     if(frame == -1) {
         int frame_libre = buscar_frame_libre();
 
@@ -298,9 +335,11 @@ void quiero_frame(t_buffer* buffer) {
             bitarray_set_bit(bitmap, frame_libre);
         }
         send(socket_cpu, &frame_libre, sizeof(int), 0);
-    }else {
-        send(socket_cpu, &frame, sizeof(int), 0);
     }
+    */
+
+    send(socket_cpu, &frame, sizeof(int), 0);
+    
     free(pedido_frame);
 }
 
@@ -494,7 +533,7 @@ int buscar_frame(t_solicitud_frame* pedido_frame) {
 
     log_info(logger_memoria, "La cantidad de entradas que tiene la memoria es: %d", list_size(proceso_paginas->tabla_paginas));
     
-    for(int i=0;i < list_size(tabla_paginas); i++){
+    for(int i=0;i < list_size(tabla_paginas); i++) {
         t_pagina* pagina = list_get(tabla_paginas, i);
         if(pagina->numero_pagina == pedido_frame->nro_pagina){
             int numero_frame = *(int*) list_get(tabla_paginas, pedido_frame->nro_pagina);
@@ -583,14 +622,13 @@ void* handle_kernel(void* socket) {
 
                 void* registro_lectura = malloc(pid_stdout->registro_tamanio);
                 log_info(logger_memoria, "El tamanio del valor leido* es: %d\n", pid_stdout->registro_tamanio);
-                void* registro_completo = malloc(pid_stdout->registro_tamanio); 
             
-                realizar_operacion(pid_stdout->pid, LECTURA, pid_stdout->lista_direcciones, user_space_aux, NULL, registro_lectura, registro_completo);
+                realizar_operacion(pid_stdout->pid, LECTURA, pid_stdout->lista_direcciones, user_space_aux, NULL, registro_lectura);
 
                 char* registro_string = malloc(pid_stdout->registro_tamanio + 1);
                 
                 // ponele el \0 para que lo pueda leer bien
-                registro_string = (char*) registro_completo;
+                registro_string = (char*) registro_lectura;
                 registro_string[pid_stdout->registro_tamanio] = '\0';
                 
                 printf("El valor leido para char* es: %s\n", registro_string); // WAR,
@@ -603,13 +641,12 @@ void* handle_kernel(void* socket) {
 
                 printf("El pid que mandaremos a la io es %d\n", pid_stdout->pid);
                 printf("El socket es %d\n", socket_io->socket);
-                enviar_valor_leido_a_io(pid_stdout->pid, socket_io->socket, registro_completo, pid_stdout->registro_tamanio);
+                enviar_valor_leido_a_io(pid_stdout->pid, socket_io->socket, registro_string, pid_stdout->registro_tamanio);
                 
                 // free(registro_string);
                 list_destroy(pid_stdout->lista_direcciones);
                 free(pid_stdout->nombre_interfaz);
                 free(pid_stdout);
-                free(registro_completo);
                 break;
             
             case ESCRIBIR_FS_MEMORIA:
@@ -847,11 +884,13 @@ void* handle_io_stdin(void* socket) {
                 // recibir_datos_escritura();
 
                 char* registro_escritura = escritura_stdin->valor;
-                printf("el valor de GUARDAR_VALOR es %s", registro_escritura);
 
-                realizar_operacion(escritura_stdin->pid_stdin->pid, ESCRITURA, escritura_stdin->pid_stdin->lista_direcciones, user_space_aux, registro_escritura, NULL, NULL); 
+                printf("el valor de GUARDAR_VALOR es %s\n", registro_escritura);
+                log_info(logger_memoria, "\nel valor a guardar en memoria llegado desde STDIN es: %s\n\n", registro_escritura);
+
+                realizar_operacion(escritura_stdin->pid_stdin->pid, ESCRITURA, escritura_stdin->pid_stdin->lista_direcciones, user_space_aux, registro_escritura, NULL); 
                 
-                printf("\n\nRegistro escrito como char* %s\n\n", ((char*)registro_escritura));
+                // printf("\n\nRegistro escrito como char* %s\n\n", ((char*)registro_escritura));
                 
                 int terminoOk = 1;
                 // send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);

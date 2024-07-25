@@ -195,6 +195,7 @@ void recibir_kernel(void* config_socket_io) { //FREE
                 
                 // free(valor); Ya esta en mandar_valor_a_memoria
                 liberar_lista_direcciones(pid_stdin->lista_direcciones);
+                printf("\nYA LIBERE LA LISTA DE DIRECCION\n");
                 free(pid_stdin);
                 free(valor);
                 break;
@@ -245,6 +246,7 @@ void recibir_memoria(void* config_socket_io) {
     t_config* config_io = config_io_memoria->config_io;
 
     printf("Voy a recibir memoria!\n");
+    
     while(1) {
         t_paquete* paquete = malloc(sizeof(t_paquete));
         paquete->buffer = malloc(sizeof(t_buffer));
@@ -256,6 +258,8 @@ void recibir_memoria(void* config_socket_io) {
 
         recv(socket_memoria, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
         paquete->buffer->stream = malloc(paquete->buffer->size);
+
+        printf("\nLLEGA HASTA RECIBIR MEMORIA DE ENTRADA SALIDA\n\n");
 
         recv(socket_memoria, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
 
@@ -276,10 +280,10 @@ void recibir_memoria(void* config_socket_io) {
                 log_info(logger_io, "el tamanio del valor a escribir es %d", tamanio_valor_recibido);
                 valor[tamanio] = '\0';
                 log_info(logger_io, "\n\nEl valor leido de memoria es: %s \n\n", valor);
+                
                 log_info(logger_io, "PID: %d - Operacion: ESCRIBIR", pid);
-
+                //free(valor);
                 send(kernelfd, &terminoOk, sizeof(int), 0);
-                free(valor);
                 break;
             default:
                 printf("Se rompio memoria!!!!\n");

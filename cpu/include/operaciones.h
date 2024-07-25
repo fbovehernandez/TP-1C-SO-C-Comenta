@@ -82,5 +82,6 @@ void hacer_interrupcion(t_pcb* pcb);
 
 void set_uint8(void* registro_dato_mov_in, uint8_t valor_recibido_8);
 void destruir_parametro(void* parametro_void);
+int primer_byte_anterior_a_dir_logica(uint32_t direccion_logica, int tamanio_pagina);
 
 #endif 

@@ -1,498 +1,201 @@
-[INFO] 15:50:40:593 LOGGER/(51892:51892): Servidor iniciado, esperando conexiones!
-[INFO] 15:51:38:928 LOGGER/(51892:52174): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 15:51:38:977 LOGGER/(51892:52174): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 15:51:39:042 LOGGER/(51892:52174): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 15:51:39:408 LOGGER/(51892:51952): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
-[INFO] 15:51:39:528 LOGGER/(51892:51952): El pid que me pide frame es: 1
-
-[INFO] 15:51:39:530 LOGGER/(51892:51952): BUSCO EL FRAME CON LA PAGINA: 1
-[INFO] 15:51:39:531 LOGGER/(51892:51952): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
-[INFO] 15:51:39:531 LOGGER/(51892:51952): La cantidad de entradas que tiene la memoria es: 8
-[INFO] 15:51:39:534 LOGGER/(51892:51952): el numero de frame es 1
-[INFO] 15:51:39:816 LOGGER/(51892:51952): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
-[INFO] 15:51:40:264 LOGGER/(51892:51952): El pid que me pide frame es: 2
-
-[INFO] 15:51:40:264 LOGGER/(51892:51952): BUSCO EL FRAME CON LA PAGINA: 16
-[INFO] 15:51:40:265 LOGGER/(51892:51952): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
-[INFO] 15:51:40:265 LOGGER/(51892:51952): La cantidad de entradas que tiene la memoria es: 3
-[INFO] 15:51:40:272 LOGGER/(51892:51952): La direccion fisica es: 176
-[INFO] 15:51:40:272 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:51:40:272 LOGGER/(51892:51952): Escritura: df_actual=176, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:51:40:273 LOGGER/(51892:51952): Contenido escrito: I
-
-[INFO] 15:51:40:273 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 176 - Tamaño 1 
-
-[INFO] 15:51:40:584 LOGGER/(51892:51952): La direccion fisica es: 177
-[INFO] 15:51:40:584 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:51:40:584 LOGGER/(51892:51952): Escritura: df_actual=177, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:51:40:584 LOGGER/(51892:51952): Contenido escrito:  
-
-[INFO] 15:51:40:584 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 177 - Tamaño 1 
-
-[INFO] 15:51:41:316 LOGGER/(51892:51952): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
-[INFO] 15:51:41:419 LOGGER/(51892:51952): El pid que me pide frame es: 3
-
-[INFO] 15:51:41:420 LOGGER/(51892:51952): BUSCO EL FRAME CON LA PAGINA: 0
-[INFO] 15:51:41:420 LOGGER/(51892:51952): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
-[INFO] 15:51:41:421 LOGGER/(51892:51952): La cantidad de entradas que tiene la memoria es: 4
-[INFO] 15:51:41:421 LOGGER/(51892:51952): el numero de frame es 0
-[INFO] 15:51:51:152 LOGGER/(51892:51952): La direccion fisica es: 178
-[INFO] 15:51:51:156 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:51:51:156 LOGGER/(51892:51952): Escritura: df_actual=178, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:51:51:156 LOGGER/(51892:51952): Contenido escrito: d
-
-[INFO] 15:51:51:157 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 178 - Tamaño 1 
-
-[INFO] 15:51:51:477 LOGGER/(51892:51952): La direccion fisica es: 179
-[INFO] 15:51:51:477 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:51:51:477 LOGGER/(51892:51952): Escritura: df_actual=179, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:51:51:479 LOGGER/(51892:51952): Contenido escrito: o
-
-[INFO] 15:51:51:479 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 179 - Tamaño 1 
-
-[INFO] 15:51:51:813 LOGGER/(51892:51952): La direccion fisica es: 180
-[INFO] 15:51:51:813 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:51:51:813 LOGGER/(51892:51952): Escritura: df_actual=180, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:51:51:813 LOGGER/(51892:51952): Contenido escrito: n
-
-[INFO] 15:51:51:814 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 180 - Tamaño 1 
-
-[INFO] 15:51:52:154 LOGGER/(51892:51952): La direccion fisica es: 181
-[INFO] 15:51:52:154 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:51:52:154 LOGGER/(51892:51952): Escritura: df_actual=181, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:51:52:154 LOGGER/(51892:51952): Contenido escrito: '
-
-[INFO] 15:51:52:154 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 181 - Tamaño 1 
-
-[INFO] 15:51:52:480 LOGGER/(51892:51952): La direccion fisica es: 182
-[INFO] 15:51:52:480 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:51:52:481 LOGGER/(51892:51952): Escritura: df_actual=182, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:51:52:481 LOGGER/(51892:51952): Contenido escrito: t
-
-[INFO] 15:51:52:481 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 182 - Tamaño 1 
-
-[INFO] 15:51:52:814 LOGGER/(51892:51952): La direccion fisica es: 183
-[INFO] 15:51:52:814 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:51:52:814 LOGGER/(51892:51952): Escritura: df_actual=183, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:51:52:814 LOGGER/(51892:51952): Contenido escrito:  
-
-[INFO] 15:51:52:814 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 183 - Tamaño 1 
-
-[INFO] 15:52:00:102 LOGGER/(51892:52407): La direccion fisica es: 16
-[INFO] 15:52:00:109 LOGGER/(51892:52407): Los bytes de lectura restante son: 4
-[INFO] 15:52:00:109 LOGGER/(51892:52407): Escritura: df_actual=16, tam_escrito_anterior=0, tamanio=4
-
-[INFO] 15:52:00:110 LOGGER/(51892:52407): Contenido escrito: WAR 
-
-[INFO] 15:52:00:110 LOGGER/(51892:52407): PID: 1 - Accion: ESCRITURA - Direccion fisica: 16 - Tamaño 4 
-
-[INFO] 15:52:00:853 LOGGER/(51892:51952): El pid que me pide frame es: 1
-
-[INFO] 15:52:00:855 LOGGER/(51892:51952): BUSCO EL FRAME CON LA PAGINA: 0
-[INFO] 15:52:00:855 LOGGER/(51892:51952): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
-[INFO] 15:52:00:856 LOGGER/(51892:51952): La cantidad de entradas que tiene la memoria es: 8
-[INFO] 15:52:00:856 LOGGER/(51892:51952): el numero de frame es 0
-[INFO] 15:52:00:865 LOGGER/(51892:51952): La direccion fisica es: 11
-[INFO] 15:52:00:865 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:52:00:865 LOGGER/(51892:51952): Escritura: df_actual=11, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:52:00:865 LOGGER/(51892:51952): Contenido escrito: W
-
-[INFO] 15:52:00:865 LOGGER/(51892:51952): PID: 1 - Accion: ESCRITURA - Direccion fisica: 11 - Tamaño 1 
-
-[INFO] 15:52:01:074 LOGGER/(51892:51952): La direccion fisica es: 12
-[INFO] 15:52:01:074 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:52:01:074 LOGGER/(51892:51952): Escritura: df_actual=12, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:52:01:074 LOGGER/(51892:51952): Contenido escrito: A
-
-[INFO] 15:52:01:074 LOGGER/(51892:51952): PID: 1 - Accion: ESCRITURA - Direccion fisica: 12 - Tamaño 1 
-
-[INFO] 15:52:01:280 LOGGER/(51892:51952): La direccion fisica es: 13
-[INFO] 15:52:01:280 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:52:01:280 LOGGER/(51892:51952): Escritura: df_actual=13, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:52:01:280 LOGGER/(51892:51952): Contenido escrito: R
-
-[INFO] 15:52:01:280 LOGGER/(51892:51952): PID: 1 - Accion: ESCRITURA - Direccion fisica: 13 - Tamaño 1 
-
-[INFO] 15:52:01:501 LOGGER/(51892:51952): La direccion fisica es: 14
-[INFO] 15:52:01:501 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:52:01:501 LOGGER/(51892:51952): Escritura: df_actual=14, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:52:01:501 LOGGER/(51892:51952): Contenido escrito: ,
-
-[INFO] 15:52:01:501 LOGGER/(51892:51952): PID: 1 - Accion: ESCRITURA - Direccion fisica: 14 - Tamaño 1 
-
-[INFO] 15:52:03:255 LOGGER/(51892:51952): La direccion fisica es: 184
-[INFO] 15:52:03:255 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:52:03:256 LOGGER/(51892:51952): Escritura: df_actual=184, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:52:03:256 LOGGER/(51892:51952): Contenido escrito: w
-
-[INFO] 15:52:03:256 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 184 - Tamaño 1 
-
-[INFO] 15:52:03:574 LOGGER/(51892:51952): La direccion fisica es: 185
-[INFO] 15:52:03:574 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:52:03:574 LOGGER/(51892:51952): Escritura: df_actual=185, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:52:03:574 LOGGER/(51892:51952): Contenido escrito: a
-
-[INFO] 15:52:03:574 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 185 - Tamaño 1 
-
-[INFO] 15:52:03:887 LOGGER/(51892:51952): La direccion fisica es: 186
-[INFO] 15:52:03:887 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:52:03:887 LOGGER/(51892:51952): Escritura: df_actual=186, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:52:03:887 LOGGER/(51892:51952): Contenido escrito: n
-
-[INFO] 15:52:03:887 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 186 - Tamaño 1 
-
-[INFO] 15:52:04:205 LOGGER/(51892:51952): La direccion fisica es: 187
-[INFO] 15:52:04:205 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:52:04:205 LOGGER/(51892:51952): Escritura: df_actual=187, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:52:04:205 LOGGER/(51892:51952): Contenido escrito: t
-
-[INFO] 15:52:04:205 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 187 - Tamaño 1 
-
-[INFO] 15:52:04:514 LOGGER/(51892:51952): La direccion fisica es: 188
-[INFO] 15:52:04:514 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:52:04:514 LOGGER/(51892:51952): Escritura: df_actual=188, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:52:04:514 LOGGER/(51892:51952): Contenido escrito:  
-
-[INFO] 15:52:04:514 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 188 - Tamaño 1 
-
-[INFO] 15:52:23:056 LOGGER/(51892:51952): La direccion fisica es: 15
-[INFO] 15:52:23:056 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:52:23:056 LOGGER/(51892:51952): Escritura: df_actual=15, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:52:23:056 LOGGER/(51892:51952): Contenido escrito:  
-
-[INFO] 15:52:23:056 LOGGER/(51892:51952): PID: 1 - Accion: ESCRITURA - Direccion fisica: 15 - Tamaño 1 
-
-[INFO] 15:52:23:394 LOGGER/(51892:52174): El tamanio del valor leido* es: 25
-
-[INFO] 15:52:23:395 LOGGER/(51892:52174): La direccion fisica es: 11
-[INFO] 15:52:23:396 LOGGER/(51892:52174): Los bytes de lectura restante son: 4
-[INFO] 15:52:23:396 LOGGER/(51892:52174): Lectura: df_actual=11, tam_escrito_anterior=0, tamanio=4
-
-[INFO] 15:52:23:397 LOGGER/(51892:52174): Contenido leido: 
-
-[INFO] 15:52:23:398 LOGGER/(51892:52174): PID: 1 - Accion: LECTURA - Direccion fisica: 11 - Tamaño 4 
-
-[INFO] 15:52:23:592 LOGGER/(51892:52174): PID: 1 - Accion: DESTRUIR - Tamaño: 8
-[INFO] 15:52:27:731 LOGGER/(51892:52407): La direccion fisica es: 0
-[INFO] 15:52:27:732 LOGGER/(51892:52407): Los bytes de lectura restante son: 1
-[INFO] 15:52:27:732 LOGGER/(51892:52407): Escritura: df_actual=0, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:52:27:732 LOGGER/(51892:52407): Contenido escrito: S
-
-[INFO] 15:52:27:732 LOGGER/(51892:52407): PID: 3 - Accion: ESCRITURA - Direccion fisica: 0 - Tamaño 1 
-
-[INFO] 15:52:33:273 LOGGER/(51892:51952): La direccion fisica es: 189
-[INFO] 15:52:33:274 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:52:33:274 LOGGER/(51892:51952): Escritura: df_actual=189, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:52:33:275 LOGGER/(51892:51952): Contenido escrito: t
-
-[INFO] 15:52:33:275 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 189 - Tamaño 1 
-
-[INFO] 15:52:33:592 LOGGER/(51892:51952): La direccion fisica es: 190
-[INFO] 15:52:33:592 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:52:33:592 LOGGER/(51892:51952): Escritura: df_actual=190, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:52:33:593 LOGGER/(51892:51952): Contenido escrito: o
-
-[INFO] 15:52:33:593 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 190 - Tamaño 1 
-
-[INFO] 15:52:33:921 LOGGER/(51892:51952): La direccion fisica es: 191
-[INFO] 15:52:33:921 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
-[INFO] 15:52:33:921 LOGGER/(51892:51952): Escritura: df_actual=191, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:52:33:921 LOGGER/(51892:51952): Contenido escrito:  
-
-[INFO] 15:52:33:921 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 191 - Tamaño 1 
-
-[INFO] 15:52:53:106 LOGGER/(51892:51952): La direccion fisica es: 0
-[INFO] 15:52:53:107 LOGGER/(51892:51952): Los bytes de lectura restante son: 16
-[INFO] 15:52:53:107 LOGGER/(51892:51952): Lectura: df_actual=0, tam_escrito_anterior=0, tamanio=16
-
-[INFO] 15:52:53:107 LOGGER/(51892:51952): Contenido leido: 
-
-[INFO] 15:52:53:107 LOGGER/(51892:51952): PID: 3 - Accion: LECTURA - Direccion fisica: 0 - Tamaño 16 
-
-[INFO] 15:52:53:107 LOGGER/(51892:51952): La direccion fisica es: -16
-[INFO] 15:52:53:107 LOGGER/(51892:51952): Los bytes de lectura restante son: 10
-[INFO] 15:52:53:107 LOGGER/(51892:51952): Lectura: df_actual=-16, tam_escrito_anterior=16, tamanio=10
-
-[INFO] 15:52:53:107 LOGGER/(51892:51952): Contenido leido: 
-
-[INFO] 15:52:53:107 LOGGER/(51892:51952): PID: 3 - Accion: LECTURA - Direccion fisica: -16 - Tamaño 10 
-
-[INFO] 15:52:53:112 LOGGER/(51892:51952): El pid que me pide frame es: 3
-
-[INFO] 15:52:53:112 LOGGER/(51892:51952): BUSCO EL FRAME CON LA PAGINA: 2
-[INFO] 15:52:53:112 LOGGER/(51892:51952): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
-[INFO] 15:52:53:112 LOGGER/(51892:51952): La cantidad de entradas que tiene la memoria es: 4
-[INFO] 15:52:53:112 LOGGER/(51892:51952): el numero de frame es 2
-[INFO] 15:52:53:128 LOGGER/(51892:51952): La direccion fisica es: 32
-[INFO] 15:52:53:128 LOGGER/(51892:51952): Los bytes de lectura restante son: 16
-[INFO] 15:52:53:128 LOGGER/(51892:51952): Escritura: df_actual=32, tam_escrito_anterior=0, tamanio=16
-
-[INFO] 15:52:53:128 LOGGER/(51892:51952): Contenido escrito: S
-
-[INFO] 15:52:53:128 LOGGER/(51892:51952): PID: 3 - Accion: ESCRITURA - Direccion fisica: 32 - Tamaño 16 
-
-[INFO] 15:52:53:128 LOGGER/(51892:51952): La direccion fisica es: -16
-[INFO] 15:52:53:128 LOGGER/(51892:51952): Los bytes de lectura restante son: 10
-[INFO] 15:52:53:129 LOGGER/(51892:51952): Escritura: df_actual=-16, tam_escrito_anterior=16, tamanio=10
-
-[INFO] 15:52:53:129 LOGGER/(51892:51952): Contenido escrito: tura resta
-
-[INFO] 15:58:40:055 LOGGER/(54098:54098): Servidor iniciado, esperando conexiones!
-[INFO] 15:59:08:712 LOGGER/(54098:54239): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 15:59:08:749 LOGGER/(54098:54239): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 15:59:08:818 LOGGER/(54098:54239): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 15:59:09:166 LOGGER/(54098:54168): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
-[INFO] 15:59:09:305 LOGGER/(54098:54168): El pid que me pide frame es: 1
-
-[INFO] 15:59:09:318 LOGGER/(54098:54168): BUSCO EL FRAME CON LA PAGINA: 1
-[INFO] 15:59:09:319 LOGGER/(54098:54168): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
-[INFO] 15:59:09:319 LOGGER/(54098:54168): La cantidad de entradas que tiene la memoria es: 8
-[INFO] 15:59:09:320 LOGGER/(54098:54168): el numero de frame es 1
-[INFO] 15:59:09:536 LOGGER/(54098:54168): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
-[INFO] 15:59:09:981 LOGGER/(54098:54168): El pid que me pide frame es: 2
-
-[INFO] 15:59:09:981 LOGGER/(54098:54168): BUSCO EL FRAME CON LA PAGINA: 16
-[INFO] 15:59:09:981 LOGGER/(54098:54168): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
-[INFO] 15:59:09:981 LOGGER/(54098:54168): La cantidad de entradas que tiene la memoria es: 3
-[INFO] 15:59:09:987 LOGGER/(54098:54168): La direccion fisica es: 176
-[INFO] 15:59:09:987 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:09:987 LOGGER/(54098:54168): Escritura: df_actual=176, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:09:988 LOGGER/(54098:54168): Contenido escrito: 8
-
-[INFO] 15:59:09:988 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 176 - Tamaño 1 
-
-[INFO] 15:59:10:328 LOGGER/(54098:54168): La direccion fisica es: 177
-[INFO] 15:59:10:328 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:10:328 LOGGER/(54098:54168): Escritura: df_actual=177, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:10:328 LOGGER/(54098:54168): Contenido escrito: :
-
-[INFO] 15:59:10:328 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 177 - Tamaño 1 
-
-[INFO] 15:59:10:759 LOGGER/(54098:54168): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
-[INFO] 15:59:10:956 LOGGER/(54098:54168): El pid que me pide frame es: 3
-
-[INFO] 15:59:10:956 LOGGER/(54098:54168): BUSCO EL FRAME CON LA PAGINA: 0
-[INFO] 15:59:10:957 LOGGER/(54098:54168): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
-[INFO] 15:59:10:957 LOGGER/(54098:54168): La cantidad de entradas que tiene la memoria es: 4
-[INFO] 15:59:10:957 LOGGER/(54098:54168): el numero de frame es 0
-[INFO] 15:59:19:590 LOGGER/(54098:54440): La direccion fisica es: 16
-[INFO] 15:59:19:591 LOGGER/(54098:54440): Los bytes de lectura restante son: 4
-[INFO] 15:59:19:591 LOGGER/(54098:54440): Escritura: df_actual=16, tam_escrito_anterior=0, tamanio=4
-
-[INFO] 15:59:19:591 LOGGER/(54098:54440): Contenido escrito: S...
-
-[INFO] 15:59:19:591 LOGGER/(54098:54440): PID: 1 - Accion: ESCRITURA - Direccion fisica: 16 - Tamaño 4 
-
-[INFO] 15:59:20:313 LOGGER/(54098:54168): El pid que me pide frame es: 1
-
-[INFO] 15:59:20:314 LOGGER/(54098:54168): BUSCO EL FRAME CON LA PAGINA: 0
-[INFO] 15:59:20:314 LOGGER/(54098:54168): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
-[INFO] 15:59:20:315 LOGGER/(54098:54168): La cantidad de entradas que tiene la memoria es: 8
-[INFO] 15:59:20:315 LOGGER/(54098:54168): el numero de frame es 0
-[INFO] 15:59:20:325 LOGGER/(54098:54168): La direccion fisica es: 11
-[INFO] 15:59:20:325 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:20:325 LOGGER/(54098:54168): Escritura: df_actual=11, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:20:325 LOGGER/(54098:54168): Contenido escrito: 
-
-[INFO] 15:59:20:325 LOGGER/(54098:54168): PID: 1 - Accion: ESCRITURA - Direccion fisica: 11 - Tamaño 1 
-
-[INFO] 15:59:20:539 LOGGER/(54098:54168): La direccion fisica es: 12
-[INFO] 15:59:20:539 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:20:539 LOGGER/(54098:54168): Escritura: df_actual=12, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:20:539 LOGGER/(54098:54168): Contenido escrito: 
-
-[INFO] 15:59:20:540 LOGGER/(54098:54168): PID: 1 - Accion: ESCRITURA - Direccion fisica: 12 - Tamaño 1 
-
-[INFO] 15:59:20:747 LOGGER/(54098:54168): La direccion fisica es: 13
-[INFO] 15:59:20:747 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:20:747 LOGGER/(54098:54168): Escritura: df_actual=13, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:20:747 LOGGER/(54098:54168): Contenido escrito: 
-
-[INFO] 15:59:20:747 LOGGER/(54098:54168): PID: 1 - Accion: ESCRITURA - Direccion fisica: 13 - Tamaño 1 
-
-[INFO] 15:59:20:954 LOGGER/(54098:54168): La direccion fisica es: 14
-[INFO] 15:59:20:954 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:20:954 LOGGER/(54098:54168): Escritura: df_actual=14, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:20:954 LOGGER/(54098:54168): Contenido escrito: 
-
-[INFO] 15:59:20:954 LOGGER/(54098:54168): PID: 1 - Accion: ESCRITURA - Direccion fisica: 14 - Tamaño 1 
-
-[INFO] 15:59:21:586 LOGGER/(54098:54168): La direccion fisica es: 178
-[INFO] 15:59:21:586 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:21:586 LOGGER/(54098:54168): Escritura: df_actual=178, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:21:586 LOGGER/(54098:54168): Contenido escrito: 
-
-[INFO] 15:59:21:586 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 178 - Tamaño 1 
-
-[INFO] 15:59:21:897 LOGGER/(54098:54168): La direccion fisica es: 179
-[INFO] 15:59:21:897 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:21:897 LOGGER/(54098:54168): Escritura: df_actual=179, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:21:897 LOGGER/(54098:54168): Contenido escrito: 
-
-[INFO] 15:59:21:897 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 179 - Tamaño 1 
-
-[INFO] 15:59:22:209 LOGGER/(54098:54168): La direccion fisica es: 180
-[INFO] 15:59:22:209 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:22:209 LOGGER/(54098:54168): Escritura: df_actual=180, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:22:209 LOGGER/(54098:54168): Contenido escrito: 
-
-[INFO] 15:59:22:209 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 180 - Tamaño 1 
-
-[INFO] 15:59:22:535 LOGGER/(54098:54168): La direccion fisica es: 181
-[INFO] 15:59:22:535 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:22:535 LOGGER/(54098:54168): Escritura: df_actual=181, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:22:535 LOGGER/(54098:54168): Contenido escrito: 
-
-[INFO] 15:59:22:535 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 181 - Tamaño 1 
-
-[INFO] 15:59:22:846 LOGGER/(54098:54168): La direccion fisica es: 182
-[INFO] 15:59:22:846 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:22:846 LOGGER/(54098:54168): Escritura: df_actual=182, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:22:846 LOGGER/(54098:54168): Contenido escrito: 
-
-[INFO] 15:59:22:846 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 182 - Tamaño 1 
-
-[INFO] 15:59:23:156 LOGGER/(54098:54168): La direccion fisica es: 183
-[INFO] 15:59:23:156 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:23:156 LOGGER/(54098:54168): Escritura: df_actual=183, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:23:156 LOGGER/(54098:54168): Contenido escrito: 
-
-[INFO] 15:59:23:156 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 183 - Tamaño 1 
-
-[INFO] 15:59:27:700 LOGGER/(54098:54440): La direccion fisica es: 0
-[INFO] 15:59:27:700 LOGGER/(54098:54440): Los bytes de lectura restante son: 1
-[INFO] 15:59:27:701 LOGGER/(54098:54440): Escritura: df_actual=0, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:27:701 LOGGER/(54098:54440): Contenido escrito: S
-
-[INFO] 15:59:27:701 LOGGER/(54098:54440): PID: 3 - Accion: ESCRITURA - Direccion fisica: 0 - Tamaño 1 
-
-[INFO] 15:59:41:386 LOGGER/(54098:54168): La direccion fisica es: 15
-[INFO] 15:59:41:387 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:41:387 LOGGER/(54098:54168): Escritura: df_actual=15, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:41:387 LOGGER/(54098:54168): Contenido escrito: 
-
-[INFO] 15:59:41:387 LOGGER/(54098:54168): PID: 1 - Accion: ESCRITURA - Direccion fisica: 15 - Tamaño 1 
-
-[INFO] 15:59:41:733 LOGGER/(54098:54239): El tamanio del valor leido* es: 25
-
-[INFO] 15:59:41:733 LOGGER/(54098:54239): La direccion fisica es: 11
-[INFO] 15:59:41:733 LOGGER/(54098:54239): Los bytes de lectura restante son: 4
-[INFO] 15:59:41:733 LOGGER/(54098:54239): Lectura: df_actual=11, tam_escrito_anterior=0, tamanio=4
-
-[INFO] 15:59:41:733 LOGGER/(54098:54239): Contenido leido: 
-
-[INFO] 15:59:41:734 LOGGER/(54098:54239): PID: 1 - Accion: LECTURA - Direccion fisica: 11 - Tamaño 4 
-
-[INFO] 15:59:41:875 LOGGER/(54098:54239): PID: 1 - Accion: DESTRUIR - Tamaño: 8
-[INFO] 15:59:51:613 LOGGER/(54098:54168): La direccion fisica es: 184
-[INFO] 15:59:51:613 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:51:613 LOGGER/(54098:54168): Escritura: df_actual=184, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:51:613 LOGGER/(54098:54168): Contenido escrito: %
-
-[INFO] 15:59:51:614 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 184 - Tamaño 1 
-
-[INFO] 15:59:51:931 LOGGER/(54098:54168): La direccion fisica es: 185
-[INFO] 15:59:51:931 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:51:931 LOGGER/(54098:54168): Escritura: df_actual=185, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:51:931 LOGGER/(54098:54168): Contenido escrito: 
-
-[INFO] 15:59:51:931 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 185 - Tamaño 1 
-
-[INFO] 15:59:52:269 LOGGER/(54098:54168): La direccion fisica es: 186
-[INFO] 15:59:52:270 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:52:270 LOGGER/(54098:54168): Escritura: df_actual=186, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:52:270 LOGGER/(54098:54168): Contenido escrito: 
-
-[INFO] 15:59:52:270 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 186 - Tamaño 1 
-
-[INFO] 15:59:52:602 LOGGER/(54098:54168): La direccion fisica es: 187
-[INFO] 15:59:52:602 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:52:602 LOGGER/(54098:54168): Escritura: df_actual=187, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:52:602 LOGGER/(54098:54168): Contenido escrito: 
-
-[INFO] 15:59:52:602 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 187 - Tamaño 1 
-
-[INFO] 15:59:52:926 LOGGER/(54098:54168): La direccion fisica es: 188
-[INFO] 15:59:52:926 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
-[INFO] 15:59:52:926 LOGGER/(54098:54168): Escritura: df_actual=188, tam_escrito_anterior=0, tamanio=1
-
-[INFO] 15:59:52:926 LOGGER/(54098:54168): Contenido escrito: 
-
-[INFO] 15:59:52:926 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 188 - Tamaño 1 
-
-[INFO] 16:00:11:440 LOGGER/(54098:54168): La direccion fisica es: 0
-[INFO] 16:00:11:440 LOGGER/(54098:54168): Los bytes de lectura restante son: 16
-[INFO] 16:00:11:440 LOGGER/(54098:54168): Lectura: df_actual=0, tam_escrito_anterior=0, tamanio=16
-
-[INFO] 16:00:11:440 LOGGER/(54098:54168): Contenido leido: [0m
-
-[INFO] 16:00:11:440 LOGGER/(54098:54168): PID: 3 - Accion: LECTURA - Direccion fisica: 0 - Tamaño 16 
-
-[INFO] 16:00:11:440 LOGGER/(54098:54168): La direccion fisica es: -16
-[INFO] 16:00:11:440 LOGGER/(54098:54168): Los bytes de lectura restante son: 10
-[INFO] 16:00:11:440 LOGGER/(54098:54168): Lectura: df_actual=-16, tam_escrito_anterior=16, tamanio=10
-
-[INFO] 16:00:11:440 LOGGER/(54098:54168): Contenido leido: 
-
-[INFO] 16:00:11:441 LOGGER/(54098:54168): PID: 3 - Accion: LECTURA - Direccion fisica: -16 - Tamaño 10 
-
-[INFO] 16:00:11:444 LOGGER/(54098:54168): El pid que me pide frame es: 3
-
-[INFO] 16:00:11:444 LOGGER/(54098:54168): BUSCO EL FRAME CON LA PAGINA: 2
-[INFO] 16:00:11:444 LOGGER/(54098:54168): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
-[INFO] 16:00:11:444 LOGGER/(54098:54168): La cantidad de entradas que tiene la memoria es: 4
-[INFO] 16:00:11:444 LOGGER/(54098:54168): el numero de frame es 2
-[INFO] 16:00:11:459 LOGGER/(54098:54168): La direccion fisica es: 32
-[INFO] 16:00:11:459 LOGGER/(54098:54168): Los bytes de lectura restante son: 16
-[INFO] 16:00:11:459 LOGGER/(54098:54168): Escritura: df_actual=32, tam_escrito_anterior=0, tamanio=16
-
-[INFO] 16:00:11:459 LOGGER/(54098:54168): Contenido escrito: 
-
-[INFO] 16:00:11:459 LOGGER/(54098:54168): PID: 3 - Accion: ESCRITURA - Direccion fisica: 32 - Tamaño 16 
-
-[INFO] 16:00:11:459 LOGGER/(54098:54168): La direccion fisica es: -16
-[INFO] 16:00:11:459 LOGGER/(54098:54168): Los bytes de lectura restante son: 10
-[INFO] 16:00:11:459 LOGGER/(54098:54168): Escritura: df_actual=-16, tam_escrito_anterior=16, tamanio=10
-
-[INFO] 16:00:11:459 LOGGER/(54098:54168): Contenido escrito: 
-
+[INFO] 19:06:24:507 LOGGER/(98970:98970): Servidor iniciado, esperando conexiones!
+[INFO] 19:06:54:514 LOGGER/(98970:99130): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 19:06:54:955 LOGGER/(98970:99030): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
+[INFO] 19:06:55:082 LOGGER/(98970:99030): El pid que me pide frame es: 1
+
+[INFO] 19:06:55:086 LOGGER/(98970:99030): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 19:06:55:086 LOGGER/(98970:99030): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 19:06:55:086 LOGGER/(98970:99030): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 19:06:55:087 LOGGER/(98970:99030): el numero de frame es 1
+[INFO] 19:07:06:052 LOGGER/(98970:99330): 
+el valor a guardar en memoria llegado desde STDIN es: WAR NEVER CHANGES...
+
+
+[INFO] 19:07:06:055 LOGGER/(98970:99330): Contenido escrito:  0000000000000087
+[INFO] 19:07:06:056 LOGGER/(98970:99330): El PID del contenido escrito es: 1
+[INFO] 19:07:06:057 LOGGER/(98970:99330): Contenido escrito:  0083
+[INFO] 19:07:06:057 LOGGER/(98970:99330): El PID del contenido escrito es: 1
+[INFO] 19:07:06:786 LOGGER/(98970:99030): El pid que me pide frame es: 1
+
+[INFO] 19:07:06:786 LOGGER/(98970:99030): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 19:07:06:787 LOGGER/(98970:99030): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 19:07:06:787 LOGGER/(98970:99030): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 19:07:06:787 LOGGER/(98970:99030): el numero de frame es 0
+[INFO] 19:07:06:799 LOGGER/(98970:99030): Contenido escrito:  87
+[INFO] 19:07:06:799 LOGGER/(98970:99030): El PID del contenido escrito es: 1
+[INFO] 19:07:07:017 LOGGER/(98970:99030): Contenido escrito:  65
+[INFO] 19:07:07:017 LOGGER/(98970:99030): El PID del contenido escrito es: 1
+[INFO] 19:07:07:317 LOGGER/(98970:99030): Contenido escrito:  82
+[INFO] 19:07:07:317 LOGGER/(98970:99030): El PID del contenido escrito es: 1
+[INFO] 19:07:07:535 LOGGER/(98970:99030): Contenido escrito:  44
+[INFO] 19:07:07:535 LOGGER/(98970:99030): El PID del contenido escrito es: 1
+[INFO] 19:07:28:059 LOGGER/(98970:99030): Contenido escrito:  32
+[INFO] 19:07:28:060 LOGGER/(98970:99030): El PID del contenido escrito es: 1
+[INFO] 19:07:28:405 LOGGER/(98970:99130): El tamanio del valor leido* es: 25
+
+[INFO] 19:07:28:691 LOGGER/(98970:99130): PID: 1 - Accion: DESTRUIR - Tamaño: 8
+[INFO] 19:12:24:717 LOGGER/(100440:100440): Servidor iniciado, esperando conexiones!
+[INFO] 19:17:20:914 LOGGER/(100968:100968): Servidor iniciado, esperando conexiones!
+[INFO] 19:18:08:772 LOGGER/(100968:101190): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 19:18:09:346 LOGGER/(100968:101049): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
+[INFO] 19:18:09:463 LOGGER/(100968:101049): El pid que me pide frame es: 1
+
+[INFO] 19:18:09:466 LOGGER/(100968:101049): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 19:18:09:467 LOGGER/(100968:101049): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 19:18:09:467 LOGGER/(100968:101049): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 19:18:09:468 LOGGER/(100968:101049): el numero de frame es 1
+[INFO] 19:34:23:375 LOGGER/(102687:102687): Servidor iniciado, esperando conexiones!
+[INFO] 19:36:08:329 LOGGER/(102687:103192): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 19:36:08:741 LOGGER/(102687:103047): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
+[INFO] 19:36:08:864 LOGGER/(102687:103047): El pid que me pide frame es: 1
+
+[INFO] 19:36:08:866 LOGGER/(102687:103047): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 19:36:08:867 LOGGER/(102687:103047): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 19:36:08:867 LOGGER/(102687:103047): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 19:36:08:868 LOGGER/(102687:103047): el numero de frame es 1
+[INFO] 19:36:24:630 LOGGER/(102687:103394): 
+el valor a guardar en memoria llegado desde STDIN es: WAR NEVER CHANGES...
+
+
+[INFO] 19:36:24:656 LOGGER/(102687:103394): Contenido escrito:  0000000000000087
+[INFO] 19:36:24:659 LOGGER/(102687:103394): El PID del contenido escrito es: 1
+[INFO] 19:36:24:663 LOGGER/(102687:103394): Contenido escrito:  0083
+[INFO] 19:36:24:664 LOGGER/(102687:103394): El PID del contenido escrito es: 1
+[INFO] 19:36:25:495 LOGGER/(102687:103047): El pid que me pide frame es: 1
+
+[INFO] 19:36:25:495 LOGGER/(102687:103047): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 19:36:25:497 LOGGER/(102687:103047): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 19:36:25:497 LOGGER/(102687:103047): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 19:36:25:498 LOGGER/(102687:103047): el numero de frame es 0
+[INFO] 19:36:25:511 LOGGER/(102687:103047): Contenido escrito:  87
+[INFO] 19:36:25:511 LOGGER/(102687:103047): El PID del contenido escrito es: 1
+[INFO] 19:36:25:746 LOGGER/(102687:103047): Contenido escrito:  65
+[INFO] 19:36:25:746 LOGGER/(102687:103047): El PID del contenido escrito es: 1
+[INFO] 19:36:26:059 LOGGER/(102687:103047): Contenido escrito:  82
+[INFO] 19:36:26:059 LOGGER/(102687:103047): El PID del contenido escrito es: 1
+[INFO] 19:36:26:277 LOGGER/(102687:103047): Contenido escrito:  44
+[INFO] 19:36:26:277 LOGGER/(102687:103047): El PID del contenido escrito es: 1
+[INFO] 19:36:46:866 LOGGER/(102687:103047): Contenido escrito:  32
+[INFO] 19:36:46:872 LOGGER/(102687:103047): El PID del contenido escrito es: 1
+[INFO] 19:36:47:265 LOGGER/(102687:103192): El tamanio del valor leido* es: 25
+
+[INFO] 19:36:47:599 LOGGER/(102687:103192): PID: 1 - Accion: DESTRUIR - Tamaño: 8
+[INFO] 19:49:29:756 LOGGER/(104979:104979): Servidor iniciado, esperando conexiones!
+[INFO] 19:51:33:953 LOGGER/(104979:105482): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 19:51:34:414 LOGGER/(104979:105158): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
+[INFO] 19:51:34:528 LOGGER/(104979:105158): El pid que me pide frame es: 1
+
+[INFO] 19:51:34:532 LOGGER/(104979:105158): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 19:51:34:532 LOGGER/(104979:105158): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 19:51:34:533 LOGGER/(104979:105158): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 19:51:34:533 LOGGER/(104979:105158): el numero de frame es 1
+[INFO] 19:51:43:473 LOGGER/(104979:106001): 
+el valor a guardar en memoria llegado desde STDIN es: WAR, WAR NEVER CHANGES...
+
+
+[INFO] 19:51:43:480 LOGGER/(104979:106001): Contenido escrito:  0000000000000087
+[INFO] 19:51:43:482 LOGGER/(104979:106001): El PID del contenido escrito es: 1
+[INFO] 19:51:43:486 LOGGER/(104979:106001): Contenido escrito:  0072
+[INFO] 19:51:43:487 LOGGER/(104979:106001): El PID del contenido escrito es: 1
+[INFO] 19:51:44:270 LOGGER/(104979:105158): El pid que me pide frame es: 1
+
+[INFO] 19:51:44:270 LOGGER/(104979:105158): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 19:51:44:271 LOGGER/(104979:105158): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 19:51:44:271 LOGGER/(104979:105158): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 19:51:44:271 LOGGER/(104979:105158): el numero de frame es 0
+[INFO] 19:51:44:279 LOGGER/(104979:105158): Contenido escrito:  87
+[INFO] 19:51:44:279 LOGGER/(104979:105158): El PID del contenido escrito es: 1
+[INFO] 19:51:44:517 LOGGER/(104979:105158): Contenido escrito:  65
+[INFO] 19:51:44:517 LOGGER/(104979:105158): El PID del contenido escrito es: 1
+[INFO] 19:51:44:815 LOGGER/(104979:105158): Contenido escrito:  82
+[INFO] 19:51:44:815 LOGGER/(104979:105158): El PID del contenido escrito es: 1
+[INFO] 19:51:45:038 LOGGER/(104979:105158): Contenido escrito:  44
+[INFO] 19:51:45:038 LOGGER/(104979:105158): El PID del contenido escrito es: 1
+[INFO] 19:52:05:542 LOGGER/(104979:105158): Contenido escrito:  32
+[INFO] 19:52:05:544 LOGGER/(104979:105158): El PID del contenido escrito es: 1
+[INFO] 19:52:05:879 LOGGER/(104979:105482): El tamanio del valor leido* es: 25
+
+[INFO] 19:52:06:176 LOGGER/(104979:105482): PID: 1 - Accion: DESTRUIR - Tamaño: 8
+[INFO] 20:20:45:791 LOGGER/(107816:107816): Servidor iniciado, esperando conexiones!
+[INFO] 20:21:22:733 LOGGER/(107816:108001): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 20:21:23:134 LOGGER/(107816:107906): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
+[INFO] 20:21:23:250 LOGGER/(107816:107906): El pid que me pide frame es: 1
+
+[INFO] 20:21:23:253 LOGGER/(107816:107906): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:21:23:254 LOGGER/(107816:107906): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:21:23:254 LOGGER/(107816:107906): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:21:23:255 LOGGER/(107816:107906): el numero de frame es 1
+[INFO] 20:21:23:264 LOGGER/(107816:107906): El pid que me pide frame es: 2
+
+[INFO] 20:21:23:264 LOGGER/(107816:107906): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:21:23:265 LOGGER/(107816:107906): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 20:21:23:265 LOGGER/(107816:107906): No existe el proceso con pid 2 o rompio otra cosa
+[INFO] 20:21:37:807 LOGGER/(107816:108209): 
+el valor a guardar en memoria llegado desde STDIN es: WAR NEVER CHANGES...
+
+
+[INFO] 20:21:37:816 LOGGER/(107816:108209): Contenido escrito:  0000000000000087
+[INFO] 20:21:37:816 LOGGER/(107816:108209): El PID del contenido escrito es: 1
+[INFO] 20:21:37:817 LOGGER/(107816:108209): Contenido escrito:  0083
+[INFO] 20:21:37:817 LOGGER/(107816:108209): El PID del contenido escrito es: 1
+[INFO] 20:21:38:574 LOGGER/(107816:107906): El pid que me pide frame es: 1
+
+[INFO] 20:21:38:574 LOGGER/(107816:107906): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 20:21:38:574 LOGGER/(107816:107906): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:21:38:574 LOGGER/(107816:107906): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:21:38:575 LOGGER/(107816:107906): el numero de frame es 0
+[INFO] 20:21:38:583 LOGGER/(107816:107906): Contenido escrito:  87
+[INFO] 20:21:38:583 LOGGER/(107816:107906): El PID del contenido escrito es: 1
+[INFO] 20:21:38:805 LOGGER/(107816:107906): Contenido escrito:  65
+[INFO] 20:21:38:805 LOGGER/(107816:107906): El PID del contenido escrito es: 1
+[INFO] 20:21:39:170 LOGGER/(107816:107906): Contenido escrito:  82
+[INFO] 20:21:39:170 LOGGER/(107816:107906): El PID del contenido escrito es: 1
+[INFO] 20:21:39:389 LOGGER/(107816:107906): Contenido escrito:  44
+[INFO] 20:21:39:389 LOGGER/(107816:107906): El PID del contenido escrito es: 1
+[INFO] 20:21:59:897 LOGGER/(107816:107906): Contenido escrito:  32
+[INFO] 20:21:59:897 LOGGER/(107816:107906): El PID del contenido escrito es: 1
+[INFO] 20:22:00:234 LOGGER/(107816:108001): El tamanio del valor leido* es: 25
+
+[INFO] 20:22:00:596 LOGGER/(107816:108001): PID: 1 - Accion: DESTRUIR - Tamaño: 8
+[INFO] 20:25:53:582 LOGGER/(109277:109277): Servidor iniciado, esperando conexiones!
+[INFO] 20:26:30:436 LOGGER/(109277:109485): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 20:26:30:925 LOGGER/(109277:109376): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
+[INFO] 20:26:31:121 LOGGER/(109277:109376): El pid que me pide frame es: 1
+
+[INFO] 20:26:31:128 LOGGER/(109277:109376): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:26:31:128 LOGGER/(109277:109376): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:26:31:131 LOGGER/(109277:109376): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:26:31:136 LOGGER/(109277:109376): el numero de frame es 1
+[INFO] 20:26:31:220 LOGGER/(109277:109376): El pid que me pide frame es: 1
+
+[INFO] 20:26:31:220 LOGGER/(109277:109376): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 20:26:31:221 LOGGER/(109277:109376): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:26:31:221 LOGGER/(109277:109376): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:26:31:221 LOGGER/(109277:109376): el numero de frame es 2
+[INFO] 20:26:40:960 LOGGER/(109277:109692): 
+el valor a guardar en memoria llegado desde STDIN es: WAR NEVER CHANGES...
+
+
+[INFO] 20:26:40:968 LOGGER/(109277:109692): Contenido escrito:  0000000000000087
+[INFO] 20:26:40:970 LOGGER/(109277:109692): El PID del contenido escrito es: 1
+[INFO] 20:26:40:973 LOGGER/(109277:109692): Contenido escrito:  0083
+[INFO] 20:26:40:973 LOGGER/(109277:109692): El PID del contenido escrito es: 1
+[INFO] 20:26:41:712 LOGGER/(109277:109376): El pid que me pide frame es: 1
+
+[INFO] 20:26:41:712 LOGGER/(109277:109376): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 20:26:41:712 LOGGER/(109277:109376): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:26:41:712 LOGGER/(109277:109376): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:26:41:712 LOGGER/(109277:109376): el numero de frame es 0
+[INFO] 20:26:41:719 LOGGER/(109277:109376): Contenido escrito:  87
+[INFO] 20:26:41:720 LOGGER/(109277:109376): El PID del contenido escrito es: 1
+[INFO] 20:26:41:943 LOGGER/(109277:109376): Contenido escrito:  65
+[INFO] 20:26:41:943 LOGGER/(109277:109376): El PID del contenido escrito es: 1
+[INFO] 20:26:42:287 LOGGER/(109277:109376): Contenido escrito:  82
+[INFO] 20:26:42:287 LOGGER/(109277:109376): El PID del contenido escrito es: 1
+[INFO] 20:26:42:499 LOGGER/(109277:109376): Contenido escrito:  44
+[INFO] 20:26:42:499 LOGGER/(109277:109376): El PID del contenido escrito es: 1
+[INFO] 20:27:02:996 LOGGER/(109277:109376): Contenido escrito:  32
+[INFO] 20:27:02:998 LOGGER/(109277:109376): El PID del contenido escrito es: 1
+[INFO] 20:27:03:333 LOGGER/(109277:109485): El tamanio del valor leido* es: 25
+
+[INFO] 20:27:03:618 LOGGER/(109277:109485): PID: 1 - Accion: DESTRUIR - Tamaño: 8

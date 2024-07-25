@@ -89,7 +89,7 @@ t_buffer* llenar_buffer_stdout(char* valor);
 void recibir_resto_direcciones(t_list* lista_direcciones);
 int bytes_usables_por_pagina(int direccion_logica);
 void quiero_frame(t_buffer* buffer);
-void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_restantes, void* user_space_aux, void* registro_escritura, void* registro_lectura, void* registro_completo);
+void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_restantes, void* user_space_aux, void* registro_escritura, void* registro_lectura);
 void interaccion_user_space(int pid,tipo_operacion operacion, int df_actual, void* user_space_aux, int tam_escrito_anterior, int tamanio, void* registro_escritura, void* registro_lectura);
 t_direccion_fisica_escritura* deserializar_direccion_fisica_escritura(t_buffer* buffer);
 t_direccion_fisica* deserializar_direccion_fisica_lectura(t_buffer* buffer);
@@ -117,3 +117,7 @@ void liberar_cola_recursos(t_list* procesos_bloqueados);
 void liberar_estructuras_proceso(int pid);
 
 #endif // CONEXIONES_H
+
+
+
+

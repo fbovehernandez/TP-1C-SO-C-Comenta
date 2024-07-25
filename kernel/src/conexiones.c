@@ -309,6 +309,7 @@ void* handle_io_stdout(void* socket_io) {
 
     t_paquete *paquete = inicializarIO_recibirPaquete(socket);
     t_list_io* io;
+    
     switch (paquete->codigo_operacion) {
         case CONEXION_INTERFAZ:
             printf("llego hasta handle io stdout 2\n");
@@ -383,7 +384,7 @@ void* handle_io_stdout(void* socket_io) {
     free(io->semaforo_cola_procesos_blocked);
     free(io->nombreInterfaz);
     free(io);
-    free(pid_stdout); //QUE_NO_ROMPA
+    free(pid_stdout); // QUE_NO_ROMPA
     liberar_paquete(paquete);
     return NULL;
 }

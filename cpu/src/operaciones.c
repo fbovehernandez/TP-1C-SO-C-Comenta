@@ -621,9 +621,12 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         printf("El valor de la direccion es: %d\n", var_register);
         
         int pagina = floor(var_register / tamanio_pagina);
+        printf("la pagina es HOLIHOLI %d", pagina);
+
         tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); // Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
 
-        int cantidad_paginas = cantidad_de_paginas_a_utilizar(var_register, tamanio_en_byte, pagina, lista_bytes_stdin); // Cantidad de paginas + la primera
+        int tamanio_listo = 20;
+        int cantidad_paginas = cantidad_de_paginas_a_utilizar(var_register, tamanio_listo, pagina, lista_bytes_stdin); // Cantidad de paginas + la primera
         
         cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdin, var_register, pcb->pid, lista_direcciones_fisicas_stdin, pagina);
 
@@ -681,6 +684,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         }
         
         pagina = floor(valor_a_enviar / tamanio_pagina);
+        
         tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); // Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
 
         cantidad_paginas = cantidad_de_paginas_a_utilizar(valor_a_enviar, tamanio_en_byte, pagina, lista_bytes_stdout); // Cantidad de paginas + la primera
@@ -863,6 +867,16 @@ void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectur
         
         frame = buscar_frame_en_TLB(pid, pagina + 1 + i);
 
+        if(frame == -1) {
+            printf("ENTRO POR ACA\n");
+            pedir_frame_a_memoria(pagina + 1 + i, pid);
+            printf("pedi el frame de la pagina : %d\n", pagina + 1 + i);
+            
+            recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
+        }
+        
+        printf("el frame es %d", frame);
+
         int direccion_fisica = frame * tamanio_pagina + 0; // 0 es el offset
 
         t_dir_fisica_tamanio *dir_fisica_tamanio_2 = malloc(sizeof(t_dir_fisica_tamanio));
@@ -934,12 +948,42 @@ int tamanio_byte_registro(bool es_registro_uint8) {
     return es_registro_uint8 ? 1 : 4;
 }
 
+
+int primer_byte_anterior_a_dir_logica(uint32_t direccion_logica, int tamanio_pagina) {
+    // Dir logica en 198, con un tam pagina de 32, el primer byte seria 192 
+    // Dir logica en 224, con un tam pagina de 32, el primer byte seria 224
+    // Dir logica en 221, con un tam pagina de 32, el primer byte seria 192
+    // Dir logica 16, con un tam pagina de 32, el primer byte seria 0
+    
+    int offset_movido = direccion_logica % tamanio_pagina; // 16 % 32 = 16 ✔ - 198 % 32 = 6 ✔ 16 % 16 = 0 ✔
+    printf("El offset movido dentro del calculo del primer byte es %d\n", offset_movido);
+
+    int primer_byte = direccion_logica - offset_movido; // 16 - 16 = 0 ✔ - 198 - 6 = 192 ✔ - 16 - 0 = 16 ✔ 
+    return primer_byte;
+}
+
 /***** ACLARACION *******/
 int cantidad_de_paginas_a_utilizar(uint32_t direccion_logica, int tamanio_en_bytes, int pagina, t_list* lista_bytes_lectura) { // Dir logica 5 tamanio 17
     int cantidad_paginas = 1; // (5)
-    
-    int offset_movido = direccion_logica - pagina * tamanio_pagina; // 5 dir logica -> 16 tam pagina EAX = 4 BYTES
-    
+
+   // imprimir la dir logica y el tam de una pagina
+    printf("Direccion logica: %d\n", direccion_logica);
+    printf("Tamanio pagina: %d\n", tamanio_pagina);
+
+    int primer_byte_anterior = primer_byte_anterior_a_dir_logica(direccion_logica, tamanio_pagina); // 0 ✔ - 192 ✔
+    int offset_movido = direccion_logica - primer_byte_anterior; // 16 - 0 = 16 ✔ - 198 - 192 = 6 ✔
+
+    /* 
+    if(direccion_logica > tamanio_pagina) {
+        offset_movido = direccion_logica % tamanio_pagina; // 198 224 = abs(dir_logica - tam_pagina * pagina)  = abs(-26) = 26 primer byte pagina en la que esta
+        printf("el offset es %d", offset_movido);
+    } else {
+        int numero = direccion_logica / tamanio_pagina;
+        offset_movido = direccion_logica - tamanio_pagina * numero;
+        printf("el offset es %d", offset_movido);
+    }
+    */
+
     while(1) { 
         int posible_lectura = tamanio_pagina - offset_movido;  // 3
 
@@ -966,6 +1010,7 @@ int cantidad_de_paginas_a_utilizar(uint32_t direccion_logica, int tamanio_en_byt
         
         tamanio_en_bytes = sobrante_de_pagina; // 14 -> 10 -> 6 -> 2
     } 
+
     return cantidad_paginas;
 }
 
