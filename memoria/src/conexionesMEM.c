@@ -225,7 +225,7 @@ void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_r
         t_dir_fisica_tamanio* dir_fisica_tam = list_remove(direcciones_restantes, 0);
         printf("La direccion fisica es: %d\n", dir_fisica_tam->direccion_fisica);
         printf("El tamanio es: %d\n", dir_fisica_tam->bytes_lectura);
-        printf("el registro escritura es : %s \n", (char*)registro_escritura);
+        // printf("el registro escritura es : %s \n", (char*)registro_escritura);
 
         interaccion_user_space(pid, operacion, dir_fisica_tam->direccion_fisica, user_space_aux, tamanio_anterior, dir_fisica_tam->bytes_lectura, registro_escritura, registro_lectura);
         tamanio_anterior += dir_fisica_tam->bytes_lectura;
@@ -813,7 +813,7 @@ void* handle_io_stdin(void* socket) {
 
         switch(paquete->codigo_operacion) { 
             case GUARDAR_VALOR:                  
-                t_escritura_stdin* escritura_stdin = deserializar_escritura_stdin(stream);
+                t_escritura_stdin* escritura_stdin = deserializar_escritura_stdin(stream); // PRINTF
 
                 imprimir_datos_stdin_escritura(escritura_stdin);
                 

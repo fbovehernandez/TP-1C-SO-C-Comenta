@@ -3770,3 +3770,79 @@
 [INFO] 23:06:58:407 LOGGER/(117861:117864): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
 [INFO] 23:06:58:981 LOGGER/(117861:117864): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
 [INFO] 23:06:58:981 LOGGER/(117861:117864): Finaliza el proceso 1 - Motivo: OUT OF MEMORY
+[INFO] 23:24:57:947 LOGGER/(5310:5310): Conexion establecida con Memoria
+[INFO] 23:24:58:053 LOGGER/(5310:5310): Conexion establecida con Dispatcher
+[INFO] 23:24:58:070 LOGGER/(5310:5310): Conexion establecida con Interrupt
+[INFO] 23:24:58:210 LOGGER/(5310:5310): Servidor iniciado, esperando conexiones!
+[INFO] 23:25:48:697 LOGGER/(5310:5315): Se crea el proceso: 1 en NEW
+[INFO] 23:25:48:697 LOGGER/(5310:5315): Hay proceso esperando en la cola de NEW!
+
+[INFO] 23:25:48:698 LOGGER/(5310:5312): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 23:25:48:699 LOGGER/(5310:5312): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 23:25:48:708 LOGGER/(5310:5312): Cola Ready: 1 
+
+[INFO] 23:25:48:710 LOGGER/(5310:5313): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:25:49:284 LOGGER/(5310:5313): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 23:25:49:284 LOGGER/(5310:5313): PID: 1 - Bloqueado por: TECLADO
+[INFO] 23:25:49:285 LOGGER/(5310:5850): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: BLOCKED
+[INFO] 23:25:58:564 LOGGER/(5310:5850): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 23:25:58:564 LOGGER/(5310:5850): Cola Ready: 1 
+
+[INFO] 23:25:58:565 LOGGER/(5310:5313): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:28:37:024 LOGGER/(7156:7156): Conexion establecida con Memoria
+[INFO] 23:28:37:088 LOGGER/(7156:7156): Conexion establecida con Dispatcher
+[INFO] 23:28:37:099 LOGGER/(7156:7156): Conexion establecida con Interrupt
+[INFO] 23:28:37:172 LOGGER/(7156:7156): Servidor iniciado, esperando conexiones!
+[INFO] 23:29:24:573 LOGGER/(7156:7172): Se crea el proceso: 1 en NEW
+[INFO] 23:29:24:574 LOGGER/(7156:7172): Hay proceso esperando en la cola de NEW!
+
+[INFO] 23:29:24:574 LOGGER/(7156:7169): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 23:29:24:576 LOGGER/(7156:7169): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 23:29:24:585 LOGGER/(7156:7169): Cola Ready: 1 
+
+[INFO] 23:29:24:597 LOGGER/(7156:7170): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:29:25:218 LOGGER/(7156:7170): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 23:29:25:220 LOGGER/(7156:7170): PID: 1 - Bloqueado por: TECLADO
+[INFO] 23:29:25:221 LOGGER/(7156:7728): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: BLOCKED
+[INFO] 23:34:07:826 LOGGER/(7156:7728): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 23:34:07:826 LOGGER/(7156:7728): Cola Ready: 1 
+
+[INFO] 23:34:07:826 LOGGER/(7156:7170): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:37:29:057 LOGGER/(9740:9740): Conexion establecida con Memoria
+[INFO] 23:37:29:111 LOGGER/(9740:9740): Conexion establecida con Dispatcher
+[INFO] 23:37:29:120 LOGGER/(9740:9740): Conexion establecida con Interrupt
+[INFO] 23:37:29:219 LOGGER/(9740:9740): Servidor iniciado, esperando conexiones!
+[INFO] 23:38:18:250 LOGGER/(9740:9756): Se crea el proceso: 1 en NEW
+[INFO] 23:38:18:250 LOGGER/(9740:9756): Hay proceso esperando en la cola de NEW!
+
+[INFO] 23:38:18:250 LOGGER/(9740:9753): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 23:38:18:251 LOGGER/(9740:9753): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 23:38:18:252 LOGGER/(9740:9753): Cola Ready: 1 
+
+[INFO] 23:38:18:258 LOGGER/(9740:9754): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:38:18:810 LOGGER/(9740:9754): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 23:38:18:811 LOGGER/(9740:9754): PID: 1 - Bloqueado por: TECLADO
+[INFO] 23:38:18:811 LOGGER/(9740:10299): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: BLOCKED
+[INFO] 23:38:34:576 LOGGER/(9740:10299): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 23:38:34:576 LOGGER/(9740:10299): Cola Ready: 1 
+
+[INFO] 23:38:34:576 LOGGER/(9740:9754): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:38:36:266 LOGGER/(9740:9754): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 23:38:36:266 LOGGER/(9740:9754): PID: 1 - Bloqueado por: GENERICA
+[INFO] 23:38:56:271 LOGGER/(9740:10040): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 23:38:56:273 LOGGER/(9740:10040): Cola Ready: 1 
+
+[INFO] 23:38:56:274 LOGGER/(9740:9754): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:38:56:721 LOGGER/(9740:9754): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 23:38:56:721 LOGGER/(9740:9754): PID: 1 - Bloqueado por: MONITOR
+[INFO] 23:38:56:721 LOGGER/(9740:9754): PID: 1 - Bloqueado por - MONITOR
+[INFO] 23:38:56:721 LOGGER/(9740:10596): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: BLOCKED
+[INFO] 23:38:56:729 LOGGER/(9740:10596): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 23:38:56:729 LOGGER/(9740:10596): Cola Ready: 1 
+
+[INFO] 23:38:56:730 LOGGER/(9740:9754): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:38:56:946 LOGGER/(9740:9754): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 23:38:56:946 LOGGER/(9740:9754): Finaliza el proceso 1 - Motivo: SUCCESS

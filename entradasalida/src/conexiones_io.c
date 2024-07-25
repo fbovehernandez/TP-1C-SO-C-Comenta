@@ -172,7 +172,9 @@ void recibir_kernel(void* config_socket_io) { //FREE
                 
                 free(pid_unidades_trabajo);
                 break;
-            case LEETE: 
+            case LEETE:
+                char valor_leido[100];
+
                 int resultOk = 0;
                 int terminoOk;
                 
@@ -180,24 +182,33 @@ void recibir_kernel(void* config_socket_io) { //FREE
                 send(socket_kernel_io, &resultOk, sizeof(int), 0);
 
                 imprimir_datos_stdin(pid_stdin);
+                
                 printf("llego hasta LEETE\n");
                 // Leer valor
                 printf("Ingrese lo que quiera gurdar (hasta %d caracteres): \n", pid_stdin->registro_tamanio);
-                char* valor = readline("");
 
-                printf("el valor leido es %s\n", valor);
-                printf("el tamanio del valor leido es: %d \n", string_length(valor));
-                mandar_valor_a_memoria(valor, pid_stdin);
+                scanf(" %[^\n]", valor_leido); // Sale en rojo, si...
+
+                printf("el valor leido es %s\n", valor_leido);
+
+                printf("el tamanio del valor leido es: %d \n", string_length(valor_leido));
+
+                mandar_valor_a_memoria(valor_leido, pid_stdin);
+
                 log_info(logger_io, "PID: %d - Operacion: LEER", pid_stdin->pid);
+
                 recv(memoriafd, &terminoOk, sizeof(int), MSG_WAITALL);
+
                 printf("el terminoOk es: %d \n", terminoOk);
+
                 send(socket_kernel_io, &terminoOk, sizeof(int), 0);
                 
                 // free(valor); Ya esta en mandar_valor_a_memoria
-                liberar_lista_direcciones(pid_stdin->lista_direcciones);
+                // liberar_lista_direcciones(pid_stdin->lista_direcciones);
+
                 printf("\nYA LIBERE LA LISTA DE DIRECCION\n");
                 free(pid_stdin);
-                free(valor);
+                // free(valor_le);
                 break;
             case CREAR_ARCHIVO:
                 // Estaria bueno que tenngamos un diccionario con key nombre archiivo y puntero como  atrbuto

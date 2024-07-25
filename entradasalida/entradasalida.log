@@ -910,3 +910,47 @@ El valor leido de memoria es: WAR,
 
 
 [INFO] 20:27:03:352 LOGGER/(109836:109836): PID: 1 - Operacion: ESCRIBIR
+[INFO] 23:25:12:259 LOGGER/(5589:5589): Conexion establecida con Kernel
+
+[INFO] 23:25:24:202 LOGGER/(5837:5837): Conexion establecida con Kernel
+
+[INFO] 23:25:24:299 LOGGER/(5837:5837): Conexion establecida con Memoria
+
+[INFO] 23:25:40:323 LOGGER/(6140:6140): Conexion establecida con Kernel
+
+[INFO] 23:25:40:442 LOGGER/(6140:6140): Conexion establecida con Memoria
+
+[INFO] 23:25:58:513 LOGGER/(5837:5837): el valor en mandar_valor_a_memoria es WAR,
+[INFO] 23:25:58:534 LOGGER/(5837:5837): PID: 1 - Operacion: LEER
+[INFO] 23:28:48:861 LOGGER/(7449:7449): Conexion establecida con Kernel
+
+[INFO] 23:28:59:821 LOGGER/(7706:7706): Conexion establecida con Kernel
+
+[INFO] 23:28:59:887 LOGGER/(7706:7706): Conexion establecida con Memoria
+
+[INFO] 23:29:14:640 LOGGER/(8008:8008): Conexion establecida con Kernel
+
+[INFO] 23:29:14:748 LOGGER/(8008:8008): Conexion establecida con Memoria
+
+[INFO] 23:34:07:804 LOGGER/(7706:7706): el valor en mandar_valor_a_memoria es WAR
+[INFO] 23:34:07:820 LOGGER/(7706:7706): PID: 1 - Operacion: LEER
+[INFO] 23:37:46:361 LOGGER/(10021:10021): Conexion establecida con Kernel
+
+[INFO] 23:37:59:674 LOGGER/(10298:10298): Conexion establecida con Kernel
+
+[INFO] 23:37:59:747 LOGGER/(10298:10298): Conexion establecida con Memoria
+
+[INFO] 23:38:10:125 LOGGER/(10583:10583): Conexion establecida con Kernel
+
+[INFO] 23:38:10:220 LOGGER/(10583:10583): Conexion establecida con Memoria
+
+[INFO] 23:38:34:556 LOGGER/(10298:10298): el valor en mandar_valor_a_memoria es WAR NEVER CHANGES...
+[INFO] 23:38:34:571 LOGGER/(10298:10298): PID: 1 - Operacion: LEER
+[INFO] 23:38:56:269 LOGGER/(10021:10021): PID 1 - Operacion: DORMIR_IO
+[INFO] 23:38:56:726 LOGGER/(10583:10583): el tamanio del valor a escribir es 4
+[INFO] 23:38:56:726 LOGGER/(10583:10583): 
+
+El valor leido de memoria es: WAR, 
+
+
+[INFO] 23:38:56:727 LOGGER/(10583:10583): PID: 1 - Operacion: ESCRIBIR

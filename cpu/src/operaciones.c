@@ -610,6 +610,9 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         registro_direccion = list_get(list_parametros, 1); // Cambiar, usa el de arriba, mejor nombre?
         t_parametro *registro_tamanio = list_get(list_parametros, 2);
 
+        int tamanio_a_copiar_en_mem = atoi(registro_tamanio->nombre);
+        printf("El tamanio a copiar es: %d\n", tamanio_a_copiar_en_mem);
+
         char* nombre_registro_direccion = registro_direccion->nombre;
         char* nombre_registro_tamanio = registro_tamanio->nombre;
 
@@ -634,8 +637,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); // Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
 
-        int tamanio_listo = 20;
-        int cantidad_paginas = cantidad_de_paginas_a_utilizar(var_register, tamanio_listo, pagina, lista_bytes_stdin); // Cantidad de paginas + la primera
+        int cantidad_paginas = cantidad_de_paginas_a_utilizar(var_register, tamanio, pagina, lista_bytes_stdin); // Cantidad de paginas + la primera
         
         cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdin, var_register, pcb->pid, lista_direcciones_fisicas_stdin, pagina);
 

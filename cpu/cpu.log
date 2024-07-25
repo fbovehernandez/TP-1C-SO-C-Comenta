@@ -798,3 +798,251 @@
 [INFO] 23:06:58:865 LOGGER/(117779:117823): PID: 1 - FETCH - Program Counter: 4
 [INFO] 23:06:58:967 LOGGER/(117779:117823): PID 1 - Ejecutando RESIZE 2352
 [INFO] 23:06:58:969 LOGGER/(117779:117823): OUT OF MEMORY
+[INFO] 23:24:43:691 LOGGER/(5049:5049): Conexion establecida con Memoria
+[INFO] 23:24:46:779 LOGGER/(5049:5107): Servidor iniciado, esperando conexiones!
+[INFO] 23:24:58:041 LOGGER/(5049:5107): Se conecto un cliente de dispatch!
+
+[INFO] 23:24:58:048 LOGGER/(5049:5107): Esperando cliente...
+[INFO] 23:24:58:067 LOGGER/(5049:5108): Se conecto un cliente de interrupt!
+
+[INFO] 23:25:48:725 LOGGER/(5049:5107): PID: 1 - FETCH - Program Counter: 0
+[INFO] 23:25:48:834 LOGGER/(5049:5107): PID 1 - Ejecutando SET EAX 16
+[INFO] 23:25:48:845 LOGGER/(5049:5107): PID: 1 - FETCH - Program Counter: 1
+[INFO] 23:25:48:961 LOGGER/(5049:5107): PID 1 - Ejecutando SET EBX 20
+[INFO] 23:25:48:961 LOGGER/(5049:5107): PID: 1 - FETCH - Program Counter: 2
+[INFO] 23:25:49:073 LOGGER/(5049:5107): PID 1 - Ejecutando RESIZE 128
+[INFO] 23:25:49:116 LOGGER/(5049:5107): PID: 1 - FETCH - Program Counter: 3
+[INFO] 23:25:49:222 LOGGER/(5049:5107): PID 1 - Ejecutando IO_STDIN_READ TECLADO EAX EBX
+[INFO] 23:25:49:226 LOGGER/(5049:5107): Direccion logica: 16
+
+[INFO] 23:25:49:228 LOGGER/(5049:5107): Numero de pagina 1 + Desplazamiento 0
+
+[INFO] 23:25:49:229 LOGGER/(5049:5107): PID: 1 - TLB MISS - Pagina: 1
+[INFO] 23:25:49:235 LOGGER/(5049:5107): PID: 1 - OBTENER MARCO - Página: 1 - Marco: 1
+[INFO] 23:25:49:236 LOGGER/(5049:5107): A la entrada 1 le asigno el frame 1
+[INFO] 23:25:49:246 LOGGER/(5049:5107): direccion fisica: 16
+[INFO] 23:25:49:247 LOGGER/(5049:5107): tamanio guardado: 16
+[INFO] 23:25:49:248 LOGGER/(5049:5107): HELP Pido el marco de la pagina 2 del proceso 1
+[INFO] 23:25:49:249 LOGGER/(5049:5107): PID: 1 - TLB MISS - Pagina: 2
+[INFO] 23:25:49:257 LOGGER/(5049:5107): PID: 1 - Acción: ESCRIBIR - Dirección Física: 16 - Valor: 16
+[INFO] 23:25:49:261 LOGGER/(5049:5107): PID: 1 - Acción: ESCRIBIR - Dirección Física: 32 - Valor: 16
+[INFO] 23:25:58:565 LOGGER/(5049:5107): PID: 1 - FETCH - Program Counter: 4
+[INFO] 23:25:58:667 LOGGER/(5049:5107): PID 1 - Ejecutando SET AX 87
+[INFO] 23:25:58:667 LOGGER/(5049:5107): PID: 1 - FETCH - Program Counter: 5
+[INFO] 23:25:58:769 LOGGER/(5049:5107): PID 1 - Ejecutando SET BX 65
+[INFO] 23:25:58:769 LOGGER/(5049:5107): PID: 1 - FETCH - Program Counter: 6
+[INFO] 23:25:58:871 LOGGER/(5049:5107): PID 1 - Ejecutando SET CX 82
+[INFO] 23:25:58:872 LOGGER/(5049:5107): PID: 1 - FETCH - Program Counter: 7
+[INFO] 23:25:58:973 LOGGER/(5049:5107): PID 1 - Ejecutando SET DX 44
+[INFO] 23:25:58:973 LOGGER/(5049:5107): PID: 1 - FETCH - Program Counter: 8
+[INFO] 23:25:59:077 LOGGER/(5049:5107): PID 1 - Ejecutando SET ECX 11
+[INFO] 23:25:59:078 LOGGER/(5049:5107): PID: 1 - FETCH - Program Counter: 9
+[INFO] 23:25:59:179 LOGGER/(5049:5107): PID 1 - Ejecutando SET EDX 1
+[INFO] 23:25:59:179 LOGGER/(5049:5107): PID: 1 - FETCH - Program Counter: 10
+[INFO] 23:25:59:282 LOGGER/(5049:5107): PID 1 - Ejecutando MOV_OUT ECX AX
+[INFO] 23:25:59:284 LOGGER/(5049:5107): Direccion logica: 11
+
+[INFO] 23:25:59:285 LOGGER/(5049:5107): Numero de pagina 0 + Desplazamiento 11
+
+[INFO] 23:25:59:285 LOGGER/(5049:5107): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 23:25:59:287 LOGGER/(5049:5107): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 23:25:59:287 LOGGER/(5049:5107): A la entrada 1 le asigno el frame 0
+[INFO] 23:25:59:289 LOGGER/(5049:5107): direccion fisica: 11
+[INFO] 23:25:59:289 LOGGER/(5049:5107): tamanio guardado: 1
+[INFO] 23:25:59:289 LOGGER/(5049:5107): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 23:28:24:912 LOGGER/(6917:6917): Conexion establecida con Memoria
+[INFO] 23:28:28:015 LOGGER/(6917:6961): Servidor iniciado, esperando conexiones!
+[INFO] 23:28:37:082 LOGGER/(6917:6961): Se conecto un cliente de dispatch!
+
+[INFO] 23:28:37:083 LOGGER/(6917:6961): Esperando cliente...
+[INFO] 23:28:37:097 LOGGER/(6917:6962): Se conecto un cliente de interrupt!
+
+[INFO] 23:29:24:631 LOGGER/(6917:6961): PID: 1 - FETCH - Program Counter: 0
+[INFO] 23:29:24:760 LOGGER/(6917:6961): PID 1 - Ejecutando SET EAX 16
+[INFO] 23:29:24:770 LOGGER/(6917:6961): PID: 1 - FETCH - Program Counter: 1
+[INFO] 23:29:24:880 LOGGER/(6917:6961): PID 1 - Ejecutando SET EBX 20
+[INFO] 23:29:24:881 LOGGER/(6917:6961): PID: 1 - FETCH - Program Counter: 2
+[INFO] 23:29:24:984 LOGGER/(6917:6961): PID 1 - Ejecutando RESIZE 128
+[INFO] 23:29:24:998 LOGGER/(6917:6961): PID: 1 - FETCH - Program Counter: 3
+[INFO] 23:29:25:101 LOGGER/(6917:6961): PID 1 - Ejecutando IO_STDIN_READ TECLADO EAX EBX
+[INFO] 23:29:25:110 LOGGER/(6917:6961): Direccion logica: 16
+
+[INFO] 23:29:25:111 LOGGER/(6917:6961): Numero de pagina 1 + Desplazamiento 0
+
+[INFO] 23:29:25:116 LOGGER/(6917:6961): PID: 1 - TLB MISS - Pagina: 1
+[INFO] 23:29:25:129 LOGGER/(6917:6961): PID: 1 - OBTENER MARCO - Página: 1 - Marco: 1
+[INFO] 23:29:25:134 LOGGER/(6917:6961): A la entrada 1 le asigno el frame 1
+[INFO] 23:29:25:161 LOGGER/(6917:6961): direccion fisica: 16
+[INFO] 23:29:25:167 LOGGER/(6917:6961): tamanio guardado: 16
+[INFO] 23:29:25:168 LOGGER/(6917:6961): HELP Pido el marco de la pagina 2 del proceso 1
+[INFO] 23:29:25:171 LOGGER/(6917:6961): PID: 1 - TLB MISS - Pagina: 2
+[INFO] 23:29:25:179 LOGGER/(6917:6961): PID: 1 - Acción: ESCRIBIR - Dirección Física: 16 - Valor: 16
+[INFO] 23:29:25:180 LOGGER/(6917:6961): PID: 1 - Acción: ESCRIBIR - Dirección Física: 32 - Valor: 16
+[INFO] 23:34:07:834 LOGGER/(6917:6961): PID: 1 - FETCH - Program Counter: 4
+[INFO] 23:34:07:936 LOGGER/(6917:6961): PID 1 - Ejecutando SET AX 87
+[INFO] 23:34:07:937 LOGGER/(6917:6961): PID: 1 - FETCH - Program Counter: 5
+[INFO] 23:34:08:039 LOGGER/(6917:6961): PID 1 - Ejecutando SET BX 65
+[INFO] 23:34:08:039 LOGGER/(6917:6961): PID: 1 - FETCH - Program Counter: 6
+[INFO] 23:34:08:141 LOGGER/(6917:6961): PID 1 - Ejecutando SET CX 82
+[INFO] 23:34:08:141 LOGGER/(6917:6961): PID: 1 - FETCH - Program Counter: 7
+[INFO] 23:34:08:243 LOGGER/(6917:6961): PID 1 - Ejecutando SET DX 44
+[INFO] 23:34:08:244 LOGGER/(6917:6961): PID: 1 - FETCH - Program Counter: 8
+[INFO] 23:34:08:346 LOGGER/(6917:6961): PID 1 - Ejecutando SET ECX 11
+[INFO] 23:34:08:346 LOGGER/(6917:6961): PID: 1 - FETCH - Program Counter: 9
+[INFO] 23:34:08:448 LOGGER/(6917:6961): PID 1 - Ejecutando SET EDX 1
+[INFO] 23:34:08:450 LOGGER/(6917:6961): PID: 1 - FETCH - Program Counter: 10
+[INFO] 23:34:08:553 LOGGER/(6917:6961): PID 1 - Ejecutando MOV_OUT ECX AX
+[INFO] 23:34:08:557 LOGGER/(6917:6961): Direccion logica: 11
+
+[INFO] 23:34:08:559 LOGGER/(6917:6961): Numero de pagina 0 + Desplazamiento 11
+
+[INFO] 23:34:08:559 LOGGER/(6917:6961): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 23:34:08:561 LOGGER/(6917:6961): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 23:34:08:562 LOGGER/(6917:6961): A la entrada 1 le asigno el frame 0
+[INFO] 23:34:08:563 LOGGER/(6917:6961): direccion fisica: 11
+[INFO] 23:34:08:574 LOGGER/(6917:6961): tamanio guardado: 1
+[INFO] 23:34:08:575 LOGGER/(6917:6961): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 23:37:15:962 LOGGER/(9482:9482): Conexion establecida con Memoria
+[INFO] 23:37:19:065 LOGGER/(9482:9531): Servidor iniciado, esperando conexiones!
+[INFO] 23:37:29:105 LOGGER/(9482:9531): Se conecto un cliente de dispatch!
+
+[INFO] 23:37:29:108 LOGGER/(9482:9531): Esperando cliente...
+[INFO] 23:37:29:118 LOGGER/(9482:9532): Se conecto un cliente de interrupt!
+
+[INFO] 23:38:18:281 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 0
+[INFO] 23:38:18:393 LOGGER/(9482:9531): PID 1 - Ejecutando SET EAX 16
+[INFO] 23:38:18:400 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 1
+[INFO] 23:38:18:508 LOGGER/(9482:9531): PID 1 - Ejecutando SET EBX 20
+[INFO] 23:38:18:509 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 2
+[INFO] 23:38:18:612 LOGGER/(9482:9531): PID 1 - Ejecutando RESIZE 128
+[INFO] 23:38:18:624 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 3
+[INFO] 23:38:18:728 LOGGER/(9482:9531): PID 1 - Ejecutando IO_STDIN_READ TECLADO EAX EBX
+[INFO] 23:38:18:734 LOGGER/(9482:9531): Direccion logica: 16
+
+[INFO] 23:38:18:735 LOGGER/(9482:9531): Numero de pagina 1 + Desplazamiento 0
+
+[INFO] 23:38:18:737 LOGGER/(9482:9531): PID: 1 - TLB MISS - Pagina: 1
+[INFO] 23:38:18:744 LOGGER/(9482:9531): PID: 1 - OBTENER MARCO - Página: 1 - Marco: 1
+[INFO] 23:38:18:747 LOGGER/(9482:9531): A la entrada 1 le asigno el frame 1
+[INFO] 23:38:18:764 LOGGER/(9482:9531): direccion fisica: 16
+[INFO] 23:38:18:767 LOGGER/(9482:9531): tamanio guardado: 16
+[INFO] 23:38:18:768 LOGGER/(9482:9531): HELP Pido el marco de la pagina 2 del proceso 1
+[INFO] 23:38:18:768 LOGGER/(9482:9531): PID: 1 - TLB MISS - Pagina: 2
+[INFO] 23:38:18:774 LOGGER/(9482:9531): PID: 1 - Acción: ESCRIBIR - Dirección Física: 16 - Valor: 16
+[INFO] 23:38:18:775 LOGGER/(9482:9531): PID: 1 - Acción: ESCRIBIR - Dirección Física: 32 - Valor: 16
+[INFO] 23:38:34:579 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 4
+[INFO] 23:38:34:680 LOGGER/(9482:9531): PID 1 - Ejecutando SET AX 87
+[INFO] 23:38:34:680 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 5
+[INFO] 23:38:34:784 LOGGER/(9482:9531): PID 1 - Ejecutando SET BX 65
+[INFO] 23:38:34:785 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 6
+[INFO] 23:38:34:886 LOGGER/(9482:9531): PID 1 - Ejecutando SET CX 82
+[INFO] 23:38:34:886 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 7
+[INFO] 23:38:34:989 LOGGER/(9482:9531): PID 1 - Ejecutando SET DX 44
+[INFO] 23:38:34:989 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 8
+[INFO] 23:38:35:091 LOGGER/(9482:9531): PID 1 - Ejecutando SET ECX 11
+[INFO] 23:38:35:091 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 9
+[INFO] 23:38:35:193 LOGGER/(9482:9531): PID 1 - Ejecutando SET EDX 1
+[INFO] 23:38:35:194 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 10
+[INFO] 23:38:35:296 LOGGER/(9482:9531): PID 1 - Ejecutando MOV_OUT ECX AX
+[INFO] 23:38:35:301 LOGGER/(9482:9531): Direccion logica: 11
+
+[INFO] 23:38:35:302 LOGGER/(9482:9531): Numero de pagina 0 + Desplazamiento 11
+
+[INFO] 23:38:35:303 LOGGER/(9482:9531): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 23:38:35:306 LOGGER/(9482:9531): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 23:38:35:306 LOGGER/(9482:9531): A la entrada 1 le asigno el frame 0
+[INFO] 23:38:35:307 LOGGER/(9482:9531): direccion fisica: 11
+[INFO] 23:38:35:307 LOGGER/(9482:9531): tamanio guardado: 1
+[INFO] 23:38:35:307 LOGGER/(9482:9531): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 23:38:35:317 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 11
+[INFO] 23:38:35:419 LOGGER/(9482:9531): PID 1 - Ejecutando SUM ECX EDX
+[INFO] 23:38:35:421 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 12
+[INFO] 23:38:35:523 LOGGER/(9482:9531): PID 1 - Ejecutando MOV_OUT ECX BX
+[INFO] 23:38:35:523 LOGGER/(9482:9531): Direccion logica: 12
+
+[INFO] 23:38:35:523 LOGGER/(9482:9531): Numero de pagina 0 + Desplazamiento 12
+
+[INFO] 23:38:35:523 LOGGER/(9482:9531): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:38:35:524 LOGGER/(9482:9531): El PID que pide frame es 1 y el pid que tiene la TLB es 1
+[INFO] 23:38:35:524 LOGGER/(9482:9531): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 23:38:35:525 LOGGER/(9482:9531): el marco que devuelve buscar_frame_en_TLB es: 0
+[INFO] 23:38:35:526 LOGGER/(9482:9531): direccion fisica: 12
+[INFO] 23:38:35:526 LOGGER/(9482:9531): tamanio guardado: 1
+[INFO] 23:38:35:527 LOGGER/(9482:9531): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 23:38:35:527 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 13
+[INFO] 23:38:35:629 LOGGER/(9482:9531): PID 1 - Ejecutando SUM ECX EDX
+[INFO] 23:38:35:629 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 14
+[INFO] 23:38:35:730 LOGGER/(9482:9531): PID 1 - Ejecutando MOV_OUT ECX CX
+[INFO] 23:38:35:730 LOGGER/(9482:9531): Direccion logica: 13
+
+[INFO] 23:38:35:731 LOGGER/(9482:9531): Numero de pagina 0 + Desplazamiento 13
+
+[INFO] 23:38:35:731 LOGGER/(9482:9531): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:38:35:732 LOGGER/(9482:9531): El PID que pide frame es 1 y el pid que tiene la TLB es 1
+[INFO] 23:38:35:732 LOGGER/(9482:9531): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 23:38:35:732 LOGGER/(9482:9531): el marco que devuelve buscar_frame_en_TLB es: 0
+[INFO] 23:38:35:733 LOGGER/(9482:9531): direccion fisica: 13
+[INFO] 23:38:35:733 LOGGER/(9482:9531): tamanio guardado: 1
+[INFO] 23:38:35:733 LOGGER/(9482:9531): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 23:38:35:734 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 15
+[INFO] 23:38:35:837 LOGGER/(9482:9531): PID 1 - Ejecutando SUM ECX EDX
+[INFO] 23:38:35:838 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 16
+[INFO] 23:38:35:939 LOGGER/(9482:9531): PID 1 - Ejecutando MOV_OUT ECX DX
+[INFO] 23:38:35:940 LOGGER/(9482:9531): Direccion logica: 14
+
+[INFO] 23:38:35:940 LOGGER/(9482:9531): Numero de pagina 0 + Desplazamiento 14
+
+[INFO] 23:38:35:941 LOGGER/(9482:9531): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:38:35:941 LOGGER/(9482:9531): El PID que pide frame es 1 y el pid que tiene la TLB es 1
+[INFO] 23:38:35:941 LOGGER/(9482:9531): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 23:38:35:941 LOGGER/(9482:9531): el marco que devuelve buscar_frame_en_TLB es: 0
+[INFO] 23:38:35:942 LOGGER/(9482:9531): direccion fisica: 14
+[INFO] 23:38:35:942 LOGGER/(9482:9531): tamanio guardado: 1
+[INFO] 23:38:35:942 LOGGER/(9482:9531): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 23:38:35:947 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 17
+[INFO] 23:38:36:053 LOGGER/(9482:9531): PID 1 - Ejecutando SUM ECX EDX
+[INFO] 23:38:36:056 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 18
+[INFO] 23:38:36:157 LOGGER/(9482:9531): PID 1 - Ejecutando SET AX 32
+[INFO] 23:38:36:157 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 19
+[INFO] 23:38:36:259 LOGGER/(9482:9531): PID 1 - Ejecutando IO_GEN_SLEEP GENERICA 2
+[INFO] 23:38:56:275 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 20
+[INFO] 23:38:56:378 LOGGER/(9482:9531): PID 1 - Ejecutando MOV_OUT ECX AX
+[INFO] 23:38:56:379 LOGGER/(9482:9531): Direccion logica: 15
+
+[INFO] 23:38:56:379 LOGGER/(9482:9531): Numero de pagina 0 + Desplazamiento 15
+
+[INFO] 23:38:56:379 LOGGER/(9482:9531): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:38:56:380 LOGGER/(9482:9531): El PID que pide frame es 1 y el pid que tiene la TLB es 1
+[INFO] 23:38:56:380 LOGGER/(9482:9531): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 23:38:56:380 LOGGER/(9482:9531): el marco que devuelve buscar_frame_en_TLB es: 0
+[INFO] 23:38:56:380 LOGGER/(9482:9531): direccion fisica: 15
+[INFO] 23:38:56:381 LOGGER/(9482:9531): tamanio guardado: 1
+[INFO] 23:38:56:381 LOGGER/(9482:9531): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 23:38:56:386 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 21
+[INFO] 23:38:56:489 LOGGER/(9482:9531): PID 1 - Ejecutando SET EBX 25
+[INFO] 23:38:56:489 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 22
+[INFO] 23:38:56:591 LOGGER/(9482:9531): PID 1 - Ejecutando SET EAX 11
+[INFO] 23:38:56:591 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 23
+[INFO] 23:38:56:693 LOGGER/(9482:9531): PID 1 - Ejecutando IO_STDOUT_WRITE MONITOR EAX EBX
+[INFO] 23:38:56:700 LOGGER/(9482:9531): Direccion logica: 11
+
+[INFO] 23:38:56:700 LOGGER/(9482:9531): Numero de pagina 0 + Desplazamiento 11
+
+[INFO] 23:38:56:701 LOGGER/(9482:9531): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 23:38:56:703 LOGGER/(9482:9531): El PID que pide frame es 1 y el pid que tiene la TLB es 1
+[INFO] 23:38:56:704 LOGGER/(9482:9531): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 23:38:56:704 LOGGER/(9482:9531): el marco que devuelve buscar_frame_en_TLB es: 0
+[INFO] 23:38:56:704 LOGGER/(9482:9531): direccion fisica: 11
+[INFO] 23:38:56:704 LOGGER/(9482:9531): tamanio guardado: 4
+[INFO] 23:38:56:706 LOGGER/(9482:9531): PID: 1 - Acción: ESCRIBIR - Dirección Física: 11 - Valor: 11
+[INFO] 23:38:56:734 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 24
+[INFO] 23:38:56:838 LOGGER/(9482:9531): PID 1 - Ejecutando SET AX 0
+[INFO] 23:38:56:842 LOGGER/(9482:9531): PID: 1 - FETCH - Program Counter: 25
+[INFO] 23:38:56:944 LOGGER/(9482:9531): PID 1 - Ejecutando EXIT 
