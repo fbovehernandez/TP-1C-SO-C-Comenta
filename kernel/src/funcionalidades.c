@@ -917,8 +917,8 @@ bool esta_el_pid_en_cola_de_procesos_que_retienen(int pid, t_recurso* recurso_ob
     bool seEncuentra = false;
     for(int i=0;i<list_size(recurso_obtenido->procesos_que_lo_retienen);i++) {
         char* pid_recibido = list_get(recurso_obtenido->procesos_que_lo_retienen, i);
-        char* pid_string = string_itoa(pid_recibido);
-        if(pid == pid_string) {
+        char* pid_string = string_itoa(pid);
+        if(pid_recibido == pid_string) {
             seEncuentra = true;
         } 
         free(pid_string);

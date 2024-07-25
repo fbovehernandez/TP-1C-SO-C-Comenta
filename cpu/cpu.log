@@ -738,3 +738,5 @@
 [INFO] 20:27:03:485 LOGGER/(109354:109407): PID 1 - Ejecutando SET AX 0
 [INFO] 20:27:03:486 LOGGER/(109354:109407): PID: 1 - FETCH - Program Counter: 25
 [INFO] 20:27:03:600 LOGGER/(109354:109407): PID 1 - Ejecutando EXIT 
+[INFO] 22:29:54:195 LOGGER/(112687:112687): Conexion establecida con Memoria
+[INFO] 22:29:57:365 LOGGER/(112687:112738): Servidor iniciado, esperando conexiones!

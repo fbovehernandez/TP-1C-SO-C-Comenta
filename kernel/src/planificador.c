@@ -100,7 +100,8 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
     // liberar_recurso_de_pcb(pcb->pid);
     enviar_eliminacion_pcb_a_memoria(pcb->pid);
     liberar_pcb_estructura(pcb);
-    printf("\lego a liberar la estructura del pcb\n\n");
+
+    printf("llego a liberar la estructura del pcb\n");
 
     // sem_post(&sem_planificadores);
     // cantidad_bloqueados--;

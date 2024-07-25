@@ -353,6 +353,23 @@ void* handle_io_stdout(void* socket_io) {
         printf("\nLa io conectada tiene nombre %s\n\n", io->nombreInterfaz);
         pid_stdout->largo_interfaz = string_length(io->nombreInterfaz) + 1;
 
+        printf("VOY A IMPRIMIR TODO LO DE STDOUT PARA EJECUTAR A LA IO\n");
+        printf("PID: %d\n", pid_stdout->pid);
+        printf("Cantidad de paginas: %d\n", pid_stdout->cantidad_paginas);
+        printf("Registro tamanio: %d\n", pid_stdout->registro_tamanio);
+        printf("Nombre interfaz: %s\n", pid_stdout->nombre_interfaz);
+        printf("Largo interfaz: %d\n", pid_stdout->largo_interfaz);
+
+        printf("AHORA IMPRIMO UNA POR UNA LAS INSTRUCCIONES CON SU DIRECCION FISICA Y BYTES DE LECTURA\n");
+
+        for(int i=0; i < pid_stdout->cantidad_paginas; i++) {
+            t_dir_fisica_tamanio* dir_fisica_tam = list_get(pid_stdout->lista_direcciones, i);
+            printf("Direccion fisica: %d\n", dir_fisica_tam->direccion_fisica);
+            printf("Bytes de lectura: %d\n", dir_fisica_tam->bytes_lectura);
+        }
+
+        // Fin de los printf
+
         int respuesta_ok = ejecutar_io_stdout(pid_stdout);
 
         if (!respuesta_ok) {
@@ -366,12 +383,13 @@ void* handle_io_stdout(void* socket_io) {
             recv(socket, &termino_io, sizeof(int), MSG_WAITALL);
 
             printf("Termino io: %d\n", termino_io);
+
             if (termino_io == 1) { // El send de termino io envia 1.                printf("Termino la IO\n");
                 t_pcb* pcb = sacarDe(cola_blocked, datos_stdout->pcb->pid);
                 
                 cantidad_bloqueados++;
                 sem_wait(&sem_planificadores);
-                pasar_a_ready(pcb); // ACA
+                pasar_a_ready(pcb); 
                 sem_post(&sem_planificadores);
                 cantidad_bloqueados--;
             }
@@ -385,6 +403,7 @@ void* handle_io_stdout(void* socket_io) {
     free(io->nombreInterfaz);
     free(io);
     free(pid_stdout); // QUE_NO_ROMPA
+
     liberar_paquete(paquete);
     return NULL;
 }
@@ -663,7 +682,7 @@ void liberar_io(t_list_io* io) {
 t_list_io* establecer_conexion(t_buffer *buffer, int socket_io) {
     t_list_io *io = malloc(sizeof(t_list_io)); //FREE? PARA LO ULTIMO
     t_info_io *interfaz = deserializar_interfaz(buffer); 
-    io->nombreInterfaz = malloc(string_length(interfaz->nombre_interfaz));
+    // io->nombreInterfaz = malloc(string_length(interfaz->nombre_interfaz));
     printf("\n\nllego hasta establecer conexion\n\n");
 
     io->socket         = socket_io;

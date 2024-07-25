@@ -27,19 +27,24 @@ int buscar_frame_en_TLB(int pid, int pagina) {
 
 void agregar_frame_en_TLB(int pid, int pagina, int frame) {
     t_entrada_tlb* entrada = malloc(sizeof(t_entrada_tlb));
+    
     entrada->pid = pid;
     entrada->pagina = pagina;
     entrada->marco = frame;
-    log_info(logger_CPU,"A la entrada %d le asigno el frame %d", entrada->pid, entrada->marco);
     entrada->timestamps = tiempoEnMilisecs();
+    
+    log_info(logger_CPU,"A la entrada %d le asigno el frame %d", entrada->pid, entrada->marco);
 
     int cantidad_entradas = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
-    
+    printf("La cantidad de entradas es %d\n", cantidad_entradas);
+
     if(cantidad_entradas > 0) { // Esta habilitada la TLB?
         if(list_size(tlb) == cantidad_entradas) { // Esta completa la TLB ??
             eliminar_victima_TLB();
         }
         list_add(tlb, entrada);
+    } else {
+        free(entrada);
     }
 
     imprimir_tlb();
@@ -48,15 +53,21 @@ void agregar_frame_en_TLB(int pid, int pagina, int frame) {
 
 void eliminar_victima_TLB() {
     char* algoritmo_tlb = config_get_string_value(config_CPU, "ALGORITMO_TLB");
-    t_entrada_tlb* entrada_victima = malloc(sizeof(t_entrada_tlb)); //FREE>
+    t_entrada_tlb* entrada_victima; // NO se le hace malloc porque ya le hicimos malloc cuando entro en la lista
+
     if(strcmp(algoritmo_tlb, "FIFO") == 0) {
         entrada_victima = list_get(tlb, 0);
     } else { // ES LRU
         entrada_victima = (t_entrada_tlb*) list_get_minimum(tlb, (void*) _timestamp_menor_de_entrada);
     }
+
     log_info(logger_CPU, "TLB elimina victima - PID: %d - Pagina: %d", entrada_victima->pid, entrada_victima->pagina);
+    
     list_remove_element(tlb, entrada_victima);
+    free(entrada_victima);
+    free(algoritmo_tlb);
 }
+
 
 void* _timestamp_menor_de_entrada(t_entrada_tlb* entrada1, t_entrada_tlb* entrada2) {
     return entrada1->timestamps <= entrada2->timestamps ? entrada1 : entrada2;

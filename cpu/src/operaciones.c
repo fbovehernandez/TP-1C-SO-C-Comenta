@@ -93,7 +93,8 @@ void instruccion_destruir(t_instruccion* instruccion) {
             // list_clean_and_destroy_elements(instruccion->parametros, free);  // Destruir la lista de parámetros -> Sino hacer free
         }
 
-        free(instruccion);  // Liberar la instrucción en sí
+        list_destroy(instruccion->parametros);  // Liberar la instrucción en sí
+        free(instruccion);
     }
 }
 
@@ -438,6 +439,9 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         printf("Cuando hace MOV_IN AX SI queda asi el registro AX del CPU: %u\n", registros_cpu->AX);
         printf("Cuando hace MOV_IN EAX SI queda asi el registro EAX del CPU: %u\n", registros_cpu->EAX);
 
+        list_destroy_and_destroy_elements(lista_bytes_lectura_mov_in, free);
+        list_destroy_and_destroy_elements(lista_direcciones_fisicas_mov_in, free);
+
         break;
     case MOV_OUT: // MOV_OUT (Registro Dirección, Registro Datos)
         recibir_parametros_mov_out(list_parametros, &registro_direccion, &registro_datos, &nombre_registro_dato, &nombre_registro_dir);
@@ -464,9 +468,12 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         recv(socket_memoria, &esperar_confirm, sizeof(int), MSG_WAITALL);
 
-
         //Acceso a espacio de usuario: PID: <PID> - Accion: <LEER / ESCRIBIR> - Direccion fisica: <DIRECCION_FISICA> - Tamaño <TAMAÑO A LEER / ESCRIBIR>
         
+        // Este list_destroy elements funciona como quiere, ver si hay que liberar bien
+        list_destroy_and_destroy_elements(lista_bytes_lectura, free);
+        list_destroy_and_destroy_elements(lista_direcciones_fisicas_mov_out, free);
+
         break;
     case COPY_STRING:
         // int esperar_confirm_2;
@@ -511,6 +518,8 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         printf("Esperar confirmacion COPY STRING: %d\n", esperar_confirm);
         free(valor_leido_cs);
         
+        list_destroy_and_destroy_elements(lista_bytes_lectura_cs, free);
+        list_destroy_and_destroy_elements(lista_direcciones_fisicas_cs, free);
         break;
     case SUM: // SUM DESTINO ORIGEN
         t_parametro* registro_param1 = list_get(list_parametros, 0);
@@ -644,6 +653,8 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         desalojar(pcb, PEDIDO_LECTURA, buffer_lectura);
 
         // free(buffer_lectura);
+        list_destroy_and_destroy_elements(lista_bytes_stdin, free);
+        list_destroy_and_destroy_elements(lista_direcciones_fisicas_stdin, free);
         return 1; // El return esta para que cuando se desaloje el pcb no siga ejecutando, si hace el break sigue pidiendo instrucciones, porfa no lo saquen o les va a romper
         break;
     case EXIT_INSTRUCCION:
@@ -704,7 +715,9 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         // pcb->program_counter++;
 
         desalojar(pcb, PEDIDO_ESCRITURA, buffer_escritura);
-
+        
+        list_destroy_and_destroy_elements(lista_bytes_stdout, free);
+        list_destroy_and_destroy_elements(lista_direcciones_fisicas_stdout, free);
         // free(buffer_escritura); se hace en desalojar
         return 1;
         break;
@@ -931,6 +944,8 @@ t_buffer* serializar_direcciones_fisicas(int cantidad_paginas, t_list* direccion
         buffer->offset += sizeof(int);
         memcpy(stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
         buffer->offset += sizeof(int);
+
+        free(dir_fisica_tam);
     }
     buffer->stream = stream;
 

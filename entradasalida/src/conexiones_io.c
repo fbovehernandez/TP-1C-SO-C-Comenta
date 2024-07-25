@@ -94,7 +94,7 @@ int conectar_io_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_io
 
     buffer->stream = stream;
     enviar_paquete(buffer, CONEXION_INTERFAZ, memoriafd);
-    free(io); //QUE_NO_ROMPA
+    free(io); // QUE_NO_ROMPA
     return memoriafd;
 }
 
@@ -207,7 +207,7 @@ void recibir_kernel(void* config_socket_io) { //FREE
 
                 if (archivo == NULL) {
                     printf("Error al abrir el archivo.\n");
-                } else{
+                } else {
                     log_info(logger_io,"PID: %d - Crear Archivo: %s",pedido_creacion->pid,pedido_creacion->nombre_archivo);
                 }
                 
@@ -235,6 +235,7 @@ void recibir_kernel(void* config_socket_io) { //FREE
                 exit(-1);
                 break;
         }
+
         liberar_paquete(paquete);        
     }
 }

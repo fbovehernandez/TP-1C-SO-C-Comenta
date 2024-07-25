@@ -172,7 +172,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 
                 free(pedido_op->valor_a_escribir);
                 free(pedido_op);
-                list_destroy(direcciones_restantes_mov_in);
+                list_destroy_and_destroy_elements(direcciones_restantes_mov_in, free);
                 free(registro_lectura);
                 break;
             case ESCRIBIR_DATO_EN_MEM: 
@@ -186,19 +186,22 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
                 void* registro_escritura = pedido_operacion->valor_a_escribir;
 
-                realizar_operacion(pedido_operacion->pid,ESCRITURA, direcciones_restantes_escritura, user_space_aux, registro_escritura, NULL); 
+                realizar_operacion(pedido_operacion->pid, ESCRITURA, direcciones_restantes_escritura, user_space_aux, registro_escritura, NULL); 
                 // printf("Registro escrito como int %d\n", *((uint32_t*)registro_escritura));
 
                 send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
-                free(pedido_operacion->valor_a_escribir);
 
                 // Ver esto, creo que lo estoy liberando bien, despues no lo uso
+                /*/*
                 for(int i = 0; i < list_size(direcciones_restantes_escritura); i++) {
                     free(list_get(direcciones_restantes_escritura, i));
-                }
-
+                }*/
+                
+                
+                free(pedido_operacion->valor_a_escribir);
                 free(pedido_operacion);
-                free(direcciones_restantes_escritura); // Añadido para liberar memoria
+                // free(registro_escritura);
+                list_destroy_and_destroy_elements(direcciones_restantes_escritura, free);
                 break;
             default:
                 printf("No reconozco ese cod-op...\n"); 
@@ -282,7 +285,7 @@ void interaccion_user_space(int pid,tipo_operacion operacion, int df_actual, voi
 }             */      
 
 void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_restantes, void* user_space_aux, void* registro_escritura, void* registro_lectura) {
-
+zf
     // printf("Antes de entrar al for, necesito %d paginas\n", df->cantidad_paginas);
     int tamanio_anterior = 0;
 
@@ -290,6 +293,7 @@ void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_r
         t_dir_fisica_tamanio* dir_fisica_tam = list_remove(direcciones_restantes, 0);
         printf("La direccion fisica es: %d\n", dir_fisica_tam->direccion_fisica);
         printf("El tamanio es: %d\n", dir_fisica_tam->bytes_lectura);
+        printf("el registro escritura es : %s \n", (char*)registro_escritura);
 
         interaccion_user_space(pid, operacion, dir_fisica_tam->direccion_fisica, user_space_aux, tamanio_anterior, dir_fisica_tam->bytes_lectura, registro_escritura, registro_lectura);
         tamanio_anterior += dir_fisica_tam->bytes_lectura;
