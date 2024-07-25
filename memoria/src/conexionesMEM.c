@@ -215,77 +215,9 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
     return NULL;
 }
 
-/**** 
- 
-Pequeños detalles de esta implemenetacion :  la funcion recibe 2 punteros, ya que tanto es MOV-IN, como en MOV-OUT, funcionan de forma diferente estos punteros.
-De todas formas se usan solo cuando se tienen que usar, ya que en la llamada se les pasa NULL.
-El 0 en el tercer parametro del a primera llamada a interaccion_user_space es para que la prmera vez simplemente no se mueva de su lugar
-Ahora dir fisica es una misma estructura, solo que en el MOV-IN no se usa el apartado del valor. No se si esta es la mejor idea, pero la otra era
-hacer un send y recv + para el valor, y me parecio que era mas paja.
- 
-******/
-/*
-void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_restantes, void* user_space_aux, void* registro_escritura, void* registro_lectura) {
-
-    // printf("Antes de entrar al for, necesito %d paginas\n", df->cantidad_paginas);
-    int tamanio_anterior = 0;
-
-    printf("\nLas Direcciones fisicas son: \n");
-    for(int i=0; i<list_size(direcciones_restantes); i++) {
-        t_dir_fisica_tamanio* direccion_fisica = list_get(direcciones_restantes, i); 
-        printf("%d- Direccion fisica: %d\n", direccion_fisica->direccion_fisica);
-    }
-
-    while(list_size(direcciones_restantes) > 0) {
-        printf("el size de direcciones restantes es %d \n", list_size(direcciones_restantes));
-        t_dir_fisica_tamanio* dir_fisica_tam = list_remove(direcciones_restantes, 0);
-        log_info(logger_memoria, "La direccion fisica es: %d", dir_fisica_tam->direccion_fisica);
-        log_info(logger_memoria, "Los bytes de lectura/escritura restante son: %d", dir_fisica_tam->bytes_lectura);
-
-        if(operacion == ESCRITURA) {
-            memcpy(user_space_aux + dir_fisica_tam->direccion_fisica, registro_escritura + tamanio_anterior, dir_fisica_tam->bytes_lectura);
-            printf("Contenido en user_space_aux después de escribir:\n");
-            printf("|%.*s\n|", dir_fisica_tam->bytes_lectura, (char*)(user_space_aux + dir_fisica_tam->direccion_fisica));
-            log_info(logger_memoria, "Escritura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", dir_fisica_tam->direccion_fisica, tamanio_anterior, dir_fisica_tam->bytes_lectura);
-            // log_info(logger_memoria, "Contenido escrito: %.*s\n", dir_fisica_tam->bytes_lectura, (char*)(registro_escritura + tamanio_anterior));
-            
-        } else { // == LECTURA
-            memcpy(registro_lectura + tamanio_anterior, (user_space_aux + dir_fisica_tam->direccion_fisica), dir_fisica_tam->bytes_lectura);
-            log_info(logger_memoria, "Lectura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", dir_fisica_tam->direccion_fisica, tamanio_anterior, dir_fisica_tam->bytes_lectura); // aca dice 4 cuando deberia decir 25
-            // Loguear el contenido leído
-            log_info(logger_memoria, "Contenido leido: %.*s\n", dir_fisica_tam->bytes_lectura, (char*)(registro_lectura + tamanio_anterior - dir_fisica_tam->bytes_lectura));
-            // Copiar lo leído en registro_completo
-           // memcpy(registro_completo, registro_lectura, tamanio_anterior);
-        }
-
-        char* operacion_nombre = string_tipo_operacion(operacion);
-        log_info(logger_memoria,"PID: %d - Accion: %s - Direccion fisica: %d - Tamaño %d \n", pid ,operacion_nombre, dir_fisica_tam->direccion_fisica, dir_fisica_tam->bytes_lectura);
-
-        // log_info(logger_memoria, "PID: %d - Pagina: %d - Marco: %d", pid, pagina_dir_fisica, obtener_marco_pagina(pid, pagina)); 
-        // PARA CARO EL ERROR ESTA ACA
-        // interaccion_user_space(pid,operacion, dir_fisica_tam->direccion_fisica, user_space_aux, tamanio_anterior, dir_fisica_tam->bytes_lectura, registro_escritura, registro_lectura);
-        tamanio_anterior += dir_fisica_tam->bytes_lectura;
-    }
-}*/
-/*
-void interaccion_user_space(int pid,tipo_operacion operacion, int df_actual, void* user_space_aux, int tam_escrito_anterior, int tamanio, void* registro_escritura, void* registro_lectura) {
-    if(operacion == ESCRITURA) {
-        memcpy(user_space_aux + df_actual, registro_escitura + tarm_escrito_anterior, tamanio);
-        log_info(logger_memoria, "Escritura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
-        log_info(logger_memoria, "Contenido escrito: %s\n", tamanio, *(char*)(user_space_aux + df_actual));
-        
-    } else { // == LECTURA
-        memcpy(registro_lectura + tam_escrito_anterior, (user_space_aux + df_actual), tamanio);
-        log_info(logger_memoria, "Lectura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio); // aca dice 4 cuando deberia decir 25
-        log_info(logger_memoria, "Contenido leido: %.*d\n", tamanio, *(uint8_t*)(registro_lectura + tam_escrito_anterior));
-    }
-    char* operacion_nombre = string_tipo_operacion(operacion);
-    log_info(logger_memoria,"PID: %d - Accion: %s - Direccion fisica: %d - Tamaño %d \n", pid ,operacion_nombre, df_actual, tamanio);
-    
-}             */      
 
 void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_restantes, void* user_space_aux, void* registro_escritura, void* registro_lectura) {
-zf
+
     // printf("Antes de entrar al for, necesito %d paginas\n", df->cantidad_paginas);
     int tamanio_anterior = 0;
 
@@ -314,7 +246,6 @@ void interaccion_user_space(int pid, tipo_operacion operacion, int df_actual, vo
     }
 }                                                                                                                                 
      
-
 char* string_tipo_operacion(tipo_operacion operacion){
     switch(operacion){
         case ESCRITURA: return "ESCRITURA";
@@ -389,7 +320,12 @@ int resize_memory(void* stream) {
     memcpy(&pid, stream, sizeof(int));
     // Luego verifico si tengo espacio suficiente en memoria
     int out_of_memory = validar_out_of_memory(tamanio);
-                
+
+    if(out_of_memory) {
+        printf("PID: %d - No hay espacio suficiente en memoria\n", pid);
+        return out_of_memory; // 1
+    }
+    
     char* pid_char = string_itoa(pid);
     int cant_bytes_uso = cantidad_frames_proceso(pid_char);
     
@@ -494,12 +430,12 @@ int cantidad_frames_proceso(char* pid_string) {
 int validar_out_of_memory(int tamanio) { // Me esta pidiendo mas de lo que tengo /= Te pasaste del ultimo byte disponible
     int frames_necesarios = tamanio / tamanio_pagina; // 8
     int frames_disponibles = contar_frames_libres(); 
+
     if(frames_disponibles < frames_necesarios) {
-        printf("No hay espacio suficiente en memoria\n");
+        // printf("No hay espacio suficiente en memoria\n");
         return 1; // 1 es out of memory
         // send(socket_cpu, &out_of_memory, sizeof(int), 0);
     }
-
     return 0;
 }
 

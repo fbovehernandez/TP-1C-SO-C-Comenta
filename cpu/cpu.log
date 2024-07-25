@@ -740,3 +740,61 @@
 [INFO] 20:27:03:600 LOGGER/(109354:109407): PID 1 - Ejecutando EXIT 
 [INFO] 22:29:54:195 LOGGER/(112687:112687): Conexion establecida con Memoria
 [INFO] 22:29:57:365 LOGGER/(112687:112738): Servidor iniciado, esperando conexiones!
+[INFO] 23:00:35:196 LOGGER/(116631:116631): Conexion establecida con Memoria
+[INFO] 23:00:38:311 LOGGER/(116631:116672): Servidor iniciado, esperando conexiones!
+[INFO] 23:00:42:744 LOGGER/(116631:116672): Se conecto un cliente de dispatch!
+
+[INFO] 23:00:42:744 LOGGER/(116631:116672): Esperando cliente...
+[INFO] 23:00:42:762 LOGGER/(116631:116673): Se conecto un cliente de interrupt!
+
+[INFO] 23:00:56:599 LOGGER/(116631:116672): PID: 1 - FETCH - Program Counter: 0
+[INFO] 23:00:56:728 LOGGER/(116631:116672): PID 1 - Ejecutando SET AX 1
+[INFO] 23:00:56:732 LOGGER/(116631:116672): PID: 1 - FETCH - Program Counter: 1
+[INFO] 23:00:56:855 LOGGER/(116631:116672): PID 1 - Ejecutando SET EAX 0
+[INFO] 23:00:56:856 LOGGER/(116631:116672): PID: 1 - FETCH - Program Counter: 2
+[INFO] 23:00:56:966 LOGGER/(116631:116672): PID 1 - Ejecutando RESIZE 2352
+[INFO] 23:00:56:982 LOGGER/(116631:116672): PID: 1 - FETCH - Program Counter: 3
+[INFO] 23:00:57:083 LOGGER/(116631:116672): PID 1 - Ejecutando MOV_OUT EAX AX
+[INFO] 23:00:57:093 LOGGER/(116631:116672): Direccion logica: 0
+
+[INFO] 23:00:57:096 LOGGER/(116631:116672): Numero de pagina 0 + Desplazamiento 0
+
+[INFO] 23:00:57:097 LOGGER/(116631:116672): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 23:00:57:101 LOGGER/(116631:116672): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 23:00:57:102 LOGGER/(116631:116672): A la entrada 1 le asigno el frame 0
+[INFO] 23:00:57:108 LOGGER/(116631:116672): direccion fisica: 0
+[INFO] 23:00:57:111 LOGGER/(116631:116672): tamanio guardado: 1
+[INFO] 23:00:57:112 LOGGER/(116631:116672): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 23:03:41:000 LOGGER/(117199:117199): Conexion establecida con Memoria
+[INFO] 23:03:44:171 LOGGER/(117199:117241): Servidor iniciado, esperando conexiones!
+[INFO] 23:03:47:257 LOGGER/(117199:117241): Se conecto un cliente de dispatch!
+
+[INFO] 23:03:47:257 LOGGER/(117199:117241): Esperando cliente...
+[INFO] 23:03:47:259 LOGGER/(117199:117242): Se conecto un cliente de interrupt!
+
+[INFO] 23:03:55:264 LOGGER/(117199:117241): PID: 1 - FETCH - Program Counter: 0
+[INFO] 23:03:55:377 LOGGER/(117199:117241): PID 1 - Ejecutando SET AX 1
+[INFO] 23:03:55:384 LOGGER/(117199:117241): PID: 1 - FETCH - Program Counter: 1
+[INFO] 23:03:55:488 LOGGER/(117199:117241): PID 1 - Ejecutando SET EAX 0
+[INFO] 23:03:55:490 LOGGER/(117199:117241): PID: 1 - FETCH - Program Counter: 2
+[INFO] 23:03:55:600 LOGGER/(117199:117241): PID 1 - Ejecutando RESIZE 2352
+[INFO] 23:03:55:611 LOGGER/(117199:117241): OUT OF MEMORY
+[INFO] 23:06:50:546 LOGGER/(117779:117779): Conexion establecida con Memoria
+[INFO] 23:06:53:602 LOGGER/(117779:117823): Servidor iniciado, esperando conexiones!
+[INFO] 23:06:54:091 LOGGER/(117779:117823): Se conecto un cliente de dispatch!
+
+[INFO] 23:06:54:092 LOGGER/(117779:117823): Esperando cliente...
+[INFO] 23:06:54:105 LOGGER/(117779:117824): Se conecto un cliente de interrupt!
+
+[INFO] 23:06:58:415 LOGGER/(117779:117823): PID: 1 - FETCH - Program Counter: 0
+[INFO] 23:06:58:524 LOGGER/(117779:117823): PID 1 - Ejecutando SET AX 1
+[INFO] 23:06:58:527 LOGGER/(117779:117823): PID: 1 - FETCH - Program Counter: 1
+[INFO] 23:06:58:642 LOGGER/(117779:117823): PID 1 - Ejecutando SET EAX 0
+[INFO] 23:06:58:644 LOGGER/(117779:117823): PID: 1 - FETCH - Program Counter: 2
+[INFO] 23:06:58:757 LOGGER/(117779:117823): PID 1 - Ejecutando RESIZE 100
+[INFO] 23:06:58:762 LOGGER/(117779:117823): PID: 1 - FETCH - Program Counter: 3
+[INFO] 23:06:58:865 LOGGER/(117779:117823): PID 1 - Ejecutando SET AX 0
+[INFO] 23:06:58:865 LOGGER/(117779:117823): PID: 1 - FETCH - Program Counter: 4
+[INFO] 23:06:58:967 LOGGER/(117779:117823): PID 1 - Ejecutando RESIZE 2352
+[INFO] 23:06:58:969 LOGGER/(117779:117823): OUT OF MEMORY

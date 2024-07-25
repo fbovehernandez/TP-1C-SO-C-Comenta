@@ -199,3 +199,21 @@ el valor a guardar en memoria llegado desde STDIN es: WAR NEVER CHANGES...
 [INFO] 20:27:03:333 LOGGER/(109277:109485): El tamanio del valor leido* es: 25
 
 [INFO] 20:27:03:618 LOGGER/(109277:109485): PID: 1 - Accion: DESTRUIR - Tamaño: 8
+[INFO] 23:00:27:777 LOGGER/(116541:116541): Servidor iniciado, esperando conexiones!
+[INFO] 23:00:56:554 LOGGER/(116541:116738): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 23:00:56:968 LOGGER/(116541:116632): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 2352
+[INFO] 23:00:57:100 LOGGER/(116541:116632): El pid que me pide frame es: 1
+
+[INFO] 23:00:57:100 LOGGER/(116541:116632): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 23:00:57:100 LOGGER/(116541:116632): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 23:00:57:100 LOGGER/(116541:116632): La cantidad de entradas que tiene la memoria es: 64
+[INFO] 23:00:57:100 LOGGER/(116541:116632): el numero de frame es 0
+[INFO] 23:00:57:118 LOGGER/(116541:116632): Contenido escrito:  1
+[INFO] 23:00:57:118 LOGGER/(116541:116632): El PID del contenido escrito es: 1
+[INFO] 23:03:36:064 LOGGER/(117132:117132): Servidor iniciado, esperando conexiones!
+[INFO] 23:03:55:230 LOGGER/(117132:117318): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 23:03:55:623 LOGGER/(117132:117318): PID: 1 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 23:06:46:872 LOGGER/(117720:117720): Servidor iniciado, esperando conexiones!
+[INFO] 23:06:58:379 LOGGER/(117720:117862): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 23:06:58:759 LOGGER/(117720:117780): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 100
+[INFO] 23:06:58:983 LOGGER/(117720:117862): PID: 1 - Accion: DESTRUIR - Tamaño: 7

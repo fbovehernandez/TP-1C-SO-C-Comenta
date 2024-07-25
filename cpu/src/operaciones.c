@@ -471,8 +471,8 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         //Acceso a espacio de usuario: PID: <PID> - Accion: <LEER / ESCRIBIR> - Direccion fisica: <DIRECCION_FISICA> - Tamaño <TAMAÑO A LEER / ESCRIBIR>
         
         // Este list_destroy elements funciona como quiere, ver si hay que liberar bien
-        list_destroy_and_destroy_elements(lista_bytes_lectura, free);
-        list_destroy_and_destroy_elements(lista_direcciones_fisicas_mov_out, free);
+        // list_destroy_and_destroy_elements(lista_bytes_lectura, free);
+        // list_destroy_and_destroy_elements(lista_direcciones_fisicas_mov_out, free);
 
         break;
     case COPY_STRING:

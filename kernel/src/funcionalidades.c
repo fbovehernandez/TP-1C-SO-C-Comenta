@@ -432,7 +432,6 @@ t_paquete *recibir_cpu() {
 void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     DesalojoCpu devolucion_cpu;
     
-  
     t_paquete* package = recibir_cpu(); // pcb y codigo de operacion (devolucion_cpu)
 
     devolucion_cpu = package->codigo_operacion;
