@@ -101,7 +101,7 @@ int conectar_io_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_io
 void mandar_valor_a_memoria(char* valor, t_pid_stdin* pid_stdin) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
-    int largo_valor = string_length(valor);
+    int largo_valor = string_length(valor) + 1;
 
     buffer->size = largo_valor + sizeof(int) * 4 + (sizeof(int) * pid_stdin->cantidad_paginas * 2); 
 
@@ -118,6 +118,7 @@ void mandar_valor_a_memoria(char* valor, t_pid_stdin* pid_stdin) {
     buffer->offset += sizeof(int);
     memcpy(buffer->stream + buffer->offset, &largo_valor, sizeof(int));
     buffer->offset += sizeof(int);
+    log_info(logger_io, "el valor en mandar_valor_a_memoria es %s", valor);
     memcpy(buffer->stream + buffer->offset, valor, largo_valor);
     buffer->offset += largo_valor;
 
@@ -131,7 +132,6 @@ void mandar_valor_a_memoria(char* valor, t_pid_stdin* pid_stdin) {
     
     // Si usamos memoria dinámica para el nombre, y no la precisamos más, ya podemos liberarla:
     printf("Le pide a mem GUARDAR_VALOR... o eso creo.\n");
-    free(valor);
     enviar_paquete(buffer, GUARDAR_VALOR, memoriafd);
 }
 
@@ -184,10 +184,7 @@ void recibir_kernel(void* config_socket_io) { //FREE
                 // Leer valor
                 printf("Ingrese lo que quiera gurdar (hasta %d caracteres): \n", pid_stdin->registro_tamanio);
                 char* valor = readline("");
-                
-                // Mandarlo a memoria
-                
-                
+
                 printf("el valor leido es %s\n", valor);
                 printf("el tamanio del valor leido es: %d \n", string_length(valor));
                 mandar_valor_a_memoria(valor, pid_stdin);
@@ -199,6 +196,7 @@ void recibir_kernel(void* config_socket_io) { //FREE
                 // free(valor); Ya esta en mandar_valor_a_memoria
                 liberar_lista_direcciones(pid_stdin->lista_direcciones);
                 free(pid_stdin);
+                free(valor);
                 break;
             case CREAR_ARCHIVO:
                 // Estaria bueno que tenngamos un diccionario con key nombre archiivo y puntero como  atrbuto
@@ -267,16 +265,17 @@ void recibir_memoria(void* config_socket_io) {
                 break;
             case ESCRIBITE:
                 int tamanio, pid, terminoOk = 1;
-                void* stream = paquete->buffer->stream;
-                memcpy(&pid, stream, sizeof(int));
-                stream += sizeof(int);
-                memcpy(&tamanio, stream, sizeof(int));
-                stream += sizeof(int);
+                memcpy(&pid, paquete->buffer->stream, sizeof(int));
+                paquete->buffer->stream += sizeof(int);
+                memcpy(&tamanio, paquete->buffer->stream, sizeof(int));
+                paquete->buffer->stream += sizeof(int);
                 printf("el tamanio del dato a escribir es: %d", tamanio);
                 char* valor = malloc(tamanio + 1); 
-                memcpy(valor, stream, tamanio);
+                memcpy(valor, paquete->buffer->stream, tamanio);
+                int tamanio_valor_recibido = string_length(valor);
+                log_info(logger_io, "el tamanio del valor a escribir es %d", tamanio_valor_recibido);
                 valor[tamanio] = '\0';
-                printf("\n\nEl valor leido de memoria es: %s \n\n", valor);
+                log_info(logger_io, "\n\nEl valor leido de memoria es: %s \n\n", valor);
                 log_info(logger_io, "PID: %d - Operacion: ESCRIBIR", pid);
 
                 send(kernelfd, &terminoOk, sizeof(int), 0);

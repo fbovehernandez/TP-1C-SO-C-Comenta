@@ -1,509 +1,498 @@
-[INFO] 22:22:14:817 LOGGER/(4649:4881): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 22:22:14:836 LOGGER/(4649:4881): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 22:22:14:865 LOGGER/(4649:4881): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 22:22:16:906 LOGGER/(4649:4730): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
-[INFO] 22:22:21:954 LOGGER/(4649:4730): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
-[INFO] 22:22:24:990 LOGGER/(4649:4881): PID: 1 - Accion: DESTRUIR - Tamaño: 4
-[INFO] 22:22:27:000 LOGGER/(4649:4730): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
-[INFO] 22:22:28:042 LOGGER/(4649:4730): PID: 2 - Accion: ESCRITURA - Direccion fisica: -32 - Tamaño 1
-[INFO] 22:22:29:063 /(4649:4881): PID: 3 - Accion: DESTRUIR - Tamaño: 2
-[INFO] 22:22:32:099 /(4649:4730): PID: 2 - Accion: ESCRITURA - Direccion fisica: -31 - Tamaño 1
-[INFO] 22:22:33:106 tics information
-  --help                display this help and exit
-  --version             output version information and exit
+[INFO] 15:50:40:593 LOGGER/(51892:51892): Servidor iniciado, esperando conexiones!
+[INFO] 15:51:38:928 LOGGER/(51892:52174): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 15:51:38:977 LOGGER/(51892:52174): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 15:51:39:042 LOGGER/(51892:52174): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 15:51:39:408 LOGGER/(51892:51952): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
+[INFO] 15:51:39:528 LOGGER/(51892:51952): El pid que me pide frame es: 1
 
-This program interpreter self-identifies as: /lib64/ld-linux-x86-64.so.2
-/(4649:4881): PID: 2 - Accion: DESTRUIR - Tamaño: 2
-[INFO] 22:26:56:061 LOGGER/(6485:6485): Servidor iniciado, esperando conexiones!
-[INFO] 22:30:10:738 LOGGER/(7187:7187): Servidor iniciado, esperando conexiones!
-[INFO] 22:31:04:410 LOGGER/(7187:7334): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 22:31:04:436 LOGGER/(7187:7334): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 22:31:04:463 LOGGER/(7187:7334): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 22:31:06:493 LOGGER/(7187:7264): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
-[INFO] 22:31:11:572 LOGGER/(7187:7264): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
-[INFO] 22:31:16:622 LOGGER/(7187:7264): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
-[INFO] 22:31:17:633 LOGGER/(7187:7264): PID: 2 - Accion: ESCRITURA - Direccion fisica: -32 - Tamaño 1
-[INFO] 22:31:21:649 /(7187:7264): PID: 2 - Accion: ESCRITURA - Direccion fisica: -31 - Tamaño 1
-[INFO] 22:31:30:692 tics information
-  --help                display this help and exit
-  --version             output version information and exit
+[INFO] 15:51:39:530 LOGGER/(51892:51952): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 15:51:39:531 LOGGER/(51892:51952): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 15:51:39:531 LOGGER/(51892:51952): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 15:51:39:534 LOGGER/(51892:51952): el numero de frame es 1
+[INFO] 15:51:39:816 LOGGER/(51892:51952): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
+[INFO] 15:51:40:264 LOGGER/(51892:51952): El pid que me pide frame es: 2
 
-This program interpreter self-identifies as: /lib64/ld-linux-x86-64.so.2
-/(7187:7264): PID: 2 - Accion: ESCRITURA - Direccion fisica: -30 - Tamaño 1
-[INFO] 22:37:11:065 LOGGER/(9227:9227): Servidor iniciado, esperando conexiones!
-[INFO] 22:39:27:643 LOGGER/(10401:10401): Servidor iniciado, esperando conexiones!
-[INFO] 22:40:19:730 LOGGER/(10401:10646): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 22:40:19:745 LOGGER/(10401:10646): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 22:40:19:768 LOGGER/(10401:10646): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 22:40:21:809 LOGGER/(10401:10501): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
-[INFO] 22:40:26:828 LOGGER/(10401:10501): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
-[INFO] 22:40:31:909 LOGGER/(10401:10501): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
-[INFO] 22:40:32:936 LOGGER/(10401:10501): PID: 2 - Accion: ESCRITURA - Direccion fisica: -32 - Tamaño 1
-[INFO] 22:40:36:968 /(10401:10501): PID: 2 - Accion: ESCRITURA - Direccion fisica: -31 - Tamaño 1
-[INFO] 22:40:46:010 tics information
-  --help                display this help and exit
-  --version             output version information and exit
+[INFO] 15:51:40:264 LOGGER/(51892:51952): BUSCO EL FRAME CON LA PAGINA: 16
+[INFO] 15:51:40:265 LOGGER/(51892:51952): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 15:51:40:265 LOGGER/(51892:51952): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 15:51:40:272 LOGGER/(51892:51952): La direccion fisica es: 176
+[INFO] 15:51:40:272 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:51:40:272 LOGGER/(51892:51952): Escritura: df_actual=176, tam_escrito_anterior=0, tamanio=1
 
-This program interpreter self-identifies as: /lib64/ld-linux-x86-64.so.2
-/(10401:10501): PID: 2 - Accion: ESCRITURA - Direccion fisica: -30 - Tamaño 1
-[INFO] 22:42:34:560 LOGGER/(11953:11953): Servidor iniciado, esperando conexiones!
-[INFO] 22:43:57:601 LOGGER/(12149:12149): Servidor iniciado, esperando conexiones!
-[INFO] 22:45:05:457 LOGGER/(12149:12386): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 22:45:05:480 LOGGER/(12149:12386): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 22:45:05:506 LOGGER/(12149:12386): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 22:45:07:536 LOGGER/(12149:12210): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
-[INFO] 22:45:12:630 LOGGER/(12149:12210): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
-[INFO] 22:45:17:676 LOGGER/(12149:12210): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
-[INFO] 22:45:18:691 /(12149:12210): PID: 2 - Accion: ESCRITURA - Direccion fisica: -32 - Tamaño 1
-[INFO] 22:45:22:711 tics information
-  --help                display this help and exit
-  --version             output version information and exit
+[INFO] 15:51:40:273 LOGGER/(51892:51952): Contenido escrito: I
 
-This program interpreter self-identifies as: /lib64/ld-linux-x86-64.so.2
-/(12149:12210): PID: 2 - Accion: ESCRITURA - Direccion fisica: -31 - Tamaño 1
-[INFO] 23:04:59:964 LOGGER/(14416:14416): Servidor iniciado, esperando conexiones!
-[INFO] 23:05:54:418 LOGGER/(14641:14641): Servidor iniciado, esperando conexiones!
-[INFO] 23:07:29:521 LOGGER/(14988:14988): Servidor iniciado, esperando conexiones!
-[INFO] 23:08:43:326 LOGGER/(14988:15240): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 23:08:43:348 LOGGER/(14988:15240): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 23:08:43:374 LOGGER/(14988:15240): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 23:08:43:699 LOGGER/(14988:15062): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
-[INFO] 23:08:43:979 LOGGER/(14988:15062): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
-[INFO] 23:08:44:391 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1
-[INFO] 23:08:44:700 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -15 - Tamaño 1
-[INFO] 23:08:45:113 LOGGER/(14988:15062): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
-[INFO] 23:08:55:664 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -14 - Tamaño 1
-[INFO] 23:08:55:971 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -13 - Tamaño 1
-[INFO] 23:08:56:277 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -12 - Tamaño 1
-[INFO] 23:08:56:584 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -11 - Tamaño 1
-[INFO] 23:08:56:892 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -10 - Tamaño 1
-[INFO] 23:08:57:197 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -9 - Tamaño 1
-[INFO] 23:09:07:609 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -8 - Tamaño 1
-[INFO] 23:09:07:917 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -7 - Tamaño 1
-[INFO] 23:09:08:222 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -6 - Tamaño 1
-[INFO] 23:09:08:529 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -5 - Tamaño 1
-[INFO] 23:09:08:838 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -4 - Tamaño 1
-[INFO] 23:09:19:275 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -3 - Tamaño 1
-[INFO] 23:09:19:578 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -2 - Tamaño 1
-[INFO] 23:09:19:883 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -1 - Tamaño 1
-[INFO] 23:09:29:256 LOGGER/(14988:15706): PID: 1 - Accion: ESCRITURA - Direccion fisica: 16 - Tamaño 4
-[INFO] 23:09:29:259 LOGGER/(14988:15706): PID: 3 - Accion: ESCRITURA - Direccion fisica: 0 - Tamaño 1
-[INFO] 23:09:29:974 LOGGER/(14988:15062): PID: 1 - Accion: ESCRITURA - Direccion fisica: 11 - Tamaño 1
-[INFO] 23:09:30:700 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1
-[INFO] 23:09:31:004 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -15 - Tamaño 1
-[INFO] 23:09:31:310 LOGGER/(14988:15062): PID: 1 - Accion: ESCRITURA - Direccion fisica: 12 - Tamaño 1
-[INFO] 23:09:31:517 LOGGER/(14988:15062): PID: 1 - Accion: ESCRITURA - Direccion fisica: 13 - Tamaño 1
-[INFO] 23:09:31:720 LOGGER/(14988:15062): PID: 1 - Accion: ESCRITURA - Direccion fisica: 14 - Tamaño 1
-[INFO] 23:09:32:143 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -14 - Tamaño 1
-[INFO] 23:09:32:452 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -13 - Tamaño 1
-[INFO] 23:09:50:502 LOGGER/(14988:15062): PID: 3 - Accion: LECTURA - Direccion fisica: 0 - Tamaño 16
-[INFO] 23:09:50:502 LOGGER/(14988:15062): PID: 3 - Accion: LECTURA - Direccion fisica: 16 - Tamaño 10
-[INFO] 23:09:50:507 LOGGER/(14988:15062): PID: 3 - Accion: ESCRITURA - Direccion fisica: 32 - Tamaño 16
-[INFO] 23:09:50:507 LOGGER/(14988:15062): PID: 3 - Accion: ESCRITURA - Direccion fisica: 48 - Tamaño 10
-[INFO] 23:09:50:812 LOGGER/(14988:15062): PID: 3 - Accion: ESCRITURA - Direccion fisica: 52 - Tamaño 1
-[INFO] 23:09:51:128 LOGGER/(14988:15062): PID: 3 - Accion: ESCRITURA - Direccion fisica: 57 - Tamaño 1
-[INFO] 23:10:10:495 LOGGER/(14988:15062): PID: 1 - Accion: ESCRITURA - Direccion fisica: 15 - Tamaño 1
-[INFO] 23:10:10:809 LOGGER/(14988:15240): PID: 1 - Accion: LECTURA - Direccion fisica: 11 - Tamaño 4
-[INFO] 23:10:10:920 LOGGER/(14988:15240): PID: 1 - Accion: DESTRUIR - Tamaño: 8
-[INFO] 23:10:20:700 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -12 - Tamaño 1
-[INFO] 23:10:21:010 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -11 - Tamaño 1
-[INFO] 23:10:21:316 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -10 - Tamaño 1
-[INFO] 23:10:21:625 LOGGER/(14988:15062): PID: 2 - Accion: ESCRITURA - Direccion fisica: -9 - Tamaño 1
-[INFO] 23:39:49:769 LOGGER/(19269:19269): Servidor iniciado, esperando conexiones!
-[INFO] 23:40:39:681 LOGGER/(19269:19576): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 23:40:39:717 LOGGER/(19269:19576): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 23:40:39:735 LOGGER/(19269:19576): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 23:40:40:064 LOGGER/(19269:19380): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
-[INFO] 23:40:40:355 LOGGER/(19269:19380): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
-[INFO] 23:40:40:770 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1
-[INFO] 23:40:41:080 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -15 - Tamaño 1
-[INFO] 23:40:41:502 LOGGER/(19269:19380): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
-[INFO] 23:40:52:027 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -14 - Tamaño 1
-[INFO] 23:40:52:350 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -13 - Tamaño 1
-[INFO] 23:40:52:661 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -12 - Tamaño 1
-[INFO] 23:40:52:972 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -11 - Tamaño 1
-[INFO] 23:40:53:281 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -10 - Tamaño 1
-[INFO] 23:40:53:588 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -9 - Tamaño 1
-[INFO] 23:41:04:002 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -8 - Tamaño 1
-[INFO] 23:41:04:308 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -7 - Tamaño 1
-[INFO] 23:41:04:614 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -6 - Tamaño 1
-[INFO] 23:41:04:918 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -5 - Tamaño 1
-[INFO] 23:41:05:232 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -4 - Tamaño 1
-[INFO] 23:41:06:171 LOGGER/(19269:19843): PID: 1 - Accion: ESCRITURA - Direccion fisica: 16 - Tamaño 4
-[INFO] 23:41:06:177 LOGGER/(19269:19843): PID: 3 - Accion: ESCRITURA - Direccion fisica: 0 - Tamaño 1
-[INFO] 23:41:06:893 LOGGER/(19269:19380): PID: 1 - Accion: ESCRITURA - Direccion fisica: 11 - Tamaño 1
-[INFO] 23:41:07:410 LOGGER/(19269:19380): PID: 1 - Accion: ESCRITURA - Direccion fisica: 12 - Tamaño 1
-[INFO] 23:41:07:613 LOGGER/(19269:19380): PID: 1 - Accion: ESCRITURA - Direccion fisica: 13 - Tamaño 1
-[INFO] 23:41:07:817 LOGGER/(19269:19380): PID: 1 - Accion: ESCRITURA - Direccion fisica: 14 - Tamaño 1
-[INFO] 23:41:15:648 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -3 - Tamaño 1
-[INFO] 23:41:15:957 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -2 - Tamaño 1
-[INFO] 23:41:16:265 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -1 - Tamaño 1
-[INFO] 23:41:35:448 LOGGER/(19269:19380): PID: 3 - Accion: LECTURA - Direccion fisica: 0 - Tamaño 16
-[INFO] 23:41:35:448 LOGGER/(19269:19380): PID: 3 - Accion: LECTURA - Direccion fisica: 16 - Tamaño 10
-[INFO] 23:41:35:452 LOGGER/(19269:19380): PID: 3 - Accion: ESCRITURA - Direccion fisica: 32 - Tamaño 16
-[INFO] 23:41:35:452 LOGGER/(19269:19380): PID: 3 - Accion: ESCRITURA - Direccion fisica: 48 - Tamaño 10
-[INFO] 23:41:35:756 LOGGER/(19269:19380): PID: 3 - Accion: ESCRITURA - Direccion fisica: 52 - Tamaño 1
-[INFO] 23:41:36:061 LOGGER/(19269:19380): PID: 3 - Accion: ESCRITURA - Direccion fisica: 57 - Tamaño 1
-[INFO] 23:41:55:442 LOGGER/(19269:19380): PID: 1 - Accion: ESCRITURA - Direccion fisica: 15 - Tamaño 1
-[INFO] 23:41:55:754 LOGGER/(19269:19576): PID: 1 - Accion: LECTURA - Direccion fisica: 11 - Tamaño 4
-[INFO] 23:41:55:863 LOGGER/(19269:19576): PID: 1 - Accion: DESTRUIR - Tamaño: 8
-[INFO] 23:42:05:654 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1
-[INFO] 23:42:05:959 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -15 - Tamaño 1
-[INFO] 23:42:06:272 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -14 - Tamaño 1
-[INFO] 23:42:06:605 LOGGER/(19269:19380): PID: 2 - Accion: ESCRITURA - Direccion fisica: -13 - Tamaño 1
-[INFO] 23:44:50:304 LOGGER/(21855:21855): Servidor iniciado, esperando conexiones!
-[INFO] 23:45:17:395 LOGGER/(21855:22000): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 23:45:17:417 LOGGER/(21855:22000): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 23:45:17:440 LOGGER/(21855:22000): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 23:45:17:772 LOGGER/(21855:21919): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
-[INFO] 23:45:18:050 LOGGER/(21855:21919): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
-[INFO] 23:45:18:474 LOGGER/(21855:21919): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1
-[INFO] 23:45:18:781 LOGGER/(21855:21919): PID: 2 - Accion: ESCRITURA - Direccion fisica: -15 - Tamaño 1
-[INFO] 23:45:19:196 LOGGER/(21855:21919): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
-[INFO] 23:45:29:732 LOGGER/(21855:21919): PID: 2 - Accion: ESCRITURA - Direccion fisica: -14 - Tamaño 1
-[INFO] 23:45:30:037 LOGGER/(21855:21919): PID: 2 - Accion: ESCRITURA - Direccion fisica: -13 - Tamaño 1
-[INFO] 23:45:30:344 LOGGER/(21855:21919): PID: 2 - Accion: ESCRITURA - Direccion fisica: -12 - Tamaño 1
-[INFO] 23:45:30:648 LOGGER/(21855:21919): PID: 2 - Accion: ESCRITURA - Direccion fisica: -11 - Tamaño 1
-[INFO] 23:45:30:953 LOGGER/(21855:21919): PID: 2 - Accion: ESCRITURA - Direccion fisica: -10 - Tamaño 1
-[INFO] 23:45:31:258 LOGGER/(21855:21919): PID: 2 - Accion: ESCRITURA - Direccion fisica: -9 - Tamaño 1
-[INFO] 23:45:33:917 LOGGER/(21855:22228): PID: 1 - Accion: ESCRITURA - Direccion fisica: 16 - Tamaño 4
-[INFO] 23:45:33:924 LOGGER/(21855:22228): PID: 3 - Accion: ESCRITURA - Direccion fisica: 0 - Tamaño 1
-[INFO] 23:45:34:642 LOGGER/(21855:21919): PID: 1 - Accion: ESCRITURA - Direccion fisica: 11 - Tamaño 1
-[INFO] 23:45:35:157 LOGGER/(21855:21919): PID: 1 - Accion: ESCRITURA - Direccion fisica: 12 - Tamaño 1
-[INFO] 23:45:35:373 LOGGER/(21855:21919): PID: 1 - Accion: ESCRITURA - Direccion fisica: 13 - Tamaño 1
-[INFO] 23:45:35:592 LOGGER/(21855:21919): PID: 1 - Accion: ESCRITURA - Direccion fisica: 14 - Tamaño 1
-[INFO] 23:45:41:682 LOGGER/(21855:21919): PID: 2 - Accion: ESCRITURA - Direccion fisica: -8 - Tamaño 1
-[INFO] 23:45:41:989 LOGGER/(21855:21919): PID: 2 - Accion: ESCRITURA - Direccion fisica: -7 - Tamaño 1
-[INFO] 23:45:42:300 LOGGER/(21855:21919): PID: 2 - Accion: ESCRITURA - Direccion fisica: -6 - Tamaño 1
-[INFO] 23:45:42:608 LOGGER/(21855:21919): PID: 2 - Accion: ESCRITURA - Direccion fisica: -5 - Tamaño 1
-[INFO] 23:45:42:917 LOGGER/(21855:21919): PID: 2 - Accion: ESCRITURA - Direccion fisica: -4 - Tamaño 1
-[INFO] 23:46:01:477 LOGGER/(21855:21919): PID: 3 - Accion: LECTURA - Direccion fisica: 0 - Tamaño 16
-[INFO] 23:46:01:478 LOGGER/(21855:21919): PID: 3 - Accion: LECTURA - Direccion fisica: 16 - Tamaño 10
-[INFO] 23:46:01:481 LOGGER/(21855:21919): PID: 3 - Accion: ESCRITURA - Direccion fisica: 32 - Tamaño 16
-[INFO] 23:46:01:481 LOGGER/(21855:21919): PID: 3 - Accion: ESCRITURA - Direccion fisica: 48 - Tamaño 10
-[INFO] 23:46:01:787 LOGGER/(21855:21919): PID: 3 - Accion: ESCRITURA - Direccion fisica: 52 - Tamaño 1
-[INFO] 23:46:02:094 LOGGER/(21855:21919): PID: 3 - Accion: ESCRITURA - Direccion fisica: 57 - Tamaño 1
-[INFO] 23:46:21:479 LOGGER/(21855:21919): PID: 1 - Accion: ESCRITURA - Direccion fisica: 15 - Tamaño 1
-[INFO] 23:46:21:804 LOGGER/(21855:22000): PID: 1 - Accion: LECTURA - Direccion fisica: 11 - Tamaño 4
-[INFO] 23:46:21:916 LOGGER/(21855:22000): PID: 1 - Accion: DESTRUIR - Tamaño: 8
-[INFO] 23:46:31:680 LOGGER/(21855:21919): PID: 2 - Accion: ESCRITURA - Direccion fisica: -3 - Tamaño 1
-[INFO] 23:46:31:989 LOGGER/(21855:21919): PID: 2 - Accion: ESCRITURA - Direccion fisica: -2 - Tamaño 1
-[INFO] 23:46:32:293 LOGGER/(21855:21919): PID: 2 - Accion: ESCRITURA - Direccion fisica: -1 - Tamaño 1
-[INFO] 23:50:24:095 LOGGER/(24025:24025): Servidor iniciado, esperando conexiones!
-[INFO] 23:50:36:226 LOGGER/(24203:24203): Servidor iniciado, esperando conexiones!
-[INFO] 23:51:21:010 LOGGER/(24528:24528): Servidor iniciado, esperando conexiones!
-[INFO] 23:52:29:532 LOGGER/(24528:24688): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 23:52:29:553 LOGGER/(24528:24688): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 23:52:29:568 LOGGER/(24528:24688): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 23:52:29:903 LOGGER/(24528:24607): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
-[INFO] 23:52:30:204 LOGGER/(24528:24607): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
-[INFO] 23:52:30:626 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1
-[INFO] 23:52:30:932 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -15 - Tamaño 1
-[INFO] 23:52:31:346 LOGGER/(24528:24607): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
-[INFO] 23:52:41:866 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -14 - Tamaño 1
-[INFO] 23:52:42:174 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -13 - Tamaño 1
-[INFO] 23:52:42:488 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -12 - Tamaño 1
-[INFO] 23:52:42:797 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -11 - Tamaño 1
-[INFO] 23:52:43:103 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -10 - Tamaño 1
-[INFO] 23:52:43:410 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -9 - Tamaño 1
-[INFO] 23:52:53:824 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -8 - Tamaño 1
-[INFO] 23:52:54:136 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -7 - Tamaño 1
-[INFO] 23:52:54:446 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -6 - Tamaño 1
-[INFO] 23:52:54:756 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -5 - Tamaño 1
-[INFO] 23:52:55:077 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -4 - Tamaño 1
-[INFO] 23:53:05:495 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -3 - Tamaño 1
-[INFO] 23:53:05:814 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -2 - Tamaño 1
-[INFO] 23:53:06:121 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -1 - Tamaño 1
-[INFO] 23:53:16:535 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1
-[INFO] 23:53:16:810 LOGGER/(24528:25014): PID: 1 - Accion: ESCRITURA - Direccion fisica: 16 - Tamaño 4
-[INFO] 23:53:16:844 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -15 - Tamaño 1
-[INFO] 23:53:17:763 LOGGER/(24528:24607): PID: 1 - Accion: ESCRITURA - Direccion fisica: 11 - Tamaño 1
-[INFO] 23:53:17:968 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -14 - Tamaño 1
-[INFO] 23:53:18:275 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -13 - Tamaño 1
-[INFO] 23:53:18:481 LOGGER/(24528:24607): PID: 1 - Accion: ESCRITURA - Direccion fisica: 12 - Tamaño 1
-[INFO] 23:53:18:686 LOGGER/(24528:24607): PID: 1 - Accion: ESCRITURA - Direccion fisica: 13 - Tamaño 1
-[INFO] 23:53:18:895 LOGGER/(24528:24607): PID: 1 - Accion: ESCRITURA - Direccion fisica: 14 - Tamaño 1
-[INFO] 23:53:28:706 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -12 - Tamaño 1
-[INFO] 23:53:29:021 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -11 - Tamaño 1
-[INFO] 23:53:29:335 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -10 - Tamaño 1
-[INFO] 23:53:29:651 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -9 - Tamaño 1
-[INFO] 23:53:33:428 LOGGER/(24528:25014): PID: 3 - Accion: ESCRITURA - Direccion fisica: 0 - Tamaño 1
-[INFO] 23:53:48:487 LOGGER/(24528:24607): PID: 1 - Accion: ESCRITURA - Direccion fisica: 15 - Tamaño 1
-[INFO] 23:53:48:803 LOGGER/(24528:24688): PID: 1 - Accion: LECTURA - Direccion fisica: 11 - Tamaño 4
-[INFO] 23:53:48:915 LOGGER/(24528:24688): PID: 1 - Accion: DESTRUIR - Tamaño: 8
-[INFO] 23:53:58:695 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -8 - Tamaño 1
-[INFO] 23:53:59:004 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -7 - Tamaño 1
-[INFO] 23:53:59:319 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -6 - Tamaño 1
-[INFO] 23:53:59:628 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -5 - Tamaño 1
-[INFO] 23:53:59:936 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -4 - Tamaño 1
-[INFO] 23:54:00:242 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -3 - Tamaño 1
-[INFO] 23:54:18:497 LOGGER/(24528:24607): PID: 3 - Accion: LECTURA - Direccion fisica: 0 - Tamaño 16
-[INFO] 23:54:18:497 LOGGER/(24528:24607): PID: 3 - Accion: LECTURA - Direccion fisica: 16 - Tamaño 10
-[INFO] 23:54:18:500 LOGGER/(24528:24607): PID: 3 - Accion: ESCRITURA - Direccion fisica: 32 - Tamaño 16
-[INFO] 23:54:18:500 LOGGER/(24528:24607): PID: 3 - Accion: ESCRITURA - Direccion fisica: 48 - Tamaño 10
-[INFO] 23:54:18:811 LOGGER/(24528:24607): PID: 3 - Accion: ESCRITURA - Direccion fisica: 52 - Tamaño 1
-[INFO] 23:54:19:125 LOGGER/(24528:24607): PID: 3 - Accion: ESCRITURA - Direccion fisica: 57 - Tamaño 1
-[INFO] 23:54:28:695 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -2 - Tamaño 1
-[INFO] 23:54:29:001 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -1 - Tamaño 1
-[INFO] 23:54:29:308 LOGGER/(24528:24607): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1
-[INFO] 23:56:22:549 LOGGER/(27565:27565): Servidor iniciado, esperando conexiones!
-[INFO] 23:57:47:829 LOGGER/(27806:27806): Servidor iniciado, esperando conexiones!
-[INFO] 23:58:45:728 LOGGER/(27806:28061): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 23:58:45:751 LOGGER/(27806:28061): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 23:58:45:764 LOGGER/(27806:28061): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 23:58:46:108 LOGGER/(27806:27867): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
-[INFO] 23:58:46:374 LOGGER/(27806:27867): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
-[INFO] 23:58:46:794 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1
-[INFO] 23:58:47:103 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -15 - Tamaño 1
-[INFO] 23:58:47:516 LOGGER/(27806:27867): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
-[INFO] 23:58:58:040 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -14 - Tamaño 1
-[INFO] 23:58:58:348 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -13 - Tamaño 1
-[INFO] 23:58:58:654 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -12 - Tamaño 1
-[INFO] 23:58:58:964 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -11 - Tamaño 1
-[INFO] 23:58:59:273 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -10 - Tamaño 1
-[INFO] 23:58:59:585 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -9 - Tamaño 1
-[INFO] 23:59:10:003 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -8 - Tamaño 1
-[INFO] 23:59:10:310 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -7 - Tamaño 1
-[INFO] 23:59:10:620 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -6 - Tamaño 1
-[INFO] 23:59:10:892 LOGGER/(27806:28213): PID: 1 - Accion: ESCRITURA - Direccion fisica: 16 - Tamaño 4
-[INFO] 23:59:10:924 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -5 - Tamaño 1
-[INFO] 23:59:11:233 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -4 - Tamaño 1
-[INFO] 23:59:12:071 LOGGER/(27806:27867): PID: 1 - Accion: ESCRITURA - Direccion fisica: 11 - Tamaño 1
-[INFO] 23:59:12:276 LOGGER/(27806:27867): PID: 1 - Accion: ESCRITURA - Direccion fisica: 12 - Tamaño 1
-[INFO] 23:59:12:479 LOGGER/(27806:27867): PID: 1 - Accion: ESCRITURA - Direccion fisica: 13 - Tamaño 1
-[INFO] 23:59:12:685 LOGGER/(27806:27867): PID: 1 - Accion: ESCRITURA - Direccion fisica: 14 - Tamaño 1
-[INFO] 23:59:21:649 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -3 - Tamaño 1
-[INFO] 23:59:21:958 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -2 - Tamaño 1
-[INFO] 23:59:22:266 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -1 - Tamaño 1
-[INFO] 23:59:32:722 LOGGER/(27806:28213): PID: 3 - Accion: ESCRITURA - Direccion fisica: 0 - Tamaño 1
-[INFO] 23:59:41:452 LOGGER/(27806:27867): PID: 1 - Accion: ESCRITURA - Direccion fisica: 15 - Tamaño 1
-[INFO] 23:59:41:778 LOGGER/(27806:28061): PID: 1 - Accion: LECTURA - Direccion fisica: 11 - Tamaño 4
-[INFO] 23:59:41:895 LOGGER/(27806:28061): PID: 1 - Accion: DESTRUIR - Tamaño: 8
-[INFO] 23:59:51:674 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1
-[INFO] 23:59:51:982 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -15 - Tamaño 1
-[INFO] 23:59:52:290 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -14 - Tamaño 1
-[INFO] 23:59:52:600 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -13 - Tamaño 1
-[INFO] 00:00:11:473 LOGGER/(27806:27867): PID: 3 - Accion: LECTURA - Direccion fisica: 0 - Tamaño 16
-[INFO] 00:00:11:474 LOGGER/(27806:27867): PID: 3 - Accion: LECTURA - Direccion fisica: 16 - Tamaño 10
-[INFO] 00:00:11:476 LOGGER/(27806:27867): PID: 3 - Accion: ESCRITURA - Direccion fisica: 32 - Tamaño 16
-[INFO] 00:00:11:476 LOGGER/(27806:27867): PID: 3 - Accion: ESCRITURA - Direccion fisica: 48 - Tamaño 10
-[INFO] 00:00:11:783 LOGGER/(27806:27867): PID: 3 - Accion: ESCRITURA - Direccion fisica: 52 - Tamaño 1
-[INFO] 00:00:12:094 LOGGER/(27806:27867): PID: 3 - Accion: ESCRITURA - Direccion fisica: 57 - Tamaño 1
-[INFO] 00:00:21:671 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -12 - Tamaño 1
-[INFO] 00:00:21:977 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -11 - Tamaño 1
-[INFO] 00:00:22:297 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -10 - Tamaño 1
-[INFO] 00:00:22:602 LOGGER/(27806:27867): PID: 2 - Accion: ESCRITURA - Direccion fisica: -9 - Tamaño 1
-[INFO] 00:05:37:111 LOGGER/(30603:30603): Servidor iniciado, esperando conexiones!
-[INFO] 00:05:43:739 LOGGER/(30723:30723): Servidor iniciado, esperando conexiones!
-[INFO] 00:06:21:112 LOGGER/(31081:31081): Servidor iniciado, esperando conexiones!
-[INFO] 00:06:36:990 LOGGER/(31339:31339): Servidor iniciado, esperando conexiones!
-[INFO] 00:07:06:937 LOGGER/(31339:31475): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 00:07:06:965 LOGGER/(31339:31475): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 00:07:07:003 LOGGER/(31339:31475): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 00:07:07:347 LOGGER/(31339:31400): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
-[INFO] 00:07:07:634 LOGGER/(31339:31400): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
-[INFO] 00:07:08:053 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1
-[INFO] 00:07:08:360 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -15 - Tamaño 1
-[INFO] 00:07:08:771 LOGGER/(31339:31400): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
-[INFO] 00:07:19:300 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -14 - Tamaño 1
-[INFO] 00:07:19:603 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -13 - Tamaño 1
-[INFO] 00:07:19:908 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -12 - Tamaño 1
-[INFO] 00:07:20:215 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -11 - Tamaño 1
-[INFO] 00:07:20:520 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -10 - Tamaño 1
-[INFO] 00:07:20:826 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -9 - Tamaño 1
-[INFO] 00:07:28:835 LOGGER/(31339:31688): PID: 1 - Accion: ESCRITURA - Direccion fisica: 16 - Tamaño 4
-[INFO] 00:07:29:565 LOGGER/(31339:31400): PID: 1 - Accion: ESCRITURA - Direccion fisica: 11 - Tamaño 1
-[INFO] 00:07:29:774 LOGGER/(31339:31400): PID: 1 - Accion: ESCRITURA - Direccion fisica: 12 - Tamaño 1
-[INFO] 00:07:29:980 LOGGER/(31339:31400): PID: 1 - Accion: ESCRITURA - Direccion fisica: 13 - Tamaño 1
-[INFO] 00:07:30:189 LOGGER/(31339:31400): PID: 1 - Accion: ESCRITURA - Direccion fisica: 14 - Tamaño 1
-[INFO] 00:07:31:242 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -8 - Tamaño 1
-[INFO] 00:07:31:549 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -7 - Tamaño 1
-[INFO] 00:07:31:854 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -6 - Tamaño 1
-[INFO] 00:07:32:163 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -5 - Tamaño 1
-[INFO] 00:07:32:468 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -4 - Tamaño 1
-[INFO] 00:07:47:106 LOGGER/(31339:31688): PID: 3 - Accion: ESCRITURA - Direccion fisica: 0 - Tamaño 1
-[INFO] 00:07:51:055 LOGGER/(31339:31400): PID: 1 - Accion: ESCRITURA - Direccion fisica: 15 - Tamaño 1
-[INFO] 00:07:51:377 LOGGER/(31339:31475): PID: 1 - Accion: LECTURA - Direccion fisica: 11 - Tamaño 4
-[INFO] 00:07:51:486 LOGGER/(31339:31475): PID: 1 - Accion: DESTRUIR - Tamaño: 8
-[INFO] 00:08:01:271 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -3 - Tamaño 1
-[INFO] 00:08:01:578 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -2 - Tamaño 1
-[INFO] 00:08:01:894 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -1 - Tamaño 1
-[INFO] 00:08:21:079 LOGGER/(31339:31400): PID: 3 - Accion: LECTURA - Direccion fisica: 0 - Tamaño 16
-[INFO] 00:08:21:079 LOGGER/(31339:31400): PID: 3 - Accion: LECTURA - Direccion fisica: 16 - Tamaño 10
-[INFO] 00:08:21:083 LOGGER/(31339:31400): PID: 3 - Accion: ESCRITURA - Direccion fisica: 32 - Tamaño 16
-[INFO] 00:08:21:083 LOGGER/(31339:31400): PID: 3 - Accion: ESCRITURA - Direccion fisica: 48 - Tamaño 10
-[INFO] 00:08:21:393 LOGGER/(31339:31400): PID: 3 - Accion: ESCRITURA - Direccion fisica: 52 - Tamaño 1
-[INFO] 00:08:21:700 LOGGER/(31339:31400): PID: 3 - Accion: ESCRITURA - Direccion fisica: 57 - Tamaño 1
-[INFO] 00:08:31:299 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1
-[INFO] 00:08:31:614 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -15 - Tamaño 1
-[INFO] 00:08:31:929 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -14 - Tamaño 1
-[INFO] 00:08:32:235 LOGGER/(31339:31400): PID: 2 - Accion: ESCRITURA - Direccion fisica: -13 - Tamaño 1
-[INFO] 00:19:15:705 LOGGER/(33913:33913): Servidor iniciado, esperando conexiones!
-[INFO] 00:19:46:554 LOGGER/(34231:34231): Servidor iniciado, esperando conexiones!
-[INFO] 00:20:15:756 LOGGER/(34231:34376): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 00:20:15:771 LOGGER/(34231:34376): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 00:20:15:792 LOGGER/(34231:34376): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 00:20:16:121 LOGGER/(34231:34292): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
-[INFO] 00:20:16:419 LOGGER/(34231:34292): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
-[INFO] 00:20:16:854 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1
-[INFO] 00:20:17:168 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -15 - Tamaño 1
-[INFO] 00:20:17:576 LOGGER/(34231:34292): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
-[INFO] 00:20:28:135 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -14 - Tamaño 1
-[INFO] 00:20:28:450 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -13 - Tamaño 1
-[INFO] 00:20:28:758 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -12 - Tamaño 1
-[INFO] 00:20:29:066 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -11 - Tamaño 1
-[INFO] 00:20:29:384 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -10 - Tamaño 1
-[INFO] 00:20:29:696 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -9 - Tamaño 1
-[INFO] 00:20:40:122 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -8 - Tamaño 1
-[INFO] 00:20:40:436 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -7 - Tamaño 1
-[INFO] 00:20:40:746 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -6 - Tamaño 1
-[INFO] 00:20:41:053 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -5 - Tamaño 1
-[INFO] 00:20:41:363 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -4 - Tamaño 1
-[INFO] 00:20:51:778 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -3 - Tamaño 1
-[INFO] 00:20:52:089 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -2 - Tamaño 1
-[INFO] 00:20:52:399 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -1 - Tamaño 1
-[INFO] 00:20:57:813 LOGGER/(34231:34618): PID: 1 - Accion: ESCRITURA - Direccion fisica: 16 - Tamaño 4
-[INFO] 00:20:58:534 LOGGER/(34231:34292): PID: 1 - Accion: ESCRITURA - Direccion fisica: 11 - Tamaño 1
-[INFO] 00:20:58:740 LOGGER/(34231:34292): PID: 1 - Accion: ESCRITURA - Direccion fisica: 12 - Tamaño 1
-[INFO] 00:20:58:946 LOGGER/(34231:34292): PID: 1 - Accion: ESCRITURA - Direccion fisica: 13 - Tamaño 1
-[INFO] 00:20:59:151 LOGGER/(34231:34292): PID: 1 - Accion: ESCRITURA - Direccion fisica: 14 - Tamaño 1
-[INFO] 00:21:02:831 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1
-[INFO] 00:21:03:142 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -15 - Tamaño 1
-[INFO] 00:21:03:447 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -14 - Tamaño 1
-[INFO] 00:21:03:751 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -13 - Tamaño 1
-[INFO] 00:21:11:305 LOGGER/(34231:34618): PID: 3 - Accion: ESCRITURA - Direccion fisica: 0 - Tamaño 1
-[INFO] 00:21:22:614 LOGGER/(34231:34292): PID: 1 - Accion: ESCRITURA - Direccion fisica: 15 - Tamaño 1
-[INFO] 00:21:22:926 LOGGER/(34231:34376): PID: 1 - Accion: LECTURA - Direccion fisica: 11 - Tamaño 4
-[INFO] 00:21:23:043 LOGGER/(34231:34376): PID: 1 - Accion: DESTRUIR - Tamaño: 8
-[INFO] 00:21:32:832 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -12 - Tamaño 1
-[INFO] 00:21:33:142 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -11 - Tamaño 1
-[INFO] 00:21:33:448 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -10 - Tamaño 1
-[INFO] 00:21:33:753 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -9 - Tamaño 1
-[INFO] 00:21:52:621 LOGGER/(34231:34292): PID: 3 - Accion: LECTURA - Direccion fisica: 0 - Tamaño 16
-[INFO] 00:21:52:621 LOGGER/(34231:34292): PID: 3 - Accion: LECTURA - Direccion fisica: 16 - Tamaño 10
-[INFO] 00:21:52:623 LOGGER/(34231:34292): PID: 3 - Accion: ESCRITURA - Direccion fisica: 32 - Tamaño 16
-[INFO] 00:21:52:623 LOGGER/(34231:34292): PID: 3 - Accion: ESCRITURA - Direccion fisica: 48 - Tamaño 10
-[INFO] 00:21:52:965 LOGGER/(34231:34292): PID: 3 - Accion: ESCRITURA - Direccion fisica: 52 - Tamaño 1
-[INFO] 00:21:53:273 LOGGER/(34231:34292): PID: 3 - Accion: ESCRITURA - Direccion fisica: 57 - Tamaño 1
-[INFO] 00:22:02:826 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -8 - Tamaño 1
-[INFO] 00:22:03:132 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -7 - Tamaño 1
-[INFO] 00:22:03:440 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -6 - Tamaño 1
-[INFO] 00:22:03:743 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -5 - Tamaño 1
-[INFO] 00:22:04:050 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -4 - Tamaño 1
-[INFO] 00:22:04:360 LOGGER/(34231:34292): PID: 2 - Accion: ESCRITURA - Direccion fisica: -3 - Tamaño 1
-[INFO] 00:32:05:858 LOGGER/(37421:37421): Servidor iniciado, esperando conexiones!
-[INFO] 00:32:56:887 LOGGER/(37421:37781): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 00:32:56:909 LOGGER/(37421:37781): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 00:32:56:934 LOGGER/(37421:37781): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 00:32:57:258 LOGGER/(37421:37549): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
-[INFO] 00:32:57:529 LOGGER/(37421:37549): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
-[INFO] 00:32:57:949 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1
-[INFO] 00:32:58:258 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -15 - Tamaño 1
-[INFO] 00:32:58:669 LOGGER/(37421:37549): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
-[INFO] 00:33:09:196 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -14 - Tamaño 1
-[INFO] 00:33:09:500 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -13 - Tamaño 1
-[INFO] 00:33:09:808 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -12 - Tamaño 1
-[INFO] 00:33:10:114 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -11 - Tamaño 1
-[INFO] 00:33:10:419 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -10 - Tamaño 1
-[INFO] 00:33:10:724 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -9 - Tamaño 1
-[INFO] 00:33:14:394 LOGGER/(37421:38022): PID: 1 - Accion: ESCRITURA - Direccion fisica: 16 - Tamaño 4
-[INFO] 00:33:15:119 LOGGER/(37421:37549): PID: 1 - Accion: ESCRITURA - Direccion fisica: 11 - Tamaño 1
-[INFO] 00:33:15:327 LOGGER/(37421:37549): PID: 1 - Accion: ESCRITURA - Direccion fisica: 12 - Tamaño 1
-[INFO] 00:33:15:529 LOGGER/(37421:37549): PID: 1 - Accion: ESCRITURA - Direccion fisica: 13 - Tamaño 1
-[INFO] 00:33:15:736 LOGGER/(37421:37549): PID: 1 - Accion: ESCRITURA - Direccion fisica: 14 - Tamaño 1
-[INFO] 00:33:21:134 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -8 - Tamaño 1
-[INFO] 00:33:21:443 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -7 - Tamaño 1
-[INFO] 00:33:21:751 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -6 - Tamaño 1
-[INFO] 00:33:22:083 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -5 - Tamaño 1
-[INFO] 00:33:22:397 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -4 - Tamaño 1
-[INFO] 00:33:34:659 LOGGER/(37421:38022): PID: 3 - Accion: ESCRITURA - Direccion fisica: 0 - Tamaño 1
-[INFO] 00:33:40:933 LOGGER/(37421:37549): PID: 1 - Accion: ESCRITURA - Direccion fisica: 15 - Tamaño 1
-[INFO] 00:33:41:256 LOGGER/(37421:37781): PID: 1 - Accion: LECTURA - Direccion fisica: 11 - Tamaño 4
-[INFO] 00:33:41:369 LOGGER/(37421:37781): PID: 1 - Accion: DESTRUIR - Tamaño: 8
-[INFO] 00:33:51:146 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -3 - Tamaño 1
-[INFO] 00:33:51:456 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -2 - Tamaño 1
-[INFO] 00:33:51:764 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -1 - Tamaño 1
-[INFO] 00:34:10:942 LOGGER/(37421:37549): PID: 3 - Accion: LECTURA - Direccion fisica: 0 - Tamaño 16
-[INFO] 00:34:10:943 LOGGER/(37421:37549): PID: 3 - Accion: LECTURA - Direccion fisica: 16 - Tamaño 10
-[INFO] 00:34:10:949 LOGGER/(37421:37549): PID: 3 - Accion: ESCRITURA - Direccion fisica: 32 - Tamaño 16
-[INFO] 00:34:10:949 LOGGER/(37421:37549): PID: 3 - Accion: ESCRITURA - Direccion fisica: 48 - Tamaño 10
-[INFO] 00:34:11:252 LOGGER/(37421:37549): PID: 3 - Accion: ESCRITURA - Direccion fisica: 52 - Tamaño 1
-[INFO] 00:34:11:564 LOGGER/(37421:37549): PID: 3 - Accion: ESCRITURA - Direccion fisica: 57 - Tamaño 1
-[INFO] 00:34:21:142 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1
-[INFO] 00:34:21:448 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -15 - Tamaño 1
-[INFO] 00:34:21:761 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -14 - Tamaño 1
-[INFO] 00:34:22:073 LOGGER/(37421:37549): PID: 2 - Accion: ESCRITURA - Direccion fisica: -13 - Tamaño 1
-[INFO] 00:56:41:872 LOGGER/(40950:40950): Servidor iniciado, esperando conexiones!
-[INFO] 00:57:26:508 LOGGER/(40950:41208): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 00:57:26:526 LOGGER/(40950:41208): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 00:57:26:544 LOGGER/(40950:41208): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 00:57:26:861 LOGGER/(40950:41040): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
-[INFO] 00:57:27:125 LOGGER/(40950:41040): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
-[INFO] 00:57:27:539 LOGGER/(40950:41040): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1 
+[INFO] 15:51:40:273 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 176 - Tamaño 1 
 
-[INFO] 00:57:27:849 LOGGER/(40950:41040): PID: 2 - Accion: ESCRITURA - Direccion fisica: -15 - Tamaño 1 
+[INFO] 15:51:40:584 LOGGER/(51892:51952): La direccion fisica es: 177
+[INFO] 15:51:40:584 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:51:40:584 LOGGER/(51892:51952): Escritura: df_actual=177, tam_escrito_anterior=0, tamanio=1
 
-[INFO] 00:57:28:258 LOGGER/(40950:41040): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
-[INFO] 00:57:38:792 LOGGER/(40950:41040): PID: 2 - Accion: ESCRITURA - Direccion fisica: -14 - Tamaño 1 
+[INFO] 15:51:40:584 LOGGER/(51892:51952): Contenido escrito:  
 
-[INFO] 00:57:39:101 LOGGER/(40950:41040): PID: 2 - Accion: ESCRITURA - Direccion fisica: -13 - Tamaño 1 
+[INFO] 15:51:40:584 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 177 - Tamaño 1 
 
-[INFO] 00:57:39:408 LOGGER/(40950:41040): PID: 2 - Accion: ESCRITURA - Direccion fisica: -12 - Tamaño 1 
+[INFO] 15:51:41:316 LOGGER/(51892:51952): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 15:51:41:419 LOGGER/(51892:51952): El pid que me pide frame es: 3
 
-[INFO] 00:57:39:714 LOGGER/(40950:41040): PID: 2 - Accion: ESCRITURA - Direccion fisica: -11 - Tamaño 1 
+[INFO] 15:51:41:420 LOGGER/(51892:51952): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 15:51:41:420 LOGGER/(51892:51952): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 15:51:41:421 LOGGER/(51892:51952): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 15:51:41:421 LOGGER/(51892:51952): el numero de frame es 0
+[INFO] 15:51:51:152 LOGGER/(51892:51952): La direccion fisica es: 178
+[INFO] 15:51:51:156 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:51:51:156 LOGGER/(51892:51952): Escritura: df_actual=178, tam_escrito_anterior=0, tamanio=1
 
-[INFO] 00:57:40:021 LOGGER/(40950:41040): PID: 2 - Accion: ESCRITURA - Direccion fisica: -10 - Tamaño 1 
+[INFO] 15:51:51:156 LOGGER/(51892:51952): Contenido escrito: d
 
-[INFO] 00:57:40:327 LOGGER/(40950:41040): PID: 2 - Accion: ESCRITURA - Direccion fisica: -9 - Tamaño 1 
+[INFO] 15:51:51:157 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 178 - Tamaño 1 
 
-[INFO] 00:57:50:741 LOGGER/(40950:41040): PID: 2 - Accion: ESCRITURA - Direccion fisica: -8 - Tamaño 1 
+[INFO] 15:51:51:477 LOGGER/(51892:51952): La direccion fisica es: 179
+[INFO] 15:51:51:477 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:51:51:477 LOGGER/(51892:51952): Escritura: df_actual=179, tam_escrito_anterior=0, tamanio=1
 
-[INFO] 00:57:51:048 LOGGER/(40950:41040): PID: 2 - Accion: ESCRITURA - Direccion fisica: -7 - Tamaño 1 
+[INFO] 15:51:51:479 LOGGER/(51892:51952): Contenido escrito: o
 
-[INFO] 00:57:51:357 LOGGER/(40950:41040): PID: 2 - Accion: ESCRITURA - Direccion fisica: -6 - Tamaño 1 
+[INFO] 15:51:51:479 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 179 - Tamaño 1 
 
-[INFO] 00:57:51:663 LOGGER/(40950:41040): PID: 2 - Accion: ESCRITURA - Direccion fisica: -5 - Tamaño 1 
+[INFO] 15:51:51:813 LOGGER/(51892:51952): La direccion fisica es: 180
+[INFO] 15:51:51:813 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:51:51:813 LOGGER/(51892:51952): Escritura: df_actual=180, tam_escrito_anterior=0, tamanio=1
 
-[INFO] 00:57:51:968 LOGGER/(40950:41040): PID: 2 - Accion: ESCRITURA - Direccion fisica: -4 - Tamaño 1 
+[INFO] 15:51:51:813 LOGGER/(51892:51952): Contenido escrito: n
 
-[INFO] 00:57:56:978 LOGGER/(40950:41040): PID: 2 - Accion: ESCRITURA - Direccion fisica: -3 - Tamaño 1 
+[INFO] 15:51:51:814 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 180 - Tamaño 1 
 
-[INFO] 00:57:57:284 LOGGER/(40950:41040): PID: 2 - Accion: ESCRITURA - Direccion fisica: -2 - Tamaño 1 
+[INFO] 15:51:52:154 LOGGER/(51892:51952): La direccion fisica es: 181
+[INFO] 15:51:52:154 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:51:52:154 LOGGER/(51892:51952): Escritura: df_actual=181, tam_escrito_anterior=0, tamanio=1
 
-[INFO] 00:57:57:602 LOGGER/(40950:41040): PID: 2 - Accion: ESCRITURA - Direccion fisica: -1 - Tamaño 1 
+[INFO] 15:51:52:154 LOGGER/(51892:51952): Contenido escrito: '
 
-[INFO] 00:57:58:010 LOGGER/(40950:41040): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1 
+[INFO] 15:51:52:154 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 181 - Tamaño 1 
 
-[INFO] 00:59:08:397 LOGGER/(42639:42639): Servidor iniciado, esperando conexiones!
-[INFO] 01:00:52:053 LOGGER/(42639:42906): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 01:00:52:079 LOGGER/(42639:42906): PID: 2 - Accion: CREAR - Tamaño: 0
-[INFO] 01:00:52:108 LOGGER/(42639:42906): PID: 3 - Accion: CREAR - Tamaño: 0
-[INFO] 01:00:52:433 LOGGER/(42639:42720): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
-[INFO] 01:00:52:713 LOGGER/(42639:42720): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
-[INFO] 01:00:53:130 LOGGER/(42639:42720): PID: 2 - Accion: ESCRITURA - Direccion fisica: -16 - Tamaño 1 
+[INFO] 15:51:52:480 LOGGER/(51892:51952): La direccion fisica es: 182
+[INFO] 15:51:52:480 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:51:52:481 LOGGER/(51892:51952): Escritura: df_actual=182, tam_escrito_anterior=0, tamanio=1
 
-[INFO] 01:00:53:438 LOGGER/(42639:42720): PID: 2 - Accion: ESCRITURA - Direccion fisica: -15 - Tamaño 1 
+[INFO] 15:51:52:481 LOGGER/(51892:51952): Contenido escrito: t
 
-[INFO] 01:00:53:863 LOGGER/(42639:42720): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
-[INFO] 01:01:04:396 LOGGER/(42639:42720): PID: 2 - Accion: ESCRITURA - Direccion fisica: -14 - Tamaño 1 
+[INFO] 15:51:52:481 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 182 - Tamaño 1 
 
-[INFO] 01:01:04:754 LOGGER/(42639:42720): PID: 2 - Accion: ESCRITURA - Direccion fisica: -13 - Tamaño 1 
+[INFO] 15:51:52:814 LOGGER/(51892:51952): La direccion fisica es: 183
+[INFO] 15:51:52:814 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:51:52:814 LOGGER/(51892:51952): Escritura: df_actual=183, tam_escrito_anterior=0, tamanio=1
 
-[INFO] 01:01:05:065 LOGGER/(42639:42720): PID: 2 - Accion: ESCRITURA - Direccion fisica: -12 - Tamaño 1 
+[INFO] 15:51:52:814 LOGGER/(51892:51952): Contenido escrito:  
 
-[INFO] 01:01:05:373 LOGGER/(42639:42720): PID: 2 - Accion: ESCRITURA - Direccion fisica: -11 - Tamaño 1 
+[INFO] 15:51:52:814 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 183 - Tamaño 1 
 
-[INFO] 01:01:05:681 LOGGER/(42639:42720): PID: 2 - Accion: ESCRITURA - Direccion fisica: -10 - Tamaño 1 
+[INFO] 15:52:00:102 LOGGER/(51892:52407): La direccion fisica es: 16
+[INFO] 15:52:00:109 LOGGER/(51892:52407): Los bytes de lectura restante son: 4
+[INFO] 15:52:00:109 LOGGER/(51892:52407): Escritura: df_actual=16, tam_escrito_anterior=0, tamanio=4
 
-[INFO] 01:01:06:056 LOGGER/(42639:42720): PID: 2 - Accion: ESCRITURA - Direccion fisica: -9 - Tamaño 1 
+[INFO] 15:52:00:110 LOGGER/(51892:52407): Contenido escrito: WAR 
 
-[INFO] 01:01:16:465 LOGGER/(42639:42720): PID: 2 - Accion: ESCRITURA - Direccion fisica: -8 - Tamaño 1 
+[INFO] 15:52:00:110 LOGGER/(51892:52407): PID: 1 - Accion: ESCRITURA - Direccion fisica: 16 - Tamaño 4 
 
-[INFO] 01:01:16:774 LOGGER/(42639:42720): PID: 2 - Accion: ESCRITURA - Direccion fisica: -7 - Tamaño 1 
+[INFO] 15:52:00:853 LOGGER/(51892:51952): El pid que me pide frame es: 1
 
-[INFO] 01:01:17:081 LOGGER/(42639:42720): PID: 2 - Accion: ESCRITURA - Direccion fisica: -6 - Tamaño 1 
+[INFO] 15:52:00:855 LOGGER/(51892:51952): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 15:52:00:855 LOGGER/(51892:51952): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 15:52:00:856 LOGGER/(51892:51952): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 15:52:00:856 LOGGER/(51892:51952): el numero de frame es 0
+[INFO] 15:52:00:865 LOGGER/(51892:51952): La direccion fisica es: 11
+[INFO] 15:52:00:865 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:52:00:865 LOGGER/(51892:51952): Escritura: df_actual=11, tam_escrito_anterior=0, tamanio=1
 
-[INFO] 01:01:17:386 LOGGER/(42639:42720): PID: 2 - Accion: ESCRITURA - Direccion fisica: -5 - Tamaño 1 
+[INFO] 15:52:00:865 LOGGER/(51892:51952): Contenido escrito: W
 
-[INFO] 01:01:17:713 LOGGER/(42639:42720): PID: 2 - Accion: ESCRITURA - Direccion fisica: -4 - Tamaño 1 
+[INFO] 15:52:00:865 LOGGER/(51892:51952): PID: 1 - Accion: ESCRITURA - Direccion fisica: 11 - Tamaño 1 
+
+[INFO] 15:52:01:074 LOGGER/(51892:51952): La direccion fisica es: 12
+[INFO] 15:52:01:074 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:52:01:074 LOGGER/(51892:51952): Escritura: df_actual=12, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:52:01:074 LOGGER/(51892:51952): Contenido escrito: A
+
+[INFO] 15:52:01:074 LOGGER/(51892:51952): PID: 1 - Accion: ESCRITURA - Direccion fisica: 12 - Tamaño 1 
+
+[INFO] 15:52:01:280 LOGGER/(51892:51952): La direccion fisica es: 13
+[INFO] 15:52:01:280 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:52:01:280 LOGGER/(51892:51952): Escritura: df_actual=13, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:52:01:280 LOGGER/(51892:51952): Contenido escrito: R
+
+[INFO] 15:52:01:280 LOGGER/(51892:51952): PID: 1 - Accion: ESCRITURA - Direccion fisica: 13 - Tamaño 1 
+
+[INFO] 15:52:01:501 LOGGER/(51892:51952): La direccion fisica es: 14
+[INFO] 15:52:01:501 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:52:01:501 LOGGER/(51892:51952): Escritura: df_actual=14, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:52:01:501 LOGGER/(51892:51952): Contenido escrito: ,
+
+[INFO] 15:52:01:501 LOGGER/(51892:51952): PID: 1 - Accion: ESCRITURA - Direccion fisica: 14 - Tamaño 1 
+
+[INFO] 15:52:03:255 LOGGER/(51892:51952): La direccion fisica es: 184
+[INFO] 15:52:03:255 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:52:03:256 LOGGER/(51892:51952): Escritura: df_actual=184, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:52:03:256 LOGGER/(51892:51952): Contenido escrito: w
+
+[INFO] 15:52:03:256 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 184 - Tamaño 1 
+
+[INFO] 15:52:03:574 LOGGER/(51892:51952): La direccion fisica es: 185
+[INFO] 15:52:03:574 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:52:03:574 LOGGER/(51892:51952): Escritura: df_actual=185, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:52:03:574 LOGGER/(51892:51952): Contenido escrito: a
+
+[INFO] 15:52:03:574 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 185 - Tamaño 1 
+
+[INFO] 15:52:03:887 LOGGER/(51892:51952): La direccion fisica es: 186
+[INFO] 15:52:03:887 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:52:03:887 LOGGER/(51892:51952): Escritura: df_actual=186, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:52:03:887 LOGGER/(51892:51952): Contenido escrito: n
+
+[INFO] 15:52:03:887 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 186 - Tamaño 1 
+
+[INFO] 15:52:04:205 LOGGER/(51892:51952): La direccion fisica es: 187
+[INFO] 15:52:04:205 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:52:04:205 LOGGER/(51892:51952): Escritura: df_actual=187, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:52:04:205 LOGGER/(51892:51952): Contenido escrito: t
+
+[INFO] 15:52:04:205 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 187 - Tamaño 1 
+
+[INFO] 15:52:04:514 LOGGER/(51892:51952): La direccion fisica es: 188
+[INFO] 15:52:04:514 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:52:04:514 LOGGER/(51892:51952): Escritura: df_actual=188, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:52:04:514 LOGGER/(51892:51952): Contenido escrito:  
+
+[INFO] 15:52:04:514 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 188 - Tamaño 1 
+
+[INFO] 15:52:23:056 LOGGER/(51892:51952): La direccion fisica es: 15
+[INFO] 15:52:23:056 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:52:23:056 LOGGER/(51892:51952): Escritura: df_actual=15, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:52:23:056 LOGGER/(51892:51952): Contenido escrito:  
+
+[INFO] 15:52:23:056 LOGGER/(51892:51952): PID: 1 - Accion: ESCRITURA - Direccion fisica: 15 - Tamaño 1 
+
+[INFO] 15:52:23:394 LOGGER/(51892:52174): El tamanio del valor leido* es: 25
+
+[INFO] 15:52:23:395 LOGGER/(51892:52174): La direccion fisica es: 11
+[INFO] 15:52:23:396 LOGGER/(51892:52174): Los bytes de lectura restante son: 4
+[INFO] 15:52:23:396 LOGGER/(51892:52174): Lectura: df_actual=11, tam_escrito_anterior=0, tamanio=4
+
+[INFO] 15:52:23:397 LOGGER/(51892:52174): Contenido leido: 
+
+[INFO] 15:52:23:398 LOGGER/(51892:52174): PID: 1 - Accion: LECTURA - Direccion fisica: 11 - Tamaño 4 
+
+[INFO] 15:52:23:592 LOGGER/(51892:52174): PID: 1 - Accion: DESTRUIR - Tamaño: 8
+[INFO] 15:52:27:731 LOGGER/(51892:52407): La direccion fisica es: 0
+[INFO] 15:52:27:732 LOGGER/(51892:52407): Los bytes de lectura restante son: 1
+[INFO] 15:52:27:732 LOGGER/(51892:52407): Escritura: df_actual=0, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:52:27:732 LOGGER/(51892:52407): Contenido escrito: S
+
+[INFO] 15:52:27:732 LOGGER/(51892:52407): PID: 3 - Accion: ESCRITURA - Direccion fisica: 0 - Tamaño 1 
+
+[INFO] 15:52:33:273 LOGGER/(51892:51952): La direccion fisica es: 189
+[INFO] 15:52:33:274 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:52:33:274 LOGGER/(51892:51952): Escritura: df_actual=189, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:52:33:275 LOGGER/(51892:51952): Contenido escrito: t
+
+[INFO] 15:52:33:275 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 189 - Tamaño 1 
+
+[INFO] 15:52:33:592 LOGGER/(51892:51952): La direccion fisica es: 190
+[INFO] 15:52:33:592 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:52:33:592 LOGGER/(51892:51952): Escritura: df_actual=190, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:52:33:593 LOGGER/(51892:51952): Contenido escrito: o
+
+[INFO] 15:52:33:593 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 190 - Tamaño 1 
+
+[INFO] 15:52:33:921 LOGGER/(51892:51952): La direccion fisica es: 191
+[INFO] 15:52:33:921 LOGGER/(51892:51952): Los bytes de lectura restante son: 1
+[INFO] 15:52:33:921 LOGGER/(51892:51952): Escritura: df_actual=191, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:52:33:921 LOGGER/(51892:51952): Contenido escrito:  
+
+[INFO] 15:52:33:921 LOGGER/(51892:51952): PID: 2 - Accion: ESCRITURA - Direccion fisica: 191 - Tamaño 1 
+
+[INFO] 15:52:53:106 LOGGER/(51892:51952): La direccion fisica es: 0
+[INFO] 15:52:53:107 LOGGER/(51892:51952): Los bytes de lectura restante son: 16
+[INFO] 15:52:53:107 LOGGER/(51892:51952): Lectura: df_actual=0, tam_escrito_anterior=0, tamanio=16
+
+[INFO] 15:52:53:107 LOGGER/(51892:51952): Contenido leido: 
+
+[INFO] 15:52:53:107 LOGGER/(51892:51952): PID: 3 - Accion: LECTURA - Direccion fisica: 0 - Tamaño 16 
+
+[INFO] 15:52:53:107 LOGGER/(51892:51952): La direccion fisica es: -16
+[INFO] 15:52:53:107 LOGGER/(51892:51952): Los bytes de lectura restante son: 10
+[INFO] 15:52:53:107 LOGGER/(51892:51952): Lectura: df_actual=-16, tam_escrito_anterior=16, tamanio=10
+
+[INFO] 15:52:53:107 LOGGER/(51892:51952): Contenido leido: 
+
+[INFO] 15:52:53:107 LOGGER/(51892:51952): PID: 3 - Accion: LECTURA - Direccion fisica: -16 - Tamaño 10 
+
+[INFO] 15:52:53:112 LOGGER/(51892:51952): El pid que me pide frame es: 3
+
+[INFO] 15:52:53:112 LOGGER/(51892:51952): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 15:52:53:112 LOGGER/(51892:51952): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 15:52:53:112 LOGGER/(51892:51952): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 15:52:53:112 LOGGER/(51892:51952): el numero de frame es 2
+[INFO] 15:52:53:128 LOGGER/(51892:51952): La direccion fisica es: 32
+[INFO] 15:52:53:128 LOGGER/(51892:51952): Los bytes de lectura restante son: 16
+[INFO] 15:52:53:128 LOGGER/(51892:51952): Escritura: df_actual=32, tam_escrito_anterior=0, tamanio=16
+
+[INFO] 15:52:53:128 LOGGER/(51892:51952): Contenido escrito: S
+
+[INFO] 15:52:53:128 LOGGER/(51892:51952): PID: 3 - Accion: ESCRITURA - Direccion fisica: 32 - Tamaño 16 
+
+[INFO] 15:52:53:128 LOGGER/(51892:51952): La direccion fisica es: -16
+[INFO] 15:52:53:128 LOGGER/(51892:51952): Los bytes de lectura restante son: 10
+[INFO] 15:52:53:129 LOGGER/(51892:51952): Escritura: df_actual=-16, tam_escrito_anterior=16, tamanio=10
+
+[INFO] 15:52:53:129 LOGGER/(51892:51952): Contenido escrito: tura resta
+
+[INFO] 15:58:40:055 LOGGER/(54098:54098): Servidor iniciado, esperando conexiones!
+[INFO] 15:59:08:712 LOGGER/(54098:54239): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 15:59:08:749 LOGGER/(54098:54239): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 15:59:08:818 LOGGER/(54098:54239): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 15:59:09:166 LOGGER/(54098:54168): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
+[INFO] 15:59:09:305 LOGGER/(54098:54168): El pid que me pide frame es: 1
+
+[INFO] 15:59:09:318 LOGGER/(54098:54168): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 15:59:09:319 LOGGER/(54098:54168): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 15:59:09:319 LOGGER/(54098:54168): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 15:59:09:320 LOGGER/(54098:54168): el numero de frame es 1
+[INFO] 15:59:09:536 LOGGER/(54098:54168): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
+[INFO] 15:59:09:981 LOGGER/(54098:54168): El pid que me pide frame es: 2
+
+[INFO] 15:59:09:981 LOGGER/(54098:54168): BUSCO EL FRAME CON LA PAGINA: 16
+[INFO] 15:59:09:981 LOGGER/(54098:54168): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 15:59:09:981 LOGGER/(54098:54168): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 15:59:09:987 LOGGER/(54098:54168): La direccion fisica es: 176
+[INFO] 15:59:09:987 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:09:987 LOGGER/(54098:54168): Escritura: df_actual=176, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:09:988 LOGGER/(54098:54168): Contenido escrito: 8
+
+[INFO] 15:59:09:988 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 176 - Tamaño 1 
+
+[INFO] 15:59:10:328 LOGGER/(54098:54168): La direccion fisica es: 177
+[INFO] 15:59:10:328 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:10:328 LOGGER/(54098:54168): Escritura: df_actual=177, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:10:328 LOGGER/(54098:54168): Contenido escrito: :
+
+[INFO] 15:59:10:328 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 177 - Tamaño 1 
+
+[INFO] 15:59:10:759 LOGGER/(54098:54168): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 15:59:10:956 LOGGER/(54098:54168): El pid que me pide frame es: 3
+
+[INFO] 15:59:10:956 LOGGER/(54098:54168): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 15:59:10:957 LOGGER/(54098:54168): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 15:59:10:957 LOGGER/(54098:54168): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 15:59:10:957 LOGGER/(54098:54168): el numero de frame es 0
+[INFO] 15:59:19:590 LOGGER/(54098:54440): La direccion fisica es: 16
+[INFO] 15:59:19:591 LOGGER/(54098:54440): Los bytes de lectura restante son: 4
+[INFO] 15:59:19:591 LOGGER/(54098:54440): Escritura: df_actual=16, tam_escrito_anterior=0, tamanio=4
+
+[INFO] 15:59:19:591 LOGGER/(54098:54440): Contenido escrito: S...
+
+[INFO] 15:59:19:591 LOGGER/(54098:54440): PID: 1 - Accion: ESCRITURA - Direccion fisica: 16 - Tamaño 4 
+
+[INFO] 15:59:20:313 LOGGER/(54098:54168): El pid que me pide frame es: 1
+
+[INFO] 15:59:20:314 LOGGER/(54098:54168): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 15:59:20:314 LOGGER/(54098:54168): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 15:59:20:315 LOGGER/(54098:54168): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 15:59:20:315 LOGGER/(54098:54168): el numero de frame es 0
+[INFO] 15:59:20:325 LOGGER/(54098:54168): La direccion fisica es: 11
+[INFO] 15:59:20:325 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:20:325 LOGGER/(54098:54168): Escritura: df_actual=11, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:20:325 LOGGER/(54098:54168): Contenido escrito: 
+
+[INFO] 15:59:20:325 LOGGER/(54098:54168): PID: 1 - Accion: ESCRITURA - Direccion fisica: 11 - Tamaño 1 
+
+[INFO] 15:59:20:539 LOGGER/(54098:54168): La direccion fisica es: 12
+[INFO] 15:59:20:539 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:20:539 LOGGER/(54098:54168): Escritura: df_actual=12, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:20:539 LOGGER/(54098:54168): Contenido escrito: 
+
+[INFO] 15:59:20:540 LOGGER/(54098:54168): PID: 1 - Accion: ESCRITURA - Direccion fisica: 12 - Tamaño 1 
+
+[INFO] 15:59:20:747 LOGGER/(54098:54168): La direccion fisica es: 13
+[INFO] 15:59:20:747 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:20:747 LOGGER/(54098:54168): Escritura: df_actual=13, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:20:747 LOGGER/(54098:54168): Contenido escrito: 
+
+[INFO] 15:59:20:747 LOGGER/(54098:54168): PID: 1 - Accion: ESCRITURA - Direccion fisica: 13 - Tamaño 1 
+
+[INFO] 15:59:20:954 LOGGER/(54098:54168): La direccion fisica es: 14
+[INFO] 15:59:20:954 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:20:954 LOGGER/(54098:54168): Escritura: df_actual=14, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:20:954 LOGGER/(54098:54168): Contenido escrito: 
+
+[INFO] 15:59:20:954 LOGGER/(54098:54168): PID: 1 - Accion: ESCRITURA - Direccion fisica: 14 - Tamaño 1 
+
+[INFO] 15:59:21:586 LOGGER/(54098:54168): La direccion fisica es: 178
+[INFO] 15:59:21:586 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:21:586 LOGGER/(54098:54168): Escritura: df_actual=178, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:21:586 LOGGER/(54098:54168): Contenido escrito: 
+
+[INFO] 15:59:21:586 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 178 - Tamaño 1 
+
+[INFO] 15:59:21:897 LOGGER/(54098:54168): La direccion fisica es: 179
+[INFO] 15:59:21:897 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:21:897 LOGGER/(54098:54168): Escritura: df_actual=179, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:21:897 LOGGER/(54098:54168): Contenido escrito: 
+
+[INFO] 15:59:21:897 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 179 - Tamaño 1 
+
+[INFO] 15:59:22:209 LOGGER/(54098:54168): La direccion fisica es: 180
+[INFO] 15:59:22:209 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:22:209 LOGGER/(54098:54168): Escritura: df_actual=180, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:22:209 LOGGER/(54098:54168): Contenido escrito: 
+
+[INFO] 15:59:22:209 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 180 - Tamaño 1 
+
+[INFO] 15:59:22:535 LOGGER/(54098:54168): La direccion fisica es: 181
+[INFO] 15:59:22:535 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:22:535 LOGGER/(54098:54168): Escritura: df_actual=181, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:22:535 LOGGER/(54098:54168): Contenido escrito: 
+
+[INFO] 15:59:22:535 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 181 - Tamaño 1 
+
+[INFO] 15:59:22:846 LOGGER/(54098:54168): La direccion fisica es: 182
+[INFO] 15:59:22:846 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:22:846 LOGGER/(54098:54168): Escritura: df_actual=182, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:22:846 LOGGER/(54098:54168): Contenido escrito: 
+
+[INFO] 15:59:22:846 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 182 - Tamaño 1 
+
+[INFO] 15:59:23:156 LOGGER/(54098:54168): La direccion fisica es: 183
+[INFO] 15:59:23:156 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:23:156 LOGGER/(54098:54168): Escritura: df_actual=183, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:23:156 LOGGER/(54098:54168): Contenido escrito: 
+
+[INFO] 15:59:23:156 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 183 - Tamaño 1 
+
+[INFO] 15:59:27:700 LOGGER/(54098:54440): La direccion fisica es: 0
+[INFO] 15:59:27:700 LOGGER/(54098:54440): Los bytes de lectura restante son: 1
+[INFO] 15:59:27:701 LOGGER/(54098:54440): Escritura: df_actual=0, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:27:701 LOGGER/(54098:54440): Contenido escrito: S
+
+[INFO] 15:59:27:701 LOGGER/(54098:54440): PID: 3 - Accion: ESCRITURA - Direccion fisica: 0 - Tamaño 1 
+
+[INFO] 15:59:41:386 LOGGER/(54098:54168): La direccion fisica es: 15
+[INFO] 15:59:41:387 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:41:387 LOGGER/(54098:54168): Escritura: df_actual=15, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:41:387 LOGGER/(54098:54168): Contenido escrito: 
+
+[INFO] 15:59:41:387 LOGGER/(54098:54168): PID: 1 - Accion: ESCRITURA - Direccion fisica: 15 - Tamaño 1 
+
+[INFO] 15:59:41:733 LOGGER/(54098:54239): El tamanio del valor leido* es: 25
+
+[INFO] 15:59:41:733 LOGGER/(54098:54239): La direccion fisica es: 11
+[INFO] 15:59:41:733 LOGGER/(54098:54239): Los bytes de lectura restante son: 4
+[INFO] 15:59:41:733 LOGGER/(54098:54239): Lectura: df_actual=11, tam_escrito_anterior=0, tamanio=4
+
+[INFO] 15:59:41:733 LOGGER/(54098:54239): Contenido leido: 
+
+[INFO] 15:59:41:734 LOGGER/(54098:54239): PID: 1 - Accion: LECTURA - Direccion fisica: 11 - Tamaño 4 
+
+[INFO] 15:59:41:875 LOGGER/(54098:54239): PID: 1 - Accion: DESTRUIR - Tamaño: 8
+[INFO] 15:59:51:613 LOGGER/(54098:54168): La direccion fisica es: 184
+[INFO] 15:59:51:613 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:51:613 LOGGER/(54098:54168): Escritura: df_actual=184, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:51:613 LOGGER/(54098:54168): Contenido escrito: %
+
+[INFO] 15:59:51:614 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 184 - Tamaño 1 
+
+[INFO] 15:59:51:931 LOGGER/(54098:54168): La direccion fisica es: 185
+[INFO] 15:59:51:931 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:51:931 LOGGER/(54098:54168): Escritura: df_actual=185, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:51:931 LOGGER/(54098:54168): Contenido escrito: 
+
+[INFO] 15:59:51:931 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 185 - Tamaño 1 
+
+[INFO] 15:59:52:269 LOGGER/(54098:54168): La direccion fisica es: 186
+[INFO] 15:59:52:270 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:52:270 LOGGER/(54098:54168): Escritura: df_actual=186, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:52:270 LOGGER/(54098:54168): Contenido escrito: 
+
+[INFO] 15:59:52:270 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 186 - Tamaño 1 
+
+[INFO] 15:59:52:602 LOGGER/(54098:54168): La direccion fisica es: 187
+[INFO] 15:59:52:602 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:52:602 LOGGER/(54098:54168): Escritura: df_actual=187, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:52:602 LOGGER/(54098:54168): Contenido escrito: 
+
+[INFO] 15:59:52:602 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 187 - Tamaño 1 
+
+[INFO] 15:59:52:926 LOGGER/(54098:54168): La direccion fisica es: 188
+[INFO] 15:59:52:926 LOGGER/(54098:54168): Los bytes de lectura restante son: 1
+[INFO] 15:59:52:926 LOGGER/(54098:54168): Escritura: df_actual=188, tam_escrito_anterior=0, tamanio=1
+
+[INFO] 15:59:52:926 LOGGER/(54098:54168): Contenido escrito: 
+
+[INFO] 15:59:52:926 LOGGER/(54098:54168): PID: 2 - Accion: ESCRITURA - Direccion fisica: 188 - Tamaño 1 
+
+[INFO] 16:00:11:440 LOGGER/(54098:54168): La direccion fisica es: 0
+[INFO] 16:00:11:440 LOGGER/(54098:54168): Los bytes de lectura restante son: 16
+[INFO] 16:00:11:440 LOGGER/(54098:54168): Lectura: df_actual=0, tam_escrito_anterior=0, tamanio=16
+
+[INFO] 16:00:11:440 LOGGER/(54098:54168): Contenido leido: [0m
+
+[INFO] 16:00:11:440 LOGGER/(54098:54168): PID: 3 - Accion: LECTURA - Direccion fisica: 0 - Tamaño 16 
+
+[INFO] 16:00:11:440 LOGGER/(54098:54168): La direccion fisica es: -16
+[INFO] 16:00:11:440 LOGGER/(54098:54168): Los bytes de lectura restante son: 10
+[INFO] 16:00:11:440 LOGGER/(54098:54168): Lectura: df_actual=-16, tam_escrito_anterior=16, tamanio=10
+
+[INFO] 16:00:11:440 LOGGER/(54098:54168): Contenido leido: 
+
+[INFO] 16:00:11:441 LOGGER/(54098:54168): PID: 3 - Accion: LECTURA - Direccion fisica: -16 - Tamaño 10 
+
+[INFO] 16:00:11:444 LOGGER/(54098:54168): El pid que me pide frame es: 3
+
+[INFO] 16:00:11:444 LOGGER/(54098:54168): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 16:00:11:444 LOGGER/(54098:54168): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 16:00:11:444 LOGGER/(54098:54168): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 16:00:11:444 LOGGER/(54098:54168): el numero de frame es 2
+[INFO] 16:00:11:459 LOGGER/(54098:54168): La direccion fisica es: 32
+[INFO] 16:00:11:459 LOGGER/(54098:54168): Los bytes de lectura restante son: 16
+[INFO] 16:00:11:459 LOGGER/(54098:54168): Escritura: df_actual=32, tam_escrito_anterior=0, tamanio=16
+
+[INFO] 16:00:11:459 LOGGER/(54098:54168): Contenido escrito: 
+
+[INFO] 16:00:11:459 LOGGER/(54098:54168): PID: 3 - Accion: ESCRITURA - Direccion fisica: 32 - Tamaño 16 
+
+[INFO] 16:00:11:459 LOGGER/(54098:54168): La direccion fisica es: -16
+[INFO] 16:00:11:459 LOGGER/(54098:54168): Los bytes de lectura restante son: 10
+[INFO] 16:00:11:459 LOGGER/(54098:54168): Escritura: df_actual=-16, tam_escrito_anterior=16, tamanio=10
+
+[INFO] 16:00:11:459 LOGGER/(54098:54168): Contenido escrito: 
 

@@ -383,7 +383,6 @@ void* handle_io_stdout(void* socket_io) {
     free(io->semaforo_cola_procesos_blocked);
     free(io->nombreInterfaz);
     free(io);
-    free(pid_stdout->nombre_interfaz);
     free(pid_stdout); //QUE_NO_ROMPA
     liberar_paquete(paquete);
     return NULL;

@@ -10,18 +10,19 @@ t_list* tlb;
 
 int buscar_frame_en_TLB(int pid, int pagina) {
     for(int i=0; i<list_size(tlb); i++){
-        //t_entrada_tlb* entrada = malloc(sizeof(t_entrada_tlb));
-        t_entrada_tlb* entrada = (t_entrada_tlb*) list_get(tlb, i);
+        t_entrada_tlb* entrada = list_get(tlb, i);
         if(entrada->pid == pid && entrada->pagina == pagina) {
             log_info(logger_CPU, "PID: %d - TLB HIT - Pagina: %d", pid, pagina);
             entrada->timestamps = tiempoEnMilisecs();
-            printf("el marco que devuelve buscar_frame_en_TLB es: %d\n", entrada->marco);
+            log_info(logger_CPU, "El PID que pide frame es %d y el pid que tiene la TLB es %d", pid, entrada->pid);
+            log_info(logger_CPU, "La pagina que pide frame es %d y la pagina que tiene la TLB es %d", pagina, entrada->pagina);
+            log_info(logger_CPU, "el marco que devuelve buscar_frame_en_TLB es: %d", entrada->marco);
             return entrada->marco;
         }
         //free(entrada);
     }
     log_info(logger_CPU, "PID: %d - TLB MISS - Pagina: %d", pid, pagina);
-    return -2;
+    return -1;
 }
 
 void agregar_frame_en_TLB(int pid, int pagina, int frame) {
@@ -29,6 +30,7 @@ void agregar_frame_en_TLB(int pid, int pagina, int frame) {
     entrada->pid = pid;
     entrada->pagina = pagina;
     entrada->marco = frame;
+    log_info(logger_CPU,"A la entrada %d le asigno el frame %d", entrada->pid, entrada->marco);
     entrada->timestamps = tiempoEnMilisecs();
 
     int cantidad_entradas = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
@@ -39,6 +41,8 @@ void agregar_frame_en_TLB(int pid, int pagina, int frame) {
         }
         list_add(tlb, entrada);
     }
+
+    imprimir_tlb();
     // Si la cantidad de entradas es 0, no hace nada
 }
 
@@ -91,11 +95,11 @@ int traducir_direccion_logica_a_fisica(uint32_t direccion_logica, int pid) {
     direccion_logica_a_crear->numero_pagina = floor(direccion_logica / tamanio_pagina);
     direccion_logica_a_crear->desplazamiento = direccion_logica - direccion_logica_a_crear->numero_pagina * tamanio_pagina;
 
-    printf("Numero de pagina %d + Desplazamiento %d\n", direccion_logica_a_crear->numero_pagina, direccion_logica_a_crear->desplazamiento);
+    log_info(logger_CPU, "Numero de pagina %d + Desplazamiento %d\n", direccion_logica_a_crear->numero_pagina, direccion_logica_a_crear->desplazamiento);
 
     int frame = buscar_frame_en_TLB(pid, direccion_logica_a_crear->numero_pagina);
     
-    if(frame == -2) { // Caso de que no encuentre el marco
+    if(frame == -1) { // Caso de que no encuentre el marco
         pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina, pid); 
         recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
         log_info(logger_CPU, "PID: %d - OBTENER MARCO - Página: %d - Marco: %d", pid, direccion_logica_a_crear->numero_pagina, frame);

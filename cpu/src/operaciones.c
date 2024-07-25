@@ -846,30 +846,22 @@ int bytes_usables_por_pagina(int direccion_logica) {
 void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectura, uint32_t direccion_logica, int pid, t_list* direcciones_fisicas, int pagina) {
     // Aca cargo la primera
     t_dir_fisica_tamanio *dir_fisica_tamanio = malloc(sizeof(t_dir_fisica_tamanio)); 
-    printf("Direccion logica: %d\n", direccion_logica);
+    log_info(logger_CPU, "Direccion logica: %d\n", direccion_logica);
 
     dir_fisica_tamanio->direccion_fisica = traducir_direccion_logica_a_fisica(direccion_logica, pid);
     dir_fisica_tamanio->bytes_lectura = *(int*)list_get(lista_bytes_lectura, 0); 
-    printf("direccion fisica: %d\n", dir_fisica_tamanio->direccion_fisica);
-    printf("tamanio guardado: %d\n", dir_fisica_tamanio->bytes_lectura);
+    log_info(logger_CPU, "direccion fisica: %d", dir_fisica_tamanio->direccion_fisica);
+    log_info(logger_CPU, "tamanio guardado: %d", dir_fisica_tamanio->bytes_lectura);
             
     list_add(direcciones_fisicas, dir_fisica_tamanio); 
 
-    int frame = -2;
+    int frame;
     // Aca cargo el resto
     for(int i = 0; i < cantidad_paginas - 1; i++) {
         printf("Iteracion %d\n", i);
-        printf("Pido el marco de la pagina %d del proceso %d\n", pagina + 1 + i, pid); // El uno es para que siempre pida la sig
+        log_info(logger_CPU, "HELP Pido el marco de la pagina %d del proceso %d", pagina + 1 + i, pid); // El uno es para que siempre pida la sig
         
         frame = buscar_frame_en_TLB(pid, pagina + 1 + i);
-    
-        if(frame == -2) {
-            pedir_frame_a_memoria(pagina + 1 + i, pid); 
-            recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
-            printf("el frame es:%d\n", frame);
-            log_info(logger_CPU, "PID: %d - OBTENER MARCO - Página: %d - Marco: %d", pid, pagina + 1 + i, frame);
-            agregar_frame_en_TLB(pid, pagina + 1 + i, frame);
-        }
 
         int direccion_fisica = frame * tamanio_pagina + 0; // 0 es el offset
 
@@ -895,6 +887,7 @@ t_buffer* serializar_direcciones_fisicas(int cantidad_paginas, t_list* direccion
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
     int cant_elementos_lista = list_size(direcciones_fisicas);
+    log_info(logger_CPU, "el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es %d \n", cant_elementos_lista);
 
     buffer->size = sizeof(int) * 4 + (cant_elementos_lista * sizeof(t_dir_fisica_tamanio)) + tamanio_valor;
 
