@@ -908,6 +908,11 @@ t_buffer* serializar_direcciones_fisicas(int cantidad_paginas, t_list* direccion
 
     memcpy(stream + buffer->offset, &cantidad_paginas, sizeof(int));
     buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, &tamanio_valor, sizeof(int));
+    buffer->offset += sizeof(int);
+
+    memcpy(stream + buffer->offset, registro_dato_mov_out, tamanio_valor);
+    buffer->offset += tamanio_valor;
 
     printf("VOY A IMPRIMIR LAS DIRECCIONES FISICAS\n");
     for(int i=0; i < cantidad_paginas; i++) {
@@ -920,12 +925,6 @@ t_buffer* serializar_direcciones_fisicas(int cantidad_paginas, t_list* direccion
         memcpy(stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
         buffer->offset += sizeof(int);
     }
-
-    memcpy(stream + buffer->offset, &tamanio_valor, sizeof(int));
-    buffer->offset += sizeof(int);
-
-    memcpy(stream + buffer->offset, registro_dato_mov_out, tamanio_valor);
-    
     buffer->stream = stream;
 
     return buffer;
@@ -1272,8 +1271,6 @@ t_buffer* llenar_buffer_copy_string(int direccion_fisica_SI, int direccion_fisic
 void enviar_kernel_stdout(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio){
     t_buffer* buffer = llenar_buffer_stdout(direccion_fisica, nombre_interfaz, tamanio);
     enviar_paquete(buffer, PEDIDO_ESCRITURA, client_dispatch);
-    free(buffer->stream);
-    free(buffer);
 }
 
 t_buffer* llenar_buffer_stdout(int direccion_fisica, char* nombre_interfaz, uint32_t tamanio){
@@ -1285,7 +1282,8 @@ t_buffer* llenar_buffer_stdout(int direccion_fisica, char* nombre_interfaz, uint
     buffer->stream = malloc(buffer->size);
 
     void *stream = buffer->stream;
-
+    printf("la direccion fisica de llenar buffer stdout es: %d \n", direccion_fisica);
+    printf("la tamanio de llenar buffer stdout es: %d \n", direccion_fisica);
     memcpy(stream + buffer->offset, &direccion_fisica, sizeof(int));
     buffer->offset += sizeof(int);
     memcpy(stream + buffer->offset, &tamanio, sizeof(uint32_t));

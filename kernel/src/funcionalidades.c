@@ -432,16 +432,15 @@ t_paquete *recibir_cpu() {
 void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     DesalojoCpu devolucion_cpu;
     
-    log_info(logger_kernel, "Entro a esperar_cpu");
+  
     t_paquete* package = recibir_cpu(); // pcb y codigo de operacion (devolucion_cpu)
-    log_info(logger_kernel, "Recibo cpu");
+
     devolucion_cpu = package->codigo_operacion;
 
     if(!queue_is_empty(cola_exec)) {
         pthread_mutex_lock(&mutex_estado_exec);
         t_pcb* pcb_anterior = queue_pop(cola_exec);
         printf("el pid del pcb anterior es:%d", pcb_anterior->pid);
-        log_info(logger_kernel, "PID %d - Me sacaron de EXEC", pcb_anterior->pid);
         pthread_mutex_unlock(&mutex_estado_exec);
 
         liberar_pcb_estructura(pcb_anterior);
@@ -449,8 +448,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     
     // Deserializo antes el pcb, me ahorro cierta logica y puedo hacer send si es IO_BLOCKED
     t_pcb* pcb = deserializar_pcb(package->buffer);
-    printf("VOY A IMPRIMIR EL PCB DESPUEIS DE DESALOJAR\n");
-    imprimir_pcb(pcb);
+
     printf("pid del pcb despues de desalojar: %d\n", pcb->pid);
 
     // hay_proceso_en_exec = false;
@@ -461,10 +459,6 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
         int64_t tiempo_transcurrido = temporal_gettime(timer);  // Obtenemos el tiempo transcurrido en milisegundos
         temporal_destroy(timer);
        //  printf("Tiempo transcurrido: %ld ms\n", tiempo_transcurrido);
-
-
-        printf("VOY A IMPRIMIR EL PCB DESPUES DE BORRAR EL TIMER\n");
-        imprimir_pcb(pcb);
 
         int64_t tiempo_restante = max(0, min(quantum_config, pcb->quantum - tiempo_transcurrido));  // Fede scarpa orgulloso
         printf("Tiempo restante: %ld ms\n", tiempo_restante); // jejejej
@@ -490,18 +484,12 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
             break;
         case INTERRUPCION_QUANTUM:
-            printf("VOY A IMPRIMIR PCB DESPUES DE INTERRUPCION QUANTUM\n");
-            imprimir_pcb(pcb);
             log_info(logger_kernel, "PID: %d - Desalojado por fin de Quantum", pcb->pid);
             pasar_a_ready(pcb);
             break;
-        case DORMIR_INTERFAZ:
-            printf("VOY A IMPRIMIR PCB DESPUES DE DORMIR INTERFAZ\n");
-            imprimir_pcb(pcb);
-         
+        case DORMIR_INTERFAZ:         
             t_operacion_io* operacion_io = deserializar_io(package->buffer);
-            dormir_io(operacion_io, pcb);
-            
+            dormir_io(operacion_io, pcb);        
             break;
         case WAIT_RECURSO: case SIGNAL_RECURSO:
             t_parametro* recurso = deserializar_parametro(package->buffer);
@@ -541,7 +529,6 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             break;
     }
 
-    log_info(logger_kernel, "LLEGO HASTA SEM POST DE ESPERAR CPU");
     sem_post(&sem_planificadores);
     cantidad_bloqueados--;
     //liberar_pcb_estructura(pcb);

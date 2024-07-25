@@ -149,8 +149,8 @@ typedef enum {
 typedef struct {
     int pid;
     int cantidad_paginas;
-    void* valor_a_escribir;
     uint32_t length_valor;
+    void* valor_a_escribir;
 } t_pedido_memoria;
 
 typedef enum {

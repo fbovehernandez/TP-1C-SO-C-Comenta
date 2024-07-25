@@ -182,11 +182,14 @@ void recibir_kernel(void* config_socket_io) { //FREE
                 imprimir_datos_stdin(pid_stdin);
                 printf("llego hasta LEETE\n");
                 // Leer valor
-                char *valor = malloc(pid_stdin->registro_tamanio); 
-                printf("Ingrese lo que quiera guardar (hasta %d caracteres): \n", pid_stdin->registro_tamanio);
-                scanf("%s", valor); 
+                printf("Ingrese lo que quiera gurdar (hasta %d caracteres): \n", pid_stdin->registro_tamanio);
+                char* valor = readline("");
+                
                 // Mandarlo a memoria
                 
+                
+                printf("el valor leido es %s\n", valor);
+                printf("el tamanio del valor leido es: %d \n", string_length(valor));
                 mandar_valor_a_memoria(valor, pid_stdin);
                 log_info(logger_io, "PID: %d - Operacion: LEER", pid_stdin->pid);
                 recv(memoriafd, &terminoOk, sizeof(int), MSG_WAITALL);
@@ -269,6 +272,7 @@ void recibir_memoria(void* config_socket_io) {
                 stream += sizeof(int);
                 memcpy(&tamanio, stream, sizeof(int));
                 stream += sizeof(int);
+                printf("el tamanio del dato a escribir es: %d", tamanio);
                 char* valor = malloc(tamanio + 1); 
                 memcpy(valor, stream, tamanio);
                 valor[tamanio] = '\0';
