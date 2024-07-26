@@ -752,7 +752,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         desalojar(pcb, PEDIDO_ESCRITURA, buffer_escritura);
         
         list_destroy_and_destroy_elements(lista_bytes_stdout, free);
-        list_destroy_and_destroy_elements(lista_direcciones_fisicas_stdout, free);
+        list_destroy(lista_direcciones_fisicas_stdout);
         // free(buffer_escritura); se hace en desalojar
         return 1;
         break;
@@ -981,7 +981,9 @@ t_buffer* serializar_direcciones_fisicas(int cantidad_paginas, t_list* direccion
         buffer->offset += sizeof(int);
         memcpy(stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
         buffer->offset += sizeof(int);
+        free(dir_fisica_tam);
     }
+    list_destroy(direcciones_fisicas);
 
     buffer->stream = stream;
 
@@ -1422,6 +1424,8 @@ t_buffer* llenar_buffer_stdio(char* interfaz, t_list* direcciones_fisicas, uint3
         buffer->offset += sizeof(int);
         memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
         buffer->offset += sizeof(int);
+
+        free(dir_fisica_tam);
     }
 
     memcpy(buffer->stream + buffer->offset, &tamanio_a_copiar, sizeof(uint32_t));

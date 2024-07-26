@@ -170,10 +170,10 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 // log_info("Contenido completo de registro_completo: %s", (char*)registro_completo);
                 send(socket_cpu, registro_lectura, pedido_op->length_valor, 0);
                 
+                list_destroy(direcciones_restantes_mov_in);
 
                 free(pedido_op->valor_a_escribir);
                 free(pedido_op);
-                list_destroy(direcciones_restantes_mov_in);
                 free(registro_lectura);
                 break;
             case ESCRIBIR_DATO_EN_MEM: 
@@ -457,6 +457,8 @@ int buscar_frame(t_solicitud_frame* pedido_frame) {
 
     char* pid_string = string_itoa(pedido_frame->pid);
 
+    printf("El pid despues de la conversion es: %s\n", pid_string);
+
     t_proceso_paginas* proceso_paginas = dictionary_get(diccionario_tablas_paginas, pid_string); // el diccionario tiene como key el pid y la lista de pags asociado a ese pid
 
     free(pid_string);
@@ -473,12 +475,17 @@ int buscar_frame(t_solicitud_frame* pedido_frame) {
     
     for(int i=0;i < list_size(tabla_paginas); i++) {
         t_pagina* pagina = list_get(tabla_paginas, i);
+
+        printf("La pagina es: %d\n", pagina->numero_pagina);
+        printf("El frame es: %d\n", pagina->frame);
+
         if(pagina->numero_pagina == pedido_frame->nro_pagina){
-            int numero_frame = *(int*) list_get(tabla_paginas, pedido_frame->nro_pagina);
-            log_info(logger_memoria, "el numero de frame es %d", numero_frame);
-            return numero_frame;
+            // int numero_frame = *(int*) list_get(tabla_paginas, pedido_frame->nro_pagina);
+            log_info(logger_memoria, "el numero de frame es %d", pagina->frame);
+            return pagina->frame;
         }
     }
+
     return -1; // Si no lo encontre el frame
 }
 

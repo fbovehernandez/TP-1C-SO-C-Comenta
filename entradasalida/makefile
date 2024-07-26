@@ -90,6 +90,18 @@ memcheck2: debug
 memcheck_SLP1: debug
 	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(ARGS_SLP1) $(NOMBRE_INTERFAZ_SLP1)
 
+.PHONY: memcheck_generica
+memcheck_generica: debug
+	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(GENERICA) $(NOMBRE_INTERFAZ1)
+
+.PHONY: memcheck_stdin
+memcheck_stdin: debug
+	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(TECLADO) $(NOMBRE_INTERFAZ_STDIN)
+
+.PHONY: memcheck_stdout
+memcheck_stdout: debug
+	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(MONITOR) $(NOMBRE_INTERFAZ_STDOUT)
+
 .PHONY: helgrind
 helgrind: debug
 	valgrind --tool=helgrind $(HELGRIND_FLAGS) ./$(BIN) $(ARGS)

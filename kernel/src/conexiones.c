@@ -192,14 +192,13 @@ void *handle_io_stdin(void *socket_io) {
             return NULL;
     }
 
-    t_pid_stdin* pid_stdin = malloc(sizeof(t_pid_stdin));
-
     while (true) {
         int size_dictionary = dictionary_size(diccionario_io);
         printf("\nSize del diccionario: %d\n", size_dictionary);
 
         sem_wait(io->semaforo_cola_procesos_blocked);
-
+        
+        t_pid_stdin* pid_stdin = malloc(sizeof(t_pid_stdin));
         printf("Llega al sem y mutex\n");
         
         // io_std *datos_stdin = malloc(sizeof(io_std)); -> No hace falta "aparentemente"
@@ -209,59 +208,60 @@ void *handle_io_stdin(void *socket_io) {
 
         if(list_is_empty(io->cola_blocked)) {
             printf("No hay procesos en la cola de bloqueados de la IO\n");
+            pthread_mutex_unlock(&mutex_cola_io_generica);
         } else {
-           datos_stdin = list_remove(io->cola_blocked, 0); // FREE?
-        }
-
-        pthread_mutex_unlock(&mutex_cola_io_generica);
-
-        pasar_a_blocked(datos_stdin->pcb);
-        // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
-        
-        pid_stdin->pid = datos_stdin->pcb->pid;
-        pid_stdin->cantidad_paginas = datos_stdin->cantidad_paginas;
-        pid_stdin->lista_direcciones = datos_stdin->lista_direcciones;
-        pid_stdin->registro_tamanio = datos_stdin->registro_tamanio;
-
-        // mandar la io a memoria
-        
-        int respuesta_ok = ejecutar_io_stdin(socket, pid_stdin);
-
-        printf("la respuesta ok es: %d\n", respuesta_ok);
-        if (!respuesta_ok) {
-            printf("Se ejecuto correctamente la IO...\n");
-        
-            // printf("Estado pcb: %d\n", datos_sleep->pcb->estadoActual);
-            // datos_sleep->pcb->estadoActual = READY;
-            // printf("Estado pcb : %d\n", datos_sleep->pcb->estadoActual);
+            datos_stdin = list_remove(io->cola_blocked, 0); // FREE?
+            pthread_mutex_unlock(&mutex_cola_io_generica);
             
-            recv(socket, &termino_io, sizeof(int), MSG_WAITALL);
-            
-            printf("Termino io: %d\n", termino_io);
-            if (termino_io == 1) { // El send de termino io envia 1.
-                printf("Termino la IO\n");
+            pasar_a_blocked(datos_stdin->pcb);
 
-                // Esto creo que no esta bien, pero no se como liberarlo...
-                // t_pcb* pcb = datos_stdin->pcb;
-                t_pcb* pcb = sacarDe(cola_blocked, datos_stdin->pcb->pid);
-                cantidad_bloqueados++;
-                sem_wait(&sem_planificadores);
-                pasar_a_ready(pcb); //ACA
-                sem_post(&sem_planificadores);
-                cantidad_bloqueados--;
+            // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
+            
+            pid_stdin->pid = datos_stdin->pcb->pid;
+            pid_stdin->cantidad_paginas = datos_stdin->cantidad_paginas;
+            pid_stdin->lista_direcciones = datos_stdin->lista_direcciones;
+            pid_stdin->registro_tamanio = datos_stdin->registro_tamanio;
+
+            // mandar la io a memoria
+            
+            int respuesta_ok = ejecutar_io_stdin(socket, pid_stdin);
+
+            printf("la respuesta ok es: %d\n", respuesta_ok);
+            if (!respuesta_ok) {
+                printf("Se ejecuto correctamente la IO...\n");
+            
+                // printf("Estado pcb: %d\n", datos_sleep->pcb->estadoActual);
+                // datos_sleep->pcb->estadoActual = READY;
+                // printf("Estado pcb : %d\n", datos_sleep->pcb->estadoActual);
                 
-                // free(datos_stdin->pcb->registros);
-                // free(datos_stdin->pcb);
-                // free(datos_stdin);
+                recv(socket, &termino_io, sizeof(int), MSG_WAITALL);
+                
+                printf("Termino io: %d\n", termino_io);
+                if (termino_io == 1) { // El send de termino io envia 1.
+                    printf("Termino la IO\n");
+
+                    // Esto creo que no esta bien, pero no se como liberarlo...
+                    // t_pcb* pcb = datos_stdin->pcb;
+                    t_pcb* pcb = sacarDe(cola_blocked, datos_stdin->pcb->pid);
+                    cantidad_bloqueados++;
+                    sem_wait(&sem_planificadores);
+                    pasar_a_ready(pcb); //ACA
+                    sem_post(&sem_planificadores);
+                    cantidad_bloqueados--;
+                    
+                    // free(datos_stdin->pcb->registros);
+                    // free(datos_stdin->pcb);
+                    // free(datos_stdin);
+                }
+            } else {
+                printf("No se pudo ejecutar la IO\n");
+                break;
             }
-        } else {
-            printf("No se pudo ejecutar la IO\n");
-            break;
+            // list_destroy(pid_stdin->lista_direcciones);
         }
     }
     
-    list_destroy(pid_stdin->lista_direcciones);
-    free(pid_stdin);
+    // free(pid_stdin);
     liberar_paquete(paquete);
     return NULL;
 }
@@ -288,7 +288,11 @@ int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin) {
         buffer->offset += sizeof(int);
         memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
         buffer->offset += sizeof(int);
+        free(dir_fisica_tam);
     }
+    
+    list_destroy(pid_stdin->lista_direcciones);
+    free(pid_stdin);
 
     printf("Va a hacer LEETE... o eso deberia.\n");
     enviar_paquete(buffer, LEETE, socket);
@@ -320,9 +324,6 @@ void* handle_io_stdout(void* socket_io) {
             return NULL;
     }
 
-    // ESTO NO ES LO MISMO QUE STDIN
-    t_pid_stdout* pid_stdout = malloc(sizeof(t_pid_stdout));
-
     while (true) {
         sem_wait(io->semaforo_cola_procesos_blocked);
 
@@ -330,7 +331,8 @@ void* handle_io_stdout(void* socket_io) {
         
         /////////////////// hasta aca se mantiene
 
-        io_std *datos_stdout = malloc(sizeof(io_std)); //FREE?
+        // io_std *datos_stdout = malloc(sizeof(io_std)); //FREE?
+        io_std *datos_stdout;
 
         pthread_mutex_lock(&mutex_cola_io_generica);
         if(list_is_empty(io->cola_blocked)) {
@@ -344,6 +346,8 @@ void* handle_io_stdout(void* socket_io) {
 
         pasar_a_blocked(datos_stdout->pcb);
 
+        t_pid_stdout* pid_stdout = malloc(sizeof(t_pid_stdout));
+        
         pid_stdout->pid = datos_stdout->pcb->pid;
         pid_stdout->cantidad_paginas = datos_stdout->cantidad_paginas;
         pid_stdout->lista_direcciones = datos_stdout->lista_direcciones;
@@ -360,18 +364,6 @@ void* handle_io_stdout(void* socket_io) {
         printf("Nombre interfaz: %s\n", pid_stdout->nombre_interfaz);
         printf("Largo interfaz: %d\n", pid_stdout->largo_interfaz);
         
-        /*
-        printf("AHORA IMPRIMO UNA POR UNA LAS INSTRUCCIONES CON SU DIRECCION FISICA Y BYTES DE LECTURA\n");
-
-        for(int i=0; i < pid_stdout->cantidad_paginas; i++) {
-            t_dir_fisica_tamanio* dir_fisica_tam = list_get(pid_stdout->lista_direcciones, i);
-            if(dir_fisica_tam == NULL) printf("\n\nSOY NULO\n\n");
-            printf("Direccion fisica: %d\n", dir_fisica_tam->direccion_fisica);
-            printf("Bytes de lectura: %d\n", dir_fisica_tam->bytes_lectura);
-        }
-        */
-        // Fin de los printf
-
         int respuesta_ok = ejecutar_io_stdout(pid_stdout);
 
         if (!respuesta_ok) {
@@ -399,12 +391,14 @@ void* handle_io_stdout(void* socket_io) {
             printf("No se pudo ejecutar la IO\n");
             break;
         }
+
+        free(pid_stdout);
     }
 
     free(io->semaforo_cola_procesos_blocked);
     free(io->nombreInterfaz);
     free(io);
-    free(pid_stdout); // QUE_NO_ROMPA
+    // free(pid_stdout); // QUE_NO_ROMPA
 
     liberar_paquete(paquete);
     return NULL;
@@ -433,6 +427,7 @@ int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
     printf("\n\nLa interfaz a mandar es: %s\n\n", pid_stdout->nombre_interfaz);
     memcpy(buffer->stream + buffer->offset, pid_stdout->nombre_interfaz, pid_stdout->largo_interfaz);
     buffer->offset += pid_stdout->largo_interfaz;
+    free(pid_stdout->nombre_interfaz);
     
     for(int i=0; i < pid_stdout->cantidad_paginas; i++) {
         t_dir_fisica_tamanio* dir_fisica_tam = list_get(pid_stdout->lista_direcciones, i);
@@ -440,7 +435,11 @@ int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
         buffer->offset += sizeof(int);
         memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
         buffer->offset += sizeof(int);
+        free(dir_fisica_tam);
     }
+    
+    list_destroy(pid_stdout->lista_direcciones);
+    // free(pid_stdout); lo voy a poner arriba
     
     enviar_paquete(buffer, ESCRIBIR_STDOUT, sockets->socket_memoria); //ver socket
 

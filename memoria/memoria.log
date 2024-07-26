@@ -2461,3 +2461,689 @@ el valor a guardar en memoria llegado desde STDIN es: Sistemas Operativos 1c2024
 [INFO] 19:06:18:085 LOGGER/(40540:40601): BUSCO EL FRAME CORRESPONDIENTE AL PID: 5
 [INFO] 19:06:18:085 LOGGER/(40540:40601): La cantidad de entradas que tiene la memoria es: 2
 [INFO] 19:06:18:085 LOGGER/(40540:40601): el numero de frame es 0
+[INFO] 19:50:31:981 LOGGER/(2716:2716): Servidor iniciado, esperando conexiones!
+[INFO] 19:52:46:293 LOGGER/(3388:3388): Servidor iniciado, esperando conexiones!
+[INFO] 19:54:44:543 LOGGER/(3388:3673): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 19:54:44:593 LOGGER/(3388:3673): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 19:54:44:752 LOGGER/(3388:3673): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 19:54:45:053 LOGGER/(3388:3528): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
+[INFO] 19:54:45:184 LOGGER/(3388:3528): El pid que me pide frame es: 1
+
+[INFO] 19:54:45:186 LOGGER/(3388:3528): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 19:54:45:186 LOGGER/(3388:3528): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 19:54:45:188 LOGGER/(3388:3528): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 19:54:45:191 LOGGER/(3388:3528): el numero de frame es 1
+[INFO] 19:54:45:204 LOGGER/(3388:3528): El pid que me pide frame es: 1
+
+[INFO] 19:54:45:205 LOGGER/(3388:3528): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 19:54:45:205 LOGGER/(3388:3528): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 19:54:45:206 LOGGER/(3388:3528): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 19:54:45:206 LOGGER/(3388:3528): el numero de frame es 2
+[INFO] 20:03:23:492 LOGGER/(5991:5991): Servidor iniciado, esperando conexiones!
+[INFO] 20:05:03:354 LOGGER/(5991:6286): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 20:05:03:396 LOGGER/(5991:6286): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 20:05:03:548 LOGGER/(5991:6286): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 20:05:03:819 LOGGER/(5991:6085): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
+[INFO] 20:05:03:949 LOGGER/(5991:6085): El pid que me pide frame es: 1
+
+[INFO] 20:05:03:950 LOGGER/(5991:6085): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:05:03:951 LOGGER/(5991:6085): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:05:03:952 LOGGER/(5991:6085): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:05:03:953 LOGGER/(5991:6085): el numero de frame es 1
+[INFO] 20:05:03:966 LOGGER/(5991:6085): El pid que me pide frame es: 1
+
+[INFO] 20:05:03:966 LOGGER/(5991:6085): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 20:05:03:967 LOGGER/(5991:6085): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:05:03:967 LOGGER/(5991:6085): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:05:03:968 LOGGER/(5991:6085): el numero de frame es 2
+[INFO] 20:08:38:338 LOGGER/(7519:7519): Servidor iniciado, esperando conexiones!
+[INFO] 20:10:13:318 LOGGER/(7519:8117): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 20:10:13:361 LOGGER/(7519:8117): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 20:10:13:416 LOGGER/(7519:8117): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 20:10:13:843 LOGGER/(7519:7766): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
+[INFO] 20:10:13:980 LOGGER/(7519:7766): El pid que me pide frame es: 1
+
+[INFO] 20:10:13:981 LOGGER/(7519:7766): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:10:13:981 LOGGER/(7519:7766): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:10:13:983 LOGGER/(7519:7766): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:10:13:984 LOGGER/(7519:7766): el numero de frame es 1
+[INFO] 20:10:13:997 LOGGER/(7519:7766): El pid que me pide frame es: 1
+
+[INFO] 20:10:13:998 LOGGER/(7519:7766): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 20:10:13:998 LOGGER/(7519:7766): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:10:13:999 LOGGER/(7519:7766): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:10:14:000 LOGGER/(7519:7766): el numero de frame es 2
+[INFO] 20:10:14:262 LOGGER/(7519:7766): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
+[INFO] 20:10:14:705 LOGGER/(7519:7766): El pid que me pide frame es: 2
+
+[INFO] 20:10:14:705 LOGGER/(7519:7766): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 20:10:14:706 LOGGER/(7519:7766): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 20:10:14:707 LOGGER/(7519:7766): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 20:10:14:708 LOGGER/(7519:7766): el numero de frame es 8
+[INFO] 20:10:14:727 LOGGER/(7519:7766): Contenido escrito:  73
+[INFO] 20:10:14:728 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:10:15:061 LOGGER/(7519:7766): Contenido escrito:  32
+[INFO] 20:10:15:061 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:10:15:495 LOGGER/(7519:7766): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 20:10:15:606 LOGGER/(7519:7766): El pid que me pide frame es: 3
+
+[INFO] 20:10:15:607 LOGGER/(7519:7766): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 20:10:15:607 LOGGER/(7519:7766): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:10:15:608 LOGGER/(7519:7766): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:10:15:608 LOGGER/(7519:7766): el numero de frame es 11
+[INFO] 20:10:15:613 LOGGER/(7519:7766): El pid que me pide frame es: 3
+
+[INFO] 20:10:15:613 LOGGER/(7519:7766): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:10:15:614 LOGGER/(7519:7766): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:10:15:614 LOGGER/(7519:7766): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:10:15:615 LOGGER/(7519:7766): el numero de frame es 12
+[INFO] 20:10:26:074 LOGGER/(7519:7766): Contenido escrito:  100
+[INFO] 20:10:26:075 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:10:26:427 LOGGER/(7519:7766): Contenido escrito:  111
+[INFO] 20:10:26:427 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:10:26:760 LOGGER/(7519:7766): Contenido escrito:  110
+[INFO] 20:10:26:761 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:10:27:103 LOGGER/(7519:7766): Contenido escrito:  39
+[INFO] 20:10:27:103 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:10:27:433 LOGGER/(7519:7766): Contenido escrito:  116
+[INFO] 20:10:27:433 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:10:27:753 LOGGER/(7519:7766): Contenido escrito:  32
+[INFO] 20:10:27:753 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:10:38:246 LOGGER/(7519:7766): Contenido escrito:  119
+[INFO] 20:10:38:246 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:10:38:571 LOGGER/(7519:7766): Contenido escrito:  97
+[INFO] 20:10:38:572 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:10:38:921 LOGGER/(7519:7766): Contenido escrito:  110
+[INFO] 20:10:38:922 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:10:39:240 LOGGER/(7519:7766): Contenido escrito:  116
+[INFO] 20:10:39:241 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:10:39:556 LOGGER/(7519:7766): Contenido escrito:  32
+[INFO] 20:10:39:556 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:10:49:986 LOGGER/(7519:7766): Contenido escrito:  116
+[INFO] 20:10:49:986 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:10:50:324 LOGGER/(7519:7766): Contenido escrito:  111
+[INFO] 20:10:50:325 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:10:50:654 LOGGER/(7519:7766): Contenido escrito:  32
+[INFO] 20:10:50:655 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:11:01:080 LOGGER/(7519:7766): El pid que me pide frame es: 2
+
+[INFO] 20:11:01:080 LOGGER/(7519:7766): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:11:01:081 LOGGER/(7519:7766): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 20:11:01:081 LOGGER/(7519:7766): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 20:11:01:082 LOGGER/(7519:7766): el numero de frame es 9
+[INFO] 20:11:01:087 LOGGER/(7519:7766): Contenido escrito:  115
+[INFO] 20:11:01:088 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:11:01:410 LOGGER/(7519:7766): Contenido escrito:  101
+[INFO] 20:11:01:411 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:11:01:729 LOGGER/(7519:7766): Contenido escrito:  116
+[INFO] 20:11:01:729 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:11:02:050 LOGGER/(7519:7766): Contenido escrito:  32
+[INFO] 20:11:02:050 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:11:05:521 LOGGER/(7519:8331): 
+el valor a guardar en memoria llegado desde STDIN es: WAR NEVER CHANGES...
+
+
+[INFO] 20:11:05:522 LOGGER/(7519:8331): Contenido escrito:  0000000000000087
+[INFO] 20:11:05:523 LOGGER/(7519:8331): El PID del contenido escrito es: 1
+[INFO] 20:11:05:523 LOGGER/(7519:8331): Contenido escrito:  0083
+[INFO] 20:11:05:524 LOGGER/(7519:8331): El PID del contenido escrito es: 1
+[INFO] 20:11:06:303 LOGGER/(7519:7766): El pid que me pide frame es: 1
+
+[INFO] 20:11:06:303 LOGGER/(7519:7766): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 20:11:06:304 LOGGER/(7519:7766): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:11:06:304 LOGGER/(7519:7766): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:11:06:305 LOGGER/(7519:7766): el numero de frame es 0
+[INFO] 20:11:06:315 LOGGER/(7519:7766): Contenido escrito:  87
+[INFO] 20:11:06:316 LOGGER/(7519:7766): El PID del contenido escrito es: 1
+[INFO] 20:11:06:528 LOGGER/(7519:7766): Contenido escrito:  65
+[INFO] 20:11:06:529 LOGGER/(7519:7766): El PID del contenido escrito es: 1
+[INFO] 20:11:06:746 LOGGER/(7519:7766): Contenido escrito:  82
+[INFO] 20:11:06:746 LOGGER/(7519:7766): El PID del contenido escrito es: 1
+[INFO] 20:11:06:962 LOGGER/(7519:7766): Contenido escrito:  44
+[INFO] 20:11:06:962 LOGGER/(7519:7766): El PID del contenido escrito es: 1
+[INFO] 20:11:12:478 LOGGER/(7519:7766): Contenido escrito:  116
+[INFO] 20:11:12:478 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:11:12:807 LOGGER/(7519:7766): Contenido escrito:  104
+[INFO] 20:11:12:807 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:11:13:139 LOGGER/(7519:7766): Contenido escrito:  101
+[INFO] 20:11:13:139 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:11:13:463 LOGGER/(7519:7766): Contenido escrito:  32
+[INFO] 20:11:13:463 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:11:14:828 LOGGER/(7519:8331): 
+el valor a guardar en memoria llegado desde STDIN es: Sistemas Operativos 2c2023
+
+
+[INFO] 20:11:14:829 LOGGER/(7519:8331): Contenido escrito:  0000000000000083
+[INFO] 20:11:14:829 LOGGER/(7519:8331): El PID del contenido escrito es: 3
+[INFO] 20:11:14:830 LOGGER/(7519:8331): Contenido escrito:  0000000118
+[INFO] 20:11:14:831 LOGGER/(7519:8331): El PID del contenido escrito es: 3
+[INFO] 20:11:32:279 LOGGER/(7519:7766): Contenido escrito:  32
+[INFO] 20:11:32:279 LOGGER/(7519:7766): El PID del contenido escrito es: 1
+[INFO] 20:11:32:598 LOGGER/(7519:7766): El pid que me pide frame es: 1
+
+[INFO] 20:11:32:598 LOGGER/(7519:7766): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:11:32:599 LOGGER/(7519:7766): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:11:32:599 LOGGER/(7519:7766): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:11:32:600 LOGGER/(7519:7766): el numero de frame es 1
+[INFO] 20:11:32:607 LOGGER/(7519:7766): El pid que me pide frame es: 1
+
+[INFO] 20:11:32:608 LOGGER/(7519:7766): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 20:11:32:609 LOGGER/(7519:7766): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:11:32:609 LOGGER/(7519:7766): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:11:32:610 LOGGER/(7519:7766): el numero de frame es 2
+[INFO] 20:11:32:644 LOGGER/(7519:8117): El tamanio del valor leido* es: 25
+
+[INFO] 20:11:32:647 LOGGER/(7519:8117): el valor del registro lectura es :WAR, WAR NEVER CHANGES...
+[INFO] 20:11:32:903 LOGGER/(7519:8117): PID: 1 - Accion: DESTRUIR - Tamaño: 8
+[INFO] 20:11:42:496 LOGGER/(7519:7766): Contenido escrito:  119
+[INFO] 20:11:42:497 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:11:42:814 LOGGER/(7519:7766): Contenido escrito:  111
+[INFO] 20:11:42:815 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:11:43:144 LOGGER/(7519:7766): Contenido escrito:  114
+[INFO] 20:11:43:145 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:11:43:467 LOGGER/(7519:7766): Contenido escrito:  108
+[INFO] 20:11:43:468 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:11:43:797 LOGGER/(7519:7766): Contenido escrito:  100
+[INFO] 20:11:43:797 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:11:44:113 LOGGER/(7519:7766): Contenido escrito:  32
+[INFO] 20:11:44:113 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:12:02:300 LOGGER/(7519:7766): El pid que me pide frame es: 3
+
+[INFO] 20:12:02:301 LOGGER/(7519:7766): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:12:02:301 LOGGER/(7519:7766): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:12:02:302 LOGGER/(7519:7766): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:12:02:302 LOGGER/(7519:7766): el numero de frame es 12
+[INFO] 20:12:02:312 LOGGER/(7519:7766): El pid que me pide frame es: 3
+
+[INFO] 20:12:02:312 LOGGER/(7519:7766): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 20:12:02:313 LOGGER/(7519:7766): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:12:02:313 LOGGER/(7519:7766): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:12:02:314 LOGGER/(7519:7766): el numero de frame es 13
+[INFO] 20:12:02:320 LOGGER/(7519:7766): El pid que me pide frame es: 3
+
+[INFO] 20:12:02:321 LOGGER/(7519:7766): BUSCO EL FRAME CON LA PAGINA: 3
+[INFO] 20:12:02:321 LOGGER/(7519:7766): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:12:02:322 LOGGER/(7519:7766): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:12:02:323 LOGGER/(7519:7766): el numero de frame es 14
+[INFO] 20:12:02:326 LOGGER/(7519:7766): Contenido escrito:  0000000000000083
+[INFO] 20:12:02:327 LOGGER/(7519:7766): El PID del contenido escrito es: 3
+[INFO] 20:12:02:327 LOGGER/(7519:7766): Contenido escrito:  0000000118
+[INFO] 20:12:02:328 LOGGER/(7519:7766): El PID del contenido escrito es: 3
+[INFO] 20:12:02:681 LOGGER/(7519:7766): El pid que me pide frame es: 3
+
+[INFO] 20:12:02:682 LOGGER/(7519:7766): BUSCO EL FRAME CON LA PAGINA: 3
+[INFO] 20:12:02:683 LOGGER/(7519:7766): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:12:02:684 LOGGER/(7519:7766): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:12:02:685 LOGGER/(7519:7766): el numero de frame es 14
+[INFO] 20:12:02:694 LOGGER/(7519:7766): Contenido escrito:  49
+[INFO] 20:12:02:695 LOGGER/(7519:7766): El PID del contenido escrito es: 3
+[INFO] 20:12:03:023 LOGGER/(7519:7766): Contenido escrito:  52
+[INFO] 20:12:03:024 LOGGER/(7519:7766): El PID del contenido escrito es: 3
+[INFO] 20:12:12:527 LOGGER/(7519:7766): Contenido escrito:  111
+[INFO] 20:12:12:527 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:12:12:864 LOGGER/(7519:7766): Contenido escrito:  110
+[INFO] 20:12:12:864 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:12:13:190 LOGGER/(7519:7766): El pid que me pide frame es: 2
+
+[INFO] 20:12:13:191 LOGGER/(7519:7766): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 20:12:13:191 LOGGER/(7519:7766): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 20:12:13:192 LOGGER/(7519:7766): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 20:12:13:192 LOGGER/(7519:7766): el numero de frame es 10
+[INFO] 20:12:13:198 LOGGER/(7519:7766): Contenido escrito:  32
+[INFO] 20:12:13:198 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:12:32:330 LOGGER/(7519:8117): El tamanio del valor leido* es: 26
+
+[INFO] 20:12:32:331 LOGGER/(7519:8117): el valor del registro lectura es :Sistemas Operativos 1c2024
+[INFO] 20:12:32:452 LOGGER/(7519:8117): PID: 3 - Accion: DESTRUIR - Tamaño: 4
+[INFO] 20:12:42:535 LOGGER/(7519:7766): Contenido escrito:  102
+[INFO] 20:12:42:536 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:12:42:864 LOGGER/(7519:7766): Contenido escrito:  105
+[INFO] 20:12:42:865 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:12:43:207 LOGGER/(7519:7766): Contenido escrito:  114
+[INFO] 20:12:43:207 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:12:43:566 LOGGER/(7519:7766): Contenido escrito:  101
+[INFO] 20:12:43:566 LOGGER/(7519:7766): El PID del contenido escrito es: 2
+[INFO] 20:12:43:888 LOGGER/(7519:7766): El pid que me pide frame es: 2
+
+[INFO] 20:12:43:888 LOGGER/(7519:7766): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 20:12:43:889 LOGGER/(7519:7766): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 20:12:43:889 LOGGER/(7519:7766): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 20:12:43:890 LOGGER/(7519:7766): el numero de frame es 8
+[INFO] 20:12:43:896 LOGGER/(7519:7766): El pid que me pide frame es: 2
+
+[INFO] 20:12:43:896 LOGGER/(7519:7766): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:12:43:897 LOGGER/(7519:7766): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 20:12:43:897 LOGGER/(7519:7766): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 20:12:43:898 LOGGER/(7519:7766): el numero de frame es 9
+[INFO] 20:12:43:913 LOGGER/(7519:8117): El tamanio del valor leido* es: 37
+
+[INFO] 20:12:43:914 LOGGER/(7519:8117): el valor del registro lectura es :I don't want to set the world on fire
+[INFO] 20:12:44:079 LOGGER/(7519:8117): PID: 2 - Accion: DESTRUIR - Tamaño: 3
+[INFO] 20:22:57:032 LOGGER/(11890:11890): Servidor iniciado, esperando conexiones!
+[INFO] 20:23:40:581 LOGGER/(11890:12079): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 20:23:40:638 LOGGER/(11890:12079): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 20:23:40:695 LOGGER/(11890:12079): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 20:23:41:112 LOGGER/(11890:11988): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
+[INFO] 20:23:41:244 LOGGER/(11890:11988): El pid que me pide frame es: 1
+
+[INFO] 20:23:41:245 LOGGER/(11890:11988): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:23:41:246 LOGGER/(11890:11988): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:23:41:247 LOGGER/(11890:11988): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:23:41:249 LOGGER/(11890:11988): el numero de frame es 1
+[INFO] 20:23:41:262 LOGGER/(11890:11988): El pid que me pide frame es: 1
+
+[INFO] 20:23:41:262 LOGGER/(11890:11988): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 20:23:41:263 LOGGER/(11890:11988): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:23:41:263 LOGGER/(11890:11988): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:23:41:264 LOGGER/(11890:11988): el numero de frame es 2
+[INFO] 20:23:41:506 LOGGER/(11890:11988): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
+[INFO] 20:23:41:946 LOGGER/(11890:11988): El pid que me pide frame es: 2
+
+[INFO] 20:23:41:946 LOGGER/(11890:11988): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 20:23:41:947 LOGGER/(11890:11988): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 20:23:41:948 LOGGER/(11890:11988): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 20:23:41:948 LOGGER/(11890:11988): el numero de frame es 8
+[INFO] 20:23:41:964 LOGGER/(11890:11988): Contenido escrito:  73
+[INFO] 20:23:41:965 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:23:42:310 LOGGER/(11890:11988): Contenido escrito:  32
+[INFO] 20:23:42:311 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:23:42:737 LOGGER/(11890:11988): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 20:23:42:850 LOGGER/(11890:11988): El pid que me pide frame es: 3
+
+[INFO] 20:23:42:851 LOGGER/(11890:11988): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 20:23:42:851 LOGGER/(11890:11988): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:23:42:852 LOGGER/(11890:11988): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:23:42:852 LOGGER/(11890:11988): el numero de frame es 11
+[INFO] 20:23:42:858 LOGGER/(11890:11988): El pid que me pide frame es: 3
+
+[INFO] 20:23:42:858 LOGGER/(11890:11988): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:23:42:859 LOGGER/(11890:11988): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:23:42:859 LOGGER/(11890:11988): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:23:42:860 LOGGER/(11890:11988): el numero de frame es 12
+[INFO] 20:23:53:340 LOGGER/(11890:11988): Contenido escrito:  100
+[INFO] 20:23:53:341 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:23:53:671 LOGGER/(11890:11988): Contenido escrito:  111
+[INFO] 20:23:53:674 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:23:54:002 LOGGER/(11890:11988): Contenido escrito:  110
+[INFO] 20:23:54:003 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:23:54:344 LOGGER/(11890:11988): Contenido escrito:  39
+[INFO] 20:23:54:344 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:23:54:665 LOGGER/(11890:11988): Contenido escrito:  116
+[INFO] 20:23:54:666 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:23:54:982 LOGGER/(11890:11988): Contenido escrito:  32
+[INFO] 20:23:54:983 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:24:05:437 LOGGER/(11890:11988): Contenido escrito:  119
+[INFO] 20:24:05:438 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:24:05:769 LOGGER/(11890:11988): Contenido escrito:  97
+[INFO] 20:24:05:770 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:24:05:988 LOGGER/(11890:12419): 
+el valor a guardar en memoria llegado desde STDIN es: WAR NEVER CHANGES...
+
+
+[INFO] 20:24:05:990 LOGGER/(11890:12419): Contenido escrito:  0000000000000087
+[INFO] 20:24:05:990 LOGGER/(11890:12419): El PID del contenido escrito es: 1
+[INFO] 20:24:05:991 LOGGER/(11890:12419): Contenido escrito:  0083
+[INFO] 20:24:05:991 LOGGER/(11890:12419): El PID del contenido escrito es: 1
+[INFO] 20:24:06:758 LOGGER/(11890:11988): El pid que me pide frame es: 1
+
+[INFO] 20:24:06:759 LOGGER/(11890:11988): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 20:24:06:759 LOGGER/(11890:11988): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:24:06:760 LOGGER/(11890:11988): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:24:06:760 LOGGER/(11890:11988): el numero de frame es 0
+[INFO] 20:24:06:766 LOGGER/(11890:11988): Contenido escrito:  87
+[INFO] 20:24:06:767 LOGGER/(11890:11988): El PID del contenido escrito es: 1
+[INFO] 20:24:06:996 LOGGER/(11890:11988): Contenido escrito:  110
+[INFO] 20:24:06:997 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:24:07:325 LOGGER/(11890:11988): Contenido escrito:  116
+[INFO] 20:24:07:325 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:24:07:646 LOGGER/(11890:11988): Contenido escrito:  32
+[INFO] 20:24:07:646 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:24:07:865 LOGGER/(11890:11988): Contenido escrito:  65
+[INFO] 20:24:07:865 LOGGER/(11890:11988): El PID del contenido escrito es: 1
+[INFO] 20:24:08:077 LOGGER/(11890:11988): Contenido escrito:  82
+[INFO] 20:24:08:078 LOGGER/(11890:11988): El PID del contenido escrito es: 1
+[INFO] 20:24:08:292 LOGGER/(11890:11988): Contenido escrito:  44
+[INFO] 20:24:08:292 LOGGER/(11890:11988): El PID del contenido escrito es: 1
+[INFO] 20:24:14:052 LOGGER/(11890:12419): 
+el valor a guardar en memoria llegado desde STDIN es: Sistemas Operativos 2c2023
+
+
+[INFO] 20:24:14:053 LOGGER/(11890:12419): Contenido escrito:  0000000000000083
+[INFO] 20:24:14:053 LOGGER/(11890:12419): El PID del contenido escrito es: 3
+[INFO] 20:24:14:054 LOGGER/(11890:12419): Contenido escrito:  0000000118
+[INFO] 20:24:14:054 LOGGER/(11890:12419): El PID del contenido escrito es: 3
+[INFO] 20:24:18:095 LOGGER/(11890:11988): Contenido escrito:  116
+[INFO] 20:24:18:097 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:24:18:425 LOGGER/(11890:11988): Contenido escrito:  111
+[INFO] 20:24:18:426 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:24:18:746 LOGGER/(11890:11988): Contenido escrito:  32
+[INFO] 20:24:18:747 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:24:37:881 LOGGER/(11890:11988): Contenido escrito:  32
+[INFO] 20:24:37:882 LOGGER/(11890:11988): El PID del contenido escrito es: 1
+[INFO] 20:24:38:214 LOGGER/(11890:11988): El pid que me pide frame es: 1
+
+[INFO] 20:24:38:214 LOGGER/(11890:11988): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 20:24:38:215 LOGGER/(11890:11988): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:24:38:215 LOGGER/(11890:11988): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:24:38:216 LOGGER/(11890:11988): el numero de frame es 2
+[INFO] 20:24:38:243 LOGGER/(11890:12079): El tamanio del valor leido* es: 25
+
+[INFO] 20:24:38:246 LOGGER/(11890:12079): el valor del registro lectura es :WAR, WAR NEVER CHANGES...
+[INFO] 20:24:38:504 LOGGER/(11890:12079): PID: 1 - Accion: DESTRUIR - Tamaño: 8
+[INFO] 20:24:57:898 LOGGER/(11890:11988): El pid que me pide frame es: 3
+
+[INFO] 20:24:57:899 LOGGER/(11890:11988): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:24:57:899 LOGGER/(11890:11988): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:24:57:900 LOGGER/(11890:11988): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:24:57:901 LOGGER/(11890:11988): el numero de frame es 12
+[INFO] 20:24:57:918 LOGGER/(11890:11988): El pid que me pide frame es: 3
+
+[INFO] 20:24:57:919 LOGGER/(11890:11988): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 20:24:57:919 LOGGER/(11890:11988): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:24:57:920 LOGGER/(11890:11988): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:24:57:920 LOGGER/(11890:11988): el numero de frame es 13
+[INFO] 20:24:57:935 LOGGER/(11890:11988): El pid que me pide frame es: 3
+
+[INFO] 20:24:57:936 LOGGER/(11890:11988): BUSCO EL FRAME CON LA PAGINA: 3
+[INFO] 20:24:57:936 LOGGER/(11890:11988): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:24:57:937 LOGGER/(11890:11988): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:24:57:938 LOGGER/(11890:11988): el numero de frame es 14
+[INFO] 20:24:57:942 LOGGER/(11890:11988): Contenido escrito:  0000000000000083
+[INFO] 20:24:57:944 LOGGER/(11890:11988): El PID del contenido escrito es: 3
+[INFO] 20:24:57:945 LOGGER/(11890:11988): Contenido escrito:  0000000118
+[INFO] 20:24:57:945 LOGGER/(11890:11988): El PID del contenido escrito es: 3
+[INFO] 20:24:58:297 LOGGER/(11890:11988): El pid que me pide frame es: 3
+
+[INFO] 20:24:58:298 LOGGER/(11890:11988): BUSCO EL FRAME CON LA PAGINA: 3
+[INFO] 20:24:58:298 LOGGER/(11890:11988): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:24:58:299 LOGGER/(11890:11988): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:24:58:300 LOGGER/(11890:11988): el numero de frame es 14
+[INFO] 20:24:58:305 LOGGER/(11890:11988): Contenido escrito:  49
+[INFO] 20:24:58:306 LOGGER/(11890:11988): El PID del contenido escrito es: 3
+[INFO] 20:24:58:633 LOGGER/(11890:11988): Contenido escrito:  52
+[INFO] 20:24:58:633 LOGGER/(11890:11988): El PID del contenido escrito es: 3
+[INFO] 20:25:08:110 LOGGER/(11890:11988): El pid que me pide frame es: 2
+
+[INFO] 20:25:08:110 LOGGER/(11890:11988): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:25:08:111 LOGGER/(11890:11988): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 20:25:08:111 LOGGER/(11890:11988): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 20:25:08:112 LOGGER/(11890:11988): el numero de frame es 9
+[INFO] 20:25:08:117 LOGGER/(11890:11988): Contenido escrito:  115
+[INFO] 20:25:08:118 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:25:08:458 LOGGER/(11890:11988): Contenido escrito:  101
+[INFO] 20:25:08:458 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:25:08:787 LOGGER/(11890:11988): Contenido escrito:  116
+[INFO] 20:25:08:788 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:25:09:116 LOGGER/(11890:11988): Contenido escrito:  32
+[INFO] 20:25:09:116 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:25:27:923 LOGGER/(11890:12079): El tamanio del valor leido* es: 26
+
+[INFO] 20:25:27:923 LOGGER/(11890:12079): el valor del registro lectura es :Sistemas Operativos 1c2024
+[INFO] 20:25:28:042 LOGGER/(11890:12079): PID: 3 - Accion: DESTRUIR - Tamaño: 4
+[INFO] 20:25:38:119 LOGGER/(11890:11988): Contenido escrito:  116
+[INFO] 20:25:38:120 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:25:38:457 LOGGER/(11890:11988): Contenido escrito:  104
+[INFO] 20:25:38:458 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:25:38:800 LOGGER/(11890:11988): Contenido escrito:  101
+[INFO] 20:25:38:800 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:25:39:115 LOGGER/(11890:11988): Contenido escrito:  32
+[INFO] 20:25:39:116 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:25:49:543 LOGGER/(11890:11988): Contenido escrito:  119
+[INFO] 20:25:49:544 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:25:49:888 LOGGER/(11890:11988): Contenido escrito:  111
+[INFO] 20:25:49:888 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:25:50:236 LOGGER/(11890:11988): Contenido escrito:  114
+[INFO] 20:25:50:237 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:25:50:567 LOGGER/(11890:11988): Contenido escrito:  108
+[INFO] 20:25:50:567 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:25:50:897 LOGGER/(11890:11988): Contenido escrito:  100
+[INFO] 20:25:50:897 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:25:51:230 LOGGER/(11890:11988): Contenido escrito:  32
+[INFO] 20:25:51:231 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:26:01:670 LOGGER/(11890:11988): Contenido escrito:  111
+[INFO] 20:26:01:670 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:26:02:000 LOGGER/(11890:11988): Contenido escrito:  110
+[INFO] 20:26:02:001 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:26:02:340 LOGGER/(11890:11988): El pid que me pide frame es: 2
+
+[INFO] 20:26:02:340 LOGGER/(11890:11988): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 20:26:02:341 LOGGER/(11890:11988): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 20:26:02:341 LOGGER/(11890:11988): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 20:26:02:342 LOGGER/(11890:11988): el numero de frame es 10
+[INFO] 20:26:02:349 LOGGER/(11890:11988): Contenido escrito:  32
+[INFO] 20:26:02:349 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:26:12:785 LOGGER/(11890:11988): Contenido escrito:  102
+[INFO] 20:26:12:785 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:26:13:118 LOGGER/(11890:11988): Contenido escrito:  105
+[INFO] 20:26:13:118 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:26:13:455 LOGGER/(11890:11988): Contenido escrito:  114
+[INFO] 20:26:13:457 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:26:13:781 LOGGER/(11890:11988): Contenido escrito:  101
+[INFO] 20:26:13:782 LOGGER/(11890:11988): El PID del contenido escrito es: 2
+[INFO] 20:26:14:102 LOGGER/(11890:11988): El pid que me pide frame es: 2
+
+[INFO] 20:26:14:102 LOGGER/(11890:11988): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 20:26:14:103 LOGGER/(11890:11988): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 20:26:14:104 LOGGER/(11890:11988): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 20:26:14:105 LOGGER/(11890:11988): el numero de frame es 8
+[INFO] 20:26:14:124 LOGGER/(11890:12079): El tamanio del valor leido* es: 37
+
+[INFO] 20:26:14:125 LOGGER/(11890:12079): el valor del registro lectura es :I don't want to set the world on fire
+[INFO] 20:26:14:248 LOGGER/(11890:12079): PID: 2 - Accion: DESTRUIR - Tamaño: 3
+[INFO] 20:46:19:769 LOGGER/(16280:16280): Servidor iniciado, esperando conexiones!
+[INFO] 20:47:11:757 LOGGER/(16280:16546): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 20:47:11:808 LOGGER/(16280:16546): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 20:47:11:971 LOGGER/(16280:16546): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 20:47:12:261 LOGGER/(16280:16416): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
+[INFO] 20:47:12:387 LOGGER/(16280:16416): El pid que me pide frame es: 1
+
+[INFO] 20:47:12:387 LOGGER/(16280:16416): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:47:12:388 LOGGER/(16280:16416): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:47:12:390 LOGGER/(16280:16416): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:47:12:391 LOGGER/(16280:16416): el numero de frame es 1
+[INFO] 20:47:12:405 LOGGER/(16280:16416): El pid que me pide frame es: 1
+
+[INFO] 20:47:12:406 LOGGER/(16280:16416): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 20:47:12:406 LOGGER/(16280:16416): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:47:12:407 LOGGER/(16280:16416): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:47:12:407 LOGGER/(16280:16416): el numero de frame es 2
+[INFO] 20:47:12:642 LOGGER/(16280:16416): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
+[INFO] 20:47:13:062 LOGGER/(16280:16416): El pid que me pide frame es: 2
+
+[INFO] 20:47:13:064 LOGGER/(16280:16416): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 20:47:13:064 LOGGER/(16280:16416): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 20:47:13:065 LOGGER/(16280:16416): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 20:47:13:065 LOGGER/(16280:16416): el numero de frame es 8
+[INFO] 20:47:13:083 LOGGER/(16280:16416): Contenido escrito:  73
+[INFO] 20:47:13:084 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:47:13:427 LOGGER/(16280:16416): Contenido escrito:  32
+[INFO] 20:47:13:427 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:47:13:844 LOGGER/(16280:16416): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 20:47:13:952 LOGGER/(16280:16416): El pid que me pide frame es: 3
+
+[INFO] 20:47:13:952 LOGGER/(16280:16416): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 20:47:13:952 LOGGER/(16280:16416): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:47:13:953 LOGGER/(16280:16416): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:47:13:953 LOGGER/(16280:16416): el numero de frame es 11
+[INFO] 20:47:13:958 LOGGER/(16280:16416): El pid que me pide frame es: 3
+
+[INFO] 20:47:13:958 LOGGER/(16280:16416): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:47:13:959 LOGGER/(16280:16416): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:47:13:959 LOGGER/(16280:16416): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:47:13:960 LOGGER/(16280:16416): el numero de frame es 12
+[INFO] 20:47:24:413 LOGGER/(16280:16416): Contenido escrito:  100
+[INFO] 20:47:24:414 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:47:24:738 LOGGER/(16280:16416): Contenido escrito:  111
+[INFO] 20:47:24:738 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:47:25:059 LOGGER/(16280:16416): Contenido escrito:  110
+[INFO] 20:47:25:060 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:47:25:393 LOGGER/(16280:16416): Contenido escrito:  39
+[INFO] 20:47:25:394 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:47:25:706 LOGGER/(16280:16416): Contenido escrito:  116
+[INFO] 20:47:25:707 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:47:26:053 LOGGER/(16280:16416): Contenido escrito:  32
+[INFO] 20:47:26:054 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:47:36:514 LOGGER/(16280:16416): Contenido escrito:  119
+[INFO] 20:47:36:515 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:47:36:865 LOGGER/(16280:16416): Contenido escrito:  97
+[INFO] 20:47:36:867 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:47:37:200 LOGGER/(16280:16416): Contenido escrito:  110
+[INFO] 20:47:37:200 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:47:37:516 LOGGER/(16280:16416): Contenido escrito:  116
+[INFO] 20:47:37:516 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:47:37:838 LOGGER/(16280:16416): Contenido escrito:  32
+[INFO] 20:47:37:839 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:47:48:273 LOGGER/(16280:16416): Contenido escrito:  116
+[INFO] 20:47:48:274 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:47:48:631 LOGGER/(16280:16416): Contenido escrito:  111
+[INFO] 20:47:48:631 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:47:48:953 LOGGER/(16280:16416): Contenido escrito:  32
+[INFO] 20:47:48:953 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:47:59:409 LOGGER/(16280:16416): El pid que me pide frame es: 2
+
+[INFO] 20:47:59:410 LOGGER/(16280:16416): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:47:59:410 LOGGER/(16280:16416): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 20:47:59:412 LOGGER/(16280:16416): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 20:47:59:413 LOGGER/(16280:16416): el numero de frame es 9
+[INFO] 20:47:59:427 LOGGER/(16280:16416): Contenido escrito:  115
+[INFO] 20:47:59:427 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:47:59:762 LOGGER/(16280:16416): Contenido escrito:  101
+[INFO] 20:47:59:762 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:00:090 LOGGER/(16280:16416): Contenido escrito:  116
+[INFO] 20:48:00:092 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:00:427 LOGGER/(16280:16416): Contenido escrito:  32
+[INFO] 20:48:00:428 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:10:854 LOGGER/(16280:16416): Contenido escrito:  116
+[INFO] 20:48:10:855 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:11:173 LOGGER/(16280:16416): Contenido escrito:  104
+[INFO] 20:48:11:174 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:11:496 LOGGER/(16280:16416): Contenido escrito:  101
+[INFO] 20:48:11:496 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:11:855 LOGGER/(16280:16416): Contenido escrito:  32
+[INFO] 20:48:11:857 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:22:293 LOGGER/(16280:16416): Contenido escrito:  119
+[INFO] 20:48:22:294 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:22:618 LOGGER/(16280:16416): Contenido escrito:  111
+[INFO] 20:48:22:618 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:22:936 LOGGER/(16280:16416): Contenido escrito:  114
+[INFO] 20:48:22:936 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:23:272 LOGGER/(16280:16416): Contenido escrito:  108
+[INFO] 20:48:23:273 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:23:596 LOGGER/(16280:16416): Contenido escrito:  100
+[INFO] 20:48:23:596 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:23:916 LOGGER/(16280:16416): Contenido escrito:  32
+[INFO] 20:48:23:917 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:34:362 LOGGER/(16280:16416): Contenido escrito:  111
+[INFO] 20:48:34:364 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:34:685 LOGGER/(16280:16416): Contenido escrito:  110
+[INFO] 20:48:34:686 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:35:007 LOGGER/(16280:16416): El pid que me pide frame es: 2
+
+[INFO] 20:48:35:007 LOGGER/(16280:16416): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 20:48:35:007 LOGGER/(16280:16416): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 20:48:35:008 LOGGER/(16280:16416): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 20:48:35:009 LOGGER/(16280:16416): el numero de frame es 10
+[INFO] 20:48:35:020 LOGGER/(16280:16416): Contenido escrito:  32
+[INFO] 20:48:35:020 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:45:480 LOGGER/(16280:16416): Contenido escrito:  102
+[INFO] 20:48:45:481 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:45:800 LOGGER/(16280:16416): Contenido escrito:  105
+[INFO] 20:48:45:800 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:46:138 LOGGER/(16280:16416): Contenido escrito:  114
+[INFO] 20:48:46:139 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:46:475 LOGGER/(16280:16416): Contenido escrito:  101
+[INFO] 20:48:46:475 LOGGER/(16280:16416): El PID del contenido escrito es: 2
+[INFO] 20:48:46:839 LOGGER/(16280:16546): El tamanio del valor leido* es: 37
+
+[INFO] 20:48:46:851 LOGGER/(16280:16546): el valor del registro lectura es :I don't want to set the world on fire
+[INFO] 20:48:47:016 LOGGER/(16280:16546): PID: 2 - Accion: DESTRUIR - Tamaño: 3
+[INFO] 20:49:17:509 LOGGER/(16280:16919): 
+el valor a guardar en memoria llegado desde STDIN es: WAR NEVER CHANGES...
+
+
+[INFO] 20:49:17:511 LOGGER/(16280:16919): Contenido escrito:  0000000000000087
+[INFO] 20:49:17:512 LOGGER/(16280:16919): El PID del contenido escrito es: 1
+[INFO] 20:49:17:513 LOGGER/(16280:16919): Contenido escrito:  0083
+[INFO] 20:49:17:514 LOGGER/(16280:16919): El PID del contenido escrito es: 1
+[INFO] 20:49:18:316 LOGGER/(16280:16416): El pid que me pide frame es: 1
+
+[INFO] 20:49:18:317 LOGGER/(16280:16416): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 20:49:18:317 LOGGER/(16280:16416): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:49:18:318 LOGGER/(16280:16416): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:49:18:318 LOGGER/(16280:16416): el numero de frame es 0
+[INFO] 20:49:18:325 LOGGER/(16280:16416): Contenido escrito:  87
+[INFO] 20:49:18:326 LOGGER/(16280:16416): El PID del contenido escrito es: 1
+[INFO] 20:49:18:558 LOGGER/(16280:16416): Contenido escrito:  65
+[INFO] 20:49:18:559 LOGGER/(16280:16416): El PID del contenido escrito es: 1
+[INFO] 20:49:18:786 LOGGER/(16280:16416): Contenido escrito:  82
+[INFO] 20:49:18:786 LOGGER/(16280:16416): El PID del contenido escrito es: 1
+[INFO] 20:49:18:999 LOGGER/(16280:16416): Contenido escrito:  44
+[INFO] 20:49:18:999 LOGGER/(16280:16416): El PID del contenido escrito es: 1
+[INFO] 20:49:26:217 LOGGER/(16280:16919): 
+el valor a guardar en memoria llegado desde STDIN es: Sistemas Operativos 2c2023
+
+
+[INFO] 20:49:26:218 LOGGER/(16280:16919): Contenido escrito:  0000000000000083
+[INFO] 20:49:26:218 LOGGER/(16280:16919): El PID del contenido escrito es: 3
+[INFO] 20:49:26:219 LOGGER/(16280:16919): Contenido escrito:  0000000118
+[INFO] 20:49:26:219 LOGGER/(16280:16919): El PID del contenido escrito es: 3
+[INFO] 20:49:39:427 LOGGER/(16280:16416): Contenido escrito:  32
+[INFO] 20:49:39:427 LOGGER/(16280:16416): El PID del contenido escrito es: 1
+[INFO] 20:49:39:751 LOGGER/(16280:16416): El pid que me pide frame es: 1
+
+[INFO] 20:49:39:751 LOGGER/(16280:16416): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:49:39:752 LOGGER/(16280:16416): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:49:39:753 LOGGER/(16280:16416): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:49:39:753 LOGGER/(16280:16416): el numero de frame es 1
+[INFO] 20:49:39:756 LOGGER/(16280:16416): El pid que me pide frame es: 1
+
+[INFO] 20:49:39:757 LOGGER/(16280:16416): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 20:49:39:757 LOGGER/(16280:16416): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 20:49:39:758 LOGGER/(16280:16416): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 20:49:39:758 LOGGER/(16280:16416): el numero de frame es 2
+[INFO] 20:49:39:777 LOGGER/(16280:16546): El tamanio del valor leido* es: 25
+
+[INFO] 20:49:39:778 LOGGER/(16280:16546): el valor del registro lectura es :WAR, WAR NEVER CHANGES...
+[INFO] 20:49:40:003 LOGGER/(16280:16546): PID: 1 - Accion: DESTRUIR - Tamaño: 8
+[INFO] 20:49:59:435 LOGGER/(16280:16416): El pid que me pide frame es: 3
+
+[INFO] 20:49:59:436 LOGGER/(16280:16416): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 20:49:59:436 LOGGER/(16280:16416): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:49:59:437 LOGGER/(16280:16416): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:49:59:437 LOGGER/(16280:16416): el numero de frame es 11
+[INFO] 20:49:59:443 LOGGER/(16280:16416): El pid que me pide frame es: 3
+
+[INFO] 20:49:59:444 LOGGER/(16280:16416): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 20:49:59:444 LOGGER/(16280:16416): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:49:59:445 LOGGER/(16280:16416): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:49:59:445 LOGGER/(16280:16416): el numero de frame es 12
+[INFO] 20:49:59:454 LOGGER/(16280:16416): El pid que me pide frame es: 3
+
+[INFO] 20:49:59:454 LOGGER/(16280:16416): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 20:49:59:455 LOGGER/(16280:16416): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:49:59:455 LOGGER/(16280:16416): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:49:59:456 LOGGER/(16280:16416): el numero de frame es 13
+[INFO] 20:49:59:477 LOGGER/(16280:16416): El pid que me pide frame es: 3
+
+[INFO] 20:49:59:477 LOGGER/(16280:16416): BUSCO EL FRAME CON LA PAGINA: 3
+[INFO] 20:49:59:477 LOGGER/(16280:16416): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:49:59:478 LOGGER/(16280:16416): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:49:59:479 LOGGER/(16280:16416): el numero de frame es 14
+[INFO] 20:49:59:483 LOGGER/(16280:16416): Contenido escrito:  0000000000000083
+[INFO] 20:49:59:484 LOGGER/(16280:16416): El PID del contenido escrito es: 3
+[INFO] 20:49:59:485 LOGGER/(16280:16416): Contenido escrito:  0000000118
+[INFO] 20:49:59:485 LOGGER/(16280:16416): El PID del contenido escrito es: 3
+[INFO] 20:49:59:797 LOGGER/(16280:16416): El pid que me pide frame es: 3
+
+[INFO] 20:49:59:798 LOGGER/(16280:16416): BUSCO EL FRAME CON LA PAGINA: 3
+[INFO] 20:49:59:798 LOGGER/(16280:16416): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 20:49:59:798 LOGGER/(16280:16416): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 20:49:59:799 LOGGER/(16280:16416): el numero de frame es 14
+[INFO] 20:49:59:804 LOGGER/(16280:16416): Contenido escrito:  49
+[INFO] 20:49:59:805 LOGGER/(16280:16416): El PID del contenido escrito es: 3
+[INFO] 20:50:00:125 LOGGER/(16280:16416): Contenido escrito:  52
+[INFO] 20:50:00:125 LOGGER/(16280:16416): El PID del contenido escrito es: 3
+[INFO] 20:50:20:408 LOGGER/(16280:16546): El tamanio del valor leido* es: 26
+
+[INFO] 20:50:20:409 LOGGER/(16280:16546): el valor del registro lectura es :Sistemas Operativos 1c2024
+[INFO] 20:50:20:538 LOGGER/(16280:16546): PID: 3 - Accion: DESTRUIR - Tamaño: 4

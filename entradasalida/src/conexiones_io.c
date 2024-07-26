@@ -203,12 +203,8 @@ void recibir_kernel(void* config_socket_io) { //FREE
 
                 send(socket_kernel_io, &terminoOk, sizeof(int), 0);
                 
-                // free(valor); Ya esta en mandar_valor_a_memoria
-                // liberar_lista_direcciones(pid_stdin->lista_direcciones);
-
-                // printf("\nYA LIBERE LA LISTA DE DIRECCION\n");
-                free(pid_stdin);
-                // free(valor_le);
+                liberar_pid_stdin(pid_stdin);
+                // free(pid_stdin);
                 break;
             case CREAR_ARCHIVO:
                 // Estaria bueno que tenngamos un diccionario con key nombre archiivo y puntero como  atrbuto
@@ -346,7 +342,7 @@ t_pid_stdin* deserializar_pid_stdin(t_buffer* buffer) {
         memcpy(&dir_fisica_tam->bytes_lectura, stream, sizeof(int));
         stream += sizeof(int);
         list_add(pid_stdin->lista_direcciones, dir_fisica_tam);
-        // free(dir_fisica_tam); //LIBERAR CUANDO SE DESCONECTE LA IO
+        // free(dir_fisica_tam); // LIBERAR CUANDO SE DESCONECTE LA IO
     }
     printf("llego hasta deserializar pid stdin\n");
     return pid_stdin;
@@ -457,8 +453,13 @@ t_fs_truncate* deserializar_fs_truncate(t_buffer* buffer){
     return fs_truncate; 
 }
 
-void liberar_lista_direcciones(t_list* lista_direcciones){
-    if(lista_direcciones != NULL){
-        list_destroy_and_destroy_elements(lista_direcciones,free);
+void liberar_pid_stdin(t_pid_stdin* pid_stdin) {
+    for(int i = 0; i < list_size(pid_stdin->lista_direcciones); i++) {
+        t_dir_fisica_tamanio* elemento = list_get(pid_stdin->lista_direcciones, i);
+        free(elemento);
     }
+
+    list_destroy(pid_stdin->lista_direcciones);
+    
+    free(pid_stdin);
 }

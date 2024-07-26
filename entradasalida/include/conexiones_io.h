@@ -26,5 +26,6 @@ t_pid_stdin* deserializar_pid_stdin(t_buffer* buffer);
 t_fs_create_delete* deserializar_pedido_creacion_destruccion(t_buffer* buffer);
 t_fs_truncate* deserializar_fs_truncate(t_buffer* buffer);
 void liberar_lista_direcciones(t_list* lista_direcciones);
+void liberar_pid_stdin(t_pid_stdin* pid_stdin);
 
 #endif // CONEXIONES_IO_H

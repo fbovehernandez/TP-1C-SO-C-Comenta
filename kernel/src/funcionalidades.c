@@ -645,7 +645,7 @@ void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
 
     // Habria que liberar toda la lista que se cargo adentro de pedido
     free(pedido->interfaz);
-    list_destroy(pedido->lista_dir_tamanio);
+    // list_destroy(pedido->lista_dir_tamanio) -> Creo que no hay que liberar aca porque los malloc de la lista siguen estando en datos_std
     free(pedido);
 } 
 
