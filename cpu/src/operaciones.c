@@ -480,6 +480,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         //Acceso a espacio de usuario: PID: <PID> - Accion: <LEER / ESCRIBIR> - Direccion fisica: <DIRECCION_FISICA> - Tamaño <TAMAÑO A LEER / ESCRIBIR>
         
         // Este list_destroy elements funciona como quiere, ver si hay que liberar bien
+
         list_destroy_and_destroy_elements(lista_bytes_lectura, free);
         list_destroy_and_destroy_elements(lista_direcciones_fisicas_mov_out, free);
 
@@ -531,7 +532,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         list_destroy_and_destroy_elements(lista_direcciones_fisicas_cs, free);
         list_destroy_and_destroy_elements(lista_bytes_escritura_cs, free);
         list_destroy_and_destroy_elements(lista_direcciones_fisicas_escritura_cs, free);
-        
+
         break;
     case SUM: // SUM DESTINO ORIGEN
         t_parametro* registro_param1 = list_get(list_parametros, 0);
@@ -956,7 +957,7 @@ t_buffer* serializar_direcciones_fisicas(int cantidad_paginas, t_list* direccion
     int cant_elementos_lista = list_size(direcciones_fisicas);
     log_info(logger_CPU, "el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es %d \n", cant_elementos_lista);
 
-    buffer->size = sizeof(int) * 4 + (cant_elementos_lista * sizeof(t_dir_fisica_tamanio)) + tamanio_valor;
+    buffer->size = sizeof(int) * 3 + (cant_elementos_lista * sizeof(t_dir_fisica_tamanio)) + tamanio_valor;
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
@@ -984,9 +985,10 @@ t_buffer* serializar_direcciones_fisicas(int cantidad_paginas, t_list* direccion
         buffer->offset += sizeof(int);
         memcpy(stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
         buffer->offset += sizeof(int);
-        free(dir_fisica_tam);
+       // free(dir_fisica_tam);
     }
-    list_destroy(direcciones_fisicas);
+
+    // list_destroy(direcciones_fisicas);
 
     buffer->stream = stream;
 

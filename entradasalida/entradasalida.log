@@ -2107,3 +2107,19 @@ El valor leido de memoria es: D
 
 [INFO] 22:29:27:658 LOGGER/(56045:56045): Conexion establecida con Memoria
 
+[INFO] 22:53:10:184 LOGGER/(70157:70157): Conexion establecida con Kernel
+
+[INFO] 22:53:10:220 LOGGER/(70157:70157): Conexion establecida con Memoria
+
+[INFO] 22:53:19:328 LOGGER/(70316:70316): Conexion establecida con Kernel
+
+[INFO] 22:53:19:356 LOGGER/(70316:70316): Conexion establecida con Memoria
+
+[INFO] 23:01:25:584 LOGGER/(71562:71562): Conexion establecida con Kernel
+
+[INFO] 23:01:25:625 LOGGER/(71562:71562): Conexion establecida con Memoria
+
+[INFO] 23:01:28:804 LOGGER/(71682:71682): Conexion establecida con Kernel
+
+[INFO] 23:01:28:844 LOGGER/(71682:71682): Conexion establecida con Memoria
+
