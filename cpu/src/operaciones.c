@@ -480,8 +480,8 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         //Acceso a espacio de usuario: PID: <PID> - Accion: <LEER / ESCRIBIR> - Direccion fisica: <DIRECCION_FISICA> - Tamaño <TAMAÑO A LEER / ESCRIBIR>
         
         // Este list_destroy elements funciona como quiere, ver si hay que liberar bien
-        // list_destroy_and_destroy_elements(lista_bytes_lectura, free);
-        // list_destroy_and_destroy_elements(lista_direcciones_fisicas_mov_out, free);
+        list_destroy_and_destroy_elements(lista_bytes_lectura, free);
+        list_destroy_and_destroy_elements(lista_direcciones_fisicas_mov_out, free);
 
         break;
     case COPY_STRING:
@@ -631,7 +631,6 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         
         uint32_t* registro_tamanio_stdin = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio,pcb);
 
-
         uint32_t var_register;
 
         if(es_registro_uint8_dato_register) {
@@ -639,7 +638,16 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         } else {
             var_register = *(uint32_t*) registro_direccion_stdin;
         }
-    
+
+        uint32_t tamanio_a_leer;
+        
+        // Hacer lo mismo que arriba para el tamanio
+        if(es_registro_uint8_dato) {
+            tamanio_a_leer = *(uint8_t*) registro_tamanio_stdin;
+        } else {
+            tamanio_a_leer = *(uint32_t*) registro_tamanio_stdin;
+        }
+       
         printf("El valor de la direccion es: %d\n", var_register);
         
         int pagina = floor(var_register / tamanio_pagina);
@@ -709,6 +717,15 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
             valor_a_enviar = *(uint32_t*) registro_direccion11;
         }
         
+        uint32_t tamanio_a_escribir;
+
+        // Hacer lo mismo que arriba pero con el registro de tamanio
+        if(es_registro_uint8_dato) {
+            tamanio_a_escribir = *(uint8_t*) registro_tamanio_stdout;
+        } else {
+            tamanio_a_escribir = *(uint32_t*) registro_tamanio_stdout;
+        }
+
         pagina = floor(valor_a_enviar / tamanio_pagina);
          
         printf("el valor a enviar es %d \n", valor_a_enviar);
@@ -716,7 +733,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); // Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
                                                             // 11 25 1
-        cantidad_paginas = cantidad_de_paginas_a_utilizar(valor_a_enviar, *registro_tamanio_stdout, pagina, lista_bytes_stdout); // Cantidad de paginas + la primera
+        cantidad_paginas = cantidad_de_paginas_a_utilizar(valor_a_enviar, tamanio_a_escribir, pagina, lista_bytes_stdout); // Cantidad de paginas + la primera
         
         cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdout, valor_a_enviar, pcb->pid, lista_direcciones_fisicas_stdout, pagina);
         
@@ -729,7 +746,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         }
 
         printf("\n");
-        t_buffer* buffer_escritura = llenar_buffer_stdio(nombre_interfaz, lista_direcciones_fisicas_stdout, *registro_tamanio_stdout, cantidad_paginas);
+        t_buffer* buffer_escritura = llenar_buffer_stdio(nombre_interfaz, lista_direcciones_fisicas_stdout, tamanio_a_escribir, cantidad_paginas);
         // pcb->program_counter++;
 
         desalojar(pcb, PEDIDO_ESCRITURA, buffer_escritura);
@@ -964,9 +981,8 @@ t_buffer* serializar_direcciones_fisicas(int cantidad_paginas, t_list* direccion
         buffer->offset += sizeof(int);
         memcpy(stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
         buffer->offset += sizeof(int);
-
-        free(dir_fisica_tam);
     }
+
     buffer->stream = stream;
 
     return buffer;

@@ -702,7 +702,7 @@ void limpiar_bitmap(int pid_a_liberar) {
 
     destruir_paginas(proceso_pagina);
     free(pid_string);
-    free(proceso_pagina);
+   // free(proceso_pagina);
 }
 
 void liberar_modulo_memoria() {

@@ -1263,3 +1263,61 @@ El valor leido de memoria es:
 
 
 [INFO] 02:34:27:772 LOGGER/(47396:47396): PID: 1 - Operacion: ESCRIBIR
+[INFO] 16:59:20:027 LOGGER/(3507:3507): Conexion establecida con Kernel
+
+[INFO] 16:59:20:152 LOGGER/(3507:3507): Conexion establecida con Memoria
+
+[INFO] 17:07:17:786 LOGGER/(5332:5332): Conexion establecida con Kernel
+
+[INFO] 17:07:26:003 LOGGER/(5454:5454): Conexion establecida con Kernel
+
+[INFO] 17:07:26:030 LOGGER/(5454:5454): Conexion establecida con Memoria
+
+[INFO] 17:07:45:080 LOGGER/(5641:5641): Conexion establecida con Kernel
+
+[INFO] 17:07:45:124 LOGGER/(5641:5641): Conexion establecida con Memoria
+
+[INFO] 17:15:34:663 LOGGER/(7867:7867): Conexion establecida con Kernel
+
+[INFO] 17:15:40:080 LOGGER/(7980:7980): Conexion establecida con Kernel
+
+[INFO] 17:15:40:117 LOGGER/(7980:7980): Conexion establecida con Memoria
+
+[INFO] 17:15:42:737 LOGGER/(8092:8092): Conexion establecida con Kernel
+
+[INFO] 17:15:42:767 LOGGER/(8092:8092): Conexion establecida con Memoria
+
+[INFO] 17:16:14:882 LOGGER/(7980:7980): el valor en mandar_valor_a_memoria es WAR NEVER CHANGES...
+[INFO] 17:16:14:884 LOGGER/(7980:7980): PID: 1 - Operacion: LEER
+[INFO] 17:16:35:233 LOGGER/(7867:7867): PID 1 - Operacion: DORMIR_IO
+[INFO] 17:16:56:166 LOGGER/(7867:7867): PID 1 - Operacion: DORMIR_IO
+[INFO] 17:16:56:289 LOGGER/(8092:8092): el tamanio del valor a escribir es 21
+
+[INFO] 17:16:56:290 LOGGER/(8092:8092): 
+
+El valor leido de memoria es: WAR NEVER CHANGES...1 
+
+
+[INFO] 17:16:56:290 LOGGER/(8092:8092): PID: 1 - Operacion: ESCRIBIR
+[INFO] 17:22:36:306 LOGGER/(10398:10398): Conexion establecida con Kernel
+
+[INFO] 17:22:39:483 LOGGER/(10500:10500): Conexion establecida con Kernel
+
+[INFO] 17:22:39:513 LOGGER/(10500:10500): Conexion establecida con Memoria
+
+[INFO] 17:22:42:636 LOGGER/(10614:10614): Conexion establecida con Kernel
+
+[INFO] 17:22:42:668 LOGGER/(10614:10614): Conexion establecida con Memoria
+
+[INFO] 17:23:59:244 LOGGER/(10500:10500): el valor en mandar_valor_a_memoria es Sistemas Operativos 1c2024
+[INFO] 17:23:59:246 LOGGER/(10500:10500): PID: 1 - Operacion: LEER
+[INFO] 17:24:19:603 LOGGER/(10398:10398): PID 1 - Operacion: DORMIR_IO
+[INFO] 17:24:40:462 LOGGER/(10398:10398): PID 1 - Operacion: DORMIR_IO
+[INFO] 17:24:40:578 LOGGER/(10614:10614): el tamanio del valor a escribir es 33
+
+[INFO] 17:24:40:578 LOGGER/(10614:10614): 
+
+El valor leido de memoria es: Sistemas Operativos 1c2024 
+
+
+[INFO] 17:24:40:579 LOGGER/(10614:10614): PID: 1 - Operacion: ESCRIBIR
