@@ -78,6 +78,11 @@ start_dialfs: debug
 start_SLP1: debug
 	valgrind --tool=none ./$(BIN) $(ARGS_SLP1) $(NOMBRE_INTERFAZ_SLP1) 
 
+.PHONY: start_ESPERA
+start_ESPERA: debug
+	valgrind --tool=none ./$(BIN) $(ARGS_ESPERA) $(NOMBRE_INTERFAZ_ESPERA) 
+
+
 .PHONY: memcheck
 memcheck: 
 	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(ARGS)
@@ -101,6 +106,11 @@ memcheck_stdin: debug
 .PHONY: memcheck_stdout
 memcheck_stdout: debug
 	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(MONITOR) $(NOMBRE_INTERFAZ_STDOUT)
+
+.PHONY: memcheck_espera
+memcheck_espera: debug
+	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(ARGS_ESPERA) $(NOMBRE_INTERFAZ_ESPERA)
+
 
 .PHONY: helgrind
 helgrind: debug

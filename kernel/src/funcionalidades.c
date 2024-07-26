@@ -308,6 +308,7 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
         
         if (es_VRR_RR()) {
             pthread_cancel(hilo_quantum);
+            pthread_join(hilo_quantum, NULL); // Deberia liberar los recursos del cancel
         }
     }
 }

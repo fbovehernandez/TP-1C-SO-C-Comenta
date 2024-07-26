@@ -1801,3 +1801,309 @@ El valor leido de memoria es: I don't want to set the world on fire
 
 
 [INFO] 21:31:26:056 LOGGER/(30592:30592): PID: 2 - Operacion: ESCRIBIR
+[INFO] 21:35:12:998 LOGGER/(34761:34761): Conexion establecida con Kernel
+
+[INFO] 21:35:16:663 LOGGER/(34847:34847): Conexion establecida con Kernel
+
+[INFO] 21:35:16:855 LOGGER/(34847:34847): Conexion establecida con Memoria
+
+[INFO] 21:35:21:933 LOGGER/(34991:34991): Conexion establecida con Kernel
+
+[INFO] 21:35:22:105 LOGGER/(34991:34991): Conexion establecida con Memoria
+
+[INFO] 21:38:58:380 LOGGER/(36533:36533): Conexion establecida con Kernel
+
+[INFO] 21:38:58:543 LOGGER/(36533:36533): Conexion establecida con Memoria
+
+[INFO] 21:39:35:081 LOGGER/(36533:36533): el tamanio del valor a escribir es 21
+
+[INFO] 21:39:35:084 LOGGER/(36533:36533): 
+
+El valor leido de memoria es: Aborted (core dumped) 
+
+
+[INFO] 21:39:35:085 LOGGER/(36533:36533): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:39:43:095 LOGGER/(36533:36533): el tamanio del valor a escribir es 21
+
+[INFO] 21:39:43:096 LOGGER/(36533:36533): 
+
+El valor leido de memoria es: Aborted (core dumped) 
+
+
+[INFO] 21:39:43:096 LOGGER/(36533:36533): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:39:50:891 LOGGER/(36533:36533): el tamanio del valor a escribir es 21
+
+[INFO] 21:39:50:892 LOGGER/(36533:36533): 
+
+El valor leido de memoria es: Aborted (core dumped) 
+
+
+[INFO] 21:39:50:892 LOGGER/(36533:36533): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:39:58:945 LOGGER/(36533:36533): el tamanio del valor a escribir es 21
+
+[INFO] 21:39:58:945 LOGGER/(36533:36533): 
+
+El valor leido de memoria es: Aborted (core dumped) 
+
+
+[INFO] 21:39:58:945 LOGGER/(36533:36533): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:40:06:766 LOGGER/(36533:36533): el tamanio del valor a escribir es 21
+
+[INFO] 21:40:06:768 LOGGER/(36533:36533): 
+
+El valor leido de memoria es: Aborted (core dumped) 
+
+
+[INFO] 21:40:06:768 LOGGER/(36533:36533): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:40:14:596 LOGGER/(36533:36533): el tamanio del valor a escribir es 21
+
+[INFO] 21:40:14:596 LOGGER/(36533:36533): 
+
+El valor leido de memoria es: Aborted (core dumped) 
+
+
+[INFO] 21:40:14:596 LOGGER/(36533:36533): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:41:56:684 LOGGER/(38284:38284): Conexion establecida con Kernel
+
+[INFO] 21:41:56:910 LOGGER/(38284:38284): Conexion establecida con Memoria
+
+[INFO] 21:42:26:662 LOGGER/(38284:38284): el tamanio del valor a escribir es 32
+
+[INFO] 21:42:26:662 LOGGER/(38284:38284): 
+
+El valor leido de memoria es: Segmentation fault (core dumped) 
+
+
+[INFO] 21:42:26:663 LOGGER/(38284:38284): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:42:38:583 LOGGER/(38284:38284): el tamanio del valor a escribir es 32
+
+[INFO] 21:42:38:584 LOGGER/(38284:38284): 
+
+El valor leido de memoria es: Segmentation fault (core dumped) 
+
+
+[INFO] 21:42:38:584 LOGGER/(38284:38284): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:42:50:502 LOGGER/(38284:38284): el tamanio del valor a escribir es 32
+
+[INFO] 21:42:50:502 LOGGER/(38284:38284): 
+
+El valor leido de memoria es: Segmentation fault (core dumped) 
+
+
+[INFO] 21:42:50:503 LOGGER/(38284:38284): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:43:01:984 LOGGER/(38284:38284): el tamanio del valor a escribir es 32
+
+[INFO] 21:43:01:986 LOGGER/(38284:38284): 
+
+El valor leido de memoria es: Segmentation fault (core dumped) 
+
+
+[INFO] 21:43:01:987 LOGGER/(38284:38284): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:43:13:639 LOGGER/(38284:38284): el tamanio del valor a escribir es 32
+
+[INFO] 21:43:13:639 LOGGER/(38284:38284): 
+
+El valor leido de memoria es: Segmentation fault (core dumped) 
+
+
+[INFO] 21:43:13:640 LOGGER/(38284:38284): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:43:25:300 LOGGER/(38284:38284): el tamanio del valor a escribir es 32
+
+[INFO] 21:43:25:301 LOGGER/(38284:38284): 
+
+El valor leido de memoria es: Segmentation fault (core dumped) 
+
+
+[INFO] 21:43:25:301 LOGGER/(38284:38284): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:43:37:033 LOGGER/(38284:38284): el tamanio del valor a escribir es 32
+
+[INFO] 21:43:37:035 LOGGER/(38284:38284): 
+
+El valor leido de memoria es: Segmentation fault (core dumped) 
+
+
+[INFO] 21:43:37:036 LOGGER/(38284:38284): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:45:47:251 LOGGER/(40401:40401): Conexion establecida con Kernel
+
+[INFO] 21:45:47:422 LOGGER/(40401:40401): Conexion establecida con Memoria
+
+[INFO] 21:45:49:838 LOGGER/(40501:40501): Conexion establecida con Kernel
+
+[INFO] 21:45:50:011 LOGGER/(40501:40501): Conexion establecida con Memoria
+
+[INFO] 21:46:22:432 LOGGER/(40501:40501): el valor en mandar_valor_a_memoria es H
+[INFO] 21:46:22:435 LOGGER/(40501:40501): PID: 1 - Operacion: LEER
+[INFO] 21:46:22:607 LOGGER/(40401:40401): el tamanio del valor a escribir es 1
+
+[INFO] 21:46:22:608 LOGGER/(40401:40401): 
+
+El valor leido de memoria es: H 
+
+
+[INFO] 21:46:22:612 LOGGER/(40401:40401): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:46:26:038 LOGGER/(40501:40501): el valor en mandar_valor_a_memoria es O
+[INFO] 21:46:26:038 LOGGER/(40501:40501): PID: 1 - Operacion: LEER
+[INFO] 21:46:26:165 LOGGER/(40401:40401): el tamanio del valor a escribir es 1
+
+[INFO] 21:46:26:165 LOGGER/(40401:40401): 
+
+El valor leido de memoria es: O 
+
+
+[INFO] 21:46:26:166 LOGGER/(40401:40401): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:46:29:782 LOGGER/(40501:40501): el valor en mandar_valor_a_memoria es L
+[INFO] 21:46:29:783 LOGGER/(40501:40501): PID: 1 - Operacion: LEER
+[INFO] 21:46:29:908 LOGGER/(40401:40401): el tamanio del valor a escribir es 1
+
+[INFO] 21:46:29:909 LOGGER/(40401:40401): 
+
+El valor leido de memoria es: L 
+
+
+[INFO] 21:46:29:909 LOGGER/(40401:40401): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:46:32:311 LOGGER/(40501:40501): el valor en mandar_valor_a_memoria es A
+[INFO] 21:46:32:312 LOGGER/(40501:40501): PID: 1 - Operacion: LEER
+[INFO] 21:46:32:437 LOGGER/(40401:40401): el tamanio del valor a escribir es 1
+
+[INFO] 21:46:32:438 LOGGER/(40401:40401): 
+
+El valor leido de memoria es: A 
+
+
+[INFO] 21:46:32:438 LOGGER/(40401:40401): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:46:37:112 LOGGER/(40501:40501): el valor en mandar_valor_a_memoria es F
+[INFO] 21:46:37:113 LOGGER/(40501:40501): PID: 1 - Operacion: LEER
+[INFO] 21:46:37:240 LOGGER/(40401:40401): el tamanio del valor a escribir es 1
+
+[INFO] 21:46:37:240 LOGGER/(40401:40401): 
+
+El valor leido de memoria es: F 
+
+
+[INFO] 21:46:37:241 LOGGER/(40401:40401): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:46:39:448 LOGGER/(40501:40501): el valor en mandar_valor_a_memoria es A
+[INFO] 21:46:39:449 LOGGER/(40501:40501): PID: 1 - Operacion: LEER
+[INFO] 21:46:39:596 LOGGER/(40401:40401): el tamanio del valor a escribir es 1
+
+[INFO] 21:46:39:596 LOGGER/(40401:40401): 
+
+El valor leido de memoria es: A 
+
+
+[INFO] 21:46:39:597 LOGGER/(40401:40401): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:46:41:491 LOGGER/(40501:40501): el valor en mandar_valor_a_memoria es C
+[INFO] 21:46:41:492 LOGGER/(40501:40501): PID: 1 - Operacion: LEER
+[INFO] 21:46:41:626 LOGGER/(40401:40401): el tamanio del valor a escribir es 1
+
+[INFO] 21:46:41:626 LOGGER/(40401:40401): 
+
+El valor leido de memoria es: C 
+
+
+[INFO] 21:46:41:627 LOGGER/(40401:40401): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:46:44:265 LOGGER/(40501:40501): el valor en mandar_valor_a_memoria es U
+[INFO] 21:46:44:266 LOGGER/(40501:40501): PID: 1 - Operacion: LEER
+[INFO] 21:46:44:397 LOGGER/(40401:40401): el tamanio del valor a escribir es 1
+
+[INFO] 21:46:44:398 LOGGER/(40401:40401): 
+
+El valor leido de memoria es: U 
+
+
+[INFO] 21:46:44:398 LOGGER/(40401:40401): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:46:46:973 LOGGER/(40501:40501): el valor en mandar_valor_a_memoria es P
+[INFO] 21:46:46:974 LOGGER/(40501:40501): PID: 1 - Operacion: LEER
+[INFO] 21:46:47:110 LOGGER/(40401:40401): el tamanio del valor a escribir es 1
+
+[INFO] 21:46:47:110 LOGGER/(40401:40401): 
+
+El valor leido de memoria es: P 
+
+
+[INFO] 21:46:47:111 LOGGER/(40401:40401): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:46:48:684 LOGGER/(40501:40501): el valor en mandar_valor_a_memoria es U
+[INFO] 21:46:48:684 LOGGER/(40501:40501): PID: 1 - Operacion: LEER
+[INFO] 21:46:48:825 LOGGER/(40401:40401): el tamanio del valor a escribir es 1
+
+[INFO] 21:46:48:825 LOGGER/(40401:40401): 
+
+El valor leido de memoria es: U 
+
+
+[INFO] 21:46:48:826 LOGGER/(40401:40401): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:46:50:414 LOGGER/(40501:40501): el valor en mandar_valor_a_memoria es T
+[INFO] 21:46:50:415 LOGGER/(40501:40501): PID: 1 - Operacion: LEER
+[INFO] 21:46:50:541 LOGGER/(40401:40401): el tamanio del valor a escribir es 1
+
+[INFO] 21:46:50:542 LOGGER/(40401:40401): 
+
+El valor leido de memoria es: T 
+
+
+[INFO] 21:46:50:542 LOGGER/(40401:40401): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:46:52:254 LOGGER/(40501:40501): el valor en mandar_valor_a_memoria es O
+[INFO] 21:46:52:255 LOGGER/(40501:40501): PID: 1 - Operacion: LEER
+[INFO] 21:46:52:378 LOGGER/(40401:40401): el tamanio del valor a escribir es 1
+
+[INFO] 21:46:52:379 LOGGER/(40401:40401): 
+
+El valor leido de memoria es: O 
+
+
+[INFO] 21:46:52:379 LOGGER/(40401:40401): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:47:02:437 LOGGER/(40501:40501): el valor en mandar_valor_a_memoria es X
+[INFO] 21:47:02:439 LOGGER/(40501:40501): PID: 1 - Operacion: LEER
+[INFO] 21:47:02:567 LOGGER/(40401:40401): el tamanio del valor a escribir es 1
+
+[INFO] 21:47:02:569 LOGGER/(40401:40401): 
+
+El valor leido de memoria es: X 
+
+
+[INFO] 21:47:02:570 LOGGER/(40401:40401): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:47:04:542 LOGGER/(40501:40501): el valor en mandar_valor_a_memoria es DD
+[INFO] 21:47:04:543 LOGGER/(40501:40501): PID: 1 - Operacion: LEER
+[INFO] 21:47:04:674 LOGGER/(40401:40401): el tamanio del valor a escribir es 1
+
+[INFO] 21:47:04:675 LOGGER/(40401:40401): 
+
+El valor leido de memoria es: D 
+
+
+[INFO] 21:47:04:675 LOGGER/(40401:40401): PID: 1 - Operacion: ESCRIBIR
+[INFO] 22:01:27:344 LOGGER/(45216:45216): Conexion establecida con Kernel
+
+[INFO] 22:01:27:515 LOGGER/(45216:45216): Conexion establecida con Memoria
+
+[INFO] 22:01:36:127 LOGGER/(45412:45412): Conexion establecida con Kernel
+
+[INFO] 22:01:36:317 LOGGER/(45412:45412): Conexion establecida con Memoria
+
+[INFO] 22:02:13:421 LOGGER/(45646:45646): Conexion establecida con Kernel
+
+[INFO] 22:02:22:019 LOGGER/(45805:45805): Conexion establecida con Kernel
+
+[INFO] 22:02:34:293 LOGGER/(45942:45942): Conexion establecida con Kernel
+
+[INFO] 22:13:43:037 LOGGER/(49979:49979): Conexion establecida con Kernel
+
+[INFO] 22:13:43:220 LOGGER/(49979:49979): Conexion establecida con Memoria
+
+[INFO] 22:13:46:788 LOGGER/(50080:50080): Conexion establecida con Kernel
+
+[INFO] 22:13:46:958 LOGGER/(50080:50080): Conexion establecida con Memoria
+
+[INFO] 22:13:50:240 LOGGER/(50198:50198): Conexion establecida con Kernel
+
+[INFO] 22:13:53:474 LOGGER/(50324:50324): Conexion establecida con Kernel
+
+[INFO] 22:13:56:910 LOGGER/(50438:50438): Conexion establecida con Kernel
+
+[INFO] 22:29:24:308 LOGGER/(55928:55928): Conexion establecida con Kernel
+
+[INFO] 22:29:24:582 LOGGER/(55928:55928): Conexion establecida con Memoria
+
+[INFO] 22:29:27:491 LOGGER/(56045:56045): Conexion establecida con Kernel
+
+[INFO] 22:29:27:658 LOGGER/(56045:56045): Conexion establecida con Memoria
+

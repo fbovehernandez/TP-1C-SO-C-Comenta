@@ -114,6 +114,61 @@ int esperar_cliente(int socket_escucha, t_log* logger) {
     return socket_cliente;
 }
 
+
+/*
+int esperar_cliente(int socket_escucha, t_log* logger) {
+    int handshake = 0;
+    int resultError = -1;
+    int resultOk = 0;
+    
+    printf("Esperando a la IO\n");
+    
+    int socket_cliente = accept(socket_escucha, NULL,  NULL);
+
+    if (socket_cliente == -1) {
+        printf("No acepto el handshake.\n");
+        return -1;
+    }
+    
+    recv(socket_cliente, &handshake, sizeof(int), MSG_WAITALL);
+    send(socket_cliente, &resultOk, sizeof(int), 0);
+
+    pthread_t hilo_io;
+    void *(*funcion_hilo)(void*) = NULL;
+
+    switch (handshake) {
+        case 5:
+            printf("Llego hasta crear el hilo generico\n");
+            funcion_hilo = handle_io_generica;
+            break;
+        case 13:
+            printf("Llego hasta crear el hilo stdin\n");
+            funcion_hilo = handle_io_stdin;
+            break;
+        case 15:
+            funcion_hilo = handle_io_stdout;
+            break;
+        case 17:
+            funcion_hilo = handle_io_dialfs;
+            break;
+        default:
+            send(socket_cliente, &resultError, sizeof(int), 0);
+            printf("ENTRO POR ACA\n");
+            close(socket_cliente);
+            return -1;
+    }
+
+    if (funcion_hilo) {
+        pthread_create(&hilo_io, NULL, funcion_hilo, (void*)(intptr_t) socket_cliente);
+        pthread_detach(hilo_io); // Desprende el hilo para que sus recursos se limpien automáticamente al finalizar
+    }
+
+    return socket_cliente;
+}
+
+
+*/
+
 t_pcb* sacarDe(t_queue* cola, int pid){
     t_pcb* pcb;
     t_queue* colaAux = queue_create();
