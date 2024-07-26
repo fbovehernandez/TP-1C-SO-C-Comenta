@@ -281,20 +281,27 @@ void recibir_memoria(void* config_socket_io) {
                 break;
             case ESCRIBITE:
                 int tamanio, pid, terminoOk = 1;
-                memcpy(&pid, paquete->buffer->stream, sizeof(int));
-                paquete->buffer->stream += sizeof(int);
-                memcpy(&tamanio, paquete->buffer->stream, sizeof(int));
-                paquete->buffer->stream += sizeof(int);
+
+                void* stream = paquete->buffer->stream;
+
+                memcpy(&pid, stream, sizeof(int));
+                stream += sizeof(int);
+                memcpy(&tamanio, stream, sizeof(int));
+                stream += sizeof(int);
+
                 printf("el tamanio del dato a escribir es: %d", tamanio);
+
                 char* valor = malloc(tamanio + 1); 
-                memcpy(valor, paquete->buffer->stream, tamanio);
+
+                memcpy(valor, stream, tamanio);
+                
                 int tamanio_valor_recibido = string_length(valor);
-                log_info(logger_io, "el tamanio del valor a escribir es %d", tamanio_valor_recibido);
+                log_info(logger_io, "el tamanio del valor a escribir es %d\n", tamanio_valor_recibido);
                 valor[tamanio] = '\0';
                 log_info(logger_io, "\n\nEl valor leido de memoria es: %s \n\n", valor);
                 
                 log_info(logger_io, "PID: %d - Operacion: ESCRIBIR", pid);
-                //free(valor);
+                free(valor);
                 send(kernelfd, &terminoOk, sizeof(int), 0);
                 break;
             default:
@@ -302,9 +309,9 @@ void recibir_memoria(void* config_socket_io) {
                 exit(-1);
                 break;
         }
-        liberar_paquete(paquete);        
+       liberar_paquete(paquete);        
     }
-    
+     
 }
 
 t_pid_unidades_trabajo* serializar_unidades_trabajo(t_buffer* buffer) {

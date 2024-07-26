@@ -954,3 +954,312 @@ El valor leido de memoria es: WAR,
 
 
 [INFO] 23:38:56:727 LOGGER/(10583:10583): PID: 1 - Operacion: ESCRIBIR
+[INFO] 00:01:27:646 LOGGER/(13148:13148): Conexion establecida con Kernel
+
+[INFO] 00:01:32:028 LOGGER/(13239:13239): Conexion establecida con Kernel
+
+[INFO] 00:01:32:072 LOGGER/(13239:13239): Conexion establecida con Memoria
+
+[INFO] 00:01:37:319 LOGGER/(13368:13368): Conexion establecida con Kernel
+
+[INFO] 00:01:37:365 LOGGER/(13368:13368): Conexion establecida con Memoria
+
+[INFO] 00:02:13:745 LOGGER/(13239:13239): el valor en mandar_valor_a_memoria es WAR NEVER CHANGES...
+[INFO] 00:02:13:759 LOGGER/(13239:13239): PID: 1 - Operacion: LEER
+[INFO] 00:02:35:465 LOGGER/(13148:13148): PID 1 - Operacion: DORMIR_IO
+[INFO] 00:02:35:925 LOGGER/(13368:13368): el tamanio del valor a escribir es 1
+[INFO] 00:02:35:925 LOGGER/(13368:13368): 
+
+El valor leido de memoria es: ê 
+
+
+[INFO] 00:02:35:925 LOGGER/(13368:13368): PID: 1 - Operacion: ESCRIBIR
+[INFO] 00:21:17:405 LOGGER/(15098:15098): Conexion establecida con Kernel
+
+[INFO] 00:21:21:247 LOGGER/(15175:15175): Conexion establecida con Kernel
+
+[INFO] 00:21:21:291 LOGGER/(15175:15175): Conexion establecida con Memoria
+
+[INFO] 00:21:26:390 LOGGER/(15292:15292): Conexion establecida con Kernel
+
+[INFO] 00:21:26:454 LOGGER/(15292:15292): Conexion establecida con Memoria
+
+[INFO] 00:22:14:289 LOGGER/(15175:15175): el valor en mandar_valor_a_memoria es WAR NEVER CHANGES...
+[INFO] 00:22:14:301 LOGGER/(15175:15175): PID: 1 - Operacion: LEER
+[INFO] 00:22:36:050 LOGGER/(15098:15098): PID 1 - Operacion: DORMIR_IO
+[INFO] 00:22:36:495 LOGGER/(15292:15292): el tamanio del valor a escribir es 1
+[INFO] 00:22:36:495 LOGGER/(15292:15292): 
+
+El valor leido de memoria es: ê 
+
+
+[INFO] 00:22:36:496 LOGGER/(15292:15292): PID: 1 - Operacion: ESCRIBIR
+[INFO] 00:28:13:126 LOGGER/(16433:16433): Conexion establecida con Kernel
+
+[INFO] 00:28:24:590 LOGGER/(16551:16551): Conexion establecida con Kernel
+
+[INFO] 00:28:24:730 LOGGER/(16551:16551): Conexion establecida con Memoria
+
+[INFO] 00:28:28:471 LOGGER/(16650:16650): Conexion establecida con Kernel
+
+[INFO] 00:28:28:562 LOGGER/(16650:16650): Conexion establecida con Memoria
+
+[INFO] 00:36:30:566 LOGGER/(18300:18300): Conexion establecida con Kernel
+
+[INFO] 00:36:55:124 LOGGER/(18558:18558): Conexion establecida con Kernel
+
+[INFO] 00:36:55:220 LOGGER/(18558:18558): Conexion establecida con Memoria
+
+[INFO] 00:37:10:430 LOGGER/(18843:18843): Conexion establecida con Kernel
+
+[INFO] 00:37:10:556 LOGGER/(18843:18843): Conexion establecida con Memoria
+
+[INFO] 00:37:30:043 LOGGER/(18558:18558): el valor en mandar_valor_a_memoria es WAR NEVER CHANGES...
+[INFO] 00:37:30:064 LOGGER/(18558:18558): PID: 1 - Operacion: LEER
+[INFO] 00:37:51:779 LOGGER/(18300:18300): PID 1 - Operacion: DORMIR_IO
+[INFO] 00:37:52:231 LOGGER/(18843:18843): el tamanio del valor a escribir es 21
+[INFO] 00:37:52:232 LOGGER/(18843:18843): 
+
+El valor leido de memoria es: WAR, WAR NEVER CHANGE 
+
+
+[INFO] 00:37:52:232 LOGGER/(18843:18843): PID: 1 - Operacion: ESCRIBIR
+[INFO] 00:40:35:479 LOGGER/(19976:19976): Conexion establecida con Kernel
+
+[INFO] 00:40:38:773 LOGGER/(20078:20078): Conexion establecida con Kernel
+
+[INFO] 00:40:38:840 LOGGER/(20078:20078): Conexion establecida con Memoria
+
+[INFO] 00:40:43:952 LOGGER/(20189:20189): Conexion establecida con Kernel
+
+[INFO] 00:40:44:058 LOGGER/(20189:20189): Conexion establecida con Memoria
+
+[INFO] 00:41:02:771 LOGGER/(20078:20078): el valor en mandar_valor_a_memoria es WAR NEVER CHANGES...
+[INFO] 00:41:02:788 LOGGER/(20078:20078): PID: 1 - Operacion: LEER
+[INFO] 00:41:24:495 LOGGER/(19976:19976): PID 1 - Operacion: DORMIR_IO
+[INFO] 00:41:24:941 LOGGER/(20189:20189): el tamanio del valor a escribir es 21
+[INFO] 00:41:24:941 LOGGER/(20189:20189): 
+
+El valor leido de memoria es: WAR, WAR NEVER CHANGE 
+
+
+[INFO] 00:41:24:942 LOGGER/(20189:20189): PID: 1 - Operacion: ESCRIBIR
+[INFO] 00:44:45:953 LOGGER/(21486:21486): Conexion establecida con Kernel
+
+[INFO] 00:44:50:000 LOGGER/(21560:21560): Conexion establecida con Kernel
+
+[INFO] 00:44:50:042 LOGGER/(21560:21560): Conexion establecida con Memoria
+
+[INFO] 00:44:55:489 LOGGER/(21678:21678): Conexion establecida con Kernel
+
+[INFO] 00:44:55:537 LOGGER/(21678:21678): Conexion establecida con Memoria
+
+[INFO] 00:45:14:927 LOGGER/(21560:21560): el valor en mandar_valor_a_memoria es WAR NEVER CHANGES...
+[INFO] 00:45:14:941 LOGGER/(21560:21560): PID: 1 - Operacion: LEER
+[INFO] 00:51:07:817 LOGGER/(22515:22515): Conexion establecida con Kernel
+
+[INFO] 00:51:15:240 LOGGER/(22638:22638): Conexion establecida con Kernel
+
+[INFO] 00:51:15:308 LOGGER/(22638:22638): Conexion establecida con Memoria
+
+[INFO] 00:51:20:824 LOGGER/(22734:22734): Conexion establecida con Kernel
+
+[INFO] 00:51:20:902 LOGGER/(22734:22734): Conexion establecida con Memoria
+
+[INFO] 00:51:50:535 LOGGER/(22638:22638): el valor en mandar_valor_a_memoria es WAR NEVER CHANGES...
+[INFO] 00:51:50:550 LOGGER/(22638:22638): PID: 1 - Operacion: LEER
+[INFO] 00:52:12:264 LOGGER/(22515:22515): PID 1 - Operacion: DORMIR_IO
+[INFO] 00:52:12:715 LOGGER/(22734:22734): el tamanio del valor a escribir es 21
+[INFO] 00:52:12:715 LOGGER/(22734:22734): 
+
+El valor leido de memoria es: WAR, WAR NEVER CHANGE 
+
+
+[INFO] 00:52:12:716 LOGGER/(22734:22734): PID: 1 - Operacion: ESCRIBIR
+[INFO] 01:06:27:491 LOGGER/(25269:25269): Conexion establecida con Kernel
+
+[INFO] 01:06:45:882 LOGGER/(25499:25499): Conexion establecida con Kernel
+
+[INFO] 01:06:45:950 LOGGER/(25499:25499): Conexion establecida con Memoria
+
+[INFO] 01:07:02:986 LOGGER/(25764:25764): Conexion establecida con Kernel
+
+[INFO] 01:07:03:050 LOGGER/(25764:25764): Conexion establecida con Memoria
+
+[INFO] 01:07:30:079 LOGGER/(25499:25499): el valor en mandar_valor_a_memoria es WAR NEVER CHANGES...
+[INFO] 01:07:30:092 LOGGER/(25499:25499): PID: 1 - Operacion: LEER
+[INFO] 01:07:51:789 LOGGER/(25269:25269): PID 1 - Operacion: DORMIR_IO
+[INFO] 01:07:52:243 LOGGER/(25764:25764): el tamanio del valor a escribir es 21
+
+[INFO] 01:07:52:243 LOGGER/(25764:25764): 
+
+El valor leido de memoria es: WAR, WAR NEVER CHANGE 
+
+
+[INFO] 01:07:52:243 LOGGER/(25764:25764): PID: 1 - Operacion: ESCRIBIR
+[INFO] 01:18:44:093 LOGGER/(27771:27771): Conexion establecida con Kernel
+
+[INFO] 01:18:59:550 LOGGER/(28015:28015): Conexion establecida con Kernel
+
+[INFO] 01:18:59:657 LOGGER/(28015:28015): Conexion establecida con Memoria
+
+[INFO] 01:19:20:191 LOGGER/(28296:28296): Conexion establecida con Kernel
+
+[INFO] 01:19:20:305 LOGGER/(28296:28296): Conexion establecida con Memoria
+
+[INFO] 01:19:41:260 LOGGER/(28015:28015): el valor en mandar_valor_a_memoria es WAR NEVER CHANGES...
+[INFO] 01:19:41:274 LOGGER/(28015:28015): PID: 1 - Operacion: LEER
+[INFO] 01:20:02:994 LOGGER/(27771:27771): PID 1 - Operacion: DORMIR_IO
+[INFO] 01:20:03:469 LOGGER/(28296:28296): el tamanio del valor a escribir es 33
+
+[INFO] 01:20:03:469 LOGGER/(28296:28296): 
+
+El valor leido de memoria es: WAR, WAR NEVER CHANGES... 
+
+
+[INFO] 01:20:03:470 LOGGER/(28296:28296): PID: 1 - Operacion: ESCRIBIR
+[INFO] 01:25:42:157 LOGGER/(29984:29984): Conexion establecida con Kernel
+
+[INFO] 01:25:56:945 LOGGER/(30212:30212): Conexion establecida con Kernel
+
+[INFO] 01:25:57:052 LOGGER/(30212:30212): Conexion establecida con Memoria
+
+[INFO] 01:26:11:581 LOGGER/(30476:30476): Conexion establecida con Kernel
+
+[INFO] 01:26:11:684 LOGGER/(30476:30476): Conexion establecida con Memoria
+
+[INFO] 01:26:33:974 LOGGER/(30212:30212): el valor en mandar_valor_a_memoria es WAR NEVER CHANGES...
+[INFO] 01:26:33:989 LOGGER/(30212:30212): PID: 1 - Operacion: LEER
+[INFO] 01:26:55:711 LOGGER/(29984:29984): PID 1 - Operacion: DORMIR_IO
+[INFO] 01:26:56:166 LOGGER/(30476:30476): el tamanio del valor a escribir es 33
+
+[INFO] 01:26:56:167 LOGGER/(30476:30476): 
+
+El valor leido de memoria es: WAR, WAR NEVER CHANGES... 
+
+
+[INFO] 01:26:56:167 LOGGER/(30476:30476): PID: 1 - Operacion: ESCRIBIR
+[INFO] 01:30:10:744 LOGGER/(32208:32208): Conexion establecida con Kernel
+
+[INFO] 01:30:24:683 LOGGER/(32487:32487): Conexion establecida con Kernel
+
+[INFO] 01:30:24:756 LOGGER/(32487:32487): Conexion establecida con Memoria
+
+[INFO] 01:30:37:622 LOGGER/(32771:32771): Conexion establecida con Kernel
+
+[INFO] 01:30:37:798 LOGGER/(32771:32771): Conexion establecida con Memoria
+
+[INFO] 01:30:59:629 LOGGER/(32208:32208): PID 1 - Operacion: DORMIR_IO
+[INFO] 02:04:42:455 LOGGER/(35851:35851): Conexion establecida con Kernel
+
+[INFO] 02:04:58:946 LOGGER/(36078:36078): Conexion establecida con Kernel
+
+[INFO] 02:04:59:015 LOGGER/(36078:36078): Conexion establecida con Memoria
+
+[INFO] 02:05:17:299 LOGGER/(36371:36371): Conexion establecida con Kernel
+
+[INFO] 02:05:17:393 LOGGER/(36371:36371): Conexion establecida con Memoria
+
+[INFO] 02:05:38:133 LOGGER/(35851:35851): PID 1 - Operacion: DORMIR_IO
+[INFO] 02:05:50:117 LOGGER/(35851:35851): PID 1 - Operacion: DORMIR_IO
+[INFO] 02:06:01:815 LOGGER/(35851:35851): PID 1 - Operacion: DORMIR_IO
+[INFO] 02:06:12:852 LOGGER/(35851:35851): PID 1 - Operacion: DORMIR_IO
+[INFO] 02:06:24:196 LOGGER/(35851:35851): PID 1 - Operacion: DORMIR_IO
+[INFO] 02:06:35:555 LOGGER/(35851:35851): PID 1 - Operacion: DORMIR_IO
+[INFO] 02:06:47:520 LOGGER/(35851:35851): PID 1 - Operacion: DORMIR_IO
+[INFO] 02:06:58:562 LOGGER/(35851:35851): PID 1 - Operacion: DORMIR_IO
+[INFO] 02:07:00:137 LOGGER/(36371:36371): el tamanio del valor a escribir es 37
+
+[INFO] 02:07:00:137 LOGGER/(36371:36371): 
+
+El valor leido de memoria es: I don't want to set the world on fire 
+
+
+[INFO] 02:07:00:138 LOGGER/(36371:36371): PID: 1 - Operacion: ESCRIBIR
+[INFO] 02:12:19:922 LOGGER/(39152:39152): Conexion establecida con Kernel
+
+[INFO] 02:12:33:030 LOGGER/(39374:39374): Conexion establecida con Kernel
+
+[INFO] 02:12:33:161 LOGGER/(39374:39374): Conexion establecida con Memoria
+
+[INFO] 02:12:47:017 LOGGER/(39642:39642): Conexion establecida con Kernel
+
+[INFO] 02:12:47:103 LOGGER/(39642:39642): Conexion establecida con Memoria
+
+[INFO] 02:13:03:857 LOGGER/(39374:39374): el valor en mandar_valor_a_memoria es WAR NEVER CHANGES...
+[INFO] 02:13:03:869 LOGGER/(39374:39374): PID: 1 - Operacion: LEER
+[INFO] 02:13:25:614 LOGGER/(39152:39152): PID 1 - Operacion: DORMIR_IO
+[INFO] 02:13:26:082 LOGGER/(39642:39642): el tamanio del valor a escribir es 33
+
+[INFO] 02:13:26:082 LOGGER/(39642:39642): 
+
+El valor leido de memoria es: WAR, WAR NEVER CHANGES... 
+
+
+[INFO] 02:13:26:082 LOGGER/(39642:39642): PID: 1 - Operacion: ESCRIBIR
+[INFO] 02:15:56:152 LOGGER/(41319:41319): Conexion establecida con Kernel
+
+[INFO] 02:16:14:073 LOGGER/(41549:41549): Conexion establecida con Kernel
+
+[INFO] 02:16:14:150 LOGGER/(41549:41549): Conexion establecida con Memoria
+
+[INFO] 02:16:29:659 LOGGER/(41822:41822): Conexion establecida con Kernel
+
+[INFO] 02:16:29:747 LOGGER/(41822:41822): Conexion establecida con Memoria
+
+[INFO] 02:16:53:032 LOGGER/(41549:41549): el valor en mandar_valor_a_memoria es Sistemas Operativos 2c2023
+[INFO] 02:16:53:042 LOGGER/(41549:41549): PID: 1 - Operacion: LEER
+[INFO] 02:17:13:375 LOGGER/(41319:41319): PID 1 - Operacion: DORMIR_IO
+[INFO] 02:17:34:269 LOGGER/(41319:41319): PID 1 - Operacion: DORMIR_IO
+[INFO] 02:17:40:955 LOGGER/(41822:41822): el tamanio del valor a escribir es 26
+
+[INFO] 02:17:40:956 LOGGER/(41822:41822): 
+
+El valor leido de memoria es: Sistemas Operativos 1c2024 
+
+
+[INFO] 02:17:40:956 LOGGER/(41822:41822): PID: 1 - Operacion: ESCRIBIR
+[INFO] 02:22:43:685 LOGGER/(43702:43702): Conexion establecida con Kernel
+
+[INFO] 02:23:03:152 LOGGER/(43949:43949): Conexion establecida con Kernel
+
+[INFO] 02:23:03:225 LOGGER/(43949:43949): Conexion establecida con Memoria
+
+[INFO] 02:23:27:352 LOGGER/(44284:44284): Conexion establecida con Kernel
+
+[INFO] 02:23:27:426 LOGGER/(44284:44284): Conexion establecida con Memoria
+
+[INFO] 02:23:59:522 LOGGER/(43949:43949): el valor en mandar_valor_a_memoria es Sistemas Operativos 2c2023
+[INFO] 02:23:59:536 LOGGER/(43949:43949): PID: 1 - Operacion: LEER
+[INFO] 02:24:19:864 LOGGER/(43702:43702): PID 1 - Operacion: DORMIR_IO
+[INFO] 02:24:40:766 LOGGER/(43702:43702): PID 1 - Operacion: DORMIR_IO
+[INFO] 02:25:00:369 LOGGER/(44284:44284): el tamanio del valor a escribir es 26
+
+[INFO] 02:25:00:369 LOGGER/(44284:44284): 
+
+El valor leido de memoria es: Sistemas Operativos 1c2024 
+
+
+[INFO] 02:25:00:369 LOGGER/(44284:44284): PID: 1 - Operacion: ESCRIBIR
+[INFO] 02:31:58:522 LOGGER/(46890:46890): Conexion establecida con Kernel
+
+[INFO] 02:32:15:330 LOGGER/(47124:47124): Conexion establecida con Kernel
+
+[INFO] 02:32:15:397 LOGGER/(47124:47124): Conexion establecida con Memoria
+
+[INFO] 02:32:33:041 LOGGER/(47396:47396): Conexion establecida con Kernel
+
+[INFO] 02:32:33:142 LOGGER/(47396:47396): Conexion establecida con Memoria
+
+[INFO] 02:33:21:489 LOGGER/(47124:47124): el valor en mandar_valor_a_memoria es Sistemas Operativos 2c2023
+[INFO] 02:33:21:514 LOGGER/(47124:47124): PID: 1 - Operacion: LEER
+[INFO] 02:33:41:858 LOGGER/(46890:46890): PID 1 - Operacion: DORMIR_IO
+[INFO] 02:34:02:634 LOGGER/(46890:46890): PID 1 - Operacion: DORMIR_IO
+[INFO] 02:34:27:771 LOGGER/(47396:47396): el tamanio del valor a escribir es 0
+
+[INFO] 02:34:27:771 LOGGER/(47396:47396): 
+
+El valor leido de memoria es:  
+
+
+[INFO] 02:34:27:772 LOGGER/(47396:47396): PID: 1 - Operacion: ESCRIBIR

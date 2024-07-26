@@ -221,7 +221,7 @@ void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_r
     // printf("Antes de entrar al for, necesito %d paginas\n", df->cantidad_paginas);
     int tamanio_anterior = 0;
 
-    while(list_size(direcciones_restantes) > 0) {
+    while(list_size(direcciones_restantes) > 0) { 
         t_dir_fisica_tamanio* dir_fisica_tam = list_remove(direcciones_restantes, 0);
         printf("La direccion fisica es: %d\n", dir_fisica_tam->direccion_fisica);
         printf("El tamanio es: %d\n", dir_fisica_tam->bytes_lectura);
@@ -295,6 +295,7 @@ t_pedido_memoria* deserializar_direccion_fisica(t_buffer* buffer, t_list* direcc
     datos_operacion->valor_a_escribir = malloc(datos_operacion->length_valor);
     memcpy(datos_operacion->valor_a_escribir, stream, datos_operacion->length_valor);
     stream += datos_operacion->length_valor;
+   // printf("el valor a escribir en deserializar dir fisica es %d \n", datos_operacion->valor_a_escribir);
 
     printf("cant paginas: %d\n", datos_operacion->cantidad_paginas);
     for(int i = 0; i < datos_operacion->cantidad_paginas; i++) {
@@ -564,7 +565,7 @@ void* handle_kernel(void* socket) {
                 log_info(logger_memoria, "El tamanio del valor leido* es: %d\n", pid_stdout->registro_tamanio);
             
                 realizar_operacion(pid_stdout->pid, LECTURA, pid_stdout->lista_direcciones, user_space_aux, NULL, registro_lectura);
-
+                log_info(logger_memoria, "el valor del registro lectura es :%s", (char*)registro_lectura);
                 char* registro_string = malloc(pid_stdout->registro_tamanio + 1);
                 
                 // ponele el \0 para que lo pueda leer bien
@@ -572,6 +573,7 @@ void* handle_kernel(void* socket) {
                 registro_string[pid_stdout->registro_tamanio] = '\0';
                 
                 printf("El valor leido para char* es: %s\n", registro_string); // WAR,
+                
                 // printf("El valor leido para char* es: %s\n", (char*)registro_lectura);
                 // int socket_io = (intptr_t) dictionary_get(diccionario_io, pid_stdout->nombre_interfaz);
 
@@ -581,7 +583,7 @@ void* handle_kernel(void* socket) {
 
                 printf("El pid que mandaremos a la io es %d\n", pid_stdout->pid);
                 printf("El socket es %d\n", socket_io->socket);
-                enviar_valor_leido_a_io(pid_stdout->pid, socket_io->socket, registro_string, pid_stdout->registro_tamanio);
+                enviar_valor_leido_a_io(pid_stdout->pid, socket_io->socket, registro_string, pid_stdout->registro_tamanio); // aca ya llega mal 
                 
                 // free(registro_string);
                 list_destroy(pid_stdout->lista_direcciones);
@@ -734,7 +736,7 @@ void liberar_ios() {
 }
 
 void enviar_valor_leido_a_io(int pid, int socket_io, char* valor, int tamanio) {
-    printf("\nLlega a enviar_valor con: PID %d, socket %d, valor %s, tamanio %d\n", pid, socket_io, valor, tamanio); // ACA LLEGA WAR,
+    printf("\nLlega a enviar_valor con: PID %d, socket %d, valor %s, tamanio %d\n", pid, socket_io, valor, tamanio); // ACA LLEGA MAL
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
     buffer->size = sizeof(int) * 2 + tamanio;
@@ -826,6 +828,7 @@ void* handle_io_stdin(void* socket) {
                 char* registro_escritura = escritura_stdin->valor;
 
                 printf("el valor de GUARDAR_VALOR es %s\n", registro_escritura);
+                printf("el tamanio de registro escritura es %d", string_length(registro_escritura));
                 log_info(logger_memoria, "\nel valor a guardar en memoria llegado desde STDIN es: %s\n\n", registro_escritura);
 
                 realizar_operacion(escritura_stdin->pid_stdin->pid, ESCRITURA, escritura_stdin->pid_stdin->lista_direcciones, user_space_aux, registro_escritura, NULL); 

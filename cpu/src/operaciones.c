@@ -451,17 +451,26 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         uint32_t* registro_dato_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dato,pcb);
         es_registro_uint8_dato = es_de_8_bits(nombre_registro_dato);
-        
+        bool registro_direccion_es_8_bits = es_de_8_bits(nombre_registro_dir);
+
         uint32_t* registro_direccion_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dir,pcb); // este es la direccion logica
 
-        pagina = floor(*registro_direccion_mov_out / tamanio_pagina);
+        uint32_t var_register_mov_out;
+
+        if(registro_direccion_es_8_bits) {
+            var_register_mov_out = *(uint8_t*) registro_direccion_mov_out;
+        } else {
+            var_register_mov_out = *(uint32_t*) registro_direccion_mov_out;
+        }
+        
+        pagina = floor(var_register_mov_out / tamanio_pagina);
         tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato);
 
-        cantidad_paginas = cantidad_de_paginas_a_utilizar(*registro_direccion_mov_out, tamanio_en_byte, pagina, lista_bytes_lectura); // Cantidad de paginas + la primera
+        cantidad_paginas = cantidad_de_paginas_a_utilizar(var_register_mov_out, tamanio_en_byte, pagina, lista_bytes_lectura); // Cantidad de paginas + la primera
         // imprimir lista de bytes
         // printf("Cantidad primera a copiar %d\n", *(int*)list_get(lista_bytes_lectura, 0));
 
-        cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_lectura, *registro_direccion_mov_out, pcb->pid, lista_direcciones_fisicas_mov_out, pagina);
+        cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_lectura, var_register_mov_out, pcb->pid, lista_direcciones_fisicas_mov_out, pagina);
         
         enviar_direcciones_fisicas(cantidad_paginas, lista_direcciones_fisicas_mov_out, (void*)registro_dato_mov_out, tamanio_en_byte, pcb->pid, ESCRIBIR_DATO_EN_MEM);
         // realizar_operacion(registro_direccion_mov_out, tamanio_en_byte, (void*)registro_dato_mov_out , 0, pcb->pid, ESCRIBIR_DATO_EN_MEM);
@@ -610,8 +619,8 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         registro_direccion = list_get(list_parametros, 1); // Cambiar, usa el de arriba, mejor nombre?
         t_parametro *registro_tamanio = list_get(list_parametros, 2);
 
-        int tamanio_a_copiar_en_mem = atoi(registro_tamanio->nombre);
-        printf("El tamanio a copiar es: %d\n", tamanio_a_copiar_en_mem);
+        // int tamanio_a_copiar_en_mem = atoi(registro_tamanio->nombre);
+       //  printf("El tamanio a copiar es: %d\n", tamanio_a_copiar_en_mem);
 
         char* nombre_registro_direccion = registro_direccion->nombre;
         char* nombre_registro_tamanio = registro_tamanio->nombre;
@@ -621,6 +630,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         bool es_registro_uint8_dato_register = es_de_8_bits(nombre_registro_direccion);
         
         uint32_t* registro_tamanio_stdin = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio,pcb);
+
 
         uint32_t var_register;
 
@@ -637,7 +647,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); // Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
 
-        int cantidad_paginas = cantidad_de_paginas_a_utilizar(var_register, tamanio, pagina, lista_bytes_stdin); // Cantidad de paginas + la primera
+        int cantidad_paginas = cantidad_de_paginas_a_utilizar(var_register, *registro_tamanio_stdin, pagina, lista_bytes_stdin); // Cantidad de paginas + la primera
         
         cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdin, var_register, pcb->pid, lista_direcciones_fisicas_stdin, pagina);
 
@@ -646,7 +656,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
             t_dir_fisica_tamanio* dir_stdin = list_get(lista_direcciones_fisicas_stdin, i);
             printf("Direccion fisica: %d\n", dir_stdin->direccion_fisica);
             printf("Bytes a leer: %d\n", dir_stdin->bytes_lectura);
-            log_info(logger_CPU,"PID: %d - Acción: ESCRIBIR - Dirección Física: %d - Valor: %d",pcb->pid, dir_stdin->direccion_fisica,var_register);
+            log_info(logger_CPU,"PID: %d - Acción: ESCRIBIR - Dirección Física: %d - Valor: %d",pcb->pid, dir_stdin->direccion_fisica, var_register);
         }
 
         t_buffer* buffer_lectura = llenar_buffer_stdio(interfaz->nombre, lista_direcciones_fisicas_stdin, *registro_tamanio_stdin, cantidad_paginas);
@@ -678,6 +688,9 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         t_parametro* parametro_registro_tamanio = list_get(list_parametros,2);
         char* nombre_registro_tamanio_stdout = parametro_registro_tamanio->nombre;
 
+        // int tamanio_a_leer_en_mem = atoi(nombre_registro_tamanio_stdout);
+        // printf("El tamanio a leer en memoria es: %d\n", tamanio_a_leer_en_mem); // deberia decir 25
+
         void* registro_direccion11 = seleccionar_registro_cpu(nombre_registro_direccion_stdout,pcb);
         bool es_registro_uint8_dato_register_2 = es_de_8_bits(nombre_registro_direccion_stdout);
 
@@ -697,10 +710,13 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         }
         
         pagina = floor(valor_a_enviar / tamanio_pagina);
-        
-        tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); // Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
+         
+        printf("el valor a enviar es %d \n", valor_a_enviar);
+        printf("la pagina es HOLIHOLI %d", pagina);
 
-        cantidad_paginas = cantidad_de_paginas_a_utilizar(valor_a_enviar, tamanio_en_byte, pagina, lista_bytes_stdout); // Cantidad de paginas + la primera
+        tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); // Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
+                                                            // 11 25 1
+        cantidad_paginas = cantidad_de_paginas_a_utilizar(valor_a_enviar, *registro_tamanio_stdout, pagina, lista_bytes_stdout); // Cantidad de paginas + la primera
         
         cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdout, valor_a_enviar, pcb->pid, lista_direcciones_fisicas_stdout, pagina);
         
@@ -876,8 +892,10 @@ void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectur
 
     int frame;
     // Aca cargo el resto
+
     for(int i = 0; i < cantidad_paginas - 1; i++) {
         printf("Iteracion %d\n", i);
+        
         log_info(logger_CPU, "HELP Pido el marco de la pagina %d del proceso %d", pagina + 1 + i, pid); // El uno es para que siempre pida la sig
         
         frame = buscar_frame_en_TLB(pid, pagina + 1 + i);
@@ -903,7 +921,7 @@ void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectur
 
         list_add(direcciones_fisicas, dir_fisica_tamanio_2); 
 
-        pagina++;
+        // pagina++;
     }
 }
 
@@ -972,7 +990,7 @@ int primer_byte_anterior_a_dir_logica(uint32_t direccion_logica, int tamanio_pag
     // Dir logica en 221, con un tam pagina de 32, el primer byte seria 192
     // Dir logica 16, con un tam pagina de 32, el primer byte seria 0
     
-    int offset_movido = direccion_logica % tamanio_pagina; // 16 % 32 = 16 ✔ - 198 % 32 = 6 ✔ 16 % 16 = 0 ✔
+    int offset_movido = direccion_logica % tamanio_pagina; // 11 % 16 = 11 ✔ - 198 % 32 = 6 ✔ 16 % 16 = 0 ✔
     printf("El offset movido dentro del calculo del primer byte es %d\n", offset_movido);
 
     int primer_byte = direccion_logica - offset_movido; // 16 - 16 = 0 ✔ - 198 - 6 = 192 ✔ - 16 - 0 = 16 ✔ 
@@ -989,7 +1007,7 @@ int cantidad_de_paginas_a_utilizar(uint32_t direccion_logica, int tamanio_en_byt
 
     int primer_byte_anterior = primer_byte_anterior_a_dir_logica(direccion_logica, tamanio_pagina); // 0 ✔ - 192 ✔
     int offset_movido = direccion_logica - primer_byte_anterior; // 16 - 0 = 16 ✔ - 198 - 192 = 6 ✔
-
+    printf("el offset movido es %d", offset_movido);
     /* 
     if(direccion_logica > tamanio_pagina) {
         offset_movido = direccion_logica % tamanio_pagina; // 198 224 = abs(dir_logica - tam_pagina * pagina)  = abs(-26) = 26 primer byte pagina en la que esta
@@ -1003,9 +1021,11 @@ int cantidad_de_paginas_a_utilizar(uint32_t direccion_logica, int tamanio_en_byt
 
     while(1) { 
         int posible_lectura = tamanio_pagina - offset_movido;  // 3
+        printf("tamanio en bytes: %d\n", tamanio_en_bytes); // 17 -> 14 -> 10 -> 6 -> 2
+        printf("Posible lectura: %d\n", posible_lectura); // 3 -> 4 -> 4 -> 4
+        int sobrante_de_pagina = tamanio_en_bytes - posible_lectura; 
+        printf("Sobrante de pagina: %d\n", sobrante_de_pagina); 
 
-        int sobrante_de_pagina = tamanio_en_bytes - posible_lectura; // 4 -11 = -7
-        
         if(sobrante_de_pagina <= 0) {
             int* tam_bytes = malloc(sizeof(int));
             *tam_bytes = tamanio_en_bytes; 
@@ -1390,6 +1410,7 @@ t_buffer* llenar_buffer_stdio(char* interfaz, t_list* direcciones_fisicas, uint3
 
     memcpy(buffer->stream + buffer->offset, &tamanio_a_copiar, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
+    printf("el tamanio a copiar es %d", tamanio_a_copiar);
 
     memcpy(buffer->stream + buffer->offset, &largo_interfaz, sizeof(int));
     buffer->offset += sizeof(int);
