@@ -73,4 +73,5 @@ void liberar_io(t_list_io* io);
 void liberar_arrays_recurso(char** recursos, char** instancias_recursos);
 t_pcb* sacarDe(t_queue* cola, int pid);
 pthread_mutex_t* obtener_mutex_de(t_queue* cola);
+void liberar_datos_std(io_std* datos_std);
 #endif // CONEXIONES_H

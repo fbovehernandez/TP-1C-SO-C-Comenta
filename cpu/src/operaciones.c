@@ -529,6 +529,9 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         
         list_destroy_and_destroy_elements(lista_bytes_lectura_cs, free);
         list_destroy_and_destroy_elements(lista_direcciones_fisicas_cs, free);
+        list_destroy_and_destroy_elements(lista_bytes_escritura_cs, free);
+        list_destroy_and_destroy_elements(lista_direcciones_fisicas_escritura_cs, free);
+        
         break;
     case SUM: // SUM DESTINO ORIGEN
         t_parametro* registro_param1 = list_get(list_parametros, 0);

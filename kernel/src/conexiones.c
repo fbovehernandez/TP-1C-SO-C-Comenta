@@ -197,7 +197,7 @@ void *handle_io_stdin(void *socket_io) {
         printf("\nSize del diccionario: %d\n", size_dictionary);
 
         sem_wait(io->semaforo_cola_procesos_blocked);
-        
+
         t_pid_stdin* pid_stdin = malloc(sizeof(t_pid_stdin));
         printf("Llega al sem y mutex\n");
         
@@ -245,7 +245,7 @@ void *handle_io_stdin(void *socket_io) {
                     t_pcb* pcb = sacarDe(cola_blocked, datos_stdin->pcb->pid);
                     cantidad_bloqueados++;
                     sem_wait(&sem_planificadores);
-                    pasar_a_ready(pcb); //ACA
+                    pasar_a_ready(pcb); 
                     sem_post(&sem_planificadores);
                     cantidad_bloqueados--;
                     
@@ -257,6 +257,9 @@ void *handle_io_stdin(void *socket_io) {
                 printf("No se pudo ejecutar la IO\n");
                 break;
             }
+
+            liberar_datos_std(datos_stdin);
+            free(pid_stdin);
             // list_destroy(pid_stdin->lista_direcciones);
         }
     }
@@ -288,11 +291,11 @@ int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin) {
         buffer->offset += sizeof(int);
         memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
         buffer->offset += sizeof(int);
-        free(dir_fisica_tam);
+        //free(dir_fisica_tam);
     }
     
-    list_destroy(pid_stdin->lista_direcciones);
-    free(pid_stdin);
+    //list_destroy(pid_stdin->lista_direcciones);
+    //free(pid_stdin);
 
     printf("Va a hacer LEETE... o eso deberia.\n");
     enviar_paquete(buffer, LEETE, socket);
@@ -361,8 +364,8 @@ void* handle_io_stdout(void* socket_io) {
         printf("PID: %d\n", pid_stdout->pid);
         printf("Cantidad de paginas: %d\n", pid_stdout->cantidad_paginas);
         printf("Registro tamanio: %d\n", pid_stdout->registro_tamanio);
-        printf("Nombre interfaz: %s\n", pid_stdout->nombre_interfaz);
-        printf("Largo interfaz: %d\n", pid_stdout->largo_interfaz);
+        // printf("Nombre interfaz: %s\n", pid_stdout->nombre_interfaz);
+        // printf("Largo interfaz: %d\n", pid_stdout->largo_interfaz);
         
         int respuesta_ok = ejecutar_io_stdout(pid_stdout);
 
@@ -392,6 +395,8 @@ void* handle_io_stdout(void* socket_io) {
             break;
         }
 
+        liberar_datos_std(datos_stdout);
+        free(pid_stdout->nombre_interfaz);
         free(pid_stdout);
     }
 
@@ -402,6 +407,19 @@ void* handle_io_stdout(void* socket_io) {
 
     liberar_paquete(paquete);
     return NULL;
+}
+
+void liberar_datos_std(io_std* datos_std) {
+    // Liberar una por una las direcciones
+    for(int i=0; i < datos_std->cantidad_paginas; i++) {
+        t_dir_fisica_tamanio* dir_fisica_tam = list_get(datos_std->lista_direcciones, i);
+        free(dir_fisica_tam);
+    }
+
+    list_destroy(datos_std->lista_direcciones);
+
+    // free(datos_std->pcb); -> No lo libero porque es el mismo que le hacemos malloc cuando desalojamos...
+    free(datos_std);
 }
 
 int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
@@ -427,7 +445,7 @@ int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
     printf("\n\nLa interfaz a mandar es: %s\n\n", pid_stdout->nombre_interfaz);
     memcpy(buffer->stream + buffer->offset, pid_stdout->nombre_interfaz, pid_stdout->largo_interfaz);
     buffer->offset += pid_stdout->largo_interfaz;
-    free(pid_stdout->nombre_interfaz);
+    // free(pid_stdout->nombre_interfaz);
     
     for(int i=0; i < pid_stdout->cantidad_paginas; i++) {
         t_dir_fisica_tamanio* dir_fisica_tam = list_get(pid_stdout->lista_direcciones, i);
@@ -435,10 +453,10 @@ int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
         buffer->offset += sizeof(int);
         memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
         buffer->offset += sizeof(int);
-        free(dir_fisica_tam);
+        // free(dir_fisica_tam);
     }
     
-    list_destroy(pid_stdout->lista_direcciones);
+    // list_destroy(pid_stdout->lista_direcciones);
     // free(pid_stdout); lo voy a poner arriba
     
     enviar_paquete(buffer, ESCRIBIR_STDOUT, sockets->socket_memoria); //ver socket

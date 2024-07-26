@@ -332,7 +332,7 @@ t_pid_stdin* deserializar_pid_stdin(t_buffer* buffer) {
     memcpy(&pid_stdin->cantidad_paginas, stream, sizeof(int));
     stream += sizeof(int);
 
-    pid_stdin->lista_direcciones = malloc(pid_stdin->cantidad_paginas);
+    // pid_stdin->lista_direcciones = malloc(pid_stdin->cantidad_paginas);
     pid_stdin->lista_direcciones = list_create();
     
     for(int i=0; i < pid_stdin->cantidad_paginas; i++) {
