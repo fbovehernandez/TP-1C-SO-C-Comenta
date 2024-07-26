@@ -206,7 +206,7 @@ void recibir_kernel(void* config_socket_io) { //FREE
                 // free(valor); Ya esta en mandar_valor_a_memoria
                 // liberar_lista_direcciones(pid_stdin->lista_direcciones);
 
-                printf("\nYA LIBERE LA LISTA DE DIRECCION\n");
+                // printf("\nYA LIBERE LA LISTA DE DIRECCION\n");
                 free(pid_stdin);
                 // free(valor_le);
                 break;

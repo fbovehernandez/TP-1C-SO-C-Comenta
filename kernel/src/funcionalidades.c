@@ -644,6 +644,8 @@ void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
     } 
 
     // Habria que liberar toda la lista que se cargo adentro de pedido
+    free(pedido->interfaz);
+    list_destroy(pedido->lista_dir_tamanio);
     free(pedido);
 } 
 

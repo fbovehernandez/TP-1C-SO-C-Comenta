@@ -1321,3 +1321,169 @@ El valor leido de memoria es: Sistemas Operativos 1c2024
 
 
 [INFO] 17:24:40:579 LOGGER/(10614:10614): PID: 1 - Operacion: ESCRIBIR
+[INFO] 17:29:15:425 LOGGER/(13275:13275): Conexion establecida con Kernel
+
+[INFO] 17:29:15:457 LOGGER/(13275:13275): Conexion establecida con Memoria
+
+[INFO] 17:29:23:600 LOGGER/(13413:13413): Conexion establecida con Kernel
+
+[INFO] 17:29:23:642 LOGGER/(13413:13413): Conexion establecida con Memoria
+
+[INFO] 17:29:30:953 LOGGER/(13570:13570): Conexion establecida con Kernel
+
+[INFO] 17:30:00:879 LOGGER/(13570:13570): PID 2 - Operacion: DORMIR_IO
+[INFO] 17:30:07:544 LOGGER/(13413:13413): el valor en mandar_valor_a_memoria es WAR NEVER CHANGES...
+[INFO] 17:30:07:547 LOGGER/(13413:13413): PID: 1 - Operacion: LEER
+[INFO] 17:30:12:848 LOGGER/(13570:13570): PID 2 - Operacion: DORMIR_IO
+[INFO] 17:30:32:863 LOGGER/(13570:13570): PID 1 - Operacion: DORMIR_IO
+[INFO] 17:30:33:303 LOGGER/(13275:13275): el tamanio del valor a escribir es 33
+
+[INFO] 17:30:33:303 LOGGER/(13275:13275): 
+
+El valor leido de memoria es: t R, WAR NEVER CHANGES... 
+
+
+[INFO] 17:30:33:303 LOGGER/(13275:13275): PID: 1 - Operacion: ESCRIBIR
+[INFO] 17:30:42:867 LOGGER/(13570:13570): PID 2 - Operacion: DORMIR_IO
+[INFO] 17:30:53:893 LOGGER/(13570:13570): PID 2 - Operacion: DORMIR_IO
+[INFO] 17:31:05:262 LOGGER/(13570:13570): PID 2 - Operacion: DORMIR_IO
+[INFO] 17:31:16:680 LOGGER/(13570:13570): PID 2 - Operacion: DORMIR_IO
+[INFO] 17:31:28:682 LOGGER/(13570:13570): PID 2 - Operacion: DORMIR_IO
+[INFO] 17:31:39:727 LOGGER/(13570:13570): PID 2 - Operacion: DORMIR_IO
+[INFO] 17:31:41:275 LOGGER/(13275:13275): el tamanio del valor a escribir es 37
+
+[INFO] 17:31:41:276 LOGGER/(13275:13275): 
+
+El valor leido de memoria es: I don't want to set the world on fire 
+
+
+[INFO] 17:31:41:276 LOGGER/(13275:13275): PID: 2 - Operacion: ESCRIBIR
+[INFO] 17:33:24:687 LOGGER/(16056:16056): Conexion establecida con Kernel
+
+[INFO] 17:33:24:719 LOGGER/(16056:16056): Conexion establecida con Memoria
+
+[INFO] 17:33:27:968 LOGGER/(16147:16147): Conexion establecida con Kernel
+
+[INFO] 17:33:27:995 LOGGER/(16147:16147): Conexion establecida con Memoria
+
+[INFO] 17:33:32:509 LOGGER/(16270:16270): Conexion establecida con Kernel
+
+[INFO] 17:33:58:840 LOGGER/(16270:16270): PID 2 - Operacion: DORMIR_IO
+[INFO] 17:34:04:570 LOGGER/(16147:16147): el valor en mandar_valor_a_memoria es WAR NEVER CHANGES...
+[INFO] 17:34:04:572 LOGGER/(16147:16147): PID: 1 - Operacion: LEER
+[INFO] 17:34:10:799 LOGGER/(16270:16270): PID 2 - Operacion: DORMIR_IO
+[INFO] 17:34:21:313 LOGGER/(16147:16147): el valor en mandar_valor_a_memoria es Sistemas Operativos 1c2024
+[INFO] 17:34:21:313 LOGGER/(16147:16147): PID: 3 - Operacion: LEER
+[INFO] 17:34:30:803 LOGGER/(16270:16270): PID 1 - Operacion: DORMIR_IO
+[INFO] 17:34:31:237 LOGGER/(16056:16056): el tamanio del valor a escribir es 33
+
+[INFO] 17:34:31:238 LOGGER/(16056:16056): 
+
+El valor leido de memoria es: erat vos 1c2024CHANGES... 
+
+
+[INFO] 17:34:31:238 LOGGER/(16056:16056): PID: 1 - Operacion: ESCRIBIR
+[INFO] 17:34:40:808 LOGGER/(16270:16270): PID 2 - Operacion: DORMIR_IO
+[INFO] 17:35:00:823 LOGGER/(16270:16270): PID 3 - Operacion: DORMIR_IO
+[INFO] 17:35:10:853 LOGGER/(16270:16270): PID 2 - Operacion: DORMIR_IO
+[INFO] 17:35:30:854 LOGGER/(16270:16270): PID 3 - Operacion: DORMIR_IO
+[INFO] 17:57:40:529 LOGGER/(24761:24761): Conexion establecida con Kernel
+
+[INFO] 17:57:40:676 LOGGER/(24761:24761): Conexion establecida con Memoria
+
+[INFO] 17:58:02:942 LOGGER/(24761:24761): el tamanio del valor a escribir es 21
+
+[INFO] 17:58:02:943 LOGGER/(24761:24761): 
+
+El valor leido de memoria es: Aborted (core dumped) 
+
+
+[INFO] 17:58:02:943 LOGGER/(24761:24761): PID: 1 - Operacion: ESCRIBIR
+[INFO] 17:58:10:720 LOGGER/(24761:24761): el tamanio del valor a escribir es 21
+
+[INFO] 17:58:10:721 LOGGER/(24761:24761): 
+
+El valor leido de memoria es: Aborted (core dumped) 
+
+
+[INFO] 17:58:10:721 LOGGER/(24761:24761): PID: 1 - Operacion: ESCRIBIR
+[INFO] 18:02:13:865 LOGGER/(26100:26100): Conexion establecida con Kernel
+
+[INFO] 18:02:14:013 LOGGER/(26100:26100): Conexion establecida con Memoria
+
+[INFO] 18:02:29:157 LOGGER/(26100:26100): el tamanio del valor a escribir es 21
+
+[INFO] 18:02:29:159 LOGGER/(26100:26100): 
+
+El valor leido de memoria es: Aborted (core dumped) 
+
+
+[INFO] 18:02:29:159 LOGGER/(26100:26100): PID: 1 - Operacion: ESCRIBIR
+[INFO] 18:12:25:298 LOGGER/(29324:29324): Conexion establecida con Kernel
+
+[INFO] 18:12:25:438 LOGGER/(29324:29324): Conexion establecida con Memoria
+
+[INFO] 18:12:44:606 LOGGER/(29324:29324): el tamanio del valor a escribir es 21
+
+[INFO] 18:12:44:606 LOGGER/(29324:29324): 
+
+El valor leido de memoria es: Aborted (core dumped) 
+
+
+[INFO] 18:12:44:607 LOGGER/(29324:29324): PID: 1 - Operacion: ESCRIBIR
+[INFO] 18:12:52:444 LOGGER/(29324:29324): el tamanio del valor a escribir es 21
+
+[INFO] 18:12:52:444 LOGGER/(29324:29324): 
+
+El valor leido de memoria es: Aborted (core dumped) 
+
+
+[INFO] 18:12:52:444 LOGGER/(29324:29324): PID: 1 - Operacion: ESCRIBIR
+[INFO] 18:26:38:011 LOGGER/(32379:32379): Conexion establecida con Kernel
+
+[INFO] 18:26:38:172 LOGGER/(32379:32379): Conexion establecida con Memoria
+
+[INFO] 18:27:20:261 LOGGER/(32379:32379): el tamanio del valor a escribir es 21
+
+[INFO] 18:27:20:261 LOGGER/(32379:32379): 
+
+El valor leido de memoria es: Aborted (core dumped) 
+
+
+[INFO] 18:27:20:261 LOGGER/(32379:32379): PID: 1 - Operacion: ESCRIBIR
+[INFO] 18:27:28:104 LOGGER/(32379:32379): el tamanio del valor a escribir es 21
+
+[INFO] 18:27:28:104 LOGGER/(32379:32379): 
+
+El valor leido de memoria es: Aborted (core dumped) 
+
+
+[INFO] 18:27:28:104 LOGGER/(32379:32379): PID: 1 - Operacion: ESCRIBIR
+[INFO] 18:35:37:809 LOGGER/(34826:34826): Conexion establecida con Kernel
+
+[INFO] 18:35:37:856 LOGGER/(34826:34826): Conexion establecida con Memoria
+
+[INFO] 18:35:57:969 LOGGER/(34826:34826): el tamanio del valor a escribir es 21
+
+[INFO] 18:35:57:969 LOGGER/(34826:34826): 
+
+El valor leido de memoria es: Aborted (core dumped) 
+
+
+[INFO] 18:35:57:969 LOGGER/(34826:34826): PID: 1 - Operacion: ESCRIBIR
+[INFO] 18:46:20:898 LOGGER/(36608:36608): Conexion establecida con Kernel
+
+[INFO] 18:46:20:925 LOGGER/(36608:36608): Conexion establecida con Memoria
+
+[INFO] 18:48:02:733 LOGGER/(37273:37273): Conexion establecida con Kernel
+
+[INFO] 18:48:02:778 LOGGER/(37273:37273): Conexion establecida con Memoria
+
+[INFO] 18:48:24:309 LOGGER/(37273:37273): el tamanio del valor a escribir es 21
+
+[INFO] 18:48:24:309 LOGGER/(37273:37273): 
+
+El valor leido de memoria es: Aborted (core dumped) 
+
+
+[INFO] 18:48:24:309 LOGGER/(37273:37273): PID: 1 - Operacion: ESCRIBIR

@@ -359,15 +359,17 @@ void* handle_io_stdout(void* socket_io) {
         printf("Registro tamanio: %d\n", pid_stdout->registro_tamanio);
         printf("Nombre interfaz: %s\n", pid_stdout->nombre_interfaz);
         printf("Largo interfaz: %d\n", pid_stdout->largo_interfaz);
-
+        
+        /*
         printf("AHORA IMPRIMO UNA POR UNA LAS INSTRUCCIONES CON SU DIRECCION FISICA Y BYTES DE LECTURA\n");
 
         for(int i=0; i < pid_stdout->cantidad_paginas; i++) {
             t_dir_fisica_tamanio* dir_fisica_tam = list_get(pid_stdout->lista_direcciones, i);
+            if(dir_fisica_tam == NULL) printf("\n\nSOY NULO\n\n");
             printf("Direccion fisica: %d\n", dir_fisica_tam->direccion_fisica);
             printf("Bytes de lectura: %d\n", dir_fisica_tam->bytes_lectura);
         }
-
+        */
         // Fin de los printf
 
         int respuesta_ok = ejecutar_io_stdout(pid_stdout);

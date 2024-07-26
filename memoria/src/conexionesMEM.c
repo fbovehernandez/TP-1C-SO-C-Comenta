@@ -159,7 +159,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 t_pedido_memoria* pedido_op = deserializar_direccion_fisica(paquete->buffer, direcciones_restantes_mov_in); // Le puse pedido_op para no repertir nombre, seria la operacion
 
                 // Seteos por las dudas
-                pedido_op->valor_a_escribir = NULL;
+                // pedido_op->valor_a_escribir = NULL;
                 
                 printf("dir_fisica->tamanio total calculado : %d\n", pedido_op->length_valor);
 
@@ -170,9 +170,10 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 // log_info("Contenido completo de registro_completo: %s", (char*)registro_completo);
                 send(socket_cpu, registro_lectura, pedido_op->length_valor, 0);
                 
+
                 free(pedido_op->valor_a_escribir);
                 free(pedido_op);
-                list_destroy_and_destroy_elements(direcciones_restantes_mov_in, free);
+                list_destroy(direcciones_restantes_mov_in);
                 free(registro_lectura);
                 break;
             case ESCRIBIR_DATO_EN_MEM: 
@@ -190,18 +191,12 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 // printf("Registro escrito como int %d\n", *((uint32_t*)registro_escritura));
 
                 send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
-
-                // Ver esto, creo que lo estoy liberando bien, despues no lo uso
-                /*/*
-                for(int i = 0; i < list_size(direcciones_restantes_escritura); i++) {
-                    free(list_get(direcciones_restantes_escritura, i));
-                }*/
                 
-                
+            
+                list_destroy(direcciones_restantes_escritura);            
                 free(pedido_operacion->valor_a_escribir);
                 free(pedido_operacion);
-                // free(registro_escritura);
-                list_destroy_and_destroy_elements(direcciones_restantes_escritura, free);
+                             
                 break;
             default:
                 printf("No reconozco ese cod-op...\n"); 
@@ -229,6 +224,8 @@ void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_r
 
         interaccion_user_space(pid, operacion, dir_fisica_tam->direccion_fisica, user_space_aux, tamanio_anterior, dir_fisica_tam->bytes_lectura, registro_escritura, registro_lectura);
         tamanio_anterior += dir_fisica_tam->bytes_lectura;
+
+        free(dir_fisica_tam);
     }
 }
 
@@ -555,7 +552,7 @@ void* handle_kernel(void* socket) {
                 printf("\nEste es el nombre de la interfaz: %s\n", pid_stdout->nombre_interfaz);
 
                 int result_ok = 0;
-                send(socket_kernel, &resultOk, sizeof(int), 0);
+                send(socket_kernel, &result_ok, sizeof(int), 0);
 
                 user_space_aux = espacio_usuario;
                 
@@ -563,33 +560,31 @@ void* handle_kernel(void* socket) {
 
                 void* registro_lectura = malloc(pid_stdout->registro_tamanio);
                 log_info(logger_memoria, "El tamanio del valor leido* es: %d\n", pid_stdout->registro_tamanio);
-            
+
                 realizar_operacion(pid_stdout->pid, LECTURA, pid_stdout->lista_direcciones, user_space_aux, NULL, registro_lectura);
                 log_info(logger_memoria, "el valor del registro lectura es :%s", (char*)registro_lectura);
-                char* registro_string = malloc(pid_stdout->registro_tamanio + 1);
                 
-                // ponele el \0 para que lo pueda leer bien
-                registro_string = (char*) registro_lectura;
+                char* registro_string = malloc(pid_stdout->registro_tamanio + 1);
+                memcpy(registro_string, registro_lectura, pid_stdout->registro_tamanio);
                 registro_string[pid_stdout->registro_tamanio] = '\0';
                 
-                printf("El valor leido para char* es: %s\n", registro_string); // WAR,
+                printf("El valor leido para char* es: %s\n", registro_string);
                 
-                // printf("El valor leido para char* es: %s\n", (char*)registro_lectura);
-                // int socket_io = (intptr_t) dictionary_get(diccionario_io, pid_stdout->nombre_interfaz);
-
                 pthread_mutex_lock(&mutex_diccionario_io);
                 socket_estructurado* socket_io = dictionary_get(diccionario_io, pid_stdout->nombre_interfaz);
                 pthread_mutex_unlock(&mutex_diccionario_io);
 
                 printf("El pid que mandaremos a la io es %d\n", pid_stdout->pid);
                 printf("El socket es %d\n", socket_io->socket);
-                enviar_valor_leido_a_io(pid_stdout->pid, socket_io->socket, registro_string, pid_stdout->registro_tamanio); // aca ya llega mal 
+                enviar_valor_leido_a_io(pid_stdout->pid, socket_io->socket, registro_string, pid_stdout->registro_tamanio);
                 
-                // free(registro_string);
+                free(registro_string);
+                free(registro_lectura);
                 list_destroy(pid_stdout->lista_direcciones);
                 free(pid_stdout->nombre_interfaz);
                 free(pid_stdout);
                 break;
+
             
             case ESCRIBIR_FS_MEMORIA:
             case LEER_FS_MEMORIA:

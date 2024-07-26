@@ -1,59 +1,2463 @@
-[INFO] 17:22:22:800 LOGGER/(10142:10142): Servidor iniciado, esperando conexiones!
-[INFO] 17:23:03:157 LOGGER/(10142:10321): PID: 1 - Accion: CREAR - Tamaño: 0
-[INFO] 17:23:03:617 LOGGER/(10142:10221): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
-[INFO] 17:23:03:727 LOGGER/(10142:10221): El pid que me pide frame es: 1
+[INFO] 17:30:33:286 LOGGER/(12991:13053): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 17:30:33:286 LOGGER/(12991:13053): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 17:30:33:286 LOGGER/(12991:13053): el numero de frame es 2
+[INFO] 17:30:33:299 LOGGER/(12991:13134): El tamanio del valor leido* es: 25
 
-[INFO] 17:23:03:728 LOGGER/(10142:10221): BUSCO EL FRAME CON LA PAGINA: 0
-[INFO] 17:23:03:728 LOGGER/(10142:10221): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
-[INFO] 17:23:03:728 LOGGER/(10142:10221): La cantidad de entradas que tiene la memoria es: 4
-[INFO] 17:23:03:728 LOGGER/(10142:10221): el numero de frame es 0
-[INFO] 17:23:03:733 LOGGER/(10142:10221): El pid que me pide frame es: 1
+[INFO] 17:30:33:300 LOGGER/(12991:13134): el valor del registro lectura es :t R, WAR NEVER CHANGES...
+[INFO] 17:30:33:512 LOGGER/(12991:13134): PID: 1 - Accion: DESTRUIR - Tamaño: 8
+[INFO] 17:30:43:177 LOGGER/(12991:13053): Contenido escrito:  116
+[INFO] 17:30:43:177 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:30:43:483 LOGGER/(12991:13053): Contenido escrito:  111
+[INFO] 17:30:43:483 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:30:43:790 LOGGER/(12991:13053): Contenido escrito:  32
+[INFO] 17:30:43:790 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:30:54:218 LOGGER/(12991:13053): El pid que me pide frame es: 2
 
-[INFO] 17:23:03:733 LOGGER/(10142:10221): BUSCO EL FRAME CON LA PAGINA: 1
-[INFO] 17:23:03:734 LOGGER/(10142:10221): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
-[INFO] 17:23:03:734 LOGGER/(10142:10221): La cantidad de entradas que tiene la memoria es: 4
-[INFO] 17:23:03:734 LOGGER/(10142:10221): el numero de frame es 1
-[INFO] 17:23:59:248 LOGGER/(10142:10508): 
+[INFO] 17:30:54:218 LOGGER/(12991:13053): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 17:30:54:219 LOGGER/(12991:13053): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 17:30:54:219 LOGGER/(12991:13053): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 17:30:54:219 LOGGER/(12991:13053): el numero de frame es 1
+[INFO] 17:30:54:220 LOGGER/(12991:13053): Contenido escrito:  115
+[INFO] 17:30:54:220 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:30:54:524 LOGGER/(12991:13053): Contenido escrito:  101
+[INFO] 17:30:54:525 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:30:54:835 LOGGER/(12991:13053): Contenido escrito:  116
+[INFO] 17:30:54:835 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:30:55:149 LOGGER/(12991:13053): Contenido escrito:  32
+[INFO] 17:30:55:149 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:05:569 LOGGER/(12991:13053): Contenido escrito:  116
+[INFO] 17:31:05:569 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:05:932 LOGGER/(12991:13053): Contenido escrito:  104
+[INFO] 17:31:05:932 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:06:242 LOGGER/(12991:13053): Contenido escrito:  101
+[INFO] 17:31:06:242 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:06:556 LOGGER/(12991:13053): Contenido escrito:  32
+[INFO] 17:31:06:556 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:16:995 LOGGER/(12991:13053): Contenido escrito:  119
+[INFO] 17:31:16:995 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:17:303 LOGGER/(12991:13053): Contenido escrito:  111
+[INFO] 17:31:17:303 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:17:626 LOGGER/(12991:13053): Contenido escrito:  114
+[INFO] 17:31:17:626 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:17:960 LOGGER/(12991:13053): Contenido escrito:  108
+[INFO] 17:31:17:960 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:18:271 LOGGER/(12991:13053): Contenido escrito:  100
+[INFO] 17:31:18:271 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:18:579 LOGGER/(12991:13053): Contenido escrito:  32
+[INFO] 17:31:18:580 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:28:995 LOGGER/(12991:13053): Contenido escrito:  111
+[INFO] 17:31:28:995 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:29:304 LOGGER/(12991:13053): Contenido escrito:  110
+[INFO] 17:31:29:304 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:29:614 LOGGER/(12991:13053): El pid que me pide frame es: 2
+
+[INFO] 17:31:29:614 LOGGER/(12991:13053): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 17:31:29:615 LOGGER/(12991:13053): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 17:31:29:615 LOGGER/(12991:13053): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 17:31:29:615 LOGGER/(12991:13053): el numero de frame es 2
+[INFO] 17:31:29:620 LOGGER/(12991:13053): Contenido escrito:  32
+[INFO] 17:31:29:620 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:40:043 LOGGER/(12991:13053): Contenido escrito:  102
+[INFO] 17:31:40:043 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:40:349 LOGGER/(12991:13053): Contenido escrito:  105
+[INFO] 17:31:40:349 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:40:655 LOGGER/(12991:13053): Contenido escrito:  114
+[INFO] 17:31:40:655 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:40:963 LOGGER/(12991:13053): Contenido escrito:  101
+[INFO] 17:31:40:963 LOGGER/(12991:13053): El PID del contenido escrito es: 2
+[INFO] 17:31:41:274 LOGGER/(12991:13134): El tamanio del valor leido* es: 37
+
+[INFO] 17:31:41:275 LOGGER/(12991:13134): el valor del registro lectura es :I don't want to set the world on fire8
+[INFO] 17:31:41:379 LOGGER/(12991:13134): PID: 2 - Accion: DESTRUIR - Tamaño: 3
+[INFO] 17:33:14:169 LOGGER/(15816:15816): Servidor iniciado, esperando conexiones!
+[INFO] 17:33:46:802 LOGGER/(15816:15966): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 17:33:46:822 LOGGER/(15816:15966): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 17:33:46:853 LOGGER/(15816:15966): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 17:33:47:186 LOGGER/(15816:15878): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 128
+[INFO] 17:33:47:295 LOGGER/(15816:15878): El pid que me pide frame es: 1
+
+[INFO] 17:33:47:296 LOGGER/(15816:15878): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 17:33:47:297 LOGGER/(15816:15878): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 17:33:47:297 LOGGER/(15816:15878): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 17:33:47:297 LOGGER/(15816:15878): el numero de frame es 1
+[INFO] 17:33:47:302 LOGGER/(15816:15878): El pid que me pide frame es: 1
+
+[INFO] 17:33:47:302 LOGGER/(15816:15878): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 17:33:47:302 LOGGER/(15816:15878): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 17:33:47:302 LOGGER/(15816:15878): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 17:33:47:302 LOGGER/(15816:15878): el numero de frame es 2
+[INFO] 17:33:47:460 LOGGER/(15816:15878): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
+[INFO] 17:33:47:873 LOGGER/(15816:15878): El pid que me pide frame es: 2
+
+[INFO] 17:33:47:873 LOGGER/(15816:15878): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 17:33:47:873 LOGGER/(15816:15878): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 17:33:47:873 LOGGER/(15816:15878): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 17:33:47:873 LOGGER/(15816:15878): el numero de frame es 0
+[INFO] 17:33:47:879 LOGGER/(15816:15878): Contenido escrito:  73
+[INFO] 17:33:47:879 LOGGER/(15816:15878): El PID del contenido escrito es: 2
+[INFO] 17:33:48:192 LOGGER/(15816:15878): Contenido escrito:  32
+[INFO] 17:33:48:192 LOGGER/(15816:15878): El PID del contenido escrito es: 2
+[INFO] 17:33:48:612 LOGGER/(15816:15878): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:33:48:717 LOGGER/(15816:15878): El pid que me pide frame es: 3
+
+[INFO] 17:33:48:719 LOGGER/(15816:15878): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 17:33:48:719 LOGGER/(15816:15878): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 17:33:48:719 LOGGER/(15816:15878): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 17:33:48:719 LOGGER/(15816:15878): el numero de frame es 0
+[INFO] 17:33:48:722 LOGGER/(15816:15878): El pid que me pide frame es: 3
+
+[INFO] 17:33:48:722 LOGGER/(15816:15878): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 17:33:48:722 LOGGER/(15816:15878): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 17:33:48:722 LOGGER/(15816:15878): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 17:33:48:722 LOGGER/(15816:15878): el numero de frame es 1
+[INFO] 17:33:59:151 LOGGER/(15816:15878): Contenido escrito:  100
+[INFO] 17:33:59:152 LOGGER/(15816:15878): El PID del contenido escrito es: 2
+[INFO] 17:33:59:465 LOGGER/(15816:15878): Contenido escrito:  111
+[INFO] 17:33:59:465 LOGGER/(15816:15878): El PID del contenido escrito es: 2
+[INFO] 17:33:59:773 LOGGER/(15816:15878): Contenido escrito:  110
+[INFO] 17:33:59:773 LOGGER/(15816:15878): El PID del contenido escrito es: 2
+[INFO] 17:34:00:078 LOGGER/(15816:15878): Contenido escrito:  39
+[INFO] 17:34:00:079 LOGGER/(15816:15878): El PID del contenido escrito es: 2
+[INFO] 17:34:00:390 LOGGER/(15816:15878): Contenido escrito:  116
+[INFO] 17:34:00:390 LOGGER/(15816:15878): El PID del contenido escrito es: 2
+[INFO] 17:34:00:695 LOGGER/(15816:15878): Contenido escrito:  32
+[INFO] 17:34:00:695 LOGGER/(15816:15878): El PID del contenido escrito es: 2
+[INFO] 17:34:04:575 LOGGER/(15816:16149): 
+el valor a guardar en memoria llegado desde STDIN es: WAR NEVER CHANGES...
+
+
+[INFO] 17:34:04:577 LOGGER/(15816:16149): Contenido escrito:  0000000000000087
+[INFO] 17:34:04:577 LOGGER/(15816:16149): El PID del contenido escrito es: 1
+[INFO] 17:34:04:578 LOGGER/(15816:16149): Contenido escrito:  0083
+[INFO] 17:34:04:578 LOGGER/(15816:16149): El PID del contenido escrito es: 1
+[INFO] 17:34:05:309 LOGGER/(15816:15878): El pid que me pide frame es: 1
+
+[INFO] 17:34:05:309 LOGGER/(15816:15878): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 17:34:05:309 LOGGER/(15816:15878): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 17:34:05:309 LOGGER/(15816:15878): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 17:34:05:309 LOGGER/(15816:15878): el numero de frame es 0
+[INFO] 17:34:05:311 LOGGER/(15816:15878): Contenido escrito:  87
+[INFO] 17:34:05:311 LOGGER/(15816:15878): El PID del contenido escrito es: 1
+[INFO] 17:34:05:516 LOGGER/(15816:15878): Contenido escrito:  65
+[INFO] 17:34:05:516 LOGGER/(15816:15878): El PID del contenido escrito es: 1
+[INFO] 17:34:05:720 LOGGER/(15816:15878): Contenido escrito:  82
+[INFO] 17:34:05:720 LOGGER/(15816:15878): El PID del contenido escrito es: 1
+[INFO] 17:34:05:943 LOGGER/(15816:15878): Contenido escrito:  44
+[INFO] 17:34:05:943 LOGGER/(15816:15878): El PID del contenido escrito es: 1
+[INFO] 17:34:11:104 LOGGER/(15816:15878): Contenido escrito:  119
+[INFO] 17:34:11:104 LOGGER/(15816:15878): El PID del contenido escrito es: 2
+[INFO] 17:34:11:407 LOGGER/(15816:15878): Contenido escrito:  97
+[INFO] 17:34:11:407 LOGGER/(15816:15878): El PID del contenido escrito es: 2
+[INFO] 17:34:11:712 LOGGER/(15816:15878): Contenido escrito:  110
+[INFO] 17:34:11:712 LOGGER/(15816:15878): El PID del contenido escrito es: 2
+[INFO] 17:34:12:022 LOGGER/(15816:15878): Contenido escrito:  116
+[INFO] 17:34:12:023 LOGGER/(15816:15878): El PID del contenido escrito es: 2
+[INFO] 17:34:12:329 LOGGER/(15816:15878): Contenido escrito:  32
+[INFO] 17:34:12:329 LOGGER/(15816:15878): El PID del contenido escrito es: 2
+[INFO] 17:34:21:314 LOGGER/(15816:16149): 
 el valor a guardar en memoria llegado desde STDIN es: Sistemas Operativos 1c2024
 
 
-[INFO] 17:23:59:251 LOGGER/(10142:10508): Contenido escrito:  0000000000000083
-[INFO] 17:23:59:251 LOGGER/(10142:10508): El PID del contenido escrito es: 1
-[INFO] 17:23:59:251 LOGGER/(10142:10508): Contenido escrito:  0000000118
-[INFO] 17:23:59:251 LOGGER/(10142:10508): El PID del contenido escrito es: 1
-[INFO] 17:24:19:710 LOGGER/(10142:10221): El pid que me pide frame es: 1
+[INFO] 17:34:21:314 LOGGER/(15816:16149): Contenido escrito:  0000000000000083
+[INFO] 17:34:21:314 LOGGER/(15816:16149): El PID del contenido escrito es: 3
+[INFO] 17:34:21:314 LOGGER/(15816:16149): Contenido escrito:  0000000118
+[INFO] 17:34:21:314 LOGGER/(15816:16149): El PID del contenido escrito es: 3
+[INFO] 17:34:30:914 LOGGER/(15816:15878): Contenido escrito:  32
+[INFO] 17:34:30:914 LOGGER/(15816:15878): El PID del contenido escrito es: 1
+[INFO] 17:34:31:224 LOGGER/(15816:15878): El pid que me pide frame es: 1
 
-[INFO] 17:24:19:710 LOGGER/(10142:10221): BUSCO EL FRAME CON LA PAGINA: 1
-[INFO] 17:24:19:710 LOGGER/(10142:10221): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
-[INFO] 17:24:19:710 LOGGER/(10142:10221): La cantidad de entradas que tiene la memoria es: 4
-[INFO] 17:24:19:710 LOGGER/(10142:10221): el numero de frame es 1
-[INFO] 17:24:19:715 LOGGER/(10142:10221): El pid que me pide frame es: 1
+[INFO] 17:34:31:224 LOGGER/(15816:15878): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 17:34:31:224 LOGGER/(15816:15878): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 17:34:31:224 LOGGER/(15816:15878): La cantidad de entradas que tiene la memoria es: 8
+[INFO] 17:34:31:225 LOGGER/(15816:15878): el numero de frame es 2
+[INFO] 17:34:31:234 LOGGER/(15816:15966): El tamanio del valor leido* es: 25
 
-[INFO] 17:24:19:715 LOGGER/(10142:10221): BUSCO EL FRAME CON LA PAGINA: 2
-[INFO] 17:24:19:715 LOGGER/(10142:10221): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
-[INFO] 17:24:19:715 LOGGER/(10142:10221): La cantidad de entradas que tiene la memoria es: 4
-[INFO] 17:24:19:715 LOGGER/(10142:10221): el numero de frame es 2
-[INFO] 17:24:19:717 LOGGER/(10142:10221): El pid que me pide frame es: 1
+[INFO] 17:34:31:234 LOGGER/(15816:15966): el valor del registro lectura es :erat vos 1c2024CHANGES...
+[INFO] 17:34:31:457 LOGGER/(15816:15966): PID: 1 - Accion: DESTRUIR - Tamaño: 8
+[INFO] 17:34:41:115 LOGGER/(15816:15878): Contenido escrito:  116
+[INFO] 17:34:41:115 LOGGER/(15816:15878): El PID del contenido escrito es: 2
+[INFO] 17:34:41:424 LOGGER/(15816:15878): Contenido escrito:  111
+[INFO] 17:34:41:424 LOGGER/(15816:15878): El PID del contenido escrito es: 2
+[INFO] 17:34:41:732 LOGGER/(15816:15878): Contenido escrito:  32
+[INFO] 17:34:41:732 LOGGER/(15816:15878): El PID del contenido escrito es: 2
+[INFO] 17:35:00:930 LOGGER/(15816:15878): El pid que me pide frame es: 3
 
-[INFO] 17:24:19:717 LOGGER/(10142:10221): BUSCO EL FRAME CON LA PAGINA: 3
-[INFO] 17:24:19:717 LOGGER/(10142:10221): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
-[INFO] 17:24:19:717 LOGGER/(10142:10221): La cantidad de entradas que tiene la memoria es: 4
-[INFO] 17:24:19:717 LOGGER/(10142:10221): el numero de frame es 3
-[INFO] 17:24:19:719 LOGGER/(10142:10221): Contenido escrito:  0000000000000083
-[INFO] 17:24:19:719 LOGGER/(10142:10221): El PID del contenido escrito es: 1
-[INFO] 17:24:19:719 LOGGER/(10142:10221): Contenido escrito:  0000000118
-[INFO] 17:24:19:720 LOGGER/(10142:10221): El PID del contenido escrito es: 1
-[INFO] 17:24:20:033 LOGGER/(10142:10221): El pid que me pide frame es: 1
+[INFO] 17:35:00:930 LOGGER/(15816:15878): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 17:35:00:930 LOGGER/(15816:15878): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 17:35:00:930 LOGGER/(15816:15878): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 17:35:00:930 LOGGER/(15816:15878): el numero de frame es 1
+[INFO] 17:35:00:933 LOGGER/(15816:15878): El pid que me pide frame es: 3
 
-[INFO] 17:24:20:033 LOGGER/(10142:10221): BUSCO EL FRAME CON LA PAGINA: 3
-[INFO] 17:24:20:033 LOGGER/(10142:10221): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
-[INFO] 17:24:20:033 LOGGER/(10142:10221): La cantidad de entradas que tiene la memoria es: 4
-[INFO] 17:24:20:034 LOGGER/(10142:10221): el numero de frame es 3
-[INFO] 17:24:20:036 LOGGER/(10142:10221): Contenido escrito:  49
-[INFO] 17:24:20:036 LOGGER/(10142:10221): El PID del contenido escrito es: 1
-[INFO] 17:24:20:347 LOGGER/(10142:10221): Contenido escrito:  52
-[INFO] 17:24:20:347 LOGGER/(10142:10221): El PID del contenido escrito es: 1
-[INFO] 17:24:40:576 LOGGER/(10142:10321): El tamanio del valor leido* es: 26
+[INFO] 17:35:00:933 LOGGER/(15816:15878): BUSCO EL FRAME CON LA PAGINA: 2
+[INFO] 17:35:00:933 LOGGER/(15816:15878): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 17:35:00:933 LOGGER/(15816:15878): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 17:35:00:933 LOGGER/(15816:15878): el numero de frame es 2
+[INFO] 17:35:00:939 LOGGER/(15816:15878): El pid que me pide frame es: 3
 
-[INFO] 17:24:40:576 LOGGER/(10142:10321): el valor del registro lectura es :Sistemas Operativos 1c2024
-[INFO] 17:24:40:699 LOGGER/(10142:10321): PID: 1 - Accion: DESTRUIR - Tamaño: 4
+[INFO] 17:35:00:939 LOGGER/(15816:15878): BUSCO EL FRAME CON LA PAGINA: 3
+[INFO] 17:35:00:939 LOGGER/(15816:15878): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 17:35:00:939 LOGGER/(15816:15878): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 17:35:00:939 LOGGER/(15816:15878): el numero de frame es 3
+[INFO] 17:35:00:940 LOGGER/(15816:15878): Contenido escrito:  0000000000000083
+[INFO] 17:35:00:940 LOGGER/(15816:15878): El PID del contenido escrito es: 3
+[INFO] 17:35:00:940 LOGGER/(15816:15878): Contenido escrito:  0000000118
+[INFO] 17:35:00:940 LOGGER/(15816:15878): El PID del contenido escrito es: 3
+[INFO] 17:35:01:246 LOGGER/(15816:15878): El pid que me pide frame es: 3
+
+[INFO] 17:35:01:246 LOGGER/(15816:15878): BUSCO EL FRAME CON LA PAGINA: 3
+[INFO] 17:35:01:246 LOGGER/(15816:15878): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 17:35:01:246 LOGGER/(15816:15878): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 17:35:01:246 LOGGER/(15816:15878): el numero de frame es 3
+[INFO] 17:35:01:247 LOGGER/(15816:15878): Contenido escrito:  49
+[INFO] 17:35:01:247 LOGGER/(15816:15878): El PID del contenido escrito es: 3
+[INFO] 17:35:01:553 LOGGER/(15816:15878): Contenido escrito:  52
+[INFO] 17:35:01:553 LOGGER/(15816:15878): El PID del contenido escrito es: 3
+[INFO] 17:35:11:158 LOGGER/(15816:15878): El pid que me pide frame es: 2
+
+[INFO] 17:35:11:158 LOGGER/(15816:15878): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 17:35:11:158 LOGGER/(15816:15878): BUSCO EL FRAME CORRESPONDIENTE AL PID: 2
+[INFO] 17:35:11:158 LOGGER/(15816:15878): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 17:35:11:158 LOGGER/(15816:15878): el numero de frame es 1
+[INFO] 17:38:13:227 LOGGER/(18355:18355): Servidor iniciado, esperando conexiones!
+[INFO] 17:39:30:708 LOGGER/(18355:18534): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 17:39:31:540 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:39:31:684 LOGGER/(18355:18435): El pid que me pide frame es: 1
+
+[INFO] 17:39:31:685 LOGGER/(18355:18435): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 17:39:31:686 LOGGER/(18355:18435): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 17:39:31:687 LOGGER/(18355:18435): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 17:39:31:689 LOGGER/(18355:18435): el numero de frame es 0
+[INFO] 17:39:31:713 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:31:713 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:31:955 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:31:955 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:32:201 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:32:201 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:32:440 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:32:441 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:32:565 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:39:33:307 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:39:33:421 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:33:422 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:33:641 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:33:641 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:33:866 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:33:867 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:34:126 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:34:127 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:34:246 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:39:35:021 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:39:35:139 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:35:140 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:35:381 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:35:382 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:35:602 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:35:603 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:35:831 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:35:832 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:35:937 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:39:36:673 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:39:36:790 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:36:790 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:37:012 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:37:012 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:37:228 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:37:229 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:37:462 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:37:462 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:37:568 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:39:38:296 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:39:38:418 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:38:419 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:38:630 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:38:630 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:38:896 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:38:898 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:39:129 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:39:129 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:39:233 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:39:39:975 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:39:40:086 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:40:087 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:40:305 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:40:305 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:40:530 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:40:531 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:40:744 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:40:744 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:40:848 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:39:41:584 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:39:41:706 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:41:706 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:41:948 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:41:949 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:42:171 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:42:171 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:42:384 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:42:385 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:42:492 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:39:43:223 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:39:43:340 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:43:341 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:43:553 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:43:553 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:43:809 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:43:810 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:44:038 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:44:038 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:44:143 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:39:44:885 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:39:45:004 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:45:005 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:45:217 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:45:217 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:45:440 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:45:440 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:45:654 LOGGER/(18355:18435): Contenido escrito:  1
+[INFO] 17:39:45:654 LOGGER/(18355:18435): El PID del contenido escrito es: 1
+[INFO] 17:39:45:763 LOGGER/(18355:18435): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:45:16:554 LOGGER/(19870:19870): Servidor iniciado, esperando conexiones!
+[INFO] 17:45:44:594 LOGGER/(19870:20097): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 17:45:45:377 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:45:45:507 LOGGER/(19870:19942): El pid que me pide frame es: 1
+
+[INFO] 17:45:45:508 LOGGER/(19870:19942): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 17:45:45:509 LOGGER/(19870:19942): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 17:45:45:510 LOGGER/(19870:19942): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 17:45:45:511 LOGGER/(19870:19942): el numero de frame es 0
+[INFO] 17:45:45:533 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:45:534 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:45:773 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:45:773 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:45:989 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:45:989 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:46:212 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:46:212 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:46:317 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:45:47:054 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:45:47:221 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:47:224 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:47:466 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:47:467 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:47:684 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:47:684 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:47:895 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:47:895 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:47:999 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:45:48:757 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:45:48:873 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:48:874 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:49:099 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:49:100 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:49:330 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:49:331 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:49:544 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:49:544 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:49:659 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:45:50:425 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:45:50:567 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:50:568 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:50:830 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:50:832 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:51:058 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:51:058 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:51:281 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:51:282 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:51:385 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:45:52:119 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:45:52:255 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:52:256 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:52:473 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:52:473 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:52:704 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:52:705 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:52:916 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:52:916 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:53:024 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:45:53:805 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:45:53:933 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:53:933 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:54:225 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:54:227 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:54:490 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:54:491 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:54:713 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:54:713 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:54:824 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:45:55:602 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:45:55:718 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:55:718 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:55:934 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:55:934 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:56:148 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:56:149 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:56:366 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:56:366 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:56:470 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:45:57:200 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:45:57:319 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:57:319 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:57:560 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:57:560 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:57:779 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:57:781 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:58:005 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:58:006 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:58:109 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:45:58:837 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:45:58:945 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:58:945 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:59:167 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:59:167 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:59:383 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:59:384 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:59:610 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:45:59:611 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:45:59:719 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:46:00:439 LOGGER/(19870:19942): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:46:00:552 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:46:00:552 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:46:00:763 LOGGER/(19870:19942): Contenido escrito:  1
+[INFO] 17:46:00:764 LOGGER/(19870:19942): El PID del contenido escrito es: 1
+[INFO] 17:48:29:144 LOGGER/(20964:20964): Servidor iniciado, esperando conexiones!
+[INFO] 17:49:07:500 LOGGER/(20964:21146): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 17:49:08:290 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:49:08:417 LOGGER/(20964:21054): El pid que me pide frame es: 1
+
+[INFO] 17:49:08:418 LOGGER/(20964:21054): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 17:49:08:418 LOGGER/(20964:21054): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 17:49:08:419 LOGGER/(20964:21054): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 17:49:08:421 LOGGER/(20964:21054): el numero de frame es 0
+[INFO] 17:49:08:442 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:08:443 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:08:678 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:08:679 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:08:933 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:08:935 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:09:178 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:09:179 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:09:298 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:49:10:052 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:49:10:191 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:10:192 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:10:412 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:10:412 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:10:633 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:10:634 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:10:852 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:10:852 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:10:958 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:49:11:728 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:49:11:860 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:11:861 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:12:079 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:12:079 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:12:315 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:12:315 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:12:534 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:12:535 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:12:643 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:49:13:378 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:49:13:530 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:13:532 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:13:781 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:13:782 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:14:040 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:14:041 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:14:262 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:14:263 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:14:367 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:49:15:140 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:49:15:252 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:15:252 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:15:465 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:15:466 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:15:699 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:15:700 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:15:923 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:15:923 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:16:038 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:49:16:826 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:49:16:940 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:16:940 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:17:151 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:17:151 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:17:373 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:17:373 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:17:602 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:17:602 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:17:709 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:49:18:459 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:49:18:579 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:18:579 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:18:796 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:18:796 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:19:017 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:19:017 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:19:238 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:19:239 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:19:345 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:49:20:099 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:49:20:218 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:20:219 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:20:437 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:20:438 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:20:657 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:20:658 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:20:889 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:20:889 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:21:004 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:49:21:787 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:49:21:909 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:21:909 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:22:122 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:22:122 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:22:338 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:22:339 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:22:580 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:22:581 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:22:686 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:49:23:442 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:49:23:553 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:23:553 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:23:807 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:23:807 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:24:024 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:24:024 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:24:240 LOGGER/(20964:21054): Contenido escrito:  1
+[INFO] 17:49:24:240 LOGGER/(20964:21054): El PID del contenido escrito es: 1
+[INFO] 17:49:24:346 LOGGER/(20964:21054): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:50:44:017 LOGGER/(21789:21789): Servidor iniciado, esperando conexiones!
+[INFO] 17:51:20:008 LOGGER/(21789:22282): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 17:51:20:834 LOGGER/(21789:22177): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:51:20:966 LOGGER/(21789:22177): El pid que me pide frame es: 1
+
+[INFO] 17:51:20:966 LOGGER/(21789:22177): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 17:51:20:967 LOGGER/(21789:22177): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 17:51:20:968 LOGGER/(21789:22177): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 17:51:20:969 LOGGER/(21789:22177): el numero de frame es 0
+[INFO] 17:51:20:996 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:20:997 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:21:237 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:21:237 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:21:479 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:21:480 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:21:705 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:21:705 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:21:821 LOGGER/(21789:22177): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:51:22:593 LOGGER/(21789:22177): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:51:22:713 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:22:713 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:22:935 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:22:936 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:23:217 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:23:219 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:23:458 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:23:459 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:23:571 LOGGER/(21789:22177): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:51:24:323 LOGGER/(21789:22177): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:51:24:436 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:24:436 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:24:651 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:24:652 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:24:891 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:24:891 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:25:126 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:25:127 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:25:240 LOGGER/(21789:22177): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:51:25:971 LOGGER/(21789:22177): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:51:26:107 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:26:108 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:26:343 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:26:344 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:26:563 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:26:563 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:26:779 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:26:780 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:26:883 LOGGER/(21789:22177): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:51:27:617 LOGGER/(21789:22177): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:51:27:744 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:27:745 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:27:968 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:27:969 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:28:187 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:28:188 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:28:417 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:28:418 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:28:526 LOGGER/(21789:22177): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:51:29:260 LOGGER/(21789:22177): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:51:29:388 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:29:388 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:29:608 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:29:608 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:29:825 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:29:826 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:30:043 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:30:043 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:30:151 LOGGER/(21789:22177): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:51:30:925 LOGGER/(21789:22177): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:51:31:034 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:31:034 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:31:268 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:31:269 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:31:492 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:31:493 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:31:718 LOGGER/(21789:22177): Contenido escrito:  1
+[INFO] 17:51:31:718 LOGGER/(21789:22177): El PID del contenido escrito es: 1
+[INFO] 17:51:31:824 LOGGER/(21789:22177): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:51:32:546 LOGGER/(21789:22177): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:52:37:588 LOGGER/(22809:22809): Servidor iniciado, esperando conexiones!
+[INFO] 17:52:54:169 LOGGER/(22809:22974): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 17:52:55:022 LOGGER/(22809:22899): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:52:55:149 LOGGER/(22809:22899): El pid que me pide frame es: 1
+
+[INFO] 17:52:55:150 LOGGER/(22809:22899): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 17:52:55:151 LOGGER/(22809:22899): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 17:52:55:152 LOGGER/(22809:22899): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 17:52:55:153 LOGGER/(22809:22899): el numero de frame es 0
+[INFO] 17:52:55:181 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:52:55:182 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:52:55:458 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:52:55:459 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:52:55:683 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:52:55:684 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:52:55:904 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:52:55:905 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:52:56:008 LOGGER/(22809:22899): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:52:56:776 LOGGER/(22809:22899): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:52:56:910 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:52:56:911 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:52:57:127 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:52:57:127 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:52:57:386 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:52:57:388 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:52:57:629 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:52:57:630 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:52:57:745 LOGGER/(22809:22899): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:52:58:492 LOGGER/(22809:22899): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:52:58:633 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:52:58:635 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:52:58:854 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:52:58:854 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:52:59:107 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:52:59:108 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:52:59:330 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:52:59:330 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:52:59:438 LOGGER/(22809:22899): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:53:00:164 LOGGER/(22809:22899): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:53:00:274 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:53:00:275 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:53:00:490 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:53:00:490 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:53:00:701 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:53:00:701 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:53:00:920 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:53:00:920 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:53:01:032 LOGGER/(22809:22899): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:53:01:767 LOGGER/(22809:22899): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:53:01:875 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:53:01:876 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:53:02:094 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:53:02:094 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:53:02:312 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:53:02:313 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:53:02:527 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:53:02:527 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:53:02:631 LOGGER/(22809:22899): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:53:03:400 LOGGER/(22809:22899): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:53:03:523 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:53:03:524 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:53:03:745 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:53:03:746 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:53:03:970 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:53:03:972 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:53:04:194 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:53:04:194 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:53:04:298 LOGGER/(22809:22899): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:53:05:062 LOGGER/(22809:22899): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:53:05:208 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:53:05:208 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:53:05:445 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:53:05:446 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:53:05:660 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:53:05:661 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:53:05:880 LOGGER/(22809:22899): Contenido escrito:  1
+[INFO] 17:53:05:880 LOGGER/(22809:22899): El PID del contenido escrito es: 1
+[INFO] 17:53:05:983 LOGGER/(22809:22899): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:54:13:856 LOGGER/(23610:23610): Servidor iniciado, esperando conexiones!
+[INFO] 17:54:39:382 LOGGER/(23610:23807): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 17:54:40:199 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:54:40:331 LOGGER/(23610:23712): El pid que me pide frame es: 1
+
+[INFO] 17:54:40:332 LOGGER/(23610:23712): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 17:54:40:332 LOGGER/(23610:23712): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 17:54:40:334 LOGGER/(23610:23712): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 17:54:40:335 LOGGER/(23610:23712): el numero de frame es 0
+[INFO] 17:54:40:357 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:40:358 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:40:611 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:40:611 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:40:861 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:40:862 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:41:090 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:41:092 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:41:207 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:54:41:995 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:54:42:106 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:42:106 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:42:325 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:42:326 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:42:558 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:42:559 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:42:778 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:42:778 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:42:883 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:54:43:644 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:54:43:754 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:43:755 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:43:986 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:43:986 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:44:209 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:44:209 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:44:430 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:44:430 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:44:540 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:54:45:314 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:54:45:425 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:45:425 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:45:642 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:45:642 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:45:863 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:45:864 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:46:084 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:46:084 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:46:197 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:54:46:965 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:54:47:098 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:47:099 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:47:339 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:47:340 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:47:553 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:47:553 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:47:786 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:47:787 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:47:892 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:54:48:657 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:54:48:765 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:48:766 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:48:989 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:48:989 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:49:214 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:49:215 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:49:449 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:49:450 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:49:553 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:54:50:319 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:54:50:436 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:50:437 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:50:670 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:50:671 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:50:912 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:50:913 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:51:146 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:51:147 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:51:252 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:54:52:013 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:54:52:124 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:52:125 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:52:360 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:52:361 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:52:595 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:52:596 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:52:818 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:52:819 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:52:931 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:54:53:700 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:54:53:843 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:53:844 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:54:065 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:54:065 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:54:315 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:54:316 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:54:545 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:54:546 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:54:668 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:54:55:428 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:54:55:537 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:55:537 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:55:753 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:55:753 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:55:976 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:55:977 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:56:195 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:56:196 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:56:306 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:54:57:059 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:54:57:179 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:57:180 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:57:397 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:57:397 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:57:619 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:57:619 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:57:852 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:57:852 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:57:960 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:54:58:717 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:54:58:836 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:58:837 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:59:062 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:59:063 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:59:280 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:59:281 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:59:513 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:54:59:513 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:54:59:617 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:55:00:378 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:55:00:500 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:55:00:500 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:55:00:746 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:55:00:747 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:55:00:976 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:55:00:977 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:55:01:202 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:55:01:203 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:55:01:306 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:55:02:055 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:55:02:165 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:55:02:166 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:55:02:405 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:55:02:406 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:55:02:640 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:55:02:641 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:55:02:863 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:55:02:863 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:55:02:979 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:55:03:732 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 17:55:03:842 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:55:03:842 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:55:04:055 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:55:04:056 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:55:04:269 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:55:04:270 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:55:04:508 LOGGER/(23610:23712): Contenido escrito:  1
+[INFO] 17:55:04:509 LOGGER/(23610:23712): El PID del contenido escrito es: 1
+[INFO] 17:55:04:616 LOGGER/(23610:23712): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 17:57:26:972 LOGGER/(24498:24498): Servidor iniciado, esperando conexiones!
+[INFO] 17:57:54:835 LOGGER/(24498:24651): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 17:57:55:105 LOGGER/(24498:24570): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 17:57:55:847 LOGGER/(24498:24570): El pid que me pide frame es: 1
+
+[INFO] 17:57:55:848 LOGGER/(24498:24570): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 17:57:55:848 LOGGER/(24498:24570): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 17:57:55:850 LOGGER/(24498:24570): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 17:57:55:851 LOGGER/(24498:24570): el numero de frame es 0
+[INFO] 17:57:55:880 LOGGER/(24498:24570): Contenido escrito:  65
+[INFO] 17:57:55:881 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:57:56:223 LOGGER/(24498:24570): Contenido escrito:  98
+[INFO] 17:57:56:223 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:57:56:576 LOGGER/(24498:24570): Contenido escrito:  111
+[INFO] 17:57:56:577 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:57:56:919 LOGGER/(24498:24570): Contenido escrito:  114
+[INFO] 17:57:56:919 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:57:57:298 LOGGER/(24498:24570): Contenido escrito:  116
+[INFO] 17:57:57:298 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:57:57:643 LOGGER/(24498:24570): Contenido escrito:  101
+[INFO] 17:57:57:643 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:57:57:984 LOGGER/(24498:24570): Contenido escrito:  100
+[INFO] 17:57:57:984 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:57:58:345 LOGGER/(24498:24570): Contenido escrito:  32
+[INFO] 17:57:58:345 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:57:58:673 LOGGER/(24498:24570): Contenido escrito:  40
+[INFO] 17:57:58:674 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:57:59:000 LOGGER/(24498:24570): Contenido escrito:  99
+[INFO] 17:57:59:002 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:57:59:339 LOGGER/(24498:24570): Contenido escrito:  111
+[INFO] 17:57:59:339 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:57:59:662 LOGGER/(24498:24570): Contenido escrito:  114
+[INFO] 17:57:59:663 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:57:59:998 LOGGER/(24498:24570): Contenido escrito:  101
+[INFO] 17:57:59:999 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:00:333 LOGGER/(24498:24570): Contenido escrito:  32
+[INFO] 17:58:00:334 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:00:666 LOGGER/(24498:24570): Contenido escrito:  100
+[INFO] 17:58:00:667 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:00:991 LOGGER/(24498:24570): Contenido escrito:  117
+[INFO] 17:58:00:991 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:01:317 LOGGER/(24498:24570): El pid que me pide frame es: 1
+
+[INFO] 17:58:01:317 LOGGER/(24498:24570): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 17:58:01:318 LOGGER/(24498:24570): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 17:58:01:318 LOGGER/(24498:24570): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 17:58:01:319 LOGGER/(24498:24570): el numero de frame es 1
+[INFO] 17:58:01:323 LOGGER/(24498:24570): Contenido escrito:  109
+[INFO] 17:58:01:323 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:01:649 LOGGER/(24498:24570): Contenido escrito:  112
+[INFO] 17:58:01:650 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:01:999 LOGGER/(24498:24570): Contenido escrito:  101
+[INFO] 17:58:02:000 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:02:324 LOGGER/(24498:24570): Contenido escrito:  100
+[INFO] 17:58:02:324 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:02:678 LOGGER/(24498:24570): Contenido escrito:  41
+[INFO] 17:58:02:678 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:02:934 LOGGER/(24498:24651): El tamanio del valor leido* es: 21
+
+[INFO] 17:58:02:937 LOGGER/(24498:24651): el valor del registro lectura es :Aborted (core dumped)
+[INFO] 17:58:03:061 LOGGER/(24498:24570): PID: 1 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 17:58:03:283 LOGGER/(24498:24570): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 17:58:03:930 LOGGER/(24498:24570): Contenido escrito:  65
+[INFO] 17:58:03:930 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:04:249 LOGGER/(24498:24570): Contenido escrito:  98
+[INFO] 17:58:04:249 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:04:572 LOGGER/(24498:24570): Contenido escrito:  111
+[INFO] 17:58:04:572 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:04:894 LOGGER/(24498:24570): Contenido escrito:  114
+[INFO] 17:58:04:894 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:05:232 LOGGER/(24498:24570): Contenido escrito:  116
+[INFO] 17:58:05:232 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:05:560 LOGGER/(24498:24570): Contenido escrito:  101
+[INFO] 17:58:05:560 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:05:893 LOGGER/(24498:24570): Contenido escrito:  100
+[INFO] 17:58:05:894 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:06:235 LOGGER/(24498:24570): Contenido escrito:  32
+[INFO] 17:58:06:236 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:06:558 LOGGER/(24498:24570): Contenido escrito:  40
+[INFO] 17:58:06:559 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:06:884 LOGGER/(24498:24570): Contenido escrito:  99
+[INFO] 17:58:06:885 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:07:211 LOGGER/(24498:24570): Contenido escrito:  111
+[INFO] 17:58:07:212 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:07:534 LOGGER/(24498:24570): Contenido escrito:  114
+[INFO] 17:58:07:535 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:07:882 LOGGER/(24498:24570): Contenido escrito:  101
+[INFO] 17:58:07:883 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:08:226 LOGGER/(24498:24570): Contenido escrito:  32
+[INFO] 17:58:08:227 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:08:562 LOGGER/(24498:24570): Contenido escrito:  100
+[INFO] 17:58:08:563 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:08:889 LOGGER/(24498:24570): Contenido escrito:  117
+[INFO] 17:58:08:890 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:09:210 LOGGER/(24498:24570): Contenido escrito:  109
+[INFO] 17:58:09:211 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:09:560 LOGGER/(24498:24570): Contenido escrito:  112
+[INFO] 17:58:09:560 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:09:927 LOGGER/(24498:24570): Contenido escrito:  101
+[INFO] 17:58:09:928 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:10:247 LOGGER/(24498:24570): Contenido escrito:  100
+[INFO] 17:58:10:247 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:10:583 LOGGER/(24498:24570): Contenido escrito:  41
+[INFO] 17:58:10:584 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:10:718 LOGGER/(24498:24651): El tamanio del valor leido* es: 21
+
+[INFO] 17:58:10:719 LOGGER/(24498:24651): el valor del registro lectura es :Aborted (core dumped)
+[INFO] 17:58:10:828 LOGGER/(24498:24570): PID: 1 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 17:58:11:037 LOGGER/(24498:24570): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 17:58:11:673 LOGGER/(24498:24570): Contenido escrito:  65
+[INFO] 17:58:11:674 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:12:003 LOGGER/(24498:24570): Contenido escrito:  98
+[INFO] 17:58:12:004 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:12:332 LOGGER/(24498:24570): Contenido escrito:  111
+[INFO] 17:58:12:332 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:12:658 LOGGER/(24498:24570): Contenido escrito:  114
+[INFO] 17:58:12:659 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:12:989 LOGGER/(24498:24570): Contenido escrito:  116
+[INFO] 17:58:12:989 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:13:307 LOGGER/(24498:24570): Contenido escrito:  101
+[INFO] 17:58:13:307 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:13:626 LOGGER/(24498:24570): Contenido escrito:  100
+[INFO] 17:58:13:627 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:13:973 LOGGER/(24498:24570): Contenido escrito:  32
+[INFO] 17:58:13:974 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:14:293 LOGGER/(24498:24570): Contenido escrito:  40
+[INFO] 17:58:14:294 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:14:612 LOGGER/(24498:24570): Contenido escrito:  99
+[INFO] 17:58:14:613 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:14:937 LOGGER/(24498:24570): Contenido escrito:  111
+[INFO] 17:58:14:937 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:15:271 LOGGER/(24498:24570): Contenido escrito:  114
+[INFO] 17:58:15:271 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:15:588 LOGGER/(24498:24570): Contenido escrito:  101
+[INFO] 17:58:15:589 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:15:909 LOGGER/(24498:24570): Contenido escrito:  32
+[INFO] 17:58:15:910 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:16:224 LOGGER/(24498:24570): Contenido escrito:  100
+[INFO] 17:58:16:225 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:16:556 LOGGER/(24498:24570): Contenido escrito:  117
+[INFO] 17:58:16:557 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:16:875 LOGGER/(24498:24570): Contenido escrito:  109
+[INFO] 17:58:16:875 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:17:188 LOGGER/(24498:24570): Contenido escrito:  112
+[INFO] 17:58:17:188 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:17:502 LOGGER/(24498:24570): Contenido escrito:  101
+[INFO] 17:58:17:503 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 17:58:17:821 LOGGER/(24498:24570): Contenido escrito:  100
+[INFO] 17:58:17:821 LOGGER/(24498:24570): El PID del contenido escrito es: 1
+[INFO] 18:00:14:188 LOGGER/(25517:25517): Servidor iniciado, esperando conexiones!
+[INFO] 18:02:21:117 LOGGER/(25517:25784): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 18:02:21:392 LOGGER/(25517:25619): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:02:22:081 LOGGER/(25517:25619): El pid que me pide frame es: 1
+
+[INFO] 18:02:22:084 LOGGER/(25517:25619): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 18:02:22:084 LOGGER/(25517:25619): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:02:22:086 LOGGER/(25517:25619): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:02:22:087 LOGGER/(25517:25619): el numero de frame es 0
+[INFO] 18:02:22:108 LOGGER/(25517:25619): Contenido escrito:  65
+[INFO] 18:02:22:109 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:22:482 LOGGER/(25517:25619): Contenido escrito:  98
+[INFO] 18:02:22:482 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:22:811 LOGGER/(25517:25619): Contenido escrito:  111
+[INFO] 18:02:22:811 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:23:160 LOGGER/(25517:25619): Contenido escrito:  114
+[INFO] 18:02:23:161 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:23:514 LOGGER/(25517:25619): Contenido escrito:  116
+[INFO] 18:02:23:515 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:23:844 LOGGER/(25517:25619): Contenido escrito:  101
+[INFO] 18:02:23:845 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:24:179 LOGGER/(25517:25619): Contenido escrito:  100
+[INFO] 18:02:24:180 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:24:523 LOGGER/(25517:25619): Contenido escrito:  32
+[INFO] 18:02:24:523 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:24:850 LOGGER/(25517:25619): Contenido escrito:  40
+[INFO] 18:02:24:850 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:25:173 LOGGER/(25517:25619): Contenido escrito:  99
+[INFO] 18:02:25:173 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:25:516 LOGGER/(25517:25619): Contenido escrito:  111
+[INFO] 18:02:25:517 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:25:837 LOGGER/(25517:25619): Contenido escrito:  114
+[INFO] 18:02:25:838 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:26:209 LOGGER/(25517:25619): Contenido escrito:  101
+[INFO] 18:02:26:210 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:26:537 LOGGER/(25517:25619): Contenido escrito:  32
+[INFO] 18:02:26:537 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:26:880 LOGGER/(25517:25619): Contenido escrito:  100
+[INFO] 18:02:26:881 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:27:232 LOGGER/(25517:25619): Contenido escrito:  117
+[INFO] 18:02:27:233 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:27:549 LOGGER/(25517:25619): El pid que me pide frame es: 1
+
+[INFO] 18:02:27:549 LOGGER/(25517:25619): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 18:02:27:550 LOGGER/(25517:25619): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:02:27:550 LOGGER/(25517:25619): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:02:27:551 LOGGER/(25517:25619): el numero de frame es 1
+[INFO] 18:02:27:555 LOGGER/(25517:25619): Contenido escrito:  109
+[INFO] 18:02:27:556 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:27:892 LOGGER/(25517:25619): Contenido escrito:  112
+[INFO] 18:02:27:892 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:28:234 LOGGER/(25517:25619): Contenido escrito:  101
+[INFO] 18:02:28:235 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:28:559 LOGGER/(25517:25619): Contenido escrito:  100
+[INFO] 18:02:28:559 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:28:877 LOGGER/(25517:25619): Contenido escrito:  41
+[INFO] 18:02:28:877 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:29:148 LOGGER/(25517:25784): El tamanio del valor leido* es: 21
+
+[INFO] 18:02:29:151 LOGGER/(25517:25784): el valor del registro lectura es :Aborted (core dumped)
+[INFO] 18:02:29:270 LOGGER/(25517:25619): PID: 1 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 18:02:29:479 LOGGER/(25517:25619): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:02:30:108 LOGGER/(25517:25619): Contenido escrito:  65
+[INFO] 18:02:30:109 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:30:430 LOGGER/(25517:25619): Contenido escrito:  98
+[INFO] 18:02:30:430 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:30:750 LOGGER/(25517:25619): Contenido escrito:  111
+[INFO] 18:02:30:751 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:31:074 LOGGER/(25517:25619): Contenido escrito:  114
+[INFO] 18:02:31:075 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:31:395 LOGGER/(25517:25619): Contenido escrito:  116
+[INFO] 18:02:31:396 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:31:723 LOGGER/(25517:25619): Contenido escrito:  101
+[INFO] 18:02:31:724 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:32:046 LOGGER/(25517:25619): Contenido escrito:  100
+[INFO] 18:02:32:046 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:32:456 LOGGER/(25517:25619): Contenido escrito:  32
+[INFO] 18:02:32:456 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:32:776 LOGGER/(25517:25619): Contenido escrito:  40
+[INFO] 18:02:32:777 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:33:101 LOGGER/(25517:25619): Contenido escrito:  99
+[INFO] 18:02:33:101 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:33:417 LOGGER/(25517:25619): Contenido escrito:  111
+[INFO] 18:02:33:418 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:33:752 LOGGER/(25517:25619): Contenido escrito:  114
+[INFO] 18:02:33:752 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:34:093 LOGGER/(25517:25619): Contenido escrito:  101
+[INFO] 18:02:34:093 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:34:429 LOGGER/(25517:25619): Contenido escrito:  32
+[INFO] 18:02:34:429 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:34:757 LOGGER/(25517:25619): Contenido escrito:  100
+[INFO] 18:02:34:758 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:35:078 LOGGER/(25517:25619): Contenido escrito:  117
+[INFO] 18:02:35:079 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:35:419 LOGGER/(25517:25619): Contenido escrito:  109
+[INFO] 18:02:35:419 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:35:744 LOGGER/(25517:25619): Contenido escrito:  112
+[INFO] 18:02:35:744 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:36:124 LOGGER/(25517:25619): Contenido escrito:  101
+[INFO] 18:02:36:129 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:36:460 LOGGER/(25517:25619): Contenido escrito:  100
+[INFO] 18:02:36:461 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:02:36:781 LOGGER/(25517:25619): Contenido escrito:  41
+[INFO] 18:02:36:781 LOGGER/(25517:25619): El PID del contenido escrito es: 1
+[INFO] 18:05:30:248 LOGGER/(27180:27180): Servidor iniciado, esperando conexiones!
+[INFO] 18:05:47:882 LOGGER/(27180:27371): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 18:06:45:321 LOGGER/(27819:27819): Servidor iniciado, esperando conexiones!
+[INFO] 18:09:24:016 LOGGER/(27819:28072): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 18:09:24:312 LOGGER/(27819:27972): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:09:24:997 LOGGER/(27819:27972): El pid que me pide frame es: 1
+
+[INFO] 18:09:24:998 LOGGER/(27819:27972): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 18:09:24:998 LOGGER/(27819:27972): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:09:25:000 LOGGER/(27819:27972): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:09:25:001 LOGGER/(27819:27972): el numero de frame es 0
+[INFO] 18:09:25:030 LOGGER/(27819:27972): Contenido escrito:  65
+[INFO] 18:09:25:031 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:25:405 LOGGER/(27819:27972): Contenido escrito:  98
+[INFO] 18:09:25:406 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:25:723 LOGGER/(27819:27972): Contenido escrito:  111
+[INFO] 18:09:25:724 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:26:043 LOGGER/(27819:27972): Contenido escrito:  114
+[INFO] 18:09:26:044 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:26:364 LOGGER/(27819:27972): Contenido escrito:  116
+[INFO] 18:09:26:364 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:26:694 LOGGER/(27819:27972): Contenido escrito:  101
+[INFO] 18:09:26:695 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:27:024 LOGGER/(27819:27972): Contenido escrito:  100
+[INFO] 18:09:27:025 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:27:376 LOGGER/(27819:27972): Contenido escrito:  32
+[INFO] 18:09:27:377 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:27:700 LOGGER/(27819:27972): Contenido escrito:  40
+[INFO] 18:09:27:701 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:28:073 LOGGER/(27819:27972): Contenido escrito:  99
+[INFO] 18:09:28:075 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:28:414 LOGGER/(27819:27972): Contenido escrito:  111
+[INFO] 18:09:28:415 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:28:736 LOGGER/(27819:27972): Contenido escrito:  114
+[INFO] 18:09:28:736 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:29:068 LOGGER/(27819:27972): Contenido escrito:  101
+[INFO] 18:09:29:068 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:29:387 LOGGER/(27819:27972): Contenido escrito:  32
+[INFO] 18:09:29:387 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:29:718 LOGGER/(27819:27972): Contenido escrito:  100
+[INFO] 18:09:29:719 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:30:069 LOGGER/(27819:27972): Contenido escrito:  117
+[INFO] 18:09:30:070 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:30:402 LOGGER/(27819:27972): El pid que me pide frame es: 1
+
+[INFO] 18:09:30:402 LOGGER/(27819:27972): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 18:09:30:403 LOGGER/(27819:27972): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:09:30:403 LOGGER/(27819:27972): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:09:30:404 LOGGER/(27819:27972): el numero de frame es 1
+[INFO] 18:09:30:408 LOGGER/(27819:27972): Contenido escrito:  109
+[INFO] 18:09:30:409 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:30:733 LOGGER/(27819:27972): Contenido escrito:  112
+[INFO] 18:09:30:734 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:31:049 LOGGER/(27819:27972): Contenido escrito:  101
+[INFO] 18:09:31:049 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:31:364 LOGGER/(27819:27972): Contenido escrito:  100
+[INFO] 18:09:31:365 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:31:714 LOGGER/(27819:27972): Contenido escrito:  41
+[INFO] 18:09:31:716 LOGGER/(27819:27972): El PID del contenido escrito es: 1
+[INFO] 18:09:31:863 LOGGER/(27819:28072): PID: 1 - Accion: DESTRUIR - Tamaño: 2
+[INFO] 18:11:59:818 LOGGER/(28956:28956): Servidor iniciado, esperando conexiones!
+[INFO] 18:12:36:650 LOGGER/(28956:29146): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 18:12:36:935 LOGGER/(28956:29039): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:12:37:643 LOGGER/(28956:29039): El pid que me pide frame es: 1
+
+[INFO] 18:12:37:644 LOGGER/(28956:29039): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 18:12:37:645 LOGGER/(28956:29039): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:12:37:646 LOGGER/(28956:29039): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:12:37:648 LOGGER/(28956:29039): el numero de frame es 0
+[INFO] 18:12:37:671 LOGGER/(28956:29039): Contenido escrito:  65
+[INFO] 18:12:37:672 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:38:044 LOGGER/(28956:29039): Contenido escrito:  98
+[INFO] 18:12:38:046 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:38:399 LOGGER/(28956:29039): Contenido escrito:  111
+[INFO] 18:12:38:400 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:38:729 LOGGER/(28956:29039): Contenido escrito:  114
+[INFO] 18:12:38:730 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:39:044 LOGGER/(28956:29039): Contenido escrito:  116
+[INFO] 18:12:39:045 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:39:372 LOGGER/(28956:29039): Contenido escrito:  101
+[INFO] 18:12:39:373 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:39:694 LOGGER/(28956:29039): Contenido escrito:  100
+[INFO] 18:12:39:694 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:40:012 LOGGER/(28956:29039): Contenido escrito:  32
+[INFO] 18:12:40:012 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:40:332 LOGGER/(28956:29039): Contenido escrito:  40
+[INFO] 18:12:40:332 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:40:653 LOGGER/(28956:29039): Contenido escrito:  99
+[INFO] 18:12:40:656 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:40:970 LOGGER/(28956:29039): Contenido escrito:  111
+[INFO] 18:12:40:971 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:41:284 LOGGER/(28956:29039): Contenido escrito:  114
+[INFO] 18:12:41:285 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:41:614 LOGGER/(28956:29039): Contenido escrito:  101
+[INFO] 18:12:41:614 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:41:929 LOGGER/(28956:29039): Contenido escrito:  32
+[INFO] 18:12:41:930 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:42:271 LOGGER/(28956:29039): Contenido escrito:  100
+[INFO] 18:12:42:271 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:42:599 LOGGER/(28956:29039): Contenido escrito:  117
+[INFO] 18:12:42:599 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:42:928 LOGGER/(28956:29039): El pid que me pide frame es: 1
+
+[INFO] 18:12:42:930 LOGGER/(28956:29039): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 18:12:42:932 LOGGER/(28956:29039): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:12:42:933 LOGGER/(28956:29039): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:12:42:935 LOGGER/(28956:29039): el numero de frame es 1
+[INFO] 18:12:42:947 LOGGER/(28956:29039): Contenido escrito:  109
+[INFO] 18:12:42:948 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:43:279 LOGGER/(28956:29039): Contenido escrito:  112
+[INFO] 18:12:43:280 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:43:612 LOGGER/(28956:29039): Contenido escrito:  101
+[INFO] 18:12:43:612 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:43:948 LOGGER/(28956:29039): Contenido escrito:  100
+[INFO] 18:12:43:948 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:44:266 LOGGER/(28956:29039): Contenido escrito:  41
+[INFO] 18:12:44:266 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:44:594 LOGGER/(28956:29146): El tamanio del valor leido* es: 21
+
+[INFO] 18:12:44:598 LOGGER/(28956:29146): el valor del registro lectura es :Aborted (core dumped)
+[INFO] 18:12:44:720 LOGGER/(28956:29039): PID: 1 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 18:12:44:931 LOGGER/(28956:29039): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:12:45:616 LOGGER/(28956:29039): Contenido escrito:  65
+[INFO] 18:12:45:617 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:45:932 LOGGER/(28956:29039): Contenido escrito:  98
+[INFO] 18:12:45:932 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:46:306 LOGGER/(28956:29039): Contenido escrito:  111
+[INFO] 18:12:46:308 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:46:636 LOGGER/(28956:29039): Contenido escrito:  114
+[INFO] 18:12:46:637 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:46:951 LOGGER/(28956:29039): Contenido escrito:  116
+[INFO] 18:12:46:951 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:47:281 LOGGER/(28956:29039): Contenido escrito:  101
+[INFO] 18:12:47:282 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:47:605 LOGGER/(28956:29039): Contenido escrito:  100
+[INFO] 18:12:47:605 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:47:931 LOGGER/(28956:29039): Contenido escrito:  32
+[INFO] 18:12:47:932 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:48:287 LOGGER/(28956:29039): Contenido escrito:  40
+[INFO] 18:12:48:287 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:48:614 LOGGER/(28956:29039): Contenido escrito:  99
+[INFO] 18:12:48:615 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:48:973 LOGGER/(28956:29039): Contenido escrito:  111
+[INFO] 18:12:48:974 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:49:295 LOGGER/(28956:29039): Contenido escrito:  114
+[INFO] 18:12:49:296 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:49:617 LOGGER/(28956:29039): Contenido escrito:  101
+[INFO] 18:12:49:618 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:49:961 LOGGER/(28956:29039): Contenido escrito:  32
+[INFO] 18:12:49:962 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:50:289 LOGGER/(28956:29039): Contenido escrito:  100
+[INFO] 18:12:50:289 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:50:634 LOGGER/(28956:29039): Contenido escrito:  117
+[INFO] 18:12:50:636 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:50:969 LOGGER/(28956:29039): Contenido escrito:  109
+[INFO] 18:12:50:969 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:51:296 LOGGER/(28956:29039): Contenido escrito:  112
+[INFO] 18:12:51:296 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:51:655 LOGGER/(28956:29039): Contenido escrito:  101
+[INFO] 18:12:51:656 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:51:977 LOGGER/(28956:29039): Contenido escrito:  100
+[INFO] 18:12:51:978 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:52:315 LOGGER/(28956:29039): Contenido escrito:  41
+[INFO] 18:12:52:317 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:52:442 LOGGER/(28956:29146): El tamanio del valor leido* es: 21
+
+[INFO] 18:12:52:443 LOGGER/(28956:29146): el valor del registro lectura es :Aborted (core dumped)
+[INFO] 18:12:52:552 LOGGER/(28956:29039): PID: 1 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 18:12:52:758 LOGGER/(28956:29039): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:12:53:416 LOGGER/(28956:29039): Contenido escrito:  65
+[INFO] 18:12:53:416 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:53:735 LOGGER/(28956:29039): Contenido escrito:  98
+[INFO] 18:12:53:736 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:54:054 LOGGER/(28956:29039): Contenido escrito:  111
+[INFO] 18:12:54:054 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:54:384 LOGGER/(28956:29039): Contenido escrito:  114
+[INFO] 18:12:54:385 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:54:710 LOGGER/(28956:29039): Contenido escrito:  116
+[INFO] 18:12:54:710 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:55:027 LOGGER/(28956:29039): Contenido escrito:  101
+[INFO] 18:12:55:027 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:55:343 LOGGER/(28956:29039): Contenido escrito:  100
+[INFO] 18:12:55:343 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:12:55:657 LOGGER/(28956:29039): Contenido escrito:  32
+[INFO] 18:12:55:657 LOGGER/(28956:29039): El PID del contenido escrito es: 1
+[INFO] 18:17:47:832 LOGGER/(30379:30379): Servidor iniciado, esperando conexiones!
+[INFO] 18:18:02:885 LOGGER/(30379:30533): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 18:18:03:139 LOGGER/(30379:30469): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:18:03:858 LOGGER/(30379:30469): El pid que me pide frame es: 1
+
+[INFO] 18:18:03:859 LOGGER/(30379:30469): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 18:18:03:861 LOGGER/(30379:30469): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:18:03:862 LOGGER/(30379:30469): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:18:03:863 LOGGER/(30379:30469): el numero de frame es 0
+[INFO] 18:18:03:889 LOGGER/(30379:30469): Contenido escrito:  65
+[INFO] 18:18:03:889 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:04:286 LOGGER/(30379:30469): Contenido escrito:  98
+[INFO] 18:18:04:287 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:04:617 LOGGER/(30379:30469): Contenido escrito:  111
+[INFO] 18:18:04:618 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:04:948 LOGGER/(30379:30469): Contenido escrito:  114
+[INFO] 18:18:04:949 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:05:267 LOGGER/(30379:30469): Contenido escrito:  116
+[INFO] 18:18:05:267 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:05:597 LOGGER/(30379:30469): Contenido escrito:  101
+[INFO] 18:18:05:597 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:05:917 LOGGER/(30379:30469): Contenido escrito:  100
+[INFO] 18:18:05:917 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:06:241 LOGGER/(30379:30469): Contenido escrito:  32
+[INFO] 18:18:06:242 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:06:555 LOGGER/(30379:30469): Contenido escrito:  40
+[INFO] 18:18:06:556 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:06:876 LOGGER/(30379:30469): Contenido escrito:  99
+[INFO] 18:18:06:877 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:07:191 LOGGER/(30379:30469): Contenido escrito:  111
+[INFO] 18:18:07:191 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:07:521 LOGGER/(30379:30469): Contenido escrito:  114
+[INFO] 18:18:07:522 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:07:841 LOGGER/(30379:30469): Contenido escrito:  101
+[INFO] 18:18:07:841 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:08:156 LOGGER/(30379:30469): Contenido escrito:  32
+[INFO] 18:18:08:156 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:08:474 LOGGER/(30379:30469): Contenido escrito:  100
+[INFO] 18:18:08:474 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:08:805 LOGGER/(30379:30469): Contenido escrito:  117
+[INFO] 18:18:08:805 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:09:120 LOGGER/(30379:30469): El pid que me pide frame es: 1
+
+[INFO] 18:18:09:120 LOGGER/(30379:30469): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 18:18:09:121 LOGGER/(30379:30469): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:18:09:121 LOGGER/(30379:30469): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:18:09:122 LOGGER/(30379:30469): el numero de frame es 1
+[INFO] 18:18:09:127 LOGGER/(30379:30469): Contenido escrito:  109
+[INFO] 18:18:09:127 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:09:460 LOGGER/(30379:30469): Contenido escrito:  112
+[INFO] 18:18:09:461 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:09:785 LOGGER/(30379:30469): Contenido escrito:  101
+[INFO] 18:18:09:785 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:10:114 LOGGER/(30379:30469): Contenido escrito:  100
+[INFO] 18:18:10:114 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:10:429 LOGGER/(30379:30469): Contenido escrito:  41
+[INFO] 18:18:10:429 LOGGER/(30379:30469): El PID del contenido escrito es: 1
+[INFO] 18:18:10:582 LOGGER/(30379:30533): PID: 1 - Accion: DESTRUIR - Tamaño: 2
+[INFO] 18:21:15:664 LOGGER/(31062:31062): Servidor iniciado, esperando conexiones!
+[INFO] 18:21:37:512 LOGGER/(31062:31256): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 18:21:37:795 LOGGER/(31062:31157): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:21:38:495 LOGGER/(31062:31157): El pid que me pide frame es: 1
+
+[INFO] 18:21:38:496 LOGGER/(31062:31157): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 18:21:38:496 LOGGER/(31062:31157): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:21:38:498 LOGGER/(31062:31157): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:21:38:499 LOGGER/(31062:31157): el numero de frame es 0
+[INFO] 18:21:38:523 LOGGER/(31062:31157): Contenido escrito:  65
+[INFO] 18:21:38:524 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:38:869 LOGGER/(31062:31157): Contenido escrito:  98
+[INFO] 18:21:38:869 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:39:207 LOGGER/(31062:31157): Contenido escrito:  111
+[INFO] 18:21:39:207 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:39:533 LOGGER/(31062:31157): Contenido escrito:  114
+[INFO] 18:21:39:533 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:39:885 LOGGER/(31062:31157): Contenido escrito:  116
+[INFO] 18:21:39:885 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:40:212 LOGGER/(31062:31157): Contenido escrito:  101
+[INFO] 18:21:40:213 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:40:537 LOGGER/(31062:31157): Contenido escrito:  100
+[INFO] 18:21:40:538 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:40:874 LOGGER/(31062:31157): Contenido escrito:  32
+[INFO] 18:21:40:875 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:41:194 LOGGER/(31062:31157): Contenido escrito:  40
+[INFO] 18:21:41:195 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:41:521 LOGGER/(31062:31157): Contenido escrito:  99
+[INFO] 18:21:41:522 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:41:845 LOGGER/(31062:31157): Contenido escrito:  111
+[INFO] 18:21:41:846 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:42:164 LOGGER/(31062:31157): Contenido escrito:  114
+[INFO] 18:21:42:164 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:42:492 LOGGER/(31062:31157): Contenido escrito:  101
+[INFO] 18:21:42:492 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:42:846 LOGGER/(31062:31157): Contenido escrito:  32
+[INFO] 18:21:42:846 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:43:180 LOGGER/(31062:31157): Contenido escrito:  100
+[INFO] 18:21:43:182 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:43:511 LOGGER/(31062:31157): Contenido escrito:  117
+[INFO] 18:21:43:511 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:43:827 LOGGER/(31062:31157): El pid que me pide frame es: 1
+
+[INFO] 18:21:43:828 LOGGER/(31062:31157): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 18:21:43:828 LOGGER/(31062:31157): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:21:43:829 LOGGER/(31062:31157): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:21:43:829 LOGGER/(31062:31157): el numero de frame es 1
+[INFO] 18:21:43:835 LOGGER/(31062:31157): Contenido escrito:  109
+[INFO] 18:21:43:837 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:44:180 LOGGER/(31062:31157): Contenido escrito:  112
+[INFO] 18:21:44:180 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:44:501 LOGGER/(31062:31157): Contenido escrito:  101
+[INFO] 18:21:44:502 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:44:839 LOGGER/(31062:31157): Contenido escrito:  100
+[INFO] 18:21:44:840 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:45:211 LOGGER/(31062:31157): Contenido escrito:  41
+[INFO] 18:21:45:213 LOGGER/(31062:31157): El PID del contenido escrito es: 1
+[INFO] 18:21:45:373 LOGGER/(31062:31256): PID: 1 - Accion: DESTRUIR - Tamaño: 2
+[INFO] 18:26:14:257 LOGGER/(32037:32037): Servidor iniciado, esperando conexiones!
+[INFO] 18:27:12:360 LOGGER/(32037:32252): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 18:27:12:625 LOGGER/(32037:32127): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:27:13:314 LOGGER/(32037:32127): El pid que me pide frame es: 1
+
+[INFO] 18:27:13:315 LOGGER/(32037:32127): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 18:27:13:316 LOGGER/(32037:32127): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:27:13:317 LOGGER/(32037:32127): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:27:13:318 LOGGER/(32037:32127): el numero de frame es 0
+[INFO] 18:27:13:355 LOGGER/(32037:32127): Contenido escrito:  65
+[INFO] 18:27:13:355 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:13:728 LOGGER/(32037:32127): Contenido escrito:  98
+[INFO] 18:27:13:729 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:14:071 LOGGER/(32037:32127): Contenido escrito:  111
+[INFO] 18:27:14:073 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:14:415 LOGGER/(32037:32127): Contenido escrito:  114
+[INFO] 18:27:14:415 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:14:742 LOGGER/(32037:32127): Contenido escrito:  116
+[INFO] 18:27:14:742 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:15:088 LOGGER/(32037:32127): Contenido escrito:  101
+[INFO] 18:27:15:088 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:15:417 LOGGER/(32037:32127): Contenido escrito:  100
+[INFO] 18:27:15:417 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:15:749 LOGGER/(32037:32127): Contenido escrito:  32
+[INFO] 18:27:15:749 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:16:086 LOGGER/(32037:32127): Contenido escrito:  40
+[INFO] 18:27:16:087 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:16:409 LOGGER/(32037:32127): Contenido escrito:  99
+[INFO] 18:27:16:410 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:16:724 LOGGER/(32037:32127): Contenido escrito:  111
+[INFO] 18:27:16:725 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:17:049 LOGGER/(32037:32127): Contenido escrito:  114
+[INFO] 18:27:17:049 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:17:374 LOGGER/(32037:32127): Contenido escrito:  101
+[INFO] 18:27:17:375 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:17:705 LOGGER/(32037:32127): Contenido escrito:  32
+[INFO] 18:27:17:705 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:18:030 LOGGER/(32037:32127): Contenido escrito:  100
+[INFO] 18:27:18:030 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:18:367 LOGGER/(32037:32127): Contenido escrito:  117
+[INFO] 18:27:18:368 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:18:738 LOGGER/(32037:32127): El pid que me pide frame es: 1
+
+[INFO] 18:27:18:739 LOGGER/(32037:32127): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 18:27:18:739 LOGGER/(32037:32127): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:27:18:740 LOGGER/(32037:32127): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:27:18:741 LOGGER/(32037:32127): el numero de frame es 1
+[INFO] 18:27:18:745 LOGGER/(32037:32127): Contenido escrito:  109
+[INFO] 18:27:18:746 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:19:070 LOGGER/(32037:32127): Contenido escrito:  112
+[INFO] 18:27:19:071 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:19:398 LOGGER/(32037:32127): Contenido escrito:  101
+[INFO] 18:27:19:399 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:19:729 LOGGER/(32037:32127): Contenido escrito:  100
+[INFO] 18:27:19:730 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:20:079 LOGGER/(32037:32127): Contenido escrito:  41
+[INFO] 18:27:20:079 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:20:251 LOGGER/(32037:32252): El tamanio del valor leido* es: 21
+
+[INFO] 18:27:20:254 LOGGER/(32037:32252): el valor del registro lectura es :Aborted (core dumped)
+[INFO] 18:27:20:466 LOGGER/(32037:32127): PID: 1 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 18:27:20:678 LOGGER/(32037:32127): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:27:21:319 LOGGER/(32037:32127): Contenido escrito:  65
+[INFO] 18:27:21:319 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:21:651 LOGGER/(32037:32127): Contenido escrito:  98
+[INFO] 18:27:21:651 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:22:000 LOGGER/(32037:32127): Contenido escrito:  111
+[INFO] 18:27:22:000 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:22:376 LOGGER/(32037:32127): Contenido escrito:  114
+[INFO] 18:27:22:376 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:22:694 LOGGER/(32037:32127): Contenido escrito:  116
+[INFO] 18:27:22:694 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:23:030 LOGGER/(32037:32127): Contenido escrito:  101
+[INFO] 18:27:23:031 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:23:352 LOGGER/(32037:32127): Contenido escrito:  100
+[INFO] 18:27:23:352 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:23:667 LOGGER/(32037:32127): Contenido escrito:  32
+[INFO] 18:27:23:667 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:23:994 LOGGER/(32037:32127): Contenido escrito:  40
+[INFO] 18:27:23:995 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:24:318 LOGGER/(32037:32127): Contenido escrito:  99
+[INFO] 18:27:24:318 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:24:637 LOGGER/(32037:32127): Contenido escrito:  111
+[INFO] 18:27:24:638 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:24:954 LOGGER/(32037:32127): Contenido escrito:  114
+[INFO] 18:27:24:955 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:25:300 LOGGER/(32037:32127): Contenido escrito:  101
+[INFO] 18:27:25:301 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:25:654 LOGGER/(32037:32127): Contenido escrito:  32
+[INFO] 18:27:25:655 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:25:999 LOGGER/(32037:32127): Contenido escrito:  100
+[INFO] 18:27:25:999 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:26:322 LOGGER/(32037:32127): Contenido escrito:  117
+[INFO] 18:27:26:323 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:26:646 LOGGER/(32037:32127): Contenido escrito:  109
+[INFO] 18:27:26:647 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:26:983 LOGGER/(32037:32127): Contenido escrito:  112
+[INFO] 18:27:26:983 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:27:318 LOGGER/(32037:32127): Contenido escrito:  101
+[INFO] 18:27:27:318 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:27:639 LOGGER/(32037:32127): Contenido escrito:  100
+[INFO] 18:27:27:640 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:27:981 LOGGER/(32037:32127): Contenido escrito:  41
+[INFO] 18:27:27:982 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:28:102 LOGGER/(32037:32252): El tamanio del valor leido* es: 21
+
+[INFO] 18:27:28:103 LOGGER/(32037:32252): el valor del registro lectura es :Aborted (core dumped)
+[INFO] 18:27:28:211 LOGGER/(32037:32127): PID: 1 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 18:27:28:438 LOGGER/(32037:32127): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:27:29:067 LOGGER/(32037:32127): Contenido escrito:  65
+[INFO] 18:27:29:067 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:29:389 LOGGER/(32037:32127): Contenido escrito:  98
+[INFO] 18:27:29:390 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:29:733 LOGGER/(32037:32127): Contenido escrito:  111
+[INFO] 18:27:29:733 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:30:068 LOGGER/(32037:32127): Contenido escrito:  114
+[INFO] 18:27:30:069 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:30:391 LOGGER/(32037:32127): Contenido escrito:  116
+[INFO] 18:27:30:392 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:30:723 LOGGER/(32037:32127): Contenido escrito:  101
+[INFO] 18:27:30:724 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:31:047 LOGGER/(32037:32127): Contenido escrito:  100
+[INFO] 18:27:31:048 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:31:386 LOGGER/(32037:32127): Contenido escrito:  32
+[INFO] 18:27:31:387 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:31:727 LOGGER/(32037:32127): Contenido escrito:  40
+[INFO] 18:27:31:727 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:32:059 LOGGER/(32037:32127): Contenido escrito:  99
+[INFO] 18:27:32:060 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:32:388 LOGGER/(32037:32127): Contenido escrito:  111
+[INFO] 18:27:32:389 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:32:725 LOGGER/(32037:32127): Contenido escrito:  114
+[INFO] 18:27:32:725 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:33:043 LOGGER/(32037:32127): Contenido escrito:  101
+[INFO] 18:27:33:044 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:33:362 LOGGER/(32037:32127): Contenido escrito:  32
+[INFO] 18:27:33:362 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:27:33:679 LOGGER/(32037:32127): Contenido escrito:  100
+[INFO] 18:27:33:679 LOGGER/(32037:32127): El PID del contenido escrito es: 1
+[INFO] 18:30:04:082 LOGGER/(33255:33255): Servidor iniciado, esperando conexiones!
+[INFO] 18:30:25:356 LOGGER/(33255:33411): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 18:30:25:607 LOGGER/(33255:33318): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:30:26:273 LOGGER/(33255:33318): El pid que me pide frame es: 1
+
+[INFO] 18:30:26:274 LOGGER/(33255:33318): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 18:30:26:275 LOGGER/(33255:33318): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:30:26:276 LOGGER/(33255:33318): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:30:26:277 LOGGER/(33255:33318): el numero de frame es 0
+[INFO] 18:30:26:300 LOGGER/(33255:33318): Contenido escrito:  65
+[INFO] 18:30:26:301 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:26:647 LOGGER/(33255:33318): Contenido escrito:  98
+[INFO] 18:30:26:647 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:26:975 LOGGER/(33255:33318): Contenido escrito:  111
+[INFO] 18:30:26:976 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:27:308 LOGGER/(33255:33318): Contenido escrito:  114
+[INFO] 18:30:27:309 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:27:633 LOGGER/(33255:33318): Contenido escrito:  116
+[INFO] 18:30:27:634 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:27:982 LOGGER/(33255:33318): Contenido escrito:  101
+[INFO] 18:30:27:982 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:28:315 LOGGER/(33255:33318): Contenido escrito:  100
+[INFO] 18:30:28:316 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:28:671 LOGGER/(33255:33318): Contenido escrito:  32
+[INFO] 18:30:28:672 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:28:995 LOGGER/(33255:33318): Contenido escrito:  40
+[INFO] 18:30:28:995 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:29:342 LOGGER/(33255:33318): Contenido escrito:  99
+[INFO] 18:30:29:342 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:29:659 LOGGER/(33255:33318): Contenido escrito:  111
+[INFO] 18:30:29:660 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:29:978 LOGGER/(33255:33318): Contenido escrito:  114
+[INFO] 18:30:29:978 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:30:320 LOGGER/(33255:33318): Contenido escrito:  101
+[INFO] 18:30:30:321 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:30:659 LOGGER/(33255:33318): Contenido escrito:  32
+[INFO] 18:30:30:660 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:30:995 LOGGER/(33255:33318): Contenido escrito:  100
+[INFO] 18:30:30:995 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:31:315 LOGGER/(33255:33318): Contenido escrito:  117
+[INFO] 18:30:31:315 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:31:637 LOGGER/(33255:33318): El pid que me pide frame es: 1
+
+[INFO] 18:30:31:637 LOGGER/(33255:33318): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 18:30:31:638 LOGGER/(33255:33318): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:30:31:638 LOGGER/(33255:33318): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:30:31:639 LOGGER/(33255:33318): el numero de frame es 1
+[INFO] 18:30:31:644 LOGGER/(33255:33318): Contenido escrito:  109
+[INFO] 18:30:31:644 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:31:976 LOGGER/(33255:33318): Contenido escrito:  112
+[INFO] 18:30:31:976 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:32:317 LOGGER/(33255:33318): Contenido escrito:  101
+[INFO] 18:30:32:318 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:32:743 LOGGER/(33255:33318): Contenido escrito:  100
+[INFO] 18:30:32:743 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:33:084 LOGGER/(33255:33318): Contenido escrito:  41
+[INFO] 18:30:33:084 LOGGER/(33255:33318): El PID del contenido escrito es: 1
+[INFO] 18:30:33:293 LOGGER/(33255:33411): PID: 1 - Accion: DESTRUIR - Tamaño: 2
+[INFO] 18:33:08:996 LOGGER/(33772:33772): Servidor iniciado, esperando conexiones!
+[INFO] 18:33:30:936 LOGGER/(33868:33868): Servidor iniciado, esperando conexiones!
+[INFO] 18:33:49:769 LOGGER/(33868:34054): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 18:33:50:022 LOGGER/(33868:33953): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:33:50:763 LOGGER/(33868:33953): El pid que me pide frame es: 1
+
+[INFO] 18:33:50:764 LOGGER/(33868:33953): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 18:33:50:765 LOGGER/(33868:33953): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:33:50:766 LOGGER/(33868:33953): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:33:50:767 LOGGER/(33868:33953): el numero de frame es 0
+[INFO] 18:33:50:789 LOGGER/(33868:33953): Contenido escrito:  65
+[INFO] 18:33:50:789 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:51:143 LOGGER/(33868:33953): Contenido escrito:  98
+[INFO] 18:33:51:144 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:51:477 LOGGER/(33868:33953): Contenido escrito:  111
+[INFO] 18:33:51:477 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:51:829 LOGGER/(33868:33953): Contenido escrito:  114
+[INFO] 18:33:51:829 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:52:152 LOGGER/(33868:33953): Contenido escrito:  116
+[INFO] 18:33:52:153 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:52:475 LOGGER/(33868:33953): Contenido escrito:  101
+[INFO] 18:33:52:475 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:52:797 LOGGER/(33868:33953): Contenido escrito:  100
+[INFO] 18:33:52:797 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:53:123 LOGGER/(33868:33953): Contenido escrito:  32
+[INFO] 18:33:53:123 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:53:447 LOGGER/(33868:33953): Contenido escrito:  40
+[INFO] 18:33:53:447 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:53:773 LOGGER/(33868:33953): Contenido escrito:  99
+[INFO] 18:33:53:773 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:54:099 LOGGER/(33868:33953): Contenido escrito:  111
+[INFO] 18:33:54:100 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:54:437 LOGGER/(33868:33953): Contenido escrito:  114
+[INFO] 18:33:54:437 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:54:773 LOGGER/(33868:33953): Contenido escrito:  101
+[INFO] 18:33:54:774 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:55:113 LOGGER/(33868:33953): Contenido escrito:  32
+[INFO] 18:33:55:114 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:55:445 LOGGER/(33868:33953): Contenido escrito:  100
+[INFO] 18:33:55:446 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:55:771 LOGGER/(33868:33953): Contenido escrito:  117
+[INFO] 18:33:55:772 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:56:155 LOGGER/(33868:33953): El pid que me pide frame es: 1
+
+[INFO] 18:33:56:156 LOGGER/(33868:33953): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 18:33:56:157 LOGGER/(33868:33953): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:33:56:159 LOGGER/(33868:33953): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:33:56:160 LOGGER/(33868:33953): el numero de frame es 1
+[INFO] 18:33:56:166 LOGGER/(33868:33953): Contenido escrito:  109
+[INFO] 18:33:56:166 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:56:484 LOGGER/(33868:33953): Contenido escrito:  112
+[INFO] 18:33:56:484 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:56:801 LOGGER/(33868:33953): Contenido escrito:  101
+[INFO] 18:33:56:801 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:57:119 LOGGER/(33868:33953): Contenido escrito:  100
+[INFO] 18:33:57:120 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:57:439 LOGGER/(33868:33953): Contenido escrito:  41
+[INFO] 18:33:57:439 LOGGER/(33868:33953): El PID del contenido escrito es: 1
+[INFO] 18:33:57:584 LOGGER/(33868:34054): PID: 1 - Accion: DESTRUIR - Tamaño: 2
+[INFO] 18:35:11:025 LOGGER/(34441:34441): Servidor iniciado, esperando conexiones!
+[INFO] 18:35:50:593 LOGGER/(34441:34700): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 18:35:50:741 LOGGER/(34441:34525): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:35:51:398 LOGGER/(34441:34525): El pid que me pide frame es: 1
+
+[INFO] 18:35:51:399 LOGGER/(34441:34525): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 18:35:51:399 LOGGER/(34441:34525): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:35:51:399 LOGGER/(34441:34525): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:35:51:400 LOGGER/(34441:34525): el numero de frame es 0
+[INFO] 18:35:51:411 LOGGER/(34441:34525): Contenido escrito:  65
+[INFO] 18:35:51:412 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:51:748 LOGGER/(34441:34525): Contenido escrito:  98
+[INFO] 18:35:51:748 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:52:072 LOGGER/(34441:34525): Contenido escrito:  111
+[INFO] 18:35:52:072 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:52:406 LOGGER/(34441:34525): Contenido escrito:  114
+[INFO] 18:35:52:406 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:52:733 LOGGER/(34441:34525): Contenido escrito:  116
+[INFO] 18:35:52:733 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:53:061 LOGGER/(34441:34525): Contenido escrito:  101
+[INFO] 18:35:53:061 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:53:379 LOGGER/(34441:34525): Contenido escrito:  100
+[INFO] 18:35:53:379 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:53:685 LOGGER/(34441:34525): Contenido escrito:  32
+[INFO] 18:35:53:685 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:54:002 LOGGER/(34441:34525): Contenido escrito:  40
+[INFO] 18:35:54:002 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:54:311 LOGGER/(34441:34525): Contenido escrito:  99
+[INFO] 18:35:54:311 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:54:633 LOGGER/(34441:34525): Contenido escrito:  111
+[INFO] 18:35:54:634 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:54:952 LOGGER/(34441:34525): Contenido escrito:  114
+[INFO] 18:35:54:952 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:55:262 LOGGER/(34441:34525): Contenido escrito:  101
+[INFO] 18:35:55:262 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:55:571 LOGGER/(34441:34525): Contenido escrito:  32
+[INFO] 18:35:55:571 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:55:908 LOGGER/(34441:34525): Contenido escrito:  100
+[INFO] 18:35:55:908 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:56:226 LOGGER/(34441:34525): Contenido escrito:  117
+[INFO] 18:35:56:226 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:56:540 LOGGER/(34441:34525): El pid que me pide frame es: 1
+
+[INFO] 18:35:56:540 LOGGER/(34441:34525): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 18:35:56:540 LOGGER/(34441:34525): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:35:56:540 LOGGER/(34441:34525): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:35:56:541 LOGGER/(34441:34525): el numero de frame es 1
+[INFO] 18:35:56:543 LOGGER/(34441:34525): Contenido escrito:  109
+[INFO] 18:35:56:543 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:56:861 LOGGER/(34441:34525): Contenido escrito:  112
+[INFO] 18:35:56:861 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:57:179 LOGGER/(34441:34525): Contenido escrito:  101
+[INFO] 18:35:57:179 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:57:509 LOGGER/(34441:34525): Contenido escrito:  100
+[INFO] 18:35:57:509 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:57:827 LOGGER/(34441:34525): Contenido escrito:  41
+[INFO] 18:35:57:827 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:57:966 LOGGER/(34441:34700): El tamanio del valor leido* es: 21
+
+[INFO] 18:35:57:967 LOGGER/(34441:34700): el valor del registro lectura es :Aborted (core dumped)
+[INFO] 18:35:58:075 LOGGER/(34441:34525): PID: 1 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 18:35:58:304 LOGGER/(34441:34525): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:35:58:932 LOGGER/(34441:34525): Contenido escrito:  65
+[INFO] 18:35:58:932 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:59:238 LOGGER/(34441:34525): Contenido escrito:  98
+[INFO] 18:35:59:238 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:59:556 LOGGER/(34441:34525): Contenido escrito:  111
+[INFO] 18:35:59:556 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:35:59:865 LOGGER/(34441:34525): Contenido escrito:  114
+[INFO] 18:35:59:865 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:36:00:185 LOGGER/(34441:34525): Contenido escrito:  116
+[INFO] 18:36:00:186 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:36:00:491 LOGGER/(34441:34525): Contenido escrito:  101
+[INFO] 18:36:00:492 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:36:00:800 LOGGER/(34441:34525): Contenido escrito:  100
+[INFO] 18:36:00:800 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:36:01:117 LOGGER/(34441:34525): Contenido escrito:  32
+[INFO] 18:36:01:117 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:36:01:427 LOGGER/(34441:34525): Contenido escrito:  40
+[INFO] 18:36:01:427 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:36:01:748 LOGGER/(34441:34525): Contenido escrito:  99
+[INFO] 18:36:01:748 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:36:02:055 LOGGER/(34441:34525): Contenido escrito:  111
+[INFO] 18:36:02:055 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:36:02:361 LOGGER/(34441:34525): Contenido escrito:  114
+[INFO] 18:36:02:361 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:36:02:671 LOGGER/(34441:34525): Contenido escrito:  101
+[INFO] 18:36:02:672 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:36:02:982 LOGGER/(34441:34525): Contenido escrito:  32
+[INFO] 18:36:02:982 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:36:03:315 LOGGER/(34441:34525): Contenido escrito:  100
+[INFO] 18:36:03:315 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:36:03:636 LOGGER/(34441:34525): Contenido escrito:  117
+[INFO] 18:36:03:636 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:36:03:973 LOGGER/(34441:34525): Contenido escrito:  109
+[INFO] 18:36:03:973 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:36:04:280 LOGGER/(34441:34525): Contenido escrito:  112
+[INFO] 18:36:04:280 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:36:04:591 LOGGER/(34441:34525): Contenido escrito:  101
+[INFO] 18:36:04:591 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:36:04:899 LOGGER/(34441:34525): Contenido escrito:  100
+[INFO] 18:36:04:899 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:36:05:228 LOGGER/(34441:34525): Contenido escrito:  41
+[INFO] 18:36:05:228 LOGGER/(34441:34525): El PID del contenido escrito es: 1
+[INFO] 18:43:53:112 LOGGER/(35618:35618): Servidor iniciado, esperando conexiones!
+[INFO] 18:44:22:859 LOGGER/(35618:35851): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 18:44:23:058 LOGGER/(35618:35673): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:44:23:698 LOGGER/(35618:35673): El pid que me pide frame es: 1
+
+[INFO] 18:44:23:698 LOGGER/(35618:35673): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 18:44:23:699 LOGGER/(35618:35673): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:44:23:699 LOGGER/(35618:35673): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:44:23:699 LOGGER/(35618:35673): el numero de frame es 0
+[INFO] 18:44:23:708 LOGGER/(35618:35673): Contenido escrito:  65
+[INFO] 18:44:23:708 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:24:031 LOGGER/(35618:35673): Contenido escrito:  98
+[INFO] 18:44:24:032 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:24:352 LOGGER/(35618:35673): Contenido escrito:  111
+[INFO] 18:44:24:352 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:24:683 LOGGER/(35618:35673): Contenido escrito:  114
+[INFO] 18:44:24:683 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:25:000 LOGGER/(35618:35673): Contenido escrito:  116
+[INFO] 18:44:25:000 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:25:312 LOGGER/(35618:35673): Contenido escrito:  101
+[INFO] 18:44:25:313 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:25:648 LOGGER/(35618:35673): Contenido escrito:  100
+[INFO] 18:44:25:648 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:25:961 LOGGER/(35618:35673): Contenido escrito:  32
+[INFO] 18:44:25:961 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:26:268 LOGGER/(35618:35673): Contenido escrito:  40
+[INFO] 18:44:26:268 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:26:588 LOGGER/(35618:35673): Contenido escrito:  99
+[INFO] 18:44:26:589 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:26:900 LOGGER/(35618:35673): Contenido escrito:  111
+[INFO] 18:44:26:900 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:27:216 LOGGER/(35618:35673): Contenido escrito:  114
+[INFO] 18:44:27:216 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:27:603 LOGGER/(35618:35673): Contenido escrito:  101
+[INFO] 18:44:27:603 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:27:929 LOGGER/(35618:35673): Contenido escrito:  32
+[INFO] 18:44:27:929 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:28:252 LOGGER/(35618:35673): Contenido escrito:  100
+[INFO] 18:44:28:252 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:28:563 LOGGER/(35618:35673): Contenido escrito:  117
+[INFO] 18:44:28:563 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:28:887 LOGGER/(35618:35673): El pid que me pide frame es: 1
+
+[INFO] 18:44:28:887 LOGGER/(35618:35673): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 18:44:28:888 LOGGER/(35618:35673): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:44:28:888 LOGGER/(35618:35673): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:44:28:889 LOGGER/(35618:35673): el numero de frame es 1
+[INFO] 18:44:28:898 LOGGER/(35618:35673): Contenido escrito:  109
+[INFO] 18:44:28:898 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:29:215 LOGGER/(35618:35673): Contenido escrito:  112
+[INFO] 18:44:29:215 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:29:525 LOGGER/(35618:35673): Contenido escrito:  101
+[INFO] 18:44:29:525 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:29:843 LOGGER/(35618:35673): Contenido escrito:  100
+[INFO] 18:44:29:843 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:30:155 LOGGER/(35618:35673): Contenido escrito:  41
+[INFO] 18:44:30:155 LOGGER/(35618:35673): El PID del contenido escrito es: 1
+[INFO] 18:44:30:301 LOGGER/(35618:35851): PID: 1 - Accion: DESTRUIR - Tamaño: 2
+[INFO] 18:46:03:114 LOGGER/(36315:36315): Servidor iniciado, esperando conexiones!
+[INFO] 18:46:30:139 LOGGER/(36315:36486): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 18:46:30:343 LOGGER/(36315:36370): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:46:30:991 LOGGER/(36315:36370): El pid que me pide frame es: 1
+
+[INFO] 18:46:30:991 LOGGER/(36315:36370): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 18:46:30:991 LOGGER/(36315:36370): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:46:30:991 LOGGER/(36315:36370): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:46:30:992 LOGGER/(36315:36370): el numero de frame es 0
+[INFO] 18:46:31:000 LOGGER/(36315:36370): Contenido escrito:  65
+[INFO] 18:46:31:001 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:31:336 LOGGER/(36315:36370): Contenido escrito:  98
+[INFO] 18:46:31:336 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:31:707 LOGGER/(36315:36370): Contenido escrito:  111
+[INFO] 18:46:31:707 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:32:017 LOGGER/(36315:36370): Contenido escrito:  114
+[INFO] 18:46:32:017 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:32:352 LOGGER/(36315:36370): Contenido escrito:  116
+[INFO] 18:46:32:353 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:32:729 LOGGER/(36315:36370): Contenido escrito:  101
+[INFO] 18:46:32:729 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:33:042 LOGGER/(36315:36370): Contenido escrito:  100
+[INFO] 18:46:33:042 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:33:375 LOGGER/(36315:36370): Contenido escrito:  32
+[INFO] 18:46:33:375 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:33:752 LOGGER/(36315:36370): Contenido escrito:  40
+[INFO] 18:46:33:752 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:34:063 LOGGER/(36315:36370): Contenido escrito:  99
+[INFO] 18:46:34:063 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:34:375 LOGGER/(36315:36370): Contenido escrito:  111
+[INFO] 18:46:34:375 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:34:693 LOGGER/(36315:36370): Contenido escrito:  114
+[INFO] 18:46:34:694 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:35:003 LOGGER/(36315:36370): Contenido escrito:  101
+[INFO] 18:46:35:003 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:35:309 LOGGER/(36315:36370): Contenido escrito:  32
+[INFO] 18:46:35:309 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:35:628 LOGGER/(36315:36370): Contenido escrito:  100
+[INFO] 18:46:35:628 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:35:940 LOGGER/(36315:36370): Contenido escrito:  117
+[INFO] 18:46:35:940 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:36:255 LOGGER/(36315:36370): El pid que me pide frame es: 1
+
+[INFO] 18:46:36:255 LOGGER/(36315:36370): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 18:46:36:255 LOGGER/(36315:36370): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:46:36:255 LOGGER/(36315:36370): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:46:36:255 LOGGER/(36315:36370): el numero de frame es 1
+[INFO] 18:46:36:256 LOGGER/(36315:36370): Contenido escrito:  109
+[INFO] 18:46:36:256 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:36:662 LOGGER/(36315:36370): Contenido escrito:  112
+[INFO] 18:46:36:663 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:36:982 LOGGER/(36315:36370): Contenido escrito:  101
+[INFO] 18:46:36:982 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:37:296 LOGGER/(36315:36370): Contenido escrito:  100
+[INFO] 18:46:37:297 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:46:37:606 LOGGER/(36315:36370): Contenido escrito:  41
+[INFO] 18:46:37:606 LOGGER/(36315:36370): El PID del contenido escrito es: 1
+[INFO] 18:47:43:802 LOGGER/(36967:36967): Servidor iniciado, esperando conexiones!
+[INFO] 18:48:16:891 LOGGER/(36967:37178): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 18:48:17:037 LOGGER/(36967:37041): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:48:17:728 LOGGER/(36967:37041): El pid que me pide frame es: 1
+
+[INFO] 18:48:17:728 LOGGER/(36967:37041): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 18:48:17:728 LOGGER/(36967:37041): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:48:17:729 LOGGER/(36967:37041): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:48:17:729 LOGGER/(36967:37041): el numero de frame es 0
+[INFO] 18:48:17:742 LOGGER/(36967:37041): Contenido escrito:  65
+[INFO] 18:48:17:742 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:18:074 LOGGER/(36967:37041): Contenido escrito:  98
+[INFO] 18:48:18:074 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:18:389 LOGGER/(36967:37041): Contenido escrito:  111
+[INFO] 18:48:18:389 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:18:711 LOGGER/(36967:37041): Contenido escrito:  114
+[INFO] 18:48:18:711 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:19:041 LOGGER/(36967:37041): Contenido escrito:  116
+[INFO] 18:48:19:042 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:19:360 LOGGER/(36967:37041): Contenido escrito:  101
+[INFO] 18:48:19:360 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:19:680 LOGGER/(36967:37041): Contenido escrito:  100
+[INFO] 18:48:19:681 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:20:087 LOGGER/(36967:37041): Contenido escrito:  32
+[INFO] 18:48:20:087 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:20:405 LOGGER/(36967:37041): Contenido escrito:  40
+[INFO] 18:48:20:405 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:20:721 LOGGER/(36967:37041): Contenido escrito:  99
+[INFO] 18:48:20:721 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:21:052 LOGGER/(36967:37041): Contenido escrito:  111
+[INFO] 18:48:21:052 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:21:361 LOGGER/(36967:37041): Contenido escrito:  114
+[INFO] 18:48:21:361 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:21:675 LOGGER/(36967:37041): Contenido escrito:  101
+[INFO] 18:48:21:675 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:21:999 LOGGER/(36967:37041): Contenido escrito:  32
+[INFO] 18:48:21:999 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:22:314 LOGGER/(36967:37041): Contenido escrito:  100
+[INFO] 18:48:22:314 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:22:629 LOGGER/(36967:37041): Contenido escrito:  117
+[INFO] 18:48:22:629 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:22:935 LOGGER/(36967:37041): El pid que me pide frame es: 1
+
+[INFO] 18:48:22:935 LOGGER/(36967:37041): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 18:48:22:936 LOGGER/(36967:37041): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:48:22:936 LOGGER/(36967:37041): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:48:22:936 LOGGER/(36967:37041): el numero de frame es 1
+[INFO] 18:48:22:938 LOGGER/(36967:37041): Contenido escrito:  109
+[INFO] 18:48:22:938 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:23:250 LOGGER/(36967:37041): Contenido escrito:  112
+[INFO] 18:48:23:250 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:23:561 LOGGER/(36967:37041): Contenido escrito:  101
+[INFO] 18:48:23:561 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:23:885 LOGGER/(36967:37041): Contenido escrito:  100
+[INFO] 18:48:23:885 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:24:189 LOGGER/(36967:37041): Contenido escrito:  41
+[INFO] 18:48:24:189 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:24:305 LOGGER/(36967:37178): El tamanio del valor leido* es: 21
+
+[INFO] 18:48:24:306 LOGGER/(36967:37178): el valor del registro lectura es :Aborted (core dumped)
+[INFO] 18:48:24:415 LOGGER/(36967:37041): PID: 1 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 18:48:24:627 LOGGER/(36967:37041): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:48:25:248 LOGGER/(36967:37041): Contenido escrito:  65
+[INFO] 18:48:25:248 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:25:576 LOGGER/(36967:37041): Contenido escrito:  98
+[INFO] 18:48:25:576 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:25:896 LOGGER/(36967:37041): Contenido escrito:  111
+[INFO] 18:48:25:896 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:26:212 LOGGER/(36967:37041): Contenido escrito:  114
+[INFO] 18:48:26:212 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:26:534 LOGGER/(36967:37041): Contenido escrito:  116
+[INFO] 18:48:26:534 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:26:842 LOGGER/(36967:37041): Contenido escrito:  101
+[INFO] 18:48:26:842 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:27:152 LOGGER/(36967:37041): Contenido escrito:  100
+[INFO] 18:48:27:152 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:27:475 LOGGER/(36967:37041): Contenido escrito:  32
+[INFO] 18:48:27:475 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:27:845 LOGGER/(36967:37041): Contenido escrito:  40
+[INFO] 18:48:27:845 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:28:156 LOGGER/(36967:37041): Contenido escrito:  99
+[INFO] 18:48:28:156 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:28:470 LOGGER/(36967:37041): Contenido escrito:  111
+[INFO] 18:48:28:470 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:28:786 LOGGER/(36967:37041): Contenido escrito:  114
+[INFO] 18:48:28:786 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:29:111 LOGGER/(36967:37041): Contenido escrito:  101
+[INFO] 18:48:29:111 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:29:423 LOGGER/(36967:37041): Contenido escrito:  32
+[INFO] 18:48:29:423 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:29:735 LOGGER/(36967:37041): Contenido escrito:  100
+[INFO] 18:48:29:735 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:30:102 LOGGER/(36967:37041): Contenido escrito:  117
+[INFO] 18:48:30:102 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:30:407 LOGGER/(36967:37041): Contenido escrito:  109
+[INFO] 18:48:30:407 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:30:747 LOGGER/(36967:37041): Contenido escrito:  112
+[INFO] 18:48:30:748 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:31:061 LOGGER/(36967:37041): Contenido escrito:  101
+[INFO] 18:48:31:061 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:31:383 LOGGER/(36967:37041): Contenido escrito:  100
+[INFO] 18:48:31:383 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:48:31:694 LOGGER/(36967:37041): Contenido escrito:  41
+[INFO] 18:48:31:694 LOGGER/(36967:37041): El PID del contenido escrito es: 1
+[INFO] 18:50:09:231 LOGGER/(37808:37808): Servidor iniciado, esperando conexiones!
+[INFO] 18:50:38:773 LOGGER/(37808:38094): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 18:50:38:919 LOGGER/(37808:37863): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 18:50:39:580 LOGGER/(37808:37863): El pid que me pide frame es: 1
+
+[INFO] 18:50:39:580 LOGGER/(37808:37863): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 18:50:39:580 LOGGER/(37808:37863): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:50:39:580 LOGGER/(37808:37863): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:50:39:581 LOGGER/(37808:37863): el numero de frame es 0
+[INFO] 18:50:39:593 LOGGER/(37808:37863): Contenido escrito:  65
+[INFO] 18:50:39:593 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:39:923 LOGGER/(37808:37863): Contenido escrito:  98
+[INFO] 18:50:39:924 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:40:298 LOGGER/(37808:37863): Contenido escrito:  111
+[INFO] 18:50:40:298 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:40:613 LOGGER/(37808:37863): Contenido escrito:  114
+[INFO] 18:50:40:613 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:40:929 LOGGER/(37808:37863): Contenido escrito:  116
+[INFO] 18:50:40:930 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:41:247 LOGGER/(37808:37863): Contenido escrito:  101
+[INFO] 18:50:41:247 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:41:564 LOGGER/(37808:37863): Contenido escrito:  100
+[INFO] 18:50:41:565 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:41:877 LOGGER/(37808:37863): Contenido escrito:  32
+[INFO] 18:50:41:877 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:42:197 LOGGER/(37808:37863): Contenido escrito:  40
+[INFO] 18:50:42:197 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:42:501 LOGGER/(37808:37863): Contenido escrito:  99
+[INFO] 18:50:42:501 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:42:807 LOGGER/(37808:37863): Contenido escrito:  111
+[INFO] 18:50:42:807 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:43:126 LOGGER/(37808:37863): Contenido escrito:  114
+[INFO] 18:50:43:126 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:43:436 LOGGER/(37808:37863): Contenido escrito:  101
+[INFO] 18:50:43:436 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:43:741 LOGGER/(37808:37863): Contenido escrito:  32
+[INFO] 18:50:43:741 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:44:052 LOGGER/(37808:37863): Contenido escrito:  100
+[INFO] 18:50:44:052 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:44:372 LOGGER/(37808:37863): Contenido escrito:  117
+[INFO] 18:50:44:372 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:44:685 LOGGER/(37808:37863): El pid que me pide frame es: 1
+
+[INFO] 18:50:44:685 LOGGER/(37808:37863): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 18:50:44:685 LOGGER/(37808:37863): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 18:50:44:685 LOGGER/(37808:37863): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 18:50:44:685 LOGGER/(37808:37863): el numero de frame es 1
+[INFO] 18:50:44:686 LOGGER/(37808:37863): Contenido escrito:  109
+[INFO] 18:50:44:686 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:44:999 LOGGER/(37808:37863): Contenido escrito:  112
+[INFO] 18:50:44:999 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:45:306 LOGGER/(37808:37863): Contenido escrito:  101
+[INFO] 18:50:45:306 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:45:619 LOGGER/(37808:37863): Contenido escrito:  100
+[INFO] 18:50:45:619 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:45:929 LOGGER/(37808:37863): Contenido escrito:  41
+[INFO] 18:50:45:929 LOGGER/(37808:37863): El PID del contenido escrito es: 1
+[INFO] 18:50:46:042 LOGGER/(37808:38094): PID: 1 - Accion: DESTRUIR - Tamaño: 2
+[INFO] 18:56:02:303 LOGGER/(38611:38611): Servidor iniciado, esperando conexiones!
+[INFO] 18:58:47:394 LOGGER/(38887:38887): Servidor iniciado, esperando conexiones!
+[INFO] 18:59:27:436 LOGGER/(38887:38970): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 19:00:43:533 LOGGER/(39551:39551): Servidor iniciado, esperando conexiones!
+[INFO] 19:02:57:127 LOGGER/(40087:40087): Servidor iniciado, esperando conexiones!
+[INFO] 19:04:45:233 LOGGER/(40540:40540): Servidor iniciado, esperando conexiones!
+[INFO] 19:05:19:257 LOGGER/(40540:40702): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:19:279 LOGGER/(40540:40702): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:19:289 LOGGER/(40540:40702): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:19:307 LOGGER/(40540:40702): PID: 4 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:19:327 LOGGER/(40540:40702): PID: 5 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:19:353 LOGGER/(40540:40702): PID: 6 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:19:374 LOGGER/(40540:40702): PID: 7 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:19:388 LOGGER/(40540:40702): PID: 8 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:19:539 LOGGER/(40540:40702): PID: 9 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:19:555 LOGGER/(40540:40702): PID: 10 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:19:577 LOGGER/(40540:40702): PID: 11 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:19:864 LOGGER/(40540:40702): PID: 12 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:20:027 LOGGER/(40540:40702): PID: 13 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:20:091 LOGGER/(40540:40702): PID: 14 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:20:493 LOGGER/(40540:40702): PID: 15 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:20:771 LOGGER/(40540:40702): PID: 16 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:20:819 LOGGER/(40540:40702): PID: 17 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:21:082 LOGGER/(40540:40702): PID: 18 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:21:333 LOGGER/(40540:40702): PID: 19 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:21:746 LOGGER/(40540:40702): PID: 20 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:21:813 LOGGER/(40540:40702): PID: 21 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:21:917 LOGGER/(40540:40601): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 100
+[INFO] 19:05:21:941 LOGGER/(40540:40702): PID: 22 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:22:032 LOGGER/(40540:40702): PID: 23 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:22:111 LOGGER/(40540:40702): PID: 24 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:22:383 LOGGER/(40540:40702): PID: 25 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:22:566 LOGGER/(40540:40702): PID: 26 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:22:749 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:22:753 LOGGER/(40540:40702): PID: 27 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:22:891 LOGGER/(40540:40601): El pid que me pide frame es: 3
+
+[INFO] 19:05:22:891 LOGGER/(40540:40601): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 19:05:22:892 LOGGER/(40540:40601): BUSCO EL FRAME CORRESPONDIENTE AL PID: 3
+[INFO] 19:05:22:892 LOGGER/(40540:40601): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 19:05:22:892 LOGGER/(40540:40601): el numero de frame es 0
+[INFO] 19:05:22:906 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:22:911 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:22:911 LOGGER/(40540:40702): PID: 28 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:23:220 LOGGER/(40540:40702): PID: 29 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:23:465 LOGGER/(40540:40702): PID: 30 - Accion: CREAR - Tamaño: 0
+[INFO] 19:05:23:500 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:23:617 LOGGER/(40540:40601): El pid que me pide frame es: 1
+
+[INFO] 19:05:23:624 LOGGER/(40540:40601): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 19:05:23:624 LOGGER/(40540:40601): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 19:05:23:624 LOGGER/(40540:40601): La cantidad de entradas que tiene la memoria es: 4
+[INFO] 19:05:23:628 LOGGER/(40540:40601): el numero de frame es 0
+[INFO] 19:05:23:630 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:23:633 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:23:967 LOGGER/(40540:40702): PID: 2 - Accion: DESTRUIR - Tamaño: 7
+[INFO] 19:05:24:302 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:24:302 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:24:516 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:24:516 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:24:624 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:24:942 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:24:942 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:25:161 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:25:161 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:25:368 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:25:368 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:25:469 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:25:779 LOGGER/(40540:40601): PID: 4 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
+[INFO] 19:05:26:402 LOGGER/(40540:40601): El pid que me pide frame es: 4
+
+[INFO] 19:05:26:402 LOGGER/(40540:40601): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 19:05:26:402 LOGGER/(40540:40601): BUSCO EL FRAME CORRESPONDIENTE AL PID: 4
+[INFO] 19:05:26:403 LOGGER/(40540:40601): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 19:05:26:403 LOGGER/(40540:40601): el numero de frame es 0
+[INFO] 19:05:26:404 LOGGER/(40540:40601): Contenido escrito:  83
+[INFO] 19:05:26:405 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:26:920 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:27:027 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:27:028 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:27:284 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:27:284 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:27:792 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:27:895 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:27:895 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:28:099 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:28:099 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:28:307 LOGGER/(40540:40601): Contenido escrito:  101
+[INFO] 19:05:28:307 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:28:612 LOGGER/(40540:40601): Contenido escrito:  103
+[INFO] 19:05:28:612 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:28:922 LOGGER/(40540:40601): Contenido escrito:  109
+[INFO] 19:05:28:922 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:29:129 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:29:129 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:29:231 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:29:947 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:29:947 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:30:159 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:30:159 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:30:269 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:30:885 LOGGER/(40540:40601): Contenido escrito:  101
+[INFO] 19:05:30:885 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:31:192 LOGGER/(40540:40601): Contenido escrito:  110
+[INFO] 19:05:31:192 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:31:498 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:31:604 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:31:604 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:31:807 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:31:807 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:32:011 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:32:011 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:32:112 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:32:646 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:32:750 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:32:750 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:32:954 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:32:955 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:33:164 LOGGER/(40540:40601): Contenido escrito:  116
+[INFO] 19:05:33:164 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:33:469 LOGGER/(40540:40601): Contenido escrito:  97
+[INFO] 19:05:33:469 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:33:773 LOGGER/(40540:40601): Contenido escrito:  116
+[INFO] 19:05:33:773 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:34:382 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:34:484 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:34:484 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:34:687 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:34:687 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:34:792 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:34:792 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:35:007 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:35:007 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:35:122 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:35:743 LOGGER/(40540:40601): Contenido escrito:  105
+[INFO] 19:05:35:743 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:36:056 LOGGER/(40540:40601): Contenido escrito:  111
+[INFO] 19:05:36:057 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:36:370 LOGGER/(40540:40601): Contenido escrito:  110
+[INFO] 19:05:36:370 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:36:574 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:36:574 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:36:679 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:37:495 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:37:597 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:37:597 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:37:802 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:37:802 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:38:012 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:38:012 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:38:320 LOGGER/(40540:40601): Contenido escrito:  32
+[INFO] 19:05:38:320 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:38:632 LOGGER/(40540:40601): Contenido escrito:  102
+[INFO] 19:05:38:632 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:38:960 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:39:064 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:39:064 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:39:271 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:39:271 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:39:474 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:39:474 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:39:575 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:39:882 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:39:882 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:39:983 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:40:620 LOGGER/(40540:40601): Contenido escrito:  97
+[INFO] 19:05:40:620 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:40:925 LOGGER/(40540:40601): Contenido escrito:  117
+[INFO] 19:05:40:925 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:41:230 LOGGER/(40540:40601): El pid que me pide frame es: 4
+
+[INFO] 19:05:41:230 LOGGER/(40540:40601): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 19:05:41:231 LOGGER/(40540:40601): BUSCO EL FRAME CORRESPONDIENTE AL PID: 4
+[INFO] 19:05:41:231 LOGGER/(40540:40601): La cantidad de entradas que tiene la memoria es: 3
+[INFO] 19:05:41:231 LOGGER/(40540:40601): el numero de frame es 1
+[INFO] 19:05:41:232 LOGGER/(40540:40601): Contenido escrito:  108
+[INFO] 19:05:41:232 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:41:850 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:41:955 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:41:956 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:42:165 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:42:165 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:42:368 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:42:471 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:42:471 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:42:681 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:42:681 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:42:888 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:42:888 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:43:208 LOGGER/(40540:40601): Contenido escrito:  116
+[INFO] 19:05:43:208 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:43:523 LOGGER/(40540:40601): Contenido escrito:  32
+[INFO] 19:05:43:523 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:43:834 LOGGER/(40540:40601): Contenido escrito:  40
+[INFO] 19:05:43:834 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:44:040 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:44:040 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:44:141 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:44:752 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:44:752 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:44:854 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:45:768 LOGGER/(40540:40601): Contenido escrito:  99
+[INFO] 19:05:45:768 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:46:089 LOGGER/(40540:40601): Contenido escrito:  111
+[INFO] 19:05:46:089 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:46:417 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:46:520 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:46:520 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:46:728 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:46:728 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:46:935 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:46:935 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:47:037 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:47:245 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:47:353 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:47:353 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:47:557 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:47:557 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:47:761 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:47:761 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:47:968 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:47:969 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:48:075 LOGGER/(40540:40601): Contenido escrito:  114
+[INFO] 19:05:48:075 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:48:389 LOGGER/(40540:40601): Contenido escrito:  101
+[INFO] 19:05:48:389 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:48:703 LOGGER/(40540:40601): Contenido escrito:  32
+[INFO] 19:05:48:704 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:49:315 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:49:418 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:49:418 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:49:625 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:49:625 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:49:728 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:50:442 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:50:651 LOGGER/(40540:40601): Contenido escrito:  100
+[INFO] 19:05:50:651 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:50:971 LOGGER/(40540:40601): Contenido escrito:  117
+[INFO] 19:05:50:971 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:51:282 LOGGER/(40540:40601): Contenido escrito:  109
+[INFO] 19:05:51:282 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:51:488 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:51:488 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:51:590 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:52:210 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:52:210 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:52:415 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:52:415 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:52:625 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:52:625 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:52:841 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:52:841 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:52:945 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:53:285 LOGGER/(40540:40601): Contenido escrito:  112
+[INFO] 19:05:53:285 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:53:596 LOGGER/(40540:40601): Contenido escrito:  101
+[INFO] 19:05:53:596 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:53:811 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:53:914 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:53:914 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:54:122 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:54:122 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:54:328 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:54:328 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:54:429 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:55:251 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:55:361 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:55:361 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:55:571 LOGGER/(40540:40601): Contenido escrito:  100
+[INFO] 19:05:55:571 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:55:880 LOGGER/(40540:40601): Contenido escrito:  41
+[INFO] 19:05:55:880 LOGGER/(40540:40601): El PID del contenido escrito es: 4
+[INFO] 19:05:55:995 LOGGER/(40540:40702): PID: 4 - Accion: DESTRUIR - Tamaño: 3
+[INFO] 19:05:56:507 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:56:615 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:56:615 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:56:825 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:56:825 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:57:030 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:57:030 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:57:234 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:57:234 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:57:448 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:57:448 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:05:57:550 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:57:755 LOGGER/(40540:40601): PID: 5 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 19:05:58:387 LOGGER/(40540:40601): El pid que me pide frame es: 5
+
+[INFO] 19:05:58:387 LOGGER/(40540:40601): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 19:05:58:387 LOGGER/(40540:40601): BUSCO EL FRAME CORRESPONDIENTE AL PID: 5
+[INFO] 19:05:58:387 LOGGER/(40540:40601): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 19:05:58:387 LOGGER/(40540:40601): el numero de frame es 0
+[INFO] 19:05:58:390 LOGGER/(40540:40601): Contenido escrito:  65
+[INFO] 19:05:58:390 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:05:58:700 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:58:700 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:05:58:805 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:05:59:881 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:05:59:985 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:05:59:985 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:06:00:299 LOGGER/(40540:40601): Contenido escrito:  98
+[INFO] 19:06:00:299 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:00:611 LOGGER/(40540:40601): Contenido escrito:  111
+[INFO] 19:06:00:612 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:00:920 LOGGER/(40540:40601): Contenido escrito:  114
+[INFO] 19:06:00:921 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:01:127 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:06:01:237 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:01:237 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:06:01:440 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:01:440 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:06:01:643 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:01:644 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:06:01:745 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:06:01:849 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:01:849 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:06:02:055 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:02:055 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:06:02:266 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:02:266 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:06:02:371 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:06:02:886 LOGGER/(40540:40601): Contenido escrito:  116
+[INFO] 19:06:02:886 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:03:197 LOGGER/(40540:40601): Contenido escrito:  101
+[INFO] 19:06:03:197 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:04:035 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:06:04:142 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:04:142 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:06:04:754 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:06:04:860 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:04:860 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:06:05:065 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:05:066 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:06:05:175 LOGGER/(40540:40601): Contenido escrito:  100
+[INFO] 19:06:05:175 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:05:484 LOGGER/(40540:40601): Contenido escrito:  32
+[INFO] 19:06:05:484 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:05:794 LOGGER/(40540:40601): Contenido escrito:  40
+[INFO] 19:06:05:794 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:05:999 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:05:999 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:06:06:205 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:06:205 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:06:06:307 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:06:06:925 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:06:925 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:06:07:131 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:07:131 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:06:07:233 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:06:07:745 LOGGER/(40540:40601): Contenido escrito:  99
+[INFO] 19:06:07:745 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:08:059 LOGGER/(40540:40601): Contenido escrito:  111
+[INFO] 19:06:08:059 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:08:365 LOGGER/(40540:40601): Contenido escrito:  114
+[INFO] 19:06:08:365 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:08:577 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:06:08:685 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:08:685 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:06:08:903 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:08:903 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:06:09:124 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:09:125 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:06:09:539 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:06:09:651 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:09:651 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:06:09:854 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:09:854 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:06:10:292 LOGGER/(40540:40601): Contenido escrito:  101
+[INFO] 19:06:10:292 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:10:604 LOGGER/(40540:40601): Contenido escrito:  32
+[INFO] 19:06:10:604 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:10:917 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:06:11:543 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:06:11:648 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:11:648 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:06:11:753 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:11:753 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:06:11:970 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:11:970 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:06:12:076 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:06:12:620 LOGGER/(40540:40601): Contenido escrito:  100
+[INFO] 19:06:12:620 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:12:941 LOGGER/(40540:40601): Contenido escrito:  117
+[INFO] 19:06:12:941 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:13:246 LOGGER/(40540:40601): El pid que me pide frame es: 5
+
+[INFO] 19:06:13:248 LOGGER/(40540:40601): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 19:06:13:248 LOGGER/(40540:40601): BUSCO EL FRAME CORRESPONDIENTE AL PID: 5
+[INFO] 19:06:13:248 LOGGER/(40540:40601): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 19:06:13:248 LOGGER/(40540:40601): el numero de frame es 1
+[INFO] 19:06:13:251 LOGGER/(40540:40601): Contenido escrito:  109
+[INFO] 19:06:13:251 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:13:570 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:13:570 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:06:13:776 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:13:776 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:06:13:879 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:06:14:500 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:06:14:608 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:14:609 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:06:14:837 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:14:837 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:06:15:056 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:15:056 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:06:15:273 LOGGER/(40540:40601): Contenido escrito:  112
+[INFO] 19:06:15:273 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:15:606 LOGGER/(40540:40601): Contenido escrito:  101
+[INFO] 19:06:15:606 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:16:125 LOGGER/(40540:40601): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 19:06:16:231 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:16:231 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:06:16:445 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:16:445 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:06:16:672 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:16:675 LOGGER/(40540:40601): El PID del contenido escrito es: 3
+[INFO] 19:06:16:882 LOGGER/(40540:40601): Contenido escrito:  1
+[INFO] 19:06:16:882 LOGGER/(40540:40601): El PID del contenido escrito es: 1
+[INFO] 19:06:16:984 LOGGER/(40540:40601): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 19:06:17:608 LOGGER/(40540:40601): Contenido escrito:  100
+[INFO] 19:06:17:608 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:17:983 LOGGER/(40540:40601): Contenido escrito:  41
+[INFO] 19:06:17:983 LOGGER/(40540:40601): El PID del contenido escrito es: 5
+[INFO] 19:06:18:085 LOGGER/(40540:40601): El pid que me pide frame es: 5
+
+[INFO] 19:06:18:085 LOGGER/(40540:40601): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 19:06:18:085 LOGGER/(40540:40601): BUSCO EL FRAME CORRESPONDIENTE AL PID: 5
+[INFO] 19:06:18:085 LOGGER/(40540:40601): La cantidad de entradas que tiene la memoria es: 2
+[INFO] 19:06:18:085 LOGGER/(40540:40601): el numero de frame es 0
