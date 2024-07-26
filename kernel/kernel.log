@@ -4064,3 +4064,219 @@
 [INFO] 21:21:43:440 LOGGER/(26305:26319): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
 [INFO] 21:21:43:557 LOGGER/(26305:26319): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXIT
 [INFO] 21:21:43:558 LOGGER/(26305:26319): Finaliza el proceso 2 - Motivo: SUCCESS
+[INFO] 21:27:27:133 LOGGER/(30386:30386): Conexion establecida con Memoria
+[INFO] 21:27:27:229 LOGGER/(30386:30386): Conexion establecida con Dispatcher
+[INFO] 21:27:27:232 LOGGER/(30386:30386): Conexion establecida con Interrupt
+[INFO] 21:27:27:513 LOGGER/(30386:30386): Servidor iniciado, esperando conexiones!
+[INFO] 21:28:54:349 LOGGER/(30386:30405): Se crea el proceso: 1 en NEW
+[INFO] 21:28:54:350 LOGGER/(30386:30405): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:28:54:353 LOGGER/(30386:30402): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:28:54:359 LOGGER/(30386:30402): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:28:54:364 LOGGER/(30386:30402): Cola Ready: 1 
+
+[INFO] 21:28:54:380 LOGGER/(30386:30403): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:28:54:519 LOGGER/(30386:30405): Se crea el proceso: 2 en NEW
+[INFO] 21:28:54:520 LOGGER/(30386:30405): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:28:54:524 LOGGER/(30386:30402): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:28:54:525 LOGGER/(30386:30402): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:28:54:525 LOGGER/(30386:30402): Cola Ready: 2 
+
+[INFO] 21:28:54:530 LOGGER/(30386:30405): Se crea el proceso: 3 en NEW
+[INFO] 21:28:54:534 LOGGER/(30386:30405): Hay proceso esperando en la cola de NEW!
+
+[INFO] 21:28:54:588 LOGGER/(30386:30402): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 21:28:54:589 LOGGER/(30386:30402): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 21:28:54:590 LOGGER/(30386:30402): Cola Ready: 2 3 
+
+[INFO] 21:28:55:040 LOGGER/(30386:30403): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:28:55:043 LOGGER/(30386:30403): PID: 1 - Bloqueado por: TECLADO
+[INFO] 21:28:55:052 LOGGER/(30386:30760): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: BLOCKED
+[INFO] 21:28:55:132 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:28:56:019 LOGGER/(30386:30849): Envie interrupcion para PID 2 despues de 750
+[INFO] 21:28:56:080 LOGGER/(30386:30403): PID: 2 - Desalojado por fin de Quantum
+[INFO] 21:28:56:081 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:28:56:082 LOGGER/(30386:30403): Cola Ready: 3 2 
+
+[INFO] 21:28:56:082 LOGGER/(30386:30403): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:28:56:759 LOGGER/(30386:30403): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:28:56:760 LOGGER/(30386:30403): PID: 3 - Bloqueado por: TECLADO
+[INFO] 21:28:56:761 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:28:56:918 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:28:56:919 LOGGER/(30386:30403): PID: 2 - Bloqueado por: GENERICA
+[INFO] 21:29:06:936 LOGGER/(30386:30522): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:29:06:937 LOGGER/(30386:30522): Cola Ready: 2 
+
+[INFO] 21:29:06:938 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:29:07:819 LOGGER/(30386:31050): Envie interrupcion para PID 2 despues de 750
+[INFO] 21:29:07:843 LOGGER/(30386:30403): PID: 2 - Desalojado por fin de Quantum
+[INFO] 21:29:07:843 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:29:07:844 LOGGER/(30386:30403): Cola Ready: 2 
+
+[INFO] 21:29:07:845 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:29:08:717 LOGGER/(30386:31067): Envie interrupcion para PID 2 despues de 750
+[INFO] 21:29:08:771 LOGGER/(30386:30403): PID: 2 - Desalojado por fin de Quantum
+[INFO] 21:29:08:771 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:29:08:772 LOGGER/(30386:30403): Cola Ready: 2 
+
+[INFO] 21:29:08:773 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:29:09:110 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:29:09:111 LOGGER/(30386:30403): PID: 2 - Bloqueado por: GENERICA
+[INFO] 21:29:19:117 LOGGER/(30386:30522): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:29:19:118 LOGGER/(30386:30522): Cola Ready: 2 
+
+[INFO] 21:29:19:119 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:29:19:979 LOGGER/(30386:31209): Envie interrupcion para PID 2 despues de 750
+[INFO] 21:29:20:026 LOGGER/(30386:30403): PID: 2 - Desalojado por fin de Quantum
+[INFO] 21:29:20:027 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:29:20:027 LOGGER/(30386:30403): Cola Ready: 2 
+
+[INFO] 21:29:20:028 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:29:20:890 LOGGER/(30386:31225): Envie interrupcion para PID 2 despues de 750
+[INFO] 21:29:20:915 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:29:20:916 LOGGER/(30386:30403): PID: 2 - Bloqueado por: GENERICA
+[INFO] 21:29:26:530 LOGGER/(30386:30760): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:29:26:530 LOGGER/(30386:30760): Cola Ready: 1 
+
+[INFO] 21:29:26:533 LOGGER/(30386:30760): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: BLOCKED
+[INFO] 21:29:26:533 LOGGER/(30386:30403): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:29:27:400 LOGGER/(30386:31379): Envie interrupcion para PID 1 despues de 750
+[INFO] 21:29:27:438 LOGGER/(30386:30403): PID: 1 - Desalojado por fin de Quantum
+[INFO] 21:29:27:438 LOGGER/(30386:30403): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:29:27:439 LOGGER/(30386:30403): Cola Ready: 1 
+
+[INFO] 21:29:27:440 LOGGER/(30386:30403): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:29:28:301 LOGGER/(30386:31391): Envie interrupcion para PID 1 despues de 750
+[INFO] 21:29:28:345 LOGGER/(30386:30403): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:29:28:345 LOGGER/(30386:30403): PID: 1 - Bloqueado por: GENERICA
+[INFO] 21:29:30:924 LOGGER/(30386:30522): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:29:30:925 LOGGER/(30386:30522): Cola Ready: 2 
+
+[INFO] 21:29:30:926 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:29:31:797 LOGGER/(30386:31450): Envie interrupcion para PID 2 despues de 750
+[INFO] 21:29:31:801 LOGGER/(30386:30403): PID: 2 - Desalojado por fin de Quantum
+[INFO] 21:29:31:801 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:29:31:802 LOGGER/(30386:30403): Cola Ready: 2 
+
+[INFO] 21:29:31:802 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:29:32:031 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:29:32:035 LOGGER/(30386:30403): PID: 2 - Bloqueado por: GENERICA
+[INFO] 21:29:36:494 LOGGER/(30386:30760): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:29:36:495 LOGGER/(30386:30760): Cola Ready: 3 
+
+[INFO] 21:29:36:496 LOGGER/(30386:30403): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:29:36:820 LOGGER/(30386:30403): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:29:36:822 LOGGER/(30386:30403): PID: 3 - Bloqueado por: GENERICA
+[INFO] 21:29:50:928 LOGGER/(30386:30522): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:29:50:928 LOGGER/(30386:30522): Cola Ready: 1 
+
+[INFO] 21:29:50:929 LOGGER/(30386:30403): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:29:51:446 LOGGER/(30386:30403): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:29:51:446 LOGGER/(30386:30403): PID: 1 - Bloqueado por: MONITOR
+[INFO] 21:29:51:448 LOGGER/(30386:30403): PID: 1 - Bloqueado por - MONITOR
+[INFO] 21:29:51:449 LOGGER/(30386:30605): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: BLOCKED
+[INFO] 21:29:51:475 LOGGER/(30386:30605): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:29:51:478 LOGGER/(30386:30605): Cola Ready: 1 
+
+[INFO] 21:29:51:479 LOGGER/(30386:30403): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:29:51:697 LOGGER/(30386:30403): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 21:29:51:698 LOGGER/(30386:30403): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 21:30:00:933 LOGGER/(30386:30522): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:30:00:935 LOGGER/(30386:30522): Cola Ready: 2 
+
+[INFO] 21:30:00:937 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:30:01:791 LOGGER/(30386:31878): Envie interrupcion para PID 2 despues de 750
+[INFO] 21:30:01:889 LOGGER/(30386:30403): PID: 2 - Desalojado por fin de Quantum
+[INFO] 21:30:01:891 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:30:01:892 LOGGER/(30386:30403): Cola Ready: 2 
+
+[INFO] 21:30:01:894 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:30:02:439 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:30:02:439 LOGGER/(30386:30403): PID: 2 - Bloqueado por: GENERICA
+[INFO] 21:30:20:942 LOGGER/(30386:30522): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:30:20:943 LOGGER/(30386:30522): Cola Ready: 3 
+
+[INFO] 21:30:20:945 LOGGER/(30386:30403): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:30:21:810 LOGGER/(30386:32036): Envie interrupcion para PID 3 despues de 750
+[INFO] 21:30:21:887 LOGGER/(30386:30403): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:30:21:887 LOGGER/(30386:30403): PID: 3 - Bloqueado por: GENERICA
+[INFO] 21:30:30:961 LOGGER/(30386:30522): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:30:30:963 LOGGER/(30386:30522): Cola Ready: 2 
+
+[INFO] 21:30:30:967 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:30:31:819 LOGGER/(30386:32193): Envie interrupcion para PID 2 despues de 750
+[INFO] 21:30:31:851 LOGGER/(30386:30403): PID: 2 - Desalojado por fin de Quantum
+[INFO] 21:30:31:852 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:30:31:853 LOGGER/(30386:30403): Cola Ready: 2 
+
+[INFO] 21:30:31:853 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:30:32:415 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:30:32:415 LOGGER/(30386:30403): PID: 2 - Bloqueado por: GENERICA
+[INFO] 21:30:50:972 LOGGER/(30386:30522): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:30:50:975 LOGGER/(30386:30522): Cola Ready: 3 
+
+[INFO] 21:30:50:981 LOGGER/(30386:30403): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:30:51:106 LOGGER/(30386:30403): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:30:51:107 LOGGER/(30386:30403): PID: 3 - Bloqueado por: MONITOR
+[INFO] 21:30:51:107 LOGGER/(30386:30403): PID: 3 - Bloqueado por - MONITOR
+[INFO] 21:30:51:108 LOGGER/(30386:30605): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: BLOCKED
+[INFO] 21:30:51:114 LOGGER/(30386:30605): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:30:51:115 LOGGER/(30386:30605): Cola Ready: 3 
+
+[INFO] 21:30:51:116 LOGGER/(30386:30403): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:30:51:234 LOGGER/(30386:30403): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 21:30:51:235 LOGGER/(30386:30403): Finaliza el proceso 3 - Motivo: SUCCESS
+[INFO] 21:31:00:992 LOGGER/(30386:30522): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:31:00:992 LOGGER/(30386:30522): Cola Ready: 2 
+
+[INFO] 21:31:00:993 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:31:01:854 LOGGER/(30386:32570): Envie interrupcion para PID 2 despues de 750
+[INFO] 21:31:01:906 LOGGER/(30386:30403): PID: 2 - Desalojado por fin de Quantum
+[INFO] 21:31:01:907 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:31:01:907 LOGGER/(30386:30403): Cola Ready: 2 
+
+[INFO] 21:31:01:908 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:31:02:773 LOGGER/(30386:32576): Envie interrupcion para PID 2 despues de 750
+[INFO] 21:31:02:788 LOGGER/(30386:30403): PID: 2 - Desalojado por fin de Quantum
+[INFO] 21:31:02:789 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:31:02:789 LOGGER/(30386:30403): Cola Ready: 2 
+
+[INFO] 21:31:02:790 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:31:03:179 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:31:03:182 LOGGER/(30386:30403): PID: 2 - Bloqueado por: GENERICA
+[INFO] 21:31:13:194 LOGGER/(30386:30522): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:31:13:195 LOGGER/(30386:30522): Cola Ready: 2 
+
+[INFO] 21:31:13:196 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:31:14:061 LOGGER/(30386:32729): Envie interrupcion para PID 2 despues de 750
+[INFO] 21:31:14:082 LOGGER/(30386:30403): PID: 2 - Desalojado por fin de Quantum
+[INFO] 21:31:14:083 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:31:14:083 LOGGER/(30386:30403): Cola Ready: 2 
+
+[INFO] 21:31:14:084 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:31:14:302 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:31:14:303 LOGGER/(30386:30403): PID: 2 - Bloqueado por: GENERICA
+[INFO] 21:31:24:317 LOGGER/(30386:30522): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:31:24:321 LOGGER/(30386:30522): Cola Ready: 2 
+
+[INFO] 21:31:24:322 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:31:25:188 LOGGER/(30386:32887): Envie interrupcion para PID 2 despues de 750
+[INFO] 21:31:25:211 LOGGER/(30386:30403): PID: 2 - Desalojado por fin de Quantum
+[INFO] 21:31:25:212 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 21:31:25:213 LOGGER/(30386:30403): Cola Ready: 2 
+
+[INFO] 21:31:25:213 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:31:26:046 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 21:31:26:046 LOGGER/(30386:30403): PID: 2 - Bloqueado por: MONITOR
+[INFO] 21:31:26:047 LOGGER/(30386:30403): PID: 2 - Bloqueado por - MONITOR
+[INFO] 21:31:26:048 LOGGER/(30386:30605): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: BLOCKED
+[INFO] 21:31:26:057 LOGGER/(30386:30605): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 21:31:26:058 LOGGER/(30386:30605): Cola Ready: 2 
+
+[INFO] 21:31:26:058 LOGGER/(30386:30403): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 21:31:26:179 LOGGER/(30386:30403): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 21:31:26:180 LOGGER/(30386:30403): Finaliza el proceso 2 - Motivo: SUCCESS

@@ -1752,3 +1752,52 @@ El valor leido de memoria es: I don't want to set the world on fire
 
 
 [INFO] 21:21:43:438 LOGGER/(26534:26534): PID: 2 - Operacion: ESCRIBIR
+[INFO] 21:27:41:088 LOGGER/(30509:30509): Conexion establecida con Kernel
+
+[INFO] 21:27:44:358 LOGGER/(30592:30592): Conexion establecida con Kernel
+
+[INFO] 21:27:44:529 LOGGER/(30592:30592): Conexion establecida con Memoria
+
+[INFO] 21:27:50:379 LOGGER/(30727:30727): Conexion establecida con Kernel
+
+[INFO] 21:27:50:563 LOGGER/(30727:30727): Conexion establecida con Memoria
+
+[INFO] 21:29:06:929 LOGGER/(30509:30509): PID 2 - Operacion: DORMIR_IO
+[INFO] 21:29:19:116 LOGGER/(30509:30509): PID 2 - Operacion: DORMIR_IO
+[INFO] 21:29:26:516 LOGGER/(30727:30727): el valor en mandar_valor_a_memoria es WAR NEVER CHANGES...
+[INFO] 21:29:26:519 LOGGER/(30727:30727): PID: 1 - Operacion: LEER
+[INFO] 21:29:30:923 LOGGER/(30509:30509): PID 2 - Operacion: DORMIR_IO
+[INFO] 21:29:36:483 LOGGER/(30727:30727): el valor en mandar_valor_a_memoria es Sistemas Operativos 2c2023
+[INFO] 21:29:36:488 LOGGER/(30727:30727): PID: 3 - Operacion: LEER
+[INFO] 21:29:50:927 LOGGER/(30509:30509): PID 1 - Operacion: DORMIR_IO
+[INFO] 21:29:51:471 LOGGER/(30592:30592): el tamanio del valor a escribir es 25
+
+[INFO] 21:29:51:471 LOGGER/(30592:30592): 
+
+El valor leido de memoria es: WAR, WAR NEVER CHANGES... 
+
+
+[INFO] 21:29:51:472 LOGGER/(30592:30592): PID: 1 - Operacion: ESCRIBIR
+[INFO] 21:30:00:931 LOGGER/(30509:30509): PID 2 - Operacion: DORMIR_IO
+[INFO] 21:30:20:940 LOGGER/(30509:30509): PID 3 - Operacion: DORMIR_IO
+[INFO] 21:30:30:959 LOGGER/(30509:30509): PID 2 - Operacion: DORMIR_IO
+[INFO] 21:30:50:968 LOGGER/(30509:30509): PID 3 - Operacion: DORMIR_IO
+[INFO] 21:30:51:112 LOGGER/(30592:30592): el tamanio del valor a escribir es 26
+
+[INFO] 21:30:51:113 LOGGER/(30592:30592): 
+
+El valor leido de memoria es: Sistemas Operativos 1c2024 
+
+
+[INFO] 21:30:51:113 LOGGER/(30592:30592): PID: 3 - Operacion: ESCRIBIR
+[INFO] 21:31:00:991 LOGGER/(30509:30509): PID 2 - Operacion: DORMIR_IO
+[INFO] 21:31:13:193 LOGGER/(30509:30509): PID 2 - Operacion: DORMIR_IO
+[INFO] 21:31:24:314 LOGGER/(30509:30509): PID 2 - Operacion: DORMIR_IO
+[INFO] 21:31:26:053 LOGGER/(30592:30592): el tamanio del valor a escribir es 37
+
+[INFO] 21:31:26:055 LOGGER/(30592:30592): 
+
+El valor leido de memoria es: I don't want to set the world on fire 
+
+
+[INFO] 21:31:26:056 LOGGER/(30592:30592): PID: 2 - Operacion: ESCRIBIR

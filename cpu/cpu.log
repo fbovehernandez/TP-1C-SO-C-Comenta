@@ -22981,3 +22981,988 @@
 [INFO] 21:21:43:429 LOGGER/(26161:26208): PID: 2 - Acción: ESCRIBIR - Dirección Física: 160 - Valor: 0
 [INFO] 21:21:43:443 LOGGER/(26161:26208): PID: 2 - FETCH - Program Counter: 124
 [INFO] 21:21:43:545 LOGGER/(26161:26208): PID 2 - Ejecutando EXIT 
+[INFO] 21:27:17:751 LOGGER/(30244:30244): Conexion establecida con Memoria
+[INFO] 21:27:21:077 LOGGER/(30244:30290): Servidor iniciado, esperando conexiones!
+[INFO] 21:27:27:228 LOGGER/(30244:30290): Se conecto un cliente de dispatch!
+
+[INFO] 21:27:27:229 LOGGER/(30244:30290): Esperando cliente...
+[INFO] 21:27:27:231 LOGGER/(30244:30291): Se conecto un cliente de interrupt!
+
+[INFO] 21:28:54:429 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 0
+[INFO] 21:28:54:570 LOGGER/(30244:30290): PID 1 - Ejecutando SET EAX 16
+[INFO] 21:28:54:582 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 1
+[INFO] 21:28:54:705 LOGGER/(30244:30290): PID 1 - Ejecutando SET EBX 20
+[INFO] 21:28:54:706 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 2
+[INFO] 21:28:54:807 LOGGER/(30244:30290): PID 1 - Ejecutando RESIZE 128
+[INFO] 21:28:54:823 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 3
+[INFO] 21:28:54:928 LOGGER/(30244:30290): PID 1 - Ejecutando IO_STDIN_READ TECLADO EAX EBX
+[INFO] 21:28:54:958 LOGGER/(30244:30290): Direccion logica: 16
+
+[INFO] 21:28:54:961 LOGGER/(30244:30290): Numero de pagina 1 + Desplazamiento 0
+
+[INFO] 21:28:54:962 LOGGER/(30244:30290): PID: 1 - TLB MISS - Pagina: 1
+[INFO] 21:28:54:976 LOGGER/(30244:30290): PID: 1 - OBTENER MARCO - Página: 1 - Marco: 1
+[INFO] 21:28:54:978 LOGGER/(30244:30290): A la entrada 1 le asigno el frame 1
+[INFO] 21:28:54:982 LOGGER/(30244:30290): direccion fisica: 16
+[INFO] 21:28:54:983 LOGGER/(30244:30290): tamanio guardado: 16
+[INFO] 21:28:54:984 LOGGER/(30244:30290): HELP Pido el marco de la pagina 2 del proceso 1
+[INFO] 21:28:54:986 LOGGER/(30244:30290): PID: 1 - TLB MISS - Pagina: 2
+[INFO] 21:28:54:998 LOGGER/(30244:30290): PID: 1 - Acción: ESCRIBIR - Dirección Física: 16 - Valor: 16
+[INFO] 21:28:55:001 LOGGER/(30244:30290): PID: 1 - Acción: ESCRIBIR - Dirección Física: 32 - Valor: 16
+[INFO] 21:28:55:144 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 0
+[INFO] 21:28:55:245 LOGGER/(30244:30290): PID 2 - Ejecutando RESIZE 40
+[INFO] 21:28:55:249 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 1
+[INFO] 21:28:55:352 LOGGER/(30244:30290): PID 2 - Ejecutando SET BX 0
+[INFO] 21:28:55:354 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 2
+[INFO] 21:28:55:457 LOGGER/(30244:30290): PID 2 - Ejecutando SET CX 1
+[INFO] 21:28:55:459 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 3
+[INFO] 21:28:55:566 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 73
+[INFO] 21:28:55:570 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 4
+[INFO] 21:28:55:697 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:28:55:715 LOGGER/(30244:30290): Direccion logica: 0
+
+[INFO] 21:28:55:716 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 0
+
+[INFO] 21:28:55:717 LOGGER/(30244:30290): PID: 2 - TLB MISS - Pagina: 0
+[INFO] 21:28:55:723 LOGGER/(30244:30290): PID: 2 - OBTENER MARCO - Página: 0 - Marco: 8
+[INFO] 21:28:55:724 LOGGER/(30244:30290): A la entrada 2 le asigno el frame 8
+[INFO] 21:28:55:727 LOGGER/(30244:30290): direccion fisica: 128
+[INFO] 21:28:55:727 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:28:55:729 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:28:55:745 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 5
+[INFO] 21:28:55:848 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:28:55:851 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 6
+[INFO] 21:28:55:959 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 32
+[INFO] 21:28:55:960 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 7
+[INFO] 21:28:56:065 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:28:56:065 LOGGER/(30244:30290): Direccion logica: 1
+
+[INFO] 21:28:56:066 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 1
+
+[INFO] 21:28:56:067 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 0
+[INFO] 21:28:56:067 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:28:56:068 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:28:56:069 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 8
+[INFO] 21:28:56:070 LOGGER/(30244:30290): direccion fisica: 129
+[INFO] 21:28:56:071 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:28:56:071 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:28:56:090 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 0
+[INFO] 21:28:56:192 LOGGER/(30244:30290): PID 3 - Ejecutando SET AX 0
+[INFO] 21:28:56:193 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 1
+[INFO] 21:28:56:294 LOGGER/(30244:30290): PID 3 - Ejecutando SET BX 32
+[INFO] 21:28:56:295 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 2
+[INFO] 21:28:56:493 LOGGER/(30244:30290): PID 3 - Ejecutando SET CX 26
+[INFO] 21:28:56:496 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 3
+[INFO] 21:28:56:630 LOGGER/(30244:30290): PID 3 - Ejecutando RESIZE 64
+[INFO] 21:28:56:633 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 4
+[INFO] 21:28:56:740 LOGGER/(30244:30290): PID 3 - Ejecutando IO_STDIN_READ TECLADO AX CX
+[INFO] 21:28:56:744 LOGGER/(30244:30290): Direccion logica: 0
+
+[INFO] 21:28:56:745 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 0
+
+[INFO] 21:28:56:745 LOGGER/(30244:30290): PID: 3 - TLB MISS - Pagina: 0
+[INFO] 21:28:56:749 LOGGER/(30244:30290): PID: 3 - OBTENER MARCO - Página: 0 - Marco: 11
+[INFO] 21:28:56:749 LOGGER/(30244:30290): A la entrada 3 le asigno el frame 11
+[INFO] 21:28:56:751 LOGGER/(30244:30290): direccion fisica: 176
+[INFO] 21:28:56:752 LOGGER/(30244:30290): tamanio guardado: 16
+[INFO] 21:28:56:752 LOGGER/(30244:30290): HELP Pido el marco de la pagina 1 del proceso 3
+[INFO] 21:28:56:753 LOGGER/(30244:30290): PID: 3 - TLB MISS - Pagina: 1
+[INFO] 21:28:56:757 LOGGER/(30244:30290): PID: 3 - Acción: ESCRIBIR - Dirección Física: 176 - Valor: 0
+[INFO] 21:28:56:757 LOGGER/(30244:30290): PID: 3 - Acción: ESCRIBIR - Dirección Física: 192 - Valor: 0
+[INFO] 21:28:56:765 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 8
+[INFO] 21:28:56:868 LOGGER/(30244:30290): PID 2 - Ejecutando IO_GEN_SLEEP GENERICA 1
+[INFO] 21:29:06:941 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 9
+[INFO] 21:29:07:044 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:29:07:044 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 10
+[INFO] 21:29:07:147 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 100
+[INFO] 21:29:07:148 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 11
+[INFO] 21:29:07:264 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:29:07:268 LOGGER/(30244:30290): Direccion logica: 2
+
+[INFO] 21:29:07:270 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 2
+
+[INFO] 21:29:07:273 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 0
+[INFO] 21:29:07:277 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:29:07:280 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:07:282 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 8
+[INFO] 21:29:07:285 LOGGER/(30244:30290): direccion fisica: 130
+[INFO] 21:29:07:287 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:07:288 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:07:293 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 12
+[INFO] 21:29:07:401 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:29:07:405 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 13
+[INFO] 21:29:07:513 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 111
+[INFO] 21:29:07:514 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 14
+[INFO] 21:29:07:616 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:29:07:617 LOGGER/(30244:30290): Direccion logica: 3
+
+[INFO] 21:29:07:618 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 3
+
+[INFO] 21:29:07:618 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 0
+[INFO] 21:29:07:619 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:29:07:619 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:07:620 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 8
+[INFO] 21:29:07:621 LOGGER/(30244:30290): direccion fisica: 131
+[INFO] 21:29:07:621 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:07:622 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:07:624 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 15
+[INFO] 21:29:07:738 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:29:07:739 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 16
+[INFO] 21:29:07:841 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 110
+[INFO] 21:29:07:852 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 17
+[INFO] 21:29:07:955 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:29:07:955 LOGGER/(30244:30290): Direccion logica: 4
+
+[INFO] 21:29:07:956 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 4
+
+[INFO] 21:29:07:956 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 0
+[INFO] 21:29:07:957 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:29:07:957 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:07:958 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 8
+[INFO] 21:29:07:959 LOGGER/(30244:30290): direccion fisica: 132
+[INFO] 21:29:07:959 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:07:961 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:07:963 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 18
+[INFO] 21:29:08:074 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:29:08:077 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 19
+[INFO] 21:29:08:206 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 39
+[INFO] 21:29:08:207 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 20
+[INFO] 21:29:08:313 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:29:08:314 LOGGER/(30244:30290): Direccion logica: 5
+
+[INFO] 21:29:08:315 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 5
+
+[INFO] 21:29:08:316 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 0
+[INFO] 21:29:08:316 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:29:08:317 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:08:318 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 8
+[INFO] 21:29:08:319 LOGGER/(30244:30290): direccion fisica: 133
+[INFO] 21:29:08:320 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:08:320 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:08:324 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 21
+[INFO] 21:29:08:436 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:29:08:438 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 22
+[INFO] 21:29:08:548 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 116
+[INFO] 21:29:08:551 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 23
+[INFO] 21:29:08:656 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:29:08:657 LOGGER/(30244:30290): Direccion logica: 6
+
+[INFO] 21:29:08:657 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 6
+
+[INFO] 21:29:08:658 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 0
+[INFO] 21:29:08:659 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:29:08:659 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:08:660 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 8
+[INFO] 21:29:08:662 LOGGER/(30244:30290): direccion fisica: 134
+[INFO] 21:29:08:662 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:08:663 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:08:666 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 24
+[INFO] 21:29:08:770 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:29:08:775 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 25
+[INFO] 21:29:08:879 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 32
+[INFO] 21:29:08:879 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 26
+[INFO] 21:29:08:984 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:29:08:986 LOGGER/(30244:30290): Direccion logica: 7
+
+[INFO] 21:29:08:987 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 7
+
+[INFO] 21:29:08:988 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 0
+[INFO] 21:29:08:989 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:29:08:990 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:08:991 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 8
+[INFO] 21:29:08:994 LOGGER/(30244:30290): direccion fisica: 135
+[INFO] 21:29:08:995 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:08:996 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:09:000 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 27
+[INFO] 21:29:09:106 LOGGER/(30244:30290): PID 2 - Ejecutando IO_GEN_SLEEP GENERICA 1
+[INFO] 21:29:19:124 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 28
+[INFO] 21:29:19:226 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:29:19:226 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 29
+[INFO] 21:29:19:328 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 119
+[INFO] 21:29:19:328 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 30
+[INFO] 21:29:19:434 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:29:19:438 LOGGER/(30244:30290): Direccion logica: 8
+
+[INFO] 21:29:19:440 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 8
+
+[INFO] 21:29:19:443 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 0
+[INFO] 21:29:19:446 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:29:19:450 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:19:454 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 8
+[INFO] 21:29:19:458 LOGGER/(30244:30290): direccion fisica: 136
+[INFO] 21:29:19:460 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:19:461 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:19:467 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 31
+[INFO] 21:29:19:582 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:29:19:585 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 32
+[INFO] 21:29:19:693 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 97
+[INFO] 21:29:19:694 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 33
+[INFO] 21:29:19:797 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:29:19:798 LOGGER/(30244:30290): Direccion logica: 9
+
+[INFO] 21:29:19:798 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 9
+
+[INFO] 21:29:19:799 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 0
+[INFO] 21:29:19:799 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:29:19:800 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:19:800 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 8
+[INFO] 21:29:19:801 LOGGER/(30244:30290): direccion fisica: 137
+[INFO] 21:29:19:802 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:19:802 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:19:804 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 34
+[INFO] 21:29:19:921 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:29:19:923 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 35
+[INFO] 21:29:20:025 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 110
+[INFO] 21:29:20:030 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 36
+[INFO] 21:29:20:132 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:29:20:132 LOGGER/(30244:30290): Direccion logica: 10
+
+[INFO] 21:29:20:133 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 10
+
+[INFO] 21:29:20:133 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 0
+[INFO] 21:29:20:134 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:29:20:134 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:20:135 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 8
+[INFO] 21:29:20:136 LOGGER/(30244:30290): direccion fisica: 138
+[INFO] 21:29:20:137 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:20:137 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:20:139 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 37
+[INFO] 21:29:20:245 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:29:20:248 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 38
+[INFO] 21:29:20:356 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 116
+[INFO] 21:29:20:357 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 39
+[INFO] 21:29:20:460 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:29:20:461 LOGGER/(30244:30290): Direccion logica: 11
+
+[INFO] 21:29:20:462 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 11
+
+[INFO] 21:29:20:462 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 0
+[INFO] 21:29:20:463 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:29:20:464 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:20:464 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 8
+[INFO] 21:29:20:466 LOGGER/(30244:30290): direccion fisica: 139
+[INFO] 21:29:20:466 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:20:467 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:20:470 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 40
+[INFO] 21:29:20:579 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:29:20:580 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 41
+[INFO] 21:29:20:686 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 32
+[INFO] 21:29:20:688 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 42
+[INFO] 21:29:20:801 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:29:20:805 LOGGER/(30244:30290): Direccion logica: 12
+
+[INFO] 21:29:20:805 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 12
+
+[INFO] 21:29:20:806 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 0
+[INFO] 21:29:20:806 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:29:20:807 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:20:807 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 8
+[INFO] 21:29:20:808 LOGGER/(30244:30290): direccion fisica: 140
+[INFO] 21:29:20:809 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:20:809 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:20:811 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 43
+[INFO] 21:29:20:914 LOGGER/(30244:30290): PID 2 - Ejecutando IO_GEN_SLEEP GENERICA 1
+[INFO] 21:29:26:537 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 4
+[INFO] 21:29:26:640 LOGGER/(30244:30290): PID 1 - Ejecutando SET AX 87
+[INFO] 21:29:26:640 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 5
+[INFO] 21:29:26:747 LOGGER/(30244:30290): PID 1 - Ejecutando SET BX 65
+[INFO] 21:29:26:749 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 6
+[INFO] 21:29:26:863 LOGGER/(30244:30290): PID 1 - Ejecutando SET CX 82
+[INFO] 21:29:26:866 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 7
+[INFO] 21:29:26:974 LOGGER/(30244:30290): PID 1 - Ejecutando SET DX 44
+[INFO] 21:29:26:974 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 8
+[INFO] 21:29:27:079 LOGGER/(30244:30290): PID 1 - Ejecutando SET ECX 11
+[INFO] 21:29:27:084 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 9
+[INFO] 21:29:27:189 LOGGER/(30244:30290): PID 1 - Ejecutando SET EDX 1
+[INFO] 21:29:27:190 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 10
+[INFO] 21:29:27:295 LOGGER/(30244:30290): PID 1 - Ejecutando MOV_OUT ECX AX
+[INFO] 21:29:27:301 LOGGER/(30244:30290): Direccion logica: 11
+
+[INFO] 21:29:27:303 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 11
+
+[INFO] 21:29:27:307 LOGGER/(30244:30290): PID: 1 - TLB MISS - Pagina: 0
+[INFO] 21:29:27:323 LOGGER/(30244:30290): PID: 1 - OBTENER MARCO - Página: 0 - Marco: 0
+[INFO] 21:29:27:325 LOGGER/(30244:30290): A la entrada 1 le asigno el frame 0
+[INFO] 21:29:27:328 LOGGER/(30244:30290): direccion fisica: 11
+[INFO] 21:29:27:329 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:27:330 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:27:334 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 11
+[INFO] 21:29:27:436 LOGGER/(30244:30290): PID 1 - Ejecutando SUM ECX EDX
+[INFO] 21:29:27:442 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 12
+[INFO] 21:29:27:544 LOGGER/(30244:30290): PID 1 - Ejecutando MOV_OUT ECX BX
+[INFO] 21:29:27:545 LOGGER/(30244:30290): Direccion logica: 12
+
+[INFO] 21:29:27:545 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 12
+
+[INFO] 21:29:27:546 LOGGER/(30244:30290): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 21:29:27:546 LOGGER/(30244:30290): El PID que pide frame es 1 y el pid que tiene la TLB es 1
+[INFO] 21:29:27:547 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:27:548 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 0
+[INFO] 21:29:27:549 LOGGER/(30244:30290): direccion fisica: 12
+[INFO] 21:29:27:549 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:27:550 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:27:552 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 13
+[INFO] 21:29:27:657 LOGGER/(30244:30290): PID 1 - Ejecutando SUM ECX EDX
+[INFO] 21:29:27:657 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 14
+[INFO] 21:29:27:765 LOGGER/(30244:30290): PID 1 - Ejecutando MOV_OUT ECX CX
+[INFO] 21:29:27:769 LOGGER/(30244:30290): Direccion logica: 13
+
+[INFO] 21:29:27:774 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 13
+
+[INFO] 21:29:27:776 LOGGER/(30244:30290): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 21:29:27:779 LOGGER/(30244:30290): El PID que pide frame es 1 y el pid que tiene la TLB es 1
+[INFO] 21:29:27:782 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:27:785 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 0
+[INFO] 21:29:27:790 LOGGER/(30244:30290): direccion fisica: 13
+[INFO] 21:29:27:791 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:27:793 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:27:799 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 15
+[INFO] 21:29:27:905 LOGGER/(30244:30290): PID 1 - Ejecutando SUM ECX EDX
+[INFO] 21:29:27:909 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 16
+[INFO] 21:29:28:017 LOGGER/(30244:30290): PID 1 - Ejecutando MOV_OUT ECX DX
+[INFO] 21:29:28:018 LOGGER/(30244:30290): Direccion logica: 14
+
+[INFO] 21:29:28:019 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 14
+
+[INFO] 21:29:28:020 LOGGER/(30244:30290): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 21:29:28:020 LOGGER/(30244:30290): El PID que pide frame es 1 y el pid que tiene la TLB es 1
+[INFO] 21:29:28:021 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:28:021 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 0
+[INFO] 21:29:28:022 LOGGER/(30244:30290): direccion fisica: 14
+[INFO] 21:29:28:023 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:28:023 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:28:025 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 17
+[INFO] 21:29:28:128 LOGGER/(30244:30290): PID 1 - Ejecutando SUM ECX EDX
+[INFO] 21:29:28:128 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 18
+[INFO] 21:29:28:234 LOGGER/(30244:30290): PID 1 - Ejecutando SET AX 32
+[INFO] 21:29:28:238 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 19
+[INFO] 21:29:28:343 LOGGER/(30244:30290): PID 1 - Ejecutando IO_GEN_SLEEP GENERICA 2
+[INFO] 21:29:30:928 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 44
+[INFO] 21:29:31:031 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:29:31:031 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 45
+[INFO] 21:29:31:133 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 116
+[INFO] 21:29:31:134 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 46
+[INFO] 21:29:31:239 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:29:31:244 LOGGER/(30244:30290): Direccion logica: 13
+
+[INFO] 21:29:31:246 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 13
+
+[INFO] 21:29:31:249 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 0
+[INFO] 21:29:31:252 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:29:31:255 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:31:257 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 8
+[INFO] 21:29:31:261 LOGGER/(30244:30290): direccion fisica: 141
+[INFO] 21:29:31:262 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:31:263 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:31:268 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 47
+[INFO] 21:29:31:371 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:29:31:372 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 48
+[INFO] 21:29:31:478 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 111
+[INFO] 21:29:31:480 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 49
+[INFO] 21:29:31:584 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:29:31:585 LOGGER/(30244:30290): Direccion logica: 14
+
+[INFO] 21:29:31:585 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 14
+
+[INFO] 21:29:31:586 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 0
+[INFO] 21:29:31:587 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:29:31:588 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:31:588 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 8
+[INFO] 21:29:31:590 LOGGER/(30244:30290): direccion fisica: 142
+[INFO] 21:29:31:591 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:31:591 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:31:595 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 50
+[INFO] 21:29:31:696 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:29:31:697 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 51
+[INFO] 21:29:31:799 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 32
+[INFO] 21:29:31:804 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 52
+[INFO] 21:29:31:906 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:29:31:907 LOGGER/(30244:30290): Direccion logica: 15
+
+[INFO] 21:29:31:907 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 15
+
+[INFO] 21:29:31:908 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 0
+[INFO] 21:29:31:908 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:29:31:909 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:31:910 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 8
+[INFO] 21:29:31:911 LOGGER/(30244:30290): direccion fisica: 143
+[INFO] 21:29:31:911 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:31:912 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:31:914 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 53
+[INFO] 21:29:32:020 LOGGER/(30244:30290): PID 2 - Ejecutando IO_GEN_SLEEP GENERICA 1
+[INFO] 21:29:36:498 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 5
+[INFO] 21:29:36:600 LOGGER/(30244:30290): PID 3 - Ejecutando SET SI 0
+[INFO] 21:29:36:600 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 6
+[INFO] 21:29:36:705 LOGGER/(30244:30290): PID 3 - Ejecutando SET DI 32
+[INFO] 21:29:36:706 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 7
+[INFO] 21:29:36:814 LOGGER/(30244:30290): PID 3 - Ejecutando IO_GEN_SLEEP GENERICA 2
+[INFO] 21:29:50:931 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 20
+[INFO] 21:29:51:033 LOGGER/(30244:30290): PID 1 - Ejecutando MOV_OUT ECX AX
+[INFO] 21:29:51:035 LOGGER/(30244:30290): Direccion logica: 15
+
+[INFO] 21:29:51:037 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 15
+
+[INFO] 21:29:51:037 LOGGER/(30244:30290): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 21:29:51:038 LOGGER/(30244:30290): El PID que pide frame es 1 y el pid que tiene la TLB es 1
+[INFO] 21:29:51:041 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:51:041 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 0
+[INFO] 21:29:51:042 LOGGER/(30244:30290): direccion fisica: 15
+[INFO] 21:29:51:043 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:29:51:043 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:29:51:046 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 21
+[INFO] 21:29:51:156 LOGGER/(30244:30290): PID 1 - Ejecutando SET EBX 25
+[INFO] 21:29:51:172 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 22
+[INFO] 21:29:51:278 LOGGER/(30244:30290): PID 1 - Ejecutando SET EAX 11
+[INFO] 21:29:51:281 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 23
+[INFO] 21:29:51:405 LOGGER/(30244:30290): PID 1 - Ejecutando IO_STDOUT_WRITE MONITOR EAX EBX
+[INFO] 21:29:51:419 LOGGER/(30244:30290): Direccion logica: 11
+
+[INFO] 21:29:51:420 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 11
+
+[INFO] 21:29:51:421 LOGGER/(30244:30290): PID: 1 - TLB HIT - Pagina: 0
+[INFO] 21:29:51:422 LOGGER/(30244:30290): El PID que pide frame es 1 y el pid que tiene la TLB es 1
+[INFO] 21:29:51:423 LOGGER/(30244:30290): La pagina que pide frame es 0 y la pagina que tiene la TLB es 0
+[INFO] 21:29:51:424 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 0
+[INFO] 21:29:51:427 LOGGER/(30244:30290): direccion fisica: 11
+[INFO] 21:29:51:427 LOGGER/(30244:30290): tamanio guardado: 5
+[INFO] 21:29:51:428 LOGGER/(30244:30290): HELP Pido el marco de la pagina 1 del proceso 1
+[INFO] 21:29:51:429 LOGGER/(30244:30290): PID: 1 - TLB HIT - Pagina: 1
+[INFO] 21:29:51:430 LOGGER/(30244:30290): El PID que pide frame es 1 y el pid que tiene la TLB es 1
+[INFO] 21:29:51:431 LOGGER/(30244:30290): La pagina que pide frame es 1 y la pagina que tiene la TLB es 1
+[INFO] 21:29:51:432 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 1
+[INFO] 21:29:51:433 LOGGER/(30244:30290): HELP Pido el marco de la pagina 2 del proceso 1
+[INFO] 21:29:51:433 LOGGER/(30244:30290): PID: 1 - TLB MISS - Pagina: 2
+[INFO] 21:29:51:438 LOGGER/(30244:30290): PID: 1 - Acción: ESCRIBIR - Dirección Física: 11 - Valor: 11
+[INFO] 21:29:51:439 LOGGER/(30244:30290): PID: 1 - Acción: ESCRIBIR - Dirección Física: 16 - Valor: 11
+[INFO] 21:29:51:440 LOGGER/(30244:30290): PID: 1 - Acción: ESCRIBIR - Dirección Física: 32 - Valor: 11
+[INFO] 21:29:51:485 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 24
+[INFO] 21:29:51:587 LOGGER/(30244:30290): PID 1 - Ejecutando SET AX 0
+[INFO] 21:29:51:587 LOGGER/(30244:30290): PID: 1 - FETCH - Program Counter: 25
+[INFO] 21:29:51:689 LOGGER/(30244:30290): PID 1 - Ejecutando EXIT 
+[INFO] 21:30:00:939 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 54
+[INFO] 21:30:01:041 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:30:01:041 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 55
+[INFO] 21:30:01:143 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 115
+[INFO] 21:30:01:144 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 56
+[INFO] 21:30:01:252 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:30:01:256 LOGGER/(30244:30290): Direccion logica: 16
+
+[INFO] 21:30:01:258 LOGGER/(30244:30290): Numero de pagina 1 + Desplazamiento 0
+
+[INFO] 21:30:01:260 LOGGER/(30244:30290): PID: 2 - TLB MISS - Pagina: 1
+[INFO] 21:30:01:270 LOGGER/(30244:30290): PID: 2 - OBTENER MARCO - Página: 1 - Marco: 9
+[INFO] 21:30:01:271 LOGGER/(30244:30290): A la entrada 2 le asigno el frame 9
+[INFO] 21:30:01:276 LOGGER/(30244:30290): TLB elimina victima - PID: 3 - Pagina: 0
+[INFO] 21:30:01:283 LOGGER/(30244:30290): direccion fisica: 144
+[INFO] 21:30:01:284 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:30:01:285 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:30:01:288 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 57
+[INFO] 21:30:01:403 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:30:01:406 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 58
+[INFO] 21:30:01:528 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 101
+[INFO] 21:30:01:532 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 59
+[INFO] 21:30:01:657 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:30:01:657 LOGGER/(30244:30290): Direccion logica: 17
+
+[INFO] 21:30:01:658 LOGGER/(30244:30290): Numero de pagina 1 + Desplazamiento 1
+
+[INFO] 21:30:01:658 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 21:30:01:659 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:30:01:659 LOGGER/(30244:30290): La pagina que pide frame es 1 y la pagina que tiene la TLB es 1
+[INFO] 21:30:01:660 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 9
+[INFO] 21:30:01:661 LOGGER/(30244:30290): direccion fisica: 145
+[INFO] 21:30:01:662 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:30:01:662 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:30:01:664 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 60
+[INFO] 21:30:01:777 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:30:01:778 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 61
+[INFO] 21:30:01:885 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 116
+[INFO] 21:30:01:899 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 62
+[INFO] 21:30:02:002 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:30:02:003 LOGGER/(30244:30290): Direccion logica: 18
+
+[INFO] 21:30:02:003 LOGGER/(30244:30290): Numero de pagina 1 + Desplazamiento 2
+
+[INFO] 21:30:02:004 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 21:30:02:004 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:30:02:005 LOGGER/(30244:30290): La pagina que pide frame es 1 y la pagina que tiene la TLB es 1
+[INFO] 21:30:02:005 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 9
+[INFO] 21:30:02:006 LOGGER/(30244:30290): direccion fisica: 146
+[INFO] 21:30:02:006 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:30:02:007 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:30:02:010 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 63
+[INFO] 21:30:02:113 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:30:02:114 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 64
+[INFO] 21:30:02:224 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 32
+[INFO] 21:30:02:224 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 65
+[INFO] 21:30:02:326 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:30:02:326 LOGGER/(30244:30290): Direccion logica: 19
+
+[INFO] 21:30:02:327 LOGGER/(30244:30290): Numero de pagina 1 + Desplazamiento 3
+
+[INFO] 21:30:02:328 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 21:30:02:328 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:30:02:329 LOGGER/(30244:30290): La pagina que pide frame es 1 y la pagina que tiene la TLB es 1
+[INFO] 21:30:02:329 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 9
+[INFO] 21:30:02:330 LOGGER/(30244:30290): direccion fisica: 147
+[INFO] 21:30:02:331 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:30:02:331 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:30:02:334 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 66
+[INFO] 21:30:02:437 LOGGER/(30244:30290): PID 2 - Ejecutando IO_GEN_SLEEP GENERICA 1
+[INFO] 21:30:20:950 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 8
+[INFO] 21:30:21:052 LOGGER/(30244:30290): PID 3 - Ejecutando COPY_STRING 26
+[INFO] 21:30:21:055 LOGGER/(30244:30290): Direccion logica: 0
+
+[INFO] 21:30:21:055 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 0
+
+[INFO] 21:30:21:056 LOGGER/(30244:30290): PID: 3 - TLB MISS - Pagina: 0
+[INFO] 21:30:21:060 LOGGER/(30244:30290): PID: 3 - OBTENER MARCO - Página: 0 - Marco: 11
+[INFO] 21:30:21:060 LOGGER/(30244:30290): A la entrada 3 le asigno el frame 11
+[INFO] 21:30:21:061 LOGGER/(30244:30290): TLB elimina victima - PID: 2 - Pagina: 0
+[INFO] 21:30:21:063 LOGGER/(30244:30290): direccion fisica: 176
+[INFO] 21:30:21:063 LOGGER/(30244:30290): tamanio guardado: 16
+[INFO] 21:30:21:064 LOGGER/(30244:30290): HELP Pido el marco de la pagina 1 del proceso 3
+[INFO] 21:30:21:064 LOGGER/(30244:30290): PID: 3 - TLB MISS - Pagina: 1
+[INFO] 21:30:21:069 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 2 
+
+[INFO] 21:30:21:090 LOGGER/(30244:30290): Direccion logica: 32
+
+[INFO] 21:30:21:090 LOGGER/(30244:30290): Numero de pagina 2 + Desplazamiento 0
+
+[INFO] 21:30:21:091 LOGGER/(30244:30290): PID: 3 - TLB MISS - Pagina: 2
+[INFO] 21:30:21:094 LOGGER/(30244:30290): PID: 3 - OBTENER MARCO - Página: 2 - Marco: 13
+[INFO] 21:30:21:095 LOGGER/(30244:30290): A la entrada 3 le asigno el frame 13
+[INFO] 21:30:21:095 LOGGER/(30244:30290): TLB elimina victima - PID: 1 - Pagina: 0
+[INFO] 21:30:21:097 LOGGER/(30244:30290): direccion fisica: 208
+[INFO] 21:30:21:097 LOGGER/(30244:30290): tamanio guardado: 16
+[INFO] 21:30:21:098 LOGGER/(30244:30290): HELP Pido el marco de la pagina 3 del proceso 3
+[INFO] 21:30:21:098 LOGGER/(30244:30290): PID: 3 - TLB MISS - Pagina: 3
+[INFO] 21:30:21:102 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 2 
+
+[INFO] 21:30:21:108 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 9
+[INFO] 21:30:21:213 LOGGER/(30244:30290): PID 3 - Ejecutando SET DX 52
+[INFO] 21:30:21:216 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 10
+[INFO] 21:30:21:332 LOGGER/(30244:30290): PID 3 - Ejecutando SET AX 49
+[INFO] 21:30:21:333 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 11
+[INFO] 21:30:21:435 LOGGER/(30244:30290): PID 3 - Ejecutando MOV_OUT DX AX
+[INFO] 21:30:21:437 LOGGER/(30244:30290): Direccion logica: 52
+
+[INFO] 21:30:21:437 LOGGER/(30244:30290): Numero de pagina 3 + Desplazamiento 4
+
+[INFO] 21:30:21:438 LOGGER/(30244:30290): PID: 3 - TLB MISS - Pagina: 3
+[INFO] 21:30:21:443 LOGGER/(30244:30290): PID: 3 - OBTENER MARCO - Página: 3 - Marco: 14
+[INFO] 21:30:21:444 LOGGER/(30244:30290): A la entrada 3 le asigno el frame 14
+[INFO] 21:30:21:445 LOGGER/(30244:30290): TLB elimina victima - PID: 1 - Pagina: 1
+[INFO] 21:30:21:447 LOGGER/(30244:30290): direccion fisica: 228
+[INFO] 21:30:21:448 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:30:21:449 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:30:21:453 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 12
+[INFO] 21:30:21:564 LOGGER/(30244:30290): PID 3 - Ejecutando SET AX 52
+[INFO] 21:30:21:567 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 13
+[INFO] 21:30:21:673 LOGGER/(30244:30290): PID 3 - Ejecutando SET DX 57
+[INFO] 21:30:21:673 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 14
+[INFO] 21:30:21:775 LOGGER/(30244:30290): PID 3 - Ejecutando MOV_OUT DX AX
+[INFO] 21:30:21:776 LOGGER/(30244:30290): Direccion logica: 57
+
+[INFO] 21:30:21:777 LOGGER/(30244:30290): Numero de pagina 3 + Desplazamiento 9
+
+[INFO] 21:30:21:777 LOGGER/(30244:30290): PID: 3 - TLB HIT - Pagina: 3
+[INFO] 21:30:21:778 LOGGER/(30244:30290): El PID que pide frame es 3 y el pid que tiene la TLB es 3
+[INFO] 21:30:21:778 LOGGER/(30244:30290): La pagina que pide frame es 3 y la pagina que tiene la TLB es 3
+[INFO] 21:30:21:779 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 14
+[INFO] 21:30:21:780 LOGGER/(30244:30290): direccion fisica: 233
+[INFO] 21:30:21:780 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:30:21:781 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:30:21:783 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 15
+[INFO] 21:30:21:885 LOGGER/(30244:30290): PID 3 - Ejecutando IO_GEN_SLEEP GENERICA 2
+[INFO] 21:30:30:971 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 67
+[INFO] 21:30:31:073 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:30:31:074 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 68
+[INFO] 21:30:31:176 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 116
+[INFO] 21:30:31:176 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 69
+[INFO] 21:30:31:279 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:30:31:280 LOGGER/(30244:30290): Direccion logica: 20
+
+[INFO] 21:30:31:280 LOGGER/(30244:30290): Numero de pagina 1 + Desplazamiento 4
+
+[INFO] 21:30:31:281 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 21:30:31:281 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:30:31:282 LOGGER/(30244:30290): La pagina que pide frame es 1 y la pagina que tiene la TLB es 1
+[INFO] 21:30:31:282 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 9
+[INFO] 21:30:31:283 LOGGER/(30244:30290): direccion fisica: 148
+[INFO] 21:30:31:284 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:30:31:284 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:30:31:286 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 70
+[INFO] 21:30:31:392 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:30:31:395 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 71
+[INFO] 21:30:31:506 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 104
+[INFO] 21:30:31:507 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 72
+[INFO] 21:30:31:609 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:30:31:610 LOGGER/(30244:30290): Direccion logica: 21
+
+[INFO] 21:30:31:611 LOGGER/(30244:30290): Numero de pagina 1 + Desplazamiento 5
+
+[INFO] 21:30:31:612 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 21:30:31:612 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:30:31:613 LOGGER/(30244:30290): La pagina que pide frame es 1 y la pagina que tiene la TLB es 1
+[INFO] 21:30:31:614 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 9
+[INFO] 21:30:31:616 LOGGER/(30244:30290): direccion fisica: 149
+[INFO] 21:30:31:616 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:30:31:617 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:30:31:621 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 73
+[INFO] 21:30:31:743 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:30:31:746 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 74
+[INFO] 21:30:31:850 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 101
+[INFO] 21:30:31:856 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 75
+[INFO] 21:30:31:958 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:30:31:959 LOGGER/(30244:30290): Direccion logica: 22
+
+[INFO] 21:30:31:959 LOGGER/(30244:30290): Numero de pagina 1 + Desplazamiento 6
+
+[INFO] 21:30:31:960 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 21:30:31:960 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:30:31:961 LOGGER/(30244:30290): La pagina que pide frame es 1 y la pagina que tiene la TLB es 1
+[INFO] 21:30:31:961 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 9
+[INFO] 21:30:31:963 LOGGER/(30244:30290): direccion fisica: 150
+[INFO] 21:30:31:963 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:30:31:964 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:30:31:966 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 76
+[INFO] 21:30:32:068 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:30:32:068 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 77
+[INFO] 21:30:32:176 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 32
+[INFO] 21:30:32:176 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 78
+[INFO] 21:30:32:282 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:30:32:286 LOGGER/(30244:30290): Direccion logica: 23
+
+[INFO] 21:30:32:289 LOGGER/(30244:30290): Numero de pagina 1 + Desplazamiento 7
+
+[INFO] 21:30:32:292 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 21:30:32:295 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:30:32:298 LOGGER/(30244:30290): La pagina que pide frame es 1 y la pagina que tiene la TLB es 1
+[INFO] 21:30:32:300 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 9
+[INFO] 21:30:32:303 LOGGER/(30244:30290): direccion fisica: 151
+[INFO] 21:30:32:304 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:30:32:305 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:30:32:309 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 79
+[INFO] 21:30:32:413 LOGGER/(30244:30290): PID 2 - Ejecutando IO_GEN_SLEEP GENERICA 1
+[INFO] 21:30:50:989 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 16
+[INFO] 21:30:51:091 LOGGER/(30244:30290): PID 3 - Ejecutando IO_STDOUT_WRITE MONITOR BX CX
+[INFO] 21:30:51:093 LOGGER/(30244:30290): Direccion logica: 32
+
+[INFO] 21:30:51:093 LOGGER/(30244:30290): Numero de pagina 2 + Desplazamiento 0
+
+[INFO] 21:30:51:094 LOGGER/(30244:30290): PID: 3 - TLB HIT - Pagina: 2
+[INFO] 21:30:51:094 LOGGER/(30244:30290): El PID que pide frame es 3 y el pid que tiene la TLB es 3
+[INFO] 21:30:51:095 LOGGER/(30244:30290): La pagina que pide frame es 2 y la pagina que tiene la TLB es 2
+[INFO] 21:30:51:095 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 13
+[INFO] 21:30:51:096 LOGGER/(30244:30290): direccion fisica: 208
+[INFO] 21:30:51:097 LOGGER/(30244:30290): tamanio guardado: 16
+[INFO] 21:30:51:098 LOGGER/(30244:30290): HELP Pido el marco de la pagina 3 del proceso 3
+[INFO] 21:30:51:099 LOGGER/(30244:30290): PID: 3 - TLB HIT - Pagina: 3
+[INFO] 21:30:51:099 LOGGER/(30244:30290): El PID que pide frame es 3 y el pid que tiene la TLB es 3
+[INFO] 21:30:51:100 LOGGER/(30244:30290): La pagina que pide frame es 3 y la pagina que tiene la TLB es 3
+[INFO] 21:30:51:100 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 14
+[INFO] 21:30:51:101 LOGGER/(30244:30290): PID: 3 - Acción: ESCRIBIR - Dirección Física: 208 - Valor: 32
+[INFO] 21:30:51:102 LOGGER/(30244:30290): PID: 3 - Acción: ESCRIBIR - Dirección Física: 224 - Valor: 32
+[INFO] 21:30:51:119 LOGGER/(30244:30290): PID: 3 - FETCH - Program Counter: 17
+[INFO] 21:30:51:225 LOGGER/(30244:30290): PID 3 - Ejecutando EXIT 
+[INFO] 21:31:00:995 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 80
+[INFO] 21:31:01:097 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:31:01:097 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 81
+[INFO] 21:31:01:199 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 119
+[INFO] 21:31:01:199 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 82
+[INFO] 21:31:01:319 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:31:01:323 LOGGER/(30244:30290): Direccion logica: 24
+
+[INFO] 21:31:01:325 LOGGER/(30244:30290): Numero de pagina 1 + Desplazamiento 8
+
+[INFO] 21:31:01:327 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 21:31:01:330 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:31:01:331 LOGGER/(30244:30290): La pagina que pide frame es 1 y la pagina que tiene la TLB es 1
+[INFO] 21:31:01:333 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 9
+[INFO] 21:31:01:336 LOGGER/(30244:30290): direccion fisica: 152
+[INFO] 21:31:01:337 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:31:01:338 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:31:01:343 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 83
+[INFO] 21:31:01:450 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:31:01:453 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 84
+[INFO] 21:31:01:563 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 111
+[INFO] 21:31:01:566 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 85
+[INFO] 21:31:01:672 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:31:01:674 LOGGER/(30244:30290): Direccion logica: 25
+
+[INFO] 21:31:01:675 LOGGER/(30244:30290): Numero de pagina 1 + Desplazamiento 9
+
+[INFO] 21:31:01:677 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 21:31:01:678 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:31:01:680 LOGGER/(30244:30290): La pagina que pide frame es 1 y la pagina que tiene la TLB es 1
+[INFO] 21:31:01:682 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 9
+[INFO] 21:31:01:684 LOGGER/(30244:30290): direccion fisica: 153
+[INFO] 21:31:01:685 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:31:01:687 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:31:01:692 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 86
+[INFO] 21:31:01:798 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:31:01:800 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 87
+[INFO] 21:31:01:904 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 114
+[INFO] 21:31:01:910 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 88
+[INFO] 21:31:02:012 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:31:02:013 LOGGER/(30244:30290): Direccion logica: 26
+
+[INFO] 21:31:02:014 LOGGER/(30244:30290): Numero de pagina 1 + Desplazamiento 10
+
+[INFO] 21:31:02:014 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 21:31:02:015 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:31:02:015 LOGGER/(30244:30290): La pagina que pide frame es 1 y la pagina que tiene la TLB es 1
+[INFO] 21:31:02:016 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 9
+[INFO] 21:31:02:017 LOGGER/(30244:30290): direccion fisica: 154
+[INFO] 21:31:02:017 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:31:02:018 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:31:02:021 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 89
+[INFO] 21:31:02:123 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:31:02:124 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 90
+[INFO] 21:31:02:241 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 108
+[INFO] 21:31:02:244 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 91
+[INFO] 21:31:02:352 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:31:02:353 LOGGER/(30244:30290): Direccion logica: 27
+
+[INFO] 21:31:02:353 LOGGER/(30244:30290): Numero de pagina 1 + Desplazamiento 11
+
+[INFO] 21:31:02:354 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 21:31:02:354 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:31:02:355 LOGGER/(30244:30290): La pagina que pide frame es 1 y la pagina que tiene la TLB es 1
+[INFO] 21:31:02:355 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 9
+[INFO] 21:31:02:356 LOGGER/(30244:30290): direccion fisica: 155
+[INFO] 21:31:02:356 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:31:02:357 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:31:02:359 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 92
+[INFO] 21:31:02:465 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:31:02:465 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 93
+[INFO] 21:31:02:569 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 100
+[INFO] 21:31:02:570 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 94
+[INFO] 21:31:02:678 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:31:02:678 LOGGER/(30244:30290): Direccion logica: 28
+
+[INFO] 21:31:02:679 LOGGER/(30244:30290): Numero de pagina 1 + Desplazamiento 12
+
+[INFO] 21:31:02:679 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 21:31:02:679 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:31:02:680 LOGGER/(30244:30290): La pagina que pide frame es 1 y la pagina que tiene la TLB es 1
+[INFO] 21:31:02:681 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 9
+[INFO] 21:31:02:682 LOGGER/(30244:30290): direccion fisica: 156
+[INFO] 21:31:02:682 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:31:02:682 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:31:02:685 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 95
+[INFO] 21:31:02:787 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:31:02:792 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 96
+[INFO] 21:31:02:893 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 32
+[INFO] 21:31:02:894 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 97
+[INFO] 21:31:03:012 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:31:03:016 LOGGER/(30244:30290): Direccion logica: 29
+
+[INFO] 21:31:03:018 LOGGER/(30244:30290): Numero de pagina 1 + Desplazamiento 13
+
+[INFO] 21:31:03:021 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 21:31:03:024 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:31:03:028 LOGGER/(30244:30290): La pagina que pide frame es 1 y la pagina que tiene la TLB es 1
+[INFO] 21:31:03:031 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 9
+[INFO] 21:31:03:038 LOGGER/(30244:30290): direccion fisica: 157
+[INFO] 21:31:03:040 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:31:03:043 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:31:03:057 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 98
+[INFO] 21:31:03:169 LOGGER/(30244:30290): PID 2 - Ejecutando IO_GEN_SLEEP GENERICA 1
+[INFO] 21:31:13:199 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 99
+[INFO] 21:31:13:300 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:31:13:301 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 100
+[INFO] 21:31:13:407 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 111
+[INFO] 21:31:13:411 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 101
+[INFO] 21:31:13:521 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:31:13:522 LOGGER/(30244:30290): Direccion logica: 30
+
+[INFO] 21:31:13:523 LOGGER/(30244:30290): Numero de pagina 1 + Desplazamiento 14
+
+[INFO] 21:31:13:523 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 21:31:13:524 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:31:13:525 LOGGER/(30244:30290): La pagina que pide frame es 1 y la pagina que tiene la TLB es 1
+[INFO] 21:31:13:525 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 9
+[INFO] 21:31:13:528 LOGGER/(30244:30290): direccion fisica: 158
+[INFO] 21:31:13:528 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:31:13:529 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:31:13:532 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 102
+[INFO] 21:31:13:635 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:31:13:635 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 103
+[INFO] 21:31:13:740 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 110
+[INFO] 21:31:13:741 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 104
+[INFO] 21:31:13:852 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:31:13:855 LOGGER/(30244:30290): Direccion logica: 31
+
+[INFO] 21:31:13:855 LOGGER/(30244:30290): Numero de pagina 1 + Desplazamiento 15
+
+[INFO] 21:31:13:856 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 21:31:13:856 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:31:13:857 LOGGER/(30244:30290): La pagina que pide frame es 1 y la pagina que tiene la TLB es 1
+[INFO] 21:31:13:857 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 9
+[INFO] 21:31:13:858 LOGGER/(30244:30290): direccion fisica: 159
+[INFO] 21:31:13:859 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:31:13:859 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:31:13:862 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 105
+[INFO] 21:31:13:976 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:31:13:977 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 106
+[INFO] 21:31:14:081 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 32
+[INFO] 21:31:14:086 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 107
+[INFO] 21:31:14:188 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:31:14:188 LOGGER/(30244:30290): Direccion logica: 32
+
+[INFO] 21:31:14:189 LOGGER/(30244:30290): Numero de pagina 2 + Desplazamiento 0
+
+[INFO] 21:31:14:189 LOGGER/(30244:30290): PID: 2 - TLB MISS - Pagina: 2
+[INFO] 21:31:14:193 LOGGER/(30244:30290): PID: 2 - OBTENER MARCO - Página: 2 - Marco: 10
+[INFO] 21:31:14:194 LOGGER/(30244:30290): A la entrada 2 le asigno el frame 10
+[INFO] 21:31:14:194 LOGGER/(30244:30290): TLB elimina victima - PID: 3 - Pagina: 0
+[INFO] 21:31:14:196 LOGGER/(30244:30290): direccion fisica: 160
+[INFO] 21:31:14:196 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:31:14:197 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:31:14:199 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 108
+[INFO] 21:31:14:301 LOGGER/(30244:30290): PID 2 - Ejecutando IO_GEN_SLEEP GENERICA 1
+[INFO] 21:31:24:324 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 109
+[INFO] 21:31:24:426 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:31:24:427 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 110
+[INFO] 21:31:24:529 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 102
+[INFO] 21:31:24:529 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 111
+[INFO] 21:31:24:641 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:31:24:642 LOGGER/(30244:30290): Direccion logica: 33
+
+[INFO] 21:31:24:642 LOGGER/(30244:30290): Numero de pagina 2 + Desplazamiento 1
+
+[INFO] 21:31:24:643 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 2
+[INFO] 21:31:24:643 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:31:24:644 LOGGER/(30244:30290): La pagina que pide frame es 2 y la pagina que tiene la TLB es 2
+[INFO] 21:31:24:644 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 10
+[INFO] 21:31:24:645 LOGGER/(30244:30290): direccion fisica: 161
+[INFO] 21:31:24:646 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:31:24:646 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:31:24:648 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 112
+[INFO] 21:31:24:752 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:31:24:753 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 113
+[INFO] 21:31:24:867 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 105
+[INFO] 21:31:24:869 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 114
+[INFO] 21:31:24:982 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:31:24:983 LOGGER/(30244:30290): Direccion logica: 34
+
+[INFO] 21:31:24:983 LOGGER/(30244:30290): Numero de pagina 2 + Desplazamiento 2
+
+[INFO] 21:31:24:984 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 2
+[INFO] 21:31:24:984 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:31:24:985 LOGGER/(30244:30290): La pagina que pide frame es 2 y la pagina que tiene la TLB es 2
+[INFO] 21:31:24:985 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 10
+[INFO] 21:31:24:986 LOGGER/(30244:30290): direccion fisica: 162
+[INFO] 21:31:24:987 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:31:24:987 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:31:24:990 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 115
+[INFO] 21:31:25:099 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:31:25:101 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 116
+[INFO] 21:31:25:204 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 114
+[INFO] 21:31:25:215 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 117
+[INFO] 21:31:25:317 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:31:25:318 LOGGER/(30244:30290): Direccion logica: 35
+
+[INFO] 21:31:25:318 LOGGER/(30244:30290): Numero de pagina 2 + Desplazamiento 3
+
+[INFO] 21:31:25:319 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 2
+[INFO] 21:31:25:319 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:31:25:319 LOGGER/(30244:30290): La pagina que pide frame es 2 y la pagina que tiene la TLB es 2
+[INFO] 21:31:25:320 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 10
+[INFO] 21:31:25:321 LOGGER/(30244:30290): direccion fisica: 163
+[INFO] 21:31:25:322 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:31:25:322 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:31:25:325 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 118
+[INFO] 21:31:25:430 LOGGER/(30244:30290): PID 2 - Ejecutando SUM BX CX
+[INFO] 21:31:25:433 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 119
+[INFO] 21:31:25:563 LOGGER/(30244:30290): PID 2 - Ejecutando SET AX 101
+[INFO] 21:31:25:563 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 120
+[INFO] 21:31:25:665 LOGGER/(30244:30290): PID 2 - Ejecutando MOV_OUT BX AX
+[INFO] 21:31:25:666 LOGGER/(30244:30290): Direccion logica: 36
+
+[INFO] 21:31:25:667 LOGGER/(30244:30290): Numero de pagina 2 + Desplazamiento 4
+
+[INFO] 21:31:25:668 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 2
+[INFO] 21:31:25:668 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:31:25:669 LOGGER/(30244:30290): La pagina que pide frame es 2 y la pagina que tiene la TLB es 2
+[INFO] 21:31:25:670 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 10
+[INFO] 21:31:25:671 LOGGER/(30244:30290): direccion fisica: 164
+[INFO] 21:31:25:672 LOGGER/(30244:30290): tamanio guardado: 1
+[INFO] 21:31:25:673 LOGGER/(30244:30290): el tamanio de la lista de direcciones fisicas de enviar direcciones fisicas es 1 
+
+[INFO] 21:31:25:676 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 121
+[INFO] 21:31:25:792 LOGGER/(30244:30290): PID 2 - Ejecutando SET BX 0
+[INFO] 21:31:25:793 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 122
+[INFO] 21:31:25:904 LOGGER/(30244:30290): PID 2 - Ejecutando SET DX 37
+[INFO] 21:31:25:905 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 123
+[INFO] 21:31:26:016 LOGGER/(30244:30290): PID 2 - Ejecutando IO_STDOUT_WRITE MONITOR BX DX
+[INFO] 21:31:26:017 LOGGER/(30244:30290): Direccion logica: 0
+
+[INFO] 21:31:26:018 LOGGER/(30244:30290): Numero de pagina 0 + Desplazamiento 0
+
+[INFO] 21:31:26:019 LOGGER/(30244:30290): PID: 2 - TLB MISS - Pagina: 0
+[INFO] 21:31:26:024 LOGGER/(30244:30290): PID: 2 - OBTENER MARCO - Página: 0 - Marco: 8
+[INFO] 21:31:26:025 LOGGER/(30244:30290): A la entrada 2 le asigno el frame 8
+[INFO] 21:31:26:026 LOGGER/(30244:30290): TLB elimina victima - PID: 3 - Pagina: 2
+[INFO] 21:31:26:029 LOGGER/(30244:30290): direccion fisica: 128
+[INFO] 21:31:26:030 LOGGER/(30244:30290): tamanio guardado: 16
+[INFO] 21:31:26:031 LOGGER/(30244:30290): HELP Pido el marco de la pagina 1 del proceso 2
+[INFO] 21:31:26:031 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 1
+[INFO] 21:31:26:032 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:31:26:033 LOGGER/(30244:30290): La pagina que pide frame es 1 y la pagina que tiene la TLB es 1
+[INFO] 21:31:26:034 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 9
+[INFO] 21:31:26:035 LOGGER/(30244:30290): HELP Pido el marco de la pagina 2 del proceso 2
+[INFO] 21:31:26:036 LOGGER/(30244:30290): PID: 2 - TLB HIT - Pagina: 2
+[INFO] 21:31:26:037 LOGGER/(30244:30290): El PID que pide frame es 2 y el pid que tiene la TLB es 2
+[INFO] 21:31:26:038 LOGGER/(30244:30290): La pagina que pide frame es 2 y la pagina que tiene la TLB es 2
+[INFO] 21:31:26:039 LOGGER/(30244:30290): el marco que devuelve buscar_frame_en_TLB es: 10
+[INFO] 21:31:26:041 LOGGER/(30244:30290): PID: 2 - Acción: ESCRIBIR - Dirección Física: 128 - Valor: 0
+[INFO] 21:31:26:041 LOGGER/(30244:30290): PID: 2 - Acción: ESCRIBIR - Dirección Física: 144 - Valor: 0
+[INFO] 21:31:26:042 LOGGER/(30244:30290): PID: 2 - Acción: ESCRIBIR - Dirección Física: 160 - Valor: 0
+[INFO] 21:31:26:060 LOGGER/(30244:30290): PID: 2 - FETCH - Program Counter: 124
+[INFO] 21:31:26:162 LOGGER/(30244:30290): PID 2 - Ejecutando EXIT 

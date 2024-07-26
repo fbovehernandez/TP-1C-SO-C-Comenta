@@ -355,7 +355,7 @@ void* handle_io_stdout(void* socket_io) {
         pid_stdout->cantidad_paginas = datos_stdout->cantidad_paginas;
         pid_stdout->lista_direcciones = datos_stdout->lista_direcciones;
         pid_stdout->registro_tamanio = datos_stdout->registro_tamanio;
-        pid_stdout->nombre_interfaz = malloc(string_length(io->nombreInterfaz));
+        // pid_stdout->nombre_interfaz = malloc(string_length(io->nombreInterfaz));
         pid_stdout->nombre_interfaz = io->nombreInterfaz;
         printf("\nLa io conectada tiene nombre %s\n\n", io->nombreInterfaz);
         pid_stdout->largo_interfaz = string_length(io->nombreInterfaz) + 1;
@@ -396,7 +396,7 @@ void* handle_io_stdout(void* socket_io) {
         }
 
         liberar_datos_std(datos_stdout);
-        free(pid_stdout->nombre_interfaz);
+        // free(pid_stdout->nombre_interfaz);
         free(pid_stdout);
     }
 
