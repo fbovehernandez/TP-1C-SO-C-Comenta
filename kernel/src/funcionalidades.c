@@ -496,8 +496,8 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             printf("el nombre del recurso es %s\n", recurso->nombre);  
             wait_signal_recurso(pcb, recurso->nombre, devolucion_cpu);
             
-            // free(recurso->nombre); //FREE? A LO ULTIMO
-            // free(recurso);
+            free(recurso->nombre); //FREE? A LO ULTIMO
+            free(recurso);
             printf("\nLlega al final de WAIT_RECURSO SIGNAL_RECURSO\n\n");
             break;
         case FIN_PROCESO:
@@ -880,7 +880,7 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
             //if(es_el_ultimo_recurso_a_liberar_por(pcb)) {
             //    ejecutar_signal_recurso(recurso_obtenido, pcb, true);
             //} else {
-            free(key_nombre_recurso);
+            // free(key_nombre_recurso);
             ejecutar_signal_recurso(recurso_obtenido, pcb, false);
             //}
             
@@ -1031,6 +1031,7 @@ void ejecutar_signal_de_recursos_bloqueados_por(t_pcb* pcb) {
             if(strcmp(pid, pid_string) == 0 ) { // 0 es verdadero en strcmp
                 log_info(logger_kernel, "Entra a ejecutar signal recurso del EXIT el proceso: %d\n", pcb->pid);
                 ejecutar_signal_recurso(recurso, pcb, true);
+                free(pid_string);
                 break;
             }
             free(pid_string);
@@ -1044,6 +1045,7 @@ void ejecutar_signal_de_recursos_bloqueados_por(t_pcb* pcb) {
            }
         }
     }
+    list_destroy(elementos);
 }
 
 // TODO: Buscar en las colas_blocked de io
