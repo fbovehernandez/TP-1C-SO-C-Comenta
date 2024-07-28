@@ -126,6 +126,8 @@ void encolar_fs_truncate(t_pcb* pcb,  t_fs_truncate* pedido_fs, t_list_io* inter
     datos_op_fs->puntero_operacion = pedido_a_encolar;
     
     // Ver bien esta sincronizacion
+    pasar_a_blocked(pcb);
+
     pthread_mutex_lock(&mutex_cola_fs);
     list_add(interfaz->cola_blocked, datos_op_fs);
     
@@ -146,6 +148,8 @@ void encolar_fs_create_delete(codigo_operacion operacion, t_pcb* pcb, t_pedido_f
     datos_op_fs->pcb = pcb;
     datos_op_fs->puntero_operacion = pedido_a_encolar;
     
+    pasar_a_blocked(pcb);
+
     // Ver bien esta sincronizacion
     pthread_mutex_lock(&mutex_cola_fs);
     list_add(interfaz->cola_blocked, datos_op_fs);
@@ -195,6 +199,8 @@ void encolar_fs_read_write(codigo_operacion cod_op, t_pcb* pcb, t_pedido_fs_escr
     printf("pcb: %d\n", datos_op_fs->pcb->pid);
     datos_op_fs->puntero_operacion = fs_rw;
     
+    pasar_a_blocked(pcb);
+
     pthread_mutex_lock(&mutex_cola_fs);
     list_add(interfaz->cola_blocked, datos_op_fs);
     pthread_mutex_unlock(&mutex_cola_fs);
@@ -279,7 +285,7 @@ void* handle_io_dialfs(void* socket_io) {
         }
         pthread_mutex_unlock(&mutex_cola_fs);
 
-        pasar_a_blocked(datos_op->pcb);
+        // pasar_a_blocked(datos_op->pcb);
 
         // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
         
@@ -289,10 +295,14 @@ void* handle_io_dialfs(void* socket_io) {
 
         if(result == 0) {
             printf("Se desconecto la IO\n");
+            sacarDe(cola_blocked, datos_op->pcb->pid);
             pasar_a_exit(datos_op->pcb, "DESCONEXION_IO");
-            dictionary_remove(diccionario_io, io->nombreInterfaz);
+            
+            t_list_io* interfaz_a_liberar = dictionary_remove(diccionario_io, io->nombreInterfaz);
 
             // Ojo! Aca tambien hay que liberar todo lo que no se usa cuando la io se termina
+            liberar_io(interfaz_a_liberar);
+
             free(datos_op->puntero_operacion);
             free(datos_op);
             liberar_paquete(paquete);

@@ -53,6 +53,7 @@ int validar_out_of_memory(int tamanio);
 int contar_frames_libres(/* bit map es global*/);
 int recibir_operacion(int socket_cliente);
 void* handle_kernel(void* socket); //
+void desconectar_io_de_diccionario(char* nombre_interfaz);
 void* handle_cpu(void* socket);//
 void liberar_conexion(int socket_cliente);
 int esperar_cliente(int, t_log*); //

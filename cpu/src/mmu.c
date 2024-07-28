@@ -14,12 +14,8 @@ int buscar_frame_en_TLB(int pid, int pagina) {
         if(entrada->pid == pid && entrada->pagina == pagina) {
             log_info(logger_CPU, "PID: %d - TLB HIT - Pagina: %d", pid, pagina);
             entrada->timestamps = tiempoEnMilisecs();
-            log_info(logger_CPU, "El PID que pide frame es %d y el pid que tiene la TLB es %d", pid, entrada->pid);
-            log_info(logger_CPU, "La pagina que pide frame es %d y la pagina que tiene la TLB es %d", pagina, entrada->pagina);
-            log_info(logger_CPU, "el marco que devuelve buscar_frame_en_TLB es: %d", entrada->marco);
             return entrada->marco;
         }
-        //free(entrada);
     }
     log_info(logger_CPU, "PID: %d - TLB MISS - Pagina: %d", pid, pagina);
     return -1;
@@ -32,8 +28,6 @@ void agregar_frame_en_TLB(int pid, int pagina, int frame) {
     entrada->pagina = pagina;
     entrada->marco = frame;
     entrada->timestamps = tiempoEnMilisecs();
-    
-    log_info(logger_CPU,"A la entrada %d le asigno el frame %d", entrada->pid, entrada->marco);
 
     int cantidad_entradas = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
     printf("La cantidad de entradas es %d\n", cantidad_entradas);

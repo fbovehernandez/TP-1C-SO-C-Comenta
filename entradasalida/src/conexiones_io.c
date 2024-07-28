@@ -99,6 +99,8 @@ int conectar_io_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_io
 }
 
 void mandar_valor_a_memoria(char* valor, t_pid_stdin* pid_stdin) {
+    // Cuando lo mandamos a memoria, no deberiamos decirle que seguimos vivos?
+
     t_buffer* buffer = malloc(sizeof(t_buffer));
 
     int largo_valor = string_length(valor) + 1;
@@ -118,7 +120,6 @@ void mandar_valor_a_memoria(char* valor, t_pid_stdin* pid_stdin) {
     buffer->offset += sizeof(int);
     memcpy(buffer->stream + buffer->offset, &largo_valor, sizeof(int));
     buffer->offset += sizeof(int);
-    log_info(logger_io, "el valor en mandar_valor_a_memoria es %s", valor);
     memcpy(buffer->stream + buffer->offset, valor, largo_valor);
     buffer->offset += largo_valor;
 
@@ -629,9 +630,16 @@ void recibir_memoria(void* config_socket_io) {
     int socket_memoria = config_io_memoria->socket_io;
     t_config* config_io = config_io_memoria->config_io;
 
+    int still_running = 1;
+    int test_conexion; 
+
     printf("Voy a recibir memoria!\n");
     
     while(1) {
+        printf("Esperando validar conexion...\n");  
+        recv(socket_memoria, &test_conexion, sizeof(int), MSG_WAITALL);
+        send(socket_memoria, &still_running, sizeof(int), 0);
+
         t_paquete* paquete = malloc(sizeof(t_paquete));
         paquete->buffer = malloc(sizeof(t_buffer));
 

@@ -347,11 +347,9 @@ int desplazamiento_memoria(int direccion_logica, int nro_pagina){
 */
 
 int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
-    // log_info(logger, "PID: %d - Ejecutando: %d ", pcb->pid, instruccion->nombre);
     se_seteo_pc = false;
     TipoInstruccion nombreInstruccion = instruccion->nombre;
     t_list* list_parametros = instruccion->parametros;
-    // printf("La instruccion es de numero %d y tiene %d parametros\n", instruccion->nombre, instruccion->cantidad_parametros);
     bool es_registro_uint8_dato;
     void* registro1;
     int direccion_fisica;
@@ -633,7 +631,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         es_registro_uint8_dato = es_de_8_bits(nombre_registro_tamanio);
         bool es_registro_uint8_dato_register = es_de_8_bits(nombre_registro_direccion);
         
-        uint32_t* registro_tamanio_stdin = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio,pcb);
+        void* registro_tamanio_stdin = seleccionar_registro_cpu(nombre_registro_tamanio,pcb);
 
         uint32_t var_register;
 
@@ -659,7 +657,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); // Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
 
-        int cantidad_paginas = cantidad_de_paginas_a_utilizar(var_register, *registro_tamanio_stdin, pagina, lista_bytes_stdin); // Cantidad de paginas + la primera
+        int cantidad_paginas = cantidad_de_paginas_a_utilizar(var_register, tamanio_a_leer, pagina, lista_bytes_stdin); // Cantidad de paginas + la primera
         
         cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_stdin, var_register, pcb->pid, lista_direcciones_fisicas_stdin, pagina);
 
@@ -671,7 +669,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
             log_info(logger_CPU,"PID: %d - Acción: ESCRIBIR - Dirección Física: %d - Valor: %d",pcb->pid, dir_stdin->direccion_fisica, var_register);
         }
 
-        t_buffer* buffer_lectura = llenar_buffer_stdio(interfaz->nombre, lista_direcciones_fisicas_stdin, *registro_tamanio_stdin, cantidad_paginas);
+        t_buffer* buffer_lectura = llenar_buffer_stdio(interfaz->nombre, lista_direcciones_fisicas_stdin, tamanio_a_leer, cantidad_paginas);
         
         // pcb->program_counter++;
         desalojar(pcb, PEDIDO_LECTURA, buffer_lectura);
@@ -706,7 +704,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         void* registro_direccion11 = seleccionar_registro_cpu(nombre_registro_direccion_stdout,pcb);
         bool es_registro_uint8_dato_register_2 = es_de_8_bits(nombre_registro_direccion_stdout);
 
-        uint32_t* registro_tamanio_stdout = (uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio_stdout,pcb);
+        void* registro_tamanio_stdout = seleccionar_registro_cpu(nombre_registro_tamanio_stdout,pcb);
         
         es_registro_uint8_dato = es_de_8_bits(nombre_registro_tamanio_stdout);
         
@@ -794,7 +792,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         desalojar(pcb, FS_TRUNCATE, buffer_truncate);
 
         // Libero y desalojo...
-        // free(buffer_truncate); son las dos am, los errores se arreglan comentandolos :)))
+        // free(buffer_truncate); 
         return 1;
         break;
     case IO_FS_READ:
@@ -959,30 +957,20 @@ int bytes_usables_por_pagina(int direccion_logica) {
 void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectura, uint32_t direccion_logica, int pid, t_list* direcciones_fisicas, int pagina) {
     // Aca cargo la primera
     t_dir_fisica_tamanio *dir_fisica_tamanio = malloc(sizeof(t_dir_fisica_tamanio)); 
-    log_info(logger_CPU, "Direccion logica: %d\n", direccion_logica);
 
     dir_fisica_tamanio->direccion_fisica = traducir_direccion_logica_a_fisica(direccion_logica, pid);
     dir_fisica_tamanio->bytes_lectura = *(int*)list_get(lista_bytes_lectura, 0); 
-    log_info(logger_CPU, "direccion fisica: %d", dir_fisica_tamanio->direccion_fisica);
-    log_info(logger_CPU, "tamanio guardado: %d", dir_fisica_tamanio->bytes_lectura);
-            
+         
     list_add(direcciones_fisicas, dir_fisica_tamanio); 
 
     int frame;
-    // Aca cargo el resto
 
-    for(int i = 0; i < cantidad_paginas - 1; i++) {
-        printf("Iteracion %d\n", i);
-        
-        log_info(logger_CPU, "HELP Pido el marco de la pagina %d del proceso %d", pagina + 1 + i, pid); // El uno es para que siempre pida la sig
-        
+    for(int i = 0; i < cantidad_paginas - 1; i++) {   
         frame = buscar_frame_en_TLB(pid, pagina + 1 + i);
 
         if(frame == -1) {
-            printf("ENTRO POR ACA\n");
             pedir_frame_a_memoria(pagina + 1 + i, pid);
             printf("pedi el frame de la pagina : %d\n", pagina + 1 + i);
-            
             recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
         }
         
@@ -1487,12 +1475,12 @@ t_buffer* llenar_buffer_stdio(char* interfaz, t_list* direcciones_fisicas, uint3
         memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
         buffer->offset += sizeof(int);
 
-        free(dir_fisica_tam);
+        // free(dir_fisica_tam);
     }
 
     memcpy(buffer->stream + buffer->offset, &tamanio_a_copiar, sizeof(uint32_t));
     buffer->offset += sizeof(uint32_t);
-    printf("el tamanio a copiar es %d", tamanio_a_copiar);
+    printf("el tamanio a copiar es %d\n", tamanio_a_copiar);
 
     memcpy(buffer->stream + buffer->offset, &largo_interfaz, sizeof(int));
     buffer->offset += sizeof(int);

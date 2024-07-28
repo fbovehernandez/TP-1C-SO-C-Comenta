@@ -69,10 +69,12 @@ t_list_io* establecer_conexion(t_buffer *buffer, int socket_io);
 void mostrar_elem_diccionario(char* nombre_interfaz);
 t_pcb* sacarDe(t_queue* cola, int pid);
 pthread_mutex_t* obtener_mutex_de(t_queue* cola);
+void pasar_a_exit_procesos_bloqueados(t_list* bloqueados);
 void liberarIOyPaquete(t_paquete *paquete, t_list_io *io);
 void liberar_io(t_list_io* io);
 void liberar_arrays_recurso(char** recursos, char** instancias_recursos);
 t_pcb* sacarDe(t_queue* cola, int pid);
 pthread_mutex_t* obtener_mutex_de(t_queue* cola);
 void liberar_datos_std(io_std* datos_std);
+void liberar_fs_puntero(datos_operacion* dato_fs);
 #endif // CONEXIONES_H

@@ -224,7 +224,9 @@ pthread_mutex_t* obtener_mutex_de(t_queue* cola){
 // Habria que ver de scar logica
 
 void *handle_io_stdin(void *socket_io) {
-    printf("llego hasta handle io stdin 1\n");    
+    printf("llego hasta handle io stdin 1\n");   
+    int respuesta_conexion;
+    int validacion_conexion = 1; 
     int socket = (intptr_t)socket_io;
     int termino_io;
 
@@ -269,10 +271,29 @@ void *handle_io_stdin(void *socket_io) {
             datos_stdin = list_remove(io->cola_blocked, 0); // FREE?
             pthread_mutex_unlock(&mutex_cola_io_generica);
             
-            pasar_a_blocked(datos_stdin->pcb);
+            // pasar_a_blocked(datos_stdin->pcb);
 
             // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
             
+            send(socket, &validacion_conexion, sizeof(int), 0);
+            int result = recv(socket, &respuesta_conexion, sizeof(int), 0);
+            printf("resultado recv: %d\n", result);
+
+            if(result == 0) {
+                printf("Se desconecto la IO\n");
+                sacarDe(cola_blocked, datos_stdin->pcb->pid);
+                pasar_a_exit(datos_stdin->pcb, "IO_DISCONNECTED");
+                t_list_io* interfaz_a_liberar = dictionary_remove(diccionario_io, io->nombreInterfaz);
+
+                // Ojo! Aca tambien hay que liberar todo lo que no se usa cuando la io se termina
+                liberar_io(interfaz_a_liberar);
+
+                liberar_datos_std(datos_stdin);
+                liberar_paquete(paquete);
+                
+                return NULL;
+            }
+
             pid_stdin->pid = datos_stdin->pcb->pid;
             pid_stdin->cantidad_paginas = datos_stdin->cantidad_paginas;
             pid_stdin->lista_direcciones = datos_stdin->lista_direcciones;
@@ -359,11 +380,15 @@ int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin) {
     int resultOk;
 
     recv(socket, &resultOk, sizeof(int), MSG_WAITALL);
+    
     printf("el resultOk es: %d\n", resultOk);
     return resultOk; // Ojo que siempre retorna 0 y por ende ejecuta bien
 }
 
 void* handle_io_stdout(void* socket_io) {
+    int respuesta_conexion;
+    int validacion_conexion = 1;
+
     printf("llego hasta handle io stdout 1\n");    
     int socket = (intptr_t)socket_io;
     
@@ -401,9 +426,24 @@ void* handle_io_stdout(void* socket_io) {
         }
         pthread_mutex_unlock(&mutex_cola_io_generica);
 
-        // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
+        /*send(sockets->socket_memoria, &validacion_conexion, sizeof(int), 0);
+        int result = recv(sockets->socket_memoria, &respuesta_conexion, sizeof(int), 0);
+        printf("resultado recv: %d\n", result);*/
 
-        pasar_a_blocked(datos_stdout->pcb);
+        /*if(result == 0) {
+            printf("Se desconecto la IO\n");
+            sacarDe(cola_blocked, datos_stdout->pcb->pid);
+            pasar_a_exit(datos_stdout->pcb, "IO_DISCONNECTED");
+            t_list_io* interfaz_a_liberar = dictionary_remove(diccionario_io, io->nombreInterfaz);
+
+            // Ojo! Aca tambien hay que liberar todo lo que no se usa cuando la io se termina
+            liberar_io(interfaz_a_liberar);
+
+            liberar_datos_std(datos_stdout);
+            liberar_paquete(paquete);
+            
+            return NULL;
+        }*/
 
         t_pid_stdout* pid_stdout = malloc(sizeof(t_pid_stdout));
         
@@ -448,6 +488,19 @@ void* handle_io_stdout(void* socket_io) {
             }
         } else {
             printf("No se pudo ejecutar la IO\n");
+            // La IO se desconecto.
+            printf("Se desconecto la IO\n");
+            sacarDe(cola_blocked, datos_stdout->pcb->pid);
+            pasar_a_exit(datos_stdout->pcb, "IO_DISCONNECTED");
+            t_list_io* interfaz_a_liberar = dictionary_remove(diccionario_io, io->nombreInterfaz);
+
+            // Ojo! Aca tambien hay que liberar todo lo que no se usa cuando la io se termina
+            liberar_io(interfaz_a_liberar);
+
+            liberar_datos_std(datos_stdout);
+            liberar_paquete(paquete);
+            
+            return NULL;
             break;
         }
 
@@ -477,6 +530,34 @@ void liberar_datos_std(io_std* datos_std) {
     // free(datos_std->pcb); -> No lo libero porque es el mismo que le hacemos malloc cuando desalojamos...
     free(datos_std);
 }
+
+void liberar_fs_puntero(datos_operacion* dato_fs) {
+    if(dato_fs->tipo_operacion == TRUNCAR_ARCHIVO) {
+        // Aca lo casteo al tipo correcto y lo libero
+        t_pedido_fs_truncate* fs_truncate = (t_pedido_fs_truncate*) dato_fs->puntero_operacion;
+        free(fs_truncate->nombre_archivo);
+        free(fs_truncate->nombre_interfaz);
+        free(fs_truncate);
+    } else if(dato_fs->tipo_operacion == CREAR_ARCHIVO || dato_fs->tipo_operacion == ELIMINAR_ARCHIVO) {
+        t_archivo_encolar* pedido_a_encolar = (t_archivo_encolar*) dato_fs->puntero_operacion;
+        free(pedido_a_encolar->nombre_archivo);
+        free(pedido_a_encolar);        
+    } else {
+        t_pedido_rw_encolar* fs_rw = (t_pedido_rw_encolar*) dato_fs->puntero_operacion;
+        // Libero todo l que tiene la lista una por una...
+        for(int i=0; i<list_size(fs_rw->lista_dir_tamanio); i++) {
+            t_dir_fisica_tamanio* dir_tamanio = list_get(fs_rw->lista_dir_tamanio, i);
+            free(dir_tamanio);
+        }
+
+        list_destroy(fs_rw->lista_dir_tamanio);
+        
+        free(fs_rw->nombre_archivo);
+    }
+    
+    free(dato_fs);
+}
+
 
 int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
     // Mandar todo a memoria
@@ -525,6 +606,9 @@ int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
 }
 
 void *handle_io_generica(void *socket_io) {
+    int respuesta_conexion;
+    int validacion_conexion = 1;
+
     int socket = (intptr_t)socket_io;
     t_paquete *paquete = inicializarIO_recibirPaquete(socket);
     t_list_io* io;
@@ -540,9 +624,9 @@ void *handle_io_generica(void *socket_io) {
             return NULL;
     }
     
-    t_pid_unidades_trabajo* pid_unidades_trabajo = malloc(sizeof(t_pid_unidades_trabajo));
-    
     while (true) {
+        t_pid_unidades_trabajo* pid_unidades_trabajo = malloc(sizeof(t_pid_unidades_trabajo));
+
         printf("Esperando semaforo\n");
         
         sem_wait(io->semaforo_cola_procesos_blocked);
@@ -557,30 +641,33 @@ void *handle_io_generica(void *socket_io) {
         pid_unidades_trabajo->unidades_trabajo = datos_sleep->unidad_trabajo;
 
         printf("La cola nos saca esto: PID %d, UT %d\n", datos_sleep->pcb->pid, datos_sleep->unidad_trabajo);
+        
         // printf("LO IMPRIMO DESPUES DE SACARLO DE LA COLA\n");
         // imprimir_pcb(datos_sleep->pcb);
         
         // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
         // hay que agregar un send recv de validacion en cada io. Esto es lo que use en fs
 
-        /* 
         send(socket, &validacion_conexion, sizeof(int), 0);
         int result = recv(socket, &respuesta_conexion, sizeof(int), 0);
         printf("resultado recv: %d\n", result);
 
         if(result == 0) {
             printf("Se desconecto la IO\n");
-            pasar_a_exit(datos_op->pcb);
-            dictionary_remove(diccionario_io, io->nombreInterfaz);
+            sacarDe(cola_blocked, datos_sleep->pcb->pid);
+            pasar_a_exit(datos_sleep->pcb, "IO_DISCONNECTED");
+            t_list_io* interfaz_a_liberar = dictionary_remove(diccionario_io, io->nombreInterfaz);
 
             // Ojo! Aca tambien hay que liberar todo lo que no se usa cuando la io se termina
-            free(datos_op->puntero_operacion);
-            free(datos_op);
+            liberar_io(interfaz_a_liberar);
+
+            free(pid_unidades_trabajo);
+
+            free(datos_sleep);
             liberar_paquete(paquete);
             
             return NULL;
         }
-        */
         
         int respuesta_ok = ejecutar_io_generica(io->socket, pid_unidades_trabajo);
         
@@ -605,48 +692,17 @@ void *handle_io_generica(void *socket_io) {
                 sem_post(&sem_planificadores);
                 cantidad_bloqueados--;                
             }
-        }else{
+        }else {
             printf("No se encontró el PCB con PID %d en la cola de bloqueados.\n", datos_sleep->pcb->pid);
         }
-            
-/*
-            if(pcb != NULL) {
-                printf("imprimo pc despues de termino io\n");
-                imprimir_pcb(pcb);
-            } else {
-                printf("No se encontro el pcb con pid %d en la cola de bloqueados.\n", datos_sleep->pcb->pid);
-            }	
-            
-            if (termino_io == 1 && pcb != NULL) { // El send de termino io envia 1.
-
-                    /*
-                    pcb_copy->pid = datos_sleep->pcb->pid; // CUANDO TERMINA ROMPE ACA VER SEG FAULT
-                    pcb_copy->program_counter = pcb->program_counter;
-                    pcb_copy->quantum = pcb->quantum;
-                    pcb_copy->estadoAnterior = pcb->estadoAnterior;
-                    pcb_copy->estadoActual = BLOCKED;
-                    // Asignar los registros
-                    // memcpy(pcb_copy->registros, pcb->registros, sizeof(t_registros));
-                    pcb_copy->registros = pcb->registros;
-                    */
-           /*          
-                cantidad_bloqueados++;
-                sem_wait(&sem_planificadores);
-                pasar_a_ready(pcb); 
-                sem_post(&sem_planificadores);
-                cantidad_bloqueados--;                
-            }*/
-
-            // free(datos_sleep->pcb->registros);
-            // free(datos_sleep->pcb);
-            // Si el pcb es distinto de NULL, entonces libera datos_sleep que contiene al pcb 
-
+        
             if(datos_sleep->pcb != NULL) {
                 // free(datos_sleep->pcb->registros);
                 // free(datos_sleep->pcb);
                 free(datos_sleep);
             }
 
+            free(pid_unidades_trabajo);
         }   
 
     liberar_paquete(paquete);
@@ -726,7 +782,41 @@ void liberarIOyPaquete(t_paquete *paquete, t_list_io *io) {
 void liberar_io(t_list_io* io) {
     free(io->semaforo_cola_procesos_blocked);
     free(io->nombreInterfaz);
+    close(io->socket);
+    pasar_a_exit_procesos_bloqueados(io->cola_blocked);
+    list_destroy(io->cola_blocked);
     free(io);
+}
+
+void pasar_a_exit_procesos_bloqueados(t_list* bloqueados) {
+    t_list* IOs = dictionary_elements(diccionario_io);
+
+    for(int i=0; i<dictionary_size(diccionario_io); i++) {
+        t_list_io* IO = list_get(IOs, i);
+
+        for(int j=0; j<list_size(IO->cola_blocked); j++) {
+            int pid_obtenido;
+
+            if(IO->TipoInterfaz == GENERICA) {
+                io_gen_sleep* dato_sleep = list_get(IO->cola_blocked, j);
+                pid_obtenido = dato_sleep->pcb->pid;
+            } else if(IO->TipoInterfaz == STDIN || IO->TipoInterfaz == STDOUT) {
+                io_std* dato_std = list_get(IO->cola_blocked, j);
+                pid_obtenido = dato_std->pcb->pid;
+            } else {
+                datos_operacion* dato_fs = list_get(IO->cola_blocked, j);
+                pid_obtenido = dato_fs->pcb->pid;
+            }
+
+            t_pcb* pcb = sacarDe(cola_blocked, pid_obtenido);
+            pasar_a_exit(pcb, "DESCONEXION_IO");
+            // Aca se considera liberar todo los io_gen_sleep, io_std y datos_operacion.
+        } 
+
+        free(IO->nombreInterfaz);
+        free(IO);
+    }
+    list_destroy(IOs);
 }
 
 t_list_io* establecer_conexion(t_buffer *buffer, int socket_io) {

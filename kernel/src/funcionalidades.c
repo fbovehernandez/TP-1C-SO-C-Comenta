@@ -245,7 +245,7 @@ void encolar_a_new(t_pcb *pcb) {
     log_info(logger_kernel, "Se crea el proceso: %d en NEW", pcb->pid);
     sem_post(&sem_planificadores);
     cantidad_bloqueados--;
-    log_info(logger_kernel, "Hay proceso esperando en la cola de NEW!\n");
+    printf ("Hay proceso esperando en la cola de NEW!\n");
     sem_post(&sem_hay_pcb_esperando_ready); // Incrementar el semáforo para indicar que hay un nuevo proceso
     
 }
@@ -255,7 +255,7 @@ void* a_ready() {
         // Esperar a que haya un proceso en la cola -> Esto espera a que literalment haya uno
         sem_wait(&sem_hay_pcb_esperando_ready); 
         sem_wait(&sem_grado_multiprogramacion); 
-        log_info(logger_kernel, "Grado de multiprogramación permite agregar proceso a ready\n");
+        printf("Grado de multiprogramación permite agregar proceso a ready\n");
 
         pthread_mutex_lock(&mutex_estado_new);
         t_pcb *pcb = queue_pop(cola_new);
@@ -303,8 +303,7 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
         cantidad_bloqueados--;
         
         esperar_cpu();
-        
-        // sem_wait(&termino_desalojo);
+    
         
         if (es_VRR_RR()) {
             pthread_cancel(hilo_quantum);
@@ -328,7 +327,6 @@ bool es_VRR() {
 void* esperar_VRR(void* pcb) {
     t_pcb* pcb_nuevo = (t_pcb*) pcb;
     timer = temporal_create(); // Crearlo ya empieza a contar
-    log_info(logger_kernel, "Cuando entro en esperar VRR, el pid del pcb es: %d\n", pcb_nuevo->pid);
     esperar_RR(pcb);
     // temporal_destroy(timer);
 
@@ -338,12 +336,6 @@ void* esperar_VRR(void* pcb) {
     // posible send de interrupcion
     return NULL;
 }
-
-/*
-    int64_t temporal_gettime(t_temporal* temporal);
-    void temporal_stop(t_temporal* temporal);
-    void temporal_resume(t_temporal* temporal);
-*/
 
 void* esperar_RR(void* pcb) {
     /* Esperar_cpu_RR */
@@ -519,11 +511,11 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             t_pedido* pedido_escritura = deserializar_pedido(package->buffer); // llega bien el nombre de la interfaz
             printf("NOMBRE PEDIDO ESCRITURA: %s", pedido_escritura->interfaz);
             encolar_datos_std(pcb, pedido_escritura);
-            log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->interfaz);
+            // log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->interfaz);
 
             // liberar_pedido_escritura_lectura(pedido_escritura);
             break;
-            case FS_DELETE: case FS_CREATE:
+        case FS_DELETE: case FS_CREATE:
             t_pedido_fs_create_delete* pedido_fs = deserializar_pedido_fs_create_delete(package->buffer);
 
             t_list_io* interfaz_crear_destruir = io_esta_en_diccionario(pcb, pedido_fs->nombre_interfaz);
@@ -565,7 +557,6 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
                 // codigo_operacion operacion = (package->codigo_operacion == ESCRITURA_FS) ? ESCRIBIR_FS_MEMORIA : LEER_FS_MEMORIA;
                 codigo_operacion operacion = (devolucion_cpu == ESCRITURA_FS) ? ESCRIBIR_FS_MEMORIA : LEER_FS_MEMORIA;
                 // Esto se hace en la conexion, aca tiene que encolar el pedido
-
                 encolar_fs_read_write(operacion, pcb, fs_read_write, interfaz);
 
                 // enviar_buffer_fs_escritura_lectura(pcb->pid,fs_read_write->largo_archivo,fs_read_write->nombre_archivo,fs_read_write->registro_direccion,fs_read_write->registro_tamanio,fs_read_write->registro_archivo,operacion);
@@ -947,7 +938,7 @@ void ejecutar_wait_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, char* recurs
     if(recurso_obtenido->instancias > 0) {        
         recurso_obtenido->instancias --;
         cantidad_de_waits_que_se_hicieron++;
-        log_info(logger_kernel, "WAITS REALIZADOS: %d", cantidad_de_waits_que_se_hicieron);
+
         printf("\n\nWAITS REALIZADOS: %d\n\n", cantidad_de_waits_que_se_hicieron);
         char* pid_string = string_itoa(pcb->pid);
         list_add(recurso_obtenido->procesos_que_lo_retienen, pid_string);
@@ -1064,7 +1055,6 @@ void FINALIZAR_PROCESO(int pid) {
     } else {
         t_pcb* pcb = sacarDe(cola, pid);
         printf("El proceso no se encuentra en ejecucion\n");
-        ejecutar_signal_de_recursos_bloqueados_por(pcb);
         pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
     }
     
@@ -1169,7 +1159,6 @@ void INICIAR_PLANIFICACION() {
 
     cantidad_bloqueados = 0;
 
-    pthread_cancel(hilo_detener_planificacion);
 }
 
 /*
@@ -1568,18 +1557,37 @@ void liberar_recurso_de_pcb(int pid) {
     free(pid_string);
 }
 
-void liberar_pcb_de_io(int pid) {
-    bool _tiene_pid_en_io(t_pcb* pcb) {
-        return pcb->pid == pid;
-    }
+void liberar_pcb_de_io (int pid) {
+    t_list* IOs = dictionary_elements(diccionario_io);
 
-    void _buscar_pid_entre_io(t_list_io* io) {
-        list_remove_and_destroy_by_condition(io->cola_blocked, (void*)_tiene_pid_en_io, (void*)liberar_pcb_estructura);
-    }
+    for(int i=0; i<list_size(IOs); i++) {
+        t_list_io* IO = list_get(IOs, i);
 
-    dictionary_iterator(diccionario_io, (void*)_buscar_pid_entre_io);
+        for(int j=0; j<list_size(IO->cola_blocked); j++) {
+            int pid_obtenido;
+
+            if(IO->TipoInterfaz == GENERICA) {
+                io_gen_sleep* dato_sleep = list_get(IO->cola_blocked, j);
+                pid_obtenido = dato_sleep->pcb->pid;
+                free(dato_sleep);
+            } else if(IO->TipoInterfaz == STDIN || IO->TipoInterfaz == STDOUT) {
+                io_std* dato_std = list_get(IO->cola_blocked, j);
+                pid_obtenido = dato_std->pcb->pid;
+                liberar_datos_std(dato_std);
+            } else {
+                datos_operacion* dato_fs = list_get(IO->cola_blocked, j);
+                pid_obtenido = dato_fs->pcb->pid;
+                liberar_fs_puntero(dato_fs);
+            }
+
+            if(pid_obtenido == pid) {
+                list_remove(IO->cola_blocked, j);
+                break;
+            }
+        }
+    }
+    list_destroy(IOs);
 }
-
 
 void liberar_pedido_escritura_lectura(t_pedido* pedido_escritura_lectura) {
     free(pedido_escritura_lectura->interfaz);
