@@ -760,65 +760,122 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         // free(buffer_escritura); se hace en desalojar
         return 1;
         break;
-    /*
-    case IO_FS_CREATE: case IO_FS_DELETE: // IO_FS_CREATE nombre_interfaz nombre_archivo
+    case IO_FS_DELETE: // IO_FS_DELETE nombre_interfaz nombre_archivo
+    case IO_FS_CREATE: // IO_FS_CREATE nombre_interfaz nombre_archivo
         t_parametro* interfaz_create = list_get(list_parametros, 0);
-        char* nombre_interfaz_FS_CREATE = interfaz_create->nombre;
+        char* nombre_interfaz_fs = interfaz_create->nombre;
 
         t_parametro* name_file_create = list_get(list_parametros, 1);
         char* filename = name_file_create->nombre;
 
         codigo_operacion codigo_io = (nombreInstruccion == IO_FS_CREATE) ? FS_CREATE : FS_DELETE;
-        t_buffer* buffer_io = llenar_buffer_fs_create_delete(nombre_interfaz_FS_CREATE, filename);
+        t_buffer* buffer_io = llenar_buffer_fs_create_delete(nombre_interfaz_fs, filename);
+
+        // pcb->program_counter++;
         desalojar(pcb, codigo_io, buffer_io);
 
         // Libero y desalojo...
-        free(buffer_io);
-        return -1;
+        //free(buffer_io); -> VER ESTO
+        return 1;
         break;
-    case IO_FS_TRUNCATE: // IO_FS_TRUNCATE interfaz archivo 
+    case IO_FS_TRUNCATE: // IO_FS_TRUNCATE interfaz archivo nuevo_tamanio
         t_parametro* interfaz_a_truncar = list_get(list_parametros, 0);
-        char* nombre_interfaz_a_truncar = interfaz_create->nombre;
+        char* nombre_interfaz_a_truncar = interfaz_a_truncar->nombre;
 
         t_parametro* parametro_file_truncate = list_get(list_parametros, 1);
         char* nombre_file_truncate = parametro_file_truncate->nombre;
 
         t_parametro* parametro_numero = list_get(list_parametros, 2);
         char* nombre_parametro_numero = parametro_numero->nombre;
-        uint32_t registro_truncador = (uint32_t*) seleccionar_registro_cpu(nombre_parametro_numero);
+        uint32_t* registro_truncador = (uint32_t*) seleccionar_registro_cpu(nombre_parametro_numero, pcb);
         
-        enviar_buffer_fs_truncate(nombre_interfaz_a_truncar,nombre_file_truncate,registro_truncador);
+        t_buffer* buffer_truncate = llenar_buffer_fs_truncate(nombre_interfaz_a_truncar, nombre_file_truncate, *registro_truncador);
         
+        desalojar(pcb, FS_TRUNCATE, buffer_truncate);
+
+        // Libero y desalojo...
+        // free(buffer_truncate); son las dos am, los errores se arreglan comentandolos :)))
         return 1;
         break;
     case IO_FS_READ:
     case IO_FS_WRITE:
-        t_parametro* primer_parametro2 = list_get(list_parametros, 0);
-        char* nombre_interfaz2 = primer_parametro2->nombre;
+        t_list* lista_bytes_rw = list_create();
+        t_list* lista_direcciones_fisicas_rw = list_create();
+    
+        t_parametro* interfaz_wr = list_get(list_parametros, 0);
+        char* nombre_interfaz_wr = interfaz_wr->nombre;
 
-        t_parametro* segundo_parametro2 = list_get(list_parametros, 1);
-        char* nombre_archivo2 = segundo_parametro2->nombre;
+        t_parametro* name_file_wr = list_get(list_parametros, 1);
+        char* nombre_archivo_wr = name_file_wr->nombre;
         
-        t_parametro* tercer_parametro = list_get(list_parametros, 2);
-        char* nombre_registro_direccion2 = tercer_parametro->nombre; 
-        uint32_t registro_direccion2 = *(uint32_t*) seleccionar_registro_cpu(nombre_registro_direccion2);
+        t_parametro* dir_rw = list_get(list_parametros, 2);
+        char* nombre_registro_direccion_rw = dir_rw->nombre; 
+
+        void* registro_direccion_rw = seleccionar_registro_cpu(nombre_registro_direccion_rw, pcb);
+        es_registro_uint8_dato_register = es_de_8_bits(nombre_registro_direccion_rw);
+
+        t_parametro* tamanio_rw = list_get(list_parametros, 3);
+        char* nombre_registro_tamanio_rw = tamanio_rw->nombre; 
+
+        es_registro_uint8_dato = es_de_8_bits(nombre_registro_tamanio_rw);
+
+        void* registro_tamanio_rw = seleccionar_registro_cpu(nombre_registro_tamanio_rw, pcb);
+
+        t_parametro* ptr_wr = list_get(list_parametros, 4);
+        char* nombre_puntero_registro_wr = ptr_wr->nombre; 
+
+        void* registro_puntero_archivo = seleccionar_registro_cpu(nombre_puntero_registro_wr, pcb);
+
+        codigo_operacion codigo_escritura_lectura = (nombreInstruccion == IO_FS_READ) ? LECTURA_FS : ESCRITURA_FS;
+
+        uint32_t puntero_archivo_register;
+
+        if(es_registro_uint8_dato_register) {
+            puntero_archivo_register = *(uint8_t*) registro_puntero_archivo;
+        } else {
+            puntero_archivo_register = *(uint32_t*) registro_puntero_archivo;
+        }
+
+        uint32_t var_register_fs_write;
+
+        if(es_registro_uint8_dato_register) {
+            var_register_fs_write = *(uint8_t*) registro_direccion_rw;
+        } else {
+            var_register_fs_write = *(uint32_t*) registro_direccion_rw;
+        }
+
+        uint32_t tamanio_rw_cast;
         
-        t_parametro* cuarto_parametro = list_get(list_parametros, 3);
-        char* nombre_registro_tamanio2 = cuarto_parametro->nombre; 
-        uint32_t registro_tamanio2 = *(uint32_t*) seleccionar_registro_cpu(nombre_registro_tamanio2);
+        // Hacer lo mismo que arriba para el tamanio
+        if(es_registro_uint8_dato) {
+            tamanio_rw_cast = *(uint8_t*) registro_tamanio_rw;
+        } else {
+            tamanio_rw_cast = *(uint32_t*) registro_tamanio_rw;
+        }
 
-        t_parametro* quinto_parametro = list_get(list_parametros, 4);
-        char* nombre_quinto_parametro = cuarto_parametro->nombre; 
-        uint32_t registro_puntero_archivo = *(uint32_t*) seleccionar_registro_cpu(nombre_quinto_parametro);
+        pagina = floor(var_register_fs_write / tamanio_pagina);
+        tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); // Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
 
-        codigo_operacion codigo_escritura_lectura = nombreInstruccion == IO_FS_READ ? LECTURA_FS : ESCRITURA_FS;
-
-        t_buffer* buffer_fs_lectura_escritura = llenar_buffer_fs_escritura_lectura(nombre_interfaz2,nombre_archivo2,registro_direccion2,registro_tamanio2,registro_puntero_archivo); 
-        enviar_paquete(buffer_fs_lectura_escritura,codigo_escritura_lectura,client_dispatch);
+        cantidad_paginas = cantidad_de_paginas_a_utilizar(var_register_fs_write, tamanio_rw_cast, pagina, lista_bytes_rw); // Cantidad de paginas + la primera
         
+        cargar_direcciones_tamanio(cantidad_paginas, lista_bytes_rw, var_register_fs_write, pcb->pid, lista_direcciones_fisicas_rw, pagina);
+
+        printf("\nAca va la lista de bytes del FS READ / WRITE:\n");
+        
+        for(int i=0; i < list_size(lista_direcciones_fisicas_rw); i++) {
+            t_dir_fisica_tamanio* dir_rw = list_get(lista_direcciones_fisicas_rw, i);
+            printf("Direccion fisica: %d\n", dir_rw->direccion_fisica);
+            printf("Bytes a leer: %d\n", dir_rw->bytes_lectura);
+        }
+
+        t_buffer* buffer_fs_lectura_escritura = llenar_buffer_fs_escritura_lectura(nombre_interfaz_wr , nombre_archivo_wr, var_register_fs_write , tamanio_rw_cast, puntero_archivo_register, cantidad_paginas, lista_direcciones_fisicas_rw); 
+
+        printf("CODIGO OPERACION: %d\n", codigo_escritura_lectura);
+        desalojar(pcb, codigo_escritura_lectura, buffer_fs_lectura_escritura);
+
+        // free(buffer_fs_lectura_escritura);
         return 1;
         break;
-    */
     default:
         printf("Error: No existe ese tipo de instruccion\n");
         // instruccion_destruir(instruccion);
@@ -1447,46 +1504,10 @@ t_buffer* llenar_buffer_stdio(char* interfaz, t_list* direcciones_fisicas, uint3
     return buffer;
 }
 
-t_buffer* llenar_buffer_fs_escritura_lectura(char* nombre_interfaz,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uint32_t registro_archivo){ 
-    uint32_t largo_nombre_interfaz = string_length(nombre_interfaz) + 1;
-    uint32_t largo_nombre_archivo  = string_length(nombre_archivo) + 1;
-    int size = sizeof(int) * 2 + largo_nombre_interfaz + largo_nombre_archivo + sizeof(uint32_t) * 3;
-    
-    t_buffer* buffer  = buffer_create(size);
-
-    buffer_add_uint32(buffer,largo_nombre_interfaz);
-    buffer_add_string(buffer,largo_nombre_interfaz,nombre_interfaz);
-    
-    buffer_add_uint32(buffer,largo_nombre_archivo);
-    buffer_add_string(buffer,largo_nombre_archivo,nombre_archivo);
-
-    buffer_add_uint32(buffer,registro_direccion);
-    buffer_add_uint32(buffer,registro_tamanio);
-    buffer_add_uint32(buffer,registro_archivo);
-
-    return buffer;
-}
 
 void enviar_buffer_fs_truncate(char* nombre_interfaz_a_truncar,char* nombre_file_truncate,uint32_t registro_truncador){
     t_buffer* buffer = llenar_buffer_fs_truncate(nombre_interfaz_a_truncar,nombre_file_truncate,registro_truncador);
     enviar_paquete(buffer,FS_TRUNCATE_KERNEL,client_dispatch);
-}
-
-t_buffer* llenar_buffer_fs_truncate(char* nombre_interfaz_a_truncar,char* nombre_file_truncate,uint32_t registro_truncador){
-    int largo_nombre_interfaz = nombre_interfaz_a_truncar + 1;
-    int largo_nombre_archivo  = nombre_file_truncate + 1; 
-    
-    int size = sizeof(uint32_t) + largo_nombre_archivo + largo_nombre_interfaz + sizeof(int) * 2;
-
-    t_buffer* buffer = buffer_create(size);
-
-    buffer_add_int(buffer,largo_nombre_interfaz);
-    buffer_add_string(buffer,nombre_interfaz_a_truncar,largo_nombre_interfaz);
-    buffer_add_int(buffer,largo_nombre_archivo);
-    buffer_add_string(buffer,nombre_file_truncate,largo_nombre_archivo);
-    buffer_add_uint32(buffer,registro_truncador);
-
-    return buffer;
 }
 /*
 typedef struct {

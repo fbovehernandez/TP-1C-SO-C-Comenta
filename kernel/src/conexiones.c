@@ -13,6 +13,7 @@ t_sockets* sockets;
 pthread_mutex_t mutex_estado_new;
 pthread_mutex_t mutex_estado_ready;
 pthread_mutex_t mutex_estado_exec;
+pthread_mutex_t mutex_cola_fs;
 pthread_mutex_t no_hay_nadie_en_cpu;
 pthread_mutex_t mutex_estado_blocked;
 pthread_mutex_t mutex_estado_ready_plus;
@@ -521,31 +522,6 @@ int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
     recv(sockets->socket_memoria, &resultOk, sizeof(int), MSG_WAITALL);
 
     return resultOk;
-}
-
-void* handle_io_dialfs(void* socket_io) {
-    int socket = (intptr_t)socket_io;
-
-    t_paquete *paquete = inicializarIO_recibirPaquete(socket);
-    t_list_io* io;
-
-    switch (paquete->codigo_operacion) {
-        case CONEXION_INTERFAZ:
-            printf("Vamos a establecer conexion con dialfs!!!\n");
-            io = establecer_conexion(paquete->buffer, socket);
-            // free(io);
-            break;
-        default:
-            printf("Llega al default.");
-            return NULL;
-    }
-
-    while(true) {
-        // compl, no es espera activa
-    }
-
-    liberar_paquete(paquete);
-    return NULL;
 }
 
 void *handle_io_generica(void *socket_io) {

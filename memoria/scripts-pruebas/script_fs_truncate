@@ -1,0 +1,20 @@
+RESIZE 20
+SET AX 2
+IO_FS_CREATE ara notas.txt
+SET EAX 123
+IO_FS_TRUNCATE ara notas.txt EAX
+SET BX 2
+IO_FS_CREATE ara notas2.txt
+SET EBX 125
+IO_FS_TRUNCATE ara notas2.txt EBX
+SET AX 2
+IO_FS_CREATE ara notas3.txt
+SET EAX 167
+IO_FS_TRUNCATE ara notas3.txt EAX
+SET AX 2
+SET AX 2
+SET AX 2
+SET EBX 156
+IO_FS_TRUNCATE ara notas.txt EBX
+SET AX 2
+EXIT

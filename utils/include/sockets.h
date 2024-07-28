@@ -130,9 +130,10 @@ typedef enum {
     ERROR_STDIN,
     FS_CREATE,
     FS_DELETE,
-    OUT_OF_MEMORY = 13
-    //LECTURA_FS,
-    //ESCRITURA_FS
+    OUT_OF_MEMORY,
+    LECTURA_FS,
+    ESCRITURA_FS,
+    FS_TRUNCATE = 16
 } DesalojoCpu;
 
 typedef struct {
@@ -154,13 +155,14 @@ typedef struct {
 } t_pedido_memoria;
 
 typedef enum {
-    PATH = 14,
+    PATH = 17,
 	ENVIO_PCB,
     QUIERO_INSTRUCCION,
     ENVIO_INSTRUCCION,
     QUIERO_CANTIDAD_INSTRUCCIONES,
     ENVIO_CANTIDAD_INSTRUCCIONES,
     INTERRUPCION_CPU,
+    DESCONEXION_IO,
     INTERRUPCION_FIN_PROCESO,
     QUIERO_NOMBRE,
     DORMITE,
@@ -181,17 +183,15 @@ typedef enum {
     CREAR_ARCHIVO,
     ELIMINAR_ARCHIVO,
     ESCRIBITE,
-    LECTURA_FS,
-    ESCRITURA_FS,
     ESCRIBIR_FS_MEMORIA,
+    TRUNCAR_ARCHIVO,
     LEER_FS_MEMORIA,
     ESCRIBIR_EN_FS,
     LEER_EN_FS,
-    FS_TRUNCATE_KERNEL,
-    TRUNCAR_ARCHIVO,
     INTERRUPCION_FIN_USUARIO,
     LIBERAR_PROCESO,
-    CERRAR_MODULO = 51
+    CERRAR_MODULO = 54,
+    FS_TRUNCATE_KERNEL
 } codigo_operacion;
 
 typedef enum {
@@ -338,22 +338,6 @@ typedef enum {
     ERROR_INSTRUCCION
 } TipoInstruccion;
 
-typedef struct{
-    int pid;
-    int largo_archivo;
-    char* nombre_archivo;
-    uint32_t truncador;
-} t_fs_truncate;
-
-/* 
-typedef struct {
-    int direccion_fisica;
-    int tamanio;
-    int cantidad_paginas;
-    int direccion_logica;
-} t_direccion_fisica;
-*/
-
 typedef struct {
     TipoInstruccion nombre;
     int cantidad_parametros;
@@ -381,31 +365,6 @@ typedef struct{
     int direccionFisicaSI;
     int direccionFisicaDI;
 } t_copy_string;
-
-typedef struct{
-    int longitud_nombre_interfaz;
-    char* nombre_interfaz;
-    int longitud_nombre_archivo;
-    char* nombre_archivo;
-} t_pedido_fs_create_delete;
-
-typedef struct{
-    int pid;
-    int largo_archivo;
-    char* nombre_archivo;
-} t_fs_create_delete;
-
-
-typedef struct{
-    int longitud_nombre_interfaz;
-    char* nombre_interfaz;
-    int largo_archivo;
-    char* nombre_archivo;
-    uint32_t registro_direccion;
-    uint32_t registro_tamanio;
-    uint32_t registro_archivo;
-} t_pedido_fs_escritura_lectura;
-
 
 typedef struct{
     int pid;
@@ -447,6 +406,82 @@ typedef struct {
     t_list* procesos_bloqueados;
     t_list* procesos_que_lo_retienen;
 } t_recurso;
+
+typedef struct {
+    char* name_file;
+    int first_block;
+    int block_count;
+} t_archivo;
+    
+typedef struct {
+    int block_size;
+    int block_count;
+    int retraso_compactacion;
+    char* path_base;
+} t_config_dialfs;
+
+typedef struct {
+    int largo_nombre_archivo;
+    char* nombre_archivo;
+    uint32_t registro_tamanio;
+} t_pedido_truncate;
+
+typedef struct {
+    int largo_nombre_interfaz;
+    char* nombre_interfaz;
+    int largo_nombre_archivo;
+    char* nombre_archivo;
+    uint32_t registro_tamanio;
+} t_fs_truncate;
+
+typedef struct{
+    int longitud_nombre_interfaz;
+    char* nombre_interfaz;
+    int longitud_nombre_archivo;
+    char* nombre_archivo;
+} t_pedido_fs_create_delete;
+
+typedef struct {
+    int largo_archivo;
+    char* nombre_archivo;
+} t_archivo_encolar;
+
+typedef struct {
+    codigo_operacion tipo_operacion;
+    t_pcb* pcb;
+    void* puntero_operacion;
+} datos_operacion;
+
+typedef struct{
+    int pid;
+    int largo_archivo;
+    char* nombre_archivo;
+} t_fs_create_delete;
+
+typedef struct{
+    int longitud_nombre_interfaz;
+    char* nombre_interfaz;
+    int largo_archivo;
+    char* nombre_archivo;
+    uint32_t registro_direccion;
+    uint32_t registro_tamanio;
+    uint32_t registro_archivo;
+    int cantidad_paginas;
+    t_list* lista_dir_tamanio;
+} t_pedido_fs_escritura_lectura;
+
+
+typedef struct{
+    int largo_archivo;
+    char* nombre_archivo;
+    uint32_t registro_direccion;
+    uint32_t registro_tamanio;
+    uint32_t registro_archivo;
+    int cantidad_paginas;
+    t_list* lista_dir_tamanio;
+    int socket_io;
+    int socket_memoria;
+} t_pedido_rw_encolar;
 
 char* string_operacion(codigo_operacion operacion); 
 void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* buffer);

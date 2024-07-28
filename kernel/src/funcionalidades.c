@@ -523,6 +523,57 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
 
             // liberar_pedido_escritura_lectura(pedido_escritura);
             break;
+            case FS_DELETE: case FS_CREATE:
+            t_pedido_fs_create_delete* pedido_fs = deserializar_pedido_fs_create_delete(package->buffer);
+
+            t_list_io* interfaz_crear_destruir = io_esta_en_diccionario(pcb, pedido_fs->nombre_interfaz);
+            
+            if (interfaz_crear_destruir != NULL) {
+                // codigo_operacion operacion = (package->codigo_operacion == FS_CREATE) ? CREAR_ARCHIVO : ELIMINAR_ARCHIVO;
+                codigo_operacion operacion = (devolucion_cpu == FS_CREATE) ? CREAR_ARCHIVO : ELIMINAR_ARCHIVO;
+
+                // Esto se hace en la conexion, aca tiene que encolar el pedido
+                encolar_fs_create_delete(operacion, pcb, pedido_fs, interfaz_crear_destruir);
+                // enviar_buffer_fs(interfaz_crear_destruir->socket, pcb->pid, pedido_fs->longitud_nombre_archivo, pedido_fs->nombre_archivo, operacion);
+                
+                log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, pedido_fs->nombre_interfaz);
+            }
+            
+            // free(pedido_fs);
+            // Liberar lista...
+            break;
+        case FS_TRUNCATE:
+            t_fs_truncate* pedido_fs_truncate = deserializar_pedido_fs_truncate(package->buffer);
+            t_list_io* interfaz_truncate = io_esta_en_diccionario(pcb, pedido_fs_truncate->nombre_interfaz);
+
+            if (interfaz_truncate != NULL) {
+                // Esto se hace en la conexion, aca tiene que encolar el pedido
+                encolar_fs_truncate(pcb, pedido_fs_truncate, interfaz_truncate);
+                // enviar_buffer_fs(interfaz_truncate->socket, pcb->pid, pedido_fs_truncate->longitud_nombre_archivo, pedido_fs_truncate->nombre_archivo, TRUNCAR_ARCHIVO);
+                log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, pedido_fs_truncate->nombre_interfaz);
+            }
+
+            // free(pedido_fs_truncate);
+            break;
+
+        case ESCRITURA_FS:
+        case LECTURA_FS:
+            t_pedido_fs_escritura_lectura* fs_read_write = deserializar_pedido_fs_escritura_lectura(package->buffer);
+            t_list_io* interfaz = io_esta_en_diccionario(pcb, fs_read_write->nombre_interfaz);
+
+            if (interfaz != NULL) {
+                // codigo_operacion operacion = (package->codigo_operacion == ESCRITURA_FS) ? ESCRIBIR_FS_MEMORIA : LEER_FS_MEMORIA;
+                codigo_operacion operacion = (devolucion_cpu == ESCRITURA_FS) ? ESCRIBIR_FS_MEMORIA : LEER_FS_MEMORIA;
+                // Esto se hace en la conexion, aca tiene que encolar el pedido
+
+                encolar_fs_read_write(operacion, pcb, fs_read_write, interfaz);
+
+                // enviar_buffer_fs_escritura_lectura(pcb->pid,fs_read_write->largo_archivo,fs_read_write->nombre_archivo,fs_read_write->registro_direccion,fs_read_write->registro_tamanio,fs_read_write->registro_archivo,operacion);
+                
+                log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, fs_read_write->nombre_interfaz);
+            }
+            
+            break;
         default:
             printf("Llego un codigo de operacion inexistente o rompio algo\n");
             exit(-1);
@@ -584,7 +635,7 @@ t_buffer* llenar_buffer_nombre_archivo_pid(int pid,int largo_archivo,char* nombr
     buffer->offset += sizeof(int);
     memcpy(stream + buffer->offset, &(largo_archivo), sizeof(int)); 
     buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, nombre_archivo, largo_archivo);
+    memcpy(stream + buffer->offset, &nombre_archivo, largo_archivo);
     
     buffer->stream = stream;
 

@@ -31,6 +31,7 @@ int main(int argc, char* argv[]) {
     pthread_mutex_init(&mutex_estado_new, NULL);
     pthread_mutex_init(&mutex_estado_blocked, NULL);
     pthread_mutex_init(&mutex_estado_ready, NULL);
+    pthread_mutex_init(&mutex_cola_fs, NULL);
     sem_init(&sem_contador_quantum, 0, 0);
     sem_init(&sem_hay_para_planificar, 0, 0);
     sem_init(&sem_hay_pcb_esperando_ready, 0, 0);

@@ -92,22 +92,160 @@ void iniciar_stdout(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, 
 } 
 
 void iniciar_dialfs(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, char* IP_MEMORIA, char* puerto_kernel, char* puerto_memoria) {
-    t_config_dialfs* dialfs = inicializar_file_system(config_io);
-    crear_archivos_iniciales(dialfs);
+    dialfs = inicializar_file_system(config_io);
+
+    if(dialfs == NULL) {
+        log_error(logger_io, "No se pudo inicializar el file system");
+        return;
+    }
+    
+    char filepath_bitmap[256]; 
+    char filepath_bloques[256]; 
+
+    snprintf(filepath_bloques, sizeof(filepath_bloques), "%s/bloques.dat", dialfs->path_base);
+    snprintf(filepath_bitmap, sizeof(filepath_bitmap), "%s/bitmap.dat", dialfs->path_base);
+
+    if (access(filepath_bitmap, F_OK) == -1 || access(filepath_bloques, F_OK) == -1) { // Si alguno de los archivos no existe
+        crear_archivos_iniciales(filepath_bitmap, filepath_bloques);
+    } else {
+        recuperar_bitmap_y_bloques(filepath_bitmap, filepath_bloques);
+    }
+
+    diccionario_archivos = dictionary_create();
+
+    rearmar_diccionario_archivos(dialfs->path_base);
+
+    mostrar_diccionario_no_vacio(diccionario_archivos);
 
     kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, DIALFS, 17); 
     memoriafd = conectar_io_memoria(IP_MEMORIA, puerto_memoria, logger_io, nombreInterfaz, DIALFS, 81);
 
-    t_config_socket_io* config_kernel_io = malloc(sizeof(t_config_socket_io)); //FREE?
+    t_config_socket_io* config_kernel_io = malloc(sizeof(t_config_socket_io));
     config_kernel_io->config_io = config_io;
     config_kernel_io->socket_io = kernelfd;
 
-    t_config_socket_io* config_memoria_io = malloc(sizeof(t_config_socket_io)); //FREE?
+    t_config_socket_io* config_memoria_io = malloc(sizeof(t_config_socket_io));
     config_memoria_io->config_io = config_io;
     config_memoria_io->socket_io = memoriafd;
 
     recibir_kernel_y_memoria(config_kernel_io, config_memoria_io);
     // recibir_memoria(config_io, memoriafd); TO DO: CONECTAR CON MEMORIA DESDE MEMORIA
+}
+
+void recuperar_bitmap_y_bloques(char* filepath_bitmap, char* filepath_bloques) {
+    // Abre los archivos existentes
+    int fd_bitmap = open(filepath_bitmap, O_RDWR, S_IRUSR | S_IWUSR);
+    int fd_bloques = open(filepath_bloques, O_RDWR, S_IRUSR | S_IWUSR);
+
+    // Calcula el tamaño del bitmap y de los bloques
+    int tamanio_bitmap = dialfs->block_count / 8;
+    size_t tamanio_bloques = dialfs->block_size * dialfs->block_count;
+
+    // Mapea el contenido de los archivos en memoria
+    bitmap_data = mmap(NULL, tamanio_bitmap, PROT_READ | PROT_WRITE, MAP_SHARED, fd_bitmap, 0);
+    bloques_data = mmap(NULL, tamanio_bloques, PROT_READ | PROT_WRITE, MAP_SHARED, fd_bloques, 0);
+
+    // Crea un t_bitarray con la memoria mapeada
+    bitmap = bitarray_create_with_mode(bitmap_data, tamanio_bitmap, LSB_FIRST);
+
+    // Cierra los archivos
+    close(fd_bloques);
+    close(fd_bitmap);
+}
+
+void rearmar_diccionario_archivos(char* path_base) {
+    DIR* dir;
+    struct dirent* ent;
+
+    dir = opendir(path_base);
+
+    if (dir == NULL) {
+        printf("No se pudo abrir el directorio %s\n", path_base);
+        return;
+    }
+
+    while ((ent = readdir(dir)) != NULL && hay_files_txt(path_base)) {
+        if (strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0 
+                            || strcmp(ent->d_name, "bloques.dat") == 0 || strcmp(ent->d_name, "bitmap.dat") == 0) continue;
+
+        char* path_archivo = malloc(strlen(path_base) + strlen(ent->d_name) + 2); // +2?
+        sprintf(path_archivo, "%s/%s", path_base, ent->d_name);
+
+        FILE* metadata_file = fopen(path_archivo, "r"); // Abro para lectura
+
+        if (metadata_file == NULL) {
+            printf("No se pudo abrir el archivo %s\n", path_archivo);
+            free(path_archivo);
+            continue;
+        }
+
+        char* line = NULL;
+        size_t len = 0;
+
+        getline(&line, &len, metadata_file);
+        int first_block = atoi(line);
+
+        printf("Primer bloque: %d\n", first_block);
+
+        if (getline(&line, &len, metadata_file) != -1) {
+            printf("Tamaño del archivo: %s\n", line);
+
+            t_archivo* archivo = malloc(sizeof(t_archivo));
+            archivo->first_block = first_block; 
+            archivo->block_count = asignar_bloques(atoi(line)); 
+            archivo->name_file = strdup(ent->d_name);
+
+            dictionary_put(diccionario_archivos, ent->d_name, archivo);
+        }
+
+        free(line);
+        fclose(metadata_file);
+        free(path_archivo);
+
+        }
+
+        closedir(dir);
+}
+
+// Revisar funcion
+bool hay_files_txt(char* path_base) {
+    DIR* dir = opendir(path_base);
+
+    if (dir == NULL) {
+        printf("No se pudo abrir el directorio %s\n", path_base);
+        return false;
+    }
+
+    struct dirent* ent;
+
+    while ((ent = readdir(dir)) != NULL) {
+        // Comprueba si la extensión del archivo es .txt
+        char* ext = strrchr(ent->d_name, '.');
+        if (ext != NULL && strcmp(ext, ".txt") == 0) {
+            // Se encontró un archivo .txt
+            closedir(dir);
+            return true;
+        }
+    }
+
+    // No se encontró ningún archivo .txt
+    closedir(dir);
+    return false;
+}
+
+int asignar_bloques(int tamanio_file) {
+    if(tamanio_file == 0) {
+        return 1;
+    }
+
+    int bloques_necesarios = tamanio_file / dialfs->block_size;
+
+    if (tamanio_file % dialfs->block_size != 0) {
+        bloques_necesarios++;
+    }
+
+    return bloques_necesarios;
+
 }
 
 void recibir_kernel_y_memoria(t_config_socket_io* config_kernel_io, t_config_socket_io* config_memoria_io) {
@@ -121,5 +259,3 @@ void recibir_kernel_y_memoria(t_config_socket_io* config_kernel_io, t_config_soc
     pthread_join(hilo_kernel, NULL);
     pthread_join(hilo_memoria, NULL);
 }
-
-

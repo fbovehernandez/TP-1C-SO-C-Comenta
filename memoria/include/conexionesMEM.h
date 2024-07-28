@@ -103,6 +103,9 @@ void enviar_valor_leido_a_io(int pid, int socket_io, char* valor, int tamanio);
 void* handle_io_dialfs(void* socket);
 t_memoria_fs_escritura_lectura* deserializar_escritura_lectura(t_buffer* buffer);
 char* string_tipo_operacion(tipo_operacion operacion);
+void* handle_io_dialfs(void* socket);
+t_pedido_rw_encolar* deserializar_pedido_lectura_escritura_mem(t_buffer* buffer);
+void imprimir_datos_pedido_lectura(t_pedido_rw_encolar* pedido);
 
 
 // FREE

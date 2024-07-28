@@ -591,26 +591,28 @@ void* handle_kernel(void* socket) {
                 free(pid_stdout->nombre_interfaz);
                 free(pid_stdout);
                 break;
+            case ESCRIBIR_FS_MEMORIA: // Lee en memoria y envia a fs
+                t_pedido_rw_encolar* pedido_write = deserializar_pedido_lectura_escritura_mem(paquete->buffer);
 
-            
-            case ESCRIBIR_FS_MEMORIA:
-            case LEER_FS_MEMORIA:
-                t_memoria_fs_escritura_lectura* fs_escritura_lectura = deserializar_escritura_lectura(paquete->buffer);
-                codigo_operacion codigo_escritura_lectura = (paquete->codigo_operacion == ESCRIBIR_FS_MEMORIA) ? ESCRIBIR_EN_FS : LEER_EN_FS;
-                
-                int socket_io_escritura_lectura = fs_escritura_lectura->socket;
-                int pid = fs_escritura_lectura->pid;
+                imprimir_datos_pedido_lectura(pedido_write);
 
-                free(fs_escritura_lectura);
+                // printf("\nEste es el nombre de la interfaz: %s\n", pid_stdout->nombre_interfaz);
+
+                user_space_aux = espacio_usuario;
+
+                void* registro_lectura_rw = malloc(pedido_write->registro_tamanio);
+                // FALTA SUMARLE EL PID A PEDIDO_WRITE
+                // realizar_operacion(pedido_write->pid, LECTURA, pedido_write->lista_dir_tamanio, user_space_aux, NULL, registro_lectura_rw);
+
+                printf("El valor leido para char* es: %s\n", (char*)registro_lectura);
+
+                // mandar_lectura_a_fs(registro_lectura, pedido_write->socket_io);
+
+                // Una vez leido, tiene que enviar a fs toda la info para que esta lo puedo copiar el en archivo, pero no sin antes validar la conexion
                 
-                /*
-                fs_escritura_lectura ya  tiene los datos necesarios para obtenner la info, una vvez hechho eso hhay que manndarselo a la dialfs 
-                correspondiente al socket.
-                La logica de abajo les sirve como base 
-                */
-                
-                // t_buffer* buffer = llenar_buffer_fs_read_write_memoria(pid, /*datos restantes*/);
-                // enviar_paquete(buffer,codigo_escritura_lectura,socket_io_escritura_lectura);
+                free(pedido_write);
+                free(registro_lectura);
+                break;
             case LIBERAR_PROCESO:
                 printf("\nLlega a liberar_proceso\n\n");
                 int pid_a_liberar;
@@ -632,6 +634,62 @@ void* handle_kernel(void* socket) {
     }
 
     return NULL;
+}
+
+void imprimir_datos_pedido_lectura(t_pedido_rw_encolar* pedido) {
+    printf("El largo del archivo es: %d\n", pedido->largo_archivo);
+    printf("El nombre del archivo es: %s\n", pedido->nombre_archivo);
+    printf("El registro direccion es: %d\n", pedido->registro_direccion);
+    printf("El registro tamanio es: %d\n", pedido->registro_tamanio);
+    printf("El registro archivo es: %d\n", pedido->registro_archivo);
+    printf("La cantidad de paginas es: %d\n", pedido->cantidad_paginas);
+
+    for(int i = 0; i < pedido->cantidad_paginas; i++) {
+        t_dir_fisica_tamanio* dir_fisica_tam = list_get(pedido->lista_dir_tamanio, i);
+        printf("La direccion fisica es: %d\n", dir_fisica_tam->direccion_fisica);
+        printf("El tamanio es: %d\n", dir_fisica_tam->bytes_lectura);
+    }
+
+    printf("El socket de io es: %d\n", pedido->socket_io);
+    printf("El socket de memoria es: %d\n", pedido->socket_memoria);
+}
+
+t_pedido_rw_encolar* deserializar_pedido_lectura_escritura_mem(t_buffer* buffer) {
+    t_pedido_rw_encolar* pedido_fs = malloc(sizeof(t_pedido_rw_encolar));
+
+    void* stream = buffer->stream;
+
+    memcpy(&pedido_fs->largo_archivo, stream, sizeof(int));
+    stream += sizeof(int);
+    pedido_fs->nombre_archivo = malloc(pedido_fs->largo_archivo);
+    memcpy(pedido_fs->nombre_archivo, stream, pedido_fs->largo_archivo);
+    stream += pedido_fs->largo_archivo;
+    memcpy(&pedido_fs->registro_direccion, stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&pedido_fs->registro_tamanio, stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&pedido_fs->registro_archivo, stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&pedido_fs->cantidad_paginas, stream, sizeof(int));
+    stream += sizeof(int);
+
+    pedido_fs->lista_dir_tamanio = list_create();
+
+    for(int i=0; i < pedido_fs->cantidad_paginas; i++) {
+        t_dir_fisica_tamanio* dir_fisica_tam = malloc(sizeof(t_dir_fisica_tamanio));
+        memcpy(&(dir_fisica_tam->direccion_fisica), stream, sizeof(int));
+        stream += sizeof(int);
+        memcpy(&(dir_fisica_tam->bytes_lectura), stream, sizeof(int));
+        stream += sizeof(int);
+        list_add(pedido_fs->lista_dir_tamanio, dir_fisica_tam);
+    }
+    
+    memcpy(&pedido_fs->socket_io, stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&pedido_fs->socket_memoria, stream, sizeof(int));
+    stream += sizeof(int);
+
+    return pedido_fs;
 }
 
 /* 

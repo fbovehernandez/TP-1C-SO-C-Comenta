@@ -36,6 +36,7 @@ extern pthread_mutex_t mutex_estado_blocked;
 extern pthread_mutex_t mutex_estado_ready_plus;
 extern pthread_mutex_t mutex_prioritario_por_signal;
 extern pthread_mutex_t no_hay_nadie_en_cpu;
+extern pthread_mutex_t mutex_cola_fs;
 
 
 // Aca va el struct del PCB 

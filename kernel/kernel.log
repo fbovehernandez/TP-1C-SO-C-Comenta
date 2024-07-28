@@ -29602,3 +29602,114 @@
 [INFO] 23:12:26:233 LOGGER/(71460:71463): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
 [INFO] 23:12:26:234 LOGGER/(71460:80069): Cuando entro en esperar VRR, el pid del pcb es: 2
 
+[INFO] 04:43:49:517 LOGGER/(9836:9836): Conexion establecida con Memoria
+[INFO] 04:43:49:570 LOGGER/(9836:9836): Conexion establecida con Dispatcher
+[INFO] 04:43:49:575 LOGGER/(9836:9836): Conexion establecida con Interrupt
+[INFO] 04:43:49:625 LOGGER/(9836:9836): Servidor iniciado, esperando conexiones!
+[INFO] 04:47:33:699 LOGGER/(9836:9844): Se crea el proceso: 1 en NEW
+[INFO] 04:47:33:701 LOGGER/(9836:9844): Hay proceso esperando en la cola de NEW!
+
+[INFO] 04:47:33:704 LOGGER/(9836:9838): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 04:47:33:706 LOGGER/(9836:9838): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 04:47:33:708 LOGGER/(9836:9838): Cola Ready: 1 
+
+[INFO] 04:47:33:714 LOGGER/(9836:9839): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 04:47:33:725 LOGGER/(9836:10493): Cuando entro en esperar VRR, el pid del pcb es: 1
+
+[INFO] 04:47:34:119 LOGGER/(9836:9839): El quantum restante del proceso con PID 1 es: 106
+[INFO] 04:47:34:124 LOGGER/(9836:10112): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 04:47:34:128 LOGGER/(9836:9839): PID: 1 - Bloqueado por - FS
+[INFO] 04:47:34:142 LOGGER/(9836:10112): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY_PLUS
+[INFO] 04:47:34:143 LOGGER/(9836:10112): Cola Ready Prioridad: 1 
+
+[INFO] 04:47:34:427 LOGGER/(9836:9839): Proximo PID de la cola Ready Plus: 1
+[INFO] 04:47:34:434 LOGGER/(9836:9839): PID: 1 - Estado Anterior: READY_PLUS - Estado Actual: EXEC
+[INFO] 04:47:34:451 LOGGER/(9836:10495): Cuando entro en esperar VRR, el pid del pcb es: 1
+
+[INFO] 04:47:34:523 LOGGER/(9836:9839): El quantum restante del proceso con PID 0 es: 0
+[INFO] 04:50:26:857 LOGGER/(10962:10962): Conexion establecida con Memoria
+[INFO] 04:50:26:918 LOGGER/(10962:10962): Conexion establecida con Dispatcher
+[INFO] 04:50:26:925 LOGGER/(10962:10962): Conexion establecida con Interrupt
+[INFO] 04:50:26:968 LOGGER/(10962:10962): Servidor iniciado, esperando conexiones!
+[INFO] 04:51:18:544 LOGGER/(10962:10970): Se crea el proceso: 1 en NEW
+[INFO] 04:51:18:549 LOGGER/(10962:10970): Hay proceso esperando en la cola de NEW!
+
+[INFO] 04:51:18:554 LOGGER/(10962:10967): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 04:51:18:557 LOGGER/(10962:10967): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 04:51:18:559 LOGGER/(10962:10967): Cola Ready: 1 
+
+[INFO] 04:51:18:564 LOGGER/(10962:10968): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 04:51:18:597 LOGGER/(10962:11334): Cuando entro en esperar VRR, el pid del pcb es: 1
+
+[INFO] 04:51:19:111 LOGGER/(10962:11334): Envie interrupcion para PID 1 despues de 500
+[INFO] 04:53:44:265 LOGGER/(12066:12066): Conexion establecida con Memoria
+[INFO] 04:53:44:308 LOGGER/(12066:12066): Conexion establecida con Dispatcher
+[INFO] 04:53:44:320 LOGGER/(12066:12066): Conexion establecida con Interrupt
+[INFO] 04:53:44:352 LOGGER/(12066:12066): Servidor iniciado, esperando conexiones!
+[INFO] 04:54:03:401 LOGGER/(12066:12071): Se crea el proceso: 1 en NEW
+[INFO] 04:54:03:402 LOGGER/(12066:12071): Hay proceso esperando en la cola de NEW!
+
+[INFO] 04:54:03:402 LOGGER/(12066:12068): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 04:54:03:403 LOGGER/(12066:12068): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 04:54:03:404 LOGGER/(12066:12068): Cola Ready: 1 
+
+[INFO] 04:54:03:407 LOGGER/(12066:12069): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 04:54:03:759 LOGGER/(12066:12160): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 04:54:03:761 LOGGER/(12066:12069): PID: 1 - Bloqueado por - FS
+[INFO] 04:54:03:779 LOGGER/(12066:12160): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 04:54:03:779 LOGGER/(12066:12160): Cola Ready: 1 
+
+[INFO] 04:54:03:810 LOGGER/(12066:12069): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 04:54:03:914 LOGGER/(12066:12069): PID: 1 - Bloqueado por - FS
+[INFO] 04:54:03:915 LOGGER/(12066:12160): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 04:54:03:919 LOGGER/(12066:12160): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 04:54:03:919 LOGGER/(12066:12160): Cola Ready: 1 
+
+[INFO] 04:54:03:919 LOGGER/(12066:12069): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 04:54:04:027 LOGGER/(12066:12160): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 04:54:04:028 LOGGER/(12066:12069): PID: 1 - Bloqueado por - FS
+[INFO] 04:54:04:055 LOGGER/(12066:12160): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 04:54:04:055 LOGGER/(12066:12160): Cola Ready: 1 
+
+[INFO] 04:54:04:056 LOGGER/(12066:12069): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 04:56:19:150 LOGGER/(13053:13053): Conexion establecida con Memoria
+[INFO] 04:56:19:205 LOGGER/(13053:13053): Conexion establecida con Dispatcher
+[INFO] 04:56:19:207 LOGGER/(13053:13053): Conexion establecida con Interrupt
+[INFO] 04:56:19:263 LOGGER/(13053:13053): Servidor iniciado, esperando conexiones!
+[INFO] 04:56:38:331 LOGGER/(13053:13064): Se crea el proceso: 1 en NEW
+[INFO] 04:56:38:331 LOGGER/(13053:13064): Hay proceso esperando en la cola de NEW!
+
+[INFO] 04:56:38:332 LOGGER/(13053:13058): Grado de multiprogramación permite agregar proceso a ready
+
+[INFO] 04:56:38:332 LOGGER/(13053:13058): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 04:56:38:334 LOGGER/(13053:13058): Cola Ready: 1 
+
+[INFO] 04:56:38:335 LOGGER/(13053:13059): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 04:56:38:699 LOGGER/(13053:13137): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 04:56:38:703 LOGGER/(13053:13059): PID: 1 - Bloqueado por - FS
+[INFO] 04:56:38:721 LOGGER/(13053:13137): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 04:56:38:721 LOGGER/(13053:13137): Cola Ready: 1 
+
+[INFO] 04:56:38:742 LOGGER/(13053:13059): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 04:56:38:845 LOGGER/(13053:13059): PID: 1 - Bloqueado por - FS
+[INFO] 04:56:38:846 LOGGER/(13053:13137): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 04:56:38:848 LOGGER/(13053:13137): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 04:56:38:849 LOGGER/(13053:13137): Cola Ready: 1 
+
+[INFO] 04:56:38:849 LOGGER/(13053:13059): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 04:56:38:955 LOGGER/(13053:13137): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 04:56:38:957 LOGGER/(13053:13059): PID: 1 - Bloqueado por - FS
+[INFO] 04:56:38:975 LOGGER/(13053:13137): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 04:56:38:976 LOGGER/(13053:13137): Cola Ready: 1 
+
+[INFO] 04:56:38:976 LOGGER/(13053:13059): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 04:56:39:079 LOGGER/(13053:13059): PID: 1 - Bloqueado por - FS
+[INFO] 04:56:39:080 LOGGER/(13053:13137): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 04:56:39:083 LOGGER/(13053:13137): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 04:56:39:083 LOGGER/(13053:13137): Cola Ready: 1 
+
+[INFO] 04:56:39:083 LOGGER/(13053:13059): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 04:56:39:589 LOGGER/(13053:13375): Envie interrupcion para PID 1 despues de 500
