@@ -13,11 +13,13 @@ t_config_dialfs* inicializar_file_system(t_config* config_io) {
     int block_count = config_get_int_value(config_io, "BLOCK_COUNT");
     int retraso_compactacion = config_get_int_value(config_io, "RETRASO_COMPACTACION");
     char* path_base = config_get_string_value(config_io, "PATH_BASE_DIALFS");
+    int tiempo_unidad_trabajo = config_get_int_value(config_io, "TIEMPO_UNIDAD_TRABAJO");
 
-    dialfs_config->block_size           = block_size;
-    dialfs_config->block_count          = block_count;
-    dialfs_config->retraso_compactacion = retraso_compactacion;
-    dialfs_config->path_base            = path_base;
+    dialfs_config->block_size            = block_size;
+    dialfs_config->block_count           = block_count;
+    dialfs_config->retraso_compactacion  = retraso_compactacion;
+    dialfs_config->path_base             = path_base;
+    dialfs_config->tiempo_unidad_trabajo = tiempo_unidad_trabajo;
     
     return dialfs_config;
 }

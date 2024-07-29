@@ -11,13 +11,13 @@
 #include "../../utils/include/sockets.h" 
 #include "../../utils/include/logconfig.h"
 
+void change_status(t_pcb* pcb, Estado new_status);
 void pasar_a_ready(t_pcb *pcb);
+void pasar_a_ready_normal(t_pcb* pcb);
 void pasar_a_exec(t_pcb* pcb);
 void pasar_a_blocked(t_pcb* pcb);
 void pasar_a_exit(t_pcb* pcb, char* motivo_exit);
-void change_status(t_pcb* pcb, Estado new_status);
 void pasar_a_ready_plus(t_pcb* pcb);
-void pasar_a_ready_normal(t_pcb* pcb);
 char* obtener_pid_de(t_queue* cola);
 char* pasar_a_string_estado(Estado estado);
 

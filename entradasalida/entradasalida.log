@@ -2427,3 +2427,440 @@ El valor leido de memoria es: CARO
 [INFO] 01:35:36:277 LOGGER/(32598:32598): Conexion establecida con Memoria
 
 [INFO] 01:36:13:711 LOGGER/(32319:32319): PID: 1 - Operacion: LEER
+[INFO] 02:26:37:607 LOGGER/(36763:36763): Conexion establecida con Kernel
+
+[INFO] 02:26:37:662 LOGGER/(36763:36763): Conexion establecida con Memoria
+
+[INFO] 02:26:43:144 LOGGER/(36893:36893): Conexion establecida con Kernel
+
+[INFO] 02:26:43:212 LOGGER/(36893:36893): Conexion establecida con Memoria
+
+[INFO] 02:27:50:042 LOGGER/(36763:36763): PID: 1 - Operacion: LEER
+[INFO] 13:22:45:408 LOGGER/(4766:4766): Conexion establecida con Kernel
+
+[INFO] 13:29:26:499 LOGGER/(6074:6074): Conexion establecida con Kernel
+
+[INFO] 13:29:43:967 LOGGER/(6074:6074): PID 1 - Operacion: DORMIR_IO
+[INFO] 13:53:12:817 LOGGER/(12393:12393): PID: 1 - Operacion: LEER
+[INFO] 14:12:08:474 LOGGER/(18156:18185): PID: 1 - Crear Archivo: salida.txt
+[INFO] 14:12:08:697 LOGGER/(18156:18185): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 14:12:53:700 LOGGER/(18637:18637): PID: 1 - Operacion: LEER
+[INFO] 14:39:15:008 LOGGER/(22638:22868): PID: 1 - Crear Archivo: salida.txt
+[INFO] 14:39:15:190 LOGGER/(22638:22868): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 14:39:22:848 LOGGER/(22638:22868): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 30
+[INFO] 14:39:30:459 LOGGER/(22638:22868): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 30
+[INFO] 14:41:52:545 LOGGER/(22754:22754): PID: 1 - Operacion: LEER
+[INFO] 14:42:12:810 LOGGER/(22638:22869): PID: 1 - Escribir Archivo: cronologico.txt - Tamaño a Escribir: 11 - Puntero Archivo: 10
+[INFO] 14:51:29:895 LOGGER/(26699:26723): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 14:51:29:945 LOGGER/(26699:26723): PID: 1 - Crear Archivo: salida.txt
+[INFO] 14:51:30:056 LOGGER/(26699:26723): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 14:51:30:059 LOGGER/(26699:26723): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 14:51:30:167 LOGGER/(26699:26723): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 14:51:30:182 LOGGER/(26699:26723): PID: 1 - Inicio Compactación.
+[INFO] 14:51:37:693 LOGGER/(26699:26723): PID: 1 - Fin Compactación.
+[INFO] 14:51:37:695 LOGGER/(26699:26723): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 30
+[INFO] 14:51:37:800 LOGGER/(26699:26723): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 14:51:37:800 LOGGER/(26699:26723): PID: 1 - Inicio Compactación.
+[INFO] 14:51:45:308 LOGGER/(26699:26723): PID: 1 - Fin Compactación.
+[INFO] 14:51:45:309 LOGGER/(26699:26723): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 30
+[INFO] 14:52:08:569 LOGGER/(26865:26865): PID: 1 - Operacion: LEER
+[INFO] 14:52:28:822 LOGGER/(26699:26724): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 14:52:28:843 LOGGER/(26699:26724): PID: 1 - Escribir Archivo: cronologico.txt - Tamaño a Escribir: 5 - Puntero Archivo: 10
+[INFO] 15:10:52:900 LOGGER/(31274:31308): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 15:10:52:956 LOGGER/(31274:31308): PID: 1 - Crear Archivo: salida.txt
+[INFO] 15:10:53:063 LOGGER/(31274:31308): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 15:10:53:066 LOGGER/(31274:31308): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 15:10:53:172 LOGGER/(31274:31308): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 15:10:53:184 LOGGER/(31274:31308): PID: 1 - Inicio Compactación.
+[INFO] 15:11:00:695 LOGGER/(31274:31308): PID: 1 - Fin Compactación.
+[INFO] 15:11:00:698 LOGGER/(31274:31308): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 30
+[INFO] 15:11:00:805 LOGGER/(31274:31308): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 15:11:00:806 LOGGER/(31274:31308): PID: 1 - Inicio Compactación.
+[INFO] 15:11:08:312 LOGGER/(31274:31308): PID: 1 - Fin Compactación.
+[INFO] 15:11:08:314 LOGGER/(31274:31308): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 30
+[INFO] 15:11:39:071 LOGGER/(31041:31041): PID: 1 - Operacion: LEER
+[INFO] 15:11:59:336 LOGGER/(31274:31309): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 15:11:59:339 LOGGER/(31274:31309): PID: 1 - Escribir Archivo: cronologico.txt - Tamaño a Escribir: 11 - Puntero Archivo: 10
+[INFO] 15:34:26:419 LOGGER/(34874:34909): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 15:34:26:538 LOGGER/(34874:34909): PID: 1 - Crear Archivo: salida.txt
+[INFO] 15:34:26:646 LOGGER/(34874:34909): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 15:34:26:648 LOGGER/(34874:34909): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 15:34:26:758 LOGGER/(34874:34909): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 15:34:26:769 LOGGER/(34874:34909): PID: 1 - Inicio Compactación.
+[INFO] 15:34:34:287 LOGGER/(34874:34909): PID: 1 - Fin Compactación.
+[INFO] 15:34:34:288 LOGGER/(34874:34909): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 30
+[INFO] 15:34:34:396 LOGGER/(34874:34909): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 15:34:34:397 LOGGER/(34874:34909): PID: 1 - Inicio Compactación.
+[INFO] 15:34:41:903 LOGGER/(34874:34909): PID: 1 - Fin Compactación.
+[INFO] 15:34:41:904 LOGGER/(34874:34909): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 30
+[INFO] 15:35:03:115 LOGGER/(34685:34685): PID: 1 - Operacion: LEER
+[INFO] 15:35:23:376 LOGGER/(34874:34910): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 15:35:23:378 LOGGER/(34874:34910): PID: 1 - Escribir Archivo: cronologico.txt - Tamaño a Escribir: 11 - Puntero Archivo: 10
+[INFO] 15:41:34:672 LOGGER/(37623:37710): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 15:41:34:728 LOGGER/(37623:37710): PID: 1 - Crear Archivo: salida.txt
+[INFO] 15:41:34:832 LOGGER/(37623:37710): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 15:41:34:834 LOGGER/(37623:37710): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 15:41:34:942 LOGGER/(37623:37710): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 15:41:34:957 LOGGER/(37623:37710): PID: 1 - Inicio Compactación.
+[INFO] 15:41:42:471 LOGGER/(37623:37710): PID: 1 - Fin Compactación.
+[INFO] 15:41:42:472 LOGGER/(37623:37710): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 30
+[INFO] 15:41:42:576 LOGGER/(37623:37710): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 15:41:42:577 LOGGER/(37623:37710): PID: 1 - Inicio Compactación.
+[INFO] 15:41:50:083 LOGGER/(37623:37710): PID: 1 - Fin Compactación.
+[INFO] 15:41:50:088 LOGGER/(37623:37710): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 30
+[INFO] 15:42:22:180 LOGGER/(37379:37379): PID: 1 - Operacion: LEER
+[INFO] 15:42:42:428 LOGGER/(37623:37711): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 15:42:42:433 LOGGER/(37623:37711): PID: 1 - Escribir Archivo: cronologico.txt - Tamaño a Escribir: 11 - Puntero Archivo: 10
+[INFO] 15:47:48:728 LOGGER/(40388:40419): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 15:47:48:759 LOGGER/(40388:40419): PID: 1 - Crear Archivo: salida.txt
+[INFO] 15:47:58:870 LOGGER/(40388:40419): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 15:47:58:873 LOGGER/(40388:40419): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 15:48:08:982 LOGGER/(40388:40419): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 15:48:09:000 LOGGER/(40388:40419): PID: 1 - Inicio Compactación.
+[INFO] 15:48:16:525 LOGGER/(40388:40419): PID: 1 - Fin Compactación.
+[INFO] 15:48:16:527 LOGGER/(40388:40419): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 30
+[INFO] 15:48:26:632 LOGGER/(40388:40419): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 15:48:26:633 LOGGER/(40388:40419): PID: 1 - Inicio Compactación.
+[INFO] 15:48:34:139 LOGGER/(40388:40419): PID: 1 - Fin Compactación.
+[INFO] 15:48:34:142 LOGGER/(40388:40419): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 30
+[INFO] 15:49:07:926 LOGGER/(40144:40144): PID: 1 - Operacion: LEER
+[INFO] 15:49:38:182 LOGGER/(40388:40420): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 15:49:38:184 LOGGER/(40388:40420): PID: 1 - Escribir Archivo: cronologico.txt - Tamaño a Escribir: 11 - Puntero Archivo: 10
+[INFO] 16:02:06:312 LOGGER/(44065:44068): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 16:02:06:452 LOGGER/(44065:44068): PID: 1 - Crear Archivo: salida.txt
+[INFO] 16:02:06:569 LOGGER/(44065:44068): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 16:02:06:571 LOGGER/(44065:44068): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 16:02:06:678 LOGGER/(44065:44068): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 16:02:06:695 LOGGER/(44065:44068): PID: 1 - Inicio Compactación.
+[INFO] 16:02:14:210 LOGGER/(44065:44068): PID: 1 - Fin Compactación.
+[INFO] 16:02:14:212 LOGGER/(44065:44068): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 30
+[INFO] 16:02:14:317 LOGGER/(44065:44068): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 16:02:14:318 LOGGER/(44065:44068): PID: 1 - Inicio Compactación.
+[INFO] 16:02:21:823 LOGGER/(44065:44068): PID: 1 - Fin Compactación.
+[INFO] 16:02:21:825 LOGGER/(44065:44068): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 30
+[INFO] 16:02:44:599 LOGGER/(43779:43779): PID: 1 - Operacion: LEER
+[INFO] 16:03:04:923 LOGGER/(44065:44069): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 16:03:04:928 LOGGER/(44065:44069): PID: 1 - Escribir Archivo: cronologico.txt - Tamaño a Escribir: 11 - Puntero Archivo: 10
+[INFO] 16:09:37:742 LOGGER/(46421:46436): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 16:09:37:801 LOGGER/(46421:46436): PID: 1 - Crear Archivo: salida.txt
+[INFO] 16:09:37:907 LOGGER/(46421:46436): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 16:09:37:909 LOGGER/(46421:46436): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 16:09:38:015 LOGGER/(46421:46436): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 16:09:38:038 LOGGER/(46421:46436): PID: 1 - Inicio Compactación.
+[INFO] 16:09:45:555 LOGGER/(46421:46436): PID: 1 - Fin Compactación.
+[INFO] 16:09:45:556 LOGGER/(46421:46436): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 30
+[INFO] 16:09:45:662 LOGGER/(46421:46436): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 16:09:45:663 LOGGER/(46421:46436): PID: 1 - Inicio Compactación.
+[INFO] 16:09:53:168 LOGGER/(46421:46436): PID: 1 - Fin Compactación.
+[INFO] 16:09:53:169 LOGGER/(46421:46436): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 30
+[INFO] 16:10:23:991 LOGGER/(46185:46185): PID: 1 - Operacion: LEER
+[INFO] 16:10:44:252 LOGGER/(46421:46437): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 16:10:44:258 LOGGER/(46421:46437): PID: 1 - Escribir Archivo: cronologico.txt - Tamaño a Escribir: 11 - Puntero Archivo: 10
+[INFO] 17:02:02:225 LOGGER/(51520:51580): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 17:02:02:418 LOGGER/(51520:51580): PID: 1 - Crear Archivo: salida.txt
+[INFO] 17:02:02:526 LOGGER/(51520:51580): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 17:02:02:534 LOGGER/(51520:51580): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 17:02:02:640 LOGGER/(51520:51580): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 17:02:02:655 LOGGER/(51520:51580): PID: 1 - Inicio Compactación.
+[INFO] 17:02:10:175 LOGGER/(51520:51580): PID: 1 - Fin Compactación.
+[INFO] 17:02:10:176 LOGGER/(51520:51580): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 30
+[INFO] 17:02:10:282 LOGGER/(51520:51580): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 17:02:10:284 LOGGER/(51520:51580): PID: 1 - Inicio Compactación.
+[INFO] 17:02:17:790 LOGGER/(51520:51580): PID: 1 - Fin Compactación.
+[INFO] 17:02:17:791 LOGGER/(51520:51580): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 30
+[INFO] 17:02:36:927 LOGGER/(51300:51300): PID: 1 - Operacion: LEER
+[INFO] 17:02:57:192 LOGGER/(51520:51581): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 17:02:57:194 LOGGER/(51520:51581): PID: 1 - Escribir Archivo: cronologico.txt - Tamaño a Escribir: 6 - Puntero Archivo: 10
+[INFO] 17:18:50:603 LOGGER/(54913:54964): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 17:18:50:656 LOGGER/(54913:54964): PID: 1 - Crear Archivo: salida.txt
+[INFO] 17:18:50:762 LOGGER/(54913:54964): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 17:18:50:764 LOGGER/(54913:54964): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 17:18:50:871 LOGGER/(54913:54964): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 17:18:50:885 LOGGER/(54913:54964): PID: 1 - Inicio Compactación.
+[INFO] 17:18:58:412 LOGGER/(54913:54964): PID: 1 - Fin Compactación.
+[INFO] 17:18:58:416 LOGGER/(54913:54964): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 30
+[INFO] 17:18:58:521 LOGGER/(54913:54964): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 17:18:58:523 LOGGER/(54913:54964): PID: 1 - Inicio Compactación.
+[INFO] 17:19:06:028 LOGGER/(54913:54964): PID: 1 - Fin Compactación.
+[INFO] 17:19:06:037 LOGGER/(54913:54964): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 30
+[INFO] 17:19:47:370 LOGGER/(54764:54764): PID: 1 - Operacion: LEER
+[INFO] 17:20:07:622 LOGGER/(54913:54965): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 17:20:07:630 LOGGER/(54913:54965): PID: 1 - Escribir Archivo: cronologico.txt - Tamaño a Escribir: 6 - Puntero Archivo: 10
+[INFO] 17:36:22:850 LOGGER/(58004:58007): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 17:36:22:903 LOGGER/(58004:58007): PID: 1 - Crear Archivo: salida.txt
+[INFO] 17:36:23:010 LOGGER/(58004:58007): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 17:36:23:012 LOGGER/(58004:58007): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 17:36:23:120 LOGGER/(58004:58007): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 17:36:23:133 LOGGER/(58004:58007): PID: 1 - Inicio Compactación.
+[INFO] 17:36:30:646 LOGGER/(58004:58007): PID: 1 - Fin Compactación.
+[INFO] 17:36:30:647 LOGGER/(58004:58007): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 30
+[INFO] 17:36:30:752 LOGGER/(58004:58007): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 17:36:30:754 LOGGER/(58004:58007): PID: 1 - Inicio Compactación.
+[INFO] 17:36:38:266 LOGGER/(58004:58007): PID: 1 - Fin Compactación.
+[INFO] 17:36:38:267 LOGGER/(58004:58007): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 30
+[INFO] 17:37:04:065 LOGGER/(57882:57882): PID: 1 - Operacion: LEER
+[INFO] 17:37:24:328 LOGGER/(58004:58008): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 17:37:24:330 LOGGER/(58004:58008): PID: 1 - Escribir Archivo: cronologico.txt - Tamaño a Escribir: 6 - Puntero Archivo: 10
+[INFO] 17:37:49:751 LOGGER/(58004:58007): PID: 1 - Operacion: LEER_ARCHIVO
+[INFO] 17:37:59:756 LOGGER/(58004:58007): PID: 1 - Leer Archivo: cronologico.txt - Tamaño a Leer: 10 - Puntero Archivo: 10
+[INFO] 17:48:00:415 LOGGER/(60362:60398): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 17:48:00:468 LOGGER/(60362:60398): PID: 1 - Crear Archivo: salida.txt
+[INFO] 17:48:00:575 LOGGER/(60362:60398): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 17:48:00:576 LOGGER/(60362:60398): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 17:48:00:683 LOGGER/(60362:60398): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 17:48:00:698 LOGGER/(60362:60398): PID: 1 - Inicio Compactación.
+[INFO] 17:48:08:220 LOGGER/(60362:60398): PID: 1 - Fin Compactación.
+[INFO] 17:48:08:223 LOGGER/(60362:60398): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 30
+[INFO] 17:48:08:329 LOGGER/(60362:60398): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 17:48:08:331 LOGGER/(60362:60398): PID: 1 - Inicio Compactación.
+[INFO] 17:48:15:838 LOGGER/(60362:60398): PID: 1 - Fin Compactación.
+[INFO] 17:48:15:839 LOGGER/(60362:60398): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 30
+[INFO] 17:48:41:441 LOGGER/(60572:60572): PID: 1 - Operacion: LEER
+[INFO] 17:49:01:692 LOGGER/(60362:60399): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 17:49:01:701 LOGGER/(60362:60399): PID: 1 - Escribir Archivo: cronologico.txt - Tamaño a Escribir: 6 - Puntero Archivo: 10
+[INFO] 17:49:27:122 LOGGER/(60362:60398): PID: 1 - Operacion: LEER_ARCHIVO
+[INFO] 17:49:27:126 LOGGER/(60362:60398): PID: 1 - Leer Archivo: cronologico.txt - Tamaño a Leer: 10 - Puntero Archivo: 10
+[INFO] 18:05:29:776 LOGGER/(64598:64622): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 18:05:29:841 LOGGER/(64598:64622): PID: 1 - Crear Archivo: salida.txt
+[INFO] 18:05:29:946 LOGGER/(64598:64622): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 18:05:29:948 LOGGER/(64598:64622): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 18:05:30:055 LOGGER/(64598:64622): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 18:05:30:084 LOGGER/(64598:64622): PID: 1 - Inicio Compactación.
+[INFO] 18:05:37:597 LOGGER/(64598:64622): PID: 1 - Fin Compactación.
+[INFO] 18:05:37:599 LOGGER/(64598:64622): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 30
+[INFO] 18:05:37:703 LOGGER/(64598:64622): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 18:05:37:704 LOGGER/(64598:64622): PID: 1 - Inicio Compactación.
+[INFO] 18:05:45:211 LOGGER/(64598:64622): PID: 1 - Fin Compactación.
+[INFO] 18:05:45:212 LOGGER/(64598:64622): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 30
+[INFO] 18:06:18:900 LOGGER/(64282:64282): PID: 1 - Operacion: LEER
+[INFO] 18:06:29:156 LOGGER/(64598:64623): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 18:06:29:159 LOGGER/(64598:64623): PID: 1 - Escribir Archivo: cronologico.txt - Tamaño a Escribir: 6 - Puntero Archivo: 10
+[INFO] 18:06:44:574 LOGGER/(64598:64622): PID: 1 - Operacion: LEER_ARCHIVO
+[INFO] 18:06:44:580 LOGGER/(64598:64622): PID: 1 - Leer Archivo: cronologico.txt - Tamaño a Leer: 10 - Puntero Archivo: 10
+[INFO] 19:50:36:585 LOGGER/(71411:71448): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 19:50:36:669 LOGGER/(71411:71448): PID: 1 - Crear Archivo: salida.txt
+[INFO] 19:50:36:775 LOGGER/(71411:71448): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 19:50:36:777 LOGGER/(71411:71448): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 19:50:36:883 LOGGER/(71411:71448): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 19:50:36:914 LOGGER/(71411:71448): PID: 1 - Inicio Compactación.
+[INFO] 19:50:36:952 LOGGER/(71411:71448): PID: 1 - Fin Compactación.
+[INFO] 19:50:36:957 LOGGER/(71411:71448): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 80
+[INFO] 19:50:37:062 LOGGER/(71411:71448): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 19:50:37:063 LOGGER/(71411:71448): PID: 1 - Inicio Compactación.
+[INFO] 19:50:37:072 LOGGER/(71411:71448): PID: 1 - Fin Compactación.
+[INFO] 19:50:37:073 LOGGER/(71411:71448): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 80
+[INFO] 19:53:04:080 LOGGER/(71232:71232): PID: 1 - Operacion: LEER
+[INFO] 19:53:30:172 LOGGER/(71411:71449): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 19:53:30:176 LOGGER/(71411:71449): PID: 1 - Escribir Archivo: salida.txt - Tamaño a Escribir: 75 - Puntero Archivo: 0
+[INFO] 20:09:26:100 LOGGER/(75374:75391): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 20:09:26:167 LOGGER/(75374:75391): PID: 1 - Crear Archivo: salida.txt
+[INFO] 20:09:26:294 LOGGER/(75374:75391): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 20:09:26:303 LOGGER/(75374:75391): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 20:09:26:410 LOGGER/(75374:75391): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 20:09:26:425 LOGGER/(75374:75391): PID: 1 - Inicio Compactación.
+[INFO] 20:09:26:441 LOGGER/(75374:75391): PID: 1 - Fin Compactación.
+[INFO] 20:09:26:442 LOGGER/(75374:75391): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 80
+[INFO] 20:09:26:547 LOGGER/(75374:75391): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 20:09:26:548 LOGGER/(75374:75391): PID: 1 - Inicio Compactación.
+[INFO] 20:09:26:554 LOGGER/(75374:75391): PID: 1 - Fin Compactación.
+[INFO] 20:09:26:556 LOGGER/(75374:75391): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 80
+[INFO] 20:11:20:588 LOGGER/(75242:75242): PID: 1 - Operacion: LEER
+[INFO] 20:11:46:668 LOGGER/(75374:75392): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 20:11:46:675 LOGGER/(75374:75392): PID: 1 - Escribir Archivo: salida.txt - Tamaño a Escribir: 74 - Puntero Archivo: 0
+[INFO] 20:25:49:461 LOGGER/(78407:78467): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 20:25:49:536 LOGGER/(78407:78467): PID: 1 - Crear Archivo: salida.txt
+[INFO] 20:25:49:647 LOGGER/(78407:78467): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 20:25:49:649 LOGGER/(78407:78467): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 20:25:49:755 LOGGER/(78407:78467): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 20:25:49:781 LOGGER/(78407:78467): PID: 1 - Inicio Compactación.
+[INFO] 20:25:49:822 LOGGER/(78407:78467): PID: 1 - Fin Compactación.
+[INFO] 20:25:49:824 LOGGER/(78407:78467): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 80
+[INFO] 20:25:49:931 LOGGER/(78407:78467): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 20:25:49:932 LOGGER/(78407:78467): PID: 1 - Inicio Compactación.
+[INFO] 20:25:49:938 LOGGER/(78407:78467): PID: 1 - Fin Compactación.
+[INFO] 20:25:49:940 LOGGER/(78407:78467): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 80
+[INFO] 20:27:31:120 LOGGER/(78277:78277): PID: 1 - Operacion: LEER
+[INFO] 20:27:57:202 LOGGER/(78407:78468): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 20:27:57:204 LOGGER/(78407:78468): PID: 1 - Escribir Archivo: salida.txt - Tamaño a Escribir: 75 - Puntero Archivo: 0
+[INFO] 20:42:53:875 LOGGER/(81057:81087): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 20:42:53:925 LOGGER/(81057:81087): PID: 1 - Crear Archivo: salida.txt
+[INFO] 20:42:54:035 LOGGER/(81057:81087): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 20:42:54:037 LOGGER/(81057:81087): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 20:42:54:144 LOGGER/(81057:81087): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 20:42:54:155 LOGGER/(81057:81087): PID: 1 - Inicio Compactación.
+[INFO] 20:42:54:177 LOGGER/(81057:81087): PID: 1 - Fin Compactación.
+[INFO] 20:42:54:179 LOGGER/(81057:81087): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 80
+[INFO] 20:42:54:284 LOGGER/(81057:81087): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 20:42:54:285 LOGGER/(81057:81087): PID: 1 - Inicio Compactación.
+[INFO] 20:42:54:290 LOGGER/(81057:81087): PID: 1 - Fin Compactación.
+[INFO] 20:42:54:291 LOGGER/(81057:81087): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 80
+[INFO] 20:46:25:271 LOGGER/(81244:81244): PID: 1 - Operacion: LEER
+[INFO] 20:46:51:353 LOGGER/(81057:81088): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 20:46:51:357 LOGGER/(81057:81088): PID: 1 - Escribir Archivo: salida.txt - Tamaño a Escribir: 69 - Puntero Archivo: 0
+[INFO] 21:06:59:061 LOGGER/(83666:83695): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 21:06:59:108 LOGGER/(83666:83695): PID: 1 - Crear Archivo: salida.txt
+[INFO] 21:06:59:215 LOGGER/(83666:83695): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 21:06:59:217 LOGGER/(83666:83695): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 21:06:59:323 LOGGER/(83666:83695): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 21:06:59:342 LOGGER/(83666:83695): PID: 1 - Inicio Compactación.
+[INFO] 21:06:59:358 LOGGER/(83666:83695): PID: 1 - Fin Compactación.
+[INFO] 21:06:59:360 LOGGER/(83666:83695): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 80
+[INFO] 21:06:59:465 LOGGER/(83666:83695): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 21:06:59:466 LOGGER/(83666:83695): PID: 1 - Inicio Compactación.
+[INFO] 21:06:59:472 LOGGER/(83666:83695): PID: 1 - Fin Compactación.
+[INFO] 21:06:59:473 LOGGER/(83666:83695): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 80
+[INFO] 21:10:16:409 LOGGER/(83449:83449): PID: 1 - Operacion: LEER
+[INFO] 21:10:42:489 LOGGER/(83666:83696): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 21:10:42:497 LOGGER/(83666:83696): PID: 1 - Escribir Archivo: salida.txt - Tamaño a Escribir: 69 - Puntero Archivo: 0
+[INFO] 21:11:18:540 LOGGER/(83666:83696): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 21:42:37:137 LOGGER/(86788:86821): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 21:42:37:196 LOGGER/(86788:86821): PID: 1 - Crear Archivo: salida.txt
+[INFO] 21:42:37:301 LOGGER/(86788:86821): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 21:42:37:303 LOGGER/(86788:86821): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 21:42:37:410 LOGGER/(86788:86821): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 21:42:37:425 LOGGER/(86788:86821): PID: 1 - Inicio Compactación.
+[INFO] 21:42:37:447 LOGGER/(86788:86821): PID: 1 - Fin Compactación.
+[INFO] 21:42:37:449 LOGGER/(86788:86821): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 80
+[INFO] 21:42:37:554 LOGGER/(86788:86821): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 21:42:37:555 LOGGER/(86788:86821): PID: 1 - Inicio Compactación.
+[INFO] 21:42:37:561 LOGGER/(86788:86821): PID: 1 - Fin Compactación.
+[INFO] 21:42:37:562 LOGGER/(86788:86821): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 80
+[INFO] 21:43:33:685 LOGGER/(86950:86950): PID: 1 - Operacion: LEER
+[INFO] 21:43:59:771 LOGGER/(86788:86822): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 21:43:59:773 LOGGER/(86788:86822): PID: 1 - Escribir Archivo: salida.txt - Tamaño a Escribir: 69 - Puntero Archivo: 0
+[INFO] 21:44:35:812 LOGGER/(86788:86822): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 21:52:59:905 LOGGER/(89730:89733): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 21:52:59:970 LOGGER/(89730:89733): PID: 1 - Crear Archivo: salida.txt
+[INFO] 21:53:00:078 LOGGER/(89730:89733): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 21:53:00:080 LOGGER/(89730:89733): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 21:53:00:187 LOGGER/(89730:89733): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 21:53:00:197 LOGGER/(89730:89733): PID: 1 - Inicio Compactación.
+[INFO] 21:53:00:217 LOGGER/(89730:89733): PID: 1 - Fin Compactación.
+[INFO] 21:53:00:220 LOGGER/(89730:89733): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 80
+[INFO] 21:53:00:325 LOGGER/(89730:89733): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 21:53:00:326 LOGGER/(89730:89733): PID: 1 - Inicio Compactación.
+[INFO] 21:53:00:331 LOGGER/(89730:89733): PID: 1 - Fin Compactación.
+[INFO] 21:53:00:332 LOGGER/(89730:89733): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 80
+[INFO] 21:53:36:949 LOGGER/(89479:89479): PID: 1 - Operacion: LEER
+[INFO] 21:54:03:040 LOGGER/(89730:89734): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 21:54:03:045 LOGGER/(89730:89734): PID: 1 - Escribir Archivo: salida.txt - Tamaño a Escribir: 69 - Puntero Archivo: 0
+[INFO] 21:54:39:086 LOGGER/(89730:89734): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 21:59:29:614 LOGGER/(92030:92045): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 21:59:29:661 LOGGER/(92030:92045): PID: 1 - Crear Archivo: salida.txt
+[INFO] 21:59:29:768 LOGGER/(92030:92045): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 21:59:29:770 LOGGER/(92030:92045): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 21:59:29:880 LOGGER/(92030:92045): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 21:59:29:903 LOGGER/(92030:92045): PID: 1 - Inicio Compactación.
+[INFO] 21:59:29:929 LOGGER/(92030:92045): PID: 1 - Fin Compactación.
+[INFO] 21:59:29:932 LOGGER/(92030:92045): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 80
+[INFO] 21:59:30:039 LOGGER/(92030:92045): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 21:59:30:041 LOGGER/(92030:92045): PID: 1 - Inicio Compactación.
+[INFO] 21:59:30:046 LOGGER/(92030:92045): PID: 1 - Fin Compactación.
+[INFO] 21:59:30:048 LOGGER/(92030:92045): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 80
+[INFO] 22:00:02:469 LOGGER/(91878:91878): PID: 1 - Operacion: LEER
+[INFO] 22:00:28:551 LOGGER/(92030:92046): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 22:00:28:557 LOGGER/(92030:92046): PID: 1 - Escribir Archivo: salida.txt - Tamaño a Escribir: 69 - Puntero Archivo: 0
+[INFO] 22:00:48:973 LOGGER/(92030:92046): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 22:04:27:352 LOGGER/(94372:94409): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 22:04:27:409 LOGGER/(94372:94409): PID: 1 - Crear Archivo: salida.txt
+[INFO] 22:04:27:517 LOGGER/(94372:94409): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 22:04:27:519 LOGGER/(94372:94409): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 22:04:27:627 LOGGER/(94372:94409): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 22:04:27:645 LOGGER/(94372:94409): PID: 1 - Inicio Compactación.
+[INFO] 22:04:27:666 LOGGER/(94372:94409): PID: 1 - Fin Compactación.
+[INFO] 22:04:27:667 LOGGER/(94372:94409): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 80
+[INFO] 22:04:27:772 LOGGER/(94372:94409): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 22:04:27:773 LOGGER/(94372:94409): PID: 1 - Inicio Compactación.
+[INFO] 22:04:27:780 LOGGER/(94372:94409): PID: 1 - Fin Compactación.
+[INFO] 22:04:27:781 LOGGER/(94372:94409): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 80
+[INFO] 22:05:05:009 LOGGER/(94176:94176): PID: 1 - Operacion: LEER
+[INFO] 22:05:31:087 LOGGER/(94372:94410): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 22:05:31:090 LOGGER/(94372:94410): PID: 1 - Escribir Archivo: salida.txt - Tamaño a Escribir: 69 - Puntero Archivo: 0
+[INFO] 22:05:51:508 LOGGER/(94372:94410): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 22:10:13:548 LOGGER/(96592:96610): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 22:10:13:599 LOGGER/(96592:96610): PID: 1 - Crear Archivo: salida.txt
+[INFO] 22:10:13:705 LOGGER/(96592:96610): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 22:10:13:707 LOGGER/(96592:96610): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 22:10:13:814 LOGGER/(96592:96610): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 22:10:13:828 LOGGER/(96592:96610): PID: 1 - Inicio Compactación.
+[INFO] 22:10:13:861 LOGGER/(96592:96610): PID: 1 - Fin Compactación.
+[INFO] 22:10:13:864 LOGGER/(96592:96610): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 80
+[INFO] 22:10:13:969 LOGGER/(96592:96610): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 22:10:13:971 LOGGER/(96592:96610): PID: 1 - Inicio Compactación.
+[INFO] 22:10:13:980 LOGGER/(96592:96610): PID: 1 - Fin Compactación.
+[INFO] 22:10:13:981 LOGGER/(96592:96610): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 80
+[INFO] 22:10:50:984 LOGGER/(96474:96474): PID: 1 - Operacion: LEER
+[INFO] 22:11:17:061 LOGGER/(96592:96611): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 22:11:17:068 LOGGER/(96592:96611): PID: 1 - Escribir Archivo: salida.txt - Tamaño a Escribir: 69 - Puntero Archivo: 0
+[INFO] 22:11:32:386 LOGGER/(96592:96611): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 22:17:16:085 LOGGER/(99277:99338): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 22:17:16:132 LOGGER/(99277:99338): PID: 1 - Crear Archivo: salida.txt
+[INFO] 22:17:16:238 LOGGER/(99277:99338): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 22:17:16:244 LOGGER/(99277:99338): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 22:17:16:351 LOGGER/(99277:99338): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 22:17:16:365 LOGGER/(99277:99338): PID: 1 - Inicio Compactación.
+[INFO] 22:17:16:391 LOGGER/(99277:99338): PID: 1 - Fin Compactación.
+[INFO] 22:17:16:392 LOGGER/(99277:99338): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 80
+[INFO] 22:17:16:497 LOGGER/(99277:99338): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 22:17:16:498 LOGGER/(99277:99338): PID: 1 - Inicio Compactación.
+[INFO] 22:17:16:505 LOGGER/(99277:99338): PID: 1 - Fin Compactación.
+[INFO] 22:17:16:506 LOGGER/(99277:99338): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 80
+[INFO] 22:20:13:525 LOGGER/(99171:99171): PID: 1 - Operacion: LEER
+[INFO] 22:20:39:609 LOGGER/(99277:99339): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 22:26:52:911 LOGGER/(101467:101489): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 22:26:52:961 LOGGER/(101467:101489): PID: 1 - Crear Archivo: salida.txt
+[INFO] 22:26:53:068 LOGGER/(101467:101489): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 22:26:53:070 LOGGER/(101467:101489): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 22:26:53:178 LOGGER/(101467:101489): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 22:26:53:191 LOGGER/(101467:101489): PID: 1 - Inicio Compactación.
+[INFO] 22:26:53:207 LOGGER/(101467:101489): PID: 1 - Fin Compactación.
+[INFO] 22:26:53:213 LOGGER/(101467:101489): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 80
+[INFO] 22:26:53:318 LOGGER/(101467:101489): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 22:26:53:320 LOGGER/(101467:101489): PID: 1 - Inicio Compactación.
+[INFO] 22:26:53:326 LOGGER/(101467:101489): PID: 1 - Fin Compactación.
+[INFO] 22:26:53:327 LOGGER/(101467:101489): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 80
+[INFO] 22:28:09:162 LOGGER/(101597:101597): PID: 1 - Operacion: LEER
+[INFO] 22:28:35:260 LOGGER/(101467:101490): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 22:28:35:265 LOGGER/(101467:101490): PID: 1 - Escribir Archivo: salida.txt - Tamaño a Escribir: 69 - Puntero Archivo: 0
+[INFO] 22:29:11:308 LOGGER/(101467:101490): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 22:29:11:313 LOGGER/(101467:101490): PID: 1 - Escribir Archivo: cronologico.txt - Tamaño a Escribir: 69 - Puntero Archivo: 0
+[INFO] 22:34:18:965 LOGGER/(104649:104652): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 22:34:19:061 LOGGER/(104649:104652): PID: 1 - Crear Archivo: salida.txt
+[INFO] 22:34:19:182 LOGGER/(104649:104652): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 22:34:19:185 LOGGER/(104649:104652): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 22:34:19:297 LOGGER/(104649:104652): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 22:34:19:349 LOGGER/(104649:104652): PID: 1 - Inicio Compactación.
+[INFO] 22:34:19:418 LOGGER/(104649:104652): PID: 1 - Fin Compactación.
+[INFO] 22:34:19:420 LOGGER/(104649:104652): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 80
+[INFO] 22:34:19:524 LOGGER/(104649:104652): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 22:34:19:526 LOGGER/(104649:104652): PID: 1 - Inicio Compactación.
+[INFO] 22:34:19:533 LOGGER/(104649:104652): PID: 1 - Fin Compactación.
+[INFO] 22:34:19:534 LOGGER/(104649:104652): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 80
+[INFO] 22:35:11:387 LOGGER/(104452:104452): PID: 1 - Operacion: LEER
+[INFO] 22:35:37:498 LOGGER/(104649:104653): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 22:35:37:504 LOGGER/(104649:104653): PID: 1 - Escribir Archivo: salida.txt - Tamaño a Escribir: 69 - Puntero Archivo: 0
+[INFO] 22:36:13:555 LOGGER/(104649:104653): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 22:36:13:558 LOGGER/(104649:104653): PID: 1 - Escribir Archivo: cronologico.txt - Tamaño a Escribir: 69 - Puntero Archivo: 0
+[INFO] 22:36:34:078 LOGGER/(104649:104652): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[ERROR] 22:36:34:078 LOGGER/(104649:104652): No hay bloques disponibles para truncar el archivo salida.txt
+[INFO] 22:36:34:079 LOGGER/(104649:104652): PID: 1 - Inicio Compactación.
+[INFO] 22:44:22:020 LOGGER/(107763:107799): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 22:44:22:079 LOGGER/(107763:107799): PID: 1 - Crear Archivo: salida.txt
+[INFO] 22:44:22:186 LOGGER/(107763:107799): PID: 1 - Operacion: CREAR_ARCHIVO
+[INFO] 22:44:22:187 LOGGER/(107763:107799): PID: 1 - Crear Archivo: cronologico.txt
+[INFO] 22:44:22:295 LOGGER/(107763:107799): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 22:44:22:309 LOGGER/(107763:107799): PID: 1 - Inicio Compactación.
+[INFO] 22:45:02:324 LOGGER/(107763:107799): PID: 1 - Fin Compactación.
+[INFO] 22:45:02:327 LOGGER/(107763:107799): PID: 1 - Truncar Archivo: salida.txt - Tamaño: 80
+[INFO] 22:45:02:432 LOGGER/(107763:107799): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[INFO] 22:45:02:433 LOGGER/(107763:107799): PID: 1 - Inicio Compactación.
+[INFO] 22:45:42:439 LOGGER/(107763:107799): PID: 1 - Fin Compactación.
+[INFO] 22:45:42:440 LOGGER/(107763:107799): PID: 1 - Truncar Archivo: cronologico.txt - Tamaño: 80
+[INFO] 22:46:34:828 LOGGER/(107636:107636): PID: 1 - Operacion: LEER
+[INFO] 22:47:00:926 LOGGER/(107763:107800): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 22:47:00:929 LOGGER/(107763:107800): PID: 1 - Escribir Archivo: salida.txt - Tamaño a Escribir: 69 - Puntero Archivo: 0
+[INFO] 22:47:36:979 LOGGER/(107763:107800): PID: 1 - Operacion: ESCRIBIR_ARCHIVO
+[INFO] 22:47:36:981 LOGGER/(107763:107800): PID: 1 - Escribir Archivo: cronologico.txt - Tamaño a Escribir: 69 - Puntero Archivo: 0
+[INFO] 22:47:57:498 LOGGER/(107763:107799): PID: 1 - Operacion: TRUNCAR_ARCHIVO
+[ERROR] 22:47:57:498 LOGGER/(107763:107799): No hay bloques disponibles para truncar el archivo salida.txt
+[INFO] 22:47:57:499 LOGGER/(107763:107799): PID: 1 - Inicio Compactación.

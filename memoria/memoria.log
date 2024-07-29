@@ -14471,3 +14471,110 @@ el valor a guardar en memoria llegado desde STDIN es: CAROLINA
 [INFO] 01:36:34:050 LOGGER/(32071:32143): El PID del contenido escrito es: 1
 [INFO] 01:36:39:255 LOGGER/(32071:32143): Contenido escrito:  10
 [INFO] 01:36:39:255 LOGGER/(32071:32143): El PID del contenido escrito es: 1
+[INFO] 02:26:17:389 LOGGER/(36424:36424): Servidor iniciado, esperando conexiones!
+[INFO] 02:26:53:249 LOGGER/(36424:36610): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 02:27:04:137 LOGGER/(36424:36483): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 02:27:19:561 LOGGER/(36424:36483): El pid que me pide frame es: 1
+
+[INFO] 02:27:19:561 LOGGER/(36424:36483): BUSCO EL FRAME CON LA PAGINA: 0
+[INFO] 02:27:19:561 LOGGER/(36424:36483): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 02:27:19:561 LOGGER/(36424:36483): La cantidad de entradas que tiene la memoria es: 5
+[INFO] 02:27:19:561 LOGGER/(36424:36483): el numero de frame es 0
+[INFO] 02:27:19:569 LOGGER/(36424:36483): El pid que me pide frame es: 1
+
+[INFO] 02:27:19:569 LOGGER/(36424:36483): BUSCO EL FRAME CON LA PAGINA: 1
+[INFO] 02:27:19:570 LOGGER/(36424:36483): BUSCO EL FRAME CORRESPONDIENTE AL PID: 1
+[INFO] 02:27:19:570 LOGGER/(36424:36483): La cantidad de entradas que tiene la memoria es: 5
+[INFO] 02:27:19:570 LOGGER/(36424:36483): el numero de frame es 1
+[INFO] 02:27:50:039 LOGGER/(36424:36765): 
+el valor a guardar en memoria llegado desde STDIN es: CAROLINA
+
+
+[INFO] 02:27:50:043 LOGGER/(36424:36765): Contenido escrito:  0000000000000000000067
+[INFO] 02:27:50:043 LOGGER/(36424:36765): El PID del contenido escrito es: 1
+[INFO] 02:27:50:044 LOGGER/(36424:36765): Contenido escrito:  00000000
+[INFO] 02:27:50:045 LOGGER/(36424:36765): El PID del contenido escrito es: 1
+[INFO] 13:22:18:781 LOGGER/(4313:4313): Servidor iniciado, esperando conexiones!
+[INFO] 13:24:02:171 LOGGER/(4313:4648): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 13:24:22:758 LOGGER/(4313:4648): PID: 1 - Accion: DESTRUIR - Tamaño: 0
+[INFO] 13:29:07:146 LOGGER/(5759:5759): Servidor iniciado, esperando conexiones!
+[INFO] 13:29:33:681 LOGGER/(5759:5952): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 13:43:18:326 LOGGER/(8062:8062): Servidor iniciado, esperando conexiones!
+[INFO] 13:46:31:819 LOGGER/(8062:9148): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 13:48:45:883 LOGGER/(10478:10702): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 13:48:56:932 LOGGER/(10478:10565): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 13:49:12:388 LOGGER/(10478:10702): PID: 1 - Accion: DESTRUIR - Tamaño: 5
+[INFO] 13:52:38:233 LOGGER/(12103:12254): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 13:52:49:308 LOGGER/(12103:12177): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 14:01:54:492 LOGGER/(14350:14547): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 14:05:25:511 LOGGER/(14350:14437): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 14:11:57:916 LOGGER/(17514:17684): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 14:12:24:115 LOGGER/(17514:17570): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 14:39:04:364 LOGGER/(22259:22491): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 14:39:30:567 LOGGER/(22259:22368): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 14:51:19:389 LOGGER/(26378:26563): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 14:51:45:414 LOGGER/(26378:26450): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 15:10:42:259 LOGGER/(30092:30744): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 15:11:08:423 LOGGER/(30092:30151): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 15:34:15:739 LOGGER/(34423:34600): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 15:34:42:010 LOGGER/(34423:34487): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 15:41:24:186 LOGGER/(37075:37257): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 15:41:50:196 LOGGER/(37075:37145): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 15:47:28:214 LOGGER/(39838:40026): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 15:48:34:246 LOGGER/(39838:39898): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 16:01:55:819 LOGGER/(43478:43680): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 16:02:21:931 LOGGER/(43478:43568): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 16:09:27:123 LOGGER/(45770:46029): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 16:09:53:274 LOGGER/(45770:45866): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 16:59:42:914 LOGGER/(45770:46029): PID: 1 - Accion: DESTRUIR - Tamaño: 5
+[INFO] 17:01:51:716 LOGGER/(50916:51156): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 17:02:17:896 LOGGER/(50916:51016): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 17:18:40:116 LOGGER/(54430:54629): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 17:19:06:143 LOGGER/(54430:54512): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 17:36:12:355 LOGGER/(57591:57745): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 17:36:38:375 LOGGER/(57591:57670): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 17:47:49:924 LOGGER/(59894:60266): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 17:48:15:945 LOGGER/(59894:60141): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 18:05:19:270 LOGGER/(63922:64120): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 18:05:45:317 LOGGER/(63922:63993): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 19:50:25:827 LOGGER/(70912:71133): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 19:50:37:178 LOGGER/(70912:70974): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 19:53:35:390 LOGGER/(70912:71133): PID: 1 - Accion: DESTRUIR - Tamaño: 5
+[INFO] 20:09:15:456 LOGGER/(74971:75135): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 20:09:26:661 LOGGER/(74971:75030): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 20:11:51:887 LOGGER/(74971:75135): PID: 1 - Accion: DESTRUIR - Tamaño: 5
+[INFO] 20:25:38:923 LOGGER/(77983:78135): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 20:25:50:045 LOGGER/(77983:78039): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 20:28:02:417 LOGGER/(77983:78135): PID: 1 - Accion: DESTRUIR - Tamaño: 5
+[INFO] 20:42:43:388 LOGGER/(80763:80925): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 20:42:54:395 LOGGER/(80763:80831): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 20:46:56:566 LOGGER/(80763:80925): PID: 1 - Accion: DESTRUIR - Tamaño: 5
+[INFO] 21:06:48:576 LOGGER/(83167:83335): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 21:06:59:578 LOGGER/(83167:83241): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 21:11:19:134 LOGGER/(83167:83335): PID: 1 - Accion: DESTRUIR - Tamaño: 5
+[INFO] 21:42:26:644 LOGGER/(86502:86683): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 21:42:37:666 LOGGER/(86502:86576): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 21:44:36:126 LOGGER/(86502:86683): PID: 1 - Accion: DESTRUIR - Tamaño: 5
+[INFO] 21:52:49:428 LOGGER/(89199:89401): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 21:53:00:437 LOGGER/(89199:89311): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 21:54:39:392 LOGGER/(89199:89401): PID: 1 - Accion: DESTRUIR - Tamaño: 5
+[INFO] 21:59:19:133 LOGGER/(91572:91761): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 21:59:30:153 LOGGER/(91572:91655): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 22:00:49:252 LOGGER/(91572:91761): PID: 1 - Accion: DESTRUIR - Tamaño: 5
+[INFO] 22:04:16:830 LOGGER/(93856:94062): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 22:04:27:887 LOGGER/(93856:93956): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 22:05:51:789 LOGGER/(93856:94062): PID: 1 - Accion: DESTRUIR - Tamaño: 5
+[INFO] 22:10:03:067 LOGGER/(96199:96353): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 22:10:14:087 LOGGER/(96199:96263): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 22:11:32:671 LOGGER/(96199:96353): PID: 1 - Accion: DESTRUIR - Tamaño: 5
+[INFO] 22:17:05:567 LOGGER/(98865:99057): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 22:17:16:611 LOGGER/(98865:98944): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 22:26:42:426 LOGGER/(101139:101342): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 22:26:53:432 LOGGER/(101139:101233): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 22:29:11:419 LOGGER/(101139:101342): PID: 1 - Accion: DESTRUIR - Tamaño: 5
+[INFO] 22:34:08:454 LOGGER/(104158:104338): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 22:34:19:639 LOGGER/(104158:104232): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 22:36:34:367 LOGGER/(104158:104338): PID: 1 - Accion: DESTRUIR - Tamaño: 5
+[INFO] 22:44:11:511 LOGGER/(107178:107504): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 22:45:42:544 LOGGER/(107178:107243): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 160
+[INFO] 22:48:37:801 LOGGER/(107178:107504): PID: 1 - Accion: DESTRUIR - Tamaño: 5

@@ -28,6 +28,10 @@ bool planificacion_pausada;
 
 pthread_t hilo_detener_planificacion;
 
+///////////////////
+///// CONSOLA /////
+///////////////////
+
 void *interaccion_consola() {
     char *input;
     char path_ejecutable[256];
@@ -114,6 +118,8 @@ void *interaccion_consola() {
     return NULL;
 }
 
+///// COMANDOS
+
 void EJECUTAR_SCRIPT(char* path) {
     char* path_local_kernel = strdup(path_kernel);
     if (path_local_kernel == NULL) {
@@ -182,88 +188,139 @@ void INICIAR_PROCESO(char* path_instrucciones) {
     encolar_a_new(pcb);
 }
 
-void enviar_path_a_memoria(char* path_instrucciones, t_sockets* sockets, int pid) {
-// Mando PID para saber donde asociar las instrucciones
-    int se_crearon_estructuras = 0;
-    t_path* pathNuevo = malloc(sizeof(t_path));
-
-    pathNuevo->path = strdup(path_instrucciones); 
-    pathNuevo->path_length = strlen(pathNuevo->path) + 1;
-    pathNuevo->PID = pid;
-
-    t_buffer* buffer = llenar_buffer_path(pathNuevo);
-
-    enviar_paquete(buffer, PATH, sockets->socket_memoria);
-    recv(sockets->socket_memoria, &se_crearon_estructuras, sizeof(int), MSG_WAITALL);
-
-    free(pathNuevo->path);
-    free(pathNuevo);
-} 
-
-// Falta implementar esta
-t_buffer* llenar_buffer_path(t_path* pathNuevo) {
-    t_buffer* buffer = malloc(sizeof(t_buffer));
-
-    buffer->size = sizeof(int) * 2 + pathNuevo->path_length;                    
-    buffer->offset = 0;
-    buffer->stream = malloc(buffer->size);
-
-    void* stream = buffer->stream; // No memoria?
-
-    // Para el nombre primero mandamos el tamaño y luego el texto en sí:
-    memcpy(stream+buffer->offset, &pathNuevo->PID, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &pathNuevo->path_length, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, pathNuevo->path, pathNuevo->path_length);
-    // No tiene sentido seguir calculando el desplazamiento, ya ocupamos el buffer 
-   
-    buffer->stream = stream;
-    // Si usamos memoria dinámica para el path, y no la precisamos más, ya podemos liberarla:
-
-    // free(pathNuevo->path); -> Si yo hago el free esto rompe, porque?
-    // free(pathNuevo);
-
-    return(buffer);
+void FINALIZAR_PROCESO(int pid) {
+    printf("Se ejecuta finalizar proceso\n");
+    printf("el pid recibido es: %d\n", pid);
+    
+    if (planificacion_pausada){
+        printf("No podes finalizar proceso si esta pausada la plani\n");
+        return;
+    }
+    
+    t_queue* cola = encontrar_en_que_cola_esta(pid);
+    
+    if(cola == NULL) { // Esto quiere decir que esta en la cola exit
+        printf("No se puede finalizar un proceso que esta en exit \n");
+        return;
+    }
+    
+    if(cola == cola_exec && !queue_is_empty(cola_exec)) {
+        printf("El proceso se encuentra en ejecucion\n");
+        int temp = INTERRUPCION_FIN_USUARIO;
+        send(sockets->socket_int, &temp, sizeof(int), 0);
+    } else {
+        t_pcb* pcb = sacarDe(cola, pid);
+        printf("El proceso no se encuentra en ejecucion\n");
+        pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
+    }
+    
+    // Ya se hace free en pasar a exit
 }
 
-int obtener_siguiente_pid() {
-    contador_pid++;
-    return contador_pid;
-}
-
-void encolar_a_new(t_pcb *pcb) {
-    printf("Esperando a que la planificacion se des-pause\n");
-    sem_wait(&sem_planificadores);
-    printf("Planificacion continua\n");
-
-    pthread_mutex_lock(&mutex_estado_new);
-    queue_push(cola_new, pcb);
-    pthread_mutex_unlock(&mutex_estado_new);
-
-    log_info(logger_kernel, "Se crea el proceso: %d en NEW", pcb->pid);
-    log_info(logger_kernel, "Hay proceso esperando en la cola de NEW!\n");
+void INICIAR_PLANIFICACION() {
+    if(!planificacion_pausada) {
+        printf("La planificacion no esta pausada\n");
+        return;
+    } 
+    
+    planificacion_pausada = false;
+    printf("Reiniciando planificaciones\n"); 
 
     sem_post(&sem_planificadores);
-    sem_post(&sem_hay_pcb_esperando_ready);
 }
 
-void* a_ready() {
-    while (1) {
-        sem_wait(&sem_hay_pcb_esperando_ready);
-        sem_wait(&sem_grado_multiprogramacion);
+void DETENER_PLANIFICACION() {
+    if(planificacion_pausada) {
+        printf("La planificacion ya esta detenida\n");
+        return;
+    }
 
-        log_info(logger_kernel, "Grado de multiprogramación permite agregar proceso a ready\n");
+    planificacion_pausada = true;
+    printf("Deteniendo planificaciones\n");   
 
-        pthread_mutex_lock(&mutex_estado_new);
-        t_pcb *pcb = queue_pop(cola_new);
-        pthread_mutex_unlock(&mutex_estado_new);
+    pthread_create(&hilo_detener_planificacion, NULL, detener_planificaciones, NULL); 
+    pthread_join(hilo_detener_planificacion, NULL);
+}
 
-        sem_wait(&sem_planificadores);
-        pasar_a_ready(pcb);
-        sem_post(&sem_planificadores);
+void PROCESO_ESTADO() {
+    printf("--------Listado de procesos--------\n");
+    
+    printf("Procesos en NEW\n");
+    mostrar_cola_con_mutex(cola_new, &mutex_estado_new);
+    
+    printf("Procesos en READY\n");
+    mostrar_cola_con_mutex(cola_ready, &mutex_estado_ready);
+
+    printf("Procesos en READY+\n");
+    mostrar_cola_con_mutex(cola_ready_plus, &mutex_estado_ready_plus);
+    
+    printf("Procesos en BLOCKED\n");
+    mostrar_cola_con_mutex(cola_blocked, &mutex_estado_blocked);
+
+    printf("Proceso en EXEC\n");
+    mostrar_cola_con_mutex(cola_exec, &mutex_estado_exec);
+
+    /*if(pcb_exec != NULL && hay_proceso_en_exec) {
+        imprimir_pcb(pcb_exec);
+    }else{
+        printf("No hay proceso ejecutandose actualmente\n");
+    }*/
+}
+
+void MULTIPROGRAMACION(int valor) {
+    if(grado_multiprogramacion < valor) {
+        for(int i=0; i < valor-grado_multiprogramacion; i++) {
+            sem_post(&sem_grado_multiprogramacion);
+        }
+    } else if(grado_multiprogramacion > valor) {
+        for(int i=0; i < grado_multiprogramacion-valor; i++) {
+            sem_wait(&sem_grado_multiprogramacion);
+        }
+    }
+    grado_multiprogramacion = valor;
+}
+
+////////////////////////////////////////////////
+///// FUNCIONES COMPLEMENTARIAS A COMANDOS /////
+////////////////////////////////////////////////
+
+void _ejecutarComando(void* _, char* linea_leida) {
+    char comando[20]; 
+    char parametro[20]; 
+    int parametroAux;
+
+    if (sscanf(linea_leida, "%s %s", comando, parametro) == 2) {
+        printf("Palabra 1: %s, Palabra 2: %s\n", comando, parametro);
+        if(strcmp(comando, "INICIAR_PROCESO") == 0) {
+            INICIAR_PROCESO(parametro);
+        } else if(strcmp(comando, "FINALIZAR_PROCESO") == 0) {
+            parametroAux = atoi(parametro);
+            FINALIZAR_PROCESO(parametroAux);
+        } else if(strcmp(comando, "MULTIPROGRAMACION") == 0) {
+            parametroAux = atoi(parametro);
+            MULTIPROGRAMACION(parametroAux);
+        }
+    } else {
+        sscanf(linea_leida, "%s", comando);
+        printf("Palabra única: %s\n", comando);
+        if(strcmp(comando, "INICIAR_PLANIFICACION") == 0) {
+            INICIAR_PLANIFICACION();
+        } else if(strcmp(comando, "DETENER_PLANIFICACION") == 0) {
+            DETENER_PLANIFICACION();
+        } else if(strcmp(comando, "PROCESO_ESTADO") == 0) {
+            PROCESO_ESTADO();
+        } 
     }
 }
+
+void* detener_planificaciones() {
+    sem_wait(&sem_planificadores);
+    return NULL;
+}
+
+/////////////////////////
+///// PLANIFICACION /////
+/////////////////////////
 
 void *planificar_corto_plazo(void *sockets_necesarios) {
     pthread_t hilo_quantum;
@@ -311,6 +368,86 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
     }
 }
 
+t_pcb *proximo_a_ejecutar() {
+    t_pcb *pcb = NULL;
+    
+    printf("Llega a proximo a ejecutar\n");
+
+    if (!queue_is_empty(cola_prioritarios_por_signal)) {
+        printf("Llega a prioritario por signal\n");
+        pthread_mutex_lock(&mutex_prioritario_por_signal);
+        pcb = queue_pop(cola_prioritarios_por_signal);
+        pthread_mutex_unlock(&mutex_prioritario_por_signal);
+    } else if (!queue_is_empty(cola_ready_plus)){
+        printf("Llega a ready plus\n");
+        pthread_mutex_lock(&mutex_estado_ready_plus);
+        pcb = queue_pop(cola_ready_plus);
+        pthread_mutex_unlock(&mutex_estado_ready_plus);
+    } else if (!queue_is_empty(cola_ready)) {
+        printf("Llega a ready\n");
+        pthread_mutex_lock(&mutex_estado_ready);
+        pcb = queue_pop(cola_ready);
+        pthread_mutex_unlock(&mutex_estado_ready);
+    } else {
+        log_error(logger_kernel,"No hay procesos para ejecutar.");
+        exit(1);
+    }
+    
+    return pcb;
+}
+
+t_pcb* crear_nuevo_pcb(int pid){
+    t_pcb *pcb = malloc(sizeof(t_pcb));
+    t_registros* registros_pcb = malloc(sizeof(t_registros)); 
+
+    pcb->pid = pid;
+    pcb->program_counter = 0; // Deberia ser un num de instruccion de memoria?
+    pcb->quantum = quantum_config;   // Esto lo saco del config
+    pcb->estadoActual = NEW;
+    pcb->estadoAnterior = NEW;
+    pcb->registros = inicializar_registros_cpu(registros_pcb);
+
+    return pcb;
+}
+
+int obtener_siguiente_pid() {
+    contador_pid++;
+    return contador_pid;
+}
+
+void encolar_a_new(t_pcb *pcb) {
+    printf("Esperando a que la planificacion se des-pause\n");
+    sem_wait(&sem_planificadores);
+    printf("Planificacion continua\n");
+
+    pthread_mutex_lock(&mutex_estado_new);
+    queue_push(cola_new, pcb);
+    pthread_mutex_unlock(&mutex_estado_new);
+
+    log_info(logger_kernel, "Se crea el proceso: %d en NEW", pcb->pid);
+    printf("Hay proceso esperando en la cola de NEW!\n");
+
+    sem_post(&sem_planificadores);
+    sem_post(&sem_hay_pcb_esperando_ready);
+}
+
+void* a_ready() {
+    while (1) {
+        sem_wait(&sem_hay_pcb_esperando_ready);
+        sem_wait(&sem_grado_multiprogramacion);
+
+        printf("Grado de multiprogramación permite agregar proceso a ready\n");
+
+        pthread_mutex_lock(&mutex_estado_new);
+        t_pcb *pcb = queue_pop(cola_new);
+        pthread_mutex_unlock(&mutex_estado_new);
+
+        sem_wait(&sem_planificadores);
+        pasar_a_ready(pcb);
+        sem_post(&sem_planificadores);
+    }
+}
+
 bool es_VRR_RR() {
     return es_RR() || es_VRR();
 }
@@ -350,53 +487,116 @@ void* esperar_RR(void* pcb) {
 
     send(socket_Int, &interrupcion_cpu, sizeof(codigo_operacion), 0);
     
-    char* log_message = string_from_format("Envie interrupcion para PID %d despues de %d", pcb_nuevo->pid, pcb_nuevo->quantum);
-    log_info(logger_kernel, "%s", log_message);
-    free(log_message);
-    
+    printf("Envie interrupcion para PID %d despues de %d", pcb_nuevo->pid, pcb_nuevo->quantum);
     return NULL;
-}
-
-void volver_a_settear_quantum(t_pcb* pcb) {
-    pcb->quantum = quantum_config;
-}
-
-int max(int num1, int num2) {
-    return num1 > num2 ? num1 : num2;
 }
 
 int leQuedaTiempoDeQuantum(t_pcb *pcb) {
     return pcb->quantum > 0;
 }
 
-t_pcb *proximo_a_ejecutar() {
-    t_pcb *pcb = NULL;
-    
-    printf("Llega a proximo a ejecutar\n");
-
-    if (!queue_is_empty(cola_prioritarios_por_signal)) {
-        printf("Llega a prioritario por signal\n");
-        pthread_mutex_lock(&mutex_prioritario_por_signal);
-        pcb = queue_pop(cola_prioritarios_por_signal);
-        pthread_mutex_unlock(&mutex_prioritario_por_signal);
-    } else if (!queue_is_empty(cola_ready_plus)){
-        printf("Llega a ready plus\n");
-        pthread_mutex_lock(&mutex_estado_ready_plus);
-        pcb = queue_pop(cola_ready_plus);
-        pthread_mutex_unlock(&mutex_estado_ready_plus);
-        log_info(logger_kernel, "Proximo PID de la cola Ready Plus: %d", pcb->pid);
-    } else if (!queue_is_empty(cola_ready)) {
-        printf("Llega a ready\n");
-        pthread_mutex_lock(&mutex_estado_ready);
-        pcb = queue_pop(cola_ready);
-        pthread_mutex_unlock(&mutex_estado_ready);
-    } else {
-        log_error(logger_kernel,"No hay procesos para ejecutar.");
-        exit(1);
-    }
-    
-    return pcb;
+void volver_a_settear_quantum(t_pcb* pcb) {
+    pcb->quantum = quantum_config;
 }
+
+t_queue* encontrar_en_que_cola_esta(int pid) {
+    if(esta_en_cola_pid(cola_new, pid, &mutex_estado_new)) {
+        printf("Esta en cola new\n");
+        return cola_new;
+    } else if(esta_en_cola_pid(cola_ready, pid, &mutex_estado_ready)) {
+        printf("Esta en cola ready\n");
+        sem_wait(&sem_hay_para_planificar);
+        return cola_ready;
+    } else if(esta_en_cola_pid(cola_blocked, pid, &mutex_estado_blocked)) {
+        printf("Esta en cola blocked\n");
+        return cola_blocked; // analizar si hay que sacarlo tmb de la cola de procesos bloqueados de una io
+    } else if(esta_en_cola_pid(cola_ready_plus, pid, &mutex_estado_ready_plus)){
+        printf("Esta en cola ready PLUS\n");
+        return cola_ready_plus;
+    } else if(esta_en_cola_pid(cola_exec, pid, &mutex_estado_exec)) {
+        printf("Esta en cola exec\n");
+        return cola_exec;
+    } else {
+        printf("Esta en cola exit\n");
+        return NULL;
+    }
+}
+
+int esta_en_cola_pid(t_queue* cola, int pid, pthread_mutex_t* mutex) {
+    t_queue* colaAux = queue_create();
+    int esta_el_pid = 0;
+    
+    pthread_mutex_lock(mutex); // Se que es una zona critica grande pero podria afectar negativamente si lo  pongo cada vez que hago push - pop
+    while (!queue_is_empty(cola)) {
+        t_pcb* pcbAux = queue_pop(cola);
+        
+        if (pcbAux->pid != pid) {
+            queue_push(colaAux, pcbAux);
+        } else {   
+            esta_el_pid = 1;
+            queue_push(colaAux, pcbAux);
+        }
+    }
+
+    // Restauro los elementos en la cola original
+    while (!queue_is_empty(colaAux)) {
+        queue_push(cola, queue_pop(colaAux));
+    }
+    pthread_mutex_unlock(mutex);
+    
+    queue_destroy(colaAux);
+    
+    return esta_el_pid;
+}
+
+/*
+Detener planificación: Este mensaje se encargará de pausar la planificación de corto y largo plazo. El proceso que se encuentra en ejecución NO es desalojado, 
+pero una vez que salga de EXEC se va a pausar el manejo de su motivo de desalojo. De la misma forma, los procesos bloqueados van a pausar su transición a la 
+cola de Ready.
+*/
+
+void mostrar_cola_con_mutex(t_queue* cola,pthread_mutex_t* mutex){
+    if(!queue_is_empty(cola)){
+        pthread_mutex_lock(mutex);
+        mostrar_cola(cola);
+        pthread_mutex_unlock(mutex);  
+    }else{
+        printf("Cola vacia\n");
+    }
+      
+}
+
+void mostrar_cola(t_queue* cola) {
+    t_pcb* aux;
+    t_queue* cola_aux = queue_create(); 
+
+    while (!queue_is_empty(cola)){
+        aux = queue_pop(cola);
+        imprimir_pcb(aux);
+        queue_push(cola_aux, aux);
+    }
+
+    while (!queue_is_empty(cola_aux)){
+        aux = queue_pop(cola_aux);
+        queue_push(cola, aux);
+    }
+
+    queue_destroy(cola_aux); 
+}
+
+void mostrar_pcb_proceso(t_pcb* pcb) {
+    printf("PID: %d\n", pcb->pid);
+    printf("Program Counter: %d\n", pcb->program_counter);
+    printf("Estado Actual: %d\n", pcb->estadoActual);
+    printf("Estado Anterior: %d\n", pcb->estadoAnterior);
+    if(strcmp(algoritmo_planificacion, "FIFO") == 0) {
+        printf("Quantum: %d\n", pcb->quantum);
+    }
+}
+
+///////////////
+///// CPU /////
+///////////////
 
 // TO DO: Esto bloquearia la planificacion hasta que la cpu termine de ejecutar y me devuelva el contexto.
 // Tiene que recibir causa de desalojo y contexto
@@ -456,7 +656,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
 
         // Ajustamos el quantum, asegurándonos de que no sea menor a 0
         pcb->quantum = tiempo_restante;
-        log_info(logger_kernel, "El quantum restante del proceso con PID %d es: %d", pcb->pid, pcb->quantum);
+        printf("El quantum restante del proceso con PID %d es: %d\n", pcb->pid, pcb->quantum);
     }
     
     printf("Planificacion recibe el desalojo pero... ¿esta pausada?\n");
@@ -510,7 +710,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             t_pedido* pedido_escritura = deserializar_pedido(package->buffer); // llega bien el nombre de la interfaz
             printf("NOMBRE PEDIDO ESCRITURA: %s", pedido_escritura->interfaz);
             encolar_datos_std(pcb, pedido_escritura);
-            // log_info(logger_kernel,"PID: %d - Bloqueado por - %s", pcb->pid, pedido_escritura->interfaz);
+
 
             // liberar_pedido_escritura_lectura(pedido_escritura);
             break;
@@ -541,6 +741,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
                 // Esto se hace en la conexion, aca tiene que encolar el pedido
                 encolar_fs_truncate(pcb, pedido_fs_truncate, interfaz_truncate);
                 // enviar_buffer_fs(interfaz_truncate->socket, pcb->pid, pedido_fs_truncate->longitud_nombre_archivo, pedido_fs_truncate->nombre_archivo, TRUNCAR_ARCHIVO);
+                printf("Operacion: FS_TRUNCATE");
                 log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, pedido_fs_truncate->nombre_interfaz);
             }
 
@@ -552,6 +753,8 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             t_pedido_fs_escritura_lectura* fs_read_write = deserializar_pedido_fs_escritura_lectura(package->buffer);
             t_list_io* interfaz = io_esta_en_diccionario(pcb, fs_read_write->nombre_interfaz);
 
+            printf("Registro archivo: %d\n", fs_read_write->registro_archivo);
+
             if (interfaz != NULL) {
                 // codigo_operacion operacion = (package->codigo_operacion == ESCRITURA_FS) ? ESCRIBIR_FS_MEMORIA : LEER_FS_MEMORIA;
                 codigo_operacion operacion = (devolucion_cpu == ESCRITURA_FS) ? ESCRIBIR_FS_MEMORIA : LEER_FS_MEMORIA;
@@ -559,6 +762,8 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
                 encolar_fs_read_write(operacion, pcb, fs_read_write, interfaz);
 
                 // enviar_buffer_fs_escritura_lectura(pcb->pid,fs_read_write->largo_archivo,fs_read_write->nombre_archivo,fs_read_write->registro_direccion,fs_read_write->registro_tamanio,fs_read_write->registro_archivo,operacion);
+                printf("Operacion: LECTURA_FS\n");
+                // HASTA ACA LLEGA
                 
                 log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, fs_read_write->nombre_interfaz);
             }
@@ -574,22 +779,6 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     liberar_paquete(package);
 }
 
-t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre) {
-    if(dictionary_has_key(diccionario_io, interfaz_nombre)) {
-        t_list_io* interfaz = dictionary_get(diccionario_io, interfaz_nombre);
-        printf("Nombre a comparar buscado %s\n", interfaz_nombre);
-        printf("Nombre a comparar recibido %s\n", interfaz->nombreInterfaz);
-        if(strcmp(interfaz_nombre, interfaz->nombreInterfaz) == 0) {
-            printf("Son iguales los nombres\n");
-        } else {
-            printf("No son iguales los nombres\n");
-        }
-        return interfaz;
-    } else {
-        pasar_a_exit(pcb, "INVALID_INTERFACE");
-        return NULL;
-    }
-}
 
 /*
     IO_STDIN_READ: Cadena de comunicaccion
@@ -604,6 +793,9 @@ t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre) {
         registro_tamanio  |        registro_tamanio                                 |
 */
 
+///////////////////////
+///// FILE SYSTEM /////
+///////////////////////
 
 void enviar_buffer_fs(int socket_io,int pid,int longitud_nombre_archivo,char* nombre_archivo, codigo_operacion codigo_operacion) {
     t_buffer* buffer = llenar_buffer_nombre_archivo_pid(pid,longitud_nombre_archivo,nombre_archivo);
@@ -631,6 +823,9 @@ t_buffer* llenar_buffer_nombre_archivo_pid(int pid,int largo_archivo,char* nombr
     return buffer;
 }
 
+////////////////////////
+///// STDIN|STDOUT /////
+////////////////////////
 
 void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
     t_list_io* interfaz;
@@ -689,73 +884,9 @@ void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
     free(pedido);
 } 
 
-t_pedido* deserializar_pedido(t_buffer* buffer) {
-    t_pedido* pedido = malloc(sizeof(t_pedido));
-
-    void* stream = buffer->stream + sizeof(int) * 3 + sizeof(Estado) * 2 + sizeof(uint8_t) * 4 + sizeof(uint32_t) * 6; 
-
-    memcpy(&(pedido->cantidad_paginas), stream, sizeof(int));
-    stream += sizeof(int);
-    printf("Cantidad de paginas: %d\n", pedido->cantidad_paginas);
-
-    pedido->lista_dir_tamanio = list_create();
-    // Deserializar lista con dir fisica y tamanio en bytes a leer segun la cant de pags
-    for(int i = 0; i < pedido->cantidad_paginas; i++) {
-        t_dir_fisica_tamanio* dir_fisica_tam = malloc(sizeof(t_dir_fisica_tamanio)); //VER_SI_HAY_FREE
-        memcpy(&(dir_fisica_tam->direccion_fisica), stream, sizeof(int));
-        stream += sizeof(int);
-        memcpy(&(dir_fisica_tam->bytes_lectura), stream, sizeof(int));
-        stream += sizeof(int);
-
-        list_add(pedido->lista_dir_tamanio, dir_fisica_tam);
-    }
-
-    memcpy(&(pedido->registro_tamanio), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-
-    printf("Registro tamanio: %d\n", pedido->registro_tamanio);
-
-    memcpy(&(pedido->length_interfaz), stream, sizeof(int));
-    stream += sizeof(int);
-
-    // Se recibe mal el length
-    printf("Length interfaz: %d\n", pedido->length_interfaz);
-
-    pedido->interfaz = malloc(pedido->length_interfaz);
-    memcpy(pedido->interfaz, stream, pedido->length_interfaz);
-
-    // Insertar /0 y leer
-
-    pedido->interfaz[pedido->length_interfaz] = '\0';
-    printf("Interfaz: %s\n", pedido->interfaz);
-
-    return pedido;
-}
-
-t_operacion_io* deserializar_io(t_buffer* buffer) {
-    t_operacion_io* operacion_io = malloc(sizeof(t_operacion_io)); 
-
-    // Lo siguiente es el tamaño del pcb
-    void* stream = buffer->stream + sizeof(int) * 3 + sizeof(Estado) * 2 + sizeof(uint8_t) * 4 + sizeof(uint32_t) * 6;
-
-    // Deserializamos los campos que tenemos en el buffer
-    // stream += sizeof(t_pcb);
-    
-    memcpy(&(operacion_io->unidadesDeTrabajo), stream, sizeof(int));
-    stream += sizeof(int);
-
-    memcpy(&(operacion_io->nombre_interfaz_largo), stream, sizeof(int));
-    stream += sizeof(int);
-
-    operacion_io->nombre_interfaz = malloc(operacion_io->nombre_interfaz_largo); 
-
-    memcpy(operacion_io->nombre_interfaz, stream, operacion_io->nombre_interfaz_largo);
-
-    printf("Interfaz (funcionalidades): %s\n", operacion_io->nombre_interfaz);
-    printf("Unidades de trabajo (unidades): %d\n", operacion_io->unidadesDeTrabajo);
-
-    return operacion_io;
-}
+////////////////////
+///// GENERICA /////
+////////////////////
 
 void dormir_io(t_operacion_io* io, t_pcb* pcb) {
     // VER_SI_HAY_FREE
@@ -806,104 +937,15 @@ conectada la interfaz solicitada, en caso contrario, se deberá enviar el proces
 En caso de que la interfaz exista y esté conectada, se deberá validar que la interfaz admite la
 operación solicitada, en caso de que no sea así, se deberá enviar el proceso a EXIT. */
 
-t_list_io* validar_io(t_operacion_io* io, t_pcb* pcb) {
-    /*
-    bool match_nombre(void nodo_lista) {
-        return strcmp(((t_list_io*)nodo_lista)->nombreInterfaz, io->nombre_interfaz) == 0;
-    };
-    */
-    printf("Valida la io\n");
-    
-    pthread_mutex_lock(&mutex_lista_io);
-    // t_list_io* elemento_encontrado = list_find(lista_io, match_nombre); // Aca deberia buscar la interfaz en la lista de io
-    t_list_io* elemento_encontrado = dictionary_get(diccionario_io, io->nombre_interfaz);
 
-    if(elemento_encontrado == NULL || elemento_encontrado->TipoInterfaz != GENERICA) { // Deberia ser global
-        pthread_mutex_unlock(&mutex_lista_io);
-        printf("No existe la io o no admite operacion\n");
-    } else { 
-        pasar_a_blocked(pcb);
-        pthread_mutex_unlock(&mutex_lista_io);
-        return elemento_encontrado;    
-    }
-    
-    return NULL;
-}
 
 // Esta podria ser la funcion generica y pasarle el codOP por parametro
 
 // Funcion para crear un nuevo PCB.
-t_pcb* crear_nuevo_pcb(int pid){
-    t_pcb *pcb = malloc(sizeof(t_pcb));
-    t_registros* registros_pcb = malloc(sizeof(t_registros)); 
 
-    pcb->pid = pid;
-    pcb->program_counter = 0; // Deberia ser un num de instruccion de memoria?
-    pcb->quantum = quantum_config;   // Esto lo saco del config
-    pcb->estadoActual = NEW;
-    pcb->estadoAnterior = NEW;
-    pcb->registros = inicializar_registros_cpu(registros_pcb);
-
-    return pcb;
-}
-
-void _ejecutarComando(void* _, char* linea_leida) {
-    char comando[20]; 
-    char parametro[20]; 
-    int parametroAux;
-
-    if (sscanf(linea_leida, "%s %s", comando, parametro) == 2) {
-        printf("Palabra 1: %s, Palabra 2: %s\n", comando, parametro);
-        if(strcmp(comando, "INICIAR_PROCESO") == 0) {
-            INICIAR_PROCESO(parametro);
-        } else if(strcmp(comando, "FINALIZAR_PROCESO") == 0) {
-            parametroAux = atoi(parametro);
-            FINALIZAR_PROCESO(parametroAux);
-        } else if(strcmp(comando, "MULTIPROGRAMACION") == 0) {
-            parametroAux = atoi(parametro);
-            MULTIPROGRAMACION(parametroAux);
-        }
-    } else {
-        sscanf(linea_leida, "%s", comando);
-        printf("Palabra única: %s\n", comando);
-        if(strcmp(comando, "INICIAR_PLANIFICACION") == 0) {
-            INICIAR_PLANIFICACION();
-        } else if(strcmp(comando, "DETENER_PLANIFICACION") == 0) {
-            DETENER_PLANIFICACION();
-        } else if(strcmp(comando, "PROCESO_ESTADO") == 0) {
-            PROCESO_ESTADO();
-        } 
-    }
-}
-
-t_parametro* deserializar_parametro(t_buffer* buffer) {
-    int largo_parametro;
-    
-    t_parametro* parametro = malloc(sizeof(t_parametro)); // sizeof(t_parametro) //FREE?
-
-    void* stream = buffer->stream + sizeof(int) * 3 + sizeof(Estado) * 2 + sizeof(uint8_t) * 4 + sizeof(uint32_t) * 6;
-
-    if (stream >= buffer->stream + buffer->size) {
-        printf("No hay nada en el buffer\n");
-        free(parametro->nombre);
-        free(parametro);
-        return NULL;
-    }
-
-    memcpy(&largo_parametro, stream, sizeof(int));
-    stream += sizeof(int);
-
-    parametro->length = largo_parametro;
-    parametro->nombre = malloc(parametro->length); //FREE?
-
-    memcpy(parametro->nombre, stream, parametro->length);
-
-    parametro->nombre[parametro->length] = '\0';
-
-    printf("el nombre del parametro es %s\n", parametro->nombre);
-
-    return parametro; // free(parametro) y free(parametro->nombre)
-}
+////////////////////
+///// RECURSOS /////
+////////////////////
 
 void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desalojoCpu){ 
     printf("Hace %s con el pid %d en recurso %s\n", pasar_string_desalojo_recurso(desalojoCpu), pcb->pid, key_nombre_recurso);
@@ -913,7 +955,7 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
         if(desalojoCpu == WAIT_RECURSO) {
             printf("llego hasta WAIT\n");
             ejecutar_wait_recurso(recurso_obtenido, pcb, key_nombre_recurso);
-            log_info(logger_kernel, "PID %d - Retengo el recurso: %s", pcb->pid, key_nombre_recurso);
+            printf("PID %d - Retengo el recurso: %s\nn", pcb->pid, key_nombre_recurso);
         }else{
             printf("Llega hasta signal\n");
             //if(es_el_ultimo_recurso_a_liberar_por(pcb)) {
@@ -954,24 +996,9 @@ void ejecutar_wait_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, char* recurs
     }
 }
 
-bool esta_el_pid_en_cola_de_procesos_que_retienen(int pid, t_recurso* recurso_obtenido) {
-    bool seEncuentra = false;
-    for(int i=0;i<list_size(recurso_obtenido->procesos_que_lo_retienen);i++) {
-        char* pid_recibido = list_get(recurso_obtenido->procesos_que_lo_retienen, i);
-        char* pid_string = string_itoa(pid);
-        if(pid_recibido == pid_string) {
-            seEncuentra = true;
-        } 
-        free(pid_string);
-    }
-    return seEncuentra;
-}
-
 void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, bool esta_para_finalizar) {
-    //if(esta_el_pid_en_cola_de_procesos_que_retienen(pcb->pid, recurso_obtenido)) {
-    //}
     printf("\n\nHAGO EL EJECUTAR SIGNAL RECURSO CON EL PID: %d\n\n", pcb->pid);
-    log_info(logger_kernel, "CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: %d", recurso_obtenido->instancias);
+    
     recurso_obtenido->instancias++;
     contador_aumento_instancias++;
     printf("\n\nLA CANTIDAD DE VECES QUE SE EJECUTO SIGNAL ES: %d\n\n", contador_aumento_instancias);
@@ -993,7 +1020,6 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, bool esta_
         t_pcb* proceso_liberado = list_remove(recurso_obtenido->procesos_bloqueados, 0);
         char* pid_liberado = string_itoa(proceso_liberado->pid);
         list_add(recurso_obtenido->procesos_que_lo_retienen, pid_liberado);
-        log_info(logger_kernel, "Proceso liberado %s por %d", pid_liberado, pcb->pid);
 
         /*change_status(proceso_liberado, READY);
         queue_push(cola_prioritarios_por_signal, proceso_liberado); 
@@ -1003,6 +1029,33 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, bool esta_
         proceso_liberado_desbloqueado->program_counter--;
         pasar_a_ready(proceso_liberado);
     }
+}
+
+void ejecutar_signal_de_recursos_bloqueados_por(t_pcb* pcb) {
+    t_list* elementos = dictionary_elements(datos_kernel->diccionario_recursos);
+
+    for(int i=0; i<list_size(elementos); i++) {
+        t_recurso* recurso = list_get(elementos, i);
+        for(int j=0;j<list_size(recurso->procesos_que_lo_retienen); j++) {
+            char* pid = list_get(recurso->procesos_que_lo_retienen, j);
+            char* pid_string = string_itoa(pcb->pid);
+            if(strcmp(pid, pid_string) == 0 ) { // 0 es verdadero en strcmp
+                ejecutar_signal_recurso(recurso, pcb, true);
+                free(pid_string);
+                break;
+            }
+            free(pid_string);
+        }
+
+        for(int k=0; k<list_size(recurso->procesos_bloqueados); k++) {
+           t_pcb* pcb_bloqueado = list_get(recurso->procesos_bloqueados, k);
+           if(pcb_bloqueado->pid == pcb->pid) {
+                list_remove(recurso->procesos_bloqueados, k);
+                break;
+           }
+        }
+    }
+    list_destroy(elementos);
 }
 
 char* pasar_string_desalojo_recurso(DesalojoCpu desalojoCpu){
@@ -1029,405 +1082,11 @@ void imprimir_diccionario_recursos() {
     dictionary_iterator(datos_kernel->diccionario_recursos, (void*)_imprimir_recurso);
 }
 
-void FINALIZAR_PROCESO(int pid) {
-    printf("Se ejecuta finalizar proceso\n");
-    printf("el pid recibido es: %d\n", pid);
-    
-    if (planificacion_pausada){
-        printf("No podes finalizar proceso si esta pausada la plani\n");
-        return;
-    }
-    
-    t_queue* cola = encontrar_en_que_cola_esta(pid);
-    
-    if(cola == NULL) { // Esto quiere decir que esta en la cola exit
-        printf("No se puede finalizar un proceso que esta en exit \n");
-        return;
-    }
-    
-    if(cola == cola_exec && !queue_is_empty(cola_exec)) {
-        printf("El proceso se encuentra en ejecucion\n");
-        int temp = INTERRUPCION_FIN_USUARIO;
-        send(sockets->socket_int, &temp, sizeof(int), 0);
-    } else {
-        t_pcb* pcb = sacarDe(cola, pid);
-        printf("El proceso no se encuentra en ejecucion\n");
-        pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
-    }
-    
-    // Ya se hace free en pasar a exit
-}
-
-void ejecutar_signal_de_recursos_bloqueados_por(t_pcb* pcb) {
-    t_list* elementos = dictionary_elements(datos_kernel->diccionario_recursos);
-
-    for(int i=0; i<list_size(elementos); i++) {
-        t_recurso* recurso = list_get(elementos, i);
-        for(int j=0;j<list_size(recurso->procesos_que_lo_retienen); j++) {
-            char* pid = list_get(recurso->procesos_que_lo_retienen, j);
-            char* pid_string = string_itoa(pcb->pid);
-            if(strcmp(pid, pid_string) == 0 ) { // 0 es verdadero en strcmp
-                log_info(logger_kernel, "Entra a ejecutar signal recurso del EXIT el proceso: %d\n", pcb->pid);
-                ejecutar_signal_recurso(recurso, pcb, true);
-                free(pid_string);
-                break;
-            }
-            free(pid_string);
-        }
-
-        for(int k=0; k<list_size(recurso->procesos_bloqueados); k++) {
-           t_pcb* pcb_bloqueado = list_get(recurso->procesos_bloqueados, k);
-           if(pcb_bloqueado->pid == pcb->pid) {
-                list_remove(recurso->procesos_bloqueados, k);
-                break;
-           }
-        }
-    }
-    list_destroy(elementos);
-}
-
-// TODO: Buscar en las colas_blocked de io
-// Estaba todo borrado cuando llegue
-
-t_queue* encontrar_en_que_cola_esta(int pid) {
-    if(esta_en_cola_pid(cola_new, pid, &mutex_estado_new)) {
-        log_info(logger_kernel, "Esta en cola new\n");
-        return cola_new;
-    } else if(esta_en_cola_pid(cola_ready, pid, &mutex_estado_ready)) {
-        log_info(logger_kernel, "Esta en cola ready\n");
-        sem_wait(&sem_hay_para_planificar);
-        return cola_ready;
-    } else if(esta_en_cola_pid(cola_blocked, pid, &mutex_estado_blocked)) {
-        log_info(logger_kernel, "Esta en cola blocked\n");
-        return cola_blocked; // analizar si hay que sacarlo tmb de la cola de procesos bloqueados de una io
-    } else if(esta_en_cola_pid(cola_ready_plus, pid, &mutex_estado_ready_plus)){
-        log_info(logger_kernel, "Esta en cola ready PLUS\n");
-        return cola_ready_plus;
-    } else if(esta_en_cola_pid(cola_exec, pid, &mutex_estado_exec)) {
-        log_info(logger_kernel, "Esta en cola exec\n");
-        return cola_exec;
-    } else {
-        log_info(logger_kernel, "Esta en cola exit\n");
-        return NULL;
-    }
-}
-
-int esta_en_cola_pid(t_queue* cola, int pid, pthread_mutex_t* mutex) {
-    t_queue* colaAux = queue_create();
-    int esta_el_pid = 0;
-    
-    pthread_mutex_lock(mutex); // Se que es una zona critica grande pero podria afectar negativamente si lo  pongo cada vez que hago push - pop
-    while (!queue_is_empty(cola)) {
-        t_pcb* pcbAux = queue_pop(cola);
-        
-        if (pcbAux->pid != pid) {
-            queue_push(colaAux, pcbAux);
-        } else {   
-            esta_el_pid = 1;
-            queue_push(colaAux, pcbAux);
-        }
-    }
-
-    // Restauro los elementos en la cola original
-    while (!queue_is_empty(colaAux)) {
-        queue_push(cola, queue_pop(colaAux));
-    }
-    pthread_mutex_unlock(mutex);
-    
-    queue_destroy(colaAux);
-    
-    return esta_el_pid;
-}
-
-void INICIAR_PLANIFICACION() {
-    if(!planificacion_pausada) {
-        printf("La planificacion no esta pausada\n");
-        return;
-    } 
-    
-    planificacion_pausada = false;
-    printf("Reiniciando planificaciones\n"); 
-
-    sem_post(&sem_planificadores);
-}
-
-/*
-Detener planificación: Este mensaje se encargará de pausar la planificación de corto y largo plazo. El proceso que se encuentra en ejecución NO es desalojado, 
-pero una vez que salga de EXEC se va a pausar el manejo de su motivo de desalojo. De la misma forma, los procesos bloqueados van a pausar su transición a la 
-cola de Ready.
-*/
-
-void DETENER_PLANIFICACION() {
-    if(planificacion_pausada) {
-        printf("La planificacion ya esta detenida\n");
-        return;
-    }
-
-    planificacion_pausada = true;
-    printf("Deteniendo planificaciones\n");   
-
-    pthread_create(&hilo_detener_planificacion, NULL, detener_planificaciones, NULL); 
-    pthread_join(hilo_detener_planificacion, NULL);
-}
-
-void* detener_planificaciones() {
-    sem_wait(&sem_planificadores);
-    return NULL;
-}
-
-
-void MULTIPROGRAMACION(int valor) {
-    if(grado_multiprogramacion < valor) {
-        for(int i=0; i < valor-grado_multiprogramacion; i++) {
-            sem_post(&sem_grado_multiprogramacion);
-        }
-    } else if(grado_multiprogramacion > valor) {
-        for(int i=0; i < grado_multiprogramacion-valor; i++) {
-            sem_wait(&sem_grado_multiprogramacion);
-        }
-    }
-    grado_multiprogramacion = valor;
-}
-
-void PROCESO_ESTADO() {
-    printf("--------Listado de procesos--------\n");
-    
-    printf("Procesos en NEW\n");
-    mostrar_cola_con_mutex(cola_new, &mutex_estado_new);
-    
-    printf("Procesos en READY\n");
-    mostrar_cola_con_mutex(cola_ready, &mutex_estado_ready);
-
-    printf("Procesos en READY+\n");
-    mostrar_cola_con_mutex(cola_ready_plus, &mutex_estado_ready_plus);
-    
-    printf("Procesos en BLOCKED\n");
-    mostrar_cola_con_mutex(cola_blocked, &mutex_estado_blocked);
-
-    printf("Proceso en EXEC\n");
-    mostrar_cola_con_mutex(cola_exec, &mutex_estado_exec);
-
-    /*if(pcb_exec != NULL && hay_proceso_en_exec) {
-        imprimir_pcb(pcb_exec);
-    }else{
-        printf("No hay proceso ejecutandose actualmente\n");
-    }*/
-}
-
-void mostrar_cola_con_mutex(t_queue* cola,pthread_mutex_t* mutex){
-    if(!queue_is_empty(cola)){
-        pthread_mutex_lock(mutex);
-        mostrar_cola(cola);
-        pthread_mutex_unlock(mutex);  
-    }else{
-        printf("Cola vacia\n");
-    }
-      
-}
-
-void mostrar_cola(t_queue* cola) {
-    t_pcb* aux;
-    t_queue* cola_aux = queue_create(); 
-
-    while (!queue_is_empty(cola)){
-        aux = queue_pop(cola);
-        imprimir_pcb(aux);
-        queue_push(cola_aux, aux);
-    }
-
-    while (!queue_is_empty(cola_aux)){
-        aux = queue_pop(cola_aux);
-        queue_push(cola, aux);
-    }
-
-    queue_destroy(cola_aux); 
-}
-
-void mostrar_pcb_proceso(t_pcb* pcb) {
-    printf("PID: %d\n", pcb->pid);
-    printf("Program Counter: %d\n", pcb->program_counter);
-    printf("Estado Actual: %d\n", pcb->estadoActual);
-    printf("Estado Anterior: %d\n", pcb->estadoAnterior);
-    if(strcmp(algoritmo_planificacion, "FIFO") == 0) {
-        printf("Quantum: %d\n", pcb->quantum);
-    }
-}
-
-/*
-
-t_queue* mostrar_cola_pids(t_queue* cola)
-{
-    t_pcb *aux;
-    t_queue *cola_aux = NULL;
-
-    while (cola->elements->head != NULL)
-    {
-        aux = queue_pop(&cola);
-        printf("%d\n",aux->pid);
-        queue_push(&cola_aux, aux);
-    }
-
-    return cola_aux;
-}
-*/
-
-/*
-void* serializar_instrucciones(t_list* instrucciones, int size) {
-    void* stream = malloc(size);
-    size_t size_payload = size - sizeof(t_msj_kernel_consola) - sizeof(size_t);
-    int desplazamiento = 0;
-
-    t_msj_kernel_consola op_code = LIST_INSTRUCCIONES;
-    memcpy(stream + desplazamiento, &op_code, sizeof(op_code));
-    desplazamiento += sizeof(op_code);
-
-    memcpy(stream + desplazamiento, &size_payload, sizeof(size_t));
-    desplazamiento += sizeof(size_t);
-
-    for(int i = 0; i < list_size(instrucciones); i++) {
-		t_instruccion* instruccion = list_get(instrucciones, i);
-
-		size_t largo_nombre = strlen(instruccion->nombre) + 1;
-		memcpy(stream + desplazamiento, &largo_nombre, sizeof(size_t));
-		desplazamiento += sizeof(size_t);
-
-		memcpy(stream + desplazamiento, instruccion->nombre, largo_nombre);
-		desplazamiento += largo_nombre;
-
-		t_list* parametros = instruccion->parametros;
-		for(int j = 0; j < list_size(parametros); j++) {
-			char* parametro = list_get(parametros, j);
-
-			size_t largo_nombre = strlen(parametro) + 1;
-			memcpy(stream + desplazamiento, &largo_nombre, sizeof(size_t));
-			desplazamiento += sizeof(size_t);
-
-			memcpy(stream + desplazamiento, parametro, largo_nombre);
-			desplazamiento += largo_nombre;
-	    }
-	}
-
-    return stream;
-}*/
-
-void mandar_a_escribir_a_memoria(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio){
-    t_buffer* buffer = llenar_buffer_stdout(direccion_fisica, nombre_interfaz, tamanio);
-    enviar_paquete(buffer, ESCRIBIR_STDOUT, sockets->socket_memoria);
-}
-
-t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, uint32_t tamanio){
-    t_buffer *buffer = malloc(sizeof(t_buffer));
-
-    int largo_interfaz = string_length(nombre_interfaz);
-
-    buffer->size = sizeof(int) + largo_interfaz + sizeof(uint32_t); 
-    buffer->offset = 0;
-    buffer->stream = malloc(buffer->size);
-
-    void *stream = buffer->stream;
-
-    memcpy(stream + buffer->offset, &direccion_fisica, sizeof(int));
-    buffer->offset += sizeof(int);
-    memcpy(stream + buffer->offset, &tamanio, sizeof(uint32_t));
-    buffer->offset += sizeof(uint32_t);
-    memcpy(stream + buffer->offset, &(largo_interfaz), sizeof(int)); // sizeof(largo_interfaz) ????
-    buffer->offset += sizeof(int);
-    
-    memcpy(stream + buffer->offset, nombre_interfaz, largo_interfaz);
-    
-    buffer->stream = stream;
-
-    free(nombre_interfaz);
-
-    return buffer;
-}
-
-/*
-t_pedido_fs_create_delete* deserializar_pedido_fs_create_delete(t_buffer* buffer){
-    t_pedido_fs_create_delete* pedido_fs = malloc(sizeof(t_pedido_fs_create_delete));
-
-    void* stream = buffer->stream;
-    
-    memcpy(&(pedido_fs->longitud_nombre_interfaz), stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&(pedido_fs->nombre_interfaz), stream, sizeof(pedido_fs->longitud_nombre_interfaz));
-    stream += pedido_fs->longitud_nombre_interfaz;
-    memcpy(&(pedido_fs->longitud_nombre_archivo), stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&(pedido_fs->nombre_interfaz), stream, pedido_fs->longitud_nombre_archivo);
-
-    return pedido_fs;    
-}
-
-void enviar_buffer_fs_escritura_lectura(int socket, int pid, int largo_archivo, char* nombre_archivo, uint32_t registro_direccion, uint32_t registro_tamanio,uint32_t registro_archivo, codigo_operacion operacion) {
-    t_buffer* buffer = llenar_buffer_fs_escritura_lectura(pid, socket, largo_archivo,nombre_archivo,registro_direccion, registro_tamanio,registro_archivo);
-    enviar_paquete(buffer, operacion, sockets->socket_memoria);
-}
-
-t_pedido_fs_escritura_lectura* deserializar_pedido_fs_escritura_lectura(t_buffer* buffer){
-    t_pedido_fs_escritura_lectura* pedido_fs = malloc(sizeof(t_pedido_fs_create_delete));
-
-    void* stream = buffer->stream;
-    
-    memcpy(&(pedido_fs->longitud_nombre_interfaz), stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&(pedido_fs->nombre_interfaz), stream, sizeof(pedido_fs->longitud_nombre_interfaz));
-    stream += pedido_fs->longitud_nombre_interfaz;
-    memcpy(&(pedido_fs->largo_archivo), stream, sizeof(int));
-    stream += sizeof(int);
-    memcpy(&(pedido_fs->nombre_interfaz), stream, pedido_fs->largo_archivo);
-    stream += pedido_fs->largo_archivo;
-    memcpy(&(pedido_fs->registro_direccion), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-    memcpy(&(pedido_fs->registro_tamanio), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-    memcpy(&(pedido_fs->registro_archivo), stream, sizeof(uint32_t));
-    stream += sizeof(uint32_t);
-    // Si se agregann mas datos no olvidarse de aumentar el stream
-
-    return pedido_fs;    
-}
-
-t_buffer* llenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uint32_t registro_archivo){
-   int size = sizeof(int) * 2 + largo_archivo + sizeof(uint32_t) * 2; 
-   t_buffer *buffer = buffer_create(size);
-
-    buffer_add_int(buffer,pid);
-    buffer_add_int(buffer,socket);
-    buffer_add_int(buffer,largo_archivo);
-    buffer_add_string(buffer,largo_archivo,nombre_archivo);
-    buffer_add_uint32(buffer,registro_direccion);
-    buffer_add_uint32(buffer,registro_tamanio);
-    buffer_add_uint32(buffer,registro_archivo); 
-
-    return buffer;
-}
-
-
-t_pedido_fs_truncate* deserializar_fs_truncate(t_buffer* buffer){
-    t_pedido_fs_truncate* fs_truncate = malloc(sizeof(t_pedido_fs_truncate));
-
-    fs_truncate->largo_interfaz  = buffer_read_int(buffer);
-    fs_truncate->nombre_interfaz = buffer_read_string(buffer,fs_truncate->largo_interfaz);
-    fs_truncate->largo_archivo   = buffer_read_int(buffer);
-    fs_truncate->nombre_archivo  = buffer_read_string(buffer,fs_truncate->largo_archivo);
-    fs_truncate->truncador       = buffer_read_uint32(buffer);
-
-    return fs_truncate;
-}
-
-t_buffer* llenar_buffer_fs_truncate(int pid,int largo_archivo,char* nombre_archivo,uint32_t truncador){
-    int size = largo_archivo + sizeof(uint32_t) + sizeof(int) * 2;
-    
-    t_buffer* buffer = buffer_create(size);
-
-    buffer_add_int(buffer,pid);
-    buffer_add_int(buffer,largo_archivo);
-    buffer_add_string(buffer,nombre_archivo,largo_archivo);
-    buffer_add_uint32(buffer,truncador);
-
-    return buffer;
-}*/
+////////////////////
+///// LIMPIEZA /////
+////////////////////
+
+// Las 2 funciones de abajo quedaron viejas, pero no las sacamos por miedo
 
 void liberar_recursos(t_dictionary* recursos) {
     // Iterar sobre los elementos del diccionario y liberar cada recurso
@@ -1541,7 +1200,7 @@ void liberar_recurso_de_pcb(int pid) {
     free(pid_string);
 }
 
-void liberar_pcb_de_io (int pid) {
+void liberar_pcb_de_io (int pid) { //NO EXISTE en el .h y NO se utiliza
     t_list* IOs = dictionary_elements(diccionario_io);
 
     for(int i=0; i<list_size(IOs); i++) {
@@ -1580,6 +1239,184 @@ void liberar_pedido_escritura_lectura(t_pedido* pedido_escritura_lectura) {
 }
 
 
+/////////////////////////////////////////////////////////////////////
+///// SERIALIZACION|DESERIALIZACION|ENVIO|RECEPCION DE PAQUETES /////
+/////////////////////////////////////////////////////////////////////
+
+void enviar_path_a_memoria(char* path_instrucciones, t_sockets* sockets, int pid) {
+// Mando PID para saber donde asociar las instrucciones
+    int se_crearon_estructuras = 0;
+    t_path* pathNuevo = malloc(sizeof(t_path));
+
+    pathNuevo->path = strdup(path_instrucciones); 
+    pathNuevo->path_length = strlen(pathNuevo->path) + 1;
+    pathNuevo->PID = pid;
+
+    t_buffer* buffer = llenar_buffer_path(pathNuevo);
+
+    enviar_paquete(buffer, PATH, sockets->socket_memoria);
+    recv(sockets->socket_memoria, &se_crearon_estructuras, sizeof(int), MSG_WAITALL);
+
+    free(pathNuevo->path);
+    free(pathNuevo);
+}
+
+// Falta implementar esta
+t_buffer* llenar_buffer_path(t_path* pathNuevo) {
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+
+    buffer->size = sizeof(int) * 2 + pathNuevo->path_length;                    
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    void* stream = buffer->stream; // No memoria?
+
+    // Para el nombre primero mandamos el tamaño y luego el texto en sí:
+    memcpy(stream+buffer->offset, &pathNuevo->PID, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, &pathNuevo->path_length, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, pathNuevo->path, pathNuevo->path_length);
+    // No tiene sentido seguir calculando el desplazamiento, ya ocupamos el buffer 
+   
+    buffer->stream = stream;
+    // Si usamos memoria dinámica para el path, y no la precisamos más, ya podemos liberarla:
+
+    // free(pathNuevo->path); -> Si yo hago el free esto rompe, porque?
+    // free(pathNuevo);
+
+    return(buffer);
+}
+
+t_pedido* deserializar_pedido(t_buffer* buffer) {
+    t_pedido* pedido = malloc(sizeof(t_pedido));
+
+    void* stream = buffer->stream + sizeof(int) * 3 + sizeof(Estado) * 2 + sizeof(uint8_t) * 4 + sizeof(uint32_t) * 6; 
+
+    memcpy(&(pedido->cantidad_paginas), stream, sizeof(int));
+    stream += sizeof(int);
+    printf("Cantidad de paginas: %d\n", pedido->cantidad_paginas);
+
+    pedido->lista_dir_tamanio = list_create();
+    // Deserializar lista con dir fisica y tamanio en bytes a leer segun la cant de pags
+    for(int i = 0; i < pedido->cantidad_paginas; i++) {
+        t_dir_fisica_tamanio* dir_fisica_tam = malloc(sizeof(t_dir_fisica_tamanio)); //VER_SI_HAY_FREE
+        memcpy(&(dir_fisica_tam->direccion_fisica), stream, sizeof(int));
+        stream += sizeof(int);
+        memcpy(&(dir_fisica_tam->bytes_lectura), stream, sizeof(int));
+        stream += sizeof(int);
+
+        list_add(pedido->lista_dir_tamanio, dir_fisica_tam);
+    }
+
+    memcpy(&(pedido->registro_tamanio), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+
+    printf("Registro tamanio: %d\n", pedido->registro_tamanio);
+
+    memcpy(&(pedido->length_interfaz), stream, sizeof(int));
+    stream += sizeof(int);
+
+    // Se recibe mal el length
+    printf("Length interfaz: %d\n", pedido->length_interfaz);
+
+    pedido->interfaz = malloc(pedido->length_interfaz);
+    memcpy(pedido->interfaz, stream, pedido->length_interfaz);
+
+    // Insertar /0 y leer
+
+    pedido->interfaz[pedido->length_interfaz] = '\0';
+    printf("Interfaz: %s\n", pedido->interfaz);
+
+    return pedido;
+}
+
+t_operacion_io* deserializar_io(t_buffer* buffer) {
+    t_operacion_io* operacion_io = malloc(sizeof(t_operacion_io)); 
+
+    // Lo siguiente es el tamaño del pcb
+    void* stream = buffer->stream + sizeof(int) * 3 + sizeof(Estado) * 2 + sizeof(uint8_t) * 4 + sizeof(uint32_t) * 6;
+
+    // Deserializamos los campos que tenemos en el buffer
+    // stream += sizeof(t_pcb);
+    
+    memcpy(&(operacion_io->unidadesDeTrabajo), stream, sizeof(int));
+    stream += sizeof(int);
+
+    memcpy(&(operacion_io->nombre_interfaz_largo), stream, sizeof(int));
+    stream += sizeof(int);
+
+    operacion_io->nombre_interfaz = malloc(operacion_io->nombre_interfaz_largo); 
+
+    memcpy(operacion_io->nombre_interfaz, stream, operacion_io->nombre_interfaz_largo);
+
+    printf("Interfaz (funcionalidades): %s\n", operacion_io->nombre_interfaz);
+    printf("Unidades de trabajo (unidades): %d\n", operacion_io->unidadesDeTrabajo);
+
+    return operacion_io;
+}
+
+t_parametro* deserializar_parametro(t_buffer* buffer) {
+    int largo_parametro;
+    
+    t_parametro* parametro = malloc(sizeof(t_parametro)); // sizeof(t_parametro) //FREE?
+
+    void* stream = buffer->stream + sizeof(int) * 3 + sizeof(Estado) * 2 + sizeof(uint8_t) * 4 + sizeof(uint32_t) * 6;
+
+    if (stream >= buffer->stream + buffer->size) {
+        printf("No hay nada en el buffer\n");
+        free(parametro->nombre);
+        free(parametro);
+        return NULL;
+    }
+
+    memcpy(&largo_parametro, stream, sizeof(int));
+    stream += sizeof(int);
+
+    parametro->length = largo_parametro;
+    parametro->nombre = malloc(parametro->length); //FREE?
+
+    memcpy(parametro->nombre, stream, parametro->length);
+
+    parametro->nombre[parametro->length] = '\0';
+
+    printf("el nombre del parametro es %s\n", parametro->nombre);
+
+    return parametro; // free(parametro) y free(parametro->nombre)
+}
+
+void mandar_a_escribir_a_memoria(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio){
+    t_buffer* buffer = llenar_buffer_stdout(direccion_fisica, nombre_interfaz, tamanio);
+    enviar_paquete(buffer, ESCRIBIR_STDOUT, sockets->socket_memoria);
+}
+
+t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, uint32_t tamanio){
+    t_buffer *buffer = malloc(sizeof(t_buffer));
+
+    int largo_interfaz = string_length(nombre_interfaz);
+
+    buffer->size = sizeof(int) + largo_interfaz + sizeof(uint32_t); 
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    void *stream = buffer->stream;
+
+    memcpy(stream + buffer->offset, &direccion_fisica, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, &tamanio, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+    memcpy(stream + buffer->offset, &(largo_interfaz), sizeof(int)); // sizeof(largo_interfaz) ????
+    buffer->offset += sizeof(int);
+    
+    memcpy(stream + buffer->offset, nombre_interfaz, largo_interfaz);
+    
+    buffer->stream = stream;
+
+    free(nombre_interfaz);
+
+    return buffer;
+}
+
 void enviar_eliminacion_pcb_a_memoria(int pid) {
     t_buffer* buffer = malloc(sizeof(t_buffer));
     buffer->size = sizeof(int);
@@ -1591,3 +1428,69 @@ void enviar_eliminacion_pcb_a_memoria(int pid) {
     // Problema con memoria, hay que ir a buscar sus frames y marcarlos como libres y debe ser una comunicacion directa de Kernel con Memoria
 }
 
+///////////////////////////
+///// FUNCIONES AYUDA /////
+///////////////////////////
+
+int max(int num1, int num2) {
+    return num1 > num2 ? num1 : num2;
+}
+
+t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre) {
+    if(dictionary_has_key(diccionario_io, interfaz_nombre)) {
+        t_list_io* interfaz = dictionary_get(diccionario_io, interfaz_nombre);
+        printf("Nombre a comparar buscado %s\n", interfaz_nombre);
+        printf("Nombre a comparar recibido %s\n", interfaz->nombreInterfaz);
+        if(strcmp(interfaz_nombre, interfaz->nombreInterfaz) == 0) {
+            printf("Son iguales los nombres\n");
+        } else {
+            printf("No son iguales los nombres\n");
+        }
+        return interfaz;
+    } else {
+        pasar_a_exit(pcb, "INVALID_INTERFACE");
+        return NULL;
+    }
+}
+
+t_list_io* validar_io(t_operacion_io* io, t_pcb* pcb) {
+    /*
+    bool match_nombre(void nodo_lista) {
+        return strcmp(((t_list_io*)nodo_lista)->nombreInterfaz, io->nombre_interfaz) == 0;
+    };
+    */
+    printf("Valida la io\n");
+    
+    pthread_mutex_lock(&mutex_lista_io);
+    // t_list_io* elemento_encontrado = list_find(lista_io, match_nombre); // Aca deberia buscar la interfaz en la lista de io
+    t_list_io* elemento_encontrado = dictionary_get(diccionario_io, io->nombre_interfaz);
+
+    if(elemento_encontrado == NULL || elemento_encontrado->TipoInterfaz != GENERICA) { // Deberia ser global
+        pthread_mutex_unlock(&mutex_lista_io);
+        printf("No existe la io o no admite operacion\n");
+    } else { 
+        pasar_a_blocked(pcb);
+        pthread_mutex_unlock(&mutex_lista_io);
+        return elemento_encontrado;    
+    }
+    
+    return NULL;
+}
+
+
+///////////////////////////////////////
+////////// NO SE ESTA USANDO //////////
+///////////////////////////////////////
+
+bool esta_el_pid_en_cola_de_procesos_que_retienen(int pid, t_recurso* recurso_obtenido) {
+    bool seEncuentra = false;
+    for(int i=0;i<list_size(recurso_obtenido->procesos_que_lo_retienen);i++) {
+        char* pid_recibido = list_get(recurso_obtenido->procesos_que_lo_retienen, i);
+        char* pid_string = string_itoa(pid);
+        if(pid_recibido == pid_string) {
+            seEncuentra = true;
+        } 
+        free(pid_string);
+    }
+    return seEncuentra;
+}

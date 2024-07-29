@@ -29,6 +29,7 @@ extern pthread_mutex_t mutex_interrupcion_quantum;
 extern pthread_mutex_t mutex_interrupcion_fin;
 extern pthread_mutex_t mutex_interrupcion_fin_usuario;
 
+// TIPO INTERFAZ
 typedef enum {
     GENERICA, 
     STDIN,
@@ -37,6 +38,7 @@ typedef enum {
     NON
 } TipoInterfaz;
 
+// SOCKETS
 typedef struct {
     int socket_memoria;
     int socket_cpu;
@@ -45,6 +47,7 @@ typedef struct {
 
 extern t_sockets* sockets;
 
+// Informacion Config del Kernel
 typedef struct {
     char* ip_cpu;
     char* ip_mem;
@@ -58,12 +61,14 @@ typedef struct {
     t_dictionary* diccionario_recursos;
 } ptr_kernel;
 
+// PATH
 typedef struct {
     int PID;
     int path_length;
     char* path;
 } t_path;
 
+// Pedido que recibe Kernel de CPU
 typedef struct {
     uint32_t registro_tamanio;
     int cantidad_paginas;
@@ -72,6 +77,7 @@ typedef struct {
     t_list* lista_dir_tamanio;
 } t_pedido;
 
+// MMU
 typedef struct {
     int pid;
     int pagina;
@@ -79,30 +85,35 @@ typedef struct {
     long timestamps;
 } t_entrada_tlb;
 
-typedef struct {
-    int pid;
-    int nro_pagina;
-} t_solicitud_frame;
-
+// Estructura con la que realiza la traduccion la MMU
 typedef struct {
     int numero_pagina;
     int desplazamiento;
 } t_direccion_logica;
 
-// Posible idea, crear un struct para el nombre, pero serian mas mallocs y mas frees.
-typedef struct { // usa io para pasarlo al kernel
+// Estructura con la que la Memoria agarra el pedido de frame de CPU
+typedef struct {
+    int pid;
+    int nro_pagina;
+} t_solicitud_frame;
+
+
+// Estructura con la que Memoria recibe de io
+typedef struct { 
     int nombre_interfaz_largo;
     TipoInterfaz tipo;
     char* nombre_interfaz;
 } t_info_io;
 
+
+// Lo usamos en kernel para recibir cpu
 typedef struct {
     int nombre_interfaz_largo;
     int unidadesDeTrabajo;
     char* nombre_interfaz;
 } t_operacion_io;
-// Lo usamos en kernel para recibir cpu
 
+// Estructura principal con la que manejos las I/O en kernel
 typedef struct {
     int socket;
     char* nombreInterfaz; // Aca tenia un dato_io que le sque
@@ -111,11 +122,13 @@ typedef struct {
     sem_t* semaforo_cola_procesos_blocked;
 } t_list_io; // para el diccionario
 
+// Estructura con la que CPU le pide la/s isntrucciones a memoria
 typedef struct {
     int pid;
     int pc;
 } t_solicitud_instruccion;
 
+// DESALOJOS CPU
 typedef enum {
     INTERRUPCION_QUANTUM = 0,
     IO_BLOCKED, 
@@ -136,17 +149,20 @@ typedef enum {
     FS_TRUNCATE = 16
 } DesalojoCpu;
 
+// NO SE USA
 typedef struct {
     int pid;
     DesalojoCpu motivoDesalojo;
 } t_desalojo;
 
 // Para que usar op_code si tenemos codigo_operacion? (O al revés, qué rompimos?)
+// NO SE USA
 typedef enum {
 	MENSAJE,
 	PAQUETE
 } op_code;
 
+// Estructura con la que memoria recibe de CPU
 typedef struct {
     int pid;
     int cantidad_paginas;
@@ -154,6 +170,8 @@ typedef struct {
     void* valor_a_escribir;
 } t_pedido_memoria;
 
+
+// OPERACIONES
 typedef enum {
     PATH = 17,
 	ENVIO_PCB,
@@ -196,22 +214,26 @@ typedef enum {
     FS_TRUNCATE_KERNEL
 } codigo_operacion;
 
+// TIPO DE OPERACIONES
 typedef enum {
     ESCRITURA,
     LECTURA
 } tipo_operacion;
 
+// Estructura del Buffer
 typedef struct {
 	int size;
 	uint32_t offset;
 	void* stream;
 } t_buffer;
 
+// Estructura del paquete
 typedef struct {
 	codigo_operacion codigo_operacion;
 	t_buffer* buffer;
 } t_paquete;
 
+// Estructura de los registros
 typedef struct {
 
     // Registros de proposito gral.  (1 byte) 
@@ -233,6 +255,7 @@ typedef struct {
 
 extern t_registros* registros_cpu; // Por ahora la pongo aca, despues hay que sacarla para que solo la use la CPU
 
+// ESTADOS
 typedef enum {
     NEW,
     READY,
@@ -242,6 +265,7 @@ typedef enum {
     READY_PLUS
 } Estado;
 
+// PCB
 typedef struct {
     int pid;
     int program_counter;
@@ -251,11 +275,13 @@ typedef struct {
     t_registros* registros;
 } t_pcb;
 
+// Estructura que asocia a un pcb y a una I/O
 typedef struct {
     int pid;
     int unidades_trabajo;
 } t_pid_unidades_trabajo;
 
+// NO SE USA
 typedef struct {
     int pid;
     int direccion_fisica;
@@ -270,6 +296,8 @@ typedef struct {
     t_pid_dirfisica_tamanio* pid_dirfisica_registroTamanio; 
 } t_interfaz_pid_dirfisica_tamanio;
 */
+
+// Estructura que asocia a un pcb con una io
 typedef struct {
     int unidad_trabajo;
     t_pcb* pcb;
@@ -420,6 +448,7 @@ typedef struct {
     int block_count;
     int retraso_compactacion;
     char* path_base;
+    int tiempo_unidad_trabajo;
 } t_config_dialfs;
 
 typedef struct {
@@ -475,11 +504,22 @@ typedef struct{
 } t_pedido_fs_escritura_lectura;
 
 typedef struct {
-    void* valor_a_copiar;
+    int pid;
+    uint32_t registro_tamanio;
+    int cantidad_paginas;
     int tamanio_a_copiar;
+    void* valor_a_copiar;
+    t_list* lista_dir_tamanio;
+    
+} t_escritura_memoria_fs;
+
+typedef struct {
+    void* valor_a_copiar;
+    uint32_t tamanio_a_copiar;
     uint32_t puntero_archivo;
     int largo_archivo;
     char* nombre_archivo;
+    int pid;
 } t_solicitud_escritura_bloques;
 
 typedef struct{
@@ -497,18 +537,17 @@ typedef struct{
     int pid;
 } t_pedido_rw_encolar;
 
-char* string_operacion(codigo_operacion operacion); 
-void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* buffer);
-int iniciar_servidor(char*);
-int esperar_conexion(int);
-void corroborar_exito(int, char*);
-void sendMessage(int socket_fd);
 void receiveMessagex(int socket_fd);
+void sendMessage(int socket_fd);
+int iniciar_servidor(char*);
+void corroborar_exito(int, char*);
 int crear_conexion(char *ip, char* puerto, int valor);
+int esperar_conexion(int);
 t_registros* inicializar_registros_cpu(t_registros* registro_pcb);
+void imprimir_pcb(t_pcb* pcb);
+void* enviar_pcb(t_pcb* pcb, int socket, codigo_operacion cod_op, t_buffer* buffer);
 t_pcb* deserializar_pcb(t_buffer* buffer);
 t_buffer* llenar_buffer_pcb(t_pcb* pcb);
-void imprimir_pcb(t_pcb* pcb);
 void liberar_paquete(t_paquete* paquete);
 void liberar_paquete_y_a_enviar(t_paquete* paquete,void* a_enviar);
 void enviar_paquete(t_buffer* buffer, codigo_operacion codigo, int socket);
@@ -516,8 +555,9 @@ t_info_io *deserializar_interfaz(t_buffer *buffer);
 t_paquete *inicializarIO_recibirPaquete(int socket);
 void imprimir_datos_stdin(t_pid_stdin* datos_stdin);
 void aplicar_sobre_cada_linea_del_archivo(FILE* file, void* datos_extra, void(*closure)(void*, void*));
-char* string_desalojo(DesalojoCpu desalojo);
 t_buffer* buffer_create(int size);  // Hecho
+char* string_operacion(codigo_operacion operacion); 
+char* string_desalojo(DesalojoCpu desalojo);
 int min(int num1,int num2);
 void liberar_pcb_estructura(t_pcb* pcb);
 

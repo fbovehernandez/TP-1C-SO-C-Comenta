@@ -446,67 +446,67 @@ t_buffer* buffer_create(int size){
     return buffer;
 }
 
-void buffer_destroy(t_buffer *buffer) {
+void buffer_destroy(t_buffer *buffer) { //NO SE USA
     free(buffer->stream);
     free(buffer);
 }
 
 // Agrega un stream al buffer en la posición actual y avanza el offset
-void buffer_add(t_buffer *buffer, void *data, int size) {
+void buffer_add(t_buffer *buffer, void *data, int size) { //NO SE USA
     memcpy((uint8_t *)buffer->stream + buffer->offset, data, size);
     buffer->offset += size;
 }
 
 // Guarda size bytes del principio del buffer en la dirección data y avanza el offset
-void buffer_read(t_buffer *buffer, void *data, int size) {
+void buffer_read(t_buffer *buffer, void *data, int size) { //NO SE USA
     memcpy(data, (uint8_t *)buffer->stream + buffer->offset, size);
     buffer->offset += size;
 }
 
 // Agrega un uint32_t al buffer
-void buffer_add_uint32(t_buffer *buffer, uint32_t data) {
+void buffer_add_uint32(t_buffer *buffer, uint32_t data) { //NO SE USA
     buffer_add(buffer, &data, sizeof(uint32_t));
 }
 
 // Lee un uint32_t del buffer y avanza el offset
-uint32_t buffer_read_uint32(t_buffer *buffer) {
+uint32_t buffer_read_uint32(t_buffer *buffer) { //NO SE USA 
     uint32_t data;
     buffer_read(buffer, &data, sizeof(uint32_t));
     return data;
 }
 
 // Agrega un uint8_t al buffer
-void buffer_add_uint8(t_buffer *buffer, uint8_t data) {
+void buffer_add_uint8(t_buffer *buffer, uint8_t data) { //NO SE USA
     buffer_add(buffer, &data, sizeof(uint8_t));
 }
 
 // Lee un uint8_t del buffer y avanza el offset
-uint8_t buffer_read_uint8(t_buffer *buffer) {
+uint8_t buffer_read_uint8(t_buffer *buffer) { //NO SE USA
     uint8_t data;
     buffer_read(buffer, &data, sizeof(uint8_t));
     return data;
 }
 
 // Agrega string al buffer con un uint32_t adelante indicando su longitud
-void buffer_add_string(t_buffer *buffer, uint32_t length, char *string) {
+void buffer_add_string(t_buffer *buffer, uint32_t length, char *string) { //NO SE USA
     buffer_add_uint32(buffer, length);
     buffer_add(buffer, string, length);
 }
 
 // Lee un string y su longitud del buffer y avanza el offset
-char *buffer_read_string(t_buffer *buffer, uint32_t *length) {
+char *buffer_read_string(t_buffer *buffer, uint32_t *length) { //NO SE USA
     *length = buffer_read_uint32(buffer);
     char *string = malloc(*length);
     buffer_read(buffer, string, *length);
     return string;
 }
 
-void buffer_add_int(t_buffer *buffer, int data) {
+void buffer_add_int(t_buffer *buffer, int data) { //NO SE USA
     buffer_add(buffer, &data, sizeof(int));
 }
 
 // Lee un int del buffer y avanza el offset
-int buffer_read_int(t_buffer *buffer) {
+int buffer_read_int(t_buffer *buffer) { //NO SE USA
     int data;
     buffer_read(buffer, &data, sizeof(int));
     return data;

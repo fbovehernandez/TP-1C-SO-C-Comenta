@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
     /////////////// ---------- ///////////////
     // Hilo 3 -> Conexion con interfaz I/O
     int escucha_fd = iniciar_servidor(datos_kernel->puerto_io);
-    log_info(logger_kernel, "Servidor iniciado, esperando conexiones!");
+    printf("Servidor iniciado, esperando conexiones!\n");
 
     // Creo el config para el hilo de I/O
     t_config_kernel* kernel_io = malloc(sizeof(t_config_kernel));
@@ -111,7 +111,6 @@ int main(int argc, char* argv[]) {
     queue_destroy_and_destroy_elements(cola_prioritarios_por_signal,liberar_pcb);
     queue_destroy_and_destroy_elements(cola_ready_plus,liberar_pcb);
     */
-    
     
     close(socket_memoria_kernel);
     close(socket_cpu);

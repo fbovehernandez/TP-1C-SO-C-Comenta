@@ -4,9 +4,33 @@ int tamanio_pagina;
 t_log* logger_CPU;
 t_list* tlb;
 
-/*void inicializar_tlb() {
-    tlb = list_create();
-}*/
+int traducir_direccion_logica_a_fisica(uint32_t direccion_logica, int pid) { 
+    t_direccion_logica* direccion_logica_a_crear = malloc(sizeof(t_direccion_logica)); 
+
+    direccion_logica_a_crear->numero_pagina = floor(direccion_logica / tamanio_pagina);
+    direccion_logica_a_crear->desplazamiento = direccion_logica - direccion_logica_a_crear->numero_pagina * tamanio_pagina;
+
+    printf("Numero de pagina %d + Desplazamiento %d\n", direccion_logica_a_crear->numero_pagina, direccion_logica_a_crear->desplazamiento);
+
+    int frame = buscar_frame_en_TLB(pid, direccion_logica_a_crear->numero_pagina);
+    
+    if(frame == -1) { // Caso de que no encuentre el marco
+        pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina, pid); 
+        recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
+        log_info(logger_CPU, "PID: %d - OBTENER MARCO - Página: %d - Marco: %d", pid, direccion_logica_a_crear->numero_pagina, frame);
+        agregar_frame_en_TLB(pid, direccion_logica_a_crear->numero_pagina, frame);
+    }
+    // pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina, pid); 
+    imprimir_tlb();
+    // recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
+    printf("Frame %d recibido de memoria con PID %d\n", frame, pid);
+    
+    int direccion_fisica = frame * tamanio_pagina + direccion_logica_a_crear->desplazamiento;
+    
+    free(direccion_logica_a_crear);
+
+    return direccion_fisica;
+}
 
 int buscar_frame_en_TLB(int pid, int pagina) {
     for(int i=0; i<list_size(tlb); i++){
@@ -55,7 +79,7 @@ void eliminar_victima_TLB() {
         entrada_victima = (t_entrada_tlb*) list_get_minimum(tlb, (void*) _timestamp_menor_de_entrada);
     }
 
-    log_info(logger_CPU, "TLB elimina victima - PID: %d - Pagina: %d", entrada_victima->pid, entrada_victima->pagina);
+    printf("TLB elimina victima - PID: %d - Pagina: %d", entrada_victima->pid, entrada_victima->pagina);
     
     list_remove_element(tlb, entrada_victima);
     free(entrada_victima);
@@ -94,34 +118,6 @@ int esta_en_TLB(int nro_pagina) {
 }
 */
 
-int traducir_direccion_logica_a_fisica(uint32_t direccion_logica, int pid) { 
-    t_direccion_logica* direccion_logica_a_crear = malloc(sizeof(t_direccion_logica)); 
-
-    direccion_logica_a_crear->numero_pagina = floor(direccion_logica / tamanio_pagina);
-    direccion_logica_a_crear->desplazamiento = direccion_logica - direccion_logica_a_crear->numero_pagina * tamanio_pagina;
-
-    log_info(logger_CPU, "Numero de pagina %d + Desplazamiento %d\n", direccion_logica_a_crear->numero_pagina, direccion_logica_a_crear->desplazamiento);
-
-    int frame = buscar_frame_en_TLB(pid, direccion_logica_a_crear->numero_pagina);
-    
-    if(frame == -1) { // Caso de que no encuentre el marco
-        pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina, pid); 
-        recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
-        log_info(logger_CPU, "PID: %d - OBTENER MARCO - Página: %d - Marco: %d", pid, direccion_logica_a_crear->numero_pagina, frame);
-        agregar_frame_en_TLB(pid, direccion_logica_a_crear->numero_pagina, frame);
-    }
-    // pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina, pid); 
-    imprimir_tlb();
-    // recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
-    printf("Frame %d recibido de memoria con PID %d\n", frame, pid);
-    
-    int direccion_fisica = frame * tamanio_pagina + direccion_logica_a_crear->desplazamiento;
-    
-    free(direccion_logica_a_crear);
-
-    return direccion_fisica;
-}
-
 void pedir_frame_a_memoria(int nro_pagina, int pid) {
     t_solicitud_frame* solicitud_frame = malloc(sizeof(t_solicitud_frame));
     t_buffer* buffer = malloc(sizeof(t_buffer));
@@ -151,15 +147,6 @@ void pedir_frame_a_memoria(int nro_pagina, int pid) {
 void vaciar_tlb() {
 	
 }
-
-/*
-typedef struct {
-    int pid;
-    int pagina;
-    int marco;
-    long timestamps;
-} t_entrada_tlb;
-*/
 
 void imprimir_tlb() {
     printf("\nVoy a imprimir el TLB \n");

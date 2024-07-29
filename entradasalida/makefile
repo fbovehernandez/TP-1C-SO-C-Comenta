@@ -52,35 +52,35 @@ $(sort $(dir $(BIN) $(OBJS))):
 
 .PHONY: start
 start: debug
-	valgrind --tool=none ./$(BIN) $(NOMBRE_INTERFAZ) $(ARGS)
+	valgrind --tool=none ./$(BIN) $(ARGS)
 
 .PHONY: start2
 start2: debug
-	valgrind --tool=none ./$(BIN) $(GENERICA) $(NOMBRE_INTERFAZ1) 
+	valgrind --tool=none ./$(BIN) $(GENERICA) 
 
 .PHONY: start3
 start3: debug
-	valgrind --tool=none ./$(BIN) $(ARGS3) $(NOMBRE_INTERFAZ2) 
+	valgrind --tool=none ./$(BIN) $(ARGS3)  
 
 .PHONY: start_stdin
 start_stdin: debug
-	valgrind --tool=none ./$(BIN) $(TECLADO) $(NOMBRE_INTERFAZ_STDIN) 
+	valgrind --tool=none ./$(BIN) $(TECLADO)
 
 PHONY: start_stdout
 start_stdout: debug
-	valgrind --tool=none ./$(BIN) $(MONITOR) $(NOMBRE_INTERFAZ_STDOUT) 
+	valgrind --tool=none ./$(BIN) $(MONITOR)  
 
 PHONY: start_dialfs
 start_dialfs: debug
-	valgrind --tool=none ./$(BIN) $(ARGS_DIALFS) $(NOMBRE_INTERFAZ_DIALFS) 
+	valgrind --tool=none ./$(BIN) $(ARGS_DIALFS)
 
 .PHONY: start_SLP1
 start_SLP1: debug
-	valgrind --tool=none ./$(BIN) $(ARGS_SLP1) $(NOMBRE_INTERFAZ_SLP1) 
+	valgrind --tool=none ./$(BIN) $(ARGS_SLP1)
 
 .PHONY: start_ESPERA
 start_ESPERA: debug
-	valgrind --tool=none ./$(BIN) $(ARGS_ESPERA) $(NOMBRE_INTERFAZ_ESPERA) 
+	valgrind --tool=none ./$(BIN) $(ARGS_ESPERA) 
 
 
 .PHONY: memcheck

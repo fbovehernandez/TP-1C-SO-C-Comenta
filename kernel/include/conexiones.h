@@ -46,35 +46,55 @@ typedef struct {
     t_log* logger;
 } t_config_kernel;
 
-int conectar_kernel_memoria(char* ip, char* puerto, t_log* logger_kernel);
-int conectar_kernel_cpu_dispatch(t_log* logger_kernel, char* ip, char* puerto);
-int conectar_kernel_cpu_interrupt(t_log* logger_kernel,char* IP_CPU,char* puerto_cpu_dispatch);
-int esperar_cliente(int socket_escucha, t_log* logger);
-void* handle_io_stdout(void* socket);
-void* handle_io_stdin(void* socket);
-void* handle_io_dialfs(void* socket);
-// void copiar_pcb(t_pcb* pcb);
-int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin);
-int ejecutar_io_stdout(t_pid_stdout* pid_stdout);
-void* handle_io_generica(void* socket);
-int ejecutar_io_generica(int socket_io, t_pid_unidades_trabajo* pid_unidades_trabajo);
-int recibir_operacion(int socket_cliente);
-void liberar_conexion(int socket_cliente);
-// void escuchar_STDOUT(t_config* config_kernel, t_log* logger_kernel);
-void* escuchar_IO(void* kernel_io);
+/////////////////////
+///// FUNCIONES /////
+/////////////////////
+
+// GENERAL
 ptr_kernel* solicitar_datos(t_config* config_kernel);
-void solicitar_nombre_io(int socket);
-t_info_io* deserializar_interfaz(t_buffer* buffer);
-t_list_io* establecer_conexion(t_buffer *buffer, int socket_io);
+int esperar_cliente(int socket_escucha, t_log* logger);
+int conectar_kernel_cpu_interrupt(t_log* logger_kernel,char* IP_CPU,char* puerto_cpu_dispatch);
+int conectar_kernel_cpu_dispatch(t_log* logger_kernel, char* ip, char* puerto);
+int conectar_kernel_memoria(char* ip, char* puerto, t_log* logger_kernel);
+void* escuchar_IO(void* kernel_io);
 void mostrar_elem_diccionario(char* nombre_interfaz);
+t_list_io* establecer_conexion(t_buffer *buffer, int socket_io);
+
+// PLANIFICACION
 t_pcb* sacarDe(t_queue* cola, int pid);
 pthread_mutex_t* obtener_mutex_de(t_queue* cola);
 void pasar_a_exit_procesos_bloqueados(t_list* bloqueados);
+
+// STDIN
+void* handle_io_stdin(void* socket);
+int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin);
+
+// STDOUT
+void* handle_io_stdout(void* socket);
+int ejecutar_io_stdout(t_pid_stdout* pid_stdout);
+
+// GENERICA
+void* handle_io_generica(void* socket);
+int ejecutar_io_generica(int socket_io, t_pid_unidades_trabajo* pid_unidades_trabajo);
+
+// LIMPIEZA
+void liberar_datos_std(io_std* datos_std);
+void liberar_fs_puntero(datos_operacion* dato_fs);
 void liberarIOyPaquete(t_paquete *paquete, t_list_io *io);
 void liberar_io(t_list_io* io);
 void liberar_arrays_recurso(char** recursos, char** instancias_recursos);
+
+//////////////////////////////////////////////////
+///// LOS DE ABAJO NO SE ENCUENTRAN EN EL .C /////
+//////////////////////////////////////////////////
+
+void* handle_io_dialfs(void* socket);
+// void copiar_pcb(t_pcb* pcb);
+int recibir_operacion(int socket_cliente);
+void liberar_conexion(int socket_cliente);
+// void escuchar_STDOUT(t_config* config_kernel, t_log* logger_kernel);
+void solicitar_nombre_io(int socket);
+t_info_io* deserializar_interfaz(t_buffer* buffer);
 t_pcb* sacarDe(t_queue* cola, int pid);
 pthread_mutex_t* obtener_mutex_de(t_queue* cola);
-void liberar_datos_std(io_std* datos_std);
-void liberar_fs_puntero(datos_operacion* dato_fs);
 #endif // CONEXIONES_H

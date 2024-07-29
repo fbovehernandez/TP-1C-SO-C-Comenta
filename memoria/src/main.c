@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
 
     // Levanto el servidor y devuelvo el socket de escucha
     int escucha_fd = iniciar_servidor(puerto_escucha);
-    log_info(logger_memoria, "Servidor iniciado, esperando conexiones!");
+    printf("Servidor iniciado, esperando conexiones!\n");
 
     t_config_memoria* memory_struct_cpu = malloc(sizeof(t_config_memoria));
     memory_struct_cpu->socket = escucha_fd;

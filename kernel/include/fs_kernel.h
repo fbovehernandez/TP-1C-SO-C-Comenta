@@ -12,13 +12,13 @@
 #include "../../utils/include/logconfig.h"
 
 t_pedido_fs_create_delete* deserializar_pedido_fs_create_delete(t_buffer* buffer);
-void encolar_fs_create_delete(codigo_operacion operacion, t_pcb* pcb, t_pedido_fs_create_delete* pedido_fs, t_list_io* interfaz);
-int ejecutar_io_dialfs_CREATE_DELETE(int socket, t_archivo_encolar* archivo_encolar, codigo_operacion operacion, int pid);
-void encolar_fs_truncate(t_pcb* pcb,  t_fs_truncate* pedido_fs, t_list_io* interfaz);
 t_fs_truncate* deserializar_pedido_fs_truncate(t_buffer* buffer);
+t_pedido_fs_escritura_lectura* deserializar_pedido_fs_escritura_lectura(t_buffer* buffer);
+void encolar_fs_truncate(t_pcb* pcb,  t_fs_truncate* pedido_fs, t_list_io* interfaz);
+void encolar_fs_create_delete(codigo_operacion operacion, t_pcb* pcb, t_pedido_fs_create_delete* pedido_fs, t_list_io* interfaz);
+void encolar_fs_read_write(codigo_operacion cod_op, t_pcb* pcb, t_pedido_fs_escritura_lectura* fs_read_write, t_list_io* interfaz);
+int ejecutar_io_dialfs_CREATE_DELETE(int socket, t_archivo_encolar* archivo_encolar, codigo_operacion operacion, int pid);
 int ejecutar_io_dialfs_TRUNCATE(int socket, t_pedido_truncate* pedido_truncate, int pid);
 int ejecutar_io_dialfs_READ_WRITE(t_pedido_rw_encolar* rw_encolar, codigo_operacion operacion, int socket_, int pid);
 void imprimir_datos_rw(t_pedido_rw_encolar* rw_encolar);
-void encolar_fs_read_write(codigo_operacion cod_op, t_pcb* pcb, t_pedido_fs_escritura_lectura* fs_read_write, t_list_io* interfaz);
-
 #endif // KERNEL_FS_H_

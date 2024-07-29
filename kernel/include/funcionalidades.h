@@ -59,6 +59,11 @@ typedef struct {
 extern int grado_multiprogramacion;
 extern int quantum_config;
 extern int contador_pid;  
+extern char* algoritmo_planificacion; // Tomamos en convencion que los algoritmos son "FIFO", "VRR" , "RR" (siempre en mayuscula)
+extern t_log* logger_kernel;
+extern char* path_kernel;
+extern ptr_kernel* datos_kernel;
+extern bool planificacion_pausada; 
 
 extern sem_t sem_grado_multiprogramacion;
 extern sem_t sem_hay_pcb_esperando_ready;
@@ -67,96 +72,14 @@ extern sem_t sem_contador_quantum;
 extern sem_t sem_planificadores;
 // extern bool hay_proceso_en_exec;
 
-extern char* algoritmo_planificacion; // Tomamos en convencion que los algoritmos son "FIFO", "VRR" , "RR" (siempre en mayuscula)
-extern t_log* logger_kernel;
-extern char* path_kernel;
-extern ptr_kernel* datos_kernel;
+/////////////////////
+///// FUNCIONES /////
+/////////////////////
 
-extern bool planificacion_pausada; 
-
-// Funciones
+// CONSOLA
 void* interaccion_consola();
-void encolar_a_new(t_pcb* pcb);
-void* a_ready(); // Para hilo 
-t_pcb* crear_nuevo_pcb(int pid);
-void* contar_quantum(void* socket_CPU);
-t_registros* inicializar_registros_cpu();
-void print_queue(Estado estado);
-int obtener_siguiente_pid();
-// t_queue* mostrar_cola(t_queue* cola);
-void mostrar_pcb_proceso(t_pcb* pcb);
-void* planificar_corto_plazo(void* sockets_kernel);
-void enviar_path_a_memoria(char* path, t_sockets* sockets, int pid);
-t_buffer* llenar_buffer_path(t_path* pathNuevo);
-t_pcb* proximo_a_ejecutar();
-void esperar_cpu();
-void mandar_datos_io(char* interfaz_nombre, uint32_t registro_direccion, uint32_t registro_tamanio);
-t_operacion_io* deserializar_io(t_buffer* buffer);
-t_paquete* recibir_cpu();
-// void liberar_memoria(t_pcb* pcb, int pid);
-void dormir_io(t_operacion_io* operacion_io, t_pcb* pcb);
-void hilo_dormir_io(t_operacion_io* operacion_io);
-void change_status(t_pcb* pcb, Estado new_status);
-bool match_nombre(char* interfaz);
-t_list_io* validar_io(t_operacion_io* operacion_io, t_pcb* pcb);
-void _ejecutarComando(void* _, char* linea_leida);
-void* detener_planificaciones();
 
-t_parametro* deserializar_parametro(t_buffer* buffer);
-t_pedido* deserializar_pedido(t_buffer* buffer);
-void wait_signal_recurso(t_pcb* pcb, char* recurso,DesalojoCpu desalojo);
-bool esta_el_pid_en_cola_de_procesos_que_retienen(int pid, t_recurso* recurso_obtenido);
-void ejecutar_signal_recurso(t_recurso* recurso, t_pcb* pcb, bool esta_para_finalizar);
-void ejecutar_signal_de_recursos_bloqueados_por(t_pcb* pcb);
-void ejecutar_wait_recurso(t_recurso* recurso,t_pcb* pcb,char* key_nombre_recurso);
-char* pasar_string_desalojo_recurso(DesalojoCpu desalojoCpu);
-void _imprimir_recurso(char* nombre, void* element);
-void imprimir_diccionario_recursos();
-// t_pedido_escritura* deserializar_pedido_escritura(t_buffer* buffer);
-void mandar_a_escribir_a_memoria(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio);
-void encolar_datos_std(t_pcb* pcb, t_pedido* pedido);
-void mandar_pedido_fs();
-t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre);
-t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, uint32_t tamanio);
-void enviar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uint32_t registro_archivo,codigo_operacion codigo);
-// void imprimir_datos_stdin(io_stdin* datos_stdin);
-t_pedido_fs_truncate* deserializar_fs_truncate(t_buffer* buffer);
-t_buffer* llenar_buffer_fs_truncate(int pid,int largo_archivo,char* nombre_archivo,uint32_t truncador);
-bool es_VRR_RR();
-bool es_RR();
-bool es_VRR();
-void* esperar_VRR(void* pcb);
-void* esperar_RR(void* pcb) ;
-void volver_a_settear_quantum(t_pcb* pcb);
-int max(int num1, int num2);
-int leQuedaTiempoDeQuantum(t_pcb *pcb);
-void mostrar_cola(t_queue* cola);
-void ejecutarComando(char* linea_leida);
-void mostrar_cola_con_mutex(t_queue* cola,pthread_mutex_t* mutex);
-
-
-t_queue* encontrar_en_que_cola_esta(int pid);
-int esta_en_cola_pid(t_queue* cola, int pid, pthread_mutex_t* mutex);
-int queue_find(t_queue* cola, int pid);
-t_pcb* sacarPCBDeDondeEste(int pid);
-pthread_mutex_t* obtener_mutex_de(t_queue* cola);
-
-/* FUNCIONES PARA LOS MEMCHECK Y LIBERAR MALLOCS :D */
-void liberar_pedido_escritura_lectura(t_pedido* pedido_escritura_lectura);
-void liberar_recursos(t_dictionary* recursos);
-void finalizar_kernel();
-void enviar_eliminacion_pcb_a_memoria(int pid);
-void liberar_pcb(t_pcb* pcb);
-void liberar_estructura_sockets();
-void liberar_cola_recursos(t_list* procesos_bloqueados);
-void liberar_datos_kernel();
-void liberar_ios();
-void liberar_pcb_de_io(int pid);
-void liberar_pcb_de_recursos(int pid);
-void liberar_pcb_normal(t_pcb* pcb);
-void finalzar_cpu();
-void finalizar_memoria();
-
+// COMANDOS CONSOLA
 void EJECUTAR_SCRIPT(char* path);
 void INICIAR_PROCESO(char* path);
 void FINALIZAR_PROCESO(int pid);
@@ -165,9 +88,115 @@ void DETENER_PLANIFICACION();
 void PROCESO_ESTADO();
 void MULTIPROGRAMACION(int valor);
 
+// FUNCIONES COMPLEMENTARIAS A COMANDOS
+void _ejecutarComando(void* _, char* linea_leida);
+void* detener_planificaciones();
+
+// PLANIFICACION
+void* planificar_corto_plazo(void* sockets_kernel);
+t_pcb* proximo_a_ejecutar();
+t_pcb* crear_nuevo_pcb(int pid);
+int obtener_siguiente_pid();
+void encolar_a_new(t_pcb* pcb);
+void* a_ready(); // Para hilo 
+bool es_VRR_RR();
+bool es_RR();
+bool es_VRR();
+void* esperar_VRR(void* pcb);
+void* esperar_RR(void* pcb);
+int leQuedaTiempoDeQuantum(t_pcb *pcb);
+void volver_a_settear_quantum(t_pcb* pcb);
+t_queue* encontrar_en_que_cola_esta(int pid);
+int esta_en_cola_pid(t_queue* cola, int pid, pthread_mutex_t* mutex);
+void mostrar_cola_con_mutex(t_queue* cola,pthread_mutex_t* mutex);
+void mostrar_cola(t_queue* cola);
+void mostrar_pcb_proceso(t_pcb* pcb);
+
+// CPU
+t_paquete* recibir_cpu();
+void esperar_cpu();
+
+// FILE SYSTEM
 void enviar_buffer_fs(int socket_io,int pid,int longitud_nombre_archivo,char* nombre_archivo, codigo_operacion codigo_operacion);
-t_pedido_fs_escritura_lectura* deserializar_pedido_fs_escritura_lectura(t_buffer* buffer);
 t_buffer* llenar_buffer_nombre_archivo_pid(int pid,int largo_archivo,char* nombre_archivo);
+
+// STDIN|STDOUT
+void encolar_datos_std(t_pcb* pcb, t_pedido* pedido);
+
+// GENERICA
+void dormir_io(t_operacion_io* operacion_io, t_pcb* pcb);
+
+// RECURSOS
+void wait_signal_recurso(t_pcb* pcb, char* recurso,DesalojoCpu desalojo);
+void ejecutar_wait_recurso(t_recurso* recurso,t_pcb* pcb,char* key_nombre_recurso);
+void ejecutar_signal_recurso(t_recurso* recurso, t_pcb* pcb, bool esta_para_finalizar);
+void ejecutar_signal_de_recursos_bloqueados_por(t_pcb* pcb);
+char* pasar_string_desalojo_recurso(DesalojoCpu desalojoCpu);
+void _imprimir_recurso(char* nombre, void* element);
+void imprimir_diccionario_recursos();
+
+// LIMPIEZA
+void liberar_recursos(t_dictionary* recursos);
+void liberar_ios();
+void liberar_pcb(t_pcb* pcb);
+void liberar_pcb_de_recursos(int pid);
+void liberar_pcb_de_io(int pid);
+void liberar_pedido_escritura_lectura(t_pedido* pedido_escritura_lectura);
+
+// SERIALIZACION|DESERIALIZACION|ENVIO|RECEPCION DE PAQUETES
+void enviar_path_a_memoria(char* path, t_sockets* sockets, int pid);
+t_buffer* llenar_buffer_path(t_path* pathNuevo);
+t_pedido* deserializar_pedido(t_buffer* buffer);
+t_operacion_io* deserializar_io(t_buffer* buffer);
+t_parametro* deserializar_parametro(t_buffer* buffer);
+void mandar_a_escribir_a_memoria(char* nombre_interfaz, int direccion_fisica, uint32_t tamanio);
+t_buffer* llenar_buffer_stdout(int direccion_fisica,char* nombre_interfaz, uint32_t tamanio);
+void enviar_eliminacion_pcb_a_memoria(int pid);
+
+// FUNCIONES AYUDA
+int max(int num1, int num2);
+t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre);
+t_list_io* validar_io(t_operacion_io* operacion_io, t_pcb* pcb);
+
+// NO SE ESTA USANDO
+bool esta_el_pid_en_cola_de_procesos_que_retienen(int pid, t_recurso* recurso_obtenido);
+
+
+//////////////////////////////////////////////////
+///// LOS DE ABAJO NO SE ENCUENTRAN EN EL .C /////
+//////////////////////////////////////////////////
+
+void* contar_quantum(void* socket_CPU);
+t_registros* inicializar_registros_cpu();
+// t_queue* mostrar_cola(t_queue* cola);
+// void liberar_memoria(t_pcb* pcb, int pid);
+void hilo_dormir_io(t_operacion_io* operacion_io);
+void change_status(t_pcb* pcb, Estado new_status);
+bool match_nombre(char* interfaz);
+
+// t_pedido_escritura* deserializar_pedido_escritura(t_buffer* buffer);
+void mandar_pedido_fs();
+void enviar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio,uint32_t registro_archivo,codigo_operacion codigo);
+// void imprimir_datos_stdin(io_stdin* datos_stdin);
+t_pedido_fs_truncate* deserializar_fs_truncate(t_buffer* buffer);
+void ejecutarComando(char* linea_leida);
+t_buffer* llenar_buffer_fs_truncate(int pid,int largo_archivo,char* nombre_archivo,uint32_t truncador);
+
+
+int queue_find(t_queue* cola, int pid);
+t_pcb* sacarPCBDeDondeEste(int pid);
+pthread_mutex_t* obtener_mutex_de(t_queue* cola);
+
+/* FUNCIONES PARA LOS MEMCHECK Y LIBERAR MALLOCS :D */
+void finalizar_kernel();
+void liberar_estructura_sockets();
+void liberar_cola_recursos(t_list* procesos_bloqueados);
+void liberar_datos_kernel();
+void liberar_pcb_normal(t_pcb* pcb);
+void finalzar_cpu();
+void finalizar_memoria();
+
+t_pedido_fs_escritura_lectura* deserializar_pedido_fs_escritura_lectura(t_buffer* buffer);
 t_buffer* llenar_buffer_fs_escritura_lectura(int pid,int socket,int largo_archivo,char* nombre_archivo,uint32_t registro_direccion,uint32_t registro_tamanio);
 t_pedido_fs_create_delete* deserializar_pedido_fs_create_delete(t_buffer* buffer);
 

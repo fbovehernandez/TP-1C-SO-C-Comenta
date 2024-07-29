@@ -291,14 +291,21 @@ void* handle_io_dialfs(void* socket_io) {
         } else {
             datos_op = (datos_operacion*) list_remove(io->cola_blocked, 0);
         }
+        printf("Se metio en el mutex\n");
         pthread_mutex_unlock(&mutex_cola_fs);
 
         // pasar_a_blocked(datos_op->pcb);
 
         // Chequeo conexion de la io, sino desconecto y envio proceso a exit (no se desconectan io mientras tenga procesos en la cola) -> NO BORREN ESTE
+          
+        printf("Va a mandar una validacion de conexion\n");
         
+        /* 
         send(socket, &validacion_conexion, sizeof(int), 0);
+        // Se traba aca??????
+        printf("mando validacion de conexion\n");      
         int result = recv(socket, &respuesta_conexion, sizeof(int), 0);
+
         printf("resultado recv: %d\n", result);
 
         if(result == 0) {
@@ -317,7 +324,8 @@ void* handle_io_dialfs(void* socket_io) {
             
             return NULL;
         }
-
+        */
+       
         printf("Codigo de operacion: %d\n", datos_op->tipo_operacion);
         switch (datos_op->tipo_operacion) {
             case ELIMINAR_ARCHIVO:
@@ -336,7 +344,10 @@ void* handle_io_dialfs(void* socket_io) {
                     printf("Termino io: %d\n", termino_io);
                     if (termino_io == 1) { // El send de termino io envia 1.
                         printf("Termino la IO\n");
+                        sem_wait(&sem_planificadores);
+                        sacarDe(cola_blocked, datos_op->pcb->pid);
                         pasar_a_ready(datos_op->pcb);
+                        sem_post(&sem_planificadores);
                     }
                 } else {
                     printf("No se pudo ejecutar la IO\n");
@@ -359,7 +370,10 @@ void* handle_io_dialfs(void* socket_io) {
                     printf("Termino io: %d\n", termino_io);
                     if (termino_io == 1) { // El send de termino io envia 1.
                         printf("Termino la IO\n");
+                        sacarDe(cola_blocked, datos_op->pcb->pid);
+                        sem_wait(&sem_planificadores); 
                         pasar_a_ready(datos_op->pcb);
+                        sem_post(&sem_planificadores);
                     }
                 } else {
                     printf("No se pudo ejecutar la IO\n");
@@ -376,7 +390,7 @@ void* handle_io_dialfs(void* socket_io) {
                 
                 imprimir_datos_rw(rw_encolar);
 
-                sleep(10); 
+                // sleep(10); 
 
                 int respuesta_ok_rw = ejecutar_io_dialfs_READ_WRITE(rw_encolar, datos_op->tipo_operacion, socket, datos_op->pcb->pid);
 
@@ -387,12 +401,16 @@ void* handle_io_dialfs(void* socket_io) {
         
                     recv(socket, &termino_io_rw, sizeof(int), MSG_WAITALL);
                     
-                    printf("Termino io: %d\n", termino_io_rw);
+                    printf("Termino io en LEER_FS_MEMORIA o ESCRIBIR_FS_MEMORIA: %d\n", termino_io_rw);
                     if (termino_io_rw == 1) { // El send de termino io envia 1.
                         printf("Termino la IO\n");
+                        sacarDe(cola_blocked, datos_op->pcb->pid);
+                        sem_wait(&sem_planificadores);
                         pasar_a_ready(datos_op->pcb);
+                        sem_post(&sem_planificadores);
                     }
                 } else {
+                    // Por aca no entra nunca porque no puedo probar la desconexion :(
                     printf("No se pudo ejecutar la IO\n");
                     printf("Se desconecto la IO\n");
                     sacarDe(cola_blocked, datos_op->pcb->pid);
@@ -499,6 +517,7 @@ int ejecutar_io_dialfs_READ_WRITE(t_pedido_rw_encolar* rw_encolar, codigo_operac
     int respuesta_mem;
 
     if(operacion == LEER_FS_MEMORIA) {
+        printf("Le enviamos a la io un paquete LEER_FS_MEMORIA!\n");
         enviar_paquete(buffer, operacion, socket_io);
         recv(socket_io, &respuesta_mem, sizeof(int), MSG_WAITALL);
     } else {

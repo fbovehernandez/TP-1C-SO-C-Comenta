@@ -17,10 +17,10 @@ int main(int argc, char* argv[2]) {
         log_error(logger_io, "No se pudo leer el archivo de configuracion");
         return 1;
     }
-    
-    nombre_io = strdup(argv[2]);
 
+    char* nombre_io = readline(">Ingrese el nombre de interfaz: ");
     printf("Este es el nombre de la io: %s\n", nombre_io);
+    
     printf("Este es el nombre del config: %s\n", argv[1]);
 
     char* tipo_interfaz = config_get_string_value(config_io, "TIPO_INTERFAZ"); // TOdos

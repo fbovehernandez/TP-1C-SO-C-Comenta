@@ -26,14 +26,29 @@ typedef struct {
     char* puerto_memoria;
 } ptrdata_cpu;
 
-int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU);
+
+/////////////////////
+///// FUNCIONES /////
+/////////////////////
+
+// GENERAL
 int esperar_cliente(int socket_escucha, t_log* logger_CPU);
 void* iniciar_servidor_dispatch(void* datos_dispatch);
 void cargar_registros_en_cpu(t_registros* registros_pcb);
-void recibir_cliente();
-void* iniciar_servidor_interrupt(void* datos_interrupt);
-void recibir_cliente_interrupt(int client_interrupt);
 t_config_cpu* iniciar_datos(char* escucha_fd, t_log* logger_CPU);
+void* iniciar_servidor_interrupt(void* datos_interrupt);
+
+// MEMORIA 
+int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU);
+
+// KERNEL
+void recibir_cliente();
+void recibir_cliente_interrupt(int client_interrupt);
+
+
+//////////////////////////////////////////////////
+///// LOS DE ABAJO NO SE ENCUENTRAN EN EL .C /////
+//////////////////////////////////////////////////
 
 //Todo esto donde esta?
 void* handle_dispatch(void* client_dispatch);

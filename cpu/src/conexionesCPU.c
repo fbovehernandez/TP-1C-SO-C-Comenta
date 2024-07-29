@@ -4,35 +4,24 @@ int socket_memoria;
 int client_dispatch; //socket_kernel
 t_config* config_CPU;
 
-int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) {
-    int valor = 2;
-    // int message_cpu = 10;
-
-    int memoriafd = crear_conexion(IP_MEMORIA, puerto_memoria, valor);
-    log_info(logger_CPU, "Conexion establecida con Memoria");
-    
-    recv(memoriafd, &tamanio_pagina, sizeof(int), MSG_WAITALL);
-    
-    // send(memoriafd, &message_cpu, sizeof(int), 0); // Me conecto y envio un mensaje a memoria
-
-    sleep(3);
-    return memoriafd;
-}
+///////////////////
+///// GENERAL /////
+///////////////////
 
 // Modificar para que me devuelva un struct con los sockets y el sv_type
 int esperar_cliente(int socket_servidor, t_log *logger_cpu) {
     uint32_t handshake;
     uint32_t resultOk = 0;
-    uint32_t resultError = -1;
+    uint32_t resultError = -1; 
     int socket_cliente = accept(socket_servidor, NULL, NULL);
 
     recv(socket_cliente, &handshake, sizeof(uint32_t), MSG_WAITALL);
     if(handshake == 1) {
         send(socket_cliente, &resultOk, sizeof(uint32_t), 0);
-        log_info(logger_cpu, "Se conecto un cliente de dispatch!\n");
+        printf("Se conecto un cliente de dispatch!\n");
     } else if(handshake == 3){
         send(socket_cliente, &resultOk, sizeof(uint32_t), 0);
-        log_info(logger_cpu, "Se conecto un cliente de interrupt!\n");
+        printf("Se conecto un cliente de interrupt!\n");
     } else {
         send(socket_cliente, &resultError, sizeof(uint32_t), 0);
     }
@@ -44,10 +33,10 @@ int esperar_cliente(int socket_servidor, t_log *logger_cpu) {
 void* iniciar_servidor_dispatch(void* datos_dispatch) {
     t_config_cpu* datos = (t_config_cpu*) datos_dispatch;
     int socket_cpu_escucha = iniciar_servidor(datos->puerto_escucha); // Inicia el servidor, bind() y listen() y socket()
-    log_info(datos->logger, "Servidor iniciado, esperando conexiones!");
+    printf("Servidor iniciado, esperando conexiones!\n");
 
     client_dispatch = esperar_cliente(socket_cpu_escucha, datos->logger); 
-    log_info(datos->logger, "Esperando cliente...");
+    printf("Esperando cliente...\n");
 
     // Aca recibo al cliente (este es mi while(1))
     recibir_cliente();
@@ -69,6 +58,49 @@ void cargar_registros_en_cpu(t_registros* registros_pcb) {
     registros_cpu->SI = registros_pcb->SI;
     registros_cpu->DI = registros_pcb->DI;
 }
+
+t_config_cpu* iniciar_datos(char* escucha_fd, t_log* logger_CPU) {
+    // Iniciacion de datos
+
+    t_config_cpu* cpu_server = malloc(sizeof(t_config_cpu));
+    cpu_server->puerto_escucha = escucha_fd;
+    cpu_server->logger = logger_CPU;
+
+    return cpu_server;
+}
+
+// Hace lo mismo que dispatch pero con interrupt (POR AHORA)
+void* iniciar_servidor_interrupt(void* datos_interrupt) {
+    t_config_cpu* datos = (t_config_cpu*) datos_interrupt;
+    int socket_cpu_escucha = iniciar_servidor(datos->puerto_escucha); // Inicia el servidor, bind() y listen() y socket()
+    int client_interrupt = esperar_cliente(socket_cpu_escucha, datos->logger); 
+
+    recibir_cliente_interrupt(client_interrupt);
+    return NULL;
+}
+
+///////////////////
+///// MEMORIA /////
+///////////////////
+
+int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) {
+    int valor = 2;
+    // int message_cpu = 10;
+
+    int memoriafd = crear_conexion(IP_MEMORIA, puerto_memoria, valor);
+    printf("Conexion establecida con Memoria\n");
+    
+    recv(memoriafd, &tamanio_pagina, sizeof(int), MSG_WAITALL);
+    
+    // send(memoriafd, &message_cpu, sizeof(int), 0); // Me conecto y envio un mensaje a memoria
+
+    sleep(3);
+    return memoriafd;
+}
+
+//////////////////
+///// KERNEL /////
+//////////////////
 
 void recibir_cliente() { // Se supone que desde aca se conecta el kernel
     while(1) {
@@ -105,16 +137,6 @@ void recibir_cliente() { // Se supone que desde aca se conecta el kernel
     }
 }
 
-// Hace lo mismo que dispatch pero con interrupt (POR AHORA)
-void* iniciar_servidor_interrupt(void* datos_interrupt) {
-    t_config_cpu* datos = (t_config_cpu*) datos_interrupt;
-    int socket_cpu_escucha = iniciar_servidor(datos->puerto_escucha); // Inicia el servidor, bind() y listen() y socket()
-    int client_interrupt = esperar_cliente(socket_cpu_escucha, datos->logger); 
-
-    recibir_cliente_interrupt(client_interrupt);
-    return NULL;
-}
-
 void recibir_cliente_interrupt(int client_interrupt) {
     codigo_operacion cod_op;
     while(1) {
@@ -147,14 +169,4 @@ void recibir_cliente_interrupt(int client_interrupt) {
                 break;
         }
     }
-}
-
-t_config_cpu* iniciar_datos(char* escucha_fd, t_log* logger_CPU) {
-    // Iniciacion de datos
-
-    t_config_cpu* cpu_server = malloc(sizeof(t_config_cpu));
-    cpu_server->puerto_escucha = escucha_fd;
-    cpu_server->logger = logger_CPU;
-
-    return cpu_server;
 }
