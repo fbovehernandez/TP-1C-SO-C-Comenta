@@ -50,6 +50,7 @@ int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
         printf("Se creo el hilo STDOUT\n");
     } else if(handshake == 81) { 
         pthread_create(&io_stdout_thread, NULL, (void*)handle_io_dialfs, (void*)(intptr_t)socket_cliente);
+        printf("Se creo el hilo DIALFS\n");
     } else {
         send(socket_cliente, &resultError, sizeof(int), 0);
         close(socket_cliente);
@@ -79,7 +80,44 @@ void* handle_io_dialfs(void* socket) {
     t_paquete* paquete_inicial = inicializarIO_recibirPaquete(socket_io);
     agregar_interfaz_en_el_diccionario(paquete_inicial, socket_io);
 
-    // en progreso...
+    while(1) {
+        t_paquete* paquete = malloc(sizeof(t_paquete));
+        paquete->buffer = malloc(sizeof(t_buffer));
+
+        // Primero recibimos el codigo de operacion
+        printf("Esperando recibir paquete de IO\n");
+        //recv(socket_cpu, &(paquete->codigo_operacion), sizeof(int), 0);
+        //sem_wait(&sem_memoria_instruccion);
+        recv(socket_io, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
+        printf("Recibi el codigo de operacion de IO: %d\n", paquete->codigo_operacion);
+
+        // Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
+        //recv(socket_cpu, &(paquete->buffer->size), sizeof(int), 0);
+        recv(socket_io, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
+        paquete->buffer->stream = malloc(paquete->buffer->size);
+        //recv(socket_cpu, paquete->buffer->stream, paquete->buffer->size, 0);
+        recv(socket_io, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
+
+        void* stream = paquete->buffer->stream;
+
+        switch(paquete->codigo_operacion) { 
+            case ESCRIBIR_MEM_FS:                  
+                // Aca voy a deserializar todo lo que me manda el fs y lo voy a escribir en memoria
+                t_memoria_fs_escritura_lectura* escritura_lectura = deserializar_escritura_lectura_fs(paquete->buffer);
+                /* 
+                    void* registro_escritura = pedido_operacion->valor_a_escribir;
+
+                realizar_operacion(pedido_operacion->pid, ESCRITURA, direcciones_restantes_escritura, user_space_aux, registro_escritura, NULL); 
+                // printf("Registro escrito como int %d\n", *((uint32_t*)registro_escritura));
+
+                send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
+                */
+                break;
+            default:
+                printf("Rompio todo?\n");
+                return NULL;
+            }
+    }
 
     liberar_paquete(paquete_inicial);
     return NULL;
@@ -567,7 +605,7 @@ void* handle_kernel(void* socket) {
 
                 send(socket_io->socket, &validacion_conexion, sizeof(int), 0);
                 int result_io = recv(socket_io->socket, &respuesta_conexion, sizeof(int), 0);
-                printf("resultado recv: %d\n", resultOk);
+                printf("resultado recv: %d\n", result_io);
 
                 int result_kernel = 0;
                 
@@ -607,20 +645,47 @@ void* handle_kernel(void* socket) {
                 free(pid_stdout);
                 break;
             case ESCRIBIR_FS_MEMORIA: // Lee en memoria y envia a fs
+                int validacion_conexion_fs = 1;
+                int respuesta_conexion_fs;
+
                 t_pedido_rw_encolar* pedido_write = deserializar_pedido_lectura_escritura_mem(paquete->buffer);
 
                 imprimir_datos_pedido_lectura(pedido_write);
 
-                // printf("\nEste es el nombre de la interfaz: %s\n", pid_stdout->nombre_interfaz);
+                sleep(5);
 
                 user_space_aux = espacio_usuario;
 
                 void* registro_lectura_rw = malloc(pedido_write->registro_tamanio);
-                // FALTA SUMARLE EL PID A PEDIDO_WRITE
-                // realizar_operacion(pedido_write->pid, LECTURA, pedido_write->lista_dir_tamanio, user_space_aux, NULL, registro_lectura_rw);
+
+                realizar_operacion(pedido_write->pid, LECTURA, pedido_write->lista_dir_tamanio, user_space_aux, NULL, registro_lectura_rw);
 
                 printf("El valor leido para char* es: %s\n", (char*)registro_lectura_rw);
 
+                int size_registro = strlen((char*)registro_lectura_rw) + 1;
+
+                pthread_mutex_lock(&mutex_diccionario_io);
+                socket_estructurado* socket_io_fs = dictionary_get(diccionario_io, pedido_write->nombre_interfaz);
+                pthread_mutex_unlock(&mutex_diccionario_io);
+                
+                printf("Comparacion entre los 2 sockets: %d - %d\n", socket_io_fs->socket, pedido_write->socket_io);
+
+                send(socket_io_fs->socket, &validacion_conexion_fs, sizeof(int), 0);
+                int result_io_fs = recv(socket_io_fs->socket, &respuesta_conexion_fs, sizeof(int), 0);
+
+                printf("resultado recv: %d\n", result_io_fs);
+
+                int result_kernel_fs = 0;
+
+                if(result_io_fs == 0) {
+                    int result_kernel = -1;
+                    desconectar_io_de_diccionario(pedido_write->nombre_archivo); // Tengo mis dudas de si se agrega al diccionario pero creo que s
+                } else {
+                    printf("VOY A MANDAR A FS\n");  
+                    mandar_lectura_a_fs(registro_lectura_rw, pedido_write, size_registro, socket_io_fs->socket);
+                }
+
+                send(socket_kernel, &result_kernel_fs, sizeof(int), 0);
                 // mandar_lectura_a_fs(registro_lectura, pedido_write->socket_io);
 
                 // Una vez leido, tiene que enviar a fs toda la info para que esta lo puedo copiar el en archivo, pero no sin antes validar la conexion
@@ -640,6 +705,7 @@ void* handle_kernel(void* socket) {
             default:
                 printf("Rompio kernel.\n");
                 liberar_modulo_memoria();
+    
                 exit(-1);
                 break;
         }
@@ -649,6 +715,30 @@ void* handle_kernel(void* socket) {
     }
 
     return NULL;
+}
+
+void mandar_lectura_a_fs(void* registro_lectura, t_pedido_rw_encolar* pedido_fs, int size_registro, int socket_io) {
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+
+    buffer->size = sizeof(int) * 2 + size_registro + sizeof(uint32_t) + pedido_fs->largo_archivo;
+
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    void* stream = buffer->stream;
+
+    memcpy(stream + buffer->offset, &size_registro, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, registro_lectura, size_registro);
+    buffer->offset += size_registro;
+    memcpy(stream + buffer->offset, &pedido_fs->registro_archivo, sizeof(uint32_t));
+    buffer->offset += sizeof(uint32_t);
+    memcpy(stream + buffer->offset, &pedido_fs->largo_archivo, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(stream + buffer->offset, pedido_fs->nombre_archivo, pedido_fs->largo_archivo);
+    buffer->offset += pedido_fs->largo_archivo;
+
+    enviar_paquete(buffer, ESCRIBIR_BLOQUES, socket_io);
 }
 
 void desconectar_io_de_diccionario(char* nombre_interfaz) {
@@ -664,12 +754,17 @@ void desconectar_io_de_diccionario(char* nombre_interfaz) {
 }
 
 void imprimir_datos_pedido_lectura(t_pedido_rw_encolar* pedido) {
+    printf("El largo de la interfaz es: %d\n", pedido->largo_interfaz);
+
+    printf("INTERFACE NAME IS: %s\n", pedido->nombre_interfaz);
+
     printf("El largo del archivo es: %d\n", pedido->largo_archivo);
     printf("El nombre del archivo es: %s\n", pedido->nombre_archivo);
     printf("El registro direccion es: %d\n", pedido->registro_direccion);
     printf("El registro tamanio es: %d\n", pedido->registro_tamanio);
     printf("El registro archivo es: %d\n", pedido->registro_archivo);
     printf("La cantidad de paginas es: %d\n", pedido->cantidad_paginas);
+    printf("El pid es: %d\n", pedido->pid);
 
     for(int i = 0; i < pedido->cantidad_paginas; i++) {
         t_dir_fisica_tamanio* dir_fisica_tam = list_get(pedido->lista_dir_tamanio, i);
@@ -685,6 +780,12 @@ t_pedido_rw_encolar* deserializar_pedido_lectura_escritura_mem(t_buffer* buffer)
     t_pedido_rw_encolar* pedido_fs = malloc(sizeof(t_pedido_rw_encolar));
 
     void* stream = buffer->stream;
+
+    memcpy(&pedido_fs->largo_interfaz, stream, sizeof(int));
+    stream += sizeof(int);
+    pedido_fs->nombre_interfaz = malloc(pedido_fs->largo_interfaz);
+    memcpy(pedido_fs->nombre_interfaz, stream, pedido_fs->largo_interfaz);
+    stream += pedido_fs->largo_interfaz;
 
     memcpy(&pedido_fs->largo_archivo, stream, sizeof(int));
     stream += sizeof(int);
@@ -715,6 +816,7 @@ t_pedido_rw_encolar* deserializar_pedido_lectura_escritura_mem(t_buffer* buffer)
     stream += sizeof(int);
     memcpy(&pedido_fs->socket_memoria, stream, sizeof(int));
     stream += sizeof(int);
+    memcpy(&pedido_fs->pid, stream, sizeof(int));
 
     return pedido_fs;
 }
@@ -886,18 +988,6 @@ void* handle_io_stdin(void* socket) {
     // send(socket_io, &tamanio_pagina, sizeof(int), MSG_WAITALL);
 
     while(1) {
-        // send(socket_io, &validacion_conexion, sizeof(int), 0);
-        // int result = recv(socket_io, &respuesta_conexion, sizeof(int), 0);
-
-        // printf("resultado recv: %d\n", result);
-
-        /* 
-        if(result == 0) {
-            desconectar_io_de_diccionario(interfaz_de_buffer->nombre_interfaz);
-            return NULL;
-        }
-        */
-
         t_paquete* paquete = malloc(sizeof(t_paquete));
         paquete->buffer = malloc(sizeof(t_buffer));
 

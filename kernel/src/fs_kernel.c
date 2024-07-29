@@ -167,6 +167,8 @@ void encolar_fs_read_write(codigo_operacion cod_op, t_pcb* pcb, t_pedido_fs_escr
     t_pedido_rw_encolar* fs_rw = malloc(sizeof(t_pedido_rw_encolar));
     int socket_io = interfaz->socket;
     
+    fs_rw->largo_interfaz = fs_read_write->longitud_nombre_interfaz;
+    fs_rw->nombre_interfaz = fs_read_write->nombre_interfaz;
     fs_rw->largo_archivo = fs_read_write->largo_archivo;
     fs_rw->nombre_archivo = fs_read_write->nombre_archivo;
     fs_rw->registro_direccion = fs_read_write->registro_direccion;
@@ -213,10 +215,10 @@ void encolar_fs_read_write(codigo_operacion cod_op, t_pcb* pcb, t_pedido_fs_escr
     // liberar_pedido_fs_escritura_lectura(fs_read_write);
 }
 
-int ejecutar_io_dialfs_CREATE_DELETE(int socket, t_archivo_encolar* archivo_encolar, codigo_operacion operacion) {
+int ejecutar_io_dialfs_CREATE_DELETE(int socket, t_archivo_encolar* archivo_encolar, codigo_operacion operacion, int pid) {
     // Aca voy a enviar a la io toda la informacion necesria para que pueda crear o borrar un archivo
     t_buffer *buffer = malloc(sizeof(t_buffer));
-    buffer->size = sizeof(int) + archivo_encolar->largo_archivo;
+    buffer->size = sizeof(int) * 2 + archivo_encolar->largo_archivo;
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
@@ -224,16 +226,19 @@ int ejecutar_io_dialfs_CREATE_DELETE(int socket, t_archivo_encolar* archivo_enco
     memcpy(buffer->stream + buffer->offset, &archivo_encolar->largo_archivo, sizeof(int));
     buffer->offset += sizeof(int);
     memcpy(buffer->stream + buffer->offset, archivo_encolar->nombre_archivo, archivo_encolar->largo_archivo);
+    buffer->offset += archivo_encolar->largo_archivo;
+    memcpy(buffer->stream + buffer->offset, &pid, sizeof(int));
+    buffer->offset += sizeof(int);
 
     enviar_paquete(buffer, operacion, socket);
 
     return 0;
 }
 
-int ejecutar_io_dialfs_TRUNCATE(int socket, t_pedido_truncate* pedido_truncate) {
+int ejecutar_io_dialfs_TRUNCATE(int socket, t_pedido_truncate* pedido_truncate, int pid) {
     // Aca voy a enviar a la io toda la informacion necesria para que pueda truncar un archivo
     t_buffer *buffer = malloc(sizeof(t_buffer));
-    buffer->size = sizeof(int) + pedido_truncate->largo_nombre_archivo + sizeof(uint32_t);
+    buffer->size = sizeof(int) * 2 + pedido_truncate->largo_nombre_archivo + sizeof(uint32_t);
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
@@ -243,7 +248,10 @@ int ejecutar_io_dialfs_TRUNCATE(int socket, t_pedido_truncate* pedido_truncate) 
     memcpy(buffer->stream + buffer->offset, pedido_truncate->nombre_archivo, pedido_truncate->largo_nombre_archivo);
     buffer->offset += pedido_truncate->largo_nombre_archivo;
     memcpy(buffer->stream + buffer->offset, &pedido_truncate->registro_tamanio, sizeof(uint32_t));
-
+    buffer->offset += sizeof(uint32_t);
+    memcpy(buffer->stream + buffer->offset, &pid, sizeof(int));
+    buffer->offset += sizeof(int);
+    
     enviar_paquete(buffer, TRUNCAR_ARCHIVO, socket);
 
     return 0;
@@ -317,7 +325,7 @@ void* handle_io_dialfs(void* socket_io) {
                 t_archivo_encolar* archivo_encolar = (t_archivo_encolar*) datos_op->puntero_operacion;
                 printf("Vamos a encolar el archivo %s\n", archivo_encolar->nombre_archivo);
        
-                int respuesta_ok = ejecutar_io_dialfs_CREATE_DELETE(socket, archivo_encolar, datos_op->tipo_operacion);
+                int respuesta_ok = ejecutar_io_dialfs_CREATE_DELETE(socket, archivo_encolar, datos_op->tipo_operacion, datos_op->pcb->pid);
                 printf("la respuesta ok es: %d\n", respuesta_ok);
 
                 if (!respuesta_ok) {
@@ -340,7 +348,7 @@ void* handle_io_dialfs(void* socket_io) {
                 t_pedido_truncate* pedido_truncate = (t_pedido_truncate*) datos_op->puntero_operacion;
                 printf("Vamos a encolar el archivo %s\n", pedido_truncate->nombre_archivo);
        
-                int respuesta_ok_truncate = ejecutar_io_dialfs_TRUNCATE(socket, pedido_truncate);
+                int respuesta_ok_truncate = ejecutar_io_dialfs_TRUNCATE(socket, pedido_truncate, datos_op->pcb->pid);
                 printf("la respuesta ok es: %d\n", respuesta_ok);
 
                 if (!respuesta_ok_truncate) {
@@ -370,7 +378,7 @@ void* handle_io_dialfs(void* socket_io) {
 
                 sleep(10); 
 
-                int respuesta_ok_rw = ejecutar_io_dialfs_READ_WRITE(rw_encolar, datos_op->tipo_operacion, socket);
+                int respuesta_ok_rw = ejecutar_io_dialfs_READ_WRITE(rw_encolar, datos_op->tipo_operacion, socket, datos_op->pcb->pid);
 
                 printf("la respuesta ok es: %d\n", respuesta_ok_rw);
 
@@ -386,7 +394,12 @@ void* handle_io_dialfs(void* socket_io) {
                     }
                 } else {
                     printf("No se pudo ejecutar la IO\n");
-                    break; // Ver si es necesario este break
+                    printf("Se desconecto la IO\n");
+                    sacarDe(cola_blocked, datos_op->pcb->pid);
+                    pasar_a_exit(datos_op->pcb, "IO_DISCONNECTED");
+                    t_list_io* interfaz_a_liberar = dictionary_remove(diccionario_io, io->nombreInterfaz);
+
+                    // Liberar luego lo que haga falta...
                 }
 
                 break;
@@ -430,17 +443,22 @@ void imprimir_datos_rw(t_pedido_rw_encolar* rw_encolar) {
     uint32_t registro_archivo;
 } t_pedido_rw_encolar; */
 
-int ejecutar_io_dialfs_READ_WRITE(t_pedido_rw_encolar* rw_encolar, codigo_operacion operacion, int socket_io) {
+int ejecutar_io_dialfs_READ_WRITE(t_pedido_rw_encolar* rw_encolar, codigo_operacion operacion, int socket_io, int pid) {
     // Aca voy a enviar a la io toda la informacion necesria para que pueda leer o escribir un archivo
     t_buffer *buffer = malloc(sizeof(t_buffer));
 
     // Calculo el list size de la lista y lo agrego al size del buffer
     int list_size = rw_encolar->cantidad_paginas * sizeof(int) * 2;
 
-    buffer->size = sizeof(uint32_t) * 3 + rw_encolar->largo_archivo + sizeof(int) * 4 + list_size;
+    buffer->size = sizeof(uint32_t) * 3 + rw_encolar->largo_archivo + rw_encolar->largo_interfaz + sizeof(int) * 6 + list_size;
 
     buffer->offset = 0;
     buffer->stream = malloc(buffer->size);
+
+    memcpy(buffer->stream + buffer->offset, &rw_encolar->largo_interfaz, sizeof(int));
+    buffer->offset += sizeof(int);
+    memcpy(buffer->stream + buffer->offset, rw_encolar->nombre_interfaz, rw_encolar->largo_interfaz);
+    buffer->offset += rw_encolar->largo_interfaz;
 
     memcpy(buffer->stream + buffer->offset, &rw_encolar->largo_archivo, sizeof(int));
     buffer->offset += sizeof(int);
@@ -475,15 +493,22 @@ int ejecutar_io_dialfs_READ_WRITE(t_pedido_rw_encolar* rw_encolar, codigo_operac
     memcpy(buffer->stream + buffer->offset, &rw_encolar->socket_memoria, sizeof(int));
     buffer->offset += sizeof(int);
 
+    memcpy(buffer->stream + buffer->offset, &pid, sizeof(int));
+    buffer->offset += sizeof(int);
+
+    int respuesta_mem;
+
     if(operacion == LEER_FS_MEMORIA) {
         enviar_paquete(buffer, operacion, socket_io);
+        recv(socket_io, &respuesta_mem, sizeof(int), MSG_WAITALL);
     } else {
         enviar_paquete(buffer, operacion, sockets->socket_memoria);
+        recv(sockets->socket_memoria, &respuesta_mem, sizeof(int), MSG_WAITALL);
     }
 
     // enviar_paquete(buffer, operacion, socket_io);
 
-    return 0;
+    return respuesta_mem;
 }
 
 

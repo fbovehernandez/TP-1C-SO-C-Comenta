@@ -385,6 +385,8 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         // Aca obtengo si es de 8 bits o no y uso eso para setear, sino funciona el bool uso un int
         bool es_registro_uint8 = es_de_8_bits(registro1);
         set(registro_pcb1, valor, es_registro_uint8);
+        
+        sleep(5);
 
         /*printf("Cuando hace SET AX 1 queda asi el registro AX del CPU: %u\n", registros_cpu->AX);
         printf("Cuando hace SET BX 1 queda asi el registro BX del CPU: %u\n", registros_cpu->BX);*/

@@ -285,15 +285,28 @@ void recibir_kernel(void* config_socket_io) { //FREE
                 send(socket_kernel_io, &fin_truncate_ok, sizeof(int), 0);
                 break;
             case LEER_FS_MEMORIA:
-                int termino_escritura_ok = 1;
+                int termino_escritura_ok;
+                int termino_ok_kernel;
 
                 t_pedido_rw_encolar* pedido_escritura = deserializar_pedido_rw(paquete->buffer);
                 imprimir_datos_pedido_escritura(pedido_escritura);
 
                 sleep(5);
 
-                // Aca va la logica en si de leer y finalmente pasar todo eso a memoria para que lo escriba
+                // Aca lo que voy a hacer es leer del void* mepeado, lo voy a copiar a un buffer y lo voy a mandar a memoria asi lo guarda en el void* de mem
+                void* buffer = malloc(pedido_escritura->registro_tamanio);
 
+                int bytes_inicio_file = byte_de_primer_bloque(pedido_escritura->nombre_archivo);
+                int bytes_movidos = bytes_inicio_file + pedido_escritura->registro_archivo;
+                printf("Los bytes movidos son: %d\n", bytes_movidos);
+                
+                memcpy(buffer, bloques_data + bytes_movidos, pedido_escritura->registro_tamanio);
+
+                // Aca tengo que mandar el buffer a memoria
+                mandar_valor_a_memoria_fs(buffer, pedido_escritura);
+
+                recv(memoriafd, &termino_escritura_ok, sizeof(int), MSG_WAITALL);
+                send(socket_kernel_io, &termino_ok_kernel, sizeof(int), 0);
                 break;
             default:
                 printf("Se rompio kernel!!!!\n");
@@ -303,6 +316,46 @@ void recibir_kernel(void* config_socket_io) { //FREE
 
         liberar_paquete(paquete);        
     }
+}
+
+/* 
+typedef struct{
+    uint32_t registro_direccion; // ES CON LO QUE HACIA LOS CALCULOS , NOSE PASA
+} t_pedido_rw_encolar;
+*/
+
+void mandar_valor_a_memoria_fs(t_pedido_rw_encolar* pedido_fs, void* buffer) {
+    t_buffer* buffer_memoria = malloc(sizeof(t_buffer));
+
+    int tamanio_buffer = pedido_fs->registro_tamanio; // Tamanio del buffer
+
+    buffer_memoria->size = tamanio_buffer + sizeof(int) * 4 + (sizeof(int) * pedido_fs->cantidad_paginas * 2); 
+
+    buffer_memoria->offset = 0;
+    buffer_memoria->stream = malloc(buffer_memoria->size);
+
+    // void* stream = buffer->stream;
+    
+    memcpy(buffer_memoria->stream + buffer_memoria->offset, &pedido_fs->pid, sizeof(int));
+    buffer_memoria->offset += sizeof(int);
+    memcpy(buffer_memoria->stream + buffer_memoria->offset, &pedido_fs->registro_tamanio, sizeof(int));
+    buffer_memoria->offset += sizeof(int);
+    memcpy(buffer_memoria->stream + buffer_memoria->offset, &pedido_fs->cantidad_paginas, sizeof(int));
+    buffer_memoria->offset += sizeof(int);
+    memcpy(buffer_memoria->stream + buffer_memoria->offset, &tamanio_buffer, sizeof(int));
+    buffer_memoria->offset += sizeof(int);
+    memcpy(buffer_memoria->stream + buffer_memoria->offset, buffer, tamanio_buffer);
+    buffer_memoria->offset += tamanio_buffer;
+
+    for(int i=0; i < pedido_fs->cantidad_paginas; i++) {
+        t_dir_fisica_tamanio* dir_fisica_tam = list_get(pedido_fs->lista_dir_tamanio, i);
+        memcpy(buffer_memoria->stream + buffer_memoria->offset, &dir_fisica_tam->direccion_fisica, sizeof(int));
+        buffer_memoria->offset += sizeof(int);
+        memcpy(buffer_memoria->stream + buffer_memoria->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
+        buffer_memoria->offset += sizeof(int);
+    }
+    
+    enviar_paquete(buffer_memoria, ESCRIBIR_MEM_FS, memoriafd);
 }
 
 void imprimir_datos_pedido_escritura(t_pedido_rw_encolar* pedido_escritura) {
@@ -358,6 +411,8 @@ t_pedido_rw_encolar* deserializar_pedido_rw(t_buffer* buffer) {
     memcpy(&pedido_rw->socket_io, stream + offset, sizeof(int));
     offset += sizeof(int);
     memcpy(&pedido_rw->socket_memoria, stream + offset, sizeof(int));
+    offset += sizeof(int);
+    memcpy(&pedido_rw->pid, stream + offset, sizeof(int));
     offset += sizeof(int);
 
     return pedido_rw;
@@ -633,11 +688,15 @@ void recibir_memoria(void* config_socket_io) {
     int still_running = 1;
     int test_conexion; 
 
-    printf("Voy a recibir memoria!\n");
+    printf("Voy a recibir memoria123!\n");
     
     while(1) {
         printf("Esperando validar conexion...\n");  
+
         recv(socket_memoria, &test_conexion, sizeof(int), MSG_WAITALL);
+
+        printf("Se recibio de memoria el test de conexion: %d\n", test_conexion);
+
         send(socket_memoria, &still_running, sizeof(int), 0);
 
         t_paquete* paquete = malloc(sizeof(t_paquete));
@@ -684,25 +743,68 @@ void recibir_memoria(void* config_socket_io) {
                 free(valor);
                 send(kernelfd, &terminoOk, sizeof(int), 0);
                 break;
-            case ESCRIBIR_EN_FS:
+            case ESCRIBIR_BLOQUES:
                 int termino_escritura_ok = 1;
 
-                /*
-                t_pedido_rw_encolar* pedido_escritura = deserializar_pedido_rw(paquete->buffer);
-                imprimir_datos_pedido_escritura(pedido_escritura);
-                */
+                // Ahora deserializo el buffer del char* con su tamanio y escribo en el void* mapeado y luego sincronizo la informacion con el file bloques.dat y al mismo tiempo actualizo el bitmap
 
-                // Aca recibo de memoria el pedido para escribir en el void* mapeado la data y sincronizarlo
+                t_solicitud_escritura_bloques* solicitud_escritura = deserializar_solicitud_escritura_bloques(paquete->buffer);
+                printf("El tamanio a copiar es: %d\n", solicitud_escritura->tamanio_a_copiar);
+                printf("El valor a copiar es: %s\n", (char*)solicitud_escritura->valor_a_copiar);
+                printf("El puntero archivo es: %d\n", solicitud_escritura->puntero_archivo);
+                printf("El nombre del file es %s\n", solicitud_escritura->nombre_archivo);
+                
+                // Podria agregar en esta parte validacion por si se pasa del tamanio del file, pero como no tengo tiempo y supongo que tampoco va a pasar, no lo voy a hacer
 
+                int bytes_inicio_file = byte_de_primer_bloque(solicitud_escritura->nombre_archivo);
+                int bytes_movidos = bytes_inicio_file + solicitud_escritura->puntero_archivo;
+                printf("Los bytes movidos son: %d\n", bytes_movidos);
+
+                memcpy(bloques_data + bytes_movidos, solicitud_escritura->valor_a_copiar, solicitud_escritura->tamanio_a_copiar);
+
+                // Sincronizo los cambios con el archivo subyacente
+                msync(bloques_data, dialfs->block_size * dialfs->block_count, MS_SYNC);
+
+                send(kernelfd, &termino_escritura_ok, sizeof(int), 0);
                 break;
             default:
                 printf("Se rompio memoria!!!!\n");
                 exit(-1);
                 break;
         }
+
        liberar_paquete(paquete);        
     }
      
+}
+
+int byte_de_primer_bloque(char* nombre_archivo) {
+    t_archivo* file = dictionary_get(diccionario_archivos, nombre_archivo);
+    return file->first_block * dialfs->block_size;
+}
+
+t_solicitud_escritura_bloques* deserializar_solicitud_escritura_bloques(t_buffer* buffer) {
+    // Aca deserializo el char* y el tamanio del char*
+    
+    t_solicitud_escritura_bloques* solicitud_escritura = malloc(sizeof(t_solicitud_escritura_bloques));
+
+    void* stream = buffer->stream;
+
+    memcpy(&solicitud_escritura->tamanio_a_copiar, stream, sizeof(int));
+    stream += sizeof(int);
+    solicitud_escritura->valor_a_copiar = malloc(solicitud_escritura->tamanio_a_copiar);
+    memcpy(solicitud_escritura->valor_a_copiar, stream, solicitud_escritura->tamanio_a_copiar);
+    stream += solicitud_escritura->tamanio_a_copiar;
+    // Agrego tambien el puntero archivo
+    memcpy(&solicitud_escritura->puntero_archivo, stream, sizeof(int));
+    stream += sizeof(int);
+    memcpy(&solicitud_escritura->largo_archivo, stream, sizeof(int));
+    stream += sizeof(int);
+    solicitud_escritura->nombre_archivo = malloc(solicitud_escritura->largo_archivo);
+    memcpy(solicitud_escritura->nombre_archivo, stream, solicitud_escritura->largo_archivo);
+    stream += solicitud_escritura->largo_archivo;
+
+    return solicitud_escritura;
 }
 
 t_archivo_encolar* deserializar_pedido_creacion_destruccion(t_buffer* buffer) {
@@ -717,6 +819,8 @@ t_archivo_encolar* deserializar_pedido_creacion_destruccion(t_buffer* buffer) {
     archivo_a_usar->nombre_archivo = malloc(archivo_a_usar->largo_archivo);
     memcpy(archivo_a_usar->nombre_archivo, stream, archivo_a_usar->largo_archivo);
     stream += archivo_a_usar->largo_archivo;
+    memcpy(&archivo_a_usar->pid, stream, sizeof(int));
+    stream += sizeof(int);
 
     return archivo_a_usar;
 }
@@ -732,6 +836,8 @@ t_pedido_truncate* deserializar_pedido_fs_truncate(t_buffer* buffer) {
     stream += pedido_truncate->largo_nombre_archivo;
     memcpy(&pedido_truncate->registro_tamanio, stream, sizeof(uint32_t));
     stream += sizeof(uint32_t);
+    memcpy(&pedido_truncate->pid, stream, sizeof(int));
+    stream += sizeof(int);
 
     return pedido_truncate;
 }

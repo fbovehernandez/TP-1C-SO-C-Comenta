@@ -1,8 +1,8 @@
 RESIZE 20
 SET AX 2
-IO_FS_CREATE ara notas.txt
+IO_FS_CREATE FS notas.txt
 SET BX 2
 SET EBX 198
-IO_FS_TRUNCATE ara notas.txt EBX
+IO_FS_TRUNCATE FS notas.txt EBX
 SET BX 2
 EXIT

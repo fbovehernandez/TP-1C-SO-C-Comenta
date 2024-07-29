@@ -40,5 +40,7 @@ void truncate_hacia_arriba(int ultimo_bloque, int registro_tamanio, t_archivo* f
 t_pedido_rw_encolar* deserializar_pedido_rw(t_buffer* buffer);
 void imprimir_datos_pedido_escritura(t_pedido_rw_encolar* pedido_escritura);
 void liberar_pid_stdin(t_pid_stdin* pid_stdin);
+t_solicitud_escritura_bloques* deserializar_solicitud_escritura_bloques(t_buffer* buffer);
+void mandar_valor_a_memoria_fs(t_pedido_rw_encolar* pedido_fs, void* buffer);
 
 #endif // CONEXIONES_IO_H

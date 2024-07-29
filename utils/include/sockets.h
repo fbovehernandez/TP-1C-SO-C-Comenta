@@ -182,10 +182,12 @@ typedef enum {
     MOSTRAR,
     CREAR_ARCHIVO,
     ELIMINAR_ARCHIVO,
+    ESCRIBIR_MEM_FS,
     ESCRIBITE,
     ESCRIBIR_FS_MEMORIA,
     TRUNCAR_ARCHIVO,
     LEER_FS_MEMORIA,
+    ESCRIBIR_BLOQUES,
     ESCRIBIR_EN_FS,
     LEER_EN_FS,
     INTERRUPCION_FIN_USUARIO,
@@ -423,6 +425,7 @@ typedef struct {
 typedef struct {
     int largo_nombre_archivo;
     char* nombre_archivo;
+    int pid;
     uint32_t registro_tamanio;
 } t_pedido_truncate;
 
@@ -444,6 +447,7 @@ typedef struct{
 typedef struct {
     int largo_archivo;
     char* nombre_archivo;
+    int pid;
 } t_archivo_encolar;
 
 typedef struct {
@@ -470,8 +474,17 @@ typedef struct{
     t_list* lista_dir_tamanio;
 } t_pedido_fs_escritura_lectura;
 
+typedef struct {
+    void* valor_a_copiar;
+    int tamanio_a_copiar;
+    uint32_t puntero_archivo;
+    int largo_archivo;
+    char* nombre_archivo;
+} t_solicitud_escritura_bloques;
 
 typedef struct{
+    int largo_interfaz;
+    char* nombre_interfaz;
     int largo_archivo;
     char* nombre_archivo;
     uint32_t registro_direccion;
@@ -481,6 +494,7 @@ typedef struct{
     t_list* lista_dir_tamanio;
     int socket_io;
     int socket_memoria;
+    int pid;
 } t_pedido_rw_encolar;
 
 char* string_operacion(codigo_operacion operacion); 

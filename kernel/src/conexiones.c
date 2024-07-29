@@ -287,7 +287,7 @@ void *handle_io_stdin(void *socket_io) {
 
                 // Ojo! Aca tambien hay que liberar todo lo que no se usa cuando la io se termina
                 liberar_io(interfaz_a_liberar);
-
+                free(pid_stdin);        
                 liberar_datos_std(datos_stdin);
                 liberar_paquete(paquete);
                 
@@ -320,11 +320,11 @@ void *handle_io_stdin(void *socket_io) {
                     // Esto creo que no esta bien, pero no se como liberarlo...
                     // t_pcb* pcb = datos_stdin->pcb;
                     t_pcb* pcb = sacarDe(cola_blocked, datos_stdin->pcb->pid);
-                    cantidad_bloqueados++;
+                 
                     sem_wait(&sem_planificadores);
                     pasar_a_ready(pcb); 
                     sem_post(&sem_planificadores);
-                    cantidad_bloqueados--;
+                  
                     
                     // free(datos_stdin->pcb->registros);
                     // free(datos_stdin->pcb);
@@ -479,12 +479,11 @@ void* handle_io_stdout(void* socket_io) {
 
             if (termino_io == 1) { // El send de termino io envia 1.                printf("Termino la IO\n");
                 t_pcb* pcb = sacarDe(cola_blocked, datos_stdout->pcb->pid);
-                
-                cantidad_bloqueados++;
+           
                 sem_wait(&sem_planificadores);
                 pasar_a_ready(pcb); 
                 sem_post(&sem_planificadores);
-                cantidad_bloqueados--;
+               
             }
         } else {
             printf("No se pudo ejecutar la IO\n");
@@ -686,11 +685,11 @@ void *handle_io_generica(void *socket_io) {
                 t_pcb* pcb = sacarDe(cola_blocked, datos_sleep->pcb->pid);
                 // pthread_mutex_unlock(&mutex_estado_blocked);
 
-                cantidad_bloqueados++;
+              
                 sem_wait(&sem_planificadores);
                 pasar_a_ready(pcb); 
                 sem_post(&sem_planificadores);
-                cantidad_bloqueados--;                
+                          
             }
         }else {
             printf("No se encontró el PCB con PID %d en la cola de bloqueados.\n", datos_sleep->pcb->pid);

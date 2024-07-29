@@ -2228,3 +2228,202 @@ El valor leido de memoria es: WAR, WAR NERVE...
 
 
 [INFO] 16:32:43:828 LOGGER/(29673:29673): PID: 1 - Operacion: ESCRIBIR
+[INFO] 17:49:38:423 LOGGER/(3606:3606): Conexion establecida con Kernel
+
+[INFO] 17:49:54:396 LOGGER/(3606:3606): PID 1 - Operacion: DORMIR_IO
+[INFO] 17:49:59:604 LOGGER/(3606:3606): PID 1 - Operacion: DORMIR_IO
+[INFO] 17:50:31:867 LOGGER/(4096:4096): Conexion establecida con Kernel
+
+[INFO] 17:50:56:091 LOGGER/(4096:4096): PID 2 - Operacion: DORMIR_IO
+[INFO] 17:54:22:239 LOGGER/(5596:5596): Conexion establecida con Kernel
+
+[INFO] 17:54:45:638 LOGGER/(5596:5596): PID 1 - Operacion: DORMIR_IO
+[INFO] 17:54:50:858 LOGGER/(5596:5596): PID 1 - Operacion: DORMIR_IO
+[INFO] 18:00:20:402 LOGGER/(7298:7298): Conexion establecida con Kernel
+
+[INFO] 18:00:20:640 LOGGER/(7298:7298): Conexion establecida con Memoria
+
+[INFO] 18:08:11:905 LOGGER/(8779:8779): Conexion establecida con Kernel
+
+[INFO] 18:08:12:131 LOGGER/(8779:8779): Conexion establecida con Memoria
+
+[INFO] 18:08:48:580 LOGGER/(8779:8779): PID: 1 - Operacion: LEER
+[INFO] 18:17:16:448 LOGGER/(10575:10575): Conexion establecida con Kernel
+
+[INFO] 18:17:16:654 LOGGER/(10575:10575): Conexion establecida con Memoria
+
+[INFO] 18:20:04:632 LOGGER/(11841:11841): Conexion establecida con Kernel
+
+[INFO] 18:20:05:273 LOGGER/(11841:11841): Conexion establecida con Memoria
+
+[INFO] 18:20:16:514 LOGGER/(12195:12195): Conexion establecida con Kernel
+
+[INFO] 18:20:16:791 LOGGER/(12195:12195): Conexion establecida con Memoria
+
+[INFO] 18:23:37:419 LOGGER/(13376:13376): Conexion establecida con Kernel
+
+[INFO] 18:23:37:688 LOGGER/(13376:13376): Conexion establecida con Memoria
+
+[INFO] 18:23:41:961 LOGGER/(13527:13527): Conexion establecida con Kernel
+
+[INFO] 18:23:42:207 LOGGER/(13527:13527): Conexion establecida con Memoria
+
+[INFO] 18:24:05:211 LOGGER/(13527:13527): PID: 1 - Operacion: LEER
+[INFO] 18:24:10:494 LOGGER/(13376:13376): el tamanio del valor a escribir es 4
+
+[INFO] 18:24:10:496 LOGGER/(13376:13376): 
+
+El valor leido de memoria es: CARO 
+
+
+[INFO] 18:24:10:496 LOGGER/(13376:13376): PID: 1 - Operacion: ESCRIBIR
+[INFO] 20:31:47:181 LOGGER/(16684:16684): Conexion establecida con Kernel
+
+[INFO] 20:31:47:224 LOGGER/(16684:16684): Conexion establecida con Memoria
+
+[INFO] 20:41:37:573 LOGGER/(18350:18350): Conexion establecida con Kernel
+
+[INFO] 20:41:37:624 LOGGER/(18350:18350): Conexion establecida con Memoria
+
+[INFO] 20:53:00:361 LOGGER/(21349:21349): Conexion establecida con Kernel
+
+[INFO] 20:53:00:470 LOGGER/(21349:21349): Conexion establecida con Memoria
+
+[INFO] 20:57:37:465 LOGGER/(22854:22854): Conexion establecida con Kernel
+
+[INFO] 20:57:37:537 LOGGER/(22854:22854): Conexion establecida con Memoria
+
+[INFO] 21:01:25:387 LOGGER/(24364:24364): Conexion establecida con Kernel
+
+[INFO] 21:01:25:454 LOGGER/(24364:24364): Conexion establecida con Memoria
+
+[INFO] 21:01:30:214 LOGGER/(24488:24488): Conexion establecida con Kernel
+
+[INFO] 21:01:30:266 LOGGER/(24488:24488): Conexion establecida con Memoria
+
+[INFO] 21:02:17:825 LOGGER/(24488:24488): PID: 1 - Operacion: LEER
+[INFO] 21:05:07:069 LOGGER/(26194:26194): Conexion establecida con Kernel
+
+[INFO] 21:05:07:115 LOGGER/(26194:26194): Conexion establecida con Memoria
+
+[INFO] 21:05:10:955 LOGGER/(26309:26309): Conexion establecida con Kernel
+
+[INFO] 21:05:11:009 LOGGER/(26309:26309): Conexion establecida con Memoria
+
+[INFO] 21:06:08:610 LOGGER/(26309:26309): PID: 1 - Operacion: LEER
+[INFO] 21:34:16:355 LOGGER/(3497:3497): Conexion establecida con Kernel
+
+[INFO] 21:34:16:437 LOGGER/(3497:3497): Conexion establecida con Memoria
+
+[INFO] 21:34:22:695 LOGGER/(3628:3628): Conexion establecida con Kernel
+
+[INFO] 21:34:22:728 LOGGER/(3628:3628): Conexion establecida con Memoria
+
+[INFO] 21:35:06:832 LOGGER/(3628:3628): PID: 1 - Operacion: LEER
+[INFO] 23:01:30:688 LOGGER/(8725:8725): Conexion establecida con Kernel
+
+[INFO] 23:01:30:739 LOGGER/(8725:8725): Conexion establecida con Memoria
+
+[INFO] 23:01:35:139 LOGGER/(8840:8840): Conexion establecida con Kernel
+
+[INFO] 23:01:35:170 LOGGER/(8840:8840): Conexion establecida con Memoria
+
+[INFO] 23:07:24:374 LOGGER/(10392:10392): Conexion establecida con Kernel
+
+[INFO] 23:07:24:431 LOGGER/(10392:10392): Conexion establecida con Memoria
+
+[INFO] 23:07:30:911 LOGGER/(10536:10536): Conexion establecida con Kernel
+
+[INFO] 23:07:30:964 LOGGER/(10536:10536): Conexion establecida con Memoria
+
+[INFO] 23:09:58:020 LOGGER/(10392:10392): PID: 1 - Operacion: LEER
+[INFO] 23:15:06:195 LOGGER/(12643:12643): Conexion establecida con Kernel
+
+[INFO] 23:15:06:296 LOGGER/(12643:12643): Conexion establecida con Memoria
+
+[INFO] 23:15:11:485 LOGGER/(12768:12768): Conexion establecida con Kernel
+
+[INFO] 23:15:11:537 LOGGER/(12768:12768): Conexion establecida con Memoria
+
+[INFO] 23:15:51:486 LOGGER/(12643:12643): PID: 1 - Operacion: LEER
+[INFO] 23:18:05:162 LOGGER/(14231:14231): Conexion establecida con Kernel
+
+[INFO] 23:18:05:208 LOGGER/(14231:14231): Conexion establecida con Memoria
+
+[INFO] 23:18:10:212 LOGGER/(14364:14364): Conexion establecida con Kernel
+
+[INFO] 23:18:10:258 LOGGER/(14364:14364): Conexion establecida con Memoria
+
+[INFO] 23:18:48:309 LOGGER/(14364:14364): PID: 1 - Operacion: LEER
+[INFO] 23:22:54:945 LOGGER/(15845:15845): Conexion establecida con Kernel
+
+[INFO] 23:22:55:000 LOGGER/(15845:15845): Conexion establecida con Memoria
+
+[INFO] 23:22:59:576 LOGGER/(15987:15987): Conexion establecida con Kernel
+
+[INFO] 23:22:59:632 LOGGER/(15987:15987): Conexion establecida con Memoria
+
+[INFO] 23:24:07:911 LOGGER/(15987:15987): PID: 1 - Operacion: LEER
+[INFO] 23:49:12:780 LOGGER/(18204:18204): Conexion establecida con Kernel
+
+[INFO] 23:49:12:842 LOGGER/(18204:18204): Conexion establecida con Memoria
+
+[INFO] 23:49:18:204 LOGGER/(18345:18345): Conexion establecida con Kernel
+
+[INFO] 23:49:18:252 LOGGER/(18345:18345): Conexion establecida con Memoria
+
+[INFO] 23:50:31:041 LOGGER/(18204:18204): PID: 1 - Operacion: LEER
+[INFO] 00:06:57:924 LOGGER/(20621:20621): Conexion establecida con Kernel
+
+[INFO] 00:06:57:979 LOGGER/(20621:20621): Conexion establecida con Memoria
+
+[INFO] 00:07:02:047 LOGGER/(20734:20734): Conexion establecida con Kernel
+
+[INFO] 00:07:02:106 LOGGER/(20734:20734): Conexion establecida con Memoria
+
+[INFO] 00:07:37:925 LOGGER/(20621:20621): PID: 1 - Operacion: LEER
+[INFO] 00:11:04:913 LOGGER/(22576:22576): Conexion establecida con Kernel
+
+[INFO] 00:11:04:967 LOGGER/(22576:22576): Conexion establecida con Memoria
+
+[INFO] 00:11:10:736 LOGGER/(22705:22705): Conexion establecida con Kernel
+
+[INFO] 00:11:10:795 LOGGER/(22705:22705): Conexion establecida con Memoria
+
+[INFO] 00:15:38:377 LOGGER/(22576:22576): PID: 1 - Operacion: LEER
+[INFO] 00:17:49:791 LOGGER/(24215:24215): Conexion establecida con Kernel
+
+[INFO] 00:17:49:840 LOGGER/(24215:24215): Conexion establecida con Memoria
+
+[INFO] 00:17:55:154 LOGGER/(24346:24346): Conexion establecida con Kernel
+
+[INFO] 00:17:55:206 LOGGER/(24346:24346): Conexion establecida con Memoria
+
+[INFO] 00:18:45:006 LOGGER/(24346:24346): PID: 1 - Operacion: LEER
+[INFO] 00:48:42:791 LOGGER/(26364:26364): Conexion establecida con Kernel
+
+[INFO] 00:48:42:841 LOGGER/(26364:26364): Conexion establecida con Memoria
+
+[INFO] 00:48:49:455 LOGGER/(26495:26495): Conexion establecida con Kernel
+
+[INFO] 00:48:49:499 LOGGER/(26495:26495): Conexion establecida con Memoria
+
+[INFO] 00:49:23:011 LOGGER/(26495:26495): PID: 1 - Operacion: LEER
+[INFO] 01:23:30:074 LOGGER/(29538:29538): Conexion establecida con Kernel
+
+[INFO] 01:23:30:130 LOGGER/(29538:29538): Conexion establecida con Memoria
+
+[INFO] 01:23:40:045 LOGGER/(29660:29660): Conexion establecida con Kernel
+
+[INFO] 01:23:40:093 LOGGER/(29660:29660): Conexion establecida con Memoria
+
+[INFO] 01:24:18:975 LOGGER/(29538:29538): PID: 1 - Operacion: LEER
+[INFO] 01:35:27:798 LOGGER/(32319:32319): Conexion establecida con Kernel
+
+[INFO] 01:35:27:854 LOGGER/(32319:32319): Conexion establecida con Memoria
+
+[INFO] 01:35:36:242 LOGGER/(32598:32598): Conexion establecida con Kernel
+
+[INFO] 01:35:36:277 LOGGER/(32598:32598): Conexion establecida con Memoria
+
+[INFO] 01:36:13:711 LOGGER/(32319:32319): PID: 1 - Operacion: LEER

@@ -60,11 +60,6 @@ void crear_archivos_iniciales(char* filepath_bitmap, char* filepath_bloques) {
     memset(bloques_data, 0, dialfs->block_size * dialfs->block_count);
 
     /* Escritura de prueba para ver los bytes con el hexdump */ 
-    char* data = "Hola, mundo!";
-    size_t data_size = strlen(data); // +1 para el carácter nulo al final no se agrega pero si es importante cuando voy a leer del archivo (si en algun momento lo hago)
-
-    // Copia los datos en la memoria mapeada
-    memcpy(bloques_data, data, data_size);
 
     /* Fin escritura de prueba */
 
