@@ -20,9 +20,11 @@ int traducir_direccion_logica_a_fisica(uint32_t direccion_logica, int pid) {
         log_info(logger_CPU, "PID: %d - OBTENER MARCO - Página: %d - Marco: %d", pid, direccion_logica_a_crear->numero_pagina, frame);
         agregar_frame_en_TLB(pid, direccion_logica_a_crear->numero_pagina, frame);
     }
+
     // pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina, pid); 
-    imprimir_tlb();
+    // imprimir_tlb();
     // recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
+    
     printf("Frame %d recibido de memoria con PID %d\n", frame, pid);
     
     int direccion_fisica = frame * tamanio_pagina + direccion_logica_a_crear->desplazamiento;
@@ -83,7 +85,7 @@ void eliminar_victima_TLB() {
     
     list_remove_element(tlb, entrada_victima);
     free(entrada_victima);
-    free(algoritmo_tlb);
+    // free(algoritmo_tlb);
 }
 
 

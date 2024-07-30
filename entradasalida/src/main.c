@@ -173,32 +173,25 @@ void rearmar_diccionario_archivos(char* path_base) {
 
         FILE* metadata_file = fopen(path_archivo, "r"); // Abro para lectura
 
-        if (metadata_file == NULL) {
-            printf("No se pudo abrir el archivo %s\n", path_archivo);
-            free(path_archivo);
-            continue;
-        }
+        if(metadata_file != NULL) {
+            // Esto esta en revision, pero deberia descartarme la primera linea que es el first_block para ir directo al tamanio
+            int first_block;
+            fscanf(metadata_file, "BLOQUE_INICIAL=%d\n", &first_block); // Lee el bloque inicial
 
-        char* line = NULL;
-        size_t len = 0;
-
-        getline(&line, &len, metadata_file);
-        int first_block = atoi(line);
-
-        printf("Primer bloque: %d\n", first_block);
-
-        if (getline(&line, &len, metadata_file) != -1) {
-            printf("Tamaño del archivo: %s\n", line);
+            int tamanio;
+            fscanf(metadata_file, "TAMANIO_ARCHIVO=%d\n", &tamanio); // Lee el tamaño del archivo
+            // fclose(metadata_file);
 
             t_archivo* archivo = malloc(sizeof(t_archivo));
             archivo->first_block = first_block; 
-            archivo->block_count = asignar_bloques(atoi(line)); 
+            archivo->block_count = asignar_bloques(tamanio); 
             archivo->name_file = strdup(ent->d_name);
 
             dictionary_put(diccionario_archivos, ent->d_name, archivo);
+        } else {
+            printf("Soy Facu zzzzzz\n");
         }
-
-        free(line);
+     
         fclose(metadata_file);
         free(path_archivo);
 

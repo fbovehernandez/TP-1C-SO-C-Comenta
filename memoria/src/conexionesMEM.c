@@ -219,7 +219,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 break;
             case QUIERO_INSTRUCCION:
                 t_solicitud_instruccion* solicitud_cpu = deserializar_solicitud_instruccion(paquete->buffer);
-                usleep(tiempo_retardo * 1000); // Harcodeado nashe para probar (Con retardo)
+                usleep(tiempo_retardo * 100); // Harcodeado nashe para probar (Con retardo)
                 enviar_instruccion(solicitud_cpu, socket_cpu);
                 free(solicitud_cpu);
                 break;
@@ -535,41 +535,43 @@ void* handle_kernel(void* socket) {
                 socket_estructurado* socket_io = dictionary_get(diccionario_io, pid_stdout->nombre_interfaz);
                 pthread_mutex_unlock(&mutex_diccionario_io);
 
-                send(socket_io->socket, &validacion_conexion, sizeof(int), 0);
-                int result_io = recv(socket_io->socket, &respuesta_conexion, sizeof(int), 0);
-                printf("resultado recv: %d\n", result_io);
+                // send(socket_io->socket, &validacion_conexion, sizeof(int), 0);
+                // int result_io = recv(socket_io->socket, &respuesta_conexion, sizeof(int), 0);
+                // printf("resultado recv: %d\n", result_io);
 
                 int result_kernel = 0;
                 
+                /* 
                 if(result_io == 0) {
                     result_kernel = -1;
                     desconectar_io_de_diccionario(pid_stdout->nombre_interfaz);
                 } else {
-                    user_space_aux = espacio_usuario;
+                    */
+
+                user_space_aux = espacio_usuario;
                 
-                    printf("dir_fisica->tamanio total calculado : %d\n", pid_stdout->registro_tamanio);
+                printf("dir_fisica->tamanio total calculado : %d\n", pid_stdout->registro_tamanio);
 
-                    void* registro_lectura = malloc(pid_stdout->registro_tamanio);
-                    printf("El tamanio del valor leido* es: %d\n", pid_stdout->registro_tamanio);
+                void* registro_lectura = malloc(pid_stdout->registro_tamanio);
+                printf("El tamanio del valor leido* es: %d\n", pid_stdout->registro_tamanio);
 
-                    realizar_operacion(pid_stdout->pid, LECTURA, pid_stdout->lista_direcciones, user_space_aux, NULL, registro_lectura);
-                    printf("el valor del registro lectura es :%s\n", (char*)registro_lectura);
+                realizar_operacion(pid_stdout->pid, LECTURA, pid_stdout->lista_direcciones, user_space_aux, NULL, registro_lectura);
+                printf("el valor del registro lectura es :%s\n", (char*)registro_lectura);
                     
-                    char* registro_string = malloc(pid_stdout->registro_tamanio + 1);
-                    memcpy(registro_string, registro_lectura, pid_stdout->registro_tamanio);
-                    registro_string[pid_stdout->registro_tamanio] = '\0';
+                char* registro_string = malloc(pid_stdout->registro_tamanio + 1);
+                memcpy(registro_string, registro_lectura, pid_stdout->registro_tamanio);
+                registro_string[pid_stdout->registro_tamanio] = '\0';
                     
-                    printf("El valor leido para char* es: %s\n", registro_string);
+                printf("El valor leido para char* es: %s\n", registro_string);
 
-                    printf("El pid que mandaremos a la io es %d\n", pid_stdout->pid);
-                    printf("El socket es %d\n", socket_io->socket);
+                printf("El pid que mandaremos a la io es %d\n", pid_stdout->pid);
+                printf("El socket es %d\n", socket_io->socket);
 
-                    enviar_valor_leido_a_io(pid_stdout->pid, socket_io->socket, registro_string, pid_stdout->registro_tamanio);
+                enviar_valor_leido_a_io(pid_stdout->pid, socket_io->socket, registro_string, pid_stdout->registro_tamanio);
                     
-                    free(registro_string);
-                    free(registro_lectura);
-                }
-
+                free(registro_string);
+                free(registro_lectura);
+                
                 send(socket_kernel, &result_kernel, sizeof(int), 0);
 
                 list_destroy(pid_stdout->lista_direcciones);
@@ -619,7 +621,7 @@ void* handle_kernel(void* socket) {
                 printf("VOY A MANDAR A FS\n");  
                 mandar_lectura_a_fs(pedido_write->pid, registro_lectura_rw, pedido_write, pedido_write->registro_tamanio, socket_io_fs->socket);
                 
-                send(socket_kernel, &result_kernel_fs, sizeof(int), 0);
+                // send(socket_kernel, &result_kernel_fs, sizeof(int), 0);
                 // mandar_lectura_a_fs(registro_lectura, pedido_write->socket_io);
 
                 // Una vez leido, tiene que enviar a fs toda la info para que esta lo puedo copiar el en archivo, pero no sin antes validar la conexion
@@ -718,7 +720,7 @@ void* handle_io_dialfs(void* socket) {
                 realizar_operacion(escritura_lectura->pid, ESCRITURA, escritura_lectura->lista_dir_tamanio, user_space_aux, registro_escritura, NULL); 
                 // printf("Registro escrito como int %d\n", *((uint32_t*)registro_escritura));
 
-                send(socket_io, &confirm_escritura_fs, sizeof(uint32_t), 0);
+                send(socket_io, &confirm_escritura_fs, sizeof(int), 0);
                 break;
             default:
                 printf("Rompio todo?\n");

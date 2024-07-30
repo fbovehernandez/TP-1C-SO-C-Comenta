@@ -117,7 +117,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         bool es_registro_uint8 = es_de_8_bits(registro1);
         set(registro_pcb1, valor, es_registro_uint8);
         
-        sleep(5);
+        // sleep(5);
 
         /*printf("Cuando hace SET AX 1 queda asi el registro AX del CPU: %u\n", registros_cpu->AX);
         printf("Cuando hace SET BX 1 queda asi el registro BX del CPU: %u\n", registros_cpu->BX);*/
@@ -516,11 +516,22 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         t_parametro* parametro_file_truncate = list_get(list_parametros, 1);
         char* nombre_file_truncate = parametro_file_truncate->nombre;
 
-        t_parametro* parametro_numero = list_get(list_parametros, 2);
-        char* nombre_parametro_numero = parametro_numero->nombre;
-        uint32_t* registro_truncador = (uint32_t*) seleccionar_registro_cpu(nombre_parametro_numero, pcb);
+        t_parametro* parametro_tamanio = list_get(list_parametros, 2);
+        char* nombre_parametro_tamanio = parametro_tamanio->nombre;
         
-        t_buffer* buffer_truncate = llenar_buffer_fs_truncate(nombre_interfaz_a_truncar, nombre_file_truncate, *registro_truncador);
+        bool es_registro_uint8_dato_truncate = es_de_8_bits(nombre_parametro_tamanio);
+
+        uint32_t tamanio_a_truncar;
+
+        void* registro_truncador = seleccionar_registro_cpu(nombre_parametro_tamanio, pcb);
+        
+        if(es_registro_uint8_dato_truncate) {
+            tamanio_a_truncar = *(uint8_t*) registro_truncador;
+        } else {
+            tamanio_a_truncar = *(uint32_t*) registro_truncador;
+        }
+        
+        t_buffer* buffer_truncate = llenar_buffer_fs_truncate(nombre_interfaz_a_truncar, nombre_file_truncate, tamanio_a_truncar);
         
         desalojar(pcb, FS_TRUNCATE, buffer_truncate);
 

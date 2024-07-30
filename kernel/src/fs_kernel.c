@@ -402,12 +402,15 @@ void* handle_io_dialfs(void* socket_io) {
                     recv(socket, &termino_io_rw, sizeof(int), MSG_WAITALL);
                     
                     printf("Termino io en LEER_FS_MEMORIA o ESCRIBIR_FS_MEMORIA: %d\n", termino_io_rw);
+                    
                     if (termino_io_rw == 1) { // El send de termino io envia 1.
                         printf("Termino la IO\n");
                         sacarDe(cola_blocked, datos_op->pcb->pid);
                         sem_wait(&sem_planificadores);
                         pasar_a_ready(datos_op->pcb);
                         sem_post(&sem_planificadores);
+                    } else {
+                        printf("LALALALALALLALA\n");
                     }
                 } else {
                     // Por aca no entra nunca porque no puedo probar la desconexion :(
@@ -514,15 +517,15 @@ int ejecutar_io_dialfs_READ_WRITE(t_pedido_rw_encolar* rw_encolar, codigo_operac
     memcpy(buffer->stream + buffer->offset, &pid, sizeof(int));
     buffer->offset += sizeof(int);
 
-    int respuesta_mem;
+    int respuesta_mem = 0;
 
     if(operacion == LEER_FS_MEMORIA) {
         printf("Le enviamos a la io un paquete LEER_FS_MEMORIA!\n");
         enviar_paquete(buffer, operacion, socket_io);
-        recv(socket_io, &respuesta_mem, sizeof(int), MSG_WAITALL);
+        // recv(socket_io, &respuesta_mem, sizeof(int), MSG_WAITALL);
     } else {
         enviar_paquete(buffer, operacion, sockets->socket_memoria);
-        recv(sockets->socket_memoria, &respuesta_mem, sizeof(int), MSG_WAITALL);
+        // recv(sockets->socket_memoria, &respuesta_mem, sizeof(int), MSG_WAITALL);
     }
 
     // enviar_paquete(buffer, operacion, socket_io);

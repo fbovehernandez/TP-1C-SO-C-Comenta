@@ -226,7 +226,7 @@ void recibir_kernel(void* config_socket_io) { //FREE
                 break;
             case LEER_FS_MEMORIA:
                 int termino_escritura_ok;
-                int termino_ok_kernel;
+                int termino_ok_kernel = 1;
 
                 // usleep(dialfs->tiempo_unidad_trabajo * 1000);
                 printf("\nLLEGUE HASTA ACA!!!\n\n");
@@ -254,7 +254,10 @@ void recibir_kernel(void* config_socket_io) { //FREE
 
                 log_info(logger_io, "PID: %d - Leer Archivo: %s - Tamaño a Leer: %d - Puntero Archivo: %d", pedido_escritura->pid, pedido_escritura->nombre_archivo, pedido_escritura->registro_tamanio, pedido_escritura->registro_archivo);
 
-                recv(memoriafd, &termino_escritura_ok, sizeof(int), MSG_WAITALL);
+                // recv(memoriafd, &termino_escritura_ok, sizeof(int), MSG_WAITALL);
+
+                sleep(5); // Aca lo hago asi rapido pero despues lo tengo que sacar
+                
                 printf("el valor de termino_escritura_ok es %d\n", termino_escritura_ok);
 
                 send(socket_kernel_io, &termino_ok_kernel, sizeof(int), 0);
@@ -576,10 +579,7 @@ void compactar(int pid, char* name_file, int tamanio_truncar) {
 
         int bloques_necesarios_add = calcular_bloques_necesarios(file_a_truncar->block_count, tamanio_truncar);
         int bloques_totales = file_a_truncar->block_count + bloques_necesarios_add;
-
-        printf("Printeo antes del bitmap hecho verga\n");
-        sleep(40);
-        printf("Printeo despues del bitmap hecho verga\n");
+        printf("Bloques totales a agregar: %d\n", bloques_totales);
 
         // Como no evaluo casos en los que se pase del tamanio total del fs, no deberia tener problemas con el bitmap
         for(int i = file_a_truncar->first_block; i < (file_a_truncar->first_block + bloques_totales); i++) {
