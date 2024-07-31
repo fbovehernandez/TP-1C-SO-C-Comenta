@@ -211,7 +211,7 @@ void FINALIZAR_PROCESO(int pid) {
     } else {
         t_pcb* pcb = sacarDe(cola, pid);
         printf("El proceso no se encuentra en ejecucion\n");
-        // ejecutar_signal_de_recursos_bloqueados_por(pcb);
+        ejecutar_signal_de_recursos_bloqueados_por(pcb);
         pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
     }
     
@@ -643,8 +643,6 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
 
     printf("pid del pcb despues de desalojar: %d\n", pcb->pid);
 
-    // hay_proceso_en_exec = false;
-
     if (es_VRR()) {
         temporal_stop(timer); // Detenemos el temporizador
 
@@ -667,12 +665,15 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
  
     switch (devolucion_cpu) {
         case ERROR_STDOUT: case ERROR_STDIN:
+            ejecutar_signal_de_recursos_bloqueados_por(pcb);
             pasar_a_exit(pcb, "INVALID_INTERFACE");
             break;
         case OUT_OF_MEMORY:
+            ejecutar_signal_de_recursos_bloqueados_por(pcb);
             pasar_a_exit(pcb, "OUT OF MEMORY");
             break;
         case INTERRUPCION_FIN_USUARIO:
+            ejecutar_signal_de_recursos_bloqueados_por(pcb);
             pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
             break;
         case INTERRUPCION_QUANTUM:
@@ -689,13 +690,14 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     
             wait_signal_recurso(pcb, recurso->nombre, devolucion_cpu);
             
-            // free(recurso->nombre); //FREE? A LO ULTIMO
-            // free(recurso);
+            free(recurso->nombre); //FREE? A LO ULTIMO
+            free(recurso);
 
             printf("\nLlega al final de WAIT_RECURSO SIGNAL_RECURSO\n\n");
             break;
         case FIN_PROCESO:
             // pcb = deserializar_pcb(package->buffer); 
+            // ejecutar_signal_de_recursos_bloqueados_por(pcb);
             pasar_a_exit(pcb, "SUCCESS");
             //liberar_memoria(pcb->pid); // Por ahora esto seria simplemente decirle a memoria que elimine el PID del diccionario
             //change_status(pcb, EXIT); 
@@ -953,107 +955,75 @@ operación solicitada, en caso de que no sea así, se deberá enviar el proceso 
 void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desalojoCpu){ 
     printf("Hace %s con el pid %d en recurso %s\n", pasar_string_desalojo_recurso(desalojoCpu), pcb->pid, key_nombre_recurso);
     if(dictionary_has_key(datos_kernel->diccionario_recursos, key_nombre_recurso)) {
-        printf("Tiene la llave.\n");
         t_recurso* recurso_obtenido = dictionary_get(datos_kernel->diccionario_recursos, key_nombre_recurso);
         if(desalojoCpu == WAIT_RECURSO) {
-            printf("llego hasta WAIT\n");
             ejecutar_wait_recurso(recurso_obtenido, pcb, key_nombre_recurso);
-            log_info(logger_kernel, "PID %d - Retengo el recurso: %s", pcb->pid, key_nombre_recurso);
-        }else{
-            printf("Llega hasta signal\n");
-            //if(es_el_ultimo_recurso_a_liberar_por(pcb)) {
-            //    ejecutar_signal_recurso(recurso_obtenido, pcb, true);
-            //} else {
-            free(key_nombre_recurso);
+        } else {
+            printf("el pid del pcb que llega a wait_signal_recurso es %d\n", pcb->pid);
             ejecutar_signal_recurso(recurso_obtenido, pcb, false);
-            //}
-            
         }
     } else {
         pasar_a_exit(pcb, "INVALID_RESOURCE");
     }
-    
     imprimir_diccionario_recursos();
 }
 
-
-void ejecutar_wait_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, char* recurso){
+void ejecutar_wait_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, char* recurso) {
     if(recurso_obtenido->instancias > 0) {        
-        recurso_obtenido->instancias --;
-        cantidad_de_waits_que_se_hicieron++;
-        log_info(logger_kernel, "WAITS REALIZADOS: %d", cantidad_de_waits_que_se_hicieron);
-        printf("\n\nWAITS REALIZADOS: %d\n\n", cantidad_de_waits_que_se_hicieron);
+        recurso_obtenido->instancias--;
         char* pid_string = string_itoa(pcb->pid);
+        printf("El pid que estamos guardando en la lista de de procesos que lo retienen es: %s correspondiente al recurso: %s\n", pid_string, recurso);
         list_add(recurso_obtenido->procesos_que_lo_retienen, pid_string);
-
-        pthread_mutex_lock(&mutex_prioritario_por_signal);
-        queue_push(cola_prioritarios_por_signal, pcb); // Cuando dice devolver ejecucion, dice esperar a que salga el que esta ejecutando, o mandale una interrupcion
-                                                      // y que se ejecute el proximo que tenemos en esta cola prioritaria?
-                                                      // Tambien ver que hace wait y no hace signal y se libere el recurso -> ver sofi porfa
-        pthread_mutex_unlock(&mutex_prioritario_por_signal);
-
-        sem_post(&sem_hay_para_planificar);
+        pasar_a_ready(pcb);
+        // free(pid_string);
     } else {
+        printf("El pid que estamos guardando en procesos bloqueados es %d correspondiente al recurrso: %s", pcb->pid, recurso);
         pasar_a_blocked(pcb);
         list_add(recurso_obtenido->procesos_bloqueados, pcb);
-        log_info(logger_kernel,"PID: %d - Bloqueado por: %s", pcb->pid, recurso);
     }
 }
 
 void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, bool esta_para_finalizar) {
-    //if(esta_el_pid_en_cola_de_procesos_que_retienen(pcb->pid, recurso_obtenido)) {
-    //}
-    printf("\n\nHAGO EL EJECUTAR SIGNAL RECURSO CON EL PID: %d\n\n", pcb->pid);
-    log_info(logger_kernel, "CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: %d", recurso_obtenido->instancias);
-    recurso_obtenido->instancias++;
-    contador_aumento_instancias++;
-    printf("\n\nLA CANTIDAD DE VECES QUE SE EJECUTO SIGNAL ES: %d\n\n", contador_aumento_instancias);
     char* pid_string = string_itoa(pcb->pid);
-    list_remove_element(recurso_obtenido->procesos_que_lo_retienen, pid_string);
-    free(pid_string);
-    
-    printf("\nLLEGA HASTA EJECUTAR_SIGNAL_RECURSO\n\n");
-    
-    if(!esta_para_finalizar) {        
-        printf("\nLlega hasta aca\n\n");
-        pthread_mutex_lock(&mutex_prioritario_por_signal);
-        queue_push(cola_prioritarios_por_signal, pcb);
-        pthread_mutex_unlock(&mutex_prioritario_por_signal);
-        sem_post(&sem_hay_para_planificar);
+    printf("el pid string en ejecutar_sginal_recurso es %s\n", pid_string);
+     
+    if(esta_el_pid_en_cola_de_procesos_que_retienen(pid_string, recurso_obtenido)) {
+        recurso_obtenido->instancias++;
+        bool encontro_algo_la_lista = list_remove_element(recurso_obtenido->procesos_que_lo_retienen, pid_string);
+        printf("Encontro algo en la lista\n");
+
+        if(!esta_para_finalizar) {
+            printf("\nLlega hasta aca, esta para finalizar %d\n\n", pcb->pid);
+            pthread_mutex_lock(&mutex_prioritario_por_signal);
+            queue_push(cola_prioritarios_por_signal, pcb);
+            pthread_mutex_unlock(&mutex_prioritario_por_signal);
+            sem_post(&sem_hay_para_planificar);
+        }
     }
-    
+
     if(!list_is_empty(recurso_obtenido->procesos_bloqueados)) {
         t_pcb* proceso_liberado = list_remove(recurso_obtenido->procesos_bloqueados, 0);
         char* pid_liberado = string_itoa(proceso_liberado->pid);
+        printf("Pasa a ready el proceso liberado %s gracias al pcb %s\n", pid_liberado, pid_string);
         list_add(recurso_obtenido->procesos_que_lo_retienen, pid_liberado);
-        log_info(logger_kernel, "Proceso liberado %s por %d", pid_liberado, pcb->pid);
-
-        /*change_status(proceso_liberado, READY);
-        queue_push(cola_prioritarios_por_signal, proceso_liberado); 
-        sem_post(&sem_hay_para_planificar);*/
-       
-        t_pcb* proceso_liberado_desbloqueado = sacarDe(cola_blocked, proceso_liberado->pid); //ACA
-        proceso_liberado_desbloqueado->program_counter--;
-        pasar_a_ready(proceso_liberado_desbloqueado);
+        proceso_liberado->program_counter--;
+        pasar_a_ready(proceso_liberado);
     }
+
+    free(pid_string);
 }
 
 void ejecutar_signal_de_recursos_bloqueados_por(t_pcb* pcb) {
     t_list* elementos = dictionary_elements(datos_kernel->diccionario_recursos);
     char* pid_string = string_itoa(pcb->pid);
-    printf("el pid qe hace ejecutar_signal_de_recursos_bloqueados es %s\n", pid_string);
     for(int i=0; i<list_size(elementos); i++) {
         t_recurso* recurso = list_get(elementos, i);
-        printf("Recurso en posicion %d\n", i);
         for(int j=0;j<list_size(recurso->procesos_que_lo_retienen); j++) {
-            
             char* pid = list_get(recurso->procesos_que_lo_retienen, j);
-            printf("Pid obtenido en lista de recurso; %d\n", pid);
-            
             if(strcmp(pid, pid_string) == 0 ) { // 0 es verdadero en strcmp
                 log_info(logger_kernel, "Entra a ejecutar signal recurso del EXIT el proceso: %d\n", pcb->pid);
                 ejecutar_signal_recurso(recurso, pcb, true);
-                // break;
+                break;
             }
         }
 
@@ -1065,9 +1035,11 @@ void ejecutar_signal_de_recursos_bloqueados_por(t_pcb* pcb) {
            }
         }
     }
-    
+
     free(pid_string);
+    list_destroy(elementos);
 }
+
 
 char* pasar_string_desalojo_recurso(DesalojoCpu desalojoCpu){
     switch (desalojoCpu) {
@@ -1091,6 +1063,22 @@ void _imprimir_recurso(char* nombre, void* element) {
 void imprimir_diccionario_recursos() {
     printf("\n");
     dictionary_iterator(datos_kernel->diccionario_recursos, (void*)_imprimir_recurso);
+}  
+
+bool esta_el_pid_en_cola_de_procesos_que_retienen(char* pid, t_recurso* recurso_obtenido) {
+    bool seEncuentra = false;
+    printf("Esta en esta_el_pid_en_cola_de_procesos_que_retienen ahora... funciona? %s\n", pid);
+    
+    for(int i=0;i<list_size(recurso_obtenido->procesos_que_lo_retienen);i++) {
+        char* pid_recibido = list_get(recurso_obtenido->procesos_que_lo_retienen, i);
+        printf("Este es el pid recibido %s\n", pid_recibido);      
+        if(strcmp(pid_recibido, pid) == 0) {    
+            printf("Se encontro el pid\n");
+            seEncuentra = true;
+        } 
+    }
+
+    return seEncuentra;
 }
 
 ////////////////////
@@ -1493,15 +1481,3 @@ t_list_io* validar_io(t_operacion_io* io, t_pcb* pcb) {
 ////////// NO SE ESTA USANDO //////////
 ///////////////////////////////////////
 
-bool esta_el_pid_en_cola_de_procesos_que_retienen(int pid, t_recurso* recurso_obtenido) {
-    bool seEncuentra = false;
-    for(int i=0;i<list_size(recurso_obtenido->procesos_que_lo_retienen);i++) {
-        char* pid_recibido = list_get(recurso_obtenido->procesos_que_lo_retienen, i);
-        char* pid_string = string_itoa(pid);
-        if(pid_recibido == pid_string) {
-            seEncuentra = true;
-        } 
-        free(pid_string);
-    }
-    return seEncuentra;
-}

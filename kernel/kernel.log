@@ -1,1445 +1,244 @@
-[INFO] 00:03:12:597 LOGGER/(7494:7506): Se crea el proceso: 1 en NEW
-[INFO] 00:03:12:640 LOGGER/(7494:7502): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 00:03:12:644 LOGGER/(7494:7502): Cola Ready: 1 
-
-[INFO] 00:03:12:651 LOGGER/(7494:7504): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 00:12:31:351 LOGGER/(8958:8963): Se crea el proceso: 1 en NEW
-[INFO] 00:12:31:397 LOGGER/(8958:8960): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 00:12:31:399 LOGGER/(8958:8960): Cola Ready: 1 
-
-[INFO] 00:12:31:401 LOGGER/(8958:8961): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 00:13:01:617 LOGGER/(8958:8961): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 00:13:01:618 LOGGER/(8958:8961): Finaliza el proceso 1 - Motivo: SUCCESS
-[INFO] 00:25:09:919 LOGGER/(10354:10359): Se crea el proceso: 1 en NEW
-[INFO] 00:25:09:970 LOGGER/(10354:10356): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 00:25:09:972 LOGGER/(10354:10356): Cola Ready: 1 
-
-[INFO] 00:25:09:973 LOGGER/(10354:10357): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 00:25:40:184 LOGGER/(10354:10357): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 00:25:40:186 LOGGER/(10354:10357): Finaliza el proceso 1 - Motivo: SUCCESS
-[INFO] 00:27:37:161 LOGGER/(10354:10359): Se crea el proceso: 2 en NEW
-[INFO] 00:27:37:162 LOGGER/(10354:10356): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 00:27:37:162 LOGGER/(10354:10356): Cola Ready: 2 
-
-[INFO] 00:27:37:162 LOGGER/(10354:10357): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 00:27:48:200 LOGGER/(10354:10357): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 00:27:48:200 LOGGER/(10354:10357): Finaliza el proceso 2 - Motivo: SUCCESS
-[INFO] 01:00:50:570 LOGGER/(12504:12509): Se crea el proceso: 1 en NEW
-[INFO] 01:00:50:600 LOGGER/(12504:12506): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:00:50:602 LOGGER/(12504:12506): Cola Ready: 1 
-
-[INFO] 01:00:50:604 LOGGER/(12504:12507): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:01:01:747 LOGGER/(12504:12507): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:01:01:747 LOGGER/(12504:12507): Finaliza el proceso 1 - Motivo: SUCCESS
-[INFO] 01:03:08:694 LOGGER/(12504:12509): Se crea el proceso: 2 en NEW
-[INFO] 01:03:08:696 LOGGER/(12504:12506): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:03:08:696 LOGGER/(12504:12506): Cola Ready: 2 
-
-[INFO] 01:03:08:696 LOGGER/(12504:12507): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:03:12:704 LOGGER/(12504:12507): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:03:12:704 LOGGER/(12504:12507): Finaliza el proceso 2 - Motivo: OUT OF MEMORY
-[INFO] 01:03:37:554 LOGGER/(12504:12509): Se crea el proceso: 3 en NEW
-[INFO] 01:03:37:555 LOGGER/(12504:12506): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:03:37:555 LOGGER/(12504:12506): Cola Ready: 3 
-
-[INFO] 01:03:37:556 LOGGER/(12504:12507): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:03:41:563 LOGGER/(12504:12507): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:03:41:565 LOGGER/(12504:12507): Finaliza el proceso 3 - Motivo: OUT OF MEMORY
-[INFO] 01:05:29:253 LOGGER/(13545:13550): Se crea el proceso: 1 en NEW
-[INFO] 01:05:29:291 LOGGER/(13545:13547): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:05:29:292 LOGGER/(13545:13547): Cola Ready: 1 
-
-[INFO] 01:05:29:294 LOGGER/(13545:13548): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:05:29:311 LOGGER/(13545:13550): Se crea el proceso: 2 en NEW
-[INFO] 01:05:29:313 LOGGER/(13545:13547): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:05:29:314 LOGGER/(13545:13547): Cola Ready: 2 
-
-[INFO] 01:05:29:314 LOGGER/(13545:13550): Se crea el proceso: 3 en NEW
-[INFO] 01:05:29:316 LOGGER/(13545:13547): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:05:29:316 LOGGER/(13545:13547): Cola Ready: 2 3 
-
-[INFO] 01:05:29:318 LOGGER/(13545:13550): Se crea el proceso: 4 en NEW
-[INFO] 01:05:29:319 LOGGER/(13545:13547): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:05:29:319 LOGGER/(13545:13547): Cola Ready: 2 3 4 
-
-[INFO] 01:05:31:390 LOGGER/(13545:13548): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:05:31:390 LOGGER/(13545:13548): Finaliza el proceso 1 - Motivo: INVALID_RESOURCE
-[INFO] 01:05:31:398 LOGGER/(13545:13548): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:05:33:404 LOGGER/(13545:13548): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:05:33:404 LOGGER/(13545:13548): Finaliza el proceso 2 - Motivo: INVALID_RESOURCE
-[INFO] 01:05:33:406 LOGGER/(13545:13548): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:05:35:409 LOGGER/(13545:13548): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:05:35:409 LOGGER/(13545:13548): Finaliza el proceso 3 - Motivo: INVALID_RESOURCE
-[INFO] 01:05:35:410 LOGGER/(13545:13548): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:05:37:413 LOGGER/(13545:13548): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:05:37:413 LOGGER/(13545:13548): Finaliza el proceso 4 - Motivo: INVALID_RESOURCE
-[INFO] 01:08:15:226 LOGGER/(14294:14299): Se crea el proceso: 1 en NEW
-[INFO] 01:08:15:268 LOGGER/(14294:14296): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:08:15:269 LOGGER/(14294:14296): Cola Ready: 1 
-
-[INFO] 01:08:15:271 LOGGER/(14294:14297): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:08:15:290 LOGGER/(14294:14299): Se crea el proceso: 2 en NEW
-[INFO] 01:08:15:294 LOGGER/(14294:14296): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:08:15:295 LOGGER/(14294:14296): Cola Ready: 2 
-
-[INFO] 01:08:15:295 LOGGER/(14294:14299): Se crea el proceso: 3 en NEW
-[INFO] 01:08:15:296 LOGGER/(14294:14296): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:08:15:296 LOGGER/(14294:14296): Cola Ready: 2 3 
-
-[INFO] 01:08:15:299 LOGGER/(14294:14299): Se crea el proceso: 4 en NEW
-[INFO] 01:08:15:310 LOGGER/(14294:14296): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:08:15:311 LOGGER/(14294:14296): Cola Ready: 2 3 4 
-
-[INFO] 01:08:17:380 LOGGER/(14294:14297): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:08:18:386 LOGGER/(14294:14297): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:08:18:386 LOGGER/(14294:14297): Finaliza el proceso 1 - Motivo: INVALID_INTERFACE
-[INFO] 01:08:18:395 LOGGER/(14294:14297): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:08:20:403 LOGGER/(14294:14297): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:08:21:405 LOGGER/(14294:14297): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:08:21:406 LOGGER/(14294:14297): Finaliza el proceso 2 - Motivo: INVALID_INTERFACE
-[INFO] 01:08:21:407 LOGGER/(14294:14297): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:08:23:411 LOGGER/(14294:14297): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:08:24:413 LOGGER/(14294:14297): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:08:24:413 LOGGER/(14294:14297): Finaliza el proceso 3 - Motivo: INVALID_INTERFACE
-[INFO] 01:08:24:414 LOGGER/(14294:14297): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:08:26:418 LOGGER/(14294:14297): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:08:27:422 LOGGER/(14294:14297): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:08:27:422 LOGGER/(14294:14297): Finaliza el proceso 4 - Motivo: INVALID_INTERFACE
-[INFO] 01:14:28:537 LOGGER/(15903:15910): Se crea el proceso: 1 en NEW
-[INFO] 01:14:28:581 LOGGER/(15903:15907): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:14:28:583 LOGGER/(15903:15907): Cola Ready: 1 
-
-[INFO] 01:14:28:592 LOGGER/(15903:15908): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:14:28:605 LOGGER/(15903:15910): Se crea el proceso: 2 en NEW
-[INFO] 01:14:28:609 LOGGER/(15903:15907): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:14:28:609 LOGGER/(15903:15907): Cola Ready: 2 
-
-[INFO] 01:14:28:609 LOGGER/(15903:15910): Se crea el proceso: 3 en NEW
-[INFO] 01:14:28:613 LOGGER/(15903:15907): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:14:28:614 LOGGER/(15903:15907): Cola Ready: 2 3 
-
-[INFO] 01:14:28:616 LOGGER/(15903:15910): Se crea el proceso: 4 en NEW
-[INFO] 01:14:28:618 LOGGER/(15903:15907): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:14:28:618 LOGGER/(15903:15907): Cola Ready: 2 3 4 
-
-[INFO] 01:14:30:708 LOGGER/(15903:15908): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:14:31:716 LOGGER/(15903:15908): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:14:31:716 LOGGER/(15903:15908): Finaliza el proceso 1 - Motivo: INVALID_INTERFACE
-[INFO] 01:14:31:728 LOGGER/(15903:15908): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:14:33:736 LOGGER/(15903:15908): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:14:34:741 LOGGER/(15903:15908): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:14:34:742 LOGGER/(15903:15908): Finaliza el proceso 2 - Motivo: INVALID_INTERFACE
-[INFO] 01:14:34:742 LOGGER/(15903:15908): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:14:36:753 LOGGER/(15903:15908): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:14:37:756 LOGGER/(15903:15908): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:14:37:756 LOGGER/(15903:15908): Finaliza el proceso 3 - Motivo: INVALID_INTERFACE
-[INFO] 01:14:37:756 LOGGER/(15903:15908): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:14:39:760 LOGGER/(15903:15908): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:14:40:763 LOGGER/(15903:15908): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:14:40:763 LOGGER/(15903:15908): Finaliza el proceso 4 - Motivo: INVALID_INTERFACE
-[INFO] 01:17:17:952 LOGGER/(17191:17196): Se crea el proceso: 1 en NEW
-[INFO] 01:17:17:983 LOGGER/(17191:17193): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:17:17:986 LOGGER/(17191:17193): Cola Ready: 1 
-
-[INFO] 01:17:17:990 LOGGER/(17191:17194): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:17:18:005 LOGGER/(17191:17196): Se crea el proceso: 2 en NEW
-[INFO] 01:17:18:011 LOGGER/(17191:17193): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:17:18:011 LOGGER/(17191:17193): Cola Ready: 2 
-
-[INFO] 01:17:18:011 LOGGER/(17191:17196): Se crea el proceso: 3 en NEW
-[INFO] 01:17:18:014 LOGGER/(17191:17193): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:17:18:014 LOGGER/(17191:17193): Cola Ready: 2 3 
-
-[INFO] 01:17:18:016 LOGGER/(17191:17196): Se crea el proceso: 4 en NEW
-[INFO] 01:17:18:017 LOGGER/(17191:17193): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:17:18:017 LOGGER/(17191:17193): Cola Ready: 2 3 4 
-
-[INFO] 01:17:20:139 LOGGER/(17191:17194): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:17:21:145 LOGGER/(17191:17194): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:17:21:146 LOGGER/(17191:17194): PID: 1 - Bloqueado por: ESPERA
-[INFO] 01:17:21:153 LOGGER/(17191:17194): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:17:21:206 LOGGER/(17191:17343): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:17:21:207 LOGGER/(17191:17343): Cola Ready: 3 4 1 
-
-[INFO] 01:17:23:157 LOGGER/(17191:17194): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:17:24:160 LOGGER/(17191:17194): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:17:24:160 LOGGER/(17191:17194): PID: 2 - Bloqueado por: ESPERA
-[INFO] 01:17:24:161 LOGGER/(17191:17194): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:17:24:167 LOGGER/(17191:17343): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:17:24:167 LOGGER/(17191:17343): Cola Ready: 4 1 2 
-
-[INFO] 01:17:26:167 LOGGER/(17191:17194): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:17:27:174 LOGGER/(17191:17194): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:17:27:174 LOGGER/(17191:17194): PID: 3 - Bloqueado por: ESPERA
-[INFO] 01:17:27:175 LOGGER/(17191:17194): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:17:27:176 LOGGER/(17191:17343): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:17:27:176 LOGGER/(17191:17343): Cola Ready: 1 2 3 
-
-[INFO] 01:17:29:178 LOGGER/(17191:17194): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:17:30:180 LOGGER/(17191:17194): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:17:30:180 LOGGER/(17191:17194): PID: 4 - Bloqueado por: ESPERA
-[INFO] 01:17:30:181 LOGGER/(17191:17194): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:17:30:182 LOGGER/(17191:17343): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:17:30:182 LOGGER/(17191:17343): Cola Ready: 2 3 4 
-
-[INFO] 01:17:31:184 LOGGER/(17191:17194): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:17:31:184 LOGGER/(17191:17194): PID: 1 - Bloqueado por: RB
-[INFO] 01:17:31:184 LOGGER/(17191:17194): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:17:32:187 LOGGER/(17191:17194): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:17:32:188 LOGGER/(17191:17194): PID: 2 - Bloqueado por: RC
-[INFO] 01:17:32:188 LOGGER/(17191:17194): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:17:33:190 LOGGER/(17191:17194): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:17:33:191 LOGGER/(17191:17194): PID: 3 - Bloqueado por: RD
-[INFO] 01:17:33:191 LOGGER/(17191:17194): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:17:34:195 LOGGER/(17191:17194): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:17:34:195 LOGGER/(17191:17194): PID: 4 - Bloqueado por: RA
-[INFO] 01:17:44:213 LOGGER/(17191:17196): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: EXIT
-[INFO] 01:17:44:214 LOGGER/(17191:17196): Finaliza el proceso 2 - Motivo: INTERRUPTED_BY_USER
-[INFO] 01:17:44:223 LOGGER/(17191:17196): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:17:44:224 LOGGER/(17191:17196): Cola Ready: 1 
-
-[INFO] 01:17:44:224 LOGGER/(17191:17194): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:17:45:226 LOGGER/(17191:17194): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:17:48:233 LOGGER/(17191:17194): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:17:48:233 LOGGER/(17191:17194): PID: 1 - Bloqueado por: ESPERA
-[INFO] 01:17:48:234 LOGGER/(17191:17343): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:17:48:234 LOGGER/(17191:17343): Cola Ready: 1 
-
-[INFO] 01:17:48:234 LOGGER/(17191:17194): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:17:49:239 LOGGER/(17191:17194): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:17:49:239 LOGGER/(17191:17194): Cola Ready: 4 
-
-[INFO] 01:17:49:239 LOGGER/(17191:17194): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:17:50:241 LOGGER/(17191:17194): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:17:51:243 LOGGER/(17191:17194): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:17:51:244 LOGGER/(17191:17194): Finaliza el proceso 1 - Motivo: SUCCESS
-[INFO] 01:17:51:245 LOGGER/(17191:17194): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:17:52:247 LOGGER/(17191:17194): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:17:55:256 LOGGER/(17191:17194): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:17:55:256 LOGGER/(17191:17194): PID: 4 - Bloqueado por: ESPERA
-[INFO] 01:17:55:257 LOGGER/(17191:17343): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:17:55:257 LOGGER/(17191:17343): Cola Ready: 4 
-
-[INFO] 01:17:55:257 LOGGER/(17191:17194): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:17:56:259 LOGGER/(17191:17194): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:17:56:259 LOGGER/(17191:17194): Cola Ready: 3 
-
-[INFO] 01:17:56:259 LOGGER/(17191:17194): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:17:57:261 LOGGER/(17191:17194): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:17:58:265 LOGGER/(17191:17194): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:17:58:265 LOGGER/(17191:17194): Finaliza el proceso 4 - Motivo: SUCCESS
-[INFO] 01:17:58:267 LOGGER/(17191:17194): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:17:59:270 LOGGER/(17191:17194): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:18:01:274 LOGGER/(17191:17194): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:18:01:275 LOGGER/(17191:17194): PID: 3 - Bloqueado por: ESPERA
-[INFO] 01:18:01:276 LOGGER/(17191:17343): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:18:01:276 LOGGER/(17191:17343): Cola Ready: 3 
-
-[INFO] 01:18:01:276 LOGGER/(17191:17194): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:18:02:280 LOGGER/(17191:17194): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:18:03:283 LOGGER/(17191:17194): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:18:04:286 LOGGER/(17191:17194): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:18:04:286 LOGGER/(17191:17194): Finaliza el proceso 3 - Motivo: SUCCESS
-[INFO] 01:28:09:268 LOGGER/(18864:18871): Se crea el proceso: 1 en NEW
-[INFO] 01:28:09:302 LOGGER/(18864:18866): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:28:09:304 LOGGER/(18864:18866): Cola Ready: 1 
-
-[INFO] 01:28:09:305 LOGGER/(18864:18867): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:28:09:318 LOGGER/(18864:18871): Se crea el proceso: 2 en NEW
-[INFO] 01:28:09:321 LOGGER/(18864:18866): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:28:09:321 LOGGER/(18864:18866): Cola Ready: 2 
-
-[INFO] 01:28:09:322 LOGGER/(18864:18871): Se crea el proceso: 3 en NEW
-[INFO] 01:28:09:324 LOGGER/(18864:18866): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:28:09:324 LOGGER/(18864:18866): Cola Ready: 2 3 
-
-[INFO] 01:28:09:327 LOGGER/(18864:18871): Se crea el proceso: 4 en NEW
-[INFO] 01:28:09:338 LOGGER/(18864:18866): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:28:09:338 LOGGER/(18864:18866): Cola Ready: 2 3 4 
-
-[INFO] 01:28:11:392 LOGGER/(18864:18867): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:28:12:401 LOGGER/(18864:18867): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:28:12:401 LOGGER/(18864:18867): PID: 1 - Bloqueado por: ESPERA
-[INFO] 01:28:12:403 LOGGER/(18864:18867): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:28:12:444 LOGGER/(18864:19100): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:28:12:445 LOGGER/(18864:19100): Cola Ready: 3 4 1 
-
-[INFO] 01:28:14:411 LOGGER/(18864:18867): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:28:15:413 LOGGER/(18864:18867): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:28:15:414 LOGGER/(18864:18867): PID: 2 - Bloqueado por: ESPERA
-[INFO] 01:28:15:414 LOGGER/(18864:18867): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:28:15:416 LOGGER/(18864:19100): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:28:15:416 LOGGER/(18864:19100): Cola Ready: 4 1 2 
-
-[INFO] 01:28:17:418 LOGGER/(18864:18867): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:28:18:420 LOGGER/(18864:18867): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:28:18:420 LOGGER/(18864:18867): PID: 3 - Bloqueado por: ESPERA
-[INFO] 01:28:18:421 LOGGER/(18864:18867): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:28:18:423 LOGGER/(18864:19100): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:28:18:423 LOGGER/(18864:19100): Cola Ready: 1 2 3 
-
-[INFO] 01:28:20:425 LOGGER/(18864:18867): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:28:21:427 LOGGER/(18864:18867): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:28:21:427 LOGGER/(18864:18867): PID: 4 - Bloqueado por: ESPERA
-[INFO] 01:28:21:429 LOGGER/(18864:18867): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:28:21:431 LOGGER/(18864:19100): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:28:21:431 LOGGER/(18864:19100): Cola Ready: 2 3 4 
-
-[INFO] 01:28:22:432 LOGGER/(18864:18867): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:28:22:432 LOGGER/(18864:18867): PID: 1 - Bloqueado por: RB
-[INFO] 01:28:22:432 LOGGER/(18864:18867): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:28:23:435 LOGGER/(18864:18867): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:28:23:435 LOGGER/(18864:18867): PID: 2 - Bloqueado por: RC
-[INFO] 01:28:23:435 LOGGER/(18864:18867): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:28:24:437 LOGGER/(18864:18867): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:28:24:437 LOGGER/(18864:18867): PID: 3 - Bloqueado por: RD
-[INFO] 01:28:24:437 LOGGER/(18864:18867): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:28:25:440 LOGGER/(18864:18867): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:28:25:440 LOGGER/(18864:18867): PID: 4 - Bloqueado por: RA
-[INFO] 01:28:32:131 LOGGER/(18864:18871): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: EXIT
-[INFO] 01:28:32:131 LOGGER/(18864:18871): Finaliza el proceso 2 - Motivo: INTERRUPTED_BY_USER
-[INFO] 01:28:32:139 LOGGER/(18864:18871): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:28:32:139 LOGGER/(18864:18871): Cola Ready: 1 
-
-[INFO] 01:28:32:140 LOGGER/(18864:18867): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:28:33:141 LOGGER/(18864:18867): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:28:36:148 LOGGER/(18864:18867): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:28:36:148 LOGGER/(18864:18867): PID: 1 - Bloqueado por: ESPERA
-[INFO] 01:28:36:149 LOGGER/(18864:19100): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:28:36:149 LOGGER/(18864:19100): Cola Ready: 1 
-
-[INFO] 01:28:36:149 LOGGER/(18864:18867): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:28:37:154 LOGGER/(18864:18867): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:28:37:154 LOGGER/(18864:18867): Cola Ready: 4 
-
-[INFO] 01:28:37:155 LOGGER/(18864:18867): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:28:38:157 LOGGER/(18864:18867): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:28:39:159 LOGGER/(18864:18867): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:28:39:159 LOGGER/(18864:18867): Finaliza el proceso 1 - Motivo: SUCCESS
-[INFO] 01:28:39:160 LOGGER/(18864:18867): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:28:40:163 LOGGER/(18864:18867): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:28:43:167 LOGGER/(18864:18867): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:28:43:167 LOGGER/(18864:18867): PID: 4 - Bloqueado por: ESPERA
-[INFO] 01:28:43:169 LOGGER/(18864:19100): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:28:43:169 LOGGER/(18864:19100): Cola Ready: 4 
-
-[INFO] 01:28:43:169 LOGGER/(18864:18867): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:28:44:172 LOGGER/(18864:18867): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:28:44:172 LOGGER/(18864:18867): Cola Ready: 3 
-
-[INFO] 01:28:44:172 LOGGER/(18864:18867): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:28:45:175 LOGGER/(18864:18867): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:28:46:179 LOGGER/(18864:18867): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:28:46:179 LOGGER/(18864:18867): Finaliza el proceso 4 - Motivo: SUCCESS
-[INFO] 01:28:46:180 LOGGER/(18864:18867): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:28:47:182 LOGGER/(18864:18867): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:28:49:186 LOGGER/(18864:18867): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:28:49:186 LOGGER/(18864:18867): PID: 3 - Bloqueado por: ESPERA
-[INFO] 01:28:49:188 LOGGER/(18864:19100): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:28:49:188 LOGGER/(18864:19100): Cola Ready: 3 
-
-[INFO] 01:28:49:188 LOGGER/(18864:18867): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:28:50:190 LOGGER/(18864:18867): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:28:51:192 LOGGER/(18864:18867): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:28:52:196 LOGGER/(18864:18867): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:28:52:196 LOGGER/(18864:18867): Finaliza el proceso 3 - Motivo: SUCCESS
-[INFO] 01:34:53:181 LOGGER/(20791:20796): Se crea el proceso: 1 en NEW
-[INFO] 01:34:53:220 LOGGER/(20791:20793): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:34:53:221 LOGGER/(20791:20793): Cola Ready: 1 
-
-[INFO] 01:34:53:222 LOGGER/(20791:20794): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:34:53:238 LOGGER/(20791:20796): Se crea el proceso: 2 en NEW
-[INFO] 01:34:53:241 LOGGER/(20791:20793): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:34:53:241 LOGGER/(20791:20793): Cola Ready: 2 
-
-[INFO] 01:34:53:241 LOGGER/(20791:20796): Se crea el proceso: 3 en NEW
-[INFO] 01:34:53:246 LOGGER/(20791:20793): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:34:53:246 LOGGER/(20791:20793): Cola Ready: 2 3 
-
-[INFO] 01:34:53:249 LOGGER/(20791:20796): Se crea el proceso: 4 en NEW
-[INFO] 01:34:53:249 LOGGER/(20791:20793): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:34:53:250 LOGGER/(20791:20793): Cola Ready: 2 3 4 
-
-[INFO] 01:34:55:318 LOGGER/(20791:20794): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:34:56:324 LOGGER/(20791:20794): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:34:56:324 LOGGER/(20791:20794): Finaliza el proceso 1 - Motivo: INVALID_INTERFACE
-[INFO] 01:34:56:338 LOGGER/(20791:20794): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:34:58:343 LOGGER/(20791:20794): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:34:59:345 LOGGER/(20791:20794): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:34:59:345 LOGGER/(20791:20794): Finaliza el proceso 2 - Motivo: INVALID_INTERFACE
-[INFO] 01:34:59:347 LOGGER/(20791:20794): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:35:01:350 LOGGER/(20791:20794): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:35:02:352 LOGGER/(20791:20794): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:35:02:352 LOGGER/(20791:20794): Finaliza el proceso 3 - Motivo: INVALID_INTERFACE
-[INFO] 01:35:02:352 LOGGER/(20791:20794): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:35:04:355 LOGGER/(20791:20794): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:35:05:358 LOGGER/(20791:20794): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:35:05:358 LOGGER/(20791:20794): Finaliza el proceso 4 - Motivo: INVALID_INTERFACE
-[INFO] 01:35:57:468 LOGGER/(21437:21451): Se crea el proceso: 1 en NEW
-[INFO] 01:35:57:496 LOGGER/(21437:21443): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:35:57:497 LOGGER/(21437:21443): Cola Ready: 1 
-
-[INFO] 01:35:57:498 LOGGER/(21437:21444): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:35:57:519 LOGGER/(21437:21451): Se crea el proceso: 2 en NEW
-[INFO] 01:35:57:522 LOGGER/(21437:21443): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:35:57:522 LOGGER/(21437:21443): Cola Ready: 2 
-
-[INFO] 01:35:57:522 LOGGER/(21437:21451): Se crea el proceso: 3 en NEW
-[INFO] 01:35:57:523 LOGGER/(21437:21443): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:35:57:523 LOGGER/(21437:21443): Cola Ready: 2 3 
-
-[INFO] 01:35:57:527 LOGGER/(21437:21451): Se crea el proceso: 4 en NEW
-[INFO] 01:35:57:527 LOGGER/(21437:21443): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:35:57:527 LOGGER/(21437:21443): Cola Ready: 2 3 4 
-
-[INFO] 01:35:59:601 LOGGER/(21437:21444): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:36:00:607 LOGGER/(21437:21444): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:36:00:608 LOGGER/(21437:21444): PID: 1 - Bloqueado por: ESPERA
-[INFO] 01:36:00:613 LOGGER/(21437:21444): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:36:00:662 LOGGER/(21437:21610): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:36:00:663 LOGGER/(21437:21610): Cola Ready: 3 4 1 
-
-[INFO] 01:36:02:624 LOGGER/(21437:21444): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:36:03:627 LOGGER/(21437:21444): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:36:03:627 LOGGER/(21437:21444): PID: 2 - Bloqueado por: ESPERA
-[INFO] 01:36:03:627 LOGGER/(21437:21444): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:36:03:629 LOGGER/(21437:21610): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:36:03:629 LOGGER/(21437:21610): Cola Ready: 4 1 2 
-
-[INFO] 01:36:05:631 LOGGER/(21437:21444): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:36:06:634 LOGGER/(21437:21444): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:36:06:634 LOGGER/(21437:21444): PID: 3 - Bloqueado por: ESPERA
-[INFO] 01:36:06:634 LOGGER/(21437:21444): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:36:06:637 LOGGER/(21437:21610): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:36:06:637 LOGGER/(21437:21610): Cola Ready: 1 2 3 
-
-[INFO] 01:36:08:639 LOGGER/(21437:21444): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:36:09:641 LOGGER/(21437:21444): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:36:09:641 LOGGER/(21437:21444): PID: 4 - Bloqueado por: ESPERA
-[INFO] 01:36:09:642 LOGGER/(21437:21444): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:36:09:644 LOGGER/(21437:21610): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:36:09:644 LOGGER/(21437:21610): Cola Ready: 2 3 4 
-
-[INFO] 01:36:10:644 LOGGER/(21437:21444): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:36:10:645 LOGGER/(21437:21444): PID: 1 - Bloqueado por: RB
-[INFO] 01:36:10:645 LOGGER/(21437:21444): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:36:11:647 LOGGER/(21437:21444): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:36:11:647 LOGGER/(21437:21444): PID: 2 - Bloqueado por: RC
-[INFO] 01:36:11:648 LOGGER/(21437:21444): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:36:12:650 LOGGER/(21437:21444): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:36:12:650 LOGGER/(21437:21444): PID: 3 - Bloqueado por: RD
-[INFO] 01:36:12:652 LOGGER/(21437:21444): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:36:13:656 LOGGER/(21437:21444): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:36:13:656 LOGGER/(21437:21444): PID: 4 - Bloqueado por: RA
-[INFO] 01:36:19:908 LOGGER/(21437:21451): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: EXIT
-[INFO] 01:36:19:908 LOGGER/(21437:21451): Finaliza el proceso 2 - Motivo: INTERRUPTED_BY_USER
-[INFO] 01:36:19:911 LOGGER/(21437:21451): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:36:19:912 LOGGER/(21437:21451): Cola Ready: 1 
-
-[INFO] 01:36:19:912 LOGGER/(21437:21444): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:36:20:915 LOGGER/(21437:21444): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:36:23:923 LOGGER/(21437:21444): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:36:23:923 LOGGER/(21437:21444): PID: 1 - Bloqueado por: ESPERA
-[INFO] 01:36:23:924 LOGGER/(21437:21610): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:36:23:924 LOGGER/(21437:21610): Cola Ready: 1 
-
-[INFO] 01:36:23:924 LOGGER/(21437:21444): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:36:24:926 LOGGER/(21437:21444): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:36:24:927 LOGGER/(21437:21444): Cola Ready: 4 
-
-[INFO] 01:36:24:927 LOGGER/(21437:21444): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:36:25:929 LOGGER/(21437:21444): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:36:26:932 LOGGER/(21437:21444): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:36:26:932 LOGGER/(21437:21444): Finaliza el proceso 1 - Motivo: SUCCESS
-[INFO] 01:36:26:933 LOGGER/(21437:21444): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:36:27:936 LOGGER/(21437:21444): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:36:30:941 LOGGER/(21437:21444): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:36:30:941 LOGGER/(21437:21444): PID: 4 - Bloqueado por: ESPERA
-[INFO] 01:36:30:943 LOGGER/(21437:21610): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:36:30:943 LOGGER/(21437:21610): Cola Ready: 4 
-
-[INFO] 01:36:30:943 LOGGER/(21437:21444): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:36:31:945 LOGGER/(21437:21444): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:36:31:945 LOGGER/(21437:21444): Cola Ready: 3 
-
-[INFO] 01:36:31:945 LOGGER/(21437:21444): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:36:32:948 LOGGER/(21437:21444): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:36:33:950 LOGGER/(21437:21444): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:36:33:950 LOGGER/(21437:21444): Finaliza el proceso 4 - Motivo: SUCCESS
-[INFO] 01:36:33:951 LOGGER/(21437:21444): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:36:34:954 LOGGER/(21437:21444): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:36:36:959 LOGGER/(21437:21444): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:36:36:959 LOGGER/(21437:21444): PID: 3 - Bloqueado por: ESPERA
-[INFO] 01:36:36:960 LOGGER/(21437:21610): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:36:36:960 LOGGER/(21437:21610): Cola Ready: 3 
-
-[INFO] 01:36:36:960 LOGGER/(21437:21444): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:36:37:963 LOGGER/(21437:21444): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:36:38:966 LOGGER/(21437:21444): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:36:39:968 LOGGER/(21437:21444): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:36:39:968 LOGGER/(21437:21444): Finaliza el proceso 3 - Motivo: SUCCESS
-[INFO] 01:45:21:774 LOGGER/(24127:24132): Se crea el proceso: 1 en NEW
-[INFO] 01:45:21:801 LOGGER/(24127:24129): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:45:21:802 LOGGER/(24127:24129): Cola Ready: 1 
-
-[INFO] 01:45:21:804 LOGGER/(24127:24130): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:45:21:827 LOGGER/(24127:24132): Se crea el proceso: 2 en NEW
-[INFO] 01:45:21:831 LOGGER/(24127:24129): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:45:21:831 LOGGER/(24127:24129): Cola Ready: 2 
-
-[INFO] 01:45:21:831 LOGGER/(24127:24132): Se crea el proceso: 3 en NEW
-[INFO] 01:45:21:834 LOGGER/(24127:24129): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:45:21:834 LOGGER/(24127:24129): Cola Ready: 2 3 
-
-[INFO] 01:45:21:837 LOGGER/(24127:24132): Se crea el proceso: 4 en NEW
-[INFO] 01:45:21:837 LOGGER/(24127:24129): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:45:21:837 LOGGER/(24127:24129): Cola Ready: 2 3 4 
-
-[INFO] 01:45:23:898 LOGGER/(24127:24130): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:45:24:906 LOGGER/(24127:24130): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:45:24:906 LOGGER/(24127:24130): PID: 1 - Bloqueado por: ESPERA
-[INFO] 01:45:24:915 LOGGER/(24127:24130): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:45:24:939 LOGGER/(24127:24288): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:45:24:940 LOGGER/(24127:24288): Cola Ready: 3 4 1 
-
-[INFO] 01:45:26:920 LOGGER/(24127:24130): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:45:27:922 LOGGER/(24127:24130): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:45:27:922 LOGGER/(24127:24130): PID: 2 - Bloqueado por: ESPERA
-[INFO] 01:45:27:922 LOGGER/(24127:24130): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:45:27:924 LOGGER/(24127:24288): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:45:27:924 LOGGER/(24127:24288): Cola Ready: 4 1 2 
-
-[INFO] 01:45:29:925 LOGGER/(24127:24130): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:45:30:928 LOGGER/(24127:24130): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:45:30:928 LOGGER/(24127:24130): PID: 3 - Bloqueado por: ESPERA
-[INFO] 01:45:30:928 LOGGER/(24127:24130): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:45:30:929 LOGGER/(24127:24288): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:45:30:929 LOGGER/(24127:24288): Cola Ready: 1 2 3 
-
-[INFO] 01:45:32:931 LOGGER/(24127:24130): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:45:33:933 LOGGER/(24127:24130): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:45:33:933 LOGGER/(24127:24130): PID: 4 - Bloqueado por: ESPERA
-[INFO] 01:45:33:933 LOGGER/(24127:24130): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:45:33:934 LOGGER/(24127:24288): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:45:33:934 LOGGER/(24127:24288): Cola Ready: 2 3 4 
-
-[INFO] 01:45:34:935 LOGGER/(24127:24130): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:45:34:935 LOGGER/(24127:24130): PID: 1 - Bloqueado por: RB
-[INFO] 01:45:34:936 LOGGER/(24127:24130): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:45:35:937 LOGGER/(24127:24130): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:45:35:938 LOGGER/(24127:24130): PID: 2 - Bloqueado por: RC
-[INFO] 01:45:35:938 LOGGER/(24127:24130): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:45:36:940 LOGGER/(24127:24130): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:45:36:940 LOGGER/(24127:24130): PID: 3 - Bloqueado por: RD
-[INFO] 01:45:36:940 LOGGER/(24127:24130): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:45:37:942 LOGGER/(24127:24130): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:45:37:942 LOGGER/(24127:24130): PID: 4 - Bloqueado por: RA
-[INFO] 01:45:44:751 LOGGER/(24127:24132): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: EXIT
-[INFO] 01:45:44:752 LOGGER/(24127:24132): Finaliza el proceso 2 - Motivo: INTERRUPTED_BY_USER
-[INFO] 01:45:44:768 LOGGER/(24127:24132): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:45:44:777 LOGGER/(24127:24132): Cola Ready: 1 
-
-[INFO] 01:45:44:778 LOGGER/(24127:24130): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:45:45:780 LOGGER/(24127:24130): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:45:48:786 LOGGER/(24127:24130): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:45:48:786 LOGGER/(24127:24130): PID: 1 - Bloqueado por: ESPERA
-[INFO] 01:45:48:787 LOGGER/(24127:24288): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:45:48:787 LOGGER/(24127:24288): Cola Ready: 1 
-
-[INFO] 01:45:48:787 LOGGER/(24127:24130): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:45:49:790 LOGGER/(24127:24130): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:45:49:790 LOGGER/(24127:24130): Cola Ready: 4 
-
-[INFO] 01:45:49:790 LOGGER/(24127:24130): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:45:50:792 LOGGER/(24127:24130): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:45:51:795 LOGGER/(24127:24130): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:45:51:795 LOGGER/(24127:24130): Finaliza el proceso 1 - Motivo: SUCCESS
-[INFO] 01:45:51:796 LOGGER/(24127:24130): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:45:52:799 LOGGER/(24127:24130): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:45:55:804 LOGGER/(24127:24130): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:45:55:804 LOGGER/(24127:24130): PID: 4 - Bloqueado por: ESPERA
-[INFO] 01:45:55:806 LOGGER/(24127:24288): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:45:55:806 LOGGER/(24127:24288): Cola Ready: 4 
-
-[INFO] 01:45:55:806 LOGGER/(24127:24130): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:45:56:808 LOGGER/(24127:24130): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:45:56:808 LOGGER/(24127:24130): Cola Ready: 3 
-
-[INFO] 01:45:56:809 LOGGER/(24127:24130): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:45:57:811 LOGGER/(24127:24130): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:45:58:813 LOGGER/(24127:24130): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:45:58:813 LOGGER/(24127:24130): Finaliza el proceso 4 - Motivo: SUCCESS
-[INFO] 01:45:58:814 LOGGER/(24127:24130): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:45:59:816 LOGGER/(24127:24130): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:46:01:819 LOGGER/(24127:24130): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:46:01:819 LOGGER/(24127:24130): PID: 3 - Bloqueado por: ESPERA
-[INFO] 01:46:01:821 LOGGER/(24127:24288): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:46:01:821 LOGGER/(24127:24288): Cola Ready: 3 
-
-[INFO] 01:46:01:821 LOGGER/(24127:24130): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:46:02:823 LOGGER/(24127:24130): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:46:03:825 LOGGER/(24127:24130): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:46:04:827 LOGGER/(24127:24130): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:46:04:827 LOGGER/(24127:24130): Finaliza el proceso 3 - Motivo: SUCCESS
-[INFO] 01:54:19:513 LOGGER/(25851:25871): Se crea el proceso: 1 en NEW
-[INFO] 01:54:19:561 LOGGER/(25851:25868): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:54:19:563 LOGGER/(25851:25868): Cola Ready: 1 
-
-[INFO] 01:54:19:564 LOGGER/(25851:25869): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:54:19:587 LOGGER/(25851:25871): Se crea el proceso: 2 en NEW
-[INFO] 01:54:19:591 LOGGER/(25851:25868): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:54:19:591 LOGGER/(25851:25868): Cola Ready: 2 
-
-[INFO] 01:54:19:591 LOGGER/(25851:25871): Se crea el proceso: 3 en NEW
-[INFO] 01:54:19:595 LOGGER/(25851:25868): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:54:19:595 LOGGER/(25851:25868): Cola Ready: 2 3 
-
-[INFO] 01:54:19:597 LOGGER/(25851:25871): Se crea el proceso: 4 en NEW
-[INFO] 01:54:19:600 LOGGER/(25851:25868): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:54:19:600 LOGGER/(25851:25868): Cola Ready: 2 3 4 
-
-[INFO] 01:54:21:669 LOGGER/(25851:25869): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:54:22:680 LOGGER/(25851:25869): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:54:22:681 LOGGER/(25851:25869): PID: 1 - Bloqueado por: ESPERA
-[INFO] 01:54:22:688 LOGGER/(25851:25869): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:54:22:751 LOGGER/(25851:26026): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:54:22:753 LOGGER/(25851:26026): Cola Ready: 3 4 1 
-
-[INFO] 01:54:24:694 LOGGER/(25851:25869): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:54:25:697 LOGGER/(25851:25869): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:54:25:697 LOGGER/(25851:25869): PID: 2 - Bloqueado por: ESPERA
-[INFO] 01:54:25:697 LOGGER/(25851:25869): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:54:25:699 LOGGER/(25851:26026): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:54:25:700 LOGGER/(25851:26026): Cola Ready: 4 1 2 
-
-[INFO] 01:54:27:701 LOGGER/(25851:25869): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:54:28:703 LOGGER/(25851:25869): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:54:28:703 LOGGER/(25851:25869): PID: 3 - Bloqueado por: ESPERA
-[INFO] 01:54:28:703 LOGGER/(25851:25869): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:54:28:705 LOGGER/(25851:26026): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:54:28:705 LOGGER/(25851:26026): Cola Ready: 1 2 3 
-
-[INFO] 01:54:30:707 LOGGER/(25851:25869): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:54:31:711 LOGGER/(25851:25869): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:54:31:711 LOGGER/(25851:25869): PID: 4 - Bloqueado por: ESPERA
-[INFO] 01:54:31:711 LOGGER/(25851:25869): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:54:31:714 LOGGER/(25851:26026): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:54:31:714 LOGGER/(25851:26026): Cola Ready: 2 3 4 
-
-[INFO] 01:54:32:714 LOGGER/(25851:25869): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:54:32:714 LOGGER/(25851:25869): PID: 1 - Bloqueado por: RB
-[INFO] 01:54:32:715 LOGGER/(25851:25869): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:54:33:717 LOGGER/(25851:25869): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:54:33:717 LOGGER/(25851:25869): PID: 2 - Bloqueado por: RC
-[INFO] 01:54:33:718 LOGGER/(25851:25869): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:54:34:720 LOGGER/(25851:25869): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:54:34:720 LOGGER/(25851:25869): PID: 3 - Bloqueado por: RD
-[INFO] 01:54:34:720 LOGGER/(25851:25869): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:54:35:722 LOGGER/(25851:25869): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:54:35:722 LOGGER/(25851:25869): PID: 4 - Bloqueado por: RA
-[INFO] 01:54:42:404 LOGGER/(25851:25871): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: EXIT
-[INFO] 01:54:42:404 LOGGER/(25851:25871): Finaliza el proceso 3 - Motivo: INTERRUPTED_BY_USER
-[INFO] 01:54:42:409 LOGGER/(25851:25871): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:54:42:409 LOGGER/(25851:25871): Cola Ready: 2 
-
-[INFO] 01:54:42:410 LOGGER/(25851:25869): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:54:43:412 LOGGER/(25851:25869): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:54:46:418 LOGGER/(25851:25869): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:54:46:419 LOGGER/(25851:25869): PID: 2 - Bloqueado por: ESPERA
-[INFO] 01:54:46:420 LOGGER/(25851:26026): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:54:46:420 LOGGER/(25851:26026): Cola Ready: 2 
-
-[INFO] 01:54:46:420 LOGGER/(25851:25869): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:54:47:422 LOGGER/(25851:25869): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:54:47:422 LOGGER/(25851:25869): Cola Ready: 1 
-
-[INFO] 01:54:47:422 LOGGER/(25851:25869): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:54:48:425 LOGGER/(25851:25869): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:54:49:428 LOGGER/(25851:25869): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:54:49:428 LOGGER/(25851:25869): Finaliza el proceso 2 - Motivo: SUCCESS
-[INFO] 01:54:49:429 LOGGER/(25851:25869): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:54:50:431 LOGGER/(25851:25869): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:54:53:435 LOGGER/(25851:25869): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:54:53:436 LOGGER/(25851:25869): PID: 1 - Bloqueado por: ESPERA
-[INFO] 01:54:53:436 LOGGER/(25851:26026): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:54:53:436 LOGGER/(25851:26026): Cola Ready: 1 
-
-[INFO] 01:54:53:436 LOGGER/(25851:25869): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:54:54:439 LOGGER/(25851:25869): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:54:54:439 LOGGER/(25851:25869): Cola Ready: 4 
-
-[INFO] 01:54:54:439 LOGGER/(25851:25869): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:54:55:442 LOGGER/(25851:25869): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:54:56:444 LOGGER/(25851:25869): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:54:56:444 LOGGER/(25851:25869): Finaliza el proceso 1 - Motivo: SUCCESS
-[INFO] 01:54:56:444 LOGGER/(25851:25869): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:54:57:447 LOGGER/(25851:25869): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:55:00:453 LOGGER/(25851:25869): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 01:55:00:453 LOGGER/(25851:25869): PID: 4 - Bloqueado por: ESPERA
-[INFO] 01:55:00:454 LOGGER/(25851:26026): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 01:55:00:454 LOGGER/(25851:26026): Cola Ready: 4 
-
-[INFO] 01:55:00:454 LOGGER/(25851:25869): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 01:55:01:456 LOGGER/(25851:25869): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:55:02:459 LOGGER/(25851:25869): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 01:55:03:461 LOGGER/(25851:25869): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 01:55:03:461 LOGGER/(25851:25869): Finaliza el proceso 4 - Motivo: SUCCESS
-[INFO] 02:01:27:821 LOGGER/(27482:27502): Se crea el proceso: 1 en NEW
-[INFO] 02:01:27:859 LOGGER/(27482:27497): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:01:27:863 LOGGER/(27482:27497): Cola Ready: 1 
-
-[INFO] 02:01:27:864 LOGGER/(27482:27499): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:01:27:883 LOGGER/(27482:27502): Se crea el proceso: 2 en NEW
-[INFO] 02:01:27:886 LOGGER/(27482:27497): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:01:27:886 LOGGER/(27482:27497): Cola Ready: 2 
-
-[INFO] 02:01:27:887 LOGGER/(27482:27502): Se crea el proceso: 3 en NEW
-[INFO] 02:01:27:893 LOGGER/(27482:27497): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:01:27:893 LOGGER/(27482:27497): Cola Ready: 2 3 
-
-[INFO] 02:01:27:896 LOGGER/(27482:27502): Se crea el proceso: 4 en NEW
-[INFO] 02:01:27:896 LOGGER/(27482:27497): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:01:27:896 LOGGER/(27482:27497): Cola Ready: 2 3 4 
-
-[INFO] 02:01:29:981 LOGGER/(27482:27499): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:01:30:988 LOGGER/(27482:27499): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:01:30:989 LOGGER/(27482:27499): PID: 1 - Bloqueado por: ESPERA
-[INFO] 02:01:30:997 LOGGER/(27482:27499): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:01:31:046 LOGGER/(27482:27841): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:01:31:047 LOGGER/(27482:27841): Cola Ready: 3 4 1 
-
-[INFO] 02:01:33:002 LOGGER/(27482:27499): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:01:34:004 LOGGER/(27482:27499): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:01:34:005 LOGGER/(27482:27499): PID: 2 - Bloqueado por: ESPERA
-[INFO] 02:01:34:005 LOGGER/(27482:27499): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:01:34:007 LOGGER/(27482:27841): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:01:34:007 LOGGER/(27482:27841): Cola Ready: 4 1 2 
-
-[INFO] 02:01:36:008 LOGGER/(27482:27499): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:01:37:010 LOGGER/(27482:27499): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:01:37:010 LOGGER/(27482:27499): PID: 3 - Bloqueado por: ESPERA
-[INFO] 02:01:37:010 LOGGER/(27482:27499): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:01:37:011 LOGGER/(27482:27841): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:01:37:011 LOGGER/(27482:27841): Cola Ready: 1 2 3 
-
-[INFO] 02:01:39:014 LOGGER/(27482:27499): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:01:40:016 LOGGER/(27482:27499): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:01:40:016 LOGGER/(27482:27499): PID: 4 - Bloqueado por: ESPERA
-[INFO] 02:01:40:017 LOGGER/(27482:27499): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:01:40:018 LOGGER/(27482:27841): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:01:40:018 LOGGER/(27482:27841): Cola Ready: 2 3 4 
-
-[INFO] 02:01:41:019 LOGGER/(27482:27499): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:01:41:019 LOGGER/(27482:27499): PID: 1 - Bloqueado por: RB
-[INFO] 02:01:41:020 LOGGER/(27482:27499): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:01:42:021 LOGGER/(27482:27499): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:01:42:022 LOGGER/(27482:27499): PID: 2 - Bloqueado por: RC
-[INFO] 02:01:42:022 LOGGER/(27482:27499): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:01:43:024 LOGGER/(27482:27499): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:01:43:024 LOGGER/(27482:27499): PID: 3 - Bloqueado por: RD
-[INFO] 02:01:43:024 LOGGER/(27482:27499): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:01:44:026 LOGGER/(27482:27499): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:01:44:026 LOGGER/(27482:27499): PID: 4 - Bloqueado por: RA
-[INFO] 02:01:52:541 LOGGER/(27482:27502): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: EXIT
-[INFO] 02:01:52:541 LOGGER/(27482:27502): Finaliza el proceso 1 - Motivo: INTERRUPTED_BY_USER
-[INFO] 02:06:00:258 LOGGER/(29703:29715): Se crea el proceso: 1 en NEW
-[INFO] 02:06:00:302 LOGGER/(29703:29712): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:06:00:303 LOGGER/(29703:29712): Cola Ready: 1 
-
-[INFO] 02:06:00:304 LOGGER/(29703:29713): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:06:00:320 LOGGER/(29703:29715): Se crea el proceso: 2 en NEW
-[INFO] 02:06:00:323 LOGGER/(29703:29712): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:06:00:324 LOGGER/(29703:29712): Cola Ready: 2 
-
-[INFO] 02:06:00:324 LOGGER/(29703:29715): Se crea el proceso: 3 en NEW
-[INFO] 02:06:00:327 LOGGER/(29703:29712): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:06:00:327 LOGGER/(29703:29712): Cola Ready: 2 3 
-
-[INFO] 02:06:00:329 LOGGER/(29703:29715): Se crea el proceso: 4 en NEW
-[INFO] 02:06:00:330 LOGGER/(29703:29712): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:06:00:330 LOGGER/(29703:29712): Cola Ready: 2 3 4 
-
-[INFO] 02:06:02:402 LOGGER/(29703:29713): WAITS REALIZADOS: 1
-[INFO] 02:06:02:402 LOGGER/(29703:29713): PID 1 - Retengo el recurso: RA
-[INFO] 02:06:02:409 LOGGER/(29703:29713): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:06:03:414 LOGGER/(29703:29713): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:06:03:415 LOGGER/(29703:29713): PID: 1 - Bloqueado por: ESPERA
-[INFO] 02:06:03:417 LOGGER/(29703:29713): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:06:03:449 LOGGER/(29703:29854): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:06:03:452 LOGGER/(29703:29854): Cola Ready: 3 4 1 
-
-[INFO] 02:06:05:427 LOGGER/(29703:29713): WAITS REALIZADOS: 2
-[INFO] 02:06:05:427 LOGGER/(29703:29713): PID 2 - Retengo el recurso: RB
-[INFO] 02:06:05:427 LOGGER/(29703:29713): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:06:06:429 LOGGER/(29703:29713): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:06:06:429 LOGGER/(29703:29713): PID: 2 - Bloqueado por: ESPERA
-[INFO] 02:06:06:430 LOGGER/(29703:29713): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:06:06:431 LOGGER/(29703:29854): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:06:06:431 LOGGER/(29703:29854): Cola Ready: 4 1 2 
-
-[INFO] 02:06:08:433 LOGGER/(29703:29713): WAITS REALIZADOS: 3
-[INFO] 02:06:08:433 LOGGER/(29703:29713): PID 3 - Retengo el recurso: RC
-[INFO] 02:06:08:433 LOGGER/(29703:29713): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:06:09:436 LOGGER/(29703:29713): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:06:09:436 LOGGER/(29703:29713): PID: 3 - Bloqueado por: ESPERA
-[INFO] 02:06:09:436 LOGGER/(29703:29713): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:06:09:437 LOGGER/(29703:29854): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:06:09:438 LOGGER/(29703:29854): Cola Ready: 1 2 3 
-
-[INFO] 02:06:11:441 LOGGER/(29703:29713): WAITS REALIZADOS: 4
-[INFO] 02:06:11:442 LOGGER/(29703:29713): PID 4 - Retengo el recurso: RD
-[INFO] 02:06:11:442 LOGGER/(29703:29713): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:06:12:444 LOGGER/(29703:29713): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:06:12:444 LOGGER/(29703:29713): PID: 4 - Bloqueado por: ESPERA
-[INFO] 02:06:12:444 LOGGER/(29703:29713): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:06:12:445 LOGGER/(29703:29854): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:06:12:445 LOGGER/(29703:29854): Cola Ready: 2 3 4 
-
-[INFO] 02:06:13:447 LOGGER/(29703:29713): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:06:13:447 LOGGER/(29703:29713): PID: 1 - Bloqueado por: RB
-[INFO] 02:06:13:448 LOGGER/(29703:29713): PID 1 - Retengo el recurso: RB
-[INFO] 02:06:13:448 LOGGER/(29703:29713): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:06:14:450 LOGGER/(29703:29713): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:06:14:450 LOGGER/(29703:29713): PID: 2 - Bloqueado por: RC
-[INFO] 02:06:14:450 LOGGER/(29703:29713): PID 2 - Retengo el recurso: RC
-[INFO] 02:06:14:450 LOGGER/(29703:29713): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:06:15:452 LOGGER/(29703:29713): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:06:15:452 LOGGER/(29703:29713): PID: 3 - Bloqueado por: RD
-[INFO] 02:06:15:452 LOGGER/(29703:29713): PID 3 - Retengo el recurso: RD
-[INFO] 02:06:15:453 LOGGER/(29703:29713): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:06:16:455 LOGGER/(29703:29713): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:06:16:455 LOGGER/(29703:29713): PID: 4 - Bloqueado por: RA
-[INFO] 02:06:16:455 LOGGER/(29703:29713): PID 4 - Retengo el recurso: RA
-[INFO] 02:06:20:945 LOGGER/(29703:29715): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: EXIT
-[INFO] 02:06:20:946 LOGGER/(29703:29715): Finaliza el proceso 2 - Motivo: INTERRUPTED_BY_USER
-[INFO] 02:06:20:946 LOGGER/(29703:29715): Entra a ejecutar signal recurso del EXIT el proceso: 2
-
-[INFO] 02:06:20:947 LOGGER/(29703:29715): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:06:20:954 LOGGER/(29703:29715): Proceso liberado 1 por 2
-[INFO] 02:06:20:956 LOGGER/(29703:29715): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:06:20:958 LOGGER/(29703:29715): Cola Ready: 1 
-
-[INFO] 02:06:20:958 LOGGER/(29703:29713): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:06:21:960 LOGGER/(29703:29713): WAITS REALIZADOS: 5
-[INFO] 02:06:21:960 LOGGER/(29703:29713): PID 1 - Retengo el recurso: RB
-[INFO] 02:06:21:960 LOGGER/(29703:29713): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:06:24:967 LOGGER/(29703:29713): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:06:24:967 LOGGER/(29703:29713): PID: 1 - Bloqueado por: ESPERA
-[INFO] 02:06:24:967 LOGGER/(29703:29854): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:06:24:968 LOGGER/(29703:29854): Cola Ready: 1 
-
-[INFO] 02:06:24:968 LOGGER/(29703:29713): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:06:25:970 LOGGER/(29703:29713): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:06:25:970 LOGGER/(29703:29713): Proceso liberado 4 por 1
-[INFO] 02:06:25:970 LOGGER/(29703:29713): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:06:25:970 LOGGER/(29703:29713): Cola Ready: 4 
-
-[INFO] 02:06:25:970 LOGGER/(29703:29713): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:06:26:972 LOGGER/(29703:29713): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:06:26:972 LOGGER/(29703:29713): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:06:27:975 LOGGER/(29703:29713): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 02:06:27:975 LOGGER/(29703:29713): Finaliza el proceso 1 - Motivo: SUCCESS
-[INFO] 02:06:27:975 LOGGER/(29703:29713): Entra a ejecutar signal recurso del EXIT el proceso: 1
-
-[INFO] 02:06:27:975 LOGGER/(29703:29713): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:06:27:976 LOGGER/(29703:29713): Entra a ejecutar signal recurso del EXIT el proceso: 1
-
-[INFO] 02:06:27:976 LOGGER/(29703:29713): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:06:27:977 LOGGER/(29703:29713): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:06:28:979 LOGGER/(29703:29713): WAITS REALIZADOS: 6
-[INFO] 02:06:28:979 LOGGER/(29703:29713): PID 4 - Retengo el recurso: RA
-[INFO] 02:06:28:979 LOGGER/(29703:29713): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:06:31:984 LOGGER/(29703:29713): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:06:31:985 LOGGER/(29703:29713): PID: 4 - Bloqueado por: ESPERA
-[INFO] 02:06:31:985 LOGGER/(29703:29854): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:06:31:985 LOGGER/(29703:29854): Cola Ready: 4 
-
-[INFO] 02:06:31:986 LOGGER/(29703:29713): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:06:32:988 LOGGER/(29703:29713): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:06:32:988 LOGGER/(29703:29713): Proceso liberado 3 por 4
-[INFO] 02:06:32:988 LOGGER/(29703:29713): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:06:32:988 LOGGER/(29703:29713): Cola Ready: 3 
-
-[INFO] 02:06:32:989 LOGGER/(29703:29713): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:06:33:991 LOGGER/(29703:29713): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:06:33:992 LOGGER/(29703:29713): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:06:34:994 LOGGER/(29703:29713): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 02:06:34:994 LOGGER/(29703:29713): Finaliza el proceso 4 - Motivo: SUCCESS
-[INFO] 02:06:34:994 LOGGER/(29703:29713): Entra a ejecutar signal recurso del EXIT el proceso: 4
-
-[INFO] 02:06:34:994 LOGGER/(29703:29713): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 2
-[INFO] 02:06:34:994 LOGGER/(29703:29713): Entra a ejecutar signal recurso del EXIT el proceso: 4
-
-[INFO] 02:06:34:994 LOGGER/(29703:29713): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:06:34:995 LOGGER/(29703:29713): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:06:35:997 LOGGER/(29703:29713): WAITS REALIZADOS: 7
-[INFO] 02:06:35:997 LOGGER/(29703:29713): PID 3 - Retengo el recurso: RD
-[INFO] 02:06:35:997 LOGGER/(29703:29713): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:06:38:002 LOGGER/(29703:29713): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:06:38:002 LOGGER/(29703:29713): PID: 3 - Bloqueado por: ESPERA
-[INFO] 02:06:38:004 LOGGER/(29703:29854): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:06:38:004 LOGGER/(29703:29854): Cola Ready: 3 
-
-[INFO] 02:06:38:004 LOGGER/(29703:29713): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:06:39:006 LOGGER/(29703:29713): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:06:39:006 LOGGER/(29703:29713): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:06:40:008 LOGGER/(29703:29713): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:06:40:009 LOGGER/(29703:29713): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:06:41:011 LOGGER/(29703:29713): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 02:06:41:012 LOGGER/(29703:29713): Finaliza el proceso 3 - Motivo: SUCCESS
-[INFO] 02:06:41:012 LOGGER/(29703:29713): Entra a ejecutar signal recurso del EXIT el proceso: 3
-
-[INFO] 02:06:41:012 LOGGER/(29703:29713): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:06:41:012 LOGGER/(29703:29713): Entra a ejecutar signal recurso del EXIT el proceso: 3
-
-[INFO] 02:06:41:012 LOGGER/(29703:29713): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 2
-[INFO] 02:14:32:213 LOGGER/(31118:31123): Se crea el proceso: 1 en NEW
-[INFO] 02:14:32:253 LOGGER/(31118:31120): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:14:32:256 LOGGER/(31118:31120): Cola Ready: 1 
-
-[INFO] 02:14:32:257 LOGGER/(31118:31121): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:14:32:272 LOGGER/(31118:31123): Se crea el proceso: 2 en NEW
-[INFO] 02:14:32:276 LOGGER/(31118:31120): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:14:32:277 LOGGER/(31118:31120): Cola Ready: 2 
-
-[INFO] 02:14:32:277 LOGGER/(31118:31123): Se crea el proceso: 3 en NEW
-[INFO] 02:14:32:278 LOGGER/(31118:31120): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:14:32:279 LOGGER/(31118:31120): Cola Ready: 2 3 
-
-[INFO] 02:14:32:283 LOGGER/(31118:31123): Se crea el proceso: 4 en NEW
-[INFO] 02:14:32:284 LOGGER/(31118:31120): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:14:32:285 LOGGER/(31118:31120): Cola Ready: 2 3 4 
-
-[INFO] 02:14:34:356 LOGGER/(31118:31121): WAITS REALIZADOS: 1
-[INFO] 02:14:34:357 LOGGER/(31118:31121): PID 1 - Retengo el recurso: RA
-[INFO] 02:14:34:363 LOGGER/(31118:31121): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:14:35:371 LOGGER/(31118:31121): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:14:35:371 LOGGER/(31118:31121): PID: 1 - Bloqueado por: ESPERA
-[INFO] 02:14:35:376 LOGGER/(31118:31121): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:14:35:413 LOGGER/(31118:31289): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:14:35:414 LOGGER/(31118:31289): Cola Ready: 3 4 1 
-
-[INFO] 02:14:37:381 LOGGER/(31118:31121): WAITS REALIZADOS: 2
-[INFO] 02:14:37:381 LOGGER/(31118:31121): PID 2 - Retengo el recurso: RB
-[INFO] 02:14:37:381 LOGGER/(31118:31121): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:14:38:383 LOGGER/(31118:31121): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:14:38:383 LOGGER/(31118:31121): PID: 2 - Bloqueado por: ESPERA
-[INFO] 02:14:38:384 LOGGER/(31118:31121): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:14:38:385 LOGGER/(31118:31289): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:14:38:385 LOGGER/(31118:31289): Cola Ready: 4 1 2 
-
-[INFO] 02:14:40:386 LOGGER/(31118:31121): WAITS REALIZADOS: 3
-[INFO] 02:14:40:386 LOGGER/(31118:31121): PID 3 - Retengo el recurso: RC
-[INFO] 02:14:40:387 LOGGER/(31118:31121): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:14:41:389 LOGGER/(31118:31121): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:14:41:389 LOGGER/(31118:31121): PID: 3 - Bloqueado por: ESPERA
-[INFO] 02:14:41:389 LOGGER/(31118:31121): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:14:41:390 LOGGER/(31118:31289): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:14:41:391 LOGGER/(31118:31289): Cola Ready: 1 2 3 
-
-[INFO] 02:14:43:394 LOGGER/(31118:31121): WAITS REALIZADOS: 4
-[INFO] 02:14:43:394 LOGGER/(31118:31121): PID 4 - Retengo el recurso: RD
-[INFO] 02:14:43:394 LOGGER/(31118:31121): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:14:44:396 LOGGER/(31118:31121): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:14:44:396 LOGGER/(31118:31121): PID: 4 - Bloqueado por: ESPERA
-[INFO] 02:14:44:396 LOGGER/(31118:31121): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:14:44:398 LOGGER/(31118:31289): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:14:44:398 LOGGER/(31118:31289): Cola Ready: 2 3 4 
-
-[INFO] 02:14:45:399 LOGGER/(31118:31121): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:14:45:399 LOGGER/(31118:31121): PID: 1 - Bloqueado por: RB
-[INFO] 02:14:45:399 LOGGER/(31118:31121): PID 1 - Retengo el recurso: RB
-[INFO] 02:14:45:399 LOGGER/(31118:31121): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:14:46:401 LOGGER/(31118:31121): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:14:46:401 LOGGER/(31118:31121): PID: 2 - Bloqueado por: RC
-[INFO] 02:14:46:401 LOGGER/(31118:31121): PID 2 - Retengo el recurso: RC
-[INFO] 02:14:46:402 LOGGER/(31118:31121): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:14:47:404 LOGGER/(31118:31121): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:14:47:404 LOGGER/(31118:31121): PID: 3 - Bloqueado por: RD
-[INFO] 02:14:47:404 LOGGER/(31118:31121): PID 3 - Retengo el recurso: RD
-[INFO] 02:14:47:404 LOGGER/(31118:31121): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:14:48:406 LOGGER/(31118:31121): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:14:48:406 LOGGER/(31118:31121): PID: 4 - Bloqueado por: RA
-[INFO] 02:14:48:406 LOGGER/(31118:31121): PID 4 - Retengo el recurso: RA
-[INFO] 02:14:53:351 LOGGER/(31118:31123): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: EXIT
-[INFO] 02:14:53:351 LOGGER/(31118:31123): Finaliza el proceso 2 - Motivo: INTERRUPTED_BY_USER
-[INFO] 02:27:07:787 LOGGER/(32345:32354): Se crea el proceso: 1 en NEW
-[INFO] 02:27:07:827 LOGGER/(32345:32347): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:27:07:828 LOGGER/(32345:32347): Cola Ready: 1 
-
-[INFO] 02:27:07:830 LOGGER/(32345:32348): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:27:07:844 LOGGER/(32345:32354): Se crea el proceso: 2 en NEW
-[INFO] 02:27:07:846 LOGGER/(32345:32347): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:27:07:847 LOGGER/(32345:32347): Cola Ready: 2 
-
-[INFO] 02:27:07:847 LOGGER/(32345:32354): Se crea el proceso: 3 en NEW
-[INFO] 02:27:07:850 LOGGER/(32345:32347): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:27:07:850 LOGGER/(32345:32347): Cola Ready: 2 3 
-
-[INFO] 02:27:07:853 LOGGER/(32345:32354): Se crea el proceso: 4 en NEW
-[INFO] 02:27:07:853 LOGGER/(32345:32347): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:27:07:853 LOGGER/(32345:32347): Cola Ready: 2 3 4 
-
-[INFO] 02:27:09:917 LOGGER/(32345:32348): WAITS REALIZADOS: 1
-[INFO] 02:27:09:918 LOGGER/(32345:32348): PID 1 - Retengo el recurso: RA
-[INFO] 02:27:09:922 LOGGER/(32345:32348): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:27:10:930 LOGGER/(32345:32348): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:27:10:931 LOGGER/(32345:32348): PID: 1 - Bloqueado por: ESPERA
-[INFO] 02:27:10:934 LOGGER/(32345:32348): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:27:10:966 LOGGER/(32345:32503): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:27:10:967 LOGGER/(32345:32503): Cola Ready: 3 4 1 
-
-[INFO] 02:27:12:940 LOGGER/(32345:32348): WAITS REALIZADOS: 2
-[INFO] 02:27:12:940 LOGGER/(32345:32348): PID 2 - Retengo el recurso: RB
-[INFO] 02:27:12:940 LOGGER/(32345:32348): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:27:13:942 LOGGER/(32345:32348): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:27:13:943 LOGGER/(32345:32348): PID: 2 - Bloqueado por: ESPERA
-[INFO] 02:27:13:943 LOGGER/(32345:32348): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:27:13:945 LOGGER/(32345:32503): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:27:13:945 LOGGER/(32345:32503): Cola Ready: 4 1 2 
-
-[INFO] 02:27:15:946 LOGGER/(32345:32348): WAITS REALIZADOS: 3
-[INFO] 02:27:15:946 LOGGER/(32345:32348): PID 3 - Retengo el recurso: RC
-[INFO] 02:27:15:947 LOGGER/(32345:32348): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:27:16:949 LOGGER/(32345:32348): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:27:16:949 LOGGER/(32345:32348): PID: 3 - Bloqueado por: ESPERA
-[INFO] 02:27:16:949 LOGGER/(32345:32348): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:27:16:950 LOGGER/(32345:32503): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:27:16:951 LOGGER/(32345:32503): Cola Ready: 1 2 3 
-
-[INFO] 02:27:18:952 LOGGER/(32345:32348): WAITS REALIZADOS: 4
-[INFO] 02:27:18:952 LOGGER/(32345:32348): PID 4 - Retengo el recurso: RD
-[INFO] 02:27:18:952 LOGGER/(32345:32348): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:27:19:954 LOGGER/(32345:32348): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:27:19:954 LOGGER/(32345:32348): PID: 4 - Bloqueado por: ESPERA
-[INFO] 02:27:19:955 LOGGER/(32345:32348): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:27:19:956 LOGGER/(32345:32503): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:27:19:956 LOGGER/(32345:32503): Cola Ready: 2 3 4 
-
-[INFO] 02:27:20:957 LOGGER/(32345:32348): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:27:20:957 LOGGER/(32345:32348): PID: 1 - Bloqueado por: RB
-[INFO] 02:27:20:957 LOGGER/(32345:32348): PID 1 - Retengo el recurso: RB
-[INFO] 02:27:20:957 LOGGER/(32345:32348): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:27:21:959 LOGGER/(32345:32348): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:27:21:959 LOGGER/(32345:32348): PID: 2 - Bloqueado por: RC
-[INFO] 02:27:21:959 LOGGER/(32345:32348): PID 2 - Retengo el recurso: RC
-[INFO] 02:27:21:960 LOGGER/(32345:32348): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:27:22:961 LOGGER/(32345:32348): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:27:22:961 LOGGER/(32345:32348): PID: 3 - Bloqueado por: RD
-[INFO] 02:27:22:962 LOGGER/(32345:32348): PID 3 - Retengo el recurso: RD
-[INFO] 02:27:22:962 LOGGER/(32345:32348): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:27:23:964 LOGGER/(32345:32348): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:27:23:964 LOGGER/(32345:32348): PID: 4 - Bloqueado por: RA
-[INFO] 02:27:23:964 LOGGER/(32345:32348): PID 4 - Retengo el recurso: RA
-[INFO] 02:27:27:603 LOGGER/(32345:32354): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: EXIT
-[INFO] 02:27:27:603 LOGGER/(32345:32354): Finaliza el proceso 2 - Motivo: INTERRUPTED_BY_USER
-[INFO] 02:27:27:604 LOGGER/(32345:32354): Entra a ejecutar signal recurso del EXIT el proceso: 2
-
-[INFO] 02:27:27:604 LOGGER/(32345:32354): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:27:27:608 LOGGER/(32345:32354): Proceso liberado 1 por 2
-[INFO] 02:27:27:609 LOGGER/(32345:32354): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:27:27:609 LOGGER/(32345:32354): Cola Ready: 1 
-
-[INFO] 02:27:27:609 LOGGER/(32345:32348): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:27:28:612 LOGGER/(32345:32348): WAITS REALIZADOS: 5
-[INFO] 02:27:28:612 LOGGER/(32345:32348): PID 1 - Retengo el recurso: RB
-[INFO] 02:27:28:612 LOGGER/(32345:32348): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:27:31:619 LOGGER/(32345:32348): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:27:31:619 LOGGER/(32345:32348): PID: 1 - Bloqueado por: ESPERA
-[INFO] 02:27:31:619 LOGGER/(32345:32503): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:27:31:619 LOGGER/(32345:32503): Cola Ready: 1 
-
-[INFO] 02:27:31:620 LOGGER/(32345:32348): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:27:32:623 LOGGER/(32345:32348): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:27:32:623 LOGGER/(32345:32348): Proceso liberado 4 por 1
-[INFO] 02:27:32:623 LOGGER/(32345:32348): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:27:32:624 LOGGER/(32345:32348): Cola Ready: 4 
-
-[INFO] 02:27:32:624 LOGGER/(32345:32348): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:27:33:626 LOGGER/(32345:32348): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:27:33:626 LOGGER/(32345:32348): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:27:34:630 LOGGER/(32345:32348): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 02:27:34:630 LOGGER/(32345:32348): Finaliza el proceso 1 - Motivo: SUCCESS
-[INFO] 02:27:34:630 LOGGER/(32345:32348): Entra a ejecutar signal recurso del EXIT el proceso: 1
-
-[INFO] 02:27:34:630 LOGGER/(32345:32348): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:27:34:630 LOGGER/(32345:32348): Entra a ejecutar signal recurso del EXIT el proceso: 1
-
-[INFO] 02:27:34:630 LOGGER/(32345:32348): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:27:34:630 LOGGER/(32345:32348): Entra a ejecutar signal recurso del EXIT el proceso: 1
-
-[INFO] 02:27:34:631 LOGGER/(32345:32348): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 2
-[INFO] 02:27:34:632 LOGGER/(32345:32348): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:27:35:634 LOGGER/(32345:32348): WAITS REALIZADOS: 6
-[INFO] 02:27:35:634 LOGGER/(32345:32348): PID 4 - Retengo el recurso: RA
-[INFO] 02:27:35:634 LOGGER/(32345:32348): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:27:38:638 LOGGER/(32345:32348): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:27:38:638 LOGGER/(32345:32348): PID: 4 - Bloqueado por: ESPERA
-[INFO] 02:27:38:640 LOGGER/(32345:32503): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:27:38:640 LOGGER/(32345:32503): Cola Ready: 4 
-
-[INFO] 02:27:38:640 LOGGER/(32345:32348): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:27:39:643 LOGGER/(32345:32348): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:27:39:643 LOGGER/(32345:32348): Proceso liberado 3 por 4
-[INFO] 02:27:39:643 LOGGER/(32345:32348): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:27:39:643 LOGGER/(32345:32348): Cola Ready: 3 
-
-[INFO] 02:27:39:643 LOGGER/(32345:32348): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:27:40:645 LOGGER/(32345:32348): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:27:40:645 LOGGER/(32345:32348): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:27:41:647 LOGGER/(32345:32348): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 02:27:41:647 LOGGER/(32345:32348): Finaliza el proceso 4 - Motivo: SUCCESS
-[INFO] 02:27:41:647 LOGGER/(32345:32348): Entra a ejecutar signal recurso del EXIT el proceso: 4
-
-[INFO] 02:27:41:647 LOGGER/(32345:32348): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 2
-[INFO] 02:27:41:647 LOGGER/(32345:32348): Entra a ejecutar signal recurso del EXIT el proceso: 4
-
-[INFO] 02:27:41:648 LOGGER/(32345:32348): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 3
-[INFO] 02:27:41:648 LOGGER/(32345:32348): Entra a ejecutar signal recurso del EXIT el proceso: 4
-
-[INFO] 02:27:41:648 LOGGER/(32345:32348): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:27:41:648 LOGGER/(32345:32348): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:27:42:651 LOGGER/(32345:32348): WAITS REALIZADOS: 7
-[INFO] 02:27:42:651 LOGGER/(32345:32348): PID 3 - Retengo el recurso: RD
-[INFO] 02:27:42:651 LOGGER/(32345:32348): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:27:44:655 LOGGER/(32345:32348): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:27:44:655 LOGGER/(32345:32348): PID: 3 - Bloqueado por: ESPERA
-[INFO] 02:27:44:656 LOGGER/(32345:32503): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:27:44:656 LOGGER/(32345:32503): Cola Ready: 3 
-
-[INFO] 02:27:44:656 LOGGER/(32345:32348): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:27:45:658 LOGGER/(32345:32348): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:27:45:658 LOGGER/(32345:32348): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:27:46:660 LOGGER/(32345:32348): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:27:46:661 LOGGER/(32345:32348): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:27:47:663 LOGGER/(32345:32348): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 02:27:47:663 LOGGER/(32345:32348): Finaliza el proceso 3 - Motivo: SUCCESS
-[INFO] 02:27:47:663 LOGGER/(32345:32348): Entra a ejecutar signal recurso del EXIT el proceso: 3
-
-[INFO] 02:27:47:663 LOGGER/(32345:32348): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:27:47:663 LOGGER/(32345:32348): Entra a ejecutar signal recurso del EXIT el proceso: 3
-
-[INFO] 02:27:47:664 LOGGER/(32345:32348): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 2
-[INFO] 02:27:47:664 LOGGER/(32345:32348): Entra a ejecutar signal recurso del EXIT el proceso: 3
-
-[INFO] 02:27:47:664 LOGGER/(32345:32348): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 3
-[INFO] 02:33:46:292 LOGGER/(33952:33957): Se crea el proceso: 1 en NEW
-[INFO] 02:33:46:331 LOGGER/(33952:33954): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:33:46:333 LOGGER/(33952:33954): Cola Ready: 1 
-
-[INFO] 02:33:46:334 LOGGER/(33952:33955): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:33:46:348 LOGGER/(33952:33957): Se crea el proceso: 2 en NEW
-[INFO] 02:33:46:350 LOGGER/(33952:33954): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:33:46:354 LOGGER/(33952:33954): Cola Ready: 2 
-
-[INFO] 02:33:46:354 LOGGER/(33952:33957): Se crea el proceso: 3 en NEW
-[INFO] 02:33:46:361 LOGGER/(33952:33954): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:33:46:361 LOGGER/(33952:33954): Cola Ready: 2 3 
-
-[INFO] 02:33:46:362 LOGGER/(33952:33957): Se crea el proceso: 4 en NEW
-[INFO] 02:33:46:364 LOGGER/(33952:33954): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:33:46:364 LOGGER/(33952:33954): Cola Ready: 2 3 4 
-
-[INFO] 02:33:48:433 LOGGER/(33952:33955): WAITS REALIZADOS: 1
-[INFO] 02:33:48:434 LOGGER/(33952:33955): PID 1 - Retengo el recurso: RA
-[INFO] 02:33:48:438 LOGGER/(33952:33955): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:33:49:446 LOGGER/(33952:33955): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:33:49:446 LOGGER/(33952:33955): PID: 1 - Bloqueado por: ESPERA
-[INFO] 02:33:49:453 LOGGER/(33952:33955): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:33:49:522 LOGGER/(33952:34128): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:33:49:523 LOGGER/(33952:34128): Cola Ready: 3 4 1 
-
-[INFO] 02:33:51:457 LOGGER/(33952:33955): WAITS REALIZADOS: 2
-[INFO] 02:33:51:457 LOGGER/(33952:33955): PID 2 - Retengo el recurso: RB
-[INFO] 02:33:51:457 LOGGER/(33952:33955): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:33:52:460 LOGGER/(33952:33955): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:33:52:460 LOGGER/(33952:33955): PID: 2 - Bloqueado por: ESPERA
-[INFO] 02:33:52:460 LOGGER/(33952:33955): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:33:52:462 LOGGER/(33952:34128): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:33:52:462 LOGGER/(33952:34128): Cola Ready: 4 1 2 
-
-[INFO] 02:33:54:463 LOGGER/(33952:33955): WAITS REALIZADOS: 3
-[INFO] 02:33:54:464 LOGGER/(33952:33955): PID 3 - Retengo el recurso: RC
-[INFO] 02:33:54:464 LOGGER/(33952:33955): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:33:55:466 LOGGER/(33952:33955): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:33:55:466 LOGGER/(33952:33955): PID: 3 - Bloqueado por: ESPERA
-[INFO] 02:33:55:467 LOGGER/(33952:33955): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:33:55:468 LOGGER/(33952:34128): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:33:55:469 LOGGER/(33952:34128): Cola Ready: 1 2 3 
-
-[INFO] 02:33:57:470 LOGGER/(33952:33955): WAITS REALIZADOS: 4
-[INFO] 02:33:57:470 LOGGER/(33952:33955): PID 4 - Retengo el recurso: RD
-[INFO] 02:33:57:470 LOGGER/(33952:33955): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:33:58:474 LOGGER/(33952:33955): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:33:58:474 LOGGER/(33952:33955): PID: 4 - Bloqueado por: ESPERA
-[INFO] 02:33:58:474 LOGGER/(33952:33955): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:33:58:477 LOGGER/(33952:34128): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:33:58:477 LOGGER/(33952:34128): Cola Ready: 2 3 4 
-
-[INFO] 02:33:59:477 LOGGER/(33952:33955): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:33:59:477 LOGGER/(33952:33955): PID: 1 - Bloqueado por: RB
-[INFO] 02:33:59:477 LOGGER/(33952:33955): PID 1 - Retengo el recurso: RB
-[INFO] 02:33:59:478 LOGGER/(33952:33955): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:34:00:479 LOGGER/(33952:33955): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:34:00:480 LOGGER/(33952:33955): PID: 2 - Bloqueado por: RC
-[INFO] 02:34:00:480 LOGGER/(33952:33955): PID 2 - Retengo el recurso: RC
-[INFO] 02:34:00:480 LOGGER/(33952:33955): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:34:01:482 LOGGER/(33952:33955): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:34:01:482 LOGGER/(33952:33955): PID: 3 - Bloqueado por: RD
-[INFO] 02:34:01:482 LOGGER/(33952:33955): PID 3 - Retengo el recurso: RD
-[INFO] 02:34:01:482 LOGGER/(33952:33955): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:34:02:485 LOGGER/(33952:33955): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:34:02:485 LOGGER/(33952:33955): PID: 4 - Bloqueado por: RA
-[INFO] 02:34:02:485 LOGGER/(33952:33955): PID 4 - Retengo el recurso: RA
-[INFO] 02:34:06:708 LOGGER/(33952:33957): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: EXIT
-[INFO] 02:34:06:709 LOGGER/(33952:33957): Finaliza el proceso 2 - Motivo: INTERRUPTED_BY_USER
-[INFO] 02:34:06:709 LOGGER/(33952:33957): Entra a ejecutar signal recurso del EXIT el proceso: 2
-
-[INFO] 02:34:06:710 LOGGER/(33952:33957): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:34:06:714 LOGGER/(33952:33957): Proceso liberado 1 por 2
-[INFO] 02:34:06:715 LOGGER/(33952:33957): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:34:06:715 LOGGER/(33952:33957): Cola Ready: 1 
-
-[INFO] 02:34:06:716 LOGGER/(33952:33955): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:34:07:717 LOGGER/(33952:33955): WAITS REALIZADOS: 5
-[INFO] 02:34:07:718 LOGGER/(33952:33955): PID 1 - Retengo el recurso: RB
-[INFO] 02:34:07:718 LOGGER/(33952:33955): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:34:10:725 LOGGER/(33952:33955): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:34:10:725 LOGGER/(33952:33955): PID: 1 - Bloqueado por: ESPERA
-[INFO] 02:34:10:725 LOGGER/(33952:34128): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:34:10:725 LOGGER/(33952:34128): Cola Ready: 1 
-
-[INFO] 02:34:10:725 LOGGER/(33952:33955): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:34:11:728 LOGGER/(33952:33955): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:34:11:728 LOGGER/(33952:33955): Proceso liberado 4 por 1
-[INFO] 02:34:11:728 LOGGER/(33952:33955): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:34:11:728 LOGGER/(33952:33955): Cola Ready: 4 
-
-[INFO] 02:34:11:728 LOGGER/(33952:33955): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:34:12:730 LOGGER/(33952:33955): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:34:12:730 LOGGER/(33952:33955): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:34:13:733 LOGGER/(33952:33955): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 02:34:13:733 LOGGER/(33952:33955): Finaliza el proceso 1 - Motivo: SUCCESS
-[INFO] 02:34:13:733 LOGGER/(33952:33955): Entra a ejecutar signal recurso del EXIT el proceso: 1
-
-[INFO] 02:34:13:733 LOGGER/(33952:33955): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:34:13:733 LOGGER/(33952:33955): Entra a ejecutar signal recurso del EXIT el proceso: 1
-
-[INFO] 02:34:13:733 LOGGER/(33952:33955): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:34:13:733 LOGGER/(33952:33955): Entra a ejecutar signal recurso del EXIT el proceso: 1
-
-[INFO] 02:34:13:733 LOGGER/(33952:33955): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 2
-[INFO] 02:34:13:734 LOGGER/(33952:33955): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:34:14:736 LOGGER/(33952:33955): WAITS REALIZADOS: 6
-[INFO] 02:34:14:736 LOGGER/(33952:33955): PID 4 - Retengo el recurso: RA
-[INFO] 02:34:14:736 LOGGER/(33952:33955): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:34:17:742 LOGGER/(33952:33955): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:34:17:742 LOGGER/(33952:33955): PID: 4 - Bloqueado por: ESPERA
-[INFO] 02:34:17:743 LOGGER/(33952:34128): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:34:17:743 LOGGER/(33952:34128): Cola Ready: 4 
-
-[INFO] 02:34:17:743 LOGGER/(33952:33955): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:34:18:745 LOGGER/(33952:33955): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:34:18:745 LOGGER/(33952:33955): Proceso liberado 3 por 4
-[INFO] 02:34:18:746 LOGGER/(33952:33955): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:34:18:746 LOGGER/(33952:33955): Cola Ready: 3 
-
-[INFO] 02:34:18:746 LOGGER/(33952:33955): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:34:19:748 LOGGER/(33952:33955): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:34:19:748 LOGGER/(33952:33955): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:34:20:751 LOGGER/(33952:33955): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 02:34:20:751 LOGGER/(33952:33955): Finaliza el proceso 4 - Motivo: SUCCESS
-[INFO] 02:34:20:751 LOGGER/(33952:33955): Entra a ejecutar signal recurso del EXIT el proceso: 4
-
-[INFO] 02:34:20:751 LOGGER/(33952:33955): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 2
-[INFO] 02:34:20:751 LOGGER/(33952:33955): Entra a ejecutar signal recurso del EXIT el proceso: 4
-
-[INFO] 02:34:20:751 LOGGER/(33952:33955): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 3
-[INFO] 02:34:20:751 LOGGER/(33952:33955): Entra a ejecutar signal recurso del EXIT el proceso: 4
-
-[INFO] 02:34:20:752 LOGGER/(33952:33955): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:34:20:752 LOGGER/(33952:33955): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:34:21:755 LOGGER/(33952:33955): WAITS REALIZADOS: 7
-[INFO] 02:34:21:755 LOGGER/(33952:33955): PID 3 - Retengo el recurso: RD
-[INFO] 02:34:21:755 LOGGER/(33952:33955): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:34:23:758 LOGGER/(33952:33955): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:34:23:758 LOGGER/(33952:33955): PID: 3 - Bloqueado por: ESPERA
-[INFO] 02:34:23:759 LOGGER/(33952:34128): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:34:23:759 LOGGER/(33952:34128): Cola Ready: 3 
-
-[INFO] 02:34:23:759 LOGGER/(33952:33955): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:34:24:761 LOGGER/(33952:33955): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:34:24:762 LOGGER/(33952:33955): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:34:25:764 LOGGER/(33952:33955): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:34:25:764 LOGGER/(33952:33955): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:34:26:766 LOGGER/(33952:33955): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 02:34:26:766 LOGGER/(33952:33955): Finaliza el proceso 3 - Motivo: SUCCESS
-[INFO] 02:34:26:767 LOGGER/(33952:33955): Entra a ejecutar signal recurso del EXIT el proceso: 3
-
-[INFO] 02:34:26:767 LOGGER/(33952:33955): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:34:26:767 LOGGER/(33952:33955): Entra a ejecutar signal recurso del EXIT el proceso: 3
-
-[INFO] 02:34:26:767 LOGGER/(33952:33955): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 2
-[INFO] 02:34:26:767 LOGGER/(33952:33955): Entra a ejecutar signal recurso del EXIT el proceso: 3
-
-[INFO] 02:34:26:767 LOGGER/(33952:33955): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 3
-[INFO] 02:45:06:800 LOGGER/(37859:37864): Se crea el proceso: 1 en NEW
-[INFO] 02:45:06:856 LOGGER/(37859:37861): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:45:06:859 LOGGER/(37859:37861): Cola Ready: 1 
-
-[INFO] 02:45:06:860 LOGGER/(37859:37862): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:45:06:879 LOGGER/(37859:37864): Se crea el proceso: 2 en NEW
-[INFO] 02:45:06:882 LOGGER/(37859:37861): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:45:06:883 LOGGER/(37859:37861): Cola Ready: 2 
-
-[INFO] 02:45:06:883 LOGGER/(37859:37864): Se crea el proceso: 3 en NEW
-[INFO] 02:45:06:889 LOGGER/(37859:37861): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:45:06:889 LOGGER/(37859:37861): Cola Ready: 2 3 
-
-[INFO] 02:45:06:891 LOGGER/(37859:37864): Se crea el proceso: 4 en NEW
-[INFO] 02:45:06:892 LOGGER/(37859:37861): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 02:45:06:892 LOGGER/(37859:37861): Cola Ready: 2 3 4 
-
-[INFO] 02:45:09:000 LOGGER/(37859:37862): WAITS REALIZADOS: 1
-[INFO] 02:45:09:001 LOGGER/(37859:37862): PID 1 - Retengo el recurso: RA
-[INFO] 02:45:09:005 LOGGER/(37859:37862): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:45:10:012 LOGGER/(37859:37862): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:45:10:013 LOGGER/(37859:37862): PID: 1 - Bloqueado por: ESPERA
-[INFO] 02:45:10:019 LOGGER/(37859:37862): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:45:10:059 LOGGER/(37859:38177): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:45:10:060 LOGGER/(37859:38177): Cola Ready: 3 4 1 
-
-[INFO] 02:45:12:023 LOGGER/(37859:37862): WAITS REALIZADOS: 2
-[INFO] 02:45:12:024 LOGGER/(37859:37862): PID 2 - Retengo el recurso: RB
-[INFO] 02:45:12:024 LOGGER/(37859:37862): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:45:13:029 LOGGER/(37859:37862): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:45:13:030 LOGGER/(37859:37862): PID: 2 - Bloqueado por: ESPERA
-[INFO] 02:45:13:030 LOGGER/(37859:37862): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:45:13:033 LOGGER/(37859:38177): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:45:13:033 LOGGER/(37859:38177): Cola Ready: 4 1 2 
-
-[INFO] 02:45:15:034 LOGGER/(37859:37862): WAITS REALIZADOS: 3
-[INFO] 02:45:15:034 LOGGER/(37859:37862): PID 3 - Retengo el recurso: RC
-[INFO] 02:45:15:034 LOGGER/(37859:37862): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:45:16:036 LOGGER/(37859:37862): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:45:16:036 LOGGER/(37859:37862): PID: 3 - Bloqueado por: ESPERA
-[INFO] 02:45:16:036 LOGGER/(37859:37862): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:45:16:037 LOGGER/(37859:38177): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:45:16:038 LOGGER/(37859:38177): Cola Ready: 1 2 3 
-
-[INFO] 02:45:18:040 LOGGER/(37859:37862): WAITS REALIZADOS: 4
-[INFO] 02:45:18:040 LOGGER/(37859:37862): PID 4 - Retengo el recurso: RD
-[INFO] 02:45:18:040 LOGGER/(37859:37862): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:45:19:042 LOGGER/(37859:37862): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:45:19:042 LOGGER/(37859:37862): PID: 4 - Bloqueado por: ESPERA
-[INFO] 02:45:19:043 LOGGER/(37859:37862): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:45:19:044 LOGGER/(37859:38177): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:45:19:044 LOGGER/(37859:38177): Cola Ready: 2 3 4 
-
-[INFO] 02:45:20:045 LOGGER/(37859:37862): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:45:20:046 LOGGER/(37859:37862): PID: 1 - Bloqueado por: RB
-[INFO] 02:45:20:046 LOGGER/(37859:37862): PID 1 - Retengo el recurso: RB
-[INFO] 02:45:20:046 LOGGER/(37859:37862): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:45:21:048 LOGGER/(37859:37862): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:45:21:049 LOGGER/(37859:37862): PID: 2 - Bloqueado por: RC
-[INFO] 02:45:21:049 LOGGER/(37859:37862): PID 2 - Retengo el recurso: RC
-[INFO] 02:45:21:049 LOGGER/(37859:37862): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:45:22:053 LOGGER/(37859:37862): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:45:22:054 LOGGER/(37859:37862): PID: 3 - Bloqueado por: RD
-[INFO] 02:45:22:055 LOGGER/(37859:37862): PID 3 - Retengo el recurso: RD
-[INFO] 02:45:22:055 LOGGER/(37859:37862): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:45:23:058 LOGGER/(37859:37862): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:45:23:058 LOGGER/(37859:37862): PID: 4 - Bloqueado por: RA
-[INFO] 02:45:23:058 LOGGER/(37859:37862): PID 4 - Retengo el recurso: RA
-[INFO] 02:45:27:468 LOGGER/(37859:37864): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: EXIT
-[INFO] 02:45:27:469 LOGGER/(37859:37864): Finaliza el proceso 2 - Motivo: INTERRUPTED_BY_USER
-[INFO] 02:45:27:474 LOGGER/(37859:37864): Entra a ejecutar signal recurso del EXIT el proceso: 2
-
-[INFO] 02:45:27:475 LOGGER/(37859:37864): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:45:27:476 LOGGER/(37859:37864): Proceso liberado 1 por 2
-[INFO] 02:45:27:477 LOGGER/(37859:37864): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:45:27:477 LOGGER/(37859:37864): Cola Ready: 1 
-
-[INFO] 02:45:27:477 LOGGER/(37859:37862): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:45:28:479 LOGGER/(37859:37862): WAITS REALIZADOS: 5
-[INFO] 02:45:28:479 LOGGER/(37859:37862): PID 1 - Retengo el recurso: RB
-[INFO] 02:45:28:479 LOGGER/(37859:37862): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:45:31:489 LOGGER/(37859:37862): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:45:31:489 LOGGER/(37859:37862): PID: 1 - Bloqueado por: ESPERA
-[INFO] 02:45:31:490 LOGGER/(37859:38177): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:45:31:490 LOGGER/(37859:38177): Cola Ready: 1 
-
-[INFO] 02:45:31:490 LOGGER/(37859:37862): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:45:32:493 LOGGER/(37859:37862): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:45:32:493 LOGGER/(37859:37862): Proceso liberado 4 por 1
-[INFO] 02:45:32:493 LOGGER/(37859:37862): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:45:32:493 LOGGER/(37859:37862): Cola Ready: 4 
-
-[INFO] 02:45:32:494 LOGGER/(37859:37862): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:45:33:496 LOGGER/(37859:37862): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:45:33:496 LOGGER/(37859:37862): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:45:34:499 LOGGER/(37859:37862): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 02:45:34:500 LOGGER/(37859:37862): Finaliza el proceso 1 - Motivo: SUCCESS
-[INFO] 02:45:34:500 LOGGER/(37859:37862): Entra a ejecutar signal recurso del EXIT el proceso: 1
-
-[INFO] 02:45:34:500 LOGGER/(37859:37862): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:45:34:500 LOGGER/(37859:37862): Entra a ejecutar signal recurso del EXIT el proceso: 1
-
-[INFO] 02:45:34:500 LOGGER/(37859:37862): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:45:34:500 LOGGER/(37859:37862): Entra a ejecutar signal recurso del EXIT el proceso: 1
-
-[INFO] 02:45:34:500 LOGGER/(37859:37862): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 2
-[INFO] 02:45:34:502 LOGGER/(37859:37862): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:45:35:505 LOGGER/(37859:37862): WAITS REALIZADOS: 6
-[INFO] 02:45:35:505 LOGGER/(37859:37862): PID 4 - Retengo el recurso: RA
-[INFO] 02:45:35:506 LOGGER/(37859:37862): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:45:38:510 LOGGER/(37859:37862): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:45:38:511 LOGGER/(37859:37862): PID: 4 - Bloqueado por: ESPERA
-[INFO] 02:45:38:511 LOGGER/(37859:38177): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:45:38:511 LOGGER/(37859:38177): Cola Ready: 4 
-
-[INFO] 02:45:38:512 LOGGER/(37859:37862): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:45:39:514 LOGGER/(37859:37862): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:45:39:514 LOGGER/(37859:37862): Proceso liberado 3 por 4
-[INFO] 02:45:39:514 LOGGER/(37859:37862): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:45:39:514 LOGGER/(37859:37862): Cola Ready: 3 
-
-[INFO] 02:45:39:515 LOGGER/(37859:37862): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:45:40:517 LOGGER/(37859:37862): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:45:40:518 LOGGER/(37859:37862): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:45:41:524 LOGGER/(37859:37862): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 02:45:41:525 LOGGER/(37859:37862): Finaliza el proceso 4 - Motivo: SUCCESS
-[INFO] 02:45:41:525 LOGGER/(37859:37862): Entra a ejecutar signal recurso del EXIT el proceso: 4
-
-[INFO] 02:45:41:525 LOGGER/(37859:37862): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 2
-[INFO] 02:45:41:525 LOGGER/(37859:37862): Entra a ejecutar signal recurso del EXIT el proceso: 4
-
-[INFO] 02:45:41:526 LOGGER/(37859:37862): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 3
-[INFO] 02:45:41:526 LOGGER/(37859:37862): Entra a ejecutar signal recurso del EXIT el proceso: 4
-
-[INFO] 02:45:41:526 LOGGER/(37859:37862): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:45:41:527 LOGGER/(37859:37862): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:45:42:529 LOGGER/(37859:37862): WAITS REALIZADOS: 7
-[INFO] 02:45:42:529 LOGGER/(37859:37862): PID 3 - Retengo el recurso: RD
-[INFO] 02:45:42:529 LOGGER/(37859:37862): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:45:44:532 LOGGER/(37859:37862): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
-[INFO] 02:45:44:532 LOGGER/(37859:37862): PID: 3 - Bloqueado por: ESPERA
-[INFO] 02:45:44:534 LOGGER/(37859:38177): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
-[INFO] 02:45:44:534 LOGGER/(37859:38177): Cola Ready: 3 
-
-[INFO] 02:45:44:534 LOGGER/(37859:37862): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
-[INFO] 02:45:45:538 LOGGER/(37859:37862): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 0
-[INFO] 02:45:45:538 LOGGER/(37859:37862): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:45:46:540 LOGGER/(37859:37862): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:45:46:540 LOGGER/(37859:37862): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
-[INFO] 02:45:47:543 LOGGER/(37859:37862): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
-[INFO] 02:45:47:543 LOGGER/(37859:37862): Finaliza el proceso 3 - Motivo: SUCCESS
-[INFO] 02:45:47:543 LOGGER/(37859:37862): Entra a ejecutar signal recurso del EXIT el proceso: 3
-
-[INFO] 02:45:47:543 LOGGER/(37859:37862): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 1
-[INFO] 02:45:47:544 LOGGER/(37859:37862): Entra a ejecutar signal recurso del EXIT el proceso: 3
-
-[INFO] 02:45:47:544 LOGGER/(37859:37862): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 2
-[INFO] 02:45:47:544 LOGGER/(37859:37862): Entra a ejecutar signal recurso del EXIT el proceso: 3
-
-[INFO] 02:45:47:544 LOGGER/(37859:37862): CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: 3
+[INFO] 15:30:16:443 LOGGER/(65747:65752): Se crea el proceso: 1 en NEW
+[INFO] 15:30:16:466 LOGGER/(65747:65749): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:30:16:469 LOGGER/(65747:65749): Cola Ready: 1 
+
+[INFO] 15:30:16:470 LOGGER/(65747:65750): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:16:474 LOGGER/(65747:65752): Se crea el proceso: 2 en NEW
+[INFO] 15:30:16:477 LOGGER/(65747:65749): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:30:16:478 LOGGER/(65747:65749): Cola Ready: 2 
+
+[INFO] 15:30:16:478 LOGGER/(65747:65752): Se crea el proceso: 3 en NEW
+[INFO] 15:30:16:489 LOGGER/(65747:65752): Se crea el proceso: 4 en NEW
+[INFO] 15:30:16:492 LOGGER/(65747:65749): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:30:16:494 LOGGER/(65747:65749): Cola Ready: 2 3 
+
+[INFO] 15:30:16:494 LOGGER/(65747:65749): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:30:16:495 LOGGER/(65747:65749): Cola Ready: 2 3 4 
+
+[INFO] 15:30:18:556 LOGGER/(65747:65750): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:30:18:556 LOGGER/(65747:65750): Cola Ready: 2 3 4 1 
+
+[INFO] 15:30:18:558 LOGGER/(65747:65750): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:20:571 LOGGER/(65747:65750): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:30:20:572 LOGGER/(65747:65750): Cola Ready: 3 4 1 2 
+
+[INFO] 15:30:20:572 LOGGER/(65747:65750): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:22:577 LOGGER/(65747:65750): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:30:22:578 LOGGER/(65747:65750): Cola Ready: 4 1 2 3 
+
+[INFO] 15:30:22:578 LOGGER/(65747:65750): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:24:585 LOGGER/(65747:65750): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:30:24:586 LOGGER/(65747:65750): Cola Ready: 1 2 3 4 
+
+[INFO] 15:30:24:587 LOGGER/(65747:65750): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:25:597 LOGGER/(65747:65750): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:30:25:598 LOGGER/(65747:65750): PID: 1 - Bloqueado por: ESPERA
+[INFO] 15:30:25:600 LOGGER/(65747:65750): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:25:628 LOGGER/(65747:65883): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:30:25:628 LOGGER/(65747:65883): Cola Ready: 3 4 1 
+
+[INFO] 15:30:26:604 LOGGER/(65747:65750): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:30:26:604 LOGGER/(65747:65750): PID: 2 - Bloqueado por: ESPERA
+[INFO] 15:30:26:604 LOGGER/(65747:65750): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:26:605 LOGGER/(65747:65883): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:30:26:605 LOGGER/(65747:65883): Cola Ready: 4 1 2 
+
+[INFO] 15:30:27:607 LOGGER/(65747:65750): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:30:27:607 LOGGER/(65747:65750): PID: 3 - Bloqueado por: ESPERA
+[INFO] 15:30:27:607 LOGGER/(65747:65750): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:27:609 LOGGER/(65747:65883): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:30:27:609 LOGGER/(65747:65883): Cola Ready: 1 2 3 
+
+[INFO] 15:30:28:611 LOGGER/(65747:65750): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:30:28:611 LOGGER/(65747:65750): PID: 4 - Bloqueado por: ESPERA
+[INFO] 15:30:28:612 LOGGER/(65747:65750): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:28:615 LOGGER/(65747:65883): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:30:28:616 LOGGER/(65747:65883): Cola Ready: 2 3 4 
+
+[INFO] 15:30:29:617 LOGGER/(65747:65750): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:30:29:617 LOGGER/(65747:65750): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:30:622 LOGGER/(65747:65750): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:30:30:622 LOGGER/(65747:65750): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:31:624 LOGGER/(65747:65750): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:30:31:625 LOGGER/(65747:65750): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:32:636 LOGGER/(65747:65750): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:30:43:331 LOGGER/(65747:65752): Entra a ejecutar signal recurso del EXIT el proceso: 2
+
+[INFO] 15:30:43:334 LOGGER/(65747:65752): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:30:43:334 LOGGER/(65747:65752): Cola Ready: 1 
+
+[INFO] 15:30:43:335 LOGGER/(65747:65752): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: EXIT
+[INFO] 15:30:43:337 LOGGER/(65747:65752): Finaliza el proceso 2 - Motivo: INTERRUPTED_BY_USER
+[INFO] 15:30:43:335 LOGGER/(65747:65750): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:44:344 LOGGER/(65747:65750): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:30:44:344 LOGGER/(65747:65750): Cola Ready: 1 
+
+[INFO] 15:30:44:344 LOGGER/(65747:65750): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:47:350 LOGGER/(65747:65750): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:30:47:350 LOGGER/(65747:65750): PID: 1 - Bloqueado por: ESPERA
+[INFO] 15:30:47:351 LOGGER/(65747:65883): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:30:47:351 LOGGER/(65747:65883): Cola Ready: 1 
+
+[INFO] 15:30:47:351 LOGGER/(65747:65750): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:48:355 LOGGER/(65747:65750): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:30:48:356 LOGGER/(65747:65750): Cola Ready: 4 
+
+[INFO] 15:30:48:356 LOGGER/(65747:65750): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:30:49:359 LOGGER/(65747:65750): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:30:50:363 LOGGER/(65747:65750): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:30:50:363 LOGGER/(65747:65750): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 15:30:50:363 LOGGER/(65747:65750): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:51:367 LOGGER/(65747:65750): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:30:51:367 LOGGER/(65747:65750): Cola Ready: 4 
+
+[INFO] 15:30:51:368 LOGGER/(65747:65750): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:54:373 LOGGER/(65747:65750): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:30:54:373 LOGGER/(65747:65750): PID: 4 - Bloqueado por: ESPERA
+[INFO] 15:30:54:374 LOGGER/(65747:65883): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:30:54:374 LOGGER/(65747:65883): Cola Ready: 4 
+
+[INFO] 15:30:54:374 LOGGER/(65747:65750): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:55:378 LOGGER/(65747:65750): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:30:55:378 LOGGER/(65747:65750): Cola Ready: 3 
+
+[INFO] 15:30:55:378 LOGGER/(65747:65750): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:30:56:381 LOGGER/(65747:65750): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:30:57:386 LOGGER/(65747:65750): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:30:57:387 LOGGER/(65747:65750): Finaliza el proceso 4 - Motivo: SUCCESS
+[INFO] 15:30:57:387 LOGGER/(65747:65750): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:30:58:390 LOGGER/(65747:65750): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:30:58:391 LOGGER/(65747:65750): Cola Ready: 3 
+
+[INFO] 15:30:58:391 LOGGER/(65747:65750): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:31:00:395 LOGGER/(65747:65750): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:31:00:396 LOGGER/(65747:65750): PID: 3 - Bloqueado por: ESPERA
+[INFO] 15:31:00:398 LOGGER/(65747:65883): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:31:00:398 LOGGER/(65747:65883): Cola Ready: 3 
+
+[INFO] 15:31:00:398 LOGGER/(65747:65750): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:31:01:402 LOGGER/(65747:65750): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:31:02:406 LOGGER/(65747:65750): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:31:03:408 LOGGER/(65747:65750): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:31:03:409 LOGGER/(65747:65750): Finaliza el proceso 3 - Motivo: SUCCESS
+[INFO] 15:32:58:781 LOGGER/(67064:67093): Se crea el proceso: 1 en NEW
+[INFO] 15:32:58:848 LOGGER/(67064:67080): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:32:58:854 LOGGER/(67064:67080): Cola Ready: 1 
+
+[INFO] 15:32:58:856 LOGGER/(67064:67093): Se crea el proceso: 2 en NEW
+[INFO] 15:32:58:866 LOGGER/(67064:67093): Se crea el proceso: 3 en NEW
+[INFO] 15:32:58:870 LOGGER/(67064:67080): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:32:58:872 LOGGER/(67064:67080): Cola Ready: 1 2 
+
+[INFO] 15:32:58:875 LOGGER/(67064:67091): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:32:58:888 LOGGER/(67064:67093): Se crea el proceso: 4 en NEW
+[INFO] 15:32:58:919 LOGGER/(67064:67080): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:32:58:920 LOGGER/(67064:67080): Cola Ready: 2 3 
+
+[INFO] 15:32:58:921 LOGGER/(67064:67080): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:32:58:922 LOGGER/(67064:67080): Cola Ready: 2 3 4 
+
+[INFO] 15:33:01:059 LOGGER/(67064:67091): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:33:01:064 LOGGER/(67064:67091): Cola Ready: 2 3 4 1 
+
+[INFO] 15:33:01:071 LOGGER/(67064:67091): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:03:099 LOGGER/(67064:67091): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:33:03:103 LOGGER/(67064:67091): Cola Ready: 3 4 1 2 
+
+[INFO] 15:33:03:106 LOGGER/(67064:67091): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:05:126 LOGGER/(67064:67091): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:33:05:128 LOGGER/(67064:67091): Cola Ready: 4 1 2 3 
+
+[INFO] 15:33:05:129 LOGGER/(67064:67091): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:07:143 LOGGER/(67064:67091): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:33:07:144 LOGGER/(67064:67091): Cola Ready: 1 2 3 4 
+
+[INFO] 15:33:07:145 LOGGER/(67064:67091): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:08:162 LOGGER/(67064:67091): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:33:08:165 LOGGER/(67064:67091): PID: 1 - Bloqueado por: ESPERA
+[INFO] 15:33:08:167 LOGGER/(67064:67091): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:08:207 LOGGER/(67064:67228): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:33:08:208 LOGGER/(67064:67228): Cola Ready: 3 4 1 
+
+[INFO] 15:33:09:178 LOGGER/(67064:67091): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:33:09:179 LOGGER/(67064:67091): PID: 2 - Bloqueado por: ESPERA
+[INFO] 15:33:09:179 LOGGER/(67064:67091): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:09:184 LOGGER/(67064:67228): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:33:09:185 LOGGER/(67064:67228): Cola Ready: 4 1 2 
+
+[INFO] 15:33:10:187 LOGGER/(67064:67091): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:33:10:188 LOGGER/(67064:67091): PID: 3 - Bloqueado por: ESPERA
+[INFO] 15:33:10:189 LOGGER/(67064:67091): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:10:191 LOGGER/(67064:67228): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:33:10:192 LOGGER/(67064:67228): Cola Ready: 1 2 3 
+
+[INFO] 15:33:11:194 LOGGER/(67064:67091): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:33:11:194 LOGGER/(67064:67091): PID: 4 - Bloqueado por: ESPERA
+[INFO] 15:33:11:195 LOGGER/(67064:67091): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:11:196 LOGGER/(67064:67228): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:33:11:197 LOGGER/(67064:67228): Cola Ready: 2 3 4 
+
+[INFO] 15:33:12:201 LOGGER/(67064:67091): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:33:12:203 LOGGER/(67064:67091): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:13:209 LOGGER/(67064:67091): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:33:13:210 LOGGER/(67064:67091): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:14:215 LOGGER/(67064:67091): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:33:14:216 LOGGER/(67064:67091): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:15:226 LOGGER/(67064:67091): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:33:18:175 LOGGER/(67064:67093): Entra a ejecutar signal recurso del EXIT el proceso: 2
+
+[INFO] 15:33:18:183 LOGGER/(67064:67093): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:33:18:184 LOGGER/(67064:67093): Cola Ready: 1 
+
+[INFO] 15:33:18:186 LOGGER/(67064:67093): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: EXIT
+[INFO] 15:33:18:186 LOGGER/(67064:67093): Finaliza el proceso 2 - Motivo: INTERRUPTED_BY_USER
+[INFO] 15:33:18:187 LOGGER/(67064:67091): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:19:208 LOGGER/(67064:67091): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:33:19:209 LOGGER/(67064:67091): Cola Ready: 1 
+
+[INFO] 15:33:19:211 LOGGER/(67064:67091): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:22:254 LOGGER/(67064:67091): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:33:22:254 LOGGER/(67064:67091): PID: 1 - Bloqueado por: ESPERA
+[INFO] 15:33:22:257 LOGGER/(67064:67228): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:33:22:258 LOGGER/(67064:67228): Cola Ready: 1 
+
+[INFO] 15:33:22:259 LOGGER/(67064:67091): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:23:271 LOGGER/(67064:67091): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:33:23:272 LOGGER/(67064:67091): Cola Ready: 4 
+
+[INFO] 15:33:23:273 LOGGER/(67064:67091): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:33:24:279 LOGGER/(67064:67091): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:33:25:284 LOGGER/(67064:67091): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:33:25:285 LOGGER/(67064:67091): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 15:33:25:286 LOGGER/(67064:67091): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:26:290 LOGGER/(67064:67091): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:33:26:291 LOGGER/(67064:67091): Cola Ready: 4 
+
+[INFO] 15:33:26:292 LOGGER/(67064:67091): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:29:328 LOGGER/(67064:67091): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:33:29:329 LOGGER/(67064:67091): PID: 4 - Bloqueado por: ESPERA
+[INFO] 15:33:29:331 LOGGER/(67064:67228): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:33:29:331 LOGGER/(67064:67228): Cola Ready: 4 
+
+[INFO] 15:33:29:332 LOGGER/(67064:67091): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:30:338 LOGGER/(67064:67091): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:33:30:339 LOGGER/(67064:67091): Cola Ready: 3 
+
+[INFO] 15:33:30:341 LOGGER/(67064:67091): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:33:31:347 LOGGER/(67064:67091): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:33:32:355 LOGGER/(67064:67091): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:33:32:357 LOGGER/(67064:67091): Finaliza el proceso 4 - Motivo: SUCCESS
+[INFO] 15:33:32:359 LOGGER/(67064:67091): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:33:384 LOGGER/(67064:67091): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:33:33:388 LOGGER/(67064:67091): Cola Ready: 3 
+
+[INFO] 15:33:33:392 LOGGER/(67064:67091): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:35:404 LOGGER/(67064:67091): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:33:35:405 LOGGER/(67064:67091): PID: 3 - Bloqueado por: ESPERA
+[INFO] 15:33:35:406 LOGGER/(67064:67228): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:33:35:407 LOGGER/(67064:67228): Cola Ready: 3 
+
+[INFO] 15:33:35:407 LOGGER/(67064:67091): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:33:36:416 LOGGER/(67064:67091): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:33:37:423 LOGGER/(67064:67091): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:33:38:432 LOGGER/(67064:67091): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:33:38:433 LOGGER/(67064:67091): Finaliza el proceso 3 - Motivo: SUCCESS

@@ -86,10 +86,6 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
     // cantidad_bloqueados++;
     // sem_wait(&sem_planificadores);
     // printf("Si.\n");
-    if(pcb->estadoActual == BLOCKED) {
-        liberar_pcb_de_io(pcb->pid);
-    }
-    
     change_status(pcb, EXIT);
     log_info(logger_kernel, "Finaliza el proceso %d - Motivo: %s", pcb->pid, motivo_exit);
   
@@ -101,8 +97,14 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
     // liberar_pcb_de_io(pcb->pid); -------------> PARA CUANDO ESTA EN LA IO
     // liberar_pcb((void*)pcb);
     // liberar_recurso_de_pcb(pcb->pid);
-    printf("\nVoy a ejecutar signal de recursos bloqueados por !!!!\n\n")
-    ejecutar_signal_de_recursos_bloqueados_por(pcb);
+    // printf("\nVoy a ejecutar signal de recursos bloqueados por !!!!\n\n");
+    // ejecutar_signal_de_recursos_bloqueados_por(pcb);
+    //printf("Va a liberar recurso de pcb %d que lo retiene\n", pcb->pid);
+
+    if(pcb->estadoAnterior == BLOCKED) {
+        liberar_pcb_de_io(pcb->pid);
+    }
+
     enviar_eliminacion_pcb_a_memoria(pcb->pid);
     liberar_pcb_estructura(pcb);
 

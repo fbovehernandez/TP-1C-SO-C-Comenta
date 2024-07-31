@@ -134,6 +134,8 @@ void ejecutar_signal_de_recursos_bloqueados_por(t_pcb* pcb);
 char* pasar_string_desalojo_recurso(DesalojoCpu desalojoCpu);
 void _imprimir_recurso(char* nombre, void* element);
 void imprimir_diccionario_recursos();
+bool esta_el_pid_en_cola_de_procesos_que_retienen(char* pid, t_recurso* recurso_obtenido);
+
 
 // LIMPIEZA
 void liberar_recursos(t_dictionary* recursos);
@@ -159,7 +161,6 @@ t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre);
 t_list_io* validar_io(t_operacion_io* operacion_io, t_pcb* pcb);
 
 // NO SE ESTA USANDO
-bool esta_el_pid_en_cola_de_procesos_que_retienen(int pid, t_recurso* recurso_obtenido);
 
 
 //////////////////////////////////////////////////
