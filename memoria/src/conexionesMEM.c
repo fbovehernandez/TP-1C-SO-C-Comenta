@@ -219,7 +219,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 break;
             case QUIERO_INSTRUCCION:
                 t_solicitud_instruccion* solicitud_cpu = deserializar_solicitud_instruccion(paquete->buffer);
-                usleep(tiempo_retardo * 100); // Harcodeado nashe para probar (Con retardo)
+                usleep(tiempo_retardo * tiempo_retardo); // Ya no hardocdeado, tiene el tiempo retardo del config
                 enviar_instruccion(solicitud_cpu, socket_cpu);
                 free(solicitud_cpu);
                 break;
@@ -272,7 +272,6 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
                 send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
                 
-            
                 list_destroy(direcciones_restantes_escritura);            
                 free(pedido_operacion->valor_a_escribir);
                 free(pedido_operacion);
@@ -333,11 +332,13 @@ int buscar_frame(t_solicitud_frame* pedido_frame) {
     for(int i=0;i < list_size(tabla_paginas); i++) {
         t_pagina* pagina = list_get(tabla_paginas, i);
 
+        // Posible log de acceso de tabla de paginas
+
         printf("La pagina es: %d\n", pagina->numero_pagina);
         printf("El frame es: %d\n", pagina->frame);
 
         if(pagina->numero_pagina == pedido_frame->nro_pagina){
-            // int numero_frame = *(int*) list_get(tabla_paginas, pedido_frame->nro_pagina);
+            log_info(logger_memoria,"PID: %d - Pagina: %d - Frame: %d", pedido_frame->pid, pedido_frame->nro_pagina, pagina->frame);
             return pagina->frame;
         }
     }
@@ -369,10 +370,10 @@ int resize_memory(void* stream) {
     if(same_page) {
        printf("El proceso ya tiene una pagina con el tamanio solicitado\n");
     } else if(tamanio > cant_bytes_uso) {
-        log_info(logger_memoria,"PID: %d - Tamaño Actual: %d - Tamaño a Ampliar: %d",pid,cant_bytes_uso,tamanio);
+        log_info(logger_memoria,"PID: %d - Tamaño Actual: %d - Tamaño a Ampliar: %d", pid, cant_bytes_uso,tamanio);
         asignar_tamanio(tamanio, cant_bytes_uso, pid_char);
     } else {
-        log_info(logger_memoria,"PID: %d - Tamaño Actual: %d - Tamaño a Reducir: %d",pid,cant_bytes_uso,tamanio);
+        log_info(logger_memoria,"PID: %d - Tamaño Actual: %d - Tamaño a Reducir: %d", pid, cant_bytes_uso,tamanio);
         recortar_tamanio(tamanio, pid_char, cant_bytes_uso);
     }
     
@@ -424,7 +425,7 @@ void marcar_frame_en_tabla_paginas(t_list* tabla_paginas, int frame) {
     t_pagina* pagina = malloc(sizeof(t_pagina));
     pagina->numero_pagina = list_size(tabla_paginas); 
     pagina->frame = frame;
-    list_add(tabla_paginas, pagina); //VER_SI_FUNCIONA
+    list_add(tabla_paginas, pagina); // VER_SI_FUNCIONA
 }
 
 int buscar_frame_libre() {
@@ -720,6 +721,9 @@ void* handle_io_dialfs(void* socket) {
                 realizar_operacion(escritura_lectura->pid, ESCRITURA, escritura_lectura->lista_dir_tamanio, user_space_aux, registro_escritura, NULL); 
                 // printf("Registro escrito como int %d\n", *((uint32_t*)registro_escritura));
 
+                // Aca, en vez del send, tengo que enviar un paquete con el resultado para recibirlo del otro lado y poder desbloquear al semaforo, no pueda usar un send, porque lo recibe el hilo
+
+                // enviar_confirmacion_escritura_fs(socket_io);
                 send(socket_io, &confirm_escritura_fs, sizeof(int), 0);
                 break;
             default:
@@ -730,6 +734,24 @@ void* handle_io_dialfs(void* socket) {
 
     liberar_paquete(paquete_inicial);
     return NULL;
+}
+
+void enviar_confirmacion_escritura_fs(int socket_io) {
+    int terminacion_ok = 99;
+
+    t_buffer* buffer = malloc(sizeof(t_buffer));
+
+    buffer->size = sizeof(int);
+
+    buffer->offset = 0;
+    buffer->stream = malloc(buffer->size);
+
+    void* stream = buffer->stream;
+
+    memcpy(stream, &terminacion_ok, sizeof(int));
+    stream += sizeof(int);
+
+    enviar_paquete(buffer, FIN_ESCRITURA_FS, socket_io);
 }
 
 /////////////////////////////
@@ -745,14 +767,45 @@ void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_r
         t_dir_fisica_tamanio* dir_fisica_tam = list_remove(direcciones_restantes, 0);
         printf("La direccion fisica es: %d\n", dir_fisica_tam->direccion_fisica);
         printf("El tamanio es: %d\n", dir_fisica_tam->bytes_lectura);
-        // printf("el registro escritura es : %s \n", (char*)registro_escritura);
 
+        // printf("el registro escritura es : %s \n", (char*)registro_escritura);
+    
         interaccion_user_space(pid, operacion, dir_fisica_tam->direccion_fisica, user_space_aux, tamanio_anterior, dir_fisica_tam->bytes_lectura, registro_escritura, registro_lectura);
         tamanio_anterior += dir_fisica_tam->bytes_lectura;
 
-        free(dir_fisica_tam);
+        // free(dir_fisica_tam);
     }
 }
+
+/* 
+int obtener_marco(int pid, int pagina) {
+    t_proceso_paginas* proceso_pagina = dictionary_get(diccionario_tablas_paginas, string_itoa(pid));  
+    t_list* tabla_paginas = proceso_pagina->tabla_paginas;
+
+    t_pagina* pagina_ = list_get(tabla_paginas, pagina);
+    return pagina_->frame;
+}
+
+int obtener_pagina(int pid, int direccion_fisica_) {
+    t_proceso_paginas* proceso_pagina = dictionary_get(diccionario_tablas_paginas, string_itoa(pid));  
+
+    // Necesito obtener la primera pagina, para luego validar si la direccion fisica corresponde a alguan pagina de este proceso y devolverla
+    t_list* tabla_paginas = proceso_pagina->tabla_paginas;
+
+    // Si bien no es la mejor solucion, lo que esto hace es recorrer cada pagina de la lista y buscar cual es la que corresponde a la direccion fisica en funcion de ese PID
+    // Una solucion alternativa hubiera sido serializar la primera pagina o ponerla adentro de la lista. Tambien CREO que se puede poner el log en otro lado donde estos datos son mas accesibles
+
+    for(int i = 0; i < list_size(tabla_paginas); i++) {
+        t_pagina* pagina = list_get(tabla_paginas, i); // Primer pagina
+
+        if(direccion_fisica_ >= pagina->numero_pagina * tamanio_pagina && direccion_fisica_ < (pagina->numero_pagina + 1) * tamanio_pagina) {
+            return pagina->numero_pagina;
+        } else {
+            return -999 // Para ver en el log un posible mal resultado
+        }
+    }
+}
+*/
 
 void interaccion_user_space(int pid, tipo_operacion operacion, int df_actual, void* user_space_aux, int tam_escrito_anterior, int tamanio, void* registro_escritura, void* registro_lectura) {
     if(operacion == ESCRITURA) {
@@ -760,18 +813,23 @@ void interaccion_user_space(int pid, tipo_operacion operacion, int df_actual, vo
         printf("Escritura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
         printf("Contenido escrito:  %.*s", tamanio, (char*)(user_space_aux + df_actual));
         // printf("Los proximos 4 bytes a esos son: %.*s\n", 4, (char*)(user_space_aux + df_actual + tamanio));
-        printf("El PID del contenido escrito es: %d", pid);
+
+        log_info(logger_memoria,"PID: %d - Accion: ESCRIBIR - Direccion fisica: %d - Tamaño %d", pid, df_actual, tamanio);
     } else { // == LECTURA
         memcpy(registro_lectura + tam_escrito_anterior, (user_space_aux + df_actual), tamanio);
         printf("Lectura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
         printf("Contenido leido: %.*s\n", tamanio, (char*)(registro_lectura + tam_escrito_anterior));
+
+        log_info(logger_memoria,"PID: %d - Accion: LEER - Direccion fisica: %d - Tamaño %d", pid , df_actual, tamanio);
     }
 } 
 
 //////////////////////////////
 ///// FUNCIONES DE AYUDA /////
 //////////////////////////////
+
 // Posible mem leak, fix para el futuro
+
 char* agrupar_path(t_path* path) { 
     char* pathConfig_local = strdup(path_config);
     // char* path_completo = malloc(strlen(pathConfig_local) + path->path_length + 1); // 69  + 20  + 1 
@@ -1582,7 +1640,7 @@ void limpiar_bitmap(int pid_a_liberar) {
     t_proceso_paginas* proceso_pagina = dictionary_remove(diccionario_tablas_paginas, pid_string);
     t_list* tabla_paginas = proceso_pagina->tabla_paginas;
 
-    log_info(logger_memoria, "PID: %d - Accion: DESTRUIR - Tamaño: %d", pid_a_liberar, list_size(proceso_pagina ->tabla_paginas));    
+    log_info(logger_memoria, "PID: %d - Accion: DESTRUIR - Tamaño: %d", pid_a_liberar, list_size(proceso_pagina->tabla_paginas));    
 
     for(int i = 0; i < list_size(tabla_paginas); i++) {
         t_pagina* pagina = list_get(tabla_paginas, i);

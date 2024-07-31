@@ -119,6 +119,7 @@ int deserializar_pid(t_buffer* buffer);
 t_escritura_memoria_fs* deserializar_escritura_lectura_fs(t_buffer* buffer);
 t_memoria_fs_escritura_lectura* deserializar_escritura_lectura(t_buffer* buffer);
 t_pid_stdout* desearializar_pid_stdout(t_buffer* buffer);
+void enviar_confirmacion_escritura_fs(int socket_io);
 
 // LIMPIEZA
 void liberar_estructuras_proceso(int pid);

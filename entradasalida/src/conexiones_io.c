@@ -141,6 +141,8 @@ void recibir_kernel(void* config_socket_io) { //FREE
             case CREAR_ARCHIVO:
                 int termino_creacion_ok = 1; 
 
+                usleep(dialfs->tiempo_unidad_trabajo * 1000);
+
                 // Estaria bueno que tengamos un diccionario con key nombre archivo y puntero como atrbuto -> Si , o directamente el archivo y su bloque incial y la cantidad (facu)
                 t_archivo_encolar* pedido_creacion = deserializar_pedido_creacion_destruccion(paquete->buffer); // Me olvide asi que por ahora sin PID
 
@@ -187,7 +189,7 @@ void recibir_kernel(void* config_socket_io) { //FREE
             case ELIMINAR_ARCHIVO:
                 int termino_delete_ok = 1;
 
-                //usleep(dialfs->tiempo_unidad_trabajo * 1000);
+                usleep(dialfs->tiempo_unidad_trabajo * 1000);
 
                 t_archivo_encolar* pedido_destruccion = deserializar_pedido_creacion_destruccion(paquete->buffer);
 
@@ -209,7 +211,7 @@ void recibir_kernel(void* config_socket_io) { //FREE
             case TRUNCAR_ARCHIVO:
                 int fin_truncate_ok = 1;
 
-                //usleep(dialfs->tiempo_unidad_trabajo * 1000);
+                usleep(dialfs->tiempo_unidad_trabajo * 1000);
 
                 t_pedido_truncate* pedido_truncate = deserializar_pedido_fs_truncate(paquete->buffer);
 
@@ -228,7 +230,8 @@ void recibir_kernel(void* config_socket_io) { //FREE
                 int termino_escritura_ok;
                 int termino_ok_kernel = 1;
 
-                // usleep(dialfs->tiempo_unidad_trabajo * 1000);
+                usleep(dialfs->tiempo_unidad_trabajo * 1000);
+
                 printf("\nLLEGUE HASTA ACA!!!\n\n");
                 t_pedido_rw_encolar* pedido_escritura = deserializar_pedido_rw(paquete->buffer);
 
@@ -256,6 +259,8 @@ void recibir_kernel(void* config_socket_io) { //FREE
 
                 // recv(memoriafd, &termino_escritura_ok, sizeof(int), MSG_WAITALL);
 
+                // Uso esto y no recv porque literal no puedo recibir el valor por recv ya que lo toma el hilo
+                // sem_wait(&se_escribio_memoria);
                 sleep(5); // Aca lo hago asi rapido pero despues lo tengo que sacar
                 
                 printf("el valor de termino_escritura_ok es %d\n", termino_escritura_ok);
@@ -377,7 +382,7 @@ void recibir_memoria(void* config_socket_io) {
             case ESCRIBIR_BLOQUES:
                 int termino_escritura_ok = 1;
 
-                // usleep(dialfs->tiempo_unidad_trabajo * 1000);
+                usleep(dialfs->tiempo_unidad_trabajo * 1000);
 
                 // Ahora deserializo el buffer del char* con su tamanio y escribo en el void* mapeado y luego sincronizo la informacion con el file bloques.dat y al mismo tiempo actualizo el bitmap
                 t_solicitud_escritura_bloques* solicitud_escritura = deserializar_solicitud_escritura_bloques(paquete->buffer);
@@ -412,6 +417,20 @@ void recibir_memoria(void* config_socket_io) {
 
                 // recv(socket_memoria, &termino_escritura_ok, sizeof(int), MSG_WAITALL);
                 send(kernelfd, &termino_escritura_ok, sizeof(int), 0);
+                break;
+            case FIN_ESCRITURA_FS:
+                int confirmacion_escritura_fs;
+
+                // Aca voy a recibir el valor de termino escritura y voy a simplemente desbloquear el semaforo
+
+                memcpy(&confirmacion_escritura_fs, paquete->buffer->stream, sizeof(int));
+
+                if(confirmacion_escritura_fs == 99) {
+                    // sem_post(&se_escribio_memoria);
+                } else {
+                    printf("Error en la escritura de memoria\n");
+                }
+                
                 break;
             default:
                 printf("Se rompio memoria!!!!\n");
@@ -493,8 +512,10 @@ void truncate_hacia_arriba(int pid, int ultimo_bloque, int registro_tamanio, t_a
 
 void compactar(int pid, char* name_file, int tamanio_truncar) {
     log_info(logger_io, "PID: %d - Inicio Compactación.", pid);
-    // usleep(dialfs->retraso_compactacion * 1000);
+    usleep(dialfs->retraso_compactacion * 1000);
+
     // Obtener datos del namefile a truncar
+
     t_archivo* file_a_truncar = dictionary_get(diccionario_archivos, name_file);
 
     // Hacer una copia de bloques.dat

@@ -5,7 +5,10 @@ int main(int argc, char* argv[]) {
     // Creo los configs y logs   
     pthread_mutex_init(&mutex_diccionario_instrucciones, NULL);
     pthread_mutex_init(&mutex_diccionario_io, NULL);
-    config_memoria = iniciar_config("./memoria.config");
+    
+    // char* input = readline("Ingrese el path de config");
+    
+    config_memoria = iniciar_config("./memoria_deadlock.config");
     logger_memoria = iniciar_logger("memoria.log");
 
     char* puerto_escucha = config_get_string_value(config_memoria, "PUERTO_ESCUCHA");

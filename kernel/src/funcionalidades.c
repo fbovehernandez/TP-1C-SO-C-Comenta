@@ -211,6 +211,7 @@ void FINALIZAR_PROCESO(int pid) {
     } else {
         t_pcb* pcb = sacarDe(cola, pid);
         printf("El proceso no se encuentra en ejecucion\n");
+        // ejecutar_signal_de_recursos_bloqueados_por(pcb);
         pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
     }
     
@@ -631,7 +632,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
     if(!queue_is_empty(cola_exec)) {
         pthread_mutex_lock(&mutex_estado_exec);
         t_pcb* pcb_anterior = queue_pop(cola_exec);
-        printf("el pid del pcb anterior es:%d", pcb_anterior->pid);
+        printf("el pid del pcb anterior es: %d\n", pcb_anterior->pid);
         pthread_mutex_unlock(&mutex_estado_exec);
 
         liberar_pcb_estructura(pcb_anterior);
@@ -685,10 +686,12 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
         case WAIT_RECURSO: case SIGNAL_RECURSO:
             t_parametro* recurso = deserializar_parametro(package->buffer);
             printf("el nombre del recurso es %s\n", recurso->nombre);  
+    
             wait_signal_recurso(pcb, recurso->nombre, devolucion_cpu);
             
-            free(recurso->nombre); //FREE? A LO ULTIMO
-            free(recurso);
+            // free(recurso->nombre); //FREE? A LO ULTIMO
+            // free(recurso);
+
             printf("\nLlega al final de WAIT_RECURSO SIGNAL_RECURSO\n\n");
             break;
         case FIN_PROCESO:
@@ -955,13 +958,13 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
         if(desalojoCpu == WAIT_RECURSO) {
             printf("llego hasta WAIT\n");
             ejecutar_wait_recurso(recurso_obtenido, pcb, key_nombre_recurso);
-            printf("PID %d - Retengo el recurso: %s\nn", pcb->pid, key_nombre_recurso);
+            log_info(logger_kernel, "PID %d - Retengo el recurso: %s", pcb->pid, key_nombre_recurso);
         }else{
             printf("Llega hasta signal\n");
             //if(es_el_ultimo_recurso_a_liberar_por(pcb)) {
             //    ejecutar_signal_recurso(recurso_obtenido, pcb, true);
             //} else {
-            // free(key_nombre_recurso);
+            free(key_nombre_recurso);
             ejecutar_signal_recurso(recurso_obtenido, pcb, false);
             //}
             
@@ -973,11 +976,12 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
     imprimir_diccionario_recursos();
 }
 
+
 void ejecutar_wait_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, char* recurso){
     if(recurso_obtenido->instancias > 0) {        
         recurso_obtenido->instancias --;
         cantidad_de_waits_que_se_hicieron++;
-
+        log_info(logger_kernel, "WAITS REALIZADOS: %d", cantidad_de_waits_que_se_hicieron);
         printf("\n\nWAITS REALIZADOS: %d\n\n", cantidad_de_waits_que_se_hicieron);
         char* pid_string = string_itoa(pcb->pid);
         list_add(recurso_obtenido->procesos_que_lo_retienen, pid_string);
@@ -997,8 +1001,10 @@ void ejecutar_wait_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, char* recurs
 }
 
 void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, bool esta_para_finalizar) {
+    //if(esta_el_pid_en_cola_de_procesos_que_retienen(pcb->pid, recurso_obtenido)) {
+    //}
     printf("\n\nHAGO EL EJECUTAR SIGNAL RECURSO CON EL PID: %d\n\n", pcb->pid);
-    
+    log_info(logger_kernel, "CANTIDAD DE INSTANCIAS QUE TIENE EL RECURSO: %d", recurso_obtenido->instancias);
     recurso_obtenido->instancias++;
     contador_aumento_instancias++;
     printf("\n\nLA CANTIDAD DE VECES QUE SE EJECUTO SIGNAL ES: %d\n\n", contador_aumento_instancias);
@@ -1020,6 +1026,7 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, bool esta_
         t_pcb* proceso_liberado = list_remove(recurso_obtenido->procesos_bloqueados, 0);
         char* pid_liberado = string_itoa(proceso_liberado->pid);
         list_add(recurso_obtenido->procesos_que_lo_retienen, pid_liberado);
+        log_info(logger_kernel, "Proceso liberado %s por %d", pid_liberado, pcb->pid);
 
         /*change_status(proceso_liberado, READY);
         queue_push(cola_prioritarios_por_signal, proceso_liberado); 
@@ -1027,24 +1034,27 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, bool esta_
        
         t_pcb* proceso_liberado_desbloqueado = sacarDe(cola_blocked, proceso_liberado->pid); //ACA
         proceso_liberado_desbloqueado->program_counter--;
-        pasar_a_ready(proceso_liberado);
+        pasar_a_ready(proceso_liberado_desbloqueado);
     }
 }
 
 void ejecutar_signal_de_recursos_bloqueados_por(t_pcb* pcb) {
     t_list* elementos = dictionary_elements(datos_kernel->diccionario_recursos);
-
+    char* pid_string = string_itoa(pcb->pid);
+    printf("el pid qe hace ejecutar_signal_de_recursos_bloqueados es %s\n", pid_string);
     for(int i=0; i<list_size(elementos); i++) {
         t_recurso* recurso = list_get(elementos, i);
+        printf("Recurso en posicion %d\n", i);
         for(int j=0;j<list_size(recurso->procesos_que_lo_retienen); j++) {
+            
             char* pid = list_get(recurso->procesos_que_lo_retienen, j);
-            char* pid_string = string_itoa(pcb->pid);
+            printf("Pid obtenido en lista de recurso; %d\n", pid);
+            
             if(strcmp(pid, pid_string) == 0 ) { // 0 es verdadero en strcmp
+                log_info(logger_kernel, "Entra a ejecutar signal recurso del EXIT el proceso: %d\n", pcb->pid);
                 ejecutar_signal_recurso(recurso, pcb, true);
-                free(pid_string);
-                break;
+                // break;
             }
-            free(pid_string);
         }
 
         for(int k=0; k<list_size(recurso->procesos_bloqueados); k++) {
@@ -1055,7 +1065,8 @@ void ejecutar_signal_de_recursos_bloqueados_por(t_pcb* pcb) {
            }
         }
     }
-    list_destroy(elementos);
+    
+    free(pid_string);
 }
 
 char* pasar_string_desalojo_recurso(DesalojoCpu desalojoCpu){

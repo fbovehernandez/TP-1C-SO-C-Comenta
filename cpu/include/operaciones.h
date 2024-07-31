@@ -101,7 +101,7 @@ void realizar_operacion(int pid,uint32_t* registro_direccion_1, int tamanio_en_b
 t_buffer* serializar_lectura(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, int direccion_logica);
 t_buffer* serializar_escritura(int direccion_fisica, int tamanio_en_bytes, int cantidad_paginas, int direccion_logica, void* valor, uint32_t length_valor);
 void enviar_buffer_fs_create_delete(char* nombre_interfaz,char* nombre_archivo,codigo_operacion codigo);
-
+char* obtener_direcciones_fisicas(t_list* lista_direcciones_fisicas);
 
 
 #endif 

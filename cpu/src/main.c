@@ -2,7 +2,8 @@
 
 int main(int argc, char* argv[]) {
     logger_CPU    = iniciar_logger("cpu.log"); 
-    config_CPU = iniciar_config("./cpu.config");
+    
+    config_CPU = iniciar_config("./cpu_deadlock.config");
     
     char* escucha_dispatch  = config_get_string_value(config_CPU, "PUERTO_ESCUCHA_DISPATCH");
     char* escucha_interrupt = config_get_string_value(config_CPU, "PUERTO_ESCUCHA_INTERRUPT");

@@ -76,6 +76,7 @@ void ejecutar_pcb(t_pcb *pcb, int socket_memoria) {
 
 }
 
+
 int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     se_seteo_pc = false;
     TipoInstruccion nombreInstruccion = instruccion->nombre;
@@ -147,11 +148,15 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         printf("Tamanio en byte: %ld\n", tamanio_en_byte);
 
+        char* direcciones = obtener_direcciones_fisicas(lista_direcciones_fisicas_mov_in);
+
         if(tamanio_en_byte == 1) {
             uint8_t* valor_en_mem_uint8 = malloc(tamanio_en_byte);
             recv(socket_memoria, valor_en_mem_uint8, tamanio_en_byte, MSG_WAITALL);
             uint8_t valor_recibido_8 = *(uint8_t*) valor_en_mem_uint8;
             printf("El valor recibido es: %d\n", valor_recibido_8);
+
+            log_info(logger_CPU, "PID: %d - Acción: LEER - Direcciónes fisicas: %s - VALOR LEIDO: %d", pcb->pid, direcciones, valor_recibido_8);
 
             set_uint8(registro_dato_mov_in, valor_recibido_8);
             free(valor_en_mem_uint8);
@@ -162,9 +167,13 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
             uint32_t valor_recibido_32 = *(uint32_t*) valor_en_mem_uint32;
             printf("El valor recibido es: %d\n", valor_recibido_32);
 
+            log_info(logger_CPU, "PID: %d - Acción: LEER - Direcciónes fisicas: %s - VALOR LEIDO: %d", pcb->pid, direcciones, valor_recibido_32);
+
             set(registro_dato_mov_in, valor_recibido_32, es_registro_uint8_dato);
             free(valor_en_mem_uint32);
         }
+        
+        free(direcciones);
 
         // printeo como qwueda AX Y EAX
         printf("Cuando hace MOV_IN AX SI queda asi el registro AX del CPU: %u\n", registros_cpu->AX);
@@ -180,11 +189,19 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         t_list* lista_bytes_lectura = list_create();
         t_list* lista_direcciones_fisicas_mov_out = list_create(); 
 
-        uint32_t* registro_dato_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dato,pcb);
+        uint32_t* registro_dato_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dato, pcb);
         es_registro_uint8_dato = es_de_8_bits(nombre_registro_dato);
         bool registro_direccion_es_8_bits = es_de_8_bits(nombre_registro_dir);
 
-        uint32_t* registro_direccion_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dir,pcb); // este es la direccion logica
+        uint32_t* registro_direccion_mov_out = (uint32_t*)seleccionar_registro_cpu(nombre_registro_dir, pcb); // este es la direccion logica
+
+        uint32_t var_registro_dato_mov_out;
+        
+        if(es_registro_uint8_dato) {
+            var_registro_dato_mov_out = *(uint8_t*) registro_dato_mov_out;
+        } else {
+            var_registro_dato_mov_out = *(uint32_t*) registro_dato_mov_out;
+        }
 
         uint32_t var_register_mov_out;
 
@@ -198,6 +215,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato);
 
         cantidad_paginas = cantidad_de_paginas_a_utilizar(var_register_mov_out, tamanio_en_byte, pagina, lista_bytes_lectura); // Cantidad de paginas + la primera
+
         // imprimir lista de bytes
         // printf("Cantidad primera a copiar %d\n", *(int*)list_get(lista_bytes_lectura, 0));
 
@@ -208,8 +226,14 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
 
         recv(socket_memoria, &esperar_confirm, sizeof(int), MSG_WAITALL);
 
-        //Acceso a espacio de usuario: PID: <PID> - Accion: <LEER / ESCRIBIR> - Direccion fisica: <DIRECCION_FISICA> - Tamaño <TAMAÑO A LEER / ESCRIBIR>
+        // Acceso a espacio de usuario: PID: <PID> - Accion: <LEER / ESCRIBIR> - Direccion fisica: <DIRECCION_FISICA> - Tamaño <TAMAÑO A LEER / ESCRIBIR>
+        // SI hay problemas con este log lo tengo que cambiar cuando saco el valor por si es un uint8_t o un uint32_t
+        char* direcciones_mov_out = obtener_direcciones_fisicas(lista_direcciones_fisicas_mov_out);
         
+        log_info(logger_CPU, "PID: %d - Acción: ESCRIBIR - Direcciónes fisicas: %s - VALOR ESCRITO: %d", pcb->pid, direcciones_mov_out, var_registro_dato_mov_out);
+        
+        free(direcciones_mov_out);
+
         // Este list_destroy elements funciona como quiere, ver si hay que liberar bien
 
         list_destroy_and_destroy_elements(lista_bytes_lectura, free);
@@ -240,10 +264,16 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         // realizar_operacion(registro_direccion_mov_out, tamanio_en_byte, (void*)registro_dato_mov_out , 0, pcb->pid, ESCRIBIR_DATO_EN_MEM);
 
         recv(socket_memoria, valor_leido_cs, tamanio_a_copiar, MSG_WAITALL);
-        // ((char*)valor_leido_cs)[tamanio_a_copiar] = '\0';
-        // printf("El valor de memoria es: %s\n", (char*)valor_leido_cs);
 
-        // Ahora hago lo mismo pero para escribir en DI
+        // Voy a guardar sese char que recibi y le agrego el \0 para mostrarlo en el log
+        char* valor_leido_cs_char = malloc(tamanio_a_copiar + 1);
+        memcpy(valor_leido_cs_char, valor_leido_cs, tamanio_a_copiar);
+        valor_leido_cs_char[tamanio_a_copiar] = '\0';
+
+        char* direcciones_CS = obtener_direcciones_fisicas(lista_direcciones_fisicas_cs);
+        log_info(logger_CPU, "PID: %d - Acción: LEER - Direcciónes fisicas: %s - VALOR LEIDO: %s", pcb->pid, direcciones_CS, valor_leido_cs_char);
+        
+
         t_list* lista_bytes_escritura_cs = list_create();
         t_list* lista_direcciones_fisicas_escritura_cs = list_create();
 
@@ -256,8 +286,15 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         enviar_direcciones_fisicas(cantidad_paginas, lista_direcciones_fisicas_escritura_cs, valor_leido_cs, tamanio_a_copiar, pcb->pid, ESCRIBIR_DATO_EN_MEM);
 
         recv(socket_memoria, &esperar_confirm, sizeof(int), MSG_WAITALL);
+
+        log_info(logger_CPU, "PID: %d - Acción: ESCRIBIR - Direcciónes fisicas: %s - VALOR ESCRITO: %s", pcb->pid, direcciones_CS, valor_leido_cs_char);
+        
+        free(direcciones_CS);
+        
         printf("Esperar confirmacion COPY STRING: %d\n", esperar_confirm);
+
         free(valor_leido_cs);
+        free(valor_leido_cs_char);
         
         list_destroy_and_destroy_elements(lista_bytes_lectura_cs, free);
         list_destroy_and_destroy_elements(lista_direcciones_fisicas_cs, free);
@@ -386,7 +423,6 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         printf("El valor de la direccion es: %d\n", var_register);
         
         int pagina = floor(var_register / tamanio_pagina);
-        printf("la pagina es HOLIHOLI %d", pagina);
 
         tamanio_en_byte = tamanio_byte_registro(es_registro_uint8_dato); // Ojo que abajo no le paso el tam_byte, sino la cantidad que tiene dentro
 
@@ -399,7 +435,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
             t_dir_fisica_tamanio* dir_stdin = list_get(lista_direcciones_fisicas_stdin, i);
             printf("Direccion fisica: %d\n", dir_stdin->direccion_fisica);
             printf("Bytes a leer: %d\n", dir_stdin->bytes_lectura);
-            log_info(logger_CPU,"PID: %d - Acción: ESCRIBIR - Dirección Física: %d - Valor: %d",pcb->pid, dir_stdin->direccion_fisica, var_register);
+            // log_info(logger_CPU,"PID: %d - Acción: ESCRIBIR - Dirección Física: %d - Valor: %d",pcb->pid, dir_stdin->direccion_fisica, var_register);
         }
 
         t_buffer* buffer_lectura = llenar_buffer_stdio(interfaz->nombre, lista_direcciones_fisicas_stdin, tamanio_a_leer, cantidad_paginas);
@@ -477,7 +513,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
             t_dir_fisica_tamanio* dir = list_get(lista_direcciones_fisicas_stdout, i);
             printf("Direccion fisica: %d\n", dir->direccion_fisica);
             printf("Bytes a leer: %d\n", dir->bytes_lectura);
-            log_info(logger_CPU,"PID: %d - Acción: ESCRIBIR - Dirección Física: %d - Valor: %d", pcb->pid, dir->direccion_fisica,valor_a_enviar);
+            // log_info(logger_CPU,"PID: %d - Acción: ESCRIBIR - Dirección Física: %d - Valor: %d", pcb->pid, dir->direccion_fisica,valor_a_enviar);
         }
 
         printf("\n");
@@ -636,6 +672,20 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
     }
 
     return 0;
+}
+
+char* obtener_direcciones_fisicas(t_list* lista_direcciones_fisicas) {
+    char* direcciones = string_new();
+    
+    for(int i=0; i < list_size(lista_direcciones_fisicas); i++) {
+        t_dir_fisica_tamanio* dir = list_get(lista_direcciones_fisicas, i);
+        if (i != 0) {
+            string_append(&direcciones, ", ");
+        }
+        string_append_with_format(&direcciones, "%d", dir->direccion_fisica);
+    }
+
+    return direcciones;
 }
 
 char* obtener_lista_parametros(t_list* list_parametros) {
@@ -966,6 +1016,10 @@ void cargar_direcciones_tamanio(int cantidad_paginas, t_list* lista_bytes_lectur
             pedir_frame_a_memoria(pagina + 1 + i, pid);
             printf("pedi el frame de la pagina : %d\n", pagina + 1 + i);
             recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
+
+            log_info(logger_CPU, "PID: %d - OBTENER MARCO - Página: %d - Marco: %d", pid, pagina + 1 + i, frame);
+
+            agregar_frame_en_TLB(pid, pagina + 1 + i, frame);
         }
         
         printf("el frame es %d", frame);

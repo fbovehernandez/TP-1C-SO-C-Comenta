@@ -18,6 +18,7 @@ int traducir_direccion_logica_a_fisica(uint32_t direccion_logica, int pid) {
         pedir_frame_a_memoria(direccion_logica_a_crear->numero_pagina, pid); 
         recv(socket_memoria, &frame, sizeof(int), MSG_WAITALL);
         log_info(logger_CPU, "PID: %d - OBTENER MARCO - Página: %d - Marco: %d", pid, direccion_logica_a_crear->numero_pagina, frame);
+        
         agregar_frame_en_TLB(pid, direccion_logica_a_crear->numero_pagina, frame);
     }
 

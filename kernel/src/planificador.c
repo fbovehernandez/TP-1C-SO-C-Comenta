@@ -101,6 +101,7 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
     // liberar_pcb_de_io(pcb->pid); -------------> PARA CUANDO ESTA EN LA IO
     // liberar_pcb((void*)pcb);
     // liberar_recurso_de_pcb(pcb->pid);
+    printf("\nVoy a ejecutar signal de recursos bloqueados por !!!!\n\n")
     ejecutar_signal_de_recursos_bloqueados_por(pcb);
     enviar_eliminacion_pcb_a_memoria(pcb->pid);
     liberar_pcb_estructura(pcb);

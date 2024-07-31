@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[]) {
     planificacion_pausada = false;
-    // Inicializo colas con queue_create
+  
     cola_new                     = queue_create(); 
     cola_ready                   = queue_create();
     cola_blocked                 = queue_create();
@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
     cola_ready_plus              = queue_create();
     cola_exec                    = queue_create();
     
-    t_config* config_kernel  = iniciar_config("./kernel.config");
+    t_config* config_kernel  = iniciar_config("./kernel_deadlock.config");
     logger_kernel = iniciar_logger("kernel.log");
     datos_kernel = solicitar_datos(config_kernel);
     path_kernel = "/home/utnso/operativos/TPFINAL/tp-2024-1c-Sofa-Cama/kernel/scripts-comandos"; // hardcodeado nashe
