@@ -24,6 +24,8 @@ int main(int argc, char* argv[1]) {
     tamanio_pagina = config_get_int_value(config_memoria, "TAM_PAGINA");
     tiempo_retardo = config_get_int_value(config_memoria, "RETARDO_RESPUESTA");
 
+    printf("El tiempo de retardo es: %d\n", tiempo_retardo);
+
     espacio_usuario = malloc(tamanio_memoria);
 	memset(espacio_usuario, 0, tamanio_memoria); // seteo memoria en 0
     

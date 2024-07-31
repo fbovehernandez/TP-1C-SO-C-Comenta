@@ -1,0 +1,144 @@
+[INFO] 23:47:10:100 LOGGER/(14726:14731): Se crea el proceso: 1 en NEW
+[INFO] 23:47:11:100 LOGGER/(14726:14728): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 23:47:11:100 LOGGER/(14726:14728): Cola Ready: 1 
+
+[INFO] 23:47:11:100 LOGGER/(14726:14731): Se crea el proceso: 2 en NEW
+[INFO] 23:47:12:103 LOGGER/(14726:14728): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 23:47:12:103 LOGGER/(14726:14728): Cola Ready: 1 2 
+
+[INFO] 23:47:12:103 LOGGER/(14726:14729): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:12:103 LOGGER/(14726:14731): Se crea el proceso: 3 en NEW
+[INFO] 23:47:13:104 LOGGER/(14726:14731): Se crea el proceso: 4 en NEW
+[INFO] 23:47:13:104 LOGGER/(14726:14728): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 23:47:13:104 LOGGER/(14726:14728): Cola Ready: 2 3 
+
+[INFO] 23:47:13:104 LOGGER/(14726:14728): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 23:47:13:104 LOGGER/(14726:14728): Cola Ready: 2 3 4 
+
+[INFO] 23:47:15:107 LOGGER/(14726:14729): PID: 1 - Desalojado por fin de Quantum
+[INFO] 23:47:15:107 LOGGER/(14726:14729): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 23:47:15:107 LOGGER/(14726:14729): Cola Ready: 2 3 4 1 
+
+[INFO] 23:47:15:107 LOGGER/(14726:14729): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:17:109 LOGGER/(14726:14729): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 23:47:17:109 LOGGER/(14726:14729): PID: 2 - Bloqueado por: SLP1
+[INFO] 23:47:17:110 LOGGER/(14726:14729): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:17:110 LOGGER/(14726:14788): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 23:47:17:110 LOGGER/(14726:14788): Cola Ready: 4 1 2 
+
+[INFO] 23:47:20:115 LOGGER/(14726:14729): PID: 3 - Desalojado por fin de Quantum
+[INFO] 23:47:20:115 LOGGER/(14726:14729): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 23:47:20:115 LOGGER/(14726:14729): Cola Ready: 4 1 2 3 
+
+[INFO] 23:47:20:115 LOGGER/(14726:14729): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:23:122 LOGGER/(14726:14729): PID: 4 - Desalojado por fin de Quantum
+[INFO] 23:47:23:122 LOGGER/(14726:14729): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 23:47:23:122 LOGGER/(14726:14729): Cola Ready: 1 2 3 4 
+
+[INFO] 23:47:23:122 LOGGER/(14726:14729): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:25:125 LOGGER/(14726:14729): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 23:47:25:125 LOGGER/(14726:14729): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 23:47:25:125 LOGGER/(14726:14729): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:27:127 LOGGER/(14726:14729): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 23:47:27:127 LOGGER/(14726:14729): PID: 2 - Bloqueado por: SLP1
+[INFO] 23:47:27:127 LOGGER/(14726:14729): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:27:128 LOGGER/(14726:14788): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 23:47:27:128 LOGGER/(14726:14788): Cola Ready: 4 2 
+
+[INFO] 23:47:29:130 LOGGER/(14726:14729): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 23:47:29:130 LOGGER/(14726:14729): PID: 3 - Bloqueado por: SLP1
+[INFO] 23:47:29:130 LOGGER/(14726:14729): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:29:132 LOGGER/(14726:14788): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 23:47:29:132 LOGGER/(14726:14788): Cola Ready: 2 3 
+
+[INFO] 23:47:32:133 LOGGER/(14726:14729): PID: 4 - Desalojado por fin de Quantum
+[INFO] 23:47:32:133 LOGGER/(14726:14729): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 23:47:32:133 LOGGER/(14726:14729): Cola Ready: 2 3 4 
+
+[INFO] 23:47:32:133 LOGGER/(14726:14729): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:34:136 LOGGER/(14726:14729): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 23:47:34:137 LOGGER/(14726:14729): PID: 2 - Bloqueado por: SLP1
+[INFO] 23:47:34:137 LOGGER/(14726:14729): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:34:137 LOGGER/(14726:14788): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 23:47:34:137 LOGGER/(14726:14788): Cola Ready: 4 2 
+
+[INFO] 23:47:37:148 LOGGER/(14726:14729): PID: 3 - Desalojado por fin de Quantum
+[INFO] 23:47:37:148 LOGGER/(14726:14729): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 23:47:37:148 LOGGER/(14726:14729): Cola Ready: 4 2 3 
+
+[INFO] 23:47:37:148 LOGGER/(14726:14729): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:40:151 LOGGER/(14726:14729): PID: 4 - Desalojado por fin de Quantum
+[INFO] 23:47:40:151 LOGGER/(14726:14729): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 23:47:40:151 LOGGER/(14726:14729): Cola Ready: 2 3 4 
+
+[INFO] 23:47:40:151 LOGGER/(14726:14729): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:42:157 LOGGER/(14726:14729): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 23:47:42:157 LOGGER/(14726:14729): PID: 2 - Bloqueado por: SLP1
+[INFO] 23:47:42:158 LOGGER/(14726:14729): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:42:159 LOGGER/(14726:14788): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 23:47:42:159 LOGGER/(14726:14788): Cola Ready: 4 2 
+
+[INFO] 23:47:44:160 LOGGER/(14726:14729): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 23:47:44:160 LOGGER/(14726:14729): Finaliza el proceso 3 - Motivo: SUCCESS
+[INFO] 23:47:44:160 LOGGER/(14726:14729): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:47:172 LOGGER/(14726:14729): PID: 4 - Desalojado por fin de Quantum
+[INFO] 23:47:47:172 LOGGER/(14726:14729): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 23:47:47:173 LOGGER/(14726:14729): Cola Ready: 2 4 
+
+[INFO] 23:47:47:173 LOGGER/(14726:14729): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:49:179 LOGGER/(14726:14729): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 23:47:49:179 LOGGER/(14726:14729): PID: 2 - Bloqueado por: SLP1
+[INFO] 23:47:49:180 LOGGER/(14726:14729): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:49:180 LOGGER/(14726:14788): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 23:47:49:180 LOGGER/(14726:14788): Cola Ready: 2 
+
+[INFO] 23:47:52:190 LOGGER/(14726:14729): PID: 4 - Desalojado por fin de Quantum
+[INFO] 23:47:52:190 LOGGER/(14726:14729): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 23:47:52:190 LOGGER/(14726:14729): Cola Ready: 2 4 
+
+[INFO] 23:47:52:190 LOGGER/(14726:14729): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:54:194 LOGGER/(14726:14729): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 23:47:54:194 LOGGER/(14726:14729): PID: 2 - Bloqueado por: SLP1
+[INFO] 23:47:54:195 LOGGER/(14726:14788): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 23:47:54:195 LOGGER/(14726:14788): Cola Ready: 4 2 
+
+[INFO] 23:47:54:195 LOGGER/(14726:14729): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:57:200 LOGGER/(14726:14729): PID: 4 - Desalojado por fin de Quantum
+[INFO] 23:47:57:200 LOGGER/(14726:14729): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 23:47:57:200 LOGGER/(14726:14729): Cola Ready: 2 4 
+
+[INFO] 23:47:57:200 LOGGER/(14726:14729): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:59:203 LOGGER/(14726:14729): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 23:47:59:203 LOGGER/(14726:14729): PID: 2 - Bloqueado por: SLP1
+[INFO] 23:47:59:203 LOGGER/(14726:14729): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:47:59:203 LOGGER/(14726:14788): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 23:47:59:203 LOGGER/(14726:14788): Cola Ready: 2 
+
+[INFO] 23:48:02:207 LOGGER/(14726:14729): PID: 4 - Desalojado por fin de Quantum
+[INFO] 23:48:02:207 LOGGER/(14726:14729): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 23:48:02:207 LOGGER/(14726:14729): Cola Ready: 2 4 
+
+[INFO] 23:48:02:207 LOGGER/(14726:14729): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:48:04:209 LOGGER/(14726:14729): PID: 2 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 23:48:04:209 LOGGER/(14726:14729): Finaliza el proceso 2 - Motivo: SUCCESS
+[INFO] 23:48:04:209 LOGGER/(14726:14729): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:48:07:211 LOGGER/(14726:14729): PID: 4 - Desalojado por fin de Quantum
+[INFO] 23:48:07:211 LOGGER/(14726:14729): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 23:48:07:211 LOGGER/(14726:14729): Cola Ready: 4 
+
+[INFO] 23:48:07:211 LOGGER/(14726:14729): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:48:10:219 LOGGER/(14726:14729): PID: 4 - Desalojado por fin de Quantum
+[INFO] 23:48:10:219 LOGGER/(14726:14729): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 23:48:10:220 LOGGER/(14726:14729): Cola Ready: 4 
+
+[INFO] 23:48:10:220 LOGGER/(14726:14729): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:48:13:223 LOGGER/(14726:14729): PID: 4 - Desalojado por fin de Quantum
+[INFO] 23:48:13:223 LOGGER/(14726:14729): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 23:48:13:223 LOGGER/(14726:14729): Cola Ready: 4 
+
+[INFO] 23:48:13:223 LOGGER/(14726:14729): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 23:48:16:226 LOGGER/(14726:14729): PID: 4 - Desalojado por fin de Quantum
+[INFO] 23:48:16:226 LOGGER/(14726:14729): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 23:48:16:226 LOGGER/(14726:14729): Cola Ready: 4 
+
+[INFO] 23:48:16:226 LOGGER/(14726:14729): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC

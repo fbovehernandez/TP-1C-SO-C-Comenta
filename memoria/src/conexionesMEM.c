@@ -226,7 +226,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 break;
             case QUIERO_CANTIDAD_INSTRUCCIONES:
                 // usleep(1000 * tiempo_retardo);
-                //t_cantidad_instrucciones* cantidad_instrucciones = deserializar_cantidad(paquete->buffer);
+                // t_cantidad_instrucciones* cantidad_instrucciones = deserializar_cantidad(paquete->buffer);
                 int pid_int = deserializar_pid(paquete->buffer);
                 char* pid_string = string_itoa(pid_int);
                 printf("La CPU me pide la cantidad de instrucciones del proceso con pid %s.\n", pid_string);
@@ -513,7 +513,7 @@ void* handle_kernel(void* socket) {
                 path_completo = agrupar_path(path); // Ojo con el SEG_FAULT
                 printf("CUIDADO QUE IMPRIMO EL PATH: %s\n", path_completo);
 
-                usleep(1000 * tiempo_retardo);
+                usleep(1000 * tiempo_retardo); 
                 crear_estructuras(path_completo, path->PID);
                 free(path_completo);
                 int se_crearon_estructuras = 1;

@@ -94,7 +94,7 @@ int conectar_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_CPU) 
     
     // send(memoriafd, &message_cpu, sizeof(int), 0); // Me conecto y envio un mensaje a memoria
 
-    sleep(3);
+    // sleep(3);
     return memoriafd;
 }
 
