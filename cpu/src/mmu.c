@@ -36,6 +36,12 @@ int traducir_direccion_logica_a_fisica(uint32_t direccion_logica, int pid) {
 }
 
 int buscar_frame_en_TLB(int pid, int pagina) {
+    int cantidad_entradas = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
+    
+    if(cantidad_entradas == 0) {
+        return -1;
+    }
+
     for(int i=0; i<list_size(tlb); i++){
         t_entrada_tlb* entrada = list_get(tlb, i);
         if(entrada->pid == pid && entrada->pagina == pagina) {
@@ -44,6 +50,7 @@ int buscar_frame_en_TLB(int pid, int pagina) {
             return entrada->marco;
         }
     }
+    
     log_info(logger_CPU, "PID: %d - TLB MISS - Pagina: %d", pid, pagina);
     return -1;
 }

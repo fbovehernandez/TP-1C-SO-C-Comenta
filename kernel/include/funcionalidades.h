@@ -128,7 +128,7 @@ void dormir_io(t_operacion_io* operacion_io, t_pcb* pcb);
 
 // RECURSOS
 void wait_signal_recurso(t_pcb* pcb, char* recurso,DesalojoCpu desalojo);
-void ejecutar_wait_recurso(t_recurso* recurso,t_pcb* pcb);
+int ejecutar_wait_recurso(t_recurso* recurso, t_pcb* pcb);
 void ejecutar_signal_recurso(t_recurso* recurso, t_pcb* pcb, bool esta_para_finalizar);
 void ejecutar_signal_de_recursos_bloqueados_por(t_pcb* pcb);
 char* pasar_string_desalojo_recurso(DesalojoCpu desalojoCpu);

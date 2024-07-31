@@ -29,6 +29,8 @@ int main(int argc, char* argv[2]) {
     char* IP_MEMORIA = config_get_string_value(config_io, "IP_MEMORIA"); // Todos
     char* puerto_memoria = config_get_string_value(config_io, "PUERTO_MEMORIA"); // Todos
 
+    sem_init(&se_escribio_memoria, 0, 0);
+    
     // int socket_kernel_io = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombre_io);     
     // close(socket_kernel_io);
 

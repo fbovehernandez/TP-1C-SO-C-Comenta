@@ -10,7 +10,10 @@ int main(int argc, char* argv[]) {
     cola_ready_plus              = queue_create();
     cola_exec                    = queue_create();
     
-    t_config* config_kernel  = iniciar_config("./kernel_deadlock.config");
+    char* input = readline(">Ingrese el config (con ./): ");
+    t_config* config_kernel  = iniciar_config(input);
+    free(input);
+    
     logger_kernel = iniciar_logger("kernel.log");
     datos_kernel = solicitar_datos(config_kernel);
     path_kernel = "/home/utnso/tp-2024-1c-Sofa-Cama/kernel/scripts-comandos"; // hardcodeado nashe

@@ -209,21 +209,23 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
              case RESIZE_MEMORIA: 
                 // int tamanio, pid;
                 int devolucion_resize_ok = -1;
-
+                usleep(1000 * tiempo_retardo);
                 devolucion_resize_ok = resize_memory(paquete->buffer->stream);
                 send(socket_cpu, &devolucion_resize_ok, sizeof(int), 0);
                 break;
             case QUIERO_FRAME:
                 // Aca abstraigo para recibir el frame
+                usleep(1000 * tiempo_retardo);
                 quiero_frame(paquete->buffer); 
                 break;
             case QUIERO_INSTRUCCION:
                 t_solicitud_instruccion* solicitud_cpu = deserializar_solicitud_instruccion(paquete->buffer);
-                usleep(tiempo_retardo * tiempo_retardo); // Ya no hardocdeado, tiene el tiempo retardo del config
+                usleep(1000 * tiempo_retardo); // Ya no hardocdeado, tiene el tiempo retardo del config
                 enviar_instruccion(solicitud_cpu, socket_cpu);
                 free(solicitud_cpu);
                 break;
             case QUIERO_CANTIDAD_INSTRUCCIONES:
+                usleep(1000 * tiempo_retardo);
                 //t_cantidad_instrucciones* cantidad_instrucciones = deserializar_cantidad(paquete->buffer);
                 int pid_int = deserializar_pid(paquete->buffer);
                 char* pid_string = string_itoa(pid_int);
@@ -511,6 +513,7 @@ void* handle_kernel(void* socket) {
                 path_completo = agrupar_path(path); // Ojo con el SEG_FAULT
                 printf("CUIDADO QUE IMPRIMO EL PATH: %s\n", path_completo);
 
+                usleep(1000 * tiempo_retardo);
                 crear_estructuras(path_completo, path->PID);
                 free(path_completo);
                 int se_crearon_estructuras = 1;
@@ -587,7 +590,7 @@ void* handle_kernel(void* socket) {
 
                 imprimir_datos_pedido_lectura(pedido_write);
 
-                sleep(5);
+                // sleep(5);
 
                 user_space_aux = espacio_usuario;
 
@@ -634,6 +637,7 @@ void* handle_kernel(void* socket) {
                 printf("\nLlega a liberar_proceso\n\n");
                 int pid_a_liberar;
                 memcpy(&pid_a_liberar, paquete->buffer->stream, sizeof(int));
+                usleep(1000 * tiempo_retardo);
                 liberar_estructuras_proceso(pid_a_liberar);
                 // eliminar_instrucciones(pid_a_liberar);
                 limpiar_bitmap(pid_a_liberar);
@@ -719,12 +723,14 @@ void* handle_io_dialfs(void* socket) {
                 printf("El valor en char a copiar es: %s\n", (char*)registro_escritura);
 
                 realizar_operacion(escritura_lectura->pid, ESCRITURA, escritura_lectura->lista_dir_tamanio, user_space_aux, registro_escritura, NULL); 
+
                 // printf("Registro escrito como int %d\n", *((uint32_t*)registro_escritura));
 
                 // Aca, en vez del send, tengo que enviar un paquete con el resultado para recibirlo del otro lado y poder desbloquear al semaforo, no pueda usar un send, porque lo recibe el hilo
 
-                // enviar_confirmacion_escritura_fs(socket_io);
-                send(socket_io, &confirm_escritura_fs, sizeof(int), 0);
+                printf("Voy a enviar la confirmacion de escritura\n");
+                enviar_confirmacion_escritura_fs(socket_io);
+                // send(socket_io, &confirm_escritura_fs, sizeof(int), 0);
                 break;
             default:
                 printf("Rompio todo?\n");
@@ -769,7 +775,8 @@ void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_r
         printf("El tamanio es: %d\n", dir_fisica_tam->bytes_lectura);
 
         // printf("el registro escritura es : %s \n", (char*)registro_escritura);
-    
+        usleep(1000 * tiempo_retardo);
+        
         interaccion_user_space(pid, operacion, dir_fisica_tam->direccion_fisica, user_space_aux, tamanio_anterior, dir_fisica_tam->bytes_lectura, registro_escritura, registro_lectura);
         tamanio_anterior += dir_fisica_tam->bytes_lectura;
 
@@ -1757,8 +1764,6 @@ void enviar_cantidad_parametros(int socket_cpu){
     liberar_paquete(paquete);
 }
 */
-
-
 
 char* leer(int tamanio, int direccion_fisica) { // NO SE USA
     char* valor_leido;

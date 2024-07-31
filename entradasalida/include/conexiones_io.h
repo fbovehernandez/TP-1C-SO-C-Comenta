@@ -15,6 +15,7 @@ extern int kernelfd;
 extern int memoriafd;
 extern t_log* logger_io;
 extern char* nombre_io;
+extern sem_t se_escribio_memoria;
 
 /////////////////////
 ///// FUNCIONES /////

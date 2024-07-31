@@ -957,7 +957,11 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
     if(dictionary_has_key(datos_kernel->diccionario_recursos, key_nombre_recurso)) {
         t_recurso* recurso_obtenido = dictionary_get(datos_kernel->diccionario_recursos, key_nombre_recurso);
         if(desalojoCpu == WAIT_RECURSO) {
-            ejecutar_wait_recurso(recurso_obtenido, pcb);
+            int esta_bloqueado = ejecutar_wait_recurso(recurso_obtenido, pcb);
+
+            if(esta_bloqueado) {
+                log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, key_nombre_recurso);
+            }
         } else {
             printf("el pid del pcb que llega a wait_signal_recurso es %d\n", pcb->pid);
             ejecutar_signal_recurso(recurso_obtenido, pcb, false);
@@ -968,17 +972,19 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
     imprimir_diccionario_recursos();
 }
 
-void ejecutar_wait_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
+int ejecutar_wait_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
     if(recurso_obtenido->instancias > 0) {        
         recurso_obtenido->instancias--;
         char* pid_string = string_itoa(pcb->pid);
         printf("El pid que estamos guardando en la lista de de procesos que lo retienen es: %s: %s\n", pid_string);
         list_add(recurso_obtenido->procesos_que_lo_retienen, pid_string);
         pasar_a_ready(pcb);
+        return 0;    
     } else {
         printf("El pid que estamos guardando en procesos bloqueados es %d correspondiente\n", pcb->pid);
         pasar_a_blocked(pcb);
         list_add(recurso_obtenido->procesos_bloqueados, pcb);
+        return 1;
     }
 }
 

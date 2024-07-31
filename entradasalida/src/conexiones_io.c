@@ -4,6 +4,7 @@ int kernelfd;
 int memoriafd;
 t_log* logger_io;
 char* nombre_io;
+extern sem_t se_escribio_memoria;
 
 //////////////////
 ///// KERNEL /////
@@ -219,10 +220,12 @@ void recibir_kernel(void* config_socket_io) { //FREE
 
                 printf("Namefile: %s\n", pedido_truncate->nombre_archivo);
                 printf("Registro truncador: %d\n", pedido_truncate->registro_tamanio);
+                
+                log_info(logger_io, "PID: %d - Truncar Archivo: %s - Tamaño: %d", pedido_truncate->pid, pedido_truncate->nombre_archivo, pedido_truncate->registro_tamanio);
+
                 // log_info("PID: %d - Inicio Compactación.", pedido_truncate->pid);
                 gestionar_truncar(pedido_truncate->pid, pedido_truncate->nombre_archivo, pedido_truncate->registro_tamanio);
 
-                log_info(logger_io, "PID: %d - Truncar Archivo: %s - Tamaño: %d", pedido_truncate->pid, pedido_truncate->nombre_archivo, pedido_truncate->registro_tamanio);
                 // log_info(logger_io, "PID: %d - Fin Compactación.", pedido_truncate->pid);
                 send(socket_kernel_io, &fin_truncate_ok, sizeof(int), 0);
                 break;
@@ -260,8 +263,7 @@ void recibir_kernel(void* config_socket_io) { //FREE
                 // recv(memoriafd, &termino_escritura_ok, sizeof(int), MSG_WAITALL);
 
                 // Uso esto y no recv porque literal no puedo recibir el valor por recv ya que lo toma el hilo
-                // sem_wait(&se_escribio_memoria);
-                sleep(5); // Aca lo hago asi rapido pero despues lo tengo que sacar
+                sem_wait(&se_escribio_memoria);
                 
                 printf("el valor de termino_escritura_ok es %d\n", termino_escritura_ok);
 
@@ -421,12 +423,16 @@ void recibir_memoria(void* config_socket_io) {
             case FIN_ESCRITURA_FS:
                 int confirmacion_escritura_fs;
 
+                printf("ENTRE POR FIN ESCRITURA FS\n");
+
                 // Aca voy a recibir el valor de termino escritura y voy a simplemente desbloquear el semaforo
 
                 memcpy(&confirmacion_escritura_fs, paquete->buffer->stream, sizeof(int));
 
+                printf("La confirmacion de escritura de memoria es: %d\n", confirmacion_escritura_fs);
                 if(confirmacion_escritura_fs == 99) {
-                    // sem_post(&se_escribio_memoria);
+                   printf("VOY A DESBLOQUEAR EL SEMAFORO PARA QUE PUEDA HACER TRANQUILO EL  SEND\n");
+                    sem_post(&se_escribio_memoria);
                 } else {
                     printf("Error en la escritura de memoria\n");
                 }
@@ -440,7 +446,6 @@ void recibir_memoria(void* config_socket_io) {
 
        liberar_paquete(paquete);        
     }
-     
 }
 
 ///////////////////////////
