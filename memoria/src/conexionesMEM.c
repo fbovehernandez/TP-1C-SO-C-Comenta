@@ -225,7 +225,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
                 free(solicitud_cpu);
                 break;
             case QUIERO_CANTIDAD_INSTRUCCIONES:
-                usleep(1000 * tiempo_retardo);
+                // usleep(1000 * tiempo_retardo);
                 //t_cantidad_instrucciones* cantidad_instrucciones = deserializar_cantidad(paquete->buffer);
                 int pid_int = deserializar_pid(paquete->buffer);
                 char* pid_string = string_itoa(pid_int);
