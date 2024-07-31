@@ -957,7 +957,7 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
     if(dictionary_has_key(datos_kernel->diccionario_recursos, key_nombre_recurso)) {
         t_recurso* recurso_obtenido = dictionary_get(datos_kernel->diccionario_recursos, key_nombre_recurso);
         if(desalojoCpu == WAIT_RECURSO) {
-            ejecutar_wait_recurso(recurso_obtenido, pcb, key_nombre_recurso);
+            ejecutar_wait_recurso(recurso_obtenido, pcb);
         } else {
             printf("el pid del pcb que llega a wait_signal_recurso es %d\n", pcb->pid);
             ejecutar_signal_recurso(recurso_obtenido, pcb, false);
@@ -968,16 +968,15 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
     imprimir_diccionario_recursos();
 }
 
-void ejecutar_wait_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, char* recurso) {
+void ejecutar_wait_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
     if(recurso_obtenido->instancias > 0) {        
         recurso_obtenido->instancias--;
         char* pid_string = string_itoa(pcb->pid);
-        printf("El pid que estamos guardando en la lista de de procesos que lo retienen es: %s correspondiente al recurso: %s\n", pid_string, recurso);
+        printf("El pid que estamos guardando en la lista de de procesos que lo retienen es: %s: %s\n", pid_string);
         list_add(recurso_obtenido->procesos_que_lo_retienen, pid_string);
         pasar_a_ready(pcb);
-        // free(pid_string);
     } else {
-        printf("El pid que estamos guardando en procesos bloqueados es %d correspondiente al recurrso: %s", pcb->pid, recurso);
+        printf("El pid que estamos guardando en procesos bloqueados es %d correspondiente\n", pcb->pid);
         pasar_a_blocked(pcb);
         list_add(recurso_obtenido->procesos_bloqueados, pcb);
     }
@@ -1003,11 +1002,14 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, bool esta_
 
     if(!list_is_empty(recurso_obtenido->procesos_bloqueados)) {
         t_pcb* proceso_liberado = list_remove(recurso_obtenido->procesos_bloqueados, 0);
-        char* pid_liberado = string_itoa(proceso_liberado->pid);
-        printf("Pasa a ready el proceso liberado %s gracias al pcb %s\n", pid_liberado, pid_string);
-        list_add(recurso_obtenido->procesos_que_lo_retienen, pid_liberado);
+        t_pcb* pcb_sacado = sacarDe(cola_blocked, proceso_liberado->pid);
+        // char* pid_liberado = string_itoa(proceso_liberado->pid);
+        printf("Pasa a ready el proceso liberado %d gracias al pcb %s\n", proceso_liberado->pid, pid_string);
+        /*list_add(recurso_obtenido->procesos_que_lo_retienen, pid_liberado);
         proceso_liberado->program_counter--;
-        pasar_a_ready(proceso_liberado);
+        pasar_a_ready(proceso_liberado);*/
+
+        ejecutar_wait_recurso(recurso_obtenido, pcb_sacado);
     }
 
     free(pid_string);
@@ -1031,6 +1033,7 @@ void ejecutar_signal_de_recursos_bloqueados_por(t_pcb* pcb) {
            t_pcb* pcb_bloqueado = list_get(recurso->procesos_bloqueados, k);
            if(pcb_bloqueado->pid == pcb->pid) {
                 list_remove(recurso->procesos_bloqueados, k);
+                sacarDe(cola_blocked, pcb_bloqueado->pid);
                 break;
            }
         }

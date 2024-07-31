@@ -242,3 +242,289 @@
 [INFO] 15:33:37:423 LOGGER/(67064:67091): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
 [INFO] 15:33:38:432 LOGGER/(67064:67091): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
 [INFO] 15:33:38:433 LOGGER/(67064:67091): Finaliza el proceso 3 - Motivo: SUCCESS
+[INFO] 15:41:13:499 LOGGER/(68757:68762): Se crea el proceso: 1 en NEW
+[INFO] 15:41:13:529 LOGGER/(68757:68762): Se crea el proceso: 2 en NEW
+[INFO] 15:41:13:534 LOGGER/(68757:68762): Se crea el proceso: 3 en NEW
+[INFO] 15:41:13:535 LOGGER/(68757:68759): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:41:13:539 LOGGER/(68757:68759): Cola Ready: 1 
+
+[INFO] 15:41:13:540 LOGGER/(68757:68759): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:41:13:540 LOGGER/(68757:68759): Cola Ready: 1 2 
+
+[INFO] 15:41:13:540 LOGGER/(68757:68759): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:41:13:540 LOGGER/(68757:68759): Cola Ready: 1 2 3 
+
+[INFO] 15:41:13:544 LOGGER/(68757:68762): Se crea el proceso: 4 en NEW
+[INFO] 15:41:13:549 LOGGER/(68757:68760): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:41:13:553 LOGGER/(68757:68759): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:41:13:553 LOGGER/(68757:68759): Cola Ready: 2 3 4 
+
+[INFO] 15:41:15:628 LOGGER/(68757:68760): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:41:15:629 LOGGER/(68757:68760): Cola Ready: 2 3 4 1 
+
+[INFO] 15:41:15:631 LOGGER/(68757:68760): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:41:17:641 LOGGER/(68757:68760): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:41:17:642 LOGGER/(68757:68760): Cola Ready: 3 4 1 2 
+
+[INFO] 15:41:17:642 LOGGER/(68757:68760): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:41:19:652 LOGGER/(68757:68760): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:41:19:653 LOGGER/(68757:68760): Cola Ready: 4 1 2 3 
+
+[INFO] 15:41:19:655 LOGGER/(68757:68760): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:41:21:667 LOGGER/(68757:68760): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:41:21:668 LOGGER/(68757:68760): Cola Ready: 1 2 3 4 
+
+[INFO] 15:41:21:669 LOGGER/(68757:68760): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:41:22:692 LOGGER/(68757:68760): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:41:22:693 LOGGER/(68757:68760): PID: 1 - Bloqueado por: ESPERA
+[INFO] 15:41:22:694 LOGGER/(68757:68760): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:41:22:740 LOGGER/(68757:68935): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:41:22:740 LOGGER/(68757:68935): Cola Ready: 3 4 1 
+
+[INFO] 15:41:23:706 LOGGER/(68757:68760): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:41:23:707 LOGGER/(68757:68760): PID: 2 - Bloqueado por: ESPERA
+[INFO] 15:41:23:708 LOGGER/(68757:68760): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:41:23:714 LOGGER/(68757:68935): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:41:23:714 LOGGER/(68757:68935): Cola Ready: 4 1 2 
+
+[INFO] 15:41:24:717 LOGGER/(68757:68760): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:41:24:718 LOGGER/(68757:68760): PID: 3 - Bloqueado por: ESPERA
+[INFO] 15:41:24:719 LOGGER/(68757:68760): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:41:24:724 LOGGER/(68757:68935): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:41:24:724 LOGGER/(68757:68935): Cola Ready: 1 2 3 
+
+[INFO] 15:41:25:738 LOGGER/(68757:68760): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:41:25:738 LOGGER/(68757:68760): PID: 4 - Bloqueado por: ESPERA
+[INFO] 15:41:25:739 LOGGER/(68757:68760): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:41:25:741 LOGGER/(68757:68935): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:41:25:741 LOGGER/(68757:68935): Cola Ready: 2 3 4 
+
+[INFO] 15:41:26:742 LOGGER/(68757:68760): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:41:26:742 LOGGER/(68757:68760): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:41:27:761 LOGGER/(68757:68760): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:41:27:761 LOGGER/(68757:68760): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:41:28:766 LOGGER/(68757:68760): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:41:28:766 LOGGER/(68757:68760): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:41:29:773 LOGGER/(68757:68760): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:41:33:429 LOGGER/(68757:68762): Entra a ejecutar signal recurso del EXIT el proceso: 3
+
+[INFO] 15:43:07:040 LOGGER/(70091:70107): Se crea el proceso: 1 en NEW
+[INFO] 15:43:07:072 LOGGER/(70091:70107): Se crea el proceso: 2 en NEW
+[INFO] 15:43:07:074 LOGGER/(70091:70107): Se crea el proceso: 3 en NEW
+[INFO] 15:43:07:079 LOGGER/(70091:70107): Se crea el proceso: 4 en NEW
+[INFO] 15:43:07:084 LOGGER/(70091:70104): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:43:07:086 LOGGER/(70091:70104): Cola Ready: 1 
+
+[INFO] 15:43:07:087 LOGGER/(70091:70105): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:07:096 LOGGER/(70091:70104): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:43:07:096 LOGGER/(70091:70104): Cola Ready: 2 
+
+[INFO] 15:43:07:096 LOGGER/(70091:70104): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:43:07:096 LOGGER/(70091:70104): Cola Ready: 2 3 
+
+[INFO] 15:43:07:096 LOGGER/(70091:70104): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:43:07:097 LOGGER/(70091:70104): Cola Ready: 2 3 4 
+
+[INFO] 15:43:09:162 LOGGER/(70091:70105): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:43:09:162 LOGGER/(70091:70105): Cola Ready: 2 3 4 1 
+
+[INFO] 15:43:09:165 LOGGER/(70091:70105): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:11:174 LOGGER/(70091:70105): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:43:11:176 LOGGER/(70091:70105): Cola Ready: 3 4 1 2 
+
+[INFO] 15:43:11:176 LOGGER/(70091:70105): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:13:182 LOGGER/(70091:70105): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:43:13:182 LOGGER/(70091:70105): Cola Ready: 4 1 2 3 
+
+[INFO] 15:43:13:182 LOGGER/(70091:70105): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:15:192 LOGGER/(70091:70105): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:43:15:193 LOGGER/(70091:70105): Cola Ready: 1 2 3 4 
+
+[INFO] 15:43:15:194 LOGGER/(70091:70105): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:16:206 LOGGER/(70091:70105): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:43:16:207 LOGGER/(70091:70105): PID: 1 - Bloqueado por: ESPERA
+[INFO] 15:43:16:207 LOGGER/(70091:70105): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:16:237 LOGGER/(70091:70274): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:43:16:237 LOGGER/(70091:70274): Cola Ready: 3 4 1 
+
+[INFO] 15:43:17:214 LOGGER/(70091:70105): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:43:17:214 LOGGER/(70091:70105): PID: 2 - Bloqueado por: ESPERA
+[INFO] 15:43:17:218 LOGGER/(70091:70105): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:17:220 LOGGER/(70091:70274): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:43:17:221 LOGGER/(70091:70274): Cola Ready: 4 1 2 
+
+[INFO] 15:43:18:223 LOGGER/(70091:70105): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:43:18:223 LOGGER/(70091:70105): PID: 3 - Bloqueado por: ESPERA
+[INFO] 15:43:18:224 LOGGER/(70091:70105): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:18:225 LOGGER/(70091:70274): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:43:18:225 LOGGER/(70091:70274): Cola Ready: 1 2 3 
+
+[INFO] 15:43:19:226 LOGGER/(70091:70105): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:43:19:227 LOGGER/(70091:70105): PID: 4 - Bloqueado por: ESPERA
+[INFO] 15:43:19:227 LOGGER/(70091:70105): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:19:230 LOGGER/(70091:70274): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:43:19:230 LOGGER/(70091:70274): Cola Ready: 2 3 4 
+
+[INFO] 15:43:20:238 LOGGER/(70091:70105): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:43:20:239 LOGGER/(70091:70105): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:21:249 LOGGER/(70091:70105): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:43:21:250 LOGGER/(70091:70105): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:22:256 LOGGER/(70091:70105): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:43:22:257 LOGGER/(70091:70105): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:23:265 LOGGER/(70091:70105): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:43:26:532 LOGGER/(70091:70107): Entra a ejecutar signal recurso del EXIT el proceso: 2
+
+[INFO] 15:43:26:535 LOGGER/(70091:70107): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:43:26:535 LOGGER/(70091:70107): Cola Ready: 1 
+
+[INFO] 15:43:26:539 LOGGER/(70091:70107): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: EXIT
+[INFO] 15:43:26:539 LOGGER/(70091:70107): Finaliza el proceso 2 - Motivo: INTERRUPTED_BY_USER
+[INFO] 15:43:26:539 LOGGER/(70091:70105): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:29:562 LOGGER/(70091:70105): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:43:29:562 LOGGER/(70091:70105): PID: 1 - Bloqueado por: ESPERA
+[INFO] 15:43:29:565 LOGGER/(70091:70274): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:43:29:565 LOGGER/(70091:70274): Cola Ready: 1 
+
+[INFO] 15:43:29:565 LOGGER/(70091:70105): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:30:575 LOGGER/(70091:70105): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:43:30:575 LOGGER/(70091:70105): Cola Ready: 4 
+
+[INFO] 15:43:30:578 LOGGER/(70091:70105): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:43:31:588 LOGGER/(70091:70105): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:43:32:598 LOGGER/(70091:70105): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:43:32:599 LOGGER/(70091:70105): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 15:43:32:600 LOGGER/(70091:70105): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:35:628 LOGGER/(70091:70105): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:43:35:628 LOGGER/(70091:70105): PID: 4 - Bloqueado por: ESPERA
+[INFO] 15:43:35:629 LOGGER/(70091:70274): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:43:35:629 LOGGER/(70091:70274): Cola Ready: 4 
+
+[INFO] 15:43:35:630 LOGGER/(70091:70105): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:36:635 LOGGER/(70091:70105): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:43:36:636 LOGGER/(70091:70105): Cola Ready: 3 
+
+[INFO] 15:43:36:637 LOGGER/(70091:70105): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:43:37:647 LOGGER/(70091:70105): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:43:38:653 LOGGER/(70091:70105): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:43:38:653 LOGGER/(70091:70105): Finaliza el proceso 4 - Motivo: SUCCESS
+[INFO] 15:43:38:653 LOGGER/(70091:70105): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:40:657 LOGGER/(70091:70105): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:43:40:657 LOGGER/(70091:70105): PID: 3 - Bloqueado por: ESPERA
+[INFO] 15:43:40:658 LOGGER/(70091:70274): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:43:40:658 LOGGER/(70091:70274): Cola Ready: 3 
+
+[INFO] 15:43:40:659 LOGGER/(70091:70105): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:43:41:663 LOGGER/(70091:70105): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:43:42:672 LOGGER/(70091:70105): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:43:43:680 LOGGER/(70091:70105): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:43:43:680 LOGGER/(70091:70105): Finaliza el proceso 3 - Motivo: SUCCESS
+[INFO] 15:46:11:229 LOGGER/(71441:71453): Se crea el proceso: 1 en NEW
+[INFO] 15:46:11:257 LOGGER/(71441:71453): Se crea el proceso: 2 en NEW
+[INFO] 15:46:11:258 LOGGER/(71441:71450): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:46:11:260 LOGGER/(71441:71450): Cola Ready: 1 
+
+[INFO] 15:46:11:261 LOGGER/(71441:71450): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:46:11:261 LOGGER/(71441:71450): Cola Ready: 1 2 
+
+[INFO] 15:46:11:264 LOGGER/(71441:71451): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:11:271 LOGGER/(71441:71453): Se crea el proceso: 3 en NEW
+[INFO] 15:46:11:277 LOGGER/(71441:71453): Se crea el proceso: 4 en NEW
+[INFO] 15:46:11:282 LOGGER/(71441:71450): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:46:11:282 LOGGER/(71441:71450): Cola Ready: 2 3 
+
+[INFO] 15:46:11:282 LOGGER/(71441:71450): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:46:11:283 LOGGER/(71441:71450): Cola Ready: 2 3 4 
+
+[INFO] 15:46:13:346 LOGGER/(71441:71451): PID: 1 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:46:13:347 LOGGER/(71441:71451): Cola Ready: 2 3 4 1 
+
+[INFO] 15:46:13:349 LOGGER/(71441:71451): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:15:359 LOGGER/(71441:71451): PID: 2 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:46:15:360 LOGGER/(71441:71451): Cola Ready: 3 4 1 2 
+
+[INFO] 15:46:15:360 LOGGER/(71441:71451): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:17:369 LOGGER/(71441:71451): PID: 3 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:46:17:369 LOGGER/(71441:71451): Cola Ready: 4 1 2 3 
+
+[INFO] 15:46:17:370 LOGGER/(71441:71451): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:19:380 LOGGER/(71441:71451): PID: 4 - Estado Anterior: EXEC - Estado Actual: READY
+[INFO] 15:46:19:381 LOGGER/(71441:71451): Cola Ready: 1 2 3 4 
+
+[INFO] 15:46:19:381 LOGGER/(71441:71451): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:20:394 LOGGER/(71441:71451): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:46:20:395 LOGGER/(71441:71451): PID: 1 - Bloqueado por: ESPERA
+[INFO] 15:46:20:395 LOGGER/(71441:71451): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:20:426 LOGGER/(71441:71590): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:46:20:426 LOGGER/(71441:71590): Cola Ready: 3 4 1 
+
+[INFO] 15:46:21:402 LOGGER/(71441:71451): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:46:21:403 LOGGER/(71441:71451): PID: 2 - Bloqueado por: ESPERA
+[INFO] 15:46:21:404 LOGGER/(71441:71451): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:21:412 LOGGER/(71441:71590): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:46:21:412 LOGGER/(71441:71590): Cola Ready: 4 1 2 
+
+[INFO] 15:46:22:413 LOGGER/(71441:71451): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:46:22:413 LOGGER/(71441:71451): PID: 3 - Bloqueado por: ESPERA
+[INFO] 15:46:22:414 LOGGER/(71441:71451): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:22:415 LOGGER/(71441:71590): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:46:22:416 LOGGER/(71441:71590): Cola Ready: 1 2 3 
+
+[INFO] 15:46:23:419 LOGGER/(71441:71451): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:46:23:419 LOGGER/(71441:71451): PID: 4 - Bloqueado por: ESPERA
+[INFO] 15:46:23:421 LOGGER/(71441:71451): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:23:427 LOGGER/(71441:71590): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:46:23:427 LOGGER/(71441:71590): Cola Ready: 2 3 4 
+
+[INFO] 15:46:24:433 LOGGER/(71441:71451): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:46:24:435 LOGGER/(71441:71451): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:25:448 LOGGER/(71441:71451): PID: 2 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:46:25:449 LOGGER/(71441:71451): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:26:455 LOGGER/(71441:71451): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:46:26:455 LOGGER/(71441:71451): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:27:458 LOGGER/(71441:71451): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:46:30:647 LOGGER/(71441:71453): Entra a ejecutar signal recurso del EXIT el proceso: 2
+
+[INFO] 15:46:30:650 LOGGER/(71441:71453): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:46:30:650 LOGGER/(71441:71453): Cola Ready: 1 
+
+[INFO] 15:46:30:650 LOGGER/(71441:71453): PID: 2 - Estado Anterior: BLOCKED - Estado Actual: EXIT
+[INFO] 15:46:30:650 LOGGER/(71441:71453): Finaliza el proceso 2 - Motivo: INTERRUPTED_BY_USER
+[INFO] 15:46:30:654 LOGGER/(71441:71451): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:33:672 LOGGER/(71441:71451): PID: 1 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:46:33:673 LOGGER/(71441:71451): PID: 1 - Bloqueado por: ESPERA
+[INFO] 15:46:33:680 LOGGER/(71441:71590): PID: 1 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:46:33:680 LOGGER/(71441:71590): Cola Ready: 1 
+
+[INFO] 15:46:33:681 LOGGER/(71441:71451): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:34:686 LOGGER/(71441:71451): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:46:34:686 LOGGER/(71441:71451): Cola Ready: 4 
+
+[INFO] 15:46:34:687 LOGGER/(71441:71451): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:46:35:692 LOGGER/(71441:71451): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:46:36:694 LOGGER/(71441:71451): PID: 1 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:46:36:695 LOGGER/(71441:71451): Finaliza el proceso 1 - Motivo: SUCCESS
+[INFO] 15:46:36:695 LOGGER/(71441:71451): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:39:707 LOGGER/(71441:71451): PID: 4 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:46:39:707 LOGGER/(71441:71451): PID: 4 - Bloqueado por: ESPERA
+[INFO] 15:46:39:708 LOGGER/(71441:71590): PID: 4 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:46:39:708 LOGGER/(71441:71590): Cola Ready: 4 
+
+[INFO] 15:46:39:709 LOGGER/(71441:71451): PID: 4 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:40:714 LOGGER/(71441:71451): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:46:40:714 LOGGER/(71441:71451): Cola Ready: 3 
+
+[INFO] 15:46:40:715 LOGGER/(71441:71451): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:46:41:723 LOGGER/(71441:71451): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:46:42:731 LOGGER/(71441:71451): PID: 4 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:46:42:731 LOGGER/(71441:71451): Finaliza el proceso 4 - Motivo: SUCCESS
+[INFO] 15:46:42:731 LOGGER/(71441:71451): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:44:740 LOGGER/(71441:71451): PID: 3 - Estado Anterior: EXEC - Estado Actual: BLOCKED
+[INFO] 15:46:44:740 LOGGER/(71441:71451): PID: 3 - Bloqueado por: ESPERA
+[INFO] 15:46:44:741 LOGGER/(71441:71590): PID: 3 - Estado Anterior: BLOCKED - Estado Actual: READY
+[INFO] 15:46:44:741 LOGGER/(71441:71590): Cola Ready: 3 
+
+[INFO] 15:46:44:741 LOGGER/(71441:71451): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:46:45:748 LOGGER/(71441:71451): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:46:46:760 LOGGER/(71441:71451): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXEC
+[INFO] 15:46:47:773 LOGGER/(71441:71451): PID: 3 - Estado Anterior: EXEC - Estado Actual: EXIT
+[INFO] 15:46:47:773 LOGGER/(71441:71451): Finaliza el proceso 3 - Motivo: SUCCESS
