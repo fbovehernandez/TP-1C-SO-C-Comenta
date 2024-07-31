@@ -1,12 +1,13 @@
 #include "../include/main.h"
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[1]) {
     logger_CPU    = iniciar_logger("cpu.log"); 
     
-    char* input = readline(">Ingrese el config (con ./): ");
+    /*char* input = readline(">Ingrese el config (con ./): ");
     config_CPU = iniciar_config(input);
-    free(input);
+    free(input);*/
 
+    config_CPU = iniciar_config(argv[1]);
 
     char* escucha_dispatch  = config_get_string_value(config_CPU, "PUERTO_ESCUCHA_DISPATCH");
     char* escucha_interrupt = config_get_string_value(config_CPU, "PUERTO_ESCUCHA_INTERRUPT");

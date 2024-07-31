@@ -1,6 +1,6 @@
 #include "../include/main.h"
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[1]) {
 
     // Creo los configs y logs   
     pthread_mutex_init(&mutex_diccionario_instrucciones, NULL);
@@ -8,9 +8,11 @@ int main(int argc, char* argv[]) {
     
     // char* input = readline("Ingrese el path de config");
     
-    char* input = readline(">Ingrese el config (con ./): ");
+    /*char* input = readline(">Ingrese el config (con ./): ");
     config_memoria = iniciar_config(input);
-    free(input);
+    free(input);*/
+    
+    config_memoria = iniciar_config(argv[1]);
 
     logger_memoria = iniciar_logger("memoria.log");
 

@@ -111,6 +111,9 @@ memcheck_stdout: debug
 memcheck_espera: debug
 	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(ARGS_ESPERA) $(NOMBRE_INTERFAZ_ESPERA)
 
+.PHONY: memcheck_fs
+memcheck_fs: debug
+	valgrind --leak-check=full $(MEMCHECK_FLAGS) ./$(BIN) $(ARGS_DIALFS) $(NOMBRE_INTERFAZ_DIALFS)
 
 .PHONY: helgrind
 helgrind: debug

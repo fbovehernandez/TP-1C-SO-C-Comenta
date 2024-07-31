@@ -4,7 +4,7 @@ int kernelfd;
 int memoriafd;
 t_log* logger_io;
 char* nombre_io;
-extern sem_t se_escribio_memoria;
+sem_t se_escribio_memoria;
 
 //////////////////
 ///// KERNEL /////
@@ -220,7 +220,7 @@ void recibir_kernel(void* config_socket_io) { //FREE
 
                 printf("Namefile: %s\n", pedido_truncate->nombre_archivo);
                 printf("Registro truncador: %d\n", pedido_truncate->registro_tamanio);
-                
+
                 log_info(logger_io, "PID: %d - Truncar Archivo: %s - Tamaño: %d", pedido_truncate->pid, pedido_truncate->nombre_archivo, pedido_truncate->registro_tamanio);
 
                 // log_info("PID: %d - Inicio Compactación.", pedido_truncate->pid);

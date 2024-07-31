@@ -18,9 +18,10 @@ int main(int argc, char* argv[2]) {
         return 1;
     }
 
-    char* nombre_io = readline(">Ingrese el nombre de interfaz: ");
-    printf("Este es el nombre de la io: %s\n", nombre_io);
+    /*char* nombre_io = readline(">Ingrese el nombre de interfaz: ");
+    printf("Este es el nombre de la io: %s\n", nombre_io);*/
     
+    char* nombre_io = argv[2];
     printf("Este es el nombre del config: %s\n", argv[1]);
 
     char* tipo_interfaz = config_get_string_value(config_io, "TIPO_INTERFAZ"); // TOdos

@@ -1,6 +1,6 @@
 #include "../include/main.h"
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[1]) {
     planificacion_pausada = false;
   
     cola_new                     = queue_create(); 
@@ -10,9 +10,11 @@ int main(int argc, char* argv[]) {
     cola_ready_plus              = queue_create();
     cola_exec                    = queue_create();
     
-    char* input = readline(">Ingrese el config (con ./): ");
+    /*char* input = readline(">Ingrese el config (con ./): ");
     t_config* config_kernel  = iniciar_config(input);
-    free(input);
+    free(input);*/
+
+    t_config* config_kernel  = iniciar_config(argv[1]);
     
     logger_kernel = iniciar_logger("kernel.log");
     datos_kernel = solicitar_datos(config_kernel);
