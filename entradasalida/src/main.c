@@ -18,9 +18,6 @@ int main(int argc, char* argv[2]) {
         return 1;
     }
 
-    /*char* nombre_io = readline(">Ingrese el nombre de interfaz: ");
-    printf("Este es el nombre de la io: %s\n", nombre_io);*/
-    
     char* nombre_io = argv[2];
     printf("Este es el nombre del config: %s\n", argv[1]);
 
@@ -46,10 +43,7 @@ int main(int argc, char* argv[2]) {
         iniciar_interfaz_generica(nombre_io, config_io, IP_KERNEL, puerto_kernel);
     } else if (strcmp(tipo_interfaz, "DialFS") == 0) {
         iniciar_dialfs(nombre_io,config_io,IP_KERNEL,IP_MEMORIA,puerto_kernel,puerto_memoria);
-    } else {
-        printf("No trates de hacer mi experiencia con operativos peor\n");
-        // insert logica
-    }
+    } 
 
     free(nombre_io);
     return 0;
@@ -58,7 +52,6 @@ int main(int argc, char* argv[2]) {
 void iniciar_interfaz_generica(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, char* puerto_kernel) {
     // Saco el unico dato que tiene esta interfaz
     int tiempo_unidad_trabajo = config_get_int_value(config_io, "TIEMPO_UNIDAD_TRABAJO");
-    printf("Tiempo de unidad de trabajo: %d\n", tiempo_unidad_trabajo);
     kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, GENERICA, 5); 
     
     t_config_socket_io* config_generica_io = malloc(sizeof(t_config_socket_io));
@@ -68,14 +61,11 @@ void iniciar_interfaz_generica(char* nombreInterfaz, t_config* config_io, char* 
     recibir_kernel((void*) config_generica_io); 
 }
 
-// tiempo_unidad_trabajo: Tiempo que dura una unidad de trabajo en milisegundos
-// unidad_trabajo: Cantidad de unidades de trabajo que va a dormir segun la instruccion de CPU
-
 void iniciar_stdin(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, char* IP_MEMORIA, char* puerto_kernel, char* puerto_memoria) {
     kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, STDIN, 13); 
     memoriafd = conectar_io_memoria(IP_MEMORIA, puerto_memoria, logger_io, nombreInterfaz, STDIN, 91);
 
-    t_config_socket_io* config_stdin_io = malloc(sizeof(t_config_socket_io)); //FREE?
+    t_config_socket_io* config_stdin_io = malloc(sizeof(t_config_socket_io));
     config_stdin_io->config_io = config_io;
     config_stdin_io->socket_io = kernelfd;
     
@@ -86,11 +76,10 @@ void iniciar_stdout(char* nombreInterfaz, t_config* config_io, char* IP_KERNEL, 
     kernelfd = conectar_io_kernel(IP_KERNEL, puerto_kernel, logger_io, nombreInterfaz, STDOUT, 15); 
     memoriafd = conectar_io_memoria(IP_MEMORIA, puerto_memoria, logger_io, nombreInterfaz, STDOUT, 79);
 
-    t_config_socket_io* config_stdout_io = malloc(sizeof(t_config_socket_io)); //FREE?
+    t_config_socket_io* config_stdout_io = malloc(sizeof(t_config_socket_io));
     config_stdout_io->config_io = config_io;
     config_stdout_io->socket_io = memoriafd;
 
-    // recibir_kernel(config_io, kernelfd);
     recibir_memoria((void*) config_stdout_io);
 } 
 
@@ -192,15 +181,14 @@ void rearmar_diccionario_archivos(char* path_base) {
 
             dictionary_put(diccionario_archivos, ent->d_name, archivo);
         } else {
-            printf("Soy Facu zzzzzz\n");
+            printf("metadatafile es NULL\n");
         }
      
         fclose(metadata_file);
         free(path_archivo);
+    }
 
-        }
-
-        closedir(dir);
+    closedir(dir);
 }
 
 // Revisar funcion

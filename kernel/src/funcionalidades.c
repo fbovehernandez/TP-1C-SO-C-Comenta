@@ -173,12 +173,8 @@ void INICIAR_PROCESO(char* path_instrucciones) {
         return;
     }
     
-    printf("La  planificacion permite iniciar proceso? \n");
-
     sem_wait(&sem_planificadores);
-    
-    printf("Si.\n");    
-    
+        
     enviar_path_a_memoria(path_instrucciones, sockets, pid_actual); 
 
     t_pcb *pcb = crear_nuevo_pcb(pid_actual); 
@@ -189,9 +185,6 @@ void INICIAR_PROCESO(char* path_instrucciones) {
 }
 
 void FINALIZAR_PROCESO(int pid) {
-    printf("Se ejecuta finalizar proceso\n");
-    printf("el pid recibido es: %d\n", pid);
-    
     if (planificacion_pausada){
         printf("No podes finalizar proceso si esta pausada la plani\n");
         return;
@@ -210,7 +203,6 @@ void FINALIZAR_PROCESO(int pid) {
         send(sockets->socket_int, &temp, sizeof(int), 0);
     } else {
         t_pcb* pcb = sacarDe(cola, pid);
-        printf("El proceso no se encuentra en ejecucion\n");
         ejecutar_signal_de_recursos_bloqueados_por(pcb);
         pasar_a_exit(pcb, "INTERRUPTED_BY_USER");
     }
@@ -260,12 +252,6 @@ void PROCESO_ESTADO() {
 
     printf("Proceso en EXEC\n");
     mostrar_cola_con_mutex(cola_exec, &mutex_estado_exec);
-
-    /*if(pcb_exec != NULL && hay_proceso_en_exec) {
-        imprimir_pcb(pcb_exec);
-    }else{
-        printf("No hay proceso ejecutandose actualmente\n");
-    }*/
 }
 
 void MULTIPROGRAMACION(int valor) {
@@ -336,8 +322,6 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
     while (1) {
         printf("Esperando a que haya un proceso para planificar\n");
         sem_wait(&sem_hay_para_planificar);
-        printf("Hay un proceso para planificar\n");
-
      
         sem_wait(&sem_planificadores);
 
@@ -348,7 +332,6 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
         pthread_mutex_unlock(&no_hay_nadie_en_cpu);
         
         if (es_RR()) {
-            printf("\nES RR... A dormir el hilo!\n\n");
             pthread_create(&hilo_quantum, NULL, (void*) esperar_RR, (void *)pcb);
             sem_post(&sem_contador_quantum);
         } else if (es_VRR()) {
@@ -372,20 +355,15 @@ void *planificar_corto_plazo(void *sockets_necesarios) {
 t_pcb *proximo_a_ejecutar() {
     t_pcb *pcb = NULL;
     
-    printf("Llega a proximo a ejecutar\n");
-
     if (!queue_is_empty(cola_prioritarios_por_signal)) {
-        printf("Llega a prioritario por signal\n");
         pthread_mutex_lock(&mutex_prioritario_por_signal);
         pcb = queue_pop(cola_prioritarios_por_signal);
         pthread_mutex_unlock(&mutex_prioritario_por_signal);
     } else if (!queue_is_empty(cola_ready_plus)){
-        printf("Llega a ready plus\n");
         pthread_mutex_lock(&mutex_estado_ready_plus);
         pcb = queue_pop(cola_ready_plus);
         pthread_mutex_unlock(&mutex_estado_ready_plus);
     } else if (!queue_is_empty(cola_ready)) {
-        printf("Llega a ready\n");
         pthread_mutex_lock(&mutex_estado_ready);
         pcb = queue_pop(cola_ready);
         pthread_mutex_unlock(&mutex_estado_ready);
@@ -417,9 +395,7 @@ int obtener_siguiente_pid() {
 }
 
 void encolar_a_new(t_pcb *pcb) {
-    printf("Esperando a que la planificacion se des-pause\n");
     sem_wait(&sem_planificadores);
-    printf("Planificacion continua\n");
 
     pthread_mutex_lock(&mutex_estado_new);
     queue_push(cola_new, pcb);
@@ -483,12 +459,10 @@ void* esperar_RR(void* pcb) {
     sem_wait(&sem_contador_quantum);
     codigo_operacion interrupcion_cpu = INTERRUPCION_CPU;
     usleep(quantum * 1000);
-    
-    printf("ESTOY ENVIANDO LA INTERRUPCION DESPUES DEL SLEEP\n");
 
     send(socket_Int, &interrupcion_cpu, sizeof(codigo_operacion), 0);
     
-    printf("Envie interrupcion para PID %d despues de %d", pcb_nuevo->pid, pcb_nuevo->quantum);
+    printf("Envie interrupcion para PID %d despues de %d\n", pcb_nuevo->pid, pcb_nuevo->quantum);
     return NULL;
 }
 
@@ -648,7 +622,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
 
         int64_t tiempo_transcurrido = temporal_gettime(timer);  // Obtenemos el tiempo transcurrido en milisegundos
         temporal_destroy(timer);
-       //  printf("Tiempo transcurrido: %ld ms\n", tiempo_transcurrido);
+   
 
         int64_t tiempo_restante = max(0, min(quantum_config, pcb->quantum - tiempo_transcurrido));  // Fede scarpa orgulloso
         printf("Tiempo restante: %ld ms\n", tiempo_restante); // jejejej
@@ -657,11 +631,8 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
         pcb->quantum = tiempo_restante;
         printf("El quantum restante del proceso con PID %d es: %d\n", pcb->pid, pcb->quantum);
     }
-    
-    printf("Planificacion recibe el desalojo pero... ¿esta pausada?\n");
-  
+      
     sem_wait(&sem_planificadores);
-    printf("No esta pausada.\n");
  
     switch (devolucion_cpu) {
         case ERROR_STDOUT: case ERROR_STDIN:
@@ -692,8 +663,6 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
             
             free(recurso->nombre); //FREE? A LO ULTIMO
             free(recurso);
-
-            printf("\nLlega al final de WAIT_RECURSO SIGNAL_RECURSO\n\n");
             break;
         case FIN_PROCESO:
             // pcb = deserializar_pcb(package->buffer); 
@@ -746,7 +715,7 @@ void esperar_cpu() { // Evaluar la idea de que esto sea otro hilo...
                 // Esto se hace en la conexion, aca tiene que encolar el pedido
                 encolar_fs_truncate(pcb, pedido_fs_truncate, interfaz_truncate);
                 // enviar_buffer_fs(interfaz_truncate->socket, pcb->pid, pedido_fs_truncate->longitud_nombre_archivo, pedido_fs_truncate->nombre_archivo, TRUNCAR_ARCHIVO);
-                printf("Operacion: FS_TRUNCATE");
+                printf("Operacion TRUNCATE\n");
                 log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, pedido_fs_truncate->nombre_interfaz);
             }
 
@@ -845,9 +814,7 @@ void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
         datos_std->registro_tamanio  = pedido->registro_tamanio;
         datos_std->cantidad_paginas  = pedido->cantidad_paginas;
         datos_std->pcb               = pcb;
-        
-        printf("Voy a imprimir los datos std antes de agregarlos a la cola de bloqueados de la interfaz\n");
-        
+              
         printf("\nAca va la lista de bytes DEL STDOUT/STDIN ANTES DE ENCOLAR\n");
         for(int i=0; i < list_size(datos_std->lista_direcciones); i++) {
             t_dir_fisica_tamanio* dir = list_get(datos_std->lista_direcciones, i);
@@ -862,12 +829,10 @@ void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
         // imprimir_datos_stdin();
         if(interfaz->TipoInterfaz == STDOUT) {
             pthread_mutex_lock(&mutex_cola_io_stdout); // cambiar nombre_mutex
-            printf("entra aca\n");
             list_add(interfaz->cola_blocked, datos_std); // VER_SI_HAY_FREE
             pthread_mutex_unlock(&mutex_cola_io_stdout);
         } else {
             pthread_mutex_lock(&mutex_cola_io_stdin); // cambiar nombre_mutex
-            printf("entra aca\n");
             list_add(interfaz->cola_blocked, datos_std); // VER_SI_HAY_FREE
             pthread_mutex_unlock(&mutex_cola_io_stdin);
         }
@@ -879,7 +844,6 @@ void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
         // use lo que estaba, antes decia sem_post al mutex, por eso, era un binario o eso entendi
         pthread_mutex_lock(&mutex_lista_io);
         sem_post(interfaz->semaforo_cola_procesos_blocked);
-        printf("La operacion deberia realizarse...\n");
         pthread_mutex_unlock(&mutex_lista_io);
     } 
 
@@ -905,15 +869,11 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
     // Aca tambien deberia cambiar su estado a blocked o Exit respectivamnete
     // capaz estaba mal el nombre y al ser null no lo agarraba y el print rompia
     if(elemento_encontrado != NULL) { // resultado_okey
-        printf("El nombre de la interfaz es: %s\n", elemento_encontrado->nombreInterfaz); 
-
         io_gen_sleep* datos_sleep = malloc(sizeof(io_gen_sleep)); //VER_SI_HAY_FREE
 
         datos_sleep->unidad_trabajo = io->unidadesDeTrabajo;
         datos_sleep->pcb = pcb;
-        
-        printf("El pid de datos_sleep de dormir_io: %d\n", pcb->pid);
-        
+                
         pasar_a_blocked(pcb);
 
         pthread_mutex_lock(&mutex_cola_io_generica);
@@ -925,7 +885,6 @@ void dormir_io(t_operacion_io* io, t_pcb* pcb) {
         // use lo que estaba, antes decia sem_post al mutex, por eso, era un binario o eso entendi
         pthread_mutex_lock(&mutex_lista_io);
         sem_post(elemento_encontrado->semaforo_cola_procesos_blocked);
-        printf("La operacion deberia realizarse...\n");
         pthread_mutex_unlock(&mutex_lista_io);
         free(io->nombre_interfaz);
         free(io);
@@ -963,7 +922,6 @@ void wait_signal_recurso(t_pcb* pcb, char* key_nombre_recurso, DesalojoCpu desal
                 log_info(logger_kernel, "PID: %d - Bloqueado por - %s", pcb->pid, key_nombre_recurso);
             }
         } else {
-            printf("el pid del pcb que llega a wait_signal_recurso es %d\n", pcb->pid);
             ejecutar_signal_recurso(recurso_obtenido, pcb, false);
         }
     } else {
@@ -976,12 +934,10 @@ int ejecutar_wait_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
     if(recurso_obtenido->instancias > 0) {        
         recurso_obtenido->instancias--;
         char* pid_string = string_itoa(pcb->pid);
-        printf("El pid que estamos guardando en la lista de de procesos que lo retienen es: %s: %s\n", pid_string);
         list_add(recurso_obtenido->procesos_que_lo_retienen, pid_string);
         pasar_a_ready(pcb);
         return 0;    
     } else {
-        printf("El pid que estamos guardando en procesos bloqueados es %d correspondiente\n", pcb->pid);
         pasar_a_blocked(pcb);
         list_add(recurso_obtenido->procesos_bloqueados, pcb);
         return 1;
@@ -990,15 +946,12 @@ int ejecutar_wait_recurso(t_recurso* recurso_obtenido, t_pcb* pcb) {
 
 void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, bool esta_para_finalizar) {
     char* pid_string = string_itoa(pcb->pid);
-    printf("el pid string en ejecutar_sginal_recurso es %s\n", pid_string);
      
     if(esta_el_pid_en_cola_de_procesos_que_retienen(pid_string, recurso_obtenido)) {
         recurso_obtenido->instancias++;
         bool encontro_algo_la_lista = list_remove_element(recurso_obtenido->procesos_que_lo_retienen, pid_string);
-        printf("Encontro algo en la lista\n");
 
         if(!esta_para_finalizar) {
-            printf("\nLlega hasta aca, esta para finalizar %d\n\n", pcb->pid);
             pthread_mutex_lock(&mutex_prioritario_por_signal);
             queue_push(cola_prioritarios_por_signal, pcb);
             pthread_mutex_unlock(&mutex_prioritario_por_signal);
@@ -1010,7 +963,6 @@ void ejecutar_signal_recurso(t_recurso* recurso_obtenido, t_pcb* pcb, bool esta_
         t_pcb* proceso_liberado = list_remove(recurso_obtenido->procesos_bloqueados, 0);
         t_pcb* pcb_sacado = sacarDe(cola_blocked, proceso_liberado->pid);
         // char* pid_liberado = string_itoa(proceso_liberado->pid);
-        printf("Pasa a ready el proceso liberado %d gracias al pcb %s\n", proceso_liberado->pid, pid_string);
         /*list_add(recurso_obtenido->procesos_que_lo_retienen, pid_liberado);
         proceso_liberado->program_counter--;
         pasar_a_ready(proceso_liberado);*/
@@ -1076,13 +1028,10 @@ void imprimir_diccionario_recursos() {
 
 bool esta_el_pid_en_cola_de_procesos_que_retienen(char* pid, t_recurso* recurso_obtenido) {
     bool seEncuentra = false;
-    printf("Esta en esta_el_pid_en_cola_de_procesos_que_retienen ahora... funciona? %s\n", pid);
     
     for(int i=0;i<list_size(recurso_obtenido->procesos_que_lo_retienen);i++) {
         char* pid_recibido = list_get(recurso_obtenido->procesos_que_lo_retienen, i);
-        printf("Este es el pid recibido %s\n", pid_recibido);      
         if(strcmp(pid_recibido, pid) == 0) {    
-            printf("Se encontro el pid\n");
             seEncuentra = true;
         } 
     }
@@ -1136,7 +1085,6 @@ void liberar_pcb(t_pcb* pcb) {
     enviar_eliminacion_pcb_a_memoria(pcb->pid);
     if (pcb != NULL) {
         // Primero, liberamos cualquier memoria que haya sido asignada a la subestructura t_registros
-        printf("entro a liberar_pcb");
         if (pcb->registros != NULL) {
             free(pcb->registros);
             pcb->registros = NULL;  // Asegúrate de que el puntero no apunte a memoria liberada
@@ -1447,8 +1395,6 @@ int max(int num1, int num2) {
 t_list_io* io_esta_en_diccionario(t_pcb* pcb, char* interfaz_nombre) {
     if(dictionary_has_key(diccionario_io, interfaz_nombre)) {
         t_list_io* interfaz = dictionary_get(diccionario_io, interfaz_nombre);
-        printf("Nombre a comparar buscado %s\n", interfaz_nombre);
-        printf("Nombre a comparar recibido %s\n", interfaz->nombreInterfaz);
         if(strcmp(interfaz_nombre, interfaz->nombreInterfaz) == 0) {
             printf("Son iguales los nombres\n");
         } else {
@@ -1467,7 +1413,6 @@ t_list_io* validar_io(t_operacion_io* io, t_pcb* pcb) {
         return strcmp(((t_list_io*)nodo_lista)->nombreInterfaz, io->nombre_interfaz) == 0;
     };
     */
-    printf("Valida la io\n");
     
     pthread_mutex_lock(&mutex_lista_io);
     // t_list_io* elemento_encontrado = list_find(lista_io, match_nombre); // Aca deberia buscar la interfaz en la lista de io

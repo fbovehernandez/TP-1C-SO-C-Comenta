@@ -48,15 +48,11 @@ int esperar_cliente(int socket_servidor, t_log* logger_memoria) {
     } else if(handshake == 91) {
         // pthread_t cpu_thread;
         pthread_create(&io_stdin_thread, NULL, (void*)handle_io_stdin, (void*)(intptr_t)socket_cliente); // Ver
-        printf("Se creo el hilo STDIN\n");
     } else if(handshake == 79) {
         // pthread_t cpu_thread;
         pthread_create(&io_stdout_thread, NULL, (void*)handle_io_stdout, (void*)(intptr_t)socket_cliente); // Ver
-        printf("Se creo el hilo STDOUT\n");
     } else if(handshake == 81) { 
-        printf("el socket que llega a handle io dialfs es %d\n", socket_cliente);
         pthread_create(&io_stdout_thread, NULL, (void*)handle_io_dialfs, (void*)(intptr_t)socket_cliente);
-        printf("Se creo el hilo DIALFS\n");
     } else {
         send(socket_cliente, &resultError, sizeof(int), 0);
         close(socket_cliente);
@@ -112,7 +108,6 @@ void _agregar_instruccion_a_diccionario(char* pid_char, char* linea) {
 void agregar_interfaz_en_el_diccionario(t_paquete* paquete, int socket) {
     t_info_io* interfaz = deserializar_interfaz(paquete->buffer);
     printf("\nSe conecto la interfaz con nombre %s\n", interfaz->nombre_interfaz);
-    printf("La interfaz tiene socket %d\n", socket);
     socket_estructurado* socket_io = malloc(sizeof(int));
     socket_io->socket = socket;
     pthread_mutex_lock(&mutex_diccionario_io);
@@ -122,7 +117,6 @@ void agregar_interfaz_en_el_diccionario(t_paquete* paquete, int socket) {
     pthread_mutex_lock(&mutex_diccionario_io); // decile a osfi que me siga
     socket_estructurado* socket_sacado = dictionary_get(diccionario_io, interfaz->nombre_interfaz);
     pthread_mutex_unlock(&mutex_diccionario_io);
-    printf("El socket del diccionario: %d\n", socket_sacado->socket);
 }
 
 //Hay que construir bien la instruccion
@@ -178,7 +172,8 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
     int confirm_finish = 1;
     // Envio confirmacion de handshake!
     send(socket_cpu, &resultOk, sizeof(int), 0);
-    printf("Se conecto un el cpu!\n");
+
+    printf("Se conecto con la CPU\n");
 
     send(socket_cpu, &tamanio_pagina, sizeof(int), MSG_WAITALL);
     
@@ -356,7 +351,8 @@ int resize_memory(void* stream) {
     stream += sizeof(int);
     memcpy(&pid, stream, sizeof(int));
     // Luego verifico si tengo espacio suficiente en memoria
-    int out_of_memory = validar_out_of_memory(tamanio);
+
+    int out_of_memory = validar_out_of_memory(tamanio, pid);
 
     if(out_of_memory) {
         printf("PID: %d - No hay espacio suficiente en memoria\n", pid);
@@ -446,9 +442,14 @@ int cantidad_frames_proceso(char* pid_string) {
     return proceso_pagina->cantidad_frames * tamanio_pagina;
 }
 
-int validar_out_of_memory(int tamanio) { // Me esta pidiendo mas de lo que tengo /= Te pasaste del ultimo byte disponible
-    int frames_necesarios = tamanio / tamanio_pagina; // 8
+int validar_out_of_memory(int tamanio, int pid) { // Me esta pidiendo mas de lo que tengo /= Te pasaste del ultimo byte disponible
+    int frames_necesarios = tamanio / tamanio_pagina; // -> 256 tamanio 8 frames
     int frames_disponibles = contar_frames_libres(); 
+    
+    char* pid_string = string_itoa(pid);
+    int tamanio_proceso = cantidad_frames_proceso(pid_string);
+
+    frames_disponibles += (tamanio_proceso / tamanio_pagina);
 
     if(frames_disponibles < frames_necesarios) {
         // printf("No hay espacio suficiente en memoria\n");
@@ -568,9 +569,6 @@ void* handle_kernel(void* socket) {
                     
                 printf("El valor leido para char* es: %s\n", registro_string);
 
-                printf("El pid que mandaremos a la io es %d\n", pid_stdout->pid);
-                printf("El socket es %d\n", socket_io->socket);
-
                 enviar_valor_leido_a_io(pid_stdout->pid, socket_io->socket, registro_string, pid_stdout->registro_tamanio);
                     
                 free(registro_string);
@@ -607,8 +605,6 @@ void* handle_kernel(void* socket) {
                 socket_estructurado* socket_io_fs = dictionary_get(diccionario_io, pedido_write->nombre_interfaz);
                 pthread_mutex_unlock(&mutex_diccionario_io);
                 
-                printf("Comparacion entre los 2 sockets: %d - %d\n", socket_io_fs->socket, pedido_write->socket_io);
-
                 // Momentaneamente no se valida la conexion porque porque lo recibe el hilo main, lo voy a evaluar ahi, aunque quiza no funcione
                 // send(socket_io_fs->socket, &validacion_conexion_fs, sizeof(int), 0);
                 // int result_io_fs = recv(socket_io_fs->socket, &respuesta_conexion_fs, sizeof(int), 0);
@@ -622,7 +618,6 @@ void* handle_kernel(void* socket) {
                     printf("Se desconecto la IO Justo antes de enviar los datos\n");
                 }
 
-                printf("VOY A MANDAR A FS\n");  
                 mandar_lectura_a_fs(pedido_write->pid, registro_lectura_rw, pedido_write, pedido_write->registro_tamanio, socket_io_fs->socket);
                 
                 // send(socket_kernel, &result_kernel_fs, sizeof(int), 0);
@@ -665,7 +660,6 @@ void* handle_kernel(void* socket) {
 void* handle_io_dialfs(void* socket) {
     int socket_io = (intptr_t) socket;
     int resultOk = 0;
-    printf("Llega a handle_io_fs\n");
     send(socket_io, &resultOk, sizeof(int), 0);
 
     t_paquete* paquete_inicial = inicializarIO_recibirPaquete(socket_io);
@@ -713,7 +707,6 @@ void* handle_io_dialfs(void* socket) {
             case ESCRIBIR_MEM_FS:  
                 int confirm_escritura_fs = 1;
 
-                printf("llego a ESCRIBIR_MEM_FS");
                 // Aca voy a deserializar todo lo que me manda el fs y lo voy a escribir en memoria
                 
                 t_escritura_memoria_fs* escritura_lectura = deserializar_escritura_lectura_fs(paquete->buffer);
@@ -728,7 +721,6 @@ void* handle_io_dialfs(void* socket) {
 
                 // Aca, en vez del send, tengo que enviar un paquete con el resultado para recibirlo del otro lado y poder desbloquear al semaforo, no pueda usar un send, porque lo recibe el hilo
 
-                printf("Voy a enviar la confirmacion de escritura\n");
                 enviar_confirmacion_escritura_fs(socket_io);
                 // send(socket_io, &confirm_escritura_fs, sizeof(int), 0);
                 break;
@@ -818,7 +810,7 @@ void interaccion_user_space(int pid, tipo_operacion operacion, int df_actual, vo
     if(operacion == ESCRITURA) {
         memcpy(user_space_aux + df_actual, registro_escritura + tam_escrito_anterior, tamanio);
         printf("Escritura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
-        printf("Contenido escrito:  %.*s", tamanio, (char*)(user_space_aux + df_actual));
+        printf("Contenido escrito:  %.*s\n", tamanio, (char*)(user_space_aux + df_actual));
         // printf("Los proximos 4 bytes a esos son: %.*s\n", 4, (char*)(user_space_aux + df_actual + tamanio));
 
         log_info(logger_memoria,"PID: %d - Accion: ESCRIBIR - Direccion fisica: %d - Tamaño %d", pid, df_actual, tamanio);
@@ -1038,12 +1030,11 @@ TipoInstruccion pasar_a_enum(char* nombre) {
 void* handle_io_stdout(void* socket) {
     int socket_io = (intptr_t) socket;
     int resultOk = 0;
-    printf("Llega a handle_io_stdout\n");
     send(socket_io, &resultOk, sizeof(int), 0);
 
     // Recibir nombre de la IO
 
-    printf("Se conecto una io oojoo!\n");
+    printf("Se conecto una io stdout!\n");
     //void* user_space_aux;
 
     t_paquete* paquete_inicial = inicializarIO_recibirPaquete(socket_io);
@@ -1062,7 +1053,7 @@ void* handle_io_stdin(void* socket) {
     int resultOk = 0;
     // Envio confirmacion de handshake!
     send(socket_io, &resultOk, sizeof(int), 0);
-    printf("holu holu mande resultado ok porque se conecto el io\n");
+    printf("Se conecto una io stdin\n");
 
     // Recibir nombre de la IO
     t_paquete* paquete_inicial = inicializarIO_recibirPaquete(socket_io);
@@ -1101,9 +1092,7 @@ void* handle_io_stdin(void* socket) {
                 t_escritura_stdin* escritura_stdin = deserializar_escritura_stdin(stream); // PRINTF
 
                 imprimir_datos_stdin_escritura(escritura_stdin);
-                
-                printf("voy a dormir para probar serializacion\n"); 
-                
+                                
                 user_space_aux = espacio_usuario;
 
                 // recibir_datos_escritura();
@@ -1347,7 +1336,6 @@ t_path* deserializar_path(t_buffer* buffer) {
 
 t_solicitud_instruccion* deserializar_solicitud_instruccion(t_buffer* buffer) {
     t_solicitud_instruccion* instruccion = malloc(sizeof(t_solicitud_instruccion));
-    printf("Deserializando solicitud\n");
     void* stream = buffer->stream;
     // Deserializamos los campos que tenemos en el buffer
     memcpy(&(instruccion->pid), stream, sizeof(int));
@@ -1615,8 +1603,6 @@ void liberar_estructuras_proceso(int pid) {
     sprintf(pid_char, "%d", pid);*/
     char* pid_char = string_itoa(pid);
 
-    pthread_mutex_lock(&mutex_diccionario_instrucciones);
-
     t_list* instrucciones = dictionary_get(diccionario_instrucciones, pid_char);
 
     if (instrucciones != NULL) {
@@ -1635,6 +1621,8 @@ void liberar_estructuras_proceso(int pid) {
     }   
 
     list_destroy(instrucciones);
+
+    pthread_mutex_lock(&mutex_diccionario_instrucciones);
     dictionary_remove(diccionario_instrucciones, pid_char);
 
     pthread_mutex_unlock(&mutex_diccionario_instrucciones);

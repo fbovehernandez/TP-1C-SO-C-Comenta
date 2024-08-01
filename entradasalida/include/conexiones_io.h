@@ -9,7 +9,6 @@
 #include "../../utils/include/logconfig.h"
 #include <commons/string.h>
 #include <commons/txt.h>
-#include "instrucciones_io.h"
 
 extern int kernelfd;
 extern int memoriafd;

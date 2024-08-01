@@ -11,20 +11,15 @@ sem_t se_escribio_memoria;
 //////////////////
 
 int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, char* nombre_interfaz, TipoInterfaz tipo_interfaz, int handshake) {
-    // int message_io = 12; // nro de codop
-    //int valor = 5; // handshake, 5 = I/O
     kernelfd = crear_conexion(IP_KERNEL, puerto_kernel, handshake);
     
     if (kernelfd == -1) {
-        printf("AYUDAAAAAAAAAA ERROR CON KERNEEEEEEL\n");
         log_error(logger_io, "Error al conectar con Kernel\n");
         return -1;
     }
 
     printf("Conexion establecida con Kernel\n");
     
-    // send(kernelfd, &message_io, sizeof(int), 0); 
-
     int str_interfaz = strlen(nombre_interfaz) + 1;
 
     // Crear y configurar el buffer
@@ -46,14 +41,11 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     buffer->stream = stream;
     // Enviar el paquete al Kernel
     enviar_paquete(buffer, CONEXION_INTERFAZ, kernelfd);
-    printf("ENVIO MI NOMBRE!!!\n");
 
     return kernelfd;
 }
 
 void recibir_kernel(void* config_socket_io) { //FREE
-    printf("Voy a recibir kernel!\n");
-    
     int still_running = 1;
     int test_conexion;
     
@@ -67,16 +59,6 @@ void recibir_kernel(void* config_socket_io) { //FREE
         paquete->buffer = malloc(sizeof(t_buffer));
 
         test_conexion = 0;
-
-        /*
-        printf("Esperando validar conexionIOSOFI\n");
-        printf("Esperando validar conexion... de kernel\n");  
-        recv(socket_kernel_io, &test_conexion, sizeof(int), MSG_WAITALL);
-        printf("\nAparece el test conexion en kernel  %d\n", test_conexion);
-        printf("Conexion validada\n");
-
-        send(socket_kernel_io, &still_running, sizeof(int), 0);
-        */
 
         printf("Esperando paquete... en kernel\n");
         recv(socket_kernel_io, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
@@ -95,8 +77,6 @@ void recibir_kernel(void* config_socket_io) { //FREE
                 int pid = pid_unidades_trabajo->pid;
                 int unidades_trabajo = pid_unidades_trabajo->unidades_trabajo;
                 int tiempoUnidadesTrabajo = config_get_int_value(config_io,"TIEMPO_UNIDAD_TRABAJO");
-                printf("Unidades de trabajo: %d\n", unidades_trabajo);
-                printf("Tiempo de unidades de trabajo: %d\n", tiempoUnidadesTrabajo);
                 printf("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ\n");
                 sleep(unidades_trabajo * tiempoUnidadesTrabajo / 1000);
                 log_info(logger_io, "PID %d - Operacion: DORMIR_IO", pid);
@@ -116,15 +96,10 @@ void recibir_kernel(void* config_socket_io) { //FREE
 
                 imprimir_datos_stdin(pid_stdin);
                 
-                printf("llego hasta LEETE\n");
                 // Leer valor
-                printf("Ingrese lo que quiera gurdar (hasta %d caracteres): \n", pid_stdin->registro_tamanio);
+                printf("Ingrese lo que quiera guardar (hasta %d caracteres): \n", pid_stdin->registro_tamanio);
 
                 scanf(" %[^\n]", valor_leido); // Sale en rojo, si...
-
-                printf("el valor leido es %s\n", valor_leido);
-
-                printf("el tamanio del valor leido es: %d \n", string_length(valor_leido));
 
                 mandar_valor_a_memoria(valor_leido, pid_stdin);
 
@@ -132,12 +107,9 @@ void recibir_kernel(void* config_socket_io) { //FREE
 
                 recv(memoriafd, &terminoOk, sizeof(int), MSG_WAITALL);
 
-                printf("el terminoOk es: %d \n", terminoOk);
-
                 send(socket_kernel_io, &terminoOk, sizeof(int), 0);
                 
                 liberar_pid_stdin(pid_stdin);
-                // free(pid_stdin);
                 break;
             case CREAR_ARCHIVO:
                 int termino_creacion_ok = 1; 
@@ -223,10 +195,8 @@ void recibir_kernel(void* config_socket_io) { //FREE
 
                 log_info(logger_io, "PID: %d - Truncar Archivo: %s - Tamaño: %d", pedido_truncate->pid, pedido_truncate->nombre_archivo, pedido_truncate->registro_tamanio);
 
-                // log_info("PID: %d - Inicio Compactación.", pedido_truncate->pid);
                 gestionar_truncar(pedido_truncate->pid, pedido_truncate->nombre_archivo, pedido_truncate->registro_tamanio);
 
-                // log_info(logger_io, "PID: %d - Fin Compactación.", pedido_truncate->pid);
                 send(socket_kernel_io, &fin_truncate_ok, sizeof(int), 0);
                 break;
             case LEER_FS_MEMORIA:
@@ -235,7 +205,6 @@ void recibir_kernel(void* config_socket_io) { //FREE
 
                 usleep(dialfs->tiempo_unidad_trabajo * 1000);
 
-                printf("\nLLEGUE HASTA ACA!!!\n\n");
                 t_pedido_rw_encolar* pedido_escritura = deserializar_pedido_rw(paquete->buffer);
 
                 log_info(logger_io, "PID: %d - Operacion: LEER_ARCHIVO", pedido_escritura->pid);
@@ -255,8 +224,6 @@ void recibir_kernel(void* config_socket_io) { //FREE
 
                 // Aca tengo que mandar el buffer a memoria
                 mandar_valor_a_memoria_fs(pedido_escritura, buffer);
-
-                printf("ENVIE EL VALOR A MEMORIA\n");
 
                 log_info(logger_io, "PID: %d - Leer Archivo: %s - Tamaño a Leer: %d - Puntero Archivo: %d", pedido_escritura->pid, pedido_escritura->nombre_archivo, pedido_escritura->registro_tamanio, pedido_escritura->registro_archivo);
 
@@ -284,14 +251,9 @@ void recibir_kernel(void* config_socket_io) { //FREE
 ///////////////////
 
 int conectar_io_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_io, char* nombre_interfaz, TipoInterfaz tipo_interfaz, int handshake) {
-    // int message_io = 12; // nro de codop
-    //int valor = 5; 
-    
     memoriafd = crear_conexion(IP_MEMORIA, puerto_memoria, handshake);
     printf("Conexion establecida con Memoria\n");
     
-    // send(kernelfd, &message_io, sizeof(int), 0); 
-
     int str_interfaz = strlen(nombre_interfaz) + 1;
     
     t_info_io* io = malloc(sizeof(int) + sizeof(TipoInterfaz) + str_interfaz);
@@ -316,7 +278,7 @@ int conectar_io_memoria(char* IP_MEMORIA, char* puerto_memoria, t_log* logger_io
 
     buffer->stream = stream;
     enviar_paquete(buffer, CONEXION_INTERFAZ, memoriafd);
-    free(io); // QUE_NO_ROMPA
+    free(io);
     return memoriafd;
 }
 
@@ -328,8 +290,6 @@ void recibir_memoria(void* config_socket_io) {
 
     int still_running = 1;
     int test_conexion; 
-
-    printf("Voy a recibir memoria123!\n");
     
     while(1) {
         printf("Esperando validar conexion... de memoria\n");  
@@ -347,8 +307,6 @@ void recibir_memoria(void* config_socket_io) {
 
         recv(socket_memoria, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
         paquete->buffer->stream = malloc(paquete->buffer->size);
-
-        printf("\nLLEGA HASTA RECIBIR MEMORIA DE ENTRADA SALIDA\n\n");
 
         recv(socket_memoria, paquete->buffer->stream, paquete->buffer->size, MSG_WAITALL);
 
@@ -388,7 +346,7 @@ void recibir_memoria(void* config_socket_io) {
 
                 // Ahora deserializo el buffer del char* con su tamanio y escribo en el void* mapeado y luego sincronizo la informacion con el file bloques.dat y al mismo tiempo actualizo el bitmap
                 t_solicitud_escritura_bloques* solicitud_escritura = deserializar_solicitud_escritura_bloques(paquete->buffer);
-                printf("EL TAMANIO A COPIAR POSTA ES: %d\n", solicitud_escritura->tamanio_a_copiar);
+                printf("EL TAMANIO A COPIAR ES: %d\n", solicitud_escritura->tamanio_a_copiar);
                 printf("El valor a copiar es: %s\n", (char*)solicitud_escritura->valor_a_copiar);
                 printf("El puntero archivo es: %d\n", solicitud_escritura->puntero_archivo);
                 printf("El nombre del file es %s\n", solicitud_escritura->nombre_archivo);
@@ -423,15 +381,12 @@ void recibir_memoria(void* config_socket_io) {
             case FIN_ESCRITURA_FS:
                 int confirmacion_escritura_fs;
 
-                printf("ENTRE POR FIN ESCRITURA FS\n");
-
                 // Aca voy a recibir el valor de termino escritura y voy a simplemente desbloquear el semaforo
 
                 memcpy(&confirmacion_escritura_fs, paquete->buffer->stream, sizeof(int));
 
                 printf("La confirmacion de escritura de memoria es: %d\n", confirmacion_escritura_fs);
                 if(confirmacion_escritura_fs == 99) {
-                   printf("VOY A DESBLOQUEAR EL SEMAFORO PARA QUE PUEDA HACER TRANQUILO EL  SEND\n");
                     sem_post(&se_escribio_memoria);
                 } else {
                     printf("Error en la escritura de memoria\n");
@@ -538,7 +493,6 @@ void compactar(int pid, char* name_file, int tamanio_truncar) {
     // Recorrer el diccionario de archivos
     for(int i = 0; i < list_size(keys); i++) {
         char* key = list_get(keys, i);
-        printf("Key: %s\n", key);
 
         t_archivo* file = dictionary_get(diccionario_archivos, key);
         int old_file_first_block = file->first_block;
@@ -573,7 +527,7 @@ void compactar(int pid, char* name_file, int tamanio_truncar) {
         }
     }
 
-    printf("Primera etapa de diccioanario\n");
+    printf("Primera etapa de diccionario\n");
     mostrar_diccionario_no_vacio(diccionario_archivos);
 
     int tamanio_actual = obtener_tamanio_archivo(name_file); // Podria usar tambien el file_truncate->name_file
@@ -744,7 +698,6 @@ void mandar_valor_a_memoria(char* valor, t_pid_stdin* pid_stdin) {
     }
     
     // Si usamos memoria dinámica para el nombre, y no la precisamos más, ya podemos liberarla:
-    printf("Le pide a mem GUARDAR_VALOR... o eso creo.\n");
     enviar_paquete(buffer, GUARDAR_VALOR, memoriafd);
 }
 
@@ -757,8 +710,6 @@ void mandar_valor_a_memoria_fs(t_pedido_rw_encolar* pedido_fs, void* buffer) {
 
     buffer_memoria->offset = 0;
     buffer_memoria->stream = malloc(buffer_memoria->size);
-
-    // void* stream = buffer->stream;
     
     memcpy(buffer_memoria->stream + buffer_memoria->offset, &pedido_fs->pid, sizeof(int));
     buffer_memoria->offset += sizeof(int);
@@ -778,9 +729,7 @@ void mandar_valor_a_memoria_fs(t_pedido_rw_encolar* pedido_fs, void* buffer) {
         memcpy(buffer_memoria->stream + buffer_memoria->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
         buffer_memoria->offset += sizeof(int);
     }
-    
-    printf("Envio un paquete a memoria\n");
-    
+        
     enviar_paquete(buffer_memoria, ESCRIBIR_MEM_FS, memoriafd);
 }
 
@@ -931,7 +880,6 @@ t_pid_stdin* deserializar_pid_stdin(t_buffer* buffer) {
         list_add(pid_stdin->lista_direcciones, dir_fisica_tam);
         // free(dir_fisica_tam); // LIBERAR CUANDO SE DESCONECTE LA IO
     }
-    printf("llego hasta deserializar pid stdin\n");
     return pid_stdin;
 }
 
@@ -981,7 +929,7 @@ int byte_de_primer_bloque(char* nombre_archivo) {
 // Es parecida a la otra pero sin remover la entrada del diccionario
 void limpiar_bitmap(int ultimo_bloque, int bloques_a_remover) {
     for (int i = ultimo_bloque; i > (ultimo_bloque - bloques_a_remover); i--) {
-            bitarray_clean_bit(bitmap, i);
+        bitarray_clean_bit(bitmap, i);
     }
 }
 

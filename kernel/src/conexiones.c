@@ -41,7 +41,6 @@ ptr_kernel* solicitar_datos(t_config* config_kernel){
     datos->puerto_cpu_interrupt     = config_get_string_value(config_kernel, "PUERTO_CPU_INTERRUPT");
     datos->puerto_io                = config_get_string_value(config_kernel, "PUERTO_IO");
     datos->quantum                  = config_get_int_value(config_kernel, "QUANTUM");
-    printf("Quantum es: %d\n", datos->quantum);
     datos->grado_multiprogramacion  = config_get_int_value(config_kernel, "GRADO_MULTIPROGRAMACION");
     datos->algoritmo_planificacion  = config_get_string_value(config_kernel, "ALGORITMO_PLANIFICACION");
 
@@ -56,17 +55,13 @@ ptr_kernel* solicitar_datos(t_config* config_kernel){
         recurso->procesos_bloqueados = list_create();
         recurso->procesos_que_lo_retienen = list_create();
         dictionary_put(datos->diccionario_recursos, recursos[i], recurso); //Mas tarde para sumar o restar deberemos castear a int instancias_recursos[i]
-        
-        //FREE?
-        /*printf("Recurso: %s\n", recursos[i]);
-        printf("Diccionario en instancias recursos: %d\n", ((t_recurso*)(dictionary_get(datos->diccionario_recursos, recursos[i])))->instancias);    */
     }
-
+    /* // REVISAR
     for(int i=0; i<string_array_size(recursos); i++){
         printf("Recurso: %s\n", recursos[i]);
         printf("Diccionario en instancias recursos: %d\n", ((t_recurso*)(dictionary_get(datos->diccionario_recursos, recursos[i])))->instancias);  
     }
-
+    */
     liberar_arrays_recurso(recursos, instancias_recursos);
 
     return datos;
@@ -76,9 +71,7 @@ int esperar_cliente(int socket_escucha, t_log* logger) {
     int handshake = 0;
     int resultError = -1;
     int resultOk = 0;
-    
-    printf("Esperando a la IO\n");
-    
+        
     int socket_cliente = accept(socket_escucha, NULL,  NULL);
 
     // corroborar_exito(socket_cliente, "aceptar el handshake.");
@@ -93,12 +86,10 @@ int esperar_cliente(int socket_escucha, t_log* logger) {
 
     if(handshake == 5) {
         pthread_t hilo_io;
-        printf("Llego hasta crear el hilo generico\n");
         pthread_create(&hilo_io, NULL, (void*) handle_io_generica, (void*)(intptr_t) socket_cliente);
         pthread_detach(hilo_io);
     } else if( handshake == 13) {
         pthread_t hilo_io;
-        printf("llego hasta crear el hilo stdin\n");
         pthread_create(&hilo_io, NULL, (void*) handle_io_stdin, (void*)(intptr_t) socket_cliente);
         pthread_detach(hilo_io);
     } else if(handshake == 15) {
@@ -111,7 +102,7 @@ int esperar_cliente(int socket_escucha, t_log* logger) {
         pthread_detach(hilo_io);
     } else {
         send(socket_cliente, &resultError, sizeof(int), 0);
-        printf("ENTRO POR ACA\n");
+        printf("El handshake es invalido\n");
         close(socket_cliente);
         return -1;
     }
@@ -173,21 +164,19 @@ t_list_io* establecer_conexion(t_buffer *buffer, int socket_io) {
     t_list_io *io = malloc(sizeof(t_list_io)); //FREE? PARA LO ULTIMO
     t_info_io *interfaz = deserializar_interfaz(buffer); 
     // io->nombreInterfaz = malloc(string_length(interfaz->nombre_interfaz));
-    printf("\n\nllego hasta establecer conexion\n\n");
 
     io->socket         = socket_io;
     io->TipoInterfaz   = interfaz->tipo;
-    // io->nombreInterfaz = interfaz->nombre_interfaz;
     io->cola_blocked   = list_create();
     
     // Esta memoria la liberamos cuando la io se desconecte
-    io->semaforo_cola_procesos_blocked = malloc(sizeof(sem_t)); //FREE? PARA LO ULTIMO
+    io->semaforo_cola_procesos_blocked = malloc(sizeof(sem_t));
     sem_init(io->semaforo_cola_procesos_blocked, 0, 0);
     
     io->nombreInterfaz = strdup(interfaz->nombre_interfaz); // Asignación del nombre
     
     dictionary_put(diccionario_io, interfaz->nombre_interfaz, (void*)io);
-    printf("\n\n el nombre de la interfaz es: %s\n\n", interfaz->nombre_interfaz);
+    printf("\n el nombre de la interfaz conectada es: %s\n\n", interfaz->nombre_interfaz);
     mostrar_elem_diccionario(interfaz->nombre_interfaz);
 
     free(interfaz->nombre_interfaz);
@@ -289,7 +278,6 @@ void pasar_a_exit_procesos_bloqueados(t_list* bloqueados) {
 /////////////////
 
 void *handle_io_stdin(void *socket_io) {
-    printf("llego hasta handle io stdin 1\n");   
     int respuesta_conexion;
     int validacion_conexion = 1; 
     int socket = (intptr_t)socket_io;
@@ -301,14 +289,14 @@ void *handle_io_stdin(void *socket_io) {
     
     t_paquete *paquete = inicializarIO_recibirPaquete(socket);
     
+    printf("Se conecto una io stdin\n");
+
     t_list_io* io;
 
-    printf("codigo de op: %d\n", paquete->codigo_operacion); // Ahora no imprime esto
+    printf("codigo de op: %d\n", paquete->codigo_operacion);
     switch (paquete->codigo_operacion) {
         case CONEXION_INTERFAZ: 
-            printf("llego hasta handle io stdin 3\n");
             io = establecer_conexion(paquete->buffer, socket);
-            // free(io);
             break;
         default:
             printf("Llega al default en handle_io_stdin.\n");
@@ -317,12 +305,10 @@ void *handle_io_stdin(void *socket_io) {
 
     while (true) {
         int size_dictionary = dictionary_size(diccionario_io);
-        printf("\nSize del diccionario: %d\n", size_dictionary);
 
         sem_wait(io->semaforo_cola_procesos_blocked);
 
         t_pid_stdin* pid_stdin = malloc(sizeof(t_pid_stdin));
-        printf("Llega al sem y mutex\n");
         
         // io_std *datos_stdin = malloc(sizeof(io_std)); -> No hace falta "aparentemente"
         io_std* datos_stdin; 
@@ -368,7 +354,6 @@ void *handle_io_stdin(void *socket_io) {
             
             int respuesta_ok = ejecutar_io_stdin(socket, pid_stdin);
 
-            printf("la respuesta ok es: %d\n", respuesta_ok);
             if (!respuesta_ok) {
                 printf("Se ejecuto correctamente la IO...\n");
             
@@ -378,7 +363,7 @@ void *handle_io_stdin(void *socket_io) {
                 
                 recv(socket, &termino_io, sizeof(int), MSG_WAITALL);
                 
-                printf("Termino io: %d\n", termino_io);
+                // printf("Termino io: %d\n", termino_io);
                 if (termino_io == 1) { // El send de termino io envia 1.
                     printf("Termino la IO\n");
 
@@ -412,7 +397,6 @@ void *handle_io_stdin(void *socket_io) {
 }
 
 int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin) {
-    printf("Voy a ejecutar stdin!\n");
     t_buffer* buffer = malloc(sizeof(t_buffer)); 
 
     buffer->size =  sizeof(int) * 2 + sizeof(uint32_t) + pid_stdin->cantidad_paginas * 2 * sizeof(int); 
@@ -425,7 +409,6 @@ int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin) {
     buffer->offset += sizeof(uint32_t);
     memcpy(buffer->stream + buffer->offset, &pid_stdin->cantidad_paginas, sizeof(int));
     buffer->offset += sizeof(int); 
-    printf("la cant de paginas es: %d\n", pid_stdin->cantidad_paginas);
 
     for(int i=0; i < pid_stdin->cantidad_paginas; i++) {
         t_dir_fisica_tamanio* dir_fisica_tam = list_get(pid_stdin->lista_direcciones, i);
@@ -433,20 +416,14 @@ int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin) {
         buffer->offset += sizeof(int);
         memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
         buffer->offset += sizeof(int);
-        //free(dir_fisica_tam);
     }
     
-    //list_destroy(pid_stdin->lista_direcciones);
-    //free(pid_stdin);
-
-    printf("Va a hacer LEETE... o eso deberia.\n");
     enviar_paquete(buffer, LEETE, socket);
 
     int resultOk;
 
     recv(socket, &resultOk, sizeof(int), MSG_WAITALL);
     
-    printf("el resultOk es: %d\n", resultOk);
     return resultOk; // Ojo que siempre retorna 0 y por ende ejecuta bien
 }
 
@@ -458,7 +435,6 @@ void* handle_io_stdout(void* socket_io) {
     int respuesta_conexion;
     int validacion_conexion = 1;
 
-    printf("llego hasta handle io stdout 1\n");    
     int socket = (intptr_t)socket_io;
     
     /*int result = 0;
@@ -466,10 +442,11 @@ void* handle_io_stdout(void* socket_io) {
 
     t_paquete *paquete = inicializarIO_recibirPaquete(socket);
     t_list_io* io;
+
+    printf("Se conecto una io stdout\n");
     
     switch (paquete->codigo_operacion) {
         case CONEXION_INTERFAZ:
-            printf("llego hasta handle io stdout 2\n");
             io = establecer_conexion(paquete->buffer, socket);
             break;
         default:
@@ -479,11 +456,7 @@ void* handle_io_stdout(void* socket_io) {
 
     while (true) {
         sem_wait(io->semaforo_cola_procesos_blocked);
-
-        printf("Llega al sem y mutex\n");
         
-        /////////////////// hasta aca se mantiene
-
         // io_std *datos_stdout = malloc(sizeof(io_std)); //FREE?
         io_std *datos_stdout;
 
@@ -522,15 +495,7 @@ void* handle_io_stdout(void* socket_io) {
         pid_stdout->registro_tamanio = datos_stdout->registro_tamanio;
         // pid_stdout->nombre_interfaz = malloc(string_length(io->nombreInterfaz));
         pid_stdout->nombre_interfaz = io->nombreInterfaz;
-        printf("\nLa io conectada tiene nombre %s\n\n", io->nombreInterfaz);
         pid_stdout->largo_interfaz = string_length(io->nombreInterfaz) + 1;
-
-        printf("VOY A IMPRIMIR TODO LO DE STDOUT PARA EJECUTAR A LA IO\n");
-        printf("PID: %d\n", pid_stdout->pid);
-        printf("Cantidad de paginas: %d\n", pid_stdout->cantidad_paginas);
-        printf("Registro tamanio: %d\n", pid_stdout->registro_tamanio);
-        // printf("Nombre interfaz: %s\n", pid_stdout->nombre_interfaz);
-        // printf("Largo interfaz: %d\n", pid_stdout->largo_interfaz);
         
         int respuesta_ok = ejecutar_io_stdout(pid_stdout);
 
@@ -544,7 +509,7 @@ void* handle_io_stdout(void* socket_io) {
             int termino_io;
             recv(socket, &termino_io, sizeof(int), MSG_WAITALL);
 
-            printf("Termino io: %d\n", termino_io);
+            // printf("Termino io: %d\n", termino_io);
 
             if (termino_io == 1) { // El send de termino io envia 1.                printf("Termino la IO\n");
                 sem_wait(&sem_planificadores);
@@ -587,9 +552,7 @@ void* handle_io_stdout(void* socket_io) {
 
 int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
     // Mandar todo a memoria
-    printf("Voy a ejecutar stdout!\n");
-    printf("\n\nEL PID QUE SE VA A MANDAR A MEMORIA ES: %d\n\n", pid_stdout->pid);
-
+    
     t_buffer* buffer = malloc(sizeof(t_buffer)); 
 
     buffer->size = sizeof(int) * 3 + sizeof(uint32_t) + pid_stdout->cantidad_paginas * 2 * sizeof(int) + pid_stdout->largo_interfaz; 
@@ -602,10 +565,8 @@ int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
     buffer->offset += sizeof(uint32_t);
     memcpy(buffer->stream + buffer->offset, &pid_stdout->cantidad_paginas, sizeof(int));
     buffer->offset += sizeof(int);
-    printf("\nEl largo de la interfaz es: %d\n", pid_stdout->largo_interfaz);
     memcpy(buffer->stream + buffer->offset, &pid_stdout->largo_interfaz, sizeof(int)); 
     buffer->offset += sizeof(int);
-    printf("\n\nLa interfaz a mandar es: %s\n\n", pid_stdout->nombre_interfaz);
     memcpy(buffer->stream + buffer->offset, pid_stdout->nombre_interfaz, pid_stdout->largo_interfaz);
     buffer->offset += pid_stdout->largo_interfaz;
     // free(pid_stdout->nombre_interfaz);
@@ -643,9 +604,10 @@ void *handle_io_generica(void *socket_io) {
     t_paquete *paquete = inicializarIO_recibirPaquete(socket);
     t_list_io* io;
 
+    printf("Se conecto una io generica\n");
+
     switch (paquete->codigo_operacion) {
         case CONEXION_INTERFAZ:
-            printf("Vamos a establecer conexion generica!!!\n");
             io = establecer_conexion(paquete->buffer, socket);
             // free(io);
             break;
@@ -656,12 +618,8 @@ void *handle_io_generica(void *socket_io) {
     
     while (true) {
         t_pid_unidades_trabajo* pid_unidades_trabajo = malloc(sizeof(t_pid_unidades_trabajo));
-
-        printf("Esperando semaforo\n");
         
         sem_wait(io->semaforo_cola_procesos_blocked);
-
-        printf("Llega al sem y mutex\n");
 
         pthread_mutex_lock(&mutex_cola_io_generica);
         io_gen_sleep *datos_sleep = list_remove(io->cola_blocked, 0);
@@ -669,8 +627,6 @@ void *handle_io_generica(void *socket_io) {
         
         pid_unidades_trabajo->pid = datos_sleep->pcb->pid;
         pid_unidades_trabajo->unidades_trabajo = datos_sleep->unidad_trabajo;
-
-        printf("La cola nos saca esto: PID %d, UT %d\n", datos_sleep->pcb->pid, datos_sleep->unidad_trabajo);
         
         // printf("LO IMPRIMO DESPUES DE SACARLO DE LA COLA\n");
         // imprimir_pcb(datos_sleep->pcb);
@@ -702,7 +658,7 @@ void *handle_io_generica(void *socket_io) {
         int respuesta_ok = ejecutar_io_generica(io->socket, pid_unidades_trabajo);
         
         if (!respuesta_ok) {
-            printf("Se ejecuto correctamente la IO... que le mandamos el pid %d\n", pid_unidades_trabajo->pid);
+            printf("Se ejecuto correctamente la IO...");
             // printf("Estado pcb: %d\n", datos_sleep->pcb->estadoActual);
             // datos_sleep->pcb->estadoActual = READY;
             // printf("Estado pcb : %d\n", datos_sleep->pcb->estadoActual);
@@ -718,9 +674,6 @@ void *handle_io_generica(void *socket_io) {
                 pasar_a_ready(pcb); 
                 sem_post(&sem_planificadores);
                 // pthread_mutex_unlock(&mutex_estado_blocked);
-
-              
-                          
             }
         }else {
             printf("No se encontró el PCB con PID %d en la cola de bloqueados.\n", datos_sleep->pcb->pid);
@@ -733,7 +686,7 @@ void *handle_io_generica(void *socket_io) {
             }
 
             free(pid_unidades_trabajo);
-        }   
+    }   
 
     liberar_paquete(paquete);
     return NULL;

@@ -21,7 +21,6 @@ void pasar_a_ready(t_pcb *pcb) {
         pasar_a_ready_normal(pcb);
     }
     
-    printf("llega hasta aca el PID: %d\n", pcb->pid);
     sem_post(&sem_hay_para_planificar);
     // sem_post(&sem_planificadores); // Mati: Puede que este semaforo este mejor arriba que el otro semaforo
     // cantidad_bloqueados--;
@@ -108,7 +107,7 @@ void pasar_a_exit(t_pcb* pcb, char* motivo_exit) {
     enviar_eliminacion_pcb_a_memoria(pcb->pid);
     liberar_pcb_estructura(pcb);
 
-    printf("llego a liberar la estructura del pcb\n");
+    printf("Llego a liberar la estructura del pcb\n");
 
     // sem_post(&sem_planificadores);
     // cantidad_bloqueados--;
@@ -133,7 +132,6 @@ char* obtener_pid_de(t_queue* cola){ //  OBLIGATORIO: Usar el mutex de la cola c
     while(!queue_is_empty(cola)) {
         t_pcb* pcbAux1 = queue_pop(cola);
         string_append_with_format(&pids, "%d ", pcbAux1->pid); 
-        printf("Este es un pid READY: %d\n", pcbAux1->pid);
         queue_push(colaAux, pcbAux1);
     }
 

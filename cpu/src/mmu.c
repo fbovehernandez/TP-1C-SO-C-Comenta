@@ -64,7 +64,6 @@ void agregar_frame_en_TLB(int pid, int pagina, int frame) {
     entrada->timestamps = tiempoEnMilisecs();
 
     int cantidad_entradas = config_get_int_value(config_CPU, "CANTIDAD_ENTRADAS_TLB");
-    printf("La cantidad de entradas es %d\n", cantidad_entradas);
 
     if(cantidad_entradas > 0) { // Esta habilitada la TLB?
         if(list_size(tlb) == cantidad_entradas) { // Esta completa la TLB ??
@@ -148,8 +147,6 @@ void pedir_frame_a_memoria(int nro_pagina, int pid) {
 
     buffer->stream = stream;
 
-    printf("Pid de parametro %d\n", pid);
-    printf("PID - %d\n", solicitud_frame->pid);
     enviar_paquete(buffer, QUIERO_FRAME, socket_memoria);
     free(solicitud_frame);
 }

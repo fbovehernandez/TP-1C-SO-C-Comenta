@@ -68,7 +68,7 @@ void asignar_tamanio(int tamanio, int cant_bytes_uso, char* pid_string);
 void marcar_frame_en_tabla_paginas(t_list* tabla_paginas, int frame);
 int buscar_frame_libre();
 int cantidad_frames_proceso(char* pid_string);
-int validar_out_of_memory(int tamanio);
+int validar_out_of_memory(int tamanio, int pid);
 int contar_frames_libres(/* bit map es global*/);
 
 // KERNEL
