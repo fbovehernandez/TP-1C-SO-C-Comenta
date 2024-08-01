@@ -5,8 +5,6 @@
 //   es 1
 //  config es 2
 
-
-
 int main(int argc, char* argv[2]) {
     
     // Este archivo lo recibe por parametro

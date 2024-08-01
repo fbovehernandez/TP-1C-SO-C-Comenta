@@ -126,6 +126,7 @@ void liberar_estructuras_proceso(int pid);
 void limpiar_bitmap(int pid_a_liberar);
 void liberar_modulo_memoria(); //no hace nada todavia
 void destruir_paginas(t_proceso_paginas* proceso);
+void eliminar_direcciones_fisicas(t_list* direcciones_restantes);
 
 // NO SE USA
 char* leer(int tamanio, int direccion_fisica);

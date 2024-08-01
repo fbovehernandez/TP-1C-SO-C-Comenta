@@ -45,7 +45,7 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     return kernelfd;
 }
 
-void recibir_kernel(void* config_socket_io) { //FREE
+void recibir_kernel(void* config_socket_io) { // FREE
     int still_running = 1;
     int test_conexion;
     

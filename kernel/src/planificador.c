@@ -18,6 +18,7 @@ void pasar_a_ready(t_pcb *pcb) {
         if(es_VRR()) {
             volver_a_settear_quantum(pcb);
         }
+
         pasar_a_ready_normal(pcb);
     }
     
@@ -171,52 +172,3 @@ char* pasar_a_string_estado(Estado estado){
             break;
     }
 } 
-
-
-
-
-
-
-
-/* 
-t_instruccion* build_instruccion(char* line) {
-    t_instruccion* instruccion = malloc(sizeof(t_instruccion)); // SET AX 1 //VER_SI_HAY_FREE cae en una lista la instruccion
-
-    char* nombre_instruccion = strtok(line, " \n"); // char* nombre_instruccion = strtok(linea_leida, " \n");
-    
-    nombre_instruccion = strdup(nombre_instruccion); 
-
-    // printf("Nombre instruccion: %s\n", nombre_instruccion);
-
-    instruccion->nombre = pasar_a_enum(nombre_instruccion);
-    // printf("Nombre instruccion: %s\n", instruccion_a_string(instruccion->nombre));
-
-    free(nombre_instruccion); // Cualquier cosa ver free
-    instruccion->parametros = list_create();
-
-    char* arg = strtok(NULL, " \n");
-    
-    if(instruccion->nombre == EXIT_INSTRUCCION) { // Esta ultima impresion podria ser por el EXIT final que no tiene argumentos
-        printf("Estoy en EXIT\n");
-        instruccion->cantidad_parametros = 0;
-        return instruccion;
-    }
-
-    while(arg != NULL) {
-        t_parametro* parametro = malloc(sizeof(int) + string_length(strdup(arg)) * sizeof(char)); // Aaca falta un free //VER_SI_HAY_FREE
-
-        parametro->nombre = strdup(arg);
-        parametro->length = string_length(arg);
-
-        // printf("Parametro: %s\n", parametro->nombre);
-        list_add(instruccion->parametros, parametro);
-        arg = strtok(NULL, " \n");
-        // free(parametro);
-    }
-    
-    instruccion->cantidad_parametros = list_size(instruccion->parametros);
-
-    return instruccion;
-}
-
-*/

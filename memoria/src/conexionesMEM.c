@@ -235,9 +235,6 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
                 t_list* direcciones_restantes_mov_in = list_create(); 
                 t_pedido_memoria* pedido_op = deserializar_direccion_fisica(paquete->buffer, direcciones_restantes_mov_in); // Le puse pedido_op para no repertir nombre, seria la operacion
-
-                // Seteos por las dudas
-                // pedido_op->valor_a_escribir = NULL;
                 
                 printf("dir_fisica->tamanio total calculado : %d\n", pedido_op->length_valor);
 
@@ -247,6 +244,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
                 send(socket_cpu, registro_lectura, pedido_op->length_valor, 0);
                 
+                eliminar_direcciones_fisicas(direcciones_restantes_mov_in);
                 list_destroy(direcciones_restantes_mov_in);
 
                 free(pedido_op->valor_a_escribir);
@@ -269,6 +267,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
                 send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
                 
+                eliminar_direcciones_fisicas(direcciones_restantes_escritura);
                 list_destroy(direcciones_restantes_escritura);            
                 free(pedido_operacion->valor_a_escribir);
                 free(pedido_operacion);
@@ -284,6 +283,14 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
     }
 
     return NULL;
+}
+
+void eliminar_direcciones_fisicas(t_list* direcciones_restantes) {
+    // Usando un for y sin el list_destroy
+    for(int i = 0; i < list_size(direcciones_restantes); i++) {
+        t_dir_fisica_tamanio* dir_fisica_tam = list_get(direcciones_restantes, i);
+        free(dir_fisica_tam);
+    }
 }
 
 // *FRAME*
@@ -451,6 +458,8 @@ int validar_out_of_memory(int tamanio, int pid) { // Me esta pidiendo mas de lo 
 
     frames_disponibles += (tamanio_proceso / tamanio_pagina);
 
+    free(pid_string);
+
     if(frames_disponibles < frames_necesarios) {
         // printf("No hay espacio suficiente en memoria\n");
         return 1; // 1 es out of memory
@@ -518,7 +527,7 @@ void* handle_kernel(void* socket) {
                 crear_estructuras(path_completo, path->PID);
                 free(path_completo);
                 int se_crearon_estructuras = 1;
-                send(socket_kernel, &se_crearon_estructuras, sizeof(int), 0);
+                send(socket_kernel, &se_crearon_estructuras, sizeof(int), 0);  
 
                 printf("Cuidado que voy a imprimir el diccionario...\n");
                 pthread_mutex_lock(&mutex_diccionario_instrucciones);

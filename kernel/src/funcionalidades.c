@@ -164,16 +164,16 @@ la memoria que acabas de asignar a path_completo.
 */
 
 void INICIAR_PROCESO(char* path_instrucciones) {
-    int pid_actual = obtener_siguiente_pid();
-    printf("El pid del proceso es: %d\n", pid_actual);
-    // Primero envio el path de instruccion a memoria y luego el PCB...
-
     if(planificacion_pausada) {
         printf("No podes crear proceso si esta pausada la plani\n");
         return;
     }
-    
+
     sem_wait(&sem_planificadores);
+
+    int pid_actual = obtener_siguiente_pid();
+    printf("El pid del proceso es: %d\n", pid_actual);
+    // Primero envio el path de instruccion a memoria y luego el PCB...
         
     enviar_path_a_memoria(path_instrucciones, sockets, pid_actual); 
 
