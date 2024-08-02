@@ -785,43 +785,13 @@ void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_r
     }
 }
 
-/* 
-int obtener_marco(int pid, int pagina) {
-    t_proceso_paginas* proceso_pagina = dictionary_get(diccionario_tablas_paginas, string_itoa(pid));  
-    t_list* tabla_paginas = proceso_pagina->tabla_paginas;
-
-    t_pagina* pagina_ = list_get(tabla_paginas, pagina);
-    return pagina_->frame;
-}
-
-int obtener_pagina(int pid, int direccion_fisica_) {
-    t_proceso_paginas* proceso_pagina = dictionary_get(diccionario_tablas_paginas, string_itoa(pid));  
-
-    // Necesito obtener la primera pagina, para luego validar si la direccion fisica corresponde a alguan pagina de este proceso y devolverla
-    t_list* tabla_paginas = proceso_pagina->tabla_paginas;
-
-    // Si bien no es la mejor solucion, lo que esto hace es recorrer cada pagina de la lista y buscar cual es la que corresponde a la direccion fisica en funcion de ese PID
-    // Una solucion alternativa hubiera sido serializar la primera pagina o ponerla adentro de la lista. Tambien CREO que se puede poner el log en otro lado donde estos datos son mas accesibles
-
-    for(int i = 0; i < list_size(tabla_paginas); i++) {
-        t_pagina* pagina = list_get(tabla_paginas, i); // Primer pagina
-
-        if(direccion_fisica_ >= pagina->numero_pagina * tamanio_pagina && direccion_fisica_ < (pagina->numero_pagina + 1) * tamanio_pagina) {
-            return pagina->numero_pagina;
-        } else {
-            return -999 // Para ver en el log un posible mal resultado
-        }
-    }
-}
-*/
-
 void interaccion_user_space(int pid, tipo_operacion operacion, int df_actual, void* user_space_aux, int tam_escrito_anterior, int tamanio, void* registro_escritura, void* registro_lectura) {
     if(operacion == ESCRITURA) {
         memcpy(user_space_aux + df_actual, registro_escritura + tam_escrito_anterior, tamanio);
         printf("Escritura: df_actual=%d, tam_escrito_anterior=%d, tamanio=%d\n", df_actual, tam_escrito_anterior, tamanio);
         printf("Contenido escrito:  %.*s\n", tamanio, (char*)(user_space_aux + df_actual));
+        
         // printf("Los proximos 4 bytes a esos son: %.*s\n", 4, (char*)(user_space_aux + df_actual + tamanio));
-
         log_info(logger_memoria,"PID: %d - Accion: ESCRIBIR - Direccion fisica: %d - Tamaño %d", pid, df_actual, tamanio);
     } else { // == LECTURA
         memcpy(registro_lectura + tam_escrito_anterior, (user_space_aux + df_actual), tamanio);

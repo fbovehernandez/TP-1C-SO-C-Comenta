@@ -21,7 +21,6 @@ int conectar_io_kernel(char* IP_KERNEL, char* puerto_kernel, t_log* logger_io, c
     printf("Conexion establecida con Kernel\n");
     
     int str_interfaz = strlen(nombre_interfaz) + 1;
-
     // Crear y configurar el buffer
     t_buffer* buffer = malloc(sizeof(t_buffer));
     buffer->size = sizeof(int) + str_interfaz + sizeof(TipoInterfaz);
