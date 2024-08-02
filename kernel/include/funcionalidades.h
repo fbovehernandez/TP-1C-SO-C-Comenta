@@ -122,6 +122,7 @@ t_buffer* llenar_buffer_nombre_archivo_pid(int pid,int largo_archivo,char* nombr
 
 // STDIN|STDOUT
 void encolar_datos_std(t_pcb* pcb, t_pedido* pedido);
+void liberar_pedido(t_pedido* pedido);
 
 // GENERICA
 void dormir_io(t_operacion_io* operacion_io, t_pcb* pcb);

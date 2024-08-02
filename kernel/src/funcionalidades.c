@@ -810,7 +810,17 @@ void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
 
         io_std* datos_std = malloc(sizeof(io_std));
 
-        datos_std->lista_direcciones = pedido->lista_dir_tamanio;
+        datos_std->lista_direcciones = list_create();
+
+        for(int i = 0; i < list_size(pedido->lista_dir_tamanio); i++) {
+            t_dir_fisica_tamanio* original = list_get(pedido->lista_dir_tamanio, i);
+            t_dir_fisica_tamanio* copia = malloc(sizeof(t_dir_fisica_tamanio));
+            copia->direccion_fisica = original->direccion_fisica;
+            copia->bytes_lectura = original->bytes_lectura;
+            list_add(datos_std->lista_direcciones, copia);
+        }
+    
+        // datos_std->lista_direcciones = pedido->lista_dir_tamanio;
         datos_std->registro_tamanio  = pedido->registro_tamanio;
         datos_std->cantidad_paginas  = pedido->cantidad_paginas;
         datos_std->pcb               = pcb;
@@ -847,11 +857,22 @@ void encolar_datos_std(t_pcb* pcb, t_pedido* pedido) {
         pthread_mutex_unlock(&mutex_lista_io);
     } 
 
-    // Habria que liberar toda la lista que se cargo adentro de pedido
-    free(pedido->interfaz);
-    // list_destroy(pedido->lista_dir_tamanio) -> Creo que no hay que liberar aca porque los malloc de la lista siguen estando en datos_std
-    free(pedido);
+    liberar_pedido(pedido);
 } 
+
+void liberar_pedido(t_pedido* pedido) {
+    // Libera cada elemento de la lista lista_dir_tamanio
+    for(int i = 0; i < list_size(pedido->lista_dir_tamanio); i++) {
+        t_dir_fisica_tamanio* dir = list_get(pedido->lista_dir_tamanio, i);
+        free(dir);
+    }
+
+    list_destroy(pedido->lista_dir_tamanio);
+
+    // Libera la interfaz y el pedido
+    free(pedido->interfaz);
+    free(pedido);
+}
 
 ////////////////////
 ///// GENERICA /////
