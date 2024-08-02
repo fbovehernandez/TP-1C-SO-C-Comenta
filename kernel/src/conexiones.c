@@ -385,7 +385,11 @@ void *handle_io_stdin(void *socket_io) {
                 break;
             }
 
-            liberar_datos_std(datos_stdin);
+            // liberar_datos_std(datos_stdin);
+            list_destroy(datos_stdin->lista_direcciones);
+
+            // free(datos_std->pcb); -> No lo libero porque es el mismo que le hacemos malloc cuando desalojamos...
+            free(datos_stdin);
             free(pid_stdin);
             // list_destroy(pid_stdin->lista_direcciones);
         }
@@ -416,6 +420,7 @@ int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin) {
         buffer->offset += sizeof(int);
         memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
         buffer->offset += sizeof(int);
+        free(dir_fisica_tam);
     }
     
     enviar_paquete(buffer, LEETE, socket);
@@ -529,14 +534,18 @@ void* handle_io_stdout(void* socket_io) {
             // Ojo! Aca tambien hay que liberar todo lo que no se usa cuando la io se termina
             liberar_io(interfaz_a_liberar);
 
-            liberar_datos_std(datos_stdout);
+            // liberar_datos_std(datos_stdout);
             liberar_paquete(paquete);
-            
+                
             return NULL;
             break;
         }
 
-        liberar_datos_std(datos_stdout);
+        // liberar_datos_std(datos_stdout);
+        list_destroy(datos_stdout->lista_direcciones);
+
+        // free(datos_std->pcb); -> No lo libero porque es el mismo que le hacemos malloc cuando desalojamos...
+        free(datos_stdout);
         // free(pid_stdout->nombre_interfaz);
         free(pid_stdout);
     }
@@ -577,7 +586,7 @@ int ejecutar_io_stdout(t_pid_stdout* pid_stdout) {
         buffer->offset += sizeof(int);
         memcpy(buffer->stream + buffer->offset, &dir_fisica_tam->bytes_lectura, sizeof(int));
         buffer->offset += sizeof(int);
-        // free(dir_fisica_tam);
+        free(dir_fisica_tam);
     }
     
     // list_destroy(pid_stdout->lista_direcciones);

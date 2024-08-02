@@ -244,7 +244,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
                 send(socket_cpu, registro_lectura, pedido_op->length_valor, 0);
                 
-                eliminar_direcciones_fisicas(direcciones_restantes_mov_in);
+                // eliminar_direcciones_fisicas(direcciones_restantes_mov_in);
                 list_destroy(direcciones_restantes_mov_in);
 
                 free(pedido_op->valor_a_escribir);
@@ -267,7 +267,7 @@ void* handle_cpu(void* socket) { // Aca va a pasar algo parecido a lo que pasa e
 
                 send(socket_cpu, &confirm_finish, sizeof(uint32_t), 0);
                 
-                eliminar_direcciones_fisicas(direcciones_restantes_escritura);
+                // eliminar_direcciones_fisicas(direcciones_restantes_escritura);
                 list_destroy(direcciones_restantes_escritura);            
                 free(pedido_operacion->valor_a_escribir);
                 free(pedido_operacion);
@@ -781,7 +781,7 @@ void realizar_operacion(int pid, tipo_operacion operacion, t_list* direcciones_r
         interaccion_user_space(pid, operacion, dir_fisica_tam->direccion_fisica, user_space_aux, tamanio_anterior, dir_fisica_tam->bytes_lectura, registro_escritura, registro_lectura);
         tamanio_anterior += dir_fisica_tam->bytes_lectura;
 
-        // free(dir_fisica_tam);
+        free(dir_fisica_tam);
     }
 }
 

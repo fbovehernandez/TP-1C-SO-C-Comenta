@@ -2458,3 +2458,764 @@
 [INFO] 22:56:23:477 LOGGER/(27134:27269): PID: 29 - Accion: ESCRIBIR - Direccion fisica: 640 - Tamaño 1
 [INFO] 22:56:29:551 LOGGER/(27134:27333): PID: 3 - Accion: DESTRUIR - Tamaño: 0
 [INFO] 22:56:32:588 LOGGER/(27134:27269): PID: 7 - Pagina: 0 - Frame: 30
+[INFO] 03:57:10:690 LOGGER/(11819:12151): PID: 1 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:10:924 LOGGER/(11819:12151): PID: 2 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:11:221 LOGGER/(11819:12151): PID: 3 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:11:355 LOGGER/(11819:12151): PID: 4 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:11:631 LOGGER/(11819:12151): PID: 5 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:11:913 LOGGER/(11819:12151): PID: 6 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:12:135 LOGGER/(11819:12151): PID: 7 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:12:392 LOGGER/(11819:12151): PID: 8 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:12:555 LOGGER/(11819:11961): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:12:630 LOGGER/(11819:12151): PID: 9 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:12:796 LOGGER/(11819:11961): PID: 2 - Pagina: 0 - Frame: 0
+[INFO] 03:57:12:882 LOGGER/(11819:12151): PID: 10 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:12:920 LOGGER/(11819:11961): PID: 2 - Accion: ESCRIBIR - Direccion fisica: 0 - Tamaño 1
+[INFO] 03:57:13:238 LOGGER/(11819:12151): PID: 11 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:13:570 LOGGER/(11819:12151): PID: 12 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:13:870 LOGGER/(11819:11961): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:13:877 LOGGER/(11819:12151): PID: 13 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:14:169 LOGGER/(11819:12151): PID: 14 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:14:385 LOGGER/(11819:11961): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:14:607 LOGGER/(11819:11961): PID: 1 - Pagina: 0 - Frame: 4
+[INFO] 03:57:14:618 LOGGER/(11819:12151): PID: 15 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:14:710 LOGGER/(11819:11961): PID: 1 - Accion: ESCRIBIR - Direccion fisica: 129 - Tamaño 1
+[INFO] 03:57:14:972 LOGGER/(11819:12151): PID: 16 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:15:319 LOGGER/(11819:12151): PID: 17 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:15:545 LOGGER/(11819:11961): PID: 2 - Accion: LEER - Direccion fisica: 0 - Tamaño 1
+[INFO] 03:57:15:717 LOGGER/(11819:12151): PID: 18 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:15:860 LOGGER/(11819:11961): PID: 2 - Accion: ESCRIBIR - Direccion fisica: 1 - Tamaño 1
+[INFO] 03:57:16:126 LOGGER/(11819:12151): PID: 19 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:16:562 LOGGER/(11819:12151): PID: 20 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:16:771 LOGGER/(11819:11961): PID: 3 - Pagina: 0 - Frame: 2
+[INFO] 03:57:16:873 LOGGER/(11819:11961): PID: 3 - Accion: ESCRIBIR - Direccion fisica: 64 - Tamaño 1
+[INFO] 03:57:16:998 LOGGER/(11819:12151): PID: 21 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:17:188 LOGGER/(11819:11961): PID: 3 - Accion: ESCRIBIR - Direccion fisica: 65 - Tamaño 1
+[INFO] 03:57:17:449 LOGGER/(11819:12151): PID: 22 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:17:888 LOGGER/(11819:12151): PID: 23 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:18:225 LOGGER/(11819:11961): PID: 1 - Accion: ESCRIBIR - Direccion fisica: 129 - Tamaño 1
+[INFO] 03:57:18:426 LOGGER/(11819:12151): PID: 24 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:18:539 LOGGER/(11819:11961): PID: 1 - Accion: ESCRIBIR - Direccion fisica: 129 - Tamaño 1
+[INFO] 03:57:18:945 LOGGER/(11819:12151): PID: 25 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:19:370 LOGGER/(11819:12151): PID: 26 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:19:580 LOGGER/(11819:11961): PID: 2 - Accion: LEER - Direccion fisica: 1 - Tamaño 1
+[INFO] 03:57:19:822 LOGGER/(11819:12151): PID: 27 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:19:886 LOGGER/(11819:11961): PID: 2 - Accion: ESCRIBIR - Direccion fisica: 2 - Tamaño 1
+[INFO] 03:57:20:368 LOGGER/(11819:12151): PID: 28 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:21:161 LOGGER/(11819:12151): PID: 29 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:21:486 LOGGER/(11819:11961): PID: 3 - Accion: ESCRIBIR - Direccion fisica: 66 - Tamaño 1
+[INFO] 03:57:21:690 LOGGER/(11819:11961): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:57:21:694 LOGGER/(11819:12151): PID: 30 - Accion: CREAR - Tamaño: 0
+[INFO] 03:57:22:448 LOGGER/(11819:11961): PID: 2 - Accion: LEER - Direccion fisica: 2 - Tamaño 1
+[INFO] 03:57:22:760 LOGGER/(11819:11961): PID: 2 - Accion: ESCRIBIR - Direccion fisica: 3 - Tamaño 1
+[INFO] 03:57:23:485 LOGGER/(11819:11961): PID: 1 - Accion: ESCRIBIR - Direccion fisica: 129 - Tamaño 1
+[INFO] 03:57:23:689 LOGGER/(11819:11961): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:57:24:004 LOGGER/(11819:11961): PID: 2 - Accion: LEER - Direccion fisica: 3 - Tamaño 1
+[INFO] 03:57:24:210 LOGGER/(11819:11961): PID: 2 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:57:24:528 LOGGER/(11819:11961): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:24:734 LOGGER/(11819:11961): PID: 3 - Accion: ESCRIBIR - Direccion fisica: 64 - Tamaño 1
+[INFO] 03:57:25:770 LOGGER/(11819:11961): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:25:976 LOGGER/(11819:11961): PID: 2 - Accion: ESCRIBIR - Direccion fisica: 0 - Tamaño 1
+[INFO] 03:57:26:185 LOGGER/(11819:11961): PID: 3 - Accion: ESCRIBIR - Direccion fisica: 65 - Tamaño 1
+[INFO] 03:57:26:493 LOGGER/(11819:11961): PID: 3 - Accion: ESCRIBIR - Direccion fisica: 66 - Tamaño 1
+[INFO] 03:57:26:702 LOGGER/(11819:11961): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:26:909 LOGGER/(11819:11961): PID: 1 - Accion: ESCRIBIR - Direccion fisica: 129 - Tamaño 1
+[INFO] 03:57:27:221 LOGGER/(11819:11961): PID: 2 - Accion: LEER - Direccion fisica: 0 - Tamaño 1
+[INFO] 03:57:27:529 LOGGER/(11819:11961): PID: 2 - Accion: ESCRIBIR - Direccion fisica: 1 - Tamaño 1
+[INFO] 03:57:31:137 LOGGER/(11819:11961): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:57:31:657 LOGGER/(11819:11961): PID: 1 - Accion: ESCRIBIR - Direccion fisica: 129 - Tamaño 1
+[INFO] 03:57:31:967 LOGGER/(11819:11961): PID: 1 - Accion: ESCRIBIR - Direccion fisica: 129 - Tamaño 1
+[INFO] 03:57:32:177 LOGGER/(11819:11961): PID: 2 - Accion: LEER - Direccion fisica: 1 - Tamaño 1
+[INFO] 03:57:32:484 LOGGER/(11819:11961): PID: 2 - Accion: ESCRIBIR - Direccion fisica: 2 - Tamaño 1
+[INFO] 03:57:32:693 LOGGER/(11819:11961): PID: 4 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
+[INFO] 03:57:33:213 LOGGER/(11819:11961): PID: 5 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 03:57:33:937 LOGGER/(11819:11961): PID: 6 - Tamaño Actual: 0 - Tamaño a Ampliar: 8
+[INFO] 03:57:34:146 LOGGER/(11819:11961): PID: 6 - Pagina: 0 - Frame: 7
+[INFO] 03:57:34:810 LOGGER/(11819:11961): PID: 7 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:35:745 LOGGER/(11819:11961): PID: 9 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:35:951 LOGGER/(11819:11961): PID: 9 - Pagina: 0 - Frame: 10
+[INFO] 03:57:36:054 LOGGER/(11819:11961): PID: 9 - Accion: ESCRIBIR - Direccion fisica: 320 - Tamaño 1
+[INFO] 03:57:36:264 LOGGER/(11819:11961): PID: 10 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
+[INFO] 03:57:36:789 LOGGER/(11819:11961): PID: 11 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 03:57:37:509 LOGGER/(11819:11961): PID: 12 - Tamaño Actual: 0 - Tamaño a Ampliar: 8
+[INFO] 03:57:37:715 LOGGER/(11819:11961): PID: 12 - Pagina: 0 - Frame: 15
+[INFO] 03:57:38:334 LOGGER/(11819:11961): PID: 13 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:39:268 LOGGER/(11819:11961): PID: 15 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:39:474 LOGGER/(11819:11961): PID: 15 - Pagina: 0 - Frame: 18
+[INFO] 03:57:39:578 LOGGER/(11819:11961): PID: 15 - Accion: ESCRIBIR - Direccion fisica: 576 - Tamaño 1
+[INFO] 03:57:39:787 LOGGER/(11819:11961): PID: 16 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
+[INFO] 03:57:40:303 LOGGER/(11819:11961): PID: 17 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 03:57:41:025 LOGGER/(11819:11961): PID: 18 - Tamaño Actual: 0 - Tamaño a Ampliar: 8
+[INFO] 03:57:41:231 LOGGER/(11819:11961): PID: 18 - Pagina: 0 - Frame: 23
+[INFO] 03:57:41:860 LOGGER/(11819:11961): PID: 19 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:42:794 LOGGER/(11819:11961): PID: 21 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:43:000 LOGGER/(11819:11961): PID: 21 - Pagina: 0 - Frame: 26
+[INFO] 03:57:43:103 LOGGER/(11819:11961): PID: 21 - Accion: ESCRIBIR - Direccion fisica: 832 - Tamaño 1
+[INFO] 03:57:43:312 LOGGER/(11819:11961): PID: 22 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
+[INFO] 03:57:43:831 LOGGER/(11819:11961): PID: 23 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 03:57:44:561 LOGGER/(11819:11961): PID: 24 - Tamaño Actual: 0 - Tamaño a Ampliar: 8
+[INFO] 03:57:44:770 LOGGER/(11819:11961): PID: 24 - Pagina: 0 - Frame: 31
+[INFO] 03:57:45:390 LOGGER/(11819:11961): PID: 25 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:46:339 LOGGER/(11819:11961): PID: 27 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:46:547 LOGGER/(11819:11961): PID: 27 - Pagina: 0 - Frame: 34
+[INFO] 03:57:46:656 LOGGER/(11819:11961): PID: 27 - Accion: ESCRIBIR - Direccion fisica: 1088 - Tamaño 1
+[INFO] 03:57:46:876 LOGGER/(11819:11961): PID: 28 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
+[INFO] 03:57:47:397 LOGGER/(11819:11961): PID: 29 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 03:57:48:123 LOGGER/(11819:11961): PID: 30 - Tamaño Actual: 0 - Tamaño a Ampliar: 8
+[INFO] 03:57:48:331 LOGGER/(11819:11961): PID: 30 - Pagina: 0 - Frame: 39
+[INFO] 03:57:48:755 LOGGER/(11819:11961): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:48:961 LOGGER/(11819:11961): PID: 3 - Accion: ESCRIBIR - Direccion fisica: 64 - Tamaño 1
+[INFO] 03:57:49:276 LOGGER/(11819:11961): PID: 1 - Accion: ESCRIBIR - Direccion fisica: 129 - Tamaño 1
+[INFO] 03:57:49:480 LOGGER/(11819:11961): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:57:49:691 LOGGER/(11819:11961): PID: 2 - Accion: LEER - Direccion fisica: 2 - Tamaño 1
+[INFO] 03:57:49:921 LOGGER/(11819:12271): PID: 6 - Accion: ESCRIBIR - Direccion fisica: 224 - Tamaño 1
+[INFO] 03:57:50:003 LOGGER/(11819:11961): PID: 2 - Accion: ESCRIBIR - Direccion fisica: 3 - Tamaño 1
+[INFO] 03:57:50:421 LOGGER/(11819:11961): PID: 4 - Pagina: 0 - Frame: 0
+[INFO] 03:57:50:525 LOGGER/(11819:11961): PID: 4 - Accion: ESCRIBIR - Direccion fisica: 0 - Tamaño 1
+[INFO] 03:57:50:943 LOGGER/(11819:11961): PID: 5 - Pagina: 0 - Frame: 6
+[INFO] 03:57:50:973 LOGGER/(11819:12271): PID: 12 - Accion: ESCRIBIR - Direccion fisica: 480 - Tamaño 1
+[INFO] 03:57:51:047 LOGGER/(11819:11961): PID: 5 - Accion: ESCRIBIR - Direccion fisica: 192 - Tamaño 1
+[INFO] 03:57:51:259 LOGGER/(11819:11961): PID: 7 - Pagina: 0 - Frame: 8
+[INFO] 03:57:51:364 LOGGER/(11819:11961): PID: 7 - Accion: ESCRIBIR - Direccion fisica: 256 - Tamaño 1
+[INFO] 03:57:51:672 LOGGER/(11819:11961): PID: 7 - Accion: ESCRIBIR - Direccion fisica: 257 - Tamaño 1
+[INFO] 03:57:51:883 LOGGER/(11819:11961): PID: 8 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:51:900 LOGGER/(11819:12271): PID: 18 - Accion: ESCRIBIR - Direccion fisica: 736 - Tamaño 1
+[INFO] 03:57:52:089 LOGGER/(11819:11961): PID: 8 - Pagina: 0 - Frame: 4
+[INFO] 03:57:52:193 LOGGER/(11819:11961): PID: 8 - Accion: ESCRIBIR - Direccion fisica: 129 - Tamaño 1
+[INFO] 03:57:52:404 LOGGER/(11819:11961): PID: 9 - Accion: LEER - Direccion fisica: 320 - Tamaño 1
+[INFO] 03:57:52:713 LOGGER/(11819:11961): PID: 9 - Accion: ESCRIBIR - Direccion fisica: 321 - Tamaño 1
+[INFO] 03:57:52:900 LOGGER/(11819:12271): PID: 24 - Accion: ESCRIBIR - Direccion fisica: 992 - Tamaño 1
+[INFO] 03:57:53:133 LOGGER/(11819:11961): PID: 10 - Pagina: 0 - Frame: 12
+[INFO] 03:57:53:246 LOGGER/(11819:11961): PID: 10 - Accion: ESCRIBIR - Direccion fisica: 384 - Tamaño 1
+[INFO] 03:57:53:667 LOGGER/(11819:11961): PID: 11 - Pagina: 0 - Frame: 14
+[INFO] 03:57:53:773 LOGGER/(11819:11961): PID: 11 - Accion: ESCRIBIR - Direccion fisica: 448 - Tamaño 1
+[INFO] 03:57:53:974 LOGGER/(11819:12271): PID: 30 - Accion: ESCRIBIR - Direccion fisica: 1248 - Tamaño 1
+[INFO] 03:57:53:984 LOGGER/(11819:11961): PID: 13 - Pagina: 0 - Frame: 16
+[INFO] 03:57:54:088 LOGGER/(11819:11961): PID: 13 - Accion: ESCRIBIR - Direccion fisica: 512 - Tamaño 1
+[INFO] 03:57:54:397 LOGGER/(11819:11961): PID: 13 - Accion: ESCRIBIR - Direccion fisica: 513 - Tamaño 1
+[INFO] 03:57:54:608 LOGGER/(11819:11961): PID: 14 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:54:816 LOGGER/(11819:11961): PID: 14 - Pagina: 0 - Frame: 42
+[INFO] 03:57:54:920 LOGGER/(11819:11961): PID: 14 - Accion: ESCRIBIR - Direccion fisica: 1345 - Tamaño 1
+[INFO] 03:57:55:131 LOGGER/(11819:11961): PID: 15 - Pagina: 0 - Frame: 18
+[INFO] 03:57:55:238 LOGGER/(11819:11961): PID: 15 - Accion: LEER - Direccion fisica: 576 - Tamaño 1
+[INFO] 03:57:55:551 LOGGER/(11819:11961): PID: 15 - Accion: ESCRIBIR - Direccion fisica: 577 - Tamaño 1
+[INFO] 03:57:55:970 LOGGER/(11819:11961): PID: 16 - Pagina: 0 - Frame: 20
+[INFO] 03:57:56:075 LOGGER/(11819:11961): PID: 16 - Accion: ESCRIBIR - Direccion fisica: 640 - Tamaño 1
+[INFO] 03:57:56:492 LOGGER/(11819:11961): PID: 17 - Pagina: 0 - Frame: 22
+[INFO] 03:57:56:597 LOGGER/(11819:11961): PID: 17 - Accion: ESCRIBIR - Direccion fisica: 704 - Tamaño 1
+[INFO] 03:57:56:807 LOGGER/(11819:11961): PID: 19 - Pagina: 0 - Frame: 24
+[INFO] 03:57:56:912 LOGGER/(11819:11961): PID: 19 - Accion: ESCRIBIR - Direccion fisica: 768 - Tamaño 1
+[INFO] 03:57:57:225 LOGGER/(11819:11961): PID: 19 - Accion: ESCRIBIR - Direccion fisica: 769 - Tamaño 1
+[INFO] 03:57:57:435 LOGGER/(11819:11961): PID: 20 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:57:57:642 LOGGER/(11819:11961): PID: 20 - Pagina: 0 - Frame: 44
+[INFO] 03:57:57:750 LOGGER/(11819:11961): PID: 20 - Accion: ESCRIBIR - Direccion fisica: 1409 - Tamaño 1
+[INFO] 03:57:57:963 LOGGER/(11819:11961): PID: 21 - Pagina: 0 - Frame: 26
+[INFO] 03:57:58:069 LOGGER/(11819:11961): PID: 21 - Accion: LEER - Direccion fisica: 832 - Tamaño 1
+[INFO] 03:57:58:379 LOGGER/(11819:11961): PID: 21 - Accion: ESCRIBIR - Direccion fisica: 833 - Tamaño 1
+[INFO] 03:57:58:797 LOGGER/(11819:11961): PID: 22 - Pagina: 0 - Frame: 28
+[INFO] 03:57:58:902 LOGGER/(11819:11961): PID: 22 - Accion: ESCRIBIR - Direccion fisica: 896 - Tamaño 1
+[INFO] 03:57:59:320 LOGGER/(11819:11961): PID: 23 - Pagina: 0 - Frame: 30
+[INFO] 03:57:59:426 LOGGER/(11819:11961): PID: 23 - Accion: ESCRIBIR - Direccion fisica: 960 - Tamaño 1
+[INFO] 03:57:59:656 LOGGER/(11819:11961): PID: 25 - Pagina: 0 - Frame: 32
+[INFO] 03:57:59:761 LOGGER/(11819:11961): PID: 25 - Accion: ESCRIBIR - Direccion fisica: 1024 - Tamaño 1
+[INFO] 03:58:00:071 LOGGER/(11819:11961): PID: 25 - Accion: ESCRIBIR - Direccion fisica: 1025 - Tamaño 1
+[INFO] 03:58:00:283 LOGGER/(11819:11961): PID: 26 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:58:00:491 LOGGER/(11819:11961): PID: 26 - Pagina: 0 - Frame: 46
+[INFO] 03:58:00:596 LOGGER/(11819:11961): PID: 26 - Accion: ESCRIBIR - Direccion fisica: 1473 - Tamaño 1
+[INFO] 03:58:00:807 LOGGER/(11819:11961): PID: 27 - Pagina: 0 - Frame: 34
+[INFO] 03:58:00:913 LOGGER/(11819:11961): PID: 27 - Accion: LEER - Direccion fisica: 1088 - Tamaño 1
+[INFO] 03:58:01:221 LOGGER/(11819:11961): PID: 27 - Accion: ESCRIBIR - Direccion fisica: 1089 - Tamaño 1
+[INFO] 03:58:01:657 LOGGER/(11819:11961): PID: 28 - Pagina: 0 - Frame: 36
+[INFO] 03:58:01:764 LOGGER/(11819:11961): PID: 28 - Accion: ESCRIBIR - Direccion fisica: 1152 - Tamaño 1
+[INFO] 03:58:02:182 LOGGER/(11819:11961): PID: 29 - Pagina: 0 - Frame: 38
+[INFO] 03:58:02:287 LOGGER/(11819:11961): PID: 29 - Accion: ESCRIBIR - Direccion fisica: 1216 - Tamaño 1
+[INFO] 03:58:02:601 LOGGER/(11819:11961): PID: 3 - Pagina: 0 - Frame: 40
+[INFO] 03:58:02:706 LOGGER/(11819:11961): PID: 3 - Accion: ESCRIBIR - Direccion fisica: 1281 - Tamaño 1
+[INFO] 03:58:03:642 LOGGER/(11819:11961): PID: 6 - Pagina: 0 - Frame: 7
+[INFO] 03:58:03:759 LOGGER/(11819:12151): PID: 6 - Accion: LEER - Direccion fisica: 224 - Tamaño 1
+[INFO] 03:58:03:915 LOGGER/(11819:11961): PID: 2 - Pagina: 0 - Frame: 2
+[INFO] 03:58:04:020 LOGGER/(11819:11961): PID: 2 - Accion: LEER - Direccion fisica: 67 - Tamaño 1
+[INFO] 03:58:04:224 LOGGER/(11819:11961): PID: 2 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:58:04:436 LOGGER/(11819:11961): PID: 6 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 03:58:04:958 LOGGER/(11819:11961): PID: 4 - Pagina: 0 - Frame: 0
+[INFO] 03:58:05:064 LOGGER/(11819:11961): PID: 4 - Accion: ESCRIBIR - Direccion fisica: 1 - Tamaño 1
+[INFO] 03:58:05:277 LOGGER/(11819:11961): PID: 12 - Pagina: 0 - Frame: 15
+[INFO] 03:58:05:385 LOGGER/(11819:12151): PID: 12 - Accion: LEER - Direccion fisica: 480 - Tamaño 1
+[INFO] 03:58:05:697 LOGGER/(11819:11961): PID: 5 - Pagina: 0 - Frame: 6
+[INFO] 03:58:05:806 LOGGER/(11819:11961): PID: 5 - Accion: ESCRIBIR - Direccion fisica: 193 - Tamaño 1
+[INFO] 03:58:06:017 LOGGER/(11819:11961): PID: 12 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 03:58:06:435 LOGGER/(11819:11961): PID: 7 - Pagina: 0 - Frame: 8
+[INFO] 03:58:06:540 LOGGER/(11819:11961): PID: 7 - Accion: ESCRIBIR - Direccion fisica: 258 - Tamaño 1
+[INFO] 03:58:06:744 LOGGER/(11819:11961): PID: 7 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:58:06:959 LOGGER/(11819:11961): PID: 18 - Pagina: 0 - Frame: 23
+[INFO] 03:58:07:066 LOGGER/(11819:12151): PID: 18 - Accion: LEER - Direccion fisica: 736 - Tamaño 1
+[INFO] 03:58:07:276 LOGGER/(11819:11961): PID: 8 - Pagina: 0 - Frame: 4
+[INFO] 03:58:07:381 LOGGER/(11819:11961): PID: 8 - Accion: ESCRIBIR - Direccion fisica: 129 - Tamaño 1
+[INFO] 03:58:07:698 LOGGER/(11819:11961): PID: 18 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 03:58:08:015 LOGGER/(11819:11961): PID: 9 - Pagina: 0 - Frame: 10
+[INFO] 03:58:08:120 LOGGER/(11819:11961): PID: 9 - Accion: LEER - Direccion fisica: 321 - Tamaño 1
+[INFO] 03:58:08:428 LOGGER/(11819:11961): PID: 9 - Accion: ESCRIBIR - Direccion fisica: 322 - Tamaño 1
+[INFO] 03:58:08:639 LOGGER/(11819:11961): PID: 24 - Pagina: 0 - Frame: 31
+[INFO] 03:58:08:746 LOGGER/(11819:12151): PID: 24 - Accion: LEER - Direccion fisica: 992 - Tamaño 1
+[INFO] 03:58:09:058 LOGGER/(11819:11961): PID: 10 - Pagina: 0 - Frame: 12
+[INFO] 03:58:09:164 LOGGER/(11819:11961): PID: 10 - Accion: ESCRIBIR - Direccion fisica: 385 - Tamaño 1
+[INFO] 03:58:09:374 LOGGER/(11819:11961): PID: 24 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 03:58:09:892 LOGGER/(11819:11961): PID: 11 - Pagina: 0 - Frame: 14
+[INFO] 03:58:09:996 LOGGER/(11819:11961): PID: 11 - Accion: ESCRIBIR - Direccion fisica: 449 - Tamaño 1
+[INFO] 03:58:10:209 LOGGER/(11819:11961): PID: 30 - Pagina: 0 - Frame: 39
+[INFO] 03:58:10:315 LOGGER/(11819:12151): PID: 30 - Accion: LEER - Direccion fisica: 1248 - Tamaño 1
+[INFO] 03:58:10:523 LOGGER/(11819:11961): PID: 13 - Pagina: 0 - Frame: 16
+[INFO] 03:58:10:628 LOGGER/(11819:11961): PID: 13 - Accion: ESCRIBIR - Direccion fisica: 514 - Tamaño 1
+[INFO] 03:58:10:832 LOGGER/(11819:11961): PID: 13 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:58:11:047 LOGGER/(11819:11961): PID: 30 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 03:58:11:467 LOGGER/(11819:11961): PID: 14 - Pagina: 0 - Frame: 42
+[INFO] 03:58:11:571 LOGGER/(11819:11961): PID: 14 - Accion: ESCRIBIR - Direccion fisica: 1345 - Tamaño 1
+[INFO] 03:58:11:886 LOGGER/(11819:11961): PID: 15 - Pagina: 0 - Frame: 18
+[INFO] 03:58:11:990 LOGGER/(11819:11961): PID: 15 - Accion: LEER - Direccion fisica: 577 - Tamaño 1
+[INFO] 03:58:12:297 LOGGER/(11819:11961): PID: 15 - Accion: ESCRIBIR - Direccion fisica: 578 - Tamaño 1
+[INFO] 03:58:12:713 LOGGER/(11819:11961): PID: 16 - Pagina: 0 - Frame: 20
+[INFO] 03:58:12:819 LOGGER/(11819:11961): PID: 16 - Accion: ESCRIBIR - Direccion fisica: 641 - Tamaño 1
+[INFO] 03:58:13:235 LOGGER/(11819:11961): PID: 17 - Pagina: 0 - Frame: 22
+[INFO] 03:58:13:339 LOGGER/(11819:11961): PID: 17 - Accion: ESCRIBIR - Direccion fisica: 705 - Tamaño 1
+[INFO] 03:58:13:652 LOGGER/(11819:11961): PID: 19 - Pagina: 0 - Frame: 24
+[INFO] 03:58:13:756 LOGGER/(11819:11961): PID: 19 - Accion: ESCRIBIR - Direccion fisica: 770 - Tamaño 1
+[INFO] 03:58:13:961 LOGGER/(11819:11961): PID: 19 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:58:14:275 LOGGER/(11819:11961): PID: 20 - Pagina: 0 - Frame: 44
+[INFO] 03:58:14:379 LOGGER/(11819:11961): PID: 20 - Accion: ESCRIBIR - Direccion fisica: 1409 - Tamaño 1
+[INFO] 03:58:14:693 LOGGER/(11819:11961): PID: 21 - Pagina: 0 - Frame: 26
+[INFO] 03:58:14:798 LOGGER/(11819:11961): PID: 21 - Accion: LEER - Direccion fisica: 833 - Tamaño 1
+[INFO] 03:58:15:106 LOGGER/(11819:11961): PID: 21 - Accion: ESCRIBIR - Direccion fisica: 834 - Tamaño 1
+[INFO] 03:58:15:522 LOGGER/(11819:11961): PID: 22 - Pagina: 0 - Frame: 28
+[INFO] 03:58:15:628 LOGGER/(11819:11961): PID: 22 - Accion: ESCRIBIR - Direccion fisica: 897 - Tamaño 1
+[INFO] 03:58:16:047 LOGGER/(11819:11961): PID: 23 - Pagina: 0 - Frame: 30
+[INFO] 03:58:16:152 LOGGER/(11819:11961): PID: 23 - Accion: ESCRIBIR - Direccion fisica: 961 - Tamaño 1
+[INFO] 03:58:16:467 LOGGER/(11819:11961): PID: 25 - Pagina: 0 - Frame: 32
+[INFO] 03:58:16:572 LOGGER/(11819:11961): PID: 25 - Accion: ESCRIBIR - Direccion fisica: 1026 - Tamaño 1
+[INFO] 03:58:16:783 LOGGER/(11819:11961): PID: 25 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:58:17:099 LOGGER/(11819:11961): PID: 26 - Pagina: 0 - Frame: 46
+[INFO] 03:58:17:203 LOGGER/(11819:11961): PID: 26 - Accion: ESCRIBIR - Direccion fisica: 1473 - Tamaño 1
+[INFO] 03:58:17:517 LOGGER/(11819:11961): PID: 27 - Pagina: 0 - Frame: 34
+[INFO] 03:58:17:622 LOGGER/(11819:11961): PID: 27 - Accion: LEER - Direccion fisica: 1089 - Tamaño 1
+[INFO] 03:58:17:932 LOGGER/(11819:11961): PID: 27 - Accion: ESCRIBIR - Direccion fisica: 1090 - Tamaño 1
+[INFO] 03:58:18:351 LOGGER/(11819:11961): PID: 28 - Pagina: 0 - Frame: 36
+[INFO] 03:58:18:456 LOGGER/(11819:11961): PID: 28 - Accion: ESCRIBIR - Direccion fisica: 1153 - Tamaño 1
+[INFO] 03:58:18:875 LOGGER/(11819:11961): PID: 29 - Pagina: 0 - Frame: 38
+[INFO] 03:58:18:979 LOGGER/(11819:11961): PID: 29 - Accion: ESCRIBIR - Direccion fisica: 1217 - Tamaño 1
+[INFO] 03:58:19:191 LOGGER/(11819:11961): PID: 3 - Pagina: 0 - Frame: 40
+[INFO] 03:58:19:297 LOGGER/(11819:11961): PID: 3 - Accion: ESCRIBIR - Direccion fisica: 1282 - Tamaño 1
+[INFO] 03:58:19:501 LOGGER/(11819:11961): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:58:19:718 LOGGER/(11819:11961): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:58:19:925 LOGGER/(11819:11961): PID: 1 - Pagina: 0 - Frame: 2
+[INFO] 03:58:20:031 LOGGER/(11819:11961): PID: 1 - Accion: ESCRIBIR - Direccion fisica: 65 - Tamaño 1
+[INFO] 03:58:20:564 LOGGER/(11819:11961): PID: 2 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:58:20:980 LOGGER/(11819:11961): PID: 6 - Tamaño Actual: 0 - Tamaño a Ampliar: 8
+[INFO] 03:58:21:186 LOGGER/(11819:11961): PID: 6 - Pagina: 0 - Frame: 9
+[INFO] 03:58:21:604 LOGGER/(11819:11961): PID: 4 - Pagina: 0 - Frame: 0
+[INFO] 03:58:21:709 LOGGER/(11819:11961): PID: 4 - Accion: ESCRIBIR - Direccion fisica: 2 - Tamaño 1
+[INFO] 03:58:22:131 LOGGER/(11819:11961): PID: 5 - Pagina: 0 - Frame: 6
+[INFO] 03:58:22:236 LOGGER/(11819:11961): PID: 5 - Accion: ESCRIBIR - Direccion fisica: 194 - Tamaño 1
+[INFO] 03:58:22:651 LOGGER/(11819:11961): PID: 12 - Tamaño Actual: 0 - Tamaño a Ampliar: 8
+[INFO] 03:58:22:856 LOGGER/(11819:11961): PID: 12 - Pagina: 0 - Frame: 15
+[INFO] 03:58:23:587 LOGGER/(11819:11961): PID: 8 - Pagina: 0 - Frame: 4
+[INFO] 03:58:23:692 LOGGER/(11819:11961): PID: 8 - Accion: ESCRIBIR - Direccion fisica: 129 - Tamaño 1
+[INFO] 03:58:23:999 LOGGER/(11819:11961): PID: 8 - Accion: ESCRIBIR - Direccion fisica: 129 - Tamaño 1
+[INFO] 03:58:24:414 LOGGER/(11819:11961): PID: 18 - Tamaño Actual: 0 - Tamaño a Ampliar: 8
+[INFO] 03:58:24:620 LOGGER/(11819:11961): PID: 18 - Pagina: 0 - Frame: 16
+[INFO] 03:58:24:833 LOGGER/(11819:11961): PID: 9 - Pagina: 0 - Frame: 10
+[INFO] 03:58:24:937 LOGGER/(11819:11961): PID: 9 - Accion: LEER - Direccion fisica: 322 - Tamaño 1
+[INFO] 03:58:25:245 LOGGER/(11819:11961): PID: 9 - Accion: ESCRIBIR - Direccion fisica: 323 - Tamaño 1
+[INFO] 03:58:25:663 LOGGER/(11819:11961): PID: 10 - Pagina: 0 - Frame: 12
+[INFO] 03:58:25:768 LOGGER/(11819:11961): PID: 10 - Accion: ESCRIBIR - Direccion fisica: 386 - Tamaño 1
+[INFO] 03:58:26:190 LOGGER/(11819:11961): PID: 24 - Tamaño Actual: 0 - Tamaño a Ampliar: 8
+[INFO] 03:58:26:397 LOGGER/(11819:11961): PID: 24 - Pagina: 0 - Frame: 17
+[INFO] 03:58:26:814 LOGGER/(11819:11961): PID: 11 - Pagina: 0 - Frame: 14
+[INFO] 03:58:26:919 LOGGER/(11819:11961): PID: 11 - Accion: ESCRIBIR - Direccion fisica: 450 - Tamaño 1
+[INFO] 03:58:27:853 LOGGER/(11819:11961): PID: 30 - Tamaño Actual: 0 - Tamaño a Ampliar: 8
+[INFO] 03:58:28:060 LOGGER/(11819:11961): PID: 30 - Pagina: 0 - Frame: 23
+[INFO] 03:58:28:281 LOGGER/(11819:11961): PID: 14 - Pagina: 0 - Frame: 42
+[INFO] 03:58:28:391 LOGGER/(11819:11961): PID: 14 - Accion: ESCRIBIR - Direccion fisica: 1345 - Tamaño 1
+[INFO] 03:58:28:705 LOGGER/(11819:11961): PID: 14 - Accion: ESCRIBIR - Direccion fisica: 1345 - Tamaño 1
+[INFO] 03:58:28:930 LOGGER/(11819:11961): PID: 15 - Pagina: 0 - Frame: 18
+[INFO] 03:58:29:037 LOGGER/(11819:11961): PID: 15 - Accion: LEER - Direccion fisica: 578 - Tamaño 1
+[INFO] 03:58:29:348 LOGGER/(11819:11961): PID: 15 - Accion: ESCRIBIR - Direccion fisica: 579 - Tamaño 1
+[INFO] 03:58:29:785 LOGGER/(11819:11961): PID: 16 - Pagina: 0 - Frame: 20
+[INFO] 03:58:29:893 LOGGER/(11819:11961): PID: 16 - Accion: ESCRIBIR - Direccion fisica: 642 - Tamaño 1
+[INFO] 03:58:30:328 LOGGER/(11819:11961): PID: 17 - Pagina: 0 - Frame: 22
+[INFO] 03:58:30:433 LOGGER/(11819:11961): PID: 17 - Accion: ESCRIBIR - Direccion fisica: 706 - Tamaño 1
+[INFO] 03:58:31:157 LOGGER/(11819:11961): PID: 19 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:58:31:371 LOGGER/(11819:11961): PID: 20 - Pagina: 0 - Frame: 44
+[INFO] 03:58:31:479 LOGGER/(11819:11961): PID: 20 - Accion: ESCRIBIR - Direccion fisica: 1409 - Tamaño 1
+[INFO] 03:58:31:790 LOGGER/(11819:11961): PID: 20 - Accion: ESCRIBIR - Direccion fisica: 1409 - Tamaño 1
+[INFO] 03:58:32:002 LOGGER/(11819:11961): PID: 21 - Pagina: 0 - Frame: 26
+[INFO] 03:58:32:107 LOGGER/(11819:11961): PID: 21 - Accion: LEER - Direccion fisica: 834 - Tamaño 1
+[INFO] 03:58:32:416 LOGGER/(11819:11961): PID: 21 - Accion: ESCRIBIR - Direccion fisica: 835 - Tamaño 1
+[INFO] 03:58:32:836 LOGGER/(11819:11961): PID: 22 - Pagina: 0 - Frame: 28
+[INFO] 03:58:32:940 LOGGER/(11819:11961): PID: 22 - Accion: ESCRIBIR - Direccion fisica: 898 - Tamaño 1
+[INFO] 03:58:33:359 LOGGER/(11819:11961): PID: 23 - Pagina: 0 - Frame: 30
+[INFO] 03:58:33:503 LOGGER/(11819:11961): PID: 23 - Accion: ESCRIBIR - Direccion fisica: 962 - Tamaño 1
+[INFO] 03:58:34:239 LOGGER/(11819:11961): PID: 26 - Pagina: 0 - Frame: 46
+[INFO] 03:58:34:344 LOGGER/(11819:11961): PID: 26 - Accion: ESCRIBIR - Direccion fisica: 1473 - Tamaño 1
+[INFO] 03:58:34:653 LOGGER/(11819:11961): PID: 26 - Accion: ESCRIBIR - Direccion fisica: 1473 - Tamaño 1
+[INFO] 03:58:34:873 LOGGER/(11819:11961): PID: 27 - Pagina: 0 - Frame: 34
+[INFO] 03:58:34:978 LOGGER/(11819:11961): PID: 27 - Accion: LEER - Direccion fisica: 1090 - Tamaño 1
+[INFO] 03:58:35:287 LOGGER/(11819:11961): PID: 27 - Accion: ESCRIBIR - Direccion fisica: 1091 - Tamaño 1
+[INFO] 03:58:35:703 LOGGER/(11819:11961): PID: 28 - Pagina: 0 - Frame: 36
+[INFO] 03:58:35:808 LOGGER/(11819:11961): PID: 28 - Accion: ESCRIBIR - Direccion fisica: 1154 - Tamaño 1
+[INFO] 03:58:36:226 LOGGER/(11819:11961): PID: 29 - Pagina: 0 - Frame: 38
+[INFO] 03:58:36:332 LOGGER/(11819:11961): PID: 29 - Accion: ESCRIBIR - Direccion fisica: 1218 - Tamaño 1
+[INFO] 03:58:37:166 LOGGER/(11819:11961): PID: 1 - Pagina: 0 - Frame: 2
+[INFO] 03:58:37:270 LOGGER/(11819:11961): PID: 1 - Accion: ESCRIBIR - Direccion fisica: 65 - Tamaño 1
+[INFO] 03:58:37:585 LOGGER/(11819:11961): PID: 2 - Pagina: 0 - Frame: 7
+[INFO] 03:58:37:690 LOGGER/(11819:11961): PID: 2 - Accion: ESCRIBIR - Direccion fisica: 224 - Tamaño 1
+[INFO] 03:58:37:895 LOGGER/(11819:11961): PID: 2 - Accion: LEER - Direccion fisica: 224 - Tamaño 1
+[INFO] 03:58:38:312 LOGGER/(11819:11961): PID: 4 - Pagina: 0 - Frame: 0
+[INFO] 03:58:38:416 LOGGER/(11819:11961): PID: 4 - Accion: ESCRIBIR - Direccion fisica: 3 - Tamaño 1
+[INFO] 03:58:38:832 LOGGER/(11819:11961): PID: 5 - Pagina: 0 - Frame: 6
+[INFO] 03:58:38:937 LOGGER/(11819:11961): PID: 5 - Accion: ESCRIBIR - Direccion fisica: 195 - Tamaño 1
+[INFO] 03:58:39:146 LOGGER/(11819:11961): PID: 7 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:58:39:352 LOGGER/(11819:11961): PID: 7 - Pagina: 0 - Frame: 31
+[INFO] 03:58:39:456 LOGGER/(11819:11961): PID: 7 - Accion: ESCRIBIR - Direccion fisica: 992 - Tamaño 1
+[INFO] 03:58:39:671 LOGGER/(11819:11961): PID: 8 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:58:40:189 LOGGER/(11819:11961): PID: 9 - Pagina: 0 - Frame: 10
+[INFO] 03:58:40:295 LOGGER/(11819:11961): PID: 9 - Accion: LEER - Direccion fisica: 323 - Tamaño 1
+[INFO] 03:58:40:499 LOGGER/(11819:11961): PID: 9 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:58:40:914 LOGGER/(11819:11961): PID: 10 - Pagina: 0 - Frame: 12
+[INFO] 03:58:41:019 LOGGER/(11819:11961): PID: 10 - Accion: ESCRIBIR - Direccion fisica: 387 - Tamaño 1
+[INFO] 03:58:41:440 LOGGER/(11819:11961): PID: 11 - Pagina: 0 - Frame: 14
+[INFO] 03:58:41:545 LOGGER/(11819:11961): PID: 11 - Accion: ESCRIBIR - Direccion fisica: 451 - Tamaño 1
+[INFO] 03:58:41:757 LOGGER/(11819:11961): PID: 13 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:58:41:964 LOGGER/(11819:11961): PID: 13 - Pagina: 0 - Frame: 4
+[INFO] 03:58:42:070 LOGGER/(11819:11961): PID: 13 - Accion: ESCRIBIR - Direccion fisica: 128 - Tamaño 1
+[INFO] 03:58:42:282 LOGGER/(11819:11961): PID: 14 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:58:42:806 LOGGER/(11819:11961): PID: 15 - Pagina: 0 - Frame: 18
+[INFO] 03:58:42:914 LOGGER/(11819:11961): PID: 15 - Accion: LEER - Direccion fisica: 579 - Tamaño 1
+[INFO] 03:58:43:118 LOGGER/(11819:11961): PID: 15 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:58:43:536 LOGGER/(11819:11961): PID: 16 - Pagina: 0 - Frame: 20
+[INFO] 03:58:43:641 LOGGER/(11819:11961): PID: 16 - Accion: ESCRIBIR - Direccion fisica: 643 - Tamaño 1
+[INFO] 03:58:44:060 LOGGER/(11819:11961): PID: 17 - Pagina: 0 - Frame: 22
+[INFO] 03:58:44:165 LOGGER/(11819:11961): PID: 17 - Accion: ESCRIBIR - Direccion fisica: 707 - Tamaño 1
+[INFO] 03:58:44:382 LOGGER/(11819:11961): PID: 19 - Pagina: 0 - Frame: 24
+[INFO] 03:58:44:489 LOGGER/(11819:11961): PID: 19 - Accion: ESCRIBIR - Direccion fisica: 768 - Tamaño 1
+[INFO] 03:58:44:800 LOGGER/(11819:11961): PID: 19 - Accion: ESCRIBIR - Direccion fisica: 769 - Tamaño 1
+[INFO] 03:58:45:015 LOGGER/(11819:11961): PID: 20 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:58:45:536 LOGGER/(11819:11961): PID: 21 - Pagina: 0 - Frame: 26
+[INFO] 03:58:45:645 LOGGER/(11819:11961): PID: 21 - Accion: LEER - Direccion fisica: 835 - Tamaño 1
+[INFO] 03:58:45:850 LOGGER/(11819:11961): PID: 21 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:58:46:267 LOGGER/(11819:11961): PID: 22 - Pagina: 0 - Frame: 28
+[INFO] 03:58:46:372 LOGGER/(11819:11961): PID: 22 - Accion: ESCRIBIR - Direccion fisica: 899 - Tamaño 1
+[INFO] 03:58:46:789 LOGGER/(11819:11961): PID: 23 - Pagina: 0 - Frame: 30
+[INFO] 03:58:46:894 LOGGER/(11819:11961): PID: 23 - Accion: ESCRIBIR - Direccion fisica: 963 - Tamaño 1
+[INFO] 03:58:47:104 LOGGER/(11819:11961): PID: 25 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:58:47:310 LOGGER/(11819:11961): PID: 25 - Pagina: 0 - Frame: 10
+[INFO] 03:58:47:416 LOGGER/(11819:11961): PID: 25 - Accion: ESCRIBIR - Direccion fisica: 320 - Tamaño 1
+[INFO] 03:58:47:627 LOGGER/(11819:11961): PID: 26 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:58:48:152 LOGGER/(11819:11961): PID: 27 - Pagina: 0 - Frame: 34
+[INFO] 03:58:48:257 LOGGER/(11819:11961): PID: 27 - Accion: LEER - Direccion fisica: 1091 - Tamaño 1
+[INFO] 03:58:48:462 LOGGER/(11819:11961): PID: 27 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:58:48:878 LOGGER/(11819:11961): PID: 28 - Pagina: 0 - Frame: 36
+[INFO] 03:58:48:983 LOGGER/(11819:11961): PID: 28 - Accion: ESCRIBIR - Direccion fisica: 1155 - Tamaño 1
+[INFO] 03:58:49:399 LOGGER/(11819:11961): PID: 29 - Pagina: 0 - Frame: 38
+[INFO] 03:58:49:504 LOGGER/(11819:11961): PID: 29 - Accion: ESCRIBIR - Direccion fisica: 1219 - Tamaño 1
+[INFO] 03:58:49:715 LOGGER/(11819:11961): PID: 3 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:58:49:922 LOGGER/(11819:11961): PID: 3 - Pagina: 0 - Frame: 18
+[INFO] 03:58:50:027 LOGGER/(11819:11961): PID: 3 - Accion: ESCRIBIR - Direccion fisica: 576 - Tamaño 1
+[INFO] 03:58:50:239 LOGGER/(11819:11961): PID: 1 - Pagina: 0 - Frame: 2
+[INFO] 03:58:50:343 LOGGER/(11819:11961): PID: 1 - Accion: ESCRIBIR - Direccion fisica: 65 - Tamaño 1
+[INFO] 03:58:50:652 LOGGER/(11819:11961): PID: 1 - Accion: ESCRIBIR - Direccion fisica: 65 - Tamaño 1
+[INFO] 03:58:50:966 LOGGER/(11819:11961): PID: 2 - Pagina: 0 - Frame: 7
+[INFO] 03:58:51:071 LOGGER/(11819:11961): PID: 2 - Accion: ESCRIBIR - Direccion fisica: 225 - Tamaño 1
+[INFO] 03:58:51:276 LOGGER/(11819:11961): PID: 2 - Accion: LEER - Direccion fisica: 225 - Tamaño 1
+[INFO] 03:58:51:703 LOGGER/(11819:11961): PID: 4 - Pagina: 0 - Frame: 0
+[INFO] 03:58:51:808 LOGGER/(11819:11961): PID: 4 - Accion: ESCRIBIR - Direccion fisica: 4 - Tamaño 1
+[INFO] 03:58:52:224 LOGGER/(11819:11961): PID: 5 - Pagina: 0 - Frame: 6
+[INFO] 03:58:52:329 LOGGER/(11819:11961): PID: 5 - Accion: ESCRIBIR - Direccion fisica: 196 - Tamaño 1
+[INFO] 03:58:52:644 LOGGER/(11819:11961): PID: 7 - Pagina: 0 - Frame: 31
+[INFO] 03:58:52:748 LOGGER/(11819:11961): PID: 7 - Accion: ESCRIBIR - Direccion fisica: 993 - Tamaño 1
+[INFO] 03:58:53:367 LOGGER/(11819:11961): PID: 8 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:58:53:903 LOGGER/(11819:11961): PID: 9 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:58:54:319 LOGGER/(11819:11961): PID: 10 - Pagina: 0 - Frame: 12
+[INFO] 03:58:54:424 LOGGER/(11819:11961): PID: 10 - Accion: ESCRIBIR - Direccion fisica: 388 - Tamaño 1
+[INFO] 03:58:54:838 LOGGER/(11819:11961): PID: 11 - Pagina: 0 - Frame: 14
+[INFO] 03:58:54:943 LOGGER/(11819:11961): PID: 11 - Accion: ESCRIBIR - Direccion fisica: 452 - Tamaño 1
+[INFO] 03:58:55:262 LOGGER/(11819:11961): PID: 13 - Pagina: 0 - Frame: 4
+[INFO] 03:58:55:366 LOGGER/(11819:11961): PID: 13 - Accion: ESCRIBIR - Direccion fisica: 129 - Tamaño 1
+[INFO] 03:58:55:987 LOGGER/(11819:11961): PID: 14 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:58:56:509 LOGGER/(11819:11961): PID: 15 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:58:56:926 LOGGER/(11819:11961): PID: 16 - Pagina: 0 - Frame: 20
+[INFO] 03:58:57:031 LOGGER/(11819:11961): PID: 16 - Accion: ESCRIBIR - Direccion fisica: 644 - Tamaño 1
+[INFO] 03:58:57:458 LOGGER/(11819:11961): PID: 17 - Pagina: 0 - Frame: 22
+[INFO] 03:58:57:566 LOGGER/(11819:11961): PID: 17 - Accion: ESCRIBIR - Direccion fisica: 708 - Tamaño 1
+[INFO] 03:58:57:881 LOGGER/(11819:11961): PID: 19 - Pagina: 0 - Frame: 24
+[INFO] 03:58:57:986 LOGGER/(11819:11961): PID: 19 - Accion: ESCRIBIR - Direccion fisica: 770 - Tamaño 1
+[INFO] 03:58:58:191 LOGGER/(11819:11961): PID: 19 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:58:58:709 LOGGER/(11819:11961): PID: 20 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:58:59:229 LOGGER/(11819:11961): PID: 21 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:58:59:646 LOGGER/(11819:11961): PID: 22 - Pagina: 0 - Frame: 28
+[INFO] 03:58:59:751 LOGGER/(11819:11961): PID: 22 - Accion: ESCRIBIR - Direccion fisica: 900 - Tamaño 1
+[INFO] 03:58:59:814 LOGGER/(11819:12151): PID: 31 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:00:340 LOGGER/(11819:12151): PID: 32 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:00:753 LOGGER/(11819:11961): PID: 23 - Pagina: 0 - Frame: 30
+[INFO] 03:59:00:856 LOGGER/(11819:11961): PID: 23 - Accion: ESCRIBIR - Direccion fisica: 964 - Tamaño 1
+[INFO] 03:59:01:148 LOGGER/(11819:12151): PID: 33 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:01:722 LOGGER/(11819:12151): PID: 34 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:02:097 LOGGER/(11819:11961): PID: 25 - Pagina: 0 - Frame: 10
+[INFO] 03:59:02:200 LOGGER/(11819:11961): PID: 25 - Accion: ESCRIBIR - Direccion fisica: 321 - Tamaño 1
+[INFO] 03:59:02:580 LOGGER/(11819:12151): PID: 35 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:03:127 LOGGER/(11819:12151): PID: 36 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:03:639 LOGGER/(11819:11961): PID: 26 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:59:03:772 LOGGER/(11819:12151): PID: 37 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:04:490 LOGGER/(11819:12151): PID: 38 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:05:009 LOGGER/(11819:11961): PID: 27 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:59:05:042 LOGGER/(11819:12151): PID: 39 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:05:848 LOGGER/(11819:12151): PID: 40 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:06:277 LOGGER/(11819:11961): PID: 28 - Pagina: 0 - Frame: 36
+[INFO] 03:59:06:380 LOGGER/(11819:11961): PID: 28 - Accion: ESCRIBIR - Direccion fisica: 1156 - Tamaño 1
+[INFO] 03:59:06:461 LOGGER/(11819:12151): PID: 41 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:07:125 LOGGER/(11819:12151): PID: 42 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:07:547 LOGGER/(11819:11961): PID: 29 - Pagina: 0 - Frame: 38
+[INFO] 03:59:07:650 LOGGER/(11819:11961): PID: 29 - Accion: ESCRIBIR - Direccion fisica: 1220 - Tamaño 1
+[INFO] 03:59:07:910 LOGGER/(11819:12151): PID: 43 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:08:620 LOGGER/(11819:12151): PID: 44 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:08:937 LOGGER/(11819:11961): PID: 3 - Pagina: 0 - Frame: 18
+[INFO] 03:59:09:041 LOGGER/(11819:11961): PID: 3 - Accion: ESCRIBIR - Direccion fisica: 577 - Tamaño 1
+[INFO] 03:59:09:354 LOGGER/(11819:12151): PID: 45 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:09:995 LOGGER/(11819:12151): PID: 46 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:10:222 LOGGER/(11819:11961): PID: 1 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:59:10:964 LOGGER/(11819:12151): PID: 47 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:11:646 LOGGER/(11819:12151): PID: 48 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:11:955 LOGGER/(11819:11961): PID: 2 - Accion: ESCRIBIR - Direccion fisica: 226 - Tamaño 1
+[INFO] 03:59:12:158 LOGGER/(11819:11961): PID: 2 - Accion: LEER - Direccion fisica: 226 - Tamaño 1
+[INFO] 03:59:12:556 LOGGER/(11819:12151): PID: 49 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:13:220 LOGGER/(11819:12151): PID: 50 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:13:643 LOGGER/(11819:11961): PID: 4 - Accion: ESCRIBIR - Direccion fisica: 5 - Tamaño 1
+[INFO] 03:59:14:202 LOGGER/(11819:12151): PID: 51 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:14:876 LOGGER/(11819:12151): PID: 52 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:15:307 LOGGER/(11819:11961): PID: 5 - Accion: ESCRIBIR - Direccion fisica: 197 - Tamaño 1
+[INFO] 03:59:15:654 LOGGER/(11819:12151): PID: 53 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:16:655 LOGGER/(11819:12151): PID: 54 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:16:863 LOGGER/(11819:11961): PID: 7 - Accion: ESCRIBIR - Direccion fisica: 994 - Tamaño 1
+[INFO] 03:59:17:066 LOGGER/(11819:11961): PID: 7 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:59:17:475 LOGGER/(11819:12151): PID: 55 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:18:426 LOGGER/(11819:12151): PID: 56 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:18:634 LOGGER/(11819:11961): PID: 8 - Pagina: 0 - Frame: 26
+[INFO] 03:59:18:737 LOGGER/(11819:11961): PID: 8 - Accion: ESCRIBIR - Direccion fisica: 833 - Tamaño 1
+[INFO] 03:59:19:044 LOGGER/(11819:11961): PID: 8 - Accion: ESCRIBIR - Direccion fisica: 833 - Tamaño 1
+[INFO] 03:59:19:253 LOGGER/(11819:12151): PID: 57 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:20:041 LOGGER/(11819:12151): PID: 58 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:20:286 LOGGER/(11819:11961): PID: 9 - Pagina: 0 - Frame: 33
+[INFO] 03:59:20:388 LOGGER/(11819:11961): PID: 9 - Accion: ESCRIBIR - Direccion fisica: 1056 - Tamaño 1
+[INFO] 03:59:20:594 LOGGER/(11819:11961): PID: 9 - Accion: LEER - Direccion fisica: 1056 - Tamaño 1
+[INFO] 03:59:21:015 LOGGER/(11819:12151): PID: 59 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:21:859 LOGGER/(11819:12151): PID: 60 - Accion: CREAR - Tamaño: 0
+[INFO] 03:59:22:273 LOGGER/(11819:11961): PID: 10 - Pagina: 0 - Frame: 12
+[INFO] 03:59:22:376 LOGGER/(11819:11961): PID: 10 - Accion: ESCRIBIR - Direccion fisica: 389 - Tamaño 1
+[INFO] 03:59:23:114 LOGGER/(11819:11961): PID: 11 - Pagina: 0 - Frame: 14
+[INFO] 03:59:23:218 LOGGER/(11819:11961): PID: 11 - Accion: ESCRIBIR - Direccion fisica: 453 - Tamaño 1
+[INFO] 03:59:23:429 LOGGER/(11819:11961): PID: 13 - Pagina: 0 - Frame: 4
+[INFO] 03:59:23:533 LOGGER/(11819:11961): PID: 13 - Accion: ESCRIBIR - Direccion fisica: 130 - Tamaño 1
+[INFO] 03:59:23:738 LOGGER/(11819:11961): PID: 13 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:59:23:958 LOGGER/(11819:11961): PID: 14 - Pagina: 0 - Frame: 35
+[INFO] 03:59:24:062 LOGGER/(11819:11961): PID: 14 - Accion: ESCRIBIR - Direccion fisica: 1121 - Tamaño 1
+[INFO] 03:59:24:376 LOGGER/(11819:11961): PID: 14 - Accion: ESCRIBIR - Direccion fisica: 1121 - Tamaño 1
+[INFO] 03:59:24:590 LOGGER/(11819:11961): PID: 15 - Pagina: 0 - Frame: 40
+[INFO] 03:59:24:695 LOGGER/(11819:11961): PID: 15 - Accion: ESCRIBIR - Direccion fisica: 1280 - Tamaño 1
+[INFO] 03:59:24:901 LOGGER/(11819:11961): PID: 15 - Accion: LEER - Direccion fisica: 1280 - Tamaño 1
+[INFO] 03:59:25:320 LOGGER/(11819:11961): PID: 16 - Pagina: 0 - Frame: 20
+[INFO] 03:59:25:425 LOGGER/(11819:11961): PID: 16 - Accion: ESCRIBIR - Direccion fisica: 645 - Tamaño 1
+[INFO] 03:59:25:855 LOGGER/(11819:11961): PID: 17 - Pagina: 0 - Frame: 22
+[INFO] 03:59:25:960 LOGGER/(11819:11961): PID: 17 - Accion: ESCRIBIR - Direccion fisica: 709 - Tamaño 1
+[INFO] 03:59:26:702 LOGGER/(11819:11961): PID: 20 - Pagina: 0 - Frame: 24
+[INFO] 03:59:26:807 LOGGER/(11819:11961): PID: 20 - Accion: ESCRIBIR - Direccion fisica: 769 - Tamaño 1
+[INFO] 03:59:27:114 LOGGER/(11819:11961): PID: 20 - Accion: ESCRIBIR - Direccion fisica: 769 - Tamaño 1
+[INFO] 03:59:27:329 LOGGER/(11819:11961): PID: 21 - Pagina: 0 - Frame: 42
+[INFO] 03:59:27:433 LOGGER/(11819:11961): PID: 21 - Accion: ESCRIBIR - Direccion fisica: 1344 - Tamaño 1
+[INFO] 03:59:27:639 LOGGER/(11819:11961): PID: 21 - Accion: LEER - Direccion fisica: 1344 - Tamaño 1
+[INFO] 03:59:28:062 LOGGER/(11819:11961): PID: 22 - Pagina: 0 - Frame: 28
+[INFO] 03:59:28:166 LOGGER/(11819:11961): PID: 22 - Accion: ESCRIBIR - Direccion fisica: 901 - Tamaño 1
+[INFO] 03:59:29:004 LOGGER/(11819:11961): PID: 23 - Pagina: 0 - Frame: 30
+[INFO] 03:59:29:108 LOGGER/(11819:11961): PID: 23 - Accion: ESCRIBIR - Direccion fisica: 965 - Tamaño 1
+[INFO] 03:59:29:630 LOGGER/(11819:11961): PID: 32 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:59:29:837 LOGGER/(11819:11961): PID: 32 - Pagina: 0 - Frame: 2
+[INFO] 03:59:29:942 LOGGER/(11819:11961): PID: 32 - Accion: ESCRIBIR - Direccion fisica: 64 - Tamaño 1
+[INFO] 03:59:30:566 LOGGER/(11819:11961): PID: 33 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:59:30:780 LOGGER/(11819:11961): PID: 25 - Pagina: 0 - Frame: 10
+[INFO] 03:59:30:884 LOGGER/(11819:11961): PID: 25 - Accion: ESCRIBIR - Direccion fisica: 322 - Tamaño 1
+[INFO] 03:59:31:088 LOGGER/(11819:11961): PID: 25 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:59:31:301 LOGGER/(11819:11961): PID: 34 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
+[INFO] 03:59:31:823 LOGGER/(11819:11961): PID: 35 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 03:59:32:344 LOGGER/(11819:11961): PID: 26 - Pagina: 0 - Frame: 44
+[INFO] 03:59:32:449 LOGGER/(11819:11961): PID: 26 - Accion: ESCRIBIR - Direccion fisica: 1409 - Tamaño 1
+[INFO] 03:59:32:757 LOGGER/(11819:11961): PID: 26 - Accion: ESCRIBIR - Direccion fisica: 1409 - Tamaño 1
+[INFO] 03:59:33:174 LOGGER/(11819:11961): PID: 36 - Tamaño Actual: 0 - Tamaño a Ampliar: 8
+[INFO] 03:59:33:380 LOGGER/(11819:11961): PID: 36 - Pagina: 0 - Frame: 32
+[INFO] 03:59:34:000 LOGGER/(11819:11961): PID: 37 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:59:34:212 LOGGER/(11819:11961): PID: 27 - Pagina: 0 - Frame: 46
+[INFO] 03:59:34:317 LOGGER/(11819:11961): PID: 27 - Accion: ESCRIBIR - Direccion fisica: 1472 - Tamaño 1
+[INFO] 03:59:34:522 LOGGER/(11819:11961): PID: 27 - Accion: LEER - Direccion fisica: 1472 - Tamaño 1
+[INFO] 03:59:35:466 LOGGER/(11819:11961): PID: 39 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:59:35:671 LOGGER/(11819:11961): PID: 39 - Pagina: 0 - Frame: 50
+[INFO] 03:59:35:776 LOGGER/(11819:11961): PID: 39 - Accion: ESCRIBIR - Direccion fisica: 1600 - Tamaño 1
+[INFO] 03:59:36:192 LOGGER/(11819:11961): PID: 28 - Pagina: 0 - Frame: 36
+[INFO] 03:59:36:297 LOGGER/(11819:11961): PID: 28 - Accion: ESCRIBIR - Direccion fisica: 1157 - Tamaño 1
+[INFO] 03:59:36:509 LOGGER/(11819:11961): PID: 40 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
+[INFO] 03:59:37:132 LOGGER/(11819:11961): PID: 41 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 03:59:37:860 LOGGER/(11819:11961): PID: 29 - Pagina: 0 - Frame: 38
+[INFO] 03:59:37:965 LOGGER/(11819:11961): PID: 29 - Accion: ESCRIBIR - Direccion fisica: 1221 - Tamaño 1
+[INFO] 03:59:38:388 LOGGER/(11819:11961): PID: 42 - Tamaño Actual: 0 - Tamaño a Ampliar: 8
+[INFO] 03:59:38:593 LOGGER/(11819:11961): PID: 42 - Pagina: 0 - Frame: 55
+[INFO] 03:59:39:214 LOGGER/(11819:11961): PID: 43 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:59:39:427 LOGGER/(11819:11961): PID: 3 - Pagina: 0 - Frame: 18
+[INFO] 03:59:39:530 LOGGER/(11819:11961): PID: 3 - Accion: ESCRIBIR - Direccion fisica: 578 - Tamaño 1
+[INFO] 03:59:39:734 LOGGER/(11819:11961): PID: 3 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 03:59:40:670 LOGGER/(11819:11961): PID: 45 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:59:40:876 LOGGER/(11819:11961): PID: 45 - Pagina: 0 - Frame: 18
+[INFO] 03:59:40:981 LOGGER/(11819:11961): PID: 45 - Accion: ESCRIBIR - Direccion fisica: 576 - Tamaño 1
+[INFO] 03:59:41:501 LOGGER/(11819:11961): PID: 1 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:59:41:716 LOGGER/(11819:11961): PID: 46 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
+[INFO] 03:59:42:236 LOGGER/(11819:11961): PID: 47 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 03:59:42:756 LOGGER/(11819:11961): PID: 2 - Pagina: 0 - Frame: 7
+[INFO] 03:59:42:861 LOGGER/(11819:11961): PID: 2 - Accion: ESCRIBIR - Direccion fisica: 227 - Tamaño 1
+[INFO] 03:59:43:066 LOGGER/(11819:11961): PID: 2 - Accion: LEER - Direccion fisica: 227 - Tamaño 1
+[INFO] 03:59:43:487 LOGGER/(11819:11961): PID: 48 - Tamaño Actual: 0 - Tamaño a Ampliar: 8
+[INFO] 03:59:43:693 LOGGER/(11819:11961): PID: 48 - Pagina: 0 - Frame: 63
+[INFO] 03:59:44:314 LOGGER/(11819:11961): PID: 49 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:59:44:628 LOGGER/(11819:11961): PID: 4 - Pagina: 0 - Frame: 0
+[INFO] 03:59:44:733 LOGGER/(11819:11961): PID: 4 - Accion: ESCRIBIR - Direccion fisica: 6 - Tamaño 1
+[INFO] 03:59:45:785 LOGGER/(11819:11961): PID: 51 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:59:45:992 LOGGER/(11819:11961): PID: 51 - Pagina: 0 - Frame: 66
+[INFO] 03:59:46:096 LOGGER/(11819:11961): PID: 51 - Accion: ESCRIBIR - Direccion fisica: 2112 - Tamaño 1
+[INFO] 03:59:46:414 LOGGER/(11819:11961): PID: 5 - Pagina: 0 - Frame: 6
+[INFO] 03:59:46:519 LOGGER/(11819:11961): PID: 5 - Accion: ESCRIBIR - Direccion fisica: 198 - Tamaño 1
+[INFO] 03:59:46:837 LOGGER/(11819:11961): PID: 52 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
+[INFO] 03:59:47:354 LOGGER/(11819:11961): PID: 53 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 03:59:48:188 LOGGER/(11819:11961): PID: 7 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:59:48:614 LOGGER/(11819:11961): PID: 54 - Tamaño Actual: 0 - Tamaño a Ampliar: 8
+[INFO] 03:59:48:821 LOGGER/(11819:11961): PID: 54 - Pagina: 0 - Frame: 73
+[INFO] 03:59:49:442 LOGGER/(11819:11961): PID: 55 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:59:49:769 LOGGER/(11819:11961): PID: 8 - Pagina: 0 - Frame: 26
+[INFO] 03:59:49:874 LOGGER/(11819:11961): PID: 8 - Accion: ESCRIBIR - Direccion fisica: 833 - Tamaño 1
+[INFO] 03:59:50:884 LOGGER/(11819:12271): PID: 6 - Accion: ESCRIBIR - Direccion fisica: 288 - Tamaño 1
+[INFO] 03:59:50:916 LOGGER/(11819:11961): PID: 57 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:59:51:124 LOGGER/(11819:11961): PID: 57 - Pagina: 0 - Frame: 76
+[INFO] 03:59:51:228 LOGGER/(11819:11961): PID: 57 - Accion: ESCRIBIR - Direccion fisica: 2432 - Tamaño 1
+[INFO] 03:59:51:542 LOGGER/(11819:11961): PID: 9 - Pagina: 0 - Frame: 33
+[INFO] 03:59:51:646 LOGGER/(11819:11961): PID: 9 - Accion: ESCRIBIR - Direccion fisica: 1057 - Tamaño 1
+[INFO] 03:59:51:852 LOGGER/(11819:11961): PID: 9 - Accion: LEER - Direccion fisica: 1057 - Tamaño 1
+[INFO] 03:59:52:065 LOGGER/(11819:11961): PID: 58 - Tamaño Actual: 0 - Tamaño a Ampliar: 40
+[INFO] 03:59:52:229 LOGGER/(11819:12271): PID: 12 - Accion: ESCRIBIR - Direccion fisica: 480 - Tamaño 1
+[INFO] 03:59:52:589 LOGGER/(11819:11961): PID: 59 - Tamaño Actual: 0 - Tamaño a Ampliar: 22
+[INFO] 03:59:53:183 LOGGER/(11819:12271): PID: 18 - Accion: ESCRIBIR - Direccion fisica: 512 - Tamaño 1
+[INFO] 03:59:53:318 LOGGER/(11819:11961): PID: 60 - Tamaño Actual: 0 - Tamaño a Ampliar: 8
+[INFO] 03:59:53:524 LOGGER/(11819:11961): PID: 60 - Pagina: 0 - Frame: 81
+[INFO] 03:59:53:839 LOGGER/(11819:11961): PID: 10 - Pagina: 0 - Frame: 12
+[INFO] 03:59:53:943 LOGGER/(11819:11961): PID: 10 - Accion: ESCRIBIR - Direccion fisica: 390 - Tamaño 1
+[INFO] 03:59:54:194 LOGGER/(11819:12271): PID: 24 - Accion: ESCRIBIR - Direccion fisica: 544 - Tamaño 1
+[INFO] 03:59:54:467 LOGGER/(11819:11961): PID: 11 - Pagina: 0 - Frame: 14
+[INFO] 03:59:54:572 LOGGER/(11819:11961): PID: 11 - Accion: ESCRIBIR - Direccion fisica: 454 - Tamaño 1
+[INFO] 03:59:55:509 LOGGER/(11819:11961): PID: 14 - Pagina: 0 - Frame: 35
+[INFO] 03:59:55:614 LOGGER/(11819:11961): PID: 14 - Accion: ESCRIBIR - Direccion fisica: 1121 - Tamaño 1
+[INFO] 03:59:55:655 LOGGER/(11819:12271): PID: 30 - Accion: ESCRIBIR - Direccion fisica: 736 - Tamaño 1
+[INFO] 03:59:56:035 LOGGER/(11819:11961): PID: 15 - Pagina: 0 - Frame: 40
+[INFO] 03:59:56:139 LOGGER/(11819:11961): PID: 15 - Accion: ESCRIBIR - Direccion fisica: 1281 - Tamaño 1
+[INFO] 03:59:56:343 LOGGER/(11819:11961): PID: 15 - Accion: LEER - Direccion fisica: 1281 - Tamaño 1
+[INFO] 03:59:56:680 LOGGER/(11819:12271): PID: 36 - Accion: ESCRIBIR - Direccion fisica: 1024 - Tamaño 1
+[INFO] 03:59:56:760 LOGGER/(11819:11961): PID: 16 - Pagina: 0 - Frame: 20
+[INFO] 03:59:56:865 LOGGER/(11819:11961): PID: 16 - Accion: ESCRIBIR - Direccion fisica: 646 - Tamaño 1
+[INFO] 03:59:57:285 LOGGER/(11819:11961): PID: 17 - Pagina: 0 - Frame: 22
+[INFO] 03:59:57:389 LOGGER/(11819:11961): PID: 17 - Accion: ESCRIBIR - Direccion fisica: 710 - Tamaño 1
+[INFO] 03:59:57:603 LOGGER/(11819:11961): PID: 19 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 03:59:57:681 LOGGER/(11819:12271): PID: 42 - Accion: ESCRIBIR - Direccion fisica: 1760 - Tamaño 1
+[INFO] 03:59:57:810 LOGGER/(11819:11961): PID: 19 - Pagina: 0 - Frame: 82
+[INFO] 03:59:57:914 LOGGER/(11819:11961): PID: 19 - Accion: ESCRIBIR - Direccion fisica: 2624 - Tamaño 1
+[INFO] 03:59:58:227 LOGGER/(11819:11961): PID: 20 - Pagina: 0 - Frame: 24
+[INFO] 03:59:58:333 LOGGER/(11819:11961): PID: 20 - Accion: ESCRIBIR - Direccion fisica: 769 - Tamaño 1
+[INFO] 03:59:58:751 LOGGER/(11819:11961): PID: 21 - Pagina: 0 - Frame: 42
+[INFO] 03:59:58:856 LOGGER/(11819:11961): PID: 21 - Accion: ESCRIBIR - Direccion fisica: 1345 - Tamaño 1
+[INFO] 03:59:59:066 LOGGER/(11819:11961): PID: 21 - Accion: LEER - Direccion fisica: 1345 - Tamaño 1
+[INFO] 03:59:59:114 LOGGER/(11819:12271): PID: 48 - Accion: ESCRIBIR - Direccion fisica: 2016 - Tamaño 1
+[INFO] 03:59:59:493 LOGGER/(11819:11961): PID: 22 - Pagina: 0 - Frame: 28
+[INFO] 03:59:59:599 LOGGER/(11819:11961): PID: 22 - Accion: ESCRIBIR - Direccion fisica: 902 - Tamaño 1
+[INFO] 03:59:59:814 LOGGER/(11819:11961): PID: 31 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 04:00:00:021 LOGGER/(11819:11961): PID: 31 - Pagina: 0 - Frame: 84
+[INFO] 04:00:00:127 LOGGER/(11819:11961): PID: 31 - Accion: ESCRIBIR - Direccion fisica: 2689 - Tamaño 1
+[INFO] 04:00:00:430 LOGGER/(11819:12271): PID: 54 - Accion: ESCRIBIR - Direccion fisica: 2336 - Tamaño 1
+[INFO] 04:00:00:442 LOGGER/(11819:11961): PID: 23 - Pagina: 0 - Frame: 30
+[INFO] 04:00:00:547 LOGGER/(11819:11961): PID: 23 - Accion: ESCRIBIR - Direccion fisica: 966 - Tamaño 1
+[INFO] 04:00:00:861 LOGGER/(11819:11961): PID: 32 - Pagina: 0 - Frame: 2
+[INFO] 04:00:00:965 LOGGER/(11819:11961): PID: 32 - Accion: LEER - Direccion fisica: 64 - Tamaño 1
+[INFO] 04:00:01:272 LOGGER/(11819:11961): PID: 32 - Accion: ESCRIBIR - Direccion fisica: 65 - Tamaño 1
+[INFO] 04:00:01:483 LOGGER/(11819:11961): PID: 33 - Pagina: 0 - Frame: 4
+[INFO] 04:00:01:587 LOGGER/(11819:11961): PID: 33 - Accion: ESCRIBIR - Direccion fisica: 128 - Tamaño 1
+[INFO] 04:00:01:895 LOGGER/(11819:11961): PID: 33 - Accion: ESCRIBIR - Direccion fisica: 129 - Tamaño 1
+[INFO] 04:00:02:395 LOGGER/(11819:12271): PID: 60 - Accion: ESCRIBIR - Direccion fisica: 2592 - Tamaño 1
+[INFO] 04:00:02:836 LOGGER/(11819:11961): PID: 34 - Pagina: 0 - Frame: 10
+[INFO] 04:00:02:948 LOGGER/(11819:11961): PID: 34 - Accion: ESCRIBIR - Direccion fisica: 320 - Tamaño 1
+[INFO] 04:00:03:365 LOGGER/(11819:11961): PID: 35 - Pagina: 0 - Frame: 31
+[INFO] 04:00:03:470 LOGGER/(11819:11961): PID: 35 - Accion: ESCRIBIR - Direccion fisica: 992 - Tamaño 1
+[INFO] 04:00:03:787 LOGGER/(11819:11961): PID: 26 - Pagina: 0 - Frame: 44
+[INFO] 04:00:03:894 LOGGER/(11819:11961): PID: 26 - Accion: ESCRIBIR - Direccion fisica: 1409 - Tamaño 1
+[INFO] 04:00:04:203 LOGGER/(11819:11961): PID: 26 - Accion: ESCRIBIR - Direccion fisica: 1409 - Tamaño 1
+[INFO] 04:00:04:417 LOGGER/(11819:11961): PID: 37 - Pagina: 0 - Frame: 48
+[INFO] 04:00:04:522 LOGGER/(11819:11961): PID: 37 - Accion: ESCRIBIR - Direccion fisica: 1536 - Tamaño 1
+[INFO] 04:00:04:831 LOGGER/(11819:11961): PID: 37 - Accion: ESCRIBIR - Direccion fisica: 1537 - Tamaño 1
+[INFO] 04:00:05:147 LOGGER/(11819:11961): PID: 27 - Pagina: 0 - Frame: 46
+[INFO] 04:00:05:251 LOGGER/(11819:11961): PID: 27 - Accion: ESCRIBIR - Direccion fisica: 1473 - Tamaño 1
+[INFO] 04:00:05:457 LOGGER/(11819:11961): PID: 27 - Accion: LEER - Direccion fisica: 1473 - Tamaño 1
+[INFO] 04:00:05:670 LOGGER/(11819:11961): PID: 38 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 04:00:05:875 LOGGER/(11819:11961): PID: 38 - Pagina: 0 - Frame: 86
+[INFO] 04:00:05:979 LOGGER/(11819:11961): PID: 38 - Accion: ESCRIBIR - Direccion fisica: 2753 - Tamaño 1
+[INFO] 04:00:06:193 LOGGER/(11819:11961): PID: 39 - Pagina: 0 - Frame: 50
+[INFO] 04:00:06:298 LOGGER/(11819:11961): PID: 39 - Accion: LEER - Direccion fisica: 1600 - Tamaño 1
+[INFO] 04:00:06:605 LOGGER/(11819:11961): PID: 39 - Accion: ESCRIBIR - Direccion fisica: 1601 - Tamaño 1
+[INFO] 04:00:07:035 LOGGER/(11819:11961): PID: 28 - Pagina: 0 - Frame: 36
+[INFO] 04:00:07:140 LOGGER/(11819:11961): PID: 28 - Accion: ESCRIBIR - Direccion fisica: 1158 - Tamaño 1
+[INFO] 04:00:07:558 LOGGER/(11819:11961): PID: 40 - Pagina: 0 - Frame: 52
+[INFO] 04:00:07:664 LOGGER/(11819:11961): PID: 40 - Accion: ESCRIBIR - Direccion fisica: 1664 - Tamaño 1
+[INFO] 04:00:08:184 LOGGER/(11819:11961): PID: 41 - Pagina: 0 - Frame: 54
+[INFO] 04:00:08:288 LOGGER/(11819:11961): PID: 41 - Accion: ESCRIBIR - Direccion fisica: 1728 - Tamaño 1
+[INFO] 04:00:08:707 LOGGER/(11819:11961): PID: 29 - Pagina: 0 - Frame: 38
+[INFO] 04:00:08:813 LOGGER/(11819:11961): PID: 29 - Accion: ESCRIBIR - Direccion fisica: 1222 - Tamaño 1
+[INFO] 04:00:09:028 LOGGER/(11819:11961): PID: 43 - Pagina: 0 - Frame: 56
+[INFO] 04:00:09:133 LOGGER/(11819:11961): PID: 43 - Accion: ESCRIBIR - Direccion fisica: 1792 - Tamaño 1
+[INFO] 04:00:09:442 LOGGER/(11819:11961): PID: 43 - Accion: ESCRIBIR - Direccion fisica: 1793 - Tamaño 1
+[INFO] 04:00:10:176 LOGGER/(11819:11961): PID: 44 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 04:00:10:383 LOGGER/(11819:11961): PID: 44 - Pagina: 0 - Frame: 88
+[INFO] 04:00:10:487 LOGGER/(11819:11961): PID: 44 - Accion: ESCRIBIR - Direccion fisica: 2817 - Tamaño 1
+[INFO] 04:00:10:701 LOGGER/(11819:11961): PID: 45 - Pagina: 0 - Frame: 18
+[INFO] 04:00:10:805 LOGGER/(11819:11961): PID: 45 - Accion: LEER - Direccion fisica: 576 - Tamaño 1
+[INFO] 04:00:11:113 LOGGER/(11819:11961): PID: 45 - Accion: ESCRIBIR - Direccion fisica: 577 - Tamaño 1
+[INFO] 04:00:11:329 LOGGER/(11819:11961): PID: 1 - Pagina: 0 - Frame: 58
+[INFO] 04:00:11:434 LOGGER/(11819:11961): PID: 1 - Accion: ESCRIBIR - Direccion fisica: 1857 - Tamaño 1
+[INFO] 04:00:11:742 LOGGER/(11819:11961): PID: 1 - Accion: ESCRIBIR - Direccion fisica: 1857 - Tamaño 1
+[INFO] 04:00:12:162 LOGGER/(11819:11961): PID: 46 - Pagina: 0 - Frame: 60
+[INFO] 04:00:12:267 LOGGER/(11819:11961): PID: 46 - Accion: ESCRIBIR - Direccion fisica: 1920 - Tamaño 1
+[INFO] 04:00:12:690 LOGGER/(11819:11961): PID: 47 - Pagina: 0 - Frame: 62
+[INFO] 04:00:12:795 LOGGER/(11819:11961): PID: 47 - Accion: ESCRIBIR - Direccion fisica: 1984 - Tamaño 1
+[INFO] 04:00:13:012 LOGGER/(11819:11961): PID: 2 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 04:00:13:536 LOGGER/(11819:11961): PID: 49 - Pagina: 0 - Frame: 64
+[INFO] 04:00:13:643 LOGGER/(11819:11961): PID: 49 - Accion: ESCRIBIR - Direccion fisica: 2048 - Tamaño 1
+[INFO] 04:00:13:952 LOGGER/(11819:11961): PID: 49 - Accion: ESCRIBIR - Direccion fisica: 2049 - Tamaño 1
+[INFO] 04:00:14:271 LOGGER/(11819:11961): PID: 4 - Pagina: 0 - Frame: 0
+[INFO] 04:00:14:378 LOGGER/(11819:11961): PID: 4 - Accion: ESCRIBIR - Direccion fisica: 7 - Tamaño 1
+[INFO] 04:00:14:693 LOGGER/(11819:11961): PID: 50 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 04:00:14:898 LOGGER/(11819:11961): PID: 50 - Pagina: 0 - Frame: 7
+[INFO] 04:00:15:002 LOGGER/(11819:11961): PID: 50 - Accion: ESCRIBIR - Direccion fisica: 225 - Tamaño 1
+[INFO] 04:00:15:217 LOGGER/(11819:11961): PID: 51 - Pagina: 0 - Frame: 66
+[INFO] 04:00:15:322 LOGGER/(11819:11961): PID: 51 - Accion: LEER - Direccion fisica: 2112 - Tamaño 1
+[INFO] 04:00:15:639 LOGGER/(11819:11961): PID: 51 - Accion: ESCRIBIR - Direccion fisica: 2113 - Tamaño 1
+[INFO] 04:00:15:957 LOGGER/(11819:11961): PID: 5 - Pagina: 0 - Frame: 6
+[INFO] 04:00:16:062 LOGGER/(11819:11961): PID: 5 - Accion: ESCRIBIR - Direccion fisica: 199 - Tamaño 1
+[INFO] 04:00:16:592 LOGGER/(11819:11961): PID: 52 - Pagina: 0 - Frame: 68
+[INFO] 04:00:16:700 LOGGER/(11819:11961): PID: 52 - Accion: ESCRIBIR - Direccion fisica: 2176 - Tamaño 1
+[INFO] 04:00:17:119 LOGGER/(11819:11961): PID: 53 - Pagina: 0 - Frame: 70
+[INFO] 04:00:17:223 LOGGER/(11819:11961): PID: 53 - Accion: ESCRIBIR - Direccion fisica: 2240 - Tamaño 1
+[INFO] 04:00:17:437 LOGGER/(11819:11961): PID: 7 - Pagina: 0 - Frame: 71
+[INFO] 04:00:17:541 LOGGER/(11819:11961): PID: 7 - Accion: ESCRIBIR - Direccion fisica: 2272 - Tamaño 1
+[INFO] 04:00:17:849 LOGGER/(11819:11961): PID: 7 - Accion: ESCRIBIR - Direccion fisica: 2273 - Tamaño 1
+[INFO] 04:00:18:062 LOGGER/(11819:11961): PID: 55 - Pagina: 0 - Frame: 74
+[INFO] 04:00:18:167 LOGGER/(11819:11961): PID: 55 - Accion: ESCRIBIR - Direccion fisica: 2368 - Tamaño 1
+[INFO] 04:00:18:475 LOGGER/(11819:11961): PID: 55 - Accion: ESCRIBIR - Direccion fisica: 2369 - Tamaño 1
+[INFO] 04:00:18:705 LOGGER/(11819:11961): PID: 8 - Pagina: 0 - Frame: 26
+[INFO] 04:00:18:811 LOGGER/(11819:11961): PID: 8 - Accion: ESCRIBIR - Direccion fisica: 833 - Tamaño 1
+[INFO] 04:00:19:019 LOGGER/(11819:11961): PID: 8 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 04:00:19:238 LOGGER/(11819:11961): PID: 56 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 04:00:19:444 LOGGER/(11819:11961): PID: 56 - Pagina: 0 - Frame: 26
+[INFO] 04:00:19:550 LOGGER/(11819:11961): PID: 56 - Accion: ESCRIBIR - Direccion fisica: 833 - Tamaño 1
+[INFO] 04:00:19:766 LOGGER/(11819:11961): PID: 6 - Pagina: 0 - Frame: 9
+[INFO] 04:00:19:874 LOGGER/(11819:12151): PID: 6 - Accion: LEER - Direccion fisica: 288 - Tamaño 1
+[INFO] 04:00:19:982 LOGGER/(11819:11961): PID: 57 - Pagina: 0 - Frame: 76
+[INFO] 04:00:20:090 LOGGER/(11819:11961): PID: 57 - Accion: LEER - Direccion fisica: 2432 - Tamaño 1
+[INFO] 04:00:20:398 LOGGER/(11819:11961): PID: 57 - Accion: ESCRIBIR - Direccion fisica: 2433 - Tamaño 1
+[INFO] 04:00:20:612 LOGGER/(11819:11961): PID: 6 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 04:00:21:034 LOGGER/(11819:11961): PID: 9 - Pagina: 0 - Frame: 33
+[INFO] 04:00:21:138 LOGGER/(11819:11961): PID: 9 - Accion: ESCRIBIR - Direccion fisica: 1058 - Tamaño 1
+[INFO] 04:00:21:344 LOGGER/(11819:11961): PID: 9 - Accion: LEER - Direccion fisica: 1058 - Tamaño 1
+[INFO] 04:00:21:560 LOGGER/(11819:11961): PID: 12 - Pagina: 0 - Frame: 15
+[INFO] 04:00:21:670 LOGGER/(11819:12151): PID: 12 - Accion: LEER - Direccion fisica: 480 - Tamaño 1
+[INFO] 04:00:21:988 LOGGER/(11819:11961): PID: 58 - Pagina: 0 - Frame: 78
+[INFO] 04:00:22:094 LOGGER/(11819:11961): PID: 58 - Accion: ESCRIBIR - Direccion fisica: 2496 - Tamaño 1
+[INFO] 04:00:22:309 LOGGER/(11819:11961): PID: 12 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 04:00:22:839 LOGGER/(11819:11961): PID: 59 - Pagina: 0 - Frame: 80
+[INFO] 04:00:22:943 LOGGER/(11819:11961): PID: 59 - Accion: ESCRIBIR - Direccion fisica: 2560 - Tamaño 1
+[INFO] 04:00:23:159 LOGGER/(11819:11961): PID: 18 - Pagina: 0 - Frame: 16
+[INFO] 04:00:23:268 LOGGER/(11819:12151): PID: 18 - Accion: LEER - Direccion fisica: 512 - Tamaño 1
+[INFO] 04:00:23:486 LOGGER/(11819:11961): PID: 10 - Pagina: 0 - Frame: 12
+[INFO] 04:00:23:591 LOGGER/(11819:11961): PID: 10 - Accion: ESCRIBIR - Direccion fisica: 391 - Tamaño 1
+[INFO] 04:00:23:908 LOGGER/(11819:11961): PID: 18 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 04:00:24:228 LOGGER/(11819:11961): PID: 24 - Pagina: 0 - Frame: 17
+[INFO] 04:00:24:336 LOGGER/(11819:12151): PID: 24 - Accion: LEER - Direccion fisica: 544 - Tamaño 1
+[INFO] 04:00:24:546 LOGGER/(11819:11961): PID: 11 - Pagina: 0 - Frame: 14
+[INFO] 04:00:24:653 LOGGER/(11819:11961): PID: 11 - Accion: ESCRIBIR - Direccion fisica: 455 - Tamaño 1
+[INFO] 04:00:24:971 LOGGER/(11819:11961): PID: 24 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 04:00:25:390 LOGGER/(11819:11961): PID: 13 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 04:00:25:597 LOGGER/(11819:11961): PID: 13 - Pagina: 0 - Frame: 9
+[INFO] 04:00:25:701 LOGGER/(11819:11961): PID: 13 - Accion: ESCRIBIR - Direccion fisica: 288 - Tamaño 1
+[INFO] 04:00:25:915 LOGGER/(11819:11961): PID: 30 - Pagina: 0 - Frame: 23
+[INFO] 04:00:26:021 LOGGER/(11819:12151): PID: 30 - Accion: LEER - Direccion fisica: 736 - Tamaño 1
+[INFO] 04:00:26:129 LOGGER/(11819:11961): PID: 14 - Pagina: 0 - Frame: 35
+[INFO] 04:00:26:234 LOGGER/(11819:11961): PID: 14 - Accion: ESCRIBIR - Direccion fisica: 1121 - Tamaño 1
+[INFO] 04:00:26:439 LOGGER/(11819:11961): PID: 14 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 04:00:26:663 LOGGER/(11819:11961): PID: 30 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 04:00:27:082 LOGGER/(11819:11961): PID: 15 - Pagina: 0 - Frame: 40
+[INFO] 04:00:27:188 LOGGER/(11819:11961): PID: 15 - Accion: ESCRIBIR - Direccion fisica: 1282 - Tamaño 1
+[INFO] 04:00:27:394 LOGGER/(11819:11961): PID: 15 - Accion: LEER - Direccion fisica: 1282 - Tamaño 1
+[INFO] 04:00:27:609 LOGGER/(11819:11961): PID: 36 - Pagina: 0 - Frame: 32
+[INFO] 04:00:27:716 LOGGER/(11819:12151): PID: 36 - Accion: LEER - Direccion fisica: 1024 - Tamaño 1
+[INFO] 04:00:28:026 LOGGER/(11819:11961): PID: 16 - Pagina: 0 - Frame: 20
+[INFO] 04:00:28:133 LOGGER/(11819:11961): PID: 16 - Accion: ESCRIBIR - Direccion fisica: 647 - Tamaño 1
+[INFO] 04:00:28:348 LOGGER/(11819:11961): PID: 36 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 04:00:28:873 LOGGER/(11819:11961): PID: 17 - Pagina: 0 - Frame: 22
+[INFO] 04:00:28:978 LOGGER/(11819:11961): PID: 17 - Accion: ESCRIBIR - Direccion fisica: 711 - Tamaño 1
+[INFO] 04:00:29:193 LOGGER/(11819:11961): PID: 42 - Pagina: 0 - Frame: 55
+[INFO] 04:00:29:301 LOGGER/(11819:12151): PID: 42 - Accion: LEER - Direccion fisica: 1760 - Tamaño 1
+[INFO] 04:00:29:521 LOGGER/(11819:11961): PID: 19 - Pagina: 0 - Frame: 82
+[INFO] 04:00:29:625 LOGGER/(11819:11961): PID: 19 - Accion: ESCRIBIR - Direccion fisica: 2625 - Tamaño 1
+[INFO] 04:00:29:940 LOGGER/(11819:11961): PID: 42 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 04:00:30:258 LOGGER/(11819:11961): PID: 20 - Pagina: 0 - Frame: 24
+[INFO] 04:00:30:363 LOGGER/(11819:11961): PID: 20 - Accion: ESCRIBIR - Direccion fisica: 769 - Tamaño 1
+[INFO] 04:00:30:568 LOGGER/(11819:11961): PID: 20 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 04:00:30:884 LOGGER/(11819:11961): PID: 21 - Pagina: 0 - Frame: 42
+[INFO] 04:00:30:989 LOGGER/(11819:11961): PID: 21 - Accion: ESCRIBIR - Direccion fisica: 1346 - Tamaño 1
+[INFO] 04:00:31:194 LOGGER/(11819:11961): PID: 21 - Accion: LEER - Direccion fisica: 1346 - Tamaño 1
+[INFO] 04:00:31:412 LOGGER/(11819:11961): PID: 48 - Pagina: 0 - Frame: 63
+[INFO] 04:00:31:519 LOGGER/(11819:12151): PID: 48 - Accion: LEER - Direccion fisica: 2016 - Tamaño 1
+[INFO] 04:00:31:829 LOGGER/(11819:11961): PID: 22 - Pagina: 0 - Frame: 28
+[INFO] 04:00:31:934 LOGGER/(11819:11961): PID: 22 - Accion: ESCRIBIR - Direccion fisica: 903 - Tamaño 1
+[INFO] 04:00:32:149 LOGGER/(11819:11961): PID: 48 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 04:00:32:576 LOGGER/(11819:11961): PID: 31 - Pagina: 0 - Frame: 84
+[INFO] 04:00:32:681 LOGGER/(11819:11961): PID: 31 - Accion: ESCRIBIR - Direccion fisica: 2689 - Tamaño 1
+[INFO] 04:00:32:998 LOGGER/(11819:11961): PID: 54 - Pagina: 0 - Frame: 73
+[INFO] 04:00:33:105 LOGGER/(11819:12151): PID: 54 - Accion: LEER - Direccion fisica: 2336 - Tamaño 1
+[INFO] 04:00:33:313 LOGGER/(11819:11961): PID: 23 - Pagina: 0 - Frame: 30
+[INFO] 04:00:33:417 LOGGER/(11819:11961): PID: 23 - Accion: ESCRIBIR - Direccion fisica: 967 - Tamaño 1
+[INFO] 04:00:33:731 LOGGER/(11819:11961): PID: 54 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 04:00:34:047 LOGGER/(11819:11961): PID: 32 - Pagina: 0 - Frame: 2
+[INFO] 04:00:34:153 LOGGER/(11819:11961): PID: 32 - Accion: LEER - Direccion fisica: 65 - Tamaño 1
+[INFO] 04:00:34:466 LOGGER/(11819:11961): PID: 32 - Accion: ESCRIBIR - Direccion fisica: 66 - Tamaño 1
+[INFO] 04:00:34:787 LOGGER/(11819:11961): PID: 33 - Pagina: 0 - Frame: 4
+[INFO] 04:00:34:891 LOGGER/(11819:11961): PID: 33 - Accion: ESCRIBIR - Direccion fisica: 130 - Tamaño 1
+[INFO] 04:00:35:096 LOGGER/(11819:11961): PID: 33 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 04:00:35:310 LOGGER/(11819:11961): PID: 60 - Pagina: 0 - Frame: 81
+[INFO] 04:00:35:417 LOGGER/(11819:12151): PID: 60 - Accion: LEER - Direccion fisica: 2592 - Tamaño 1
+[INFO] 04:00:35:521 LOGGER/(11819:11961): PID: 25 - Tamaño Actual: 0 - Tamaño a Ampliar: 64
+[INFO] 04:00:35:728 LOGGER/(11819:11961): PID: 25 - Pagina: 0 - Frame: 4
+[INFO] 04:00:35:832 LOGGER/(11819:11961): PID: 25 - Accion: ESCRIBIR - Direccion fisica: 128 - Tamaño 1
+[INFO] 04:00:36:045 LOGGER/(11819:11961): PID: 60 - Tamaño Actual: 32 - Tamaño a Reducir: 0
+[INFO] 04:00:36:568 LOGGER/(11819:11961): PID: 34 - Pagina: 0 - Frame: 10
+[INFO] 04:00:36:672 LOGGER/(11819:11961): PID: 34 - Accion: ESCRIBIR - Direccion fisica: 321 - Tamaño 1
+[INFO] 04:00:37:091 LOGGER/(11819:11961): PID: 35 - Pagina: 0 - Frame: 31
+[INFO] 04:00:37:196 LOGGER/(11819:11961): PID: 35 - Accion: ESCRIBIR - Direccion fisica: 993 - Tamaño 1
+[INFO] 04:00:37:409 LOGGER/(11819:11961): PID: 26 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 04:00:38:031 LOGGER/(11819:11961): PID: 37 - Pagina: 0 - Frame: 48
+[INFO] 04:00:38:135 LOGGER/(11819:11961): PID: 37 - Accion: ESCRIBIR - Direccion fisica: 1538 - Tamaño 1
+[INFO] 04:00:38:338 LOGGER/(11819:11961): PID: 37 - Tamaño Actual: 64 - Tamaño a Reducir: 0
+[INFO] 04:00:38:654 LOGGER/(11819:11961): PID: 27 - Pagina: 0 - Frame: 46
+[INFO] 04:00:38:758 LOGGER/(11819:11961): PID: 27 - Accion: ESCRIBIR - Direccion fisica: 1474 - Tamaño 1
+[INFO] 04:00:38:964 LOGGER/(11819:11961): PID: 27 - Accion: LEER - Direccion fisica: 1474 - Tamaño 1
+[INFO] 04:00:39:283 LOGGER/(11819:11961): PID: 38 - Pagina: 0 - Frame: 86
+[INFO] 04:00:39:388 LOGGER/(11819:11961): PID: 38 - Accion: ESCRIBIR - Direccion fisica: 2753 - Tamaño 1
+[INFO] 04:00:39:708 LOGGER/(11819:11961): PID: 39 - Pagina: 0 - Frame: 50
+[INFO] 04:00:39:812 LOGGER/(11819:11961): PID: 39 - Accion: LEER - Direccion fisica: 1601 - Tamaño 1
+[INFO] 04:00:40:121 LOGGER/(11819:11961): PID: 39 - Accion: ESCRIBIR - Direccion fisica: 1602 - Tamaño 1
+[INFO] 04:00:40:438 LOGGER/(11819:11961): PID: 28 - Pagina: 0 - Frame: 36
+[INFO] 04:00:40:543 LOGGER/(11819:11961): PID: 28 - Accion: ESCRIBIR - Direccion fisica: 1159 - Tamaño 1

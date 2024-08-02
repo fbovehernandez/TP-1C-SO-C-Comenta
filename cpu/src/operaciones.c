@@ -492,7 +492,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         desalojar(pcb, PEDIDO_ESCRITURA, buffer_escritura);
         
         list_destroy_and_destroy_elements(lista_bytes_stdout, free);
-        list_destroy(lista_direcciones_fisicas_stdout);
+        list_destroy_and_destroy_elements(lista_direcciones_fisicas_stdout, free);
         // free(buffer_escritura); se hace en desalojar
         return 1;
         break;
