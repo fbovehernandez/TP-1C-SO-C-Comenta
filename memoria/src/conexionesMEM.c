@@ -828,6 +828,7 @@ char* agrupar_path(t_path* path) {
     return path_completo;
 }
 
+//
 void imprimir_path(t_path* path) {
     printf("PID: %d\n", path->PID);
     printf("Path length: %d\n", path->path_length);

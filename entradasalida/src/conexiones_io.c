@@ -920,6 +920,7 @@ int byte_de_primer_bloque(char* nombre_archivo) {
     return file->first_block * dialfs->block_size;
 }
 
+//
 ////////////////////
 ///// LIMPIEZA /////
 ////////////////////

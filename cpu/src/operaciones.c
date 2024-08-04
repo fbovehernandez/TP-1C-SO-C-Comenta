@@ -486,6 +486,7 @@ int ejecutar_instruccion(t_instruccion *instruccion, t_pcb *pcb) {
         }
         */
 
+//
         t_buffer* buffer_escritura = llenar_buffer_stdio(nombre_interfaz, lista_direcciones_fisicas_stdout, tamanio_a_escribir, cantidad_paginas);
         // pcb->program_counter++;
 

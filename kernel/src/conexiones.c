@@ -423,6 +423,7 @@ int ejecutar_io_stdin(int socket, t_pid_stdin* pid_stdin) {
         free(dir_fisica_tam);
     }
     
+    //
     enviar_paquete(buffer, LEETE, socket);
 
     int resultOk;
